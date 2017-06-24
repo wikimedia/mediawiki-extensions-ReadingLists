@@ -1,0 +1,23 @@
+{
+	"name": "ReadingLists",
+	"version": "0.1.0",
+	"author": [
+		"Gergő Tisza"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:ReadingLists",
+	"descriptionmsg": "readinglists-desc",
+	"license-name": "GPL-2.0+",
+	"type": "other",
+	"AutoloadClasses": {
+	},
+	"config": {
+	},
+	"Hooks": {
+	},
+	"MessagesDirs": {
+		"ReadingLists": [
+			"i18n"
+		]
+	},
+	"manifest_version": 1
+}
