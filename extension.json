@@ -9,15 +9,37 @@
 	"license-name": "GPL-2.0+",
 	"type": "other",
 	"AutoloadClasses": {
+		"MediaWiki\\Extensions\\ReadingLists\\HookHandler": "src/HookHandler.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Utils": "src/Utils.php",
+		"MediaWiki\\Extensions\\ReadingLists\\ReadingListRepository": "src/ReadingListRepository.php",
+		"MediaWiki\\Extensions\\ReadingLists\\ReadingListRepositoryException": "src/ReadingListRepositoryException.php"
+	},
+	"ConfigRegistry": {
+		"ReadingLists": "GlobalVarConfig::newInstance"
 	},
 	"config": {
+		"ReadingListsCluster": {
+			"value": false,
+			"description": "Database cluster to use for storing the lists. False means the cluster of the current wiki will be used."
+		},
+		"ReadingListsDatabase": {
+			"value": false,
+			"description": "Database to use for storing the lists. False means use the database of the current wiki. To use a table prefix, use '<database>-<prefix'>' format."
+		},
+		"ReadingListsCentralWiki": {
+			"value": false,
+			"description": "Database name of the central wiki. This is unrelated to data storage (see ReadingListsDatabase for that) and only used to identify which wiki should be used for jobs and such."
+		}
 	},
 	"Hooks": {
+		"LoadExtensionSchemaUpdates": "MediaWiki\\Extensions\\ReadingLists\\HookHandler::onLoadExtensionSchemaUpdates",
+		"UnitTestsAfterDatabaseSetup": "MediaWiki\\Extensions\\ReadingLists\\HookHandler::onUnitTestsAfterDatabaseSetup",
+		"UnitTestsBeforeDatabaseTeardown": "MediaWiki\\Extensions\\ReadingLists\\HookHandler::onUnitTestsBeforeDatabaseTeardown"
 	},
 	"MessagesDirs": {
 		"ReadingLists": [
 			"i18n"
 		]
 	},
-	"manifest_version": 1
+	"manifest_version": 2
 }

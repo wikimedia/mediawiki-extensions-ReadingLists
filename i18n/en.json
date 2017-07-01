@@ -4,5 +4,19 @@
 			"Tgr"
 		]
 	},
-	"readinglists-desc": "Allows users to manage private lists of articles, such as bookmarks or \"Read Later\" lists"
+	"readinglists-desc": "Allows users to manage private lists of articles, such as bookmarks or \"Read Later\" lists.",
+	"readinglists-db-error-not-set-up": "Reading lists have not been set up for this user.",
+	"readinglists-db-error-already-set-up": "Reading lists have already been set up for this user.",
+	"readinglists-db-error-cannot-delete-default-list": "The default list cannot be deleted.",
+	"readinglists-db-error-no-such-list": "List $1 does not exist.",
+	"readinglists-db-error-no-such-list-entry": "List entry $1 does not exist.",
+	"readinglists-db-error-not-own-list": "List $1 belongs to another user.",
+	"readinglists-db-error-not-own-list-entry": "List entry $1 belongs to another user.",
+	"readinglists-db-error-list-deleted": "List $1 has been deleted.",
+	"readinglists-db-error-list-entry-deleted": "List entry $1 has been deleted.",
+	"readinglists-db-error-duplicate-page": "The list already contains this page.",
+	"readinglists-db-error-empty-list-ids": "List ids parameter must not be empty.",
+	"readinglists-db-error-empty-order": "Order parameter must not be empty.",
+	"readinglists-db-error-entry-not-in-list": "List entry $1 does not belong to this list.",
+	"readinglists-db-error-user-required": "This method cannot be called without specifying the user."
 }

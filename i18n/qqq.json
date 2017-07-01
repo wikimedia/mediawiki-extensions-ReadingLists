@@ -4,5 +4,19 @@
 			"Tgr"
 		]
 	},
-	"readinglists-desc": "{{desc|name=ReadingLists|url=https://www.mediawiki.org/wiki/Extension:ReadingLists}}"
+	"readinglists-desc": "{{desc|name=ReadingLists|url=https://www.mediawiki.org/wiki/Extension:ReadingLists}}",
+	"readinglists-db-error-not-set-up": "Error message used when trying to perform an operation for a user without calling setup first.",
+	"readinglists-db-error-already-set-up": "Error message used when trying to call setup for a user when it has already been performed.",
+	"readinglists-db-error-cannot-delete-default-list": "Error message used when trying to delete the default list.",
+	"readinglists-db-error-no-such-list": "Error message used when trying to do something with a non-existent list.",
+	"readinglists-db-error-no-such-list-entry": "Error message used when trying to do something with a non-existent list entry.",
+	"readinglists-db-error-not-own-list": "Error message used when trying to do something with a list that belongs to another user.",
+	"readinglists-db-error-not-own-list-entry": "Error message used when trying to do something with a list entry that belongs to another user.",
+	"readinglists-db-error-list-deleted": "Error message used when trying to do something with a list that has been deleted.",
+	"readinglists-db-error-list-entry-deleted": "Error message used when trying to do something with a list entry that has been deleted.",
+	"readinglists-db-error-duplicate-page": "Error message used when trying to add a page to a list that already contains it.",
+	"readinglists-db-error-empty-list-ids": "Error message used when querying list entries without specifying any lists.",
+	"readinglists-db-error-empty-order": "Error message used when trying to set the order of lists or list entries but passing an empty order array.",
+	"readinglists-db-error-entry-not-in-list": "Error message used when trying to set the order of list entries but some of them do not belong to the list.",
+	"readinglists-db-error-user-required": "Error message used when calling a method that operates on a single user, but the user was not specified when the repository object was constructed."
 }
