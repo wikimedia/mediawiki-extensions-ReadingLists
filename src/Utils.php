@@ -3,6 +3,7 @@
 namespace MediaWiki\Extensions\ReadingLists;
 
 use MediaWiki\MediaWikiServices;
+use UnexpectedValueException;
 use Wikimedia\Rdbms\DBConnRef;
 
 /**
@@ -42,6 +43,25 @@ class Utils {
 			return true;
 		}
 		return ( wfWikiID() === $centralWiki );
+	}
+
+	/**
+	 * Returns the timestamp at which deleted items expire (can be purged).
+	 * @return string Timestamp in TS_MW format
+	 * @throws UnexpectedValueException When the extension is configured incorrectly.
+	 */
+	public static function getDeletedExpiry() {
+		$services = MediaWikiServices::getInstance();
+		$extensionConfig = $services->getConfigFactory()->makeConfig( 'ReadingLists' );
+		$days = $extensionConfig->get( 'ReadingListsDeletedRetentionDays' );
+		$unixTimestamp = strtotime( '-' . $days . ' days' );
+		$timestamp = wfTimestamp( TS_MW, $unixTimestamp );
+		if ( !$timestamp || !$unixTimestamp ) {
+			// not really an argument but close enough
+			throw new UnexpectedValueException( 'Invalid $wgReadingListsDeletedRetentionDays value: '
+				. $days );
+		}
+		return $timestamp;
 	}
 
 }

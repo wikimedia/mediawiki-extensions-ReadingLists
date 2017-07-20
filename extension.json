@@ -12,7 +12,40 @@
 		"MediaWiki\\Extensions\\ReadingLists\\HookHandler": "src/HookHandler.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Utils": "src/Utils.php",
 		"MediaWiki\\Extensions\\ReadingLists\\ReadingListRepository": "src/ReadingListRepository.php",
-		"MediaWiki\\Extensions\\ReadingLists\\ReadingListRepositoryException": "src/ReadingListRepositoryException.php"
+		"MediaWiki\\Extensions\\ReadingLists\\ReadingListRepositoryException": "src/ReadingListRepositoryException.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListEntries": "src/Api/ApiQueryReadingListEntries.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListOrder": "src/Api/ApiQueryReadingListOrder.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingLists": "src/Api/ApiQueryReadingLists.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingLists": "src/Api/ApiReadingLists.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsCreateEntry": "src/Api/ApiReadingListsCreateEntry.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsCreate": "src/Api/ApiReadingListsCreate.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsDeleteEntry": "src/Api/ApiReadingListsDeleteEntry.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsDelete": "src/Api/ApiReadingListsDelete.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsOrderEntry": "src/Api/ApiReadingListsOrderEntry.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsOrder": "src/Api/ApiReadingListsOrder.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsSetup": "src/Api/ApiReadingListsSetup.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsTeardown": "src/Api/ApiReadingListsTeardown.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsUpdate": "src/Api/ApiReadingListsUpdate.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiTrait": "src/Api/ApiTrait.php"
+	},
+	"APIModules": {
+		"readinglists": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingLists"
+	},
+	"APIListModules": {
+		"readinglistentries": {
+			"class": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListEntries",
+			"factory": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListEntries::factory"
+		}
+	},
+	"APIMetaModules": {
+		"readinglistorder": {
+			"class": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListOrder",
+			"factory": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListOrder::factory"
+		},
+		"readinglists": {
+			"class": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingLists",
+			"factory": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingLists::factory"
+		}
 	},
 	"ConfigRegistry": {
 		"ReadingLists": "GlobalVarConfig::newInstance"
@@ -29,6 +62,10 @@
 		"ReadingListsCentralWiki": {
 			"value": false,
 			"description": "Database name of the central wiki. This is unrelated to data storage (see ReadingListsDatabase for that) and only used to identify which wiki should be used for jobs and such."
+		},
+		"ReadingListsDeletedRetentionDays": {
+			"value": 30,
+			"description": "Purge deleted lists and list entries after this many days."
 		}
 	},
 	"Hooks": {

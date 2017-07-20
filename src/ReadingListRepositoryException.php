@@ -3,6 +3,7 @@
 namespace MediaWiki\Extensions\ReadingLists;
 
 use Exception;
+use ILocalizedException;
 use Message;
 
 /**
@@ -10,7 +11,7 @@ use Message;
  * constraint (e.g. trying to add an entry to a list owned by a different user). Usually this is
  * a client error; in some cases it could happen for otherwise sane calls due to race conditions.
  */
-class ReadingListRepositoryException extends Exception {
+class ReadingListRepositoryException extends Exception implements ILocalizedException {
 
 	/** @var Message */
 	private $messageObject;
