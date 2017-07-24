@@ -13,6 +13,8 @@
 		"MediaWiki\\Extensions\\ReadingLists\\Utils": "src/Utils.php",
 		"MediaWiki\\Extensions\\ReadingLists\\ReadingListRepository": "src/ReadingListRepository.php",
 		"MediaWiki\\Extensions\\ReadingLists\\ReadingListRepositoryException": "src/ReadingListRepositoryException.php",
+		"MediaWiki\\Extensions\\ReadingLists\\ReverseInterwikiLookupInterface": "src/ReverseInterwikiLookupInterface.php",
+		"MediaWiki\\Extensions\\ReadingLists\\ReverseInterwikiLookup": "src/ReverseInterwikiLookup.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListEntries": "src/Api/ApiQueryReadingListEntries.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListOrder": "src/Api/ApiQueryReadingListOrder.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingLists": "src/Api/ApiQueryReadingLists.php",
@@ -73,6 +75,9 @@
 		"UnitTestsAfterDatabaseSetup": "MediaWiki\\Extensions\\ReadingLists\\HookHandler::onUnitTestsAfterDatabaseSetup",
 		"UnitTestsBeforeDatabaseTeardown": "MediaWiki\\Extensions\\ReadingLists\\HookHandler::onUnitTestsBeforeDatabaseTeardown"
 	},
+	"ServiceWiringFiles": [
+		"ServiceWiring.php"
+	],
 	"MessagesDirs": {
 		"ReadingLists": [
 			"i18n"

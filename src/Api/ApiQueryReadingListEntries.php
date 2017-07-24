@@ -2,15 +2,19 @@
 
 namespace MediaWiki\Extensions\ReadingLists\Api;
 
-use ApiQueryBase;
+use ApiPageSet;
+use ApiQueryGeneratorBase;
 use MediaWiki\Extensions\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
+use MediaWiki\Extensions\ReadingLists\ReverseInterwikiLookup;
 use MediaWiki\Extensions\ReadingLists\Utils;
+use MediaWiki\MediaWikiServices;
+use Title;
 
 /**
  * API list module for getting list contents.
  */
-class ApiQueryReadingListEntries extends ApiQueryBase {
+class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 
 	use ApiTrait;
 
@@ -38,50 +42,80 @@ class ApiQueryReadingListEntries extends ApiQueryBase {
 	 */
 	public function execute() {
 		try {
-			if ( $this->getUser()->isAnon() ) {
-				$this->dieWithError( [ 'apierror-mustbeloggedin',
-					$this->msg( 'action-viewmyprivateinfo' ) ], 'notloggedin' );
-			}
-			$this->checkUserRightsAny( 'viewmyprivateinfo' );
-
-			$lists = $this->getParameter( 'lists' );
-			$changedSince = $this->getParameter( 'changedsince' );
-			$limit = $this->getParameter( 'limit' );
-			$offset = $this->getParameter( 'continue' );
-			$mode = $changedSince !== null ? self::MODE_CHANGES : self::MODE_ALL;
-
-			$this->requireOnlyOneParameter( $this->extractRequestParams(), 'lists', 'changedsince' );
-			if ( $mode === self::MODE_CHANGES ) {
-				$expiry = Utils::getDeletedExpiry();
-				if ( $changedSince < $expiry ) {
-					$errorMessage = $this->msg( 'readinglists-apierror-too-old', static::$prefix,
-						wfTimestamp( TS_ISO_8601, $expiry ) );
-					$this->dieWithError( $errorMessage );
-				}
-			}
-
-			$path = [ 'query', $this->getModuleName() ];
-			$result = $this->getResult();
-			$result->addIndexedTagName( $path, 'entry' );
-
-			$repository = $this->getReadingListRepository( $this->getUser() );
-			if ( $mode === self::MODE_CHANGES ) {
-				$res = $repository->getListEntriesByDateUpdated( $changedSince, $limit + 1, $offset );
-			} else {
-				$res = $repository->getListEntries( $lists, $limit + 1, $offset );
-			}
-			$resultOffset = 0;
-			foreach ( $res as $row ) {
-				$isLastRow = ( $resultOffset === $res->numRows() - 1 );
-				$fits = $result->addValue( $path, null,
-					$this->getResultItem( $row, $mode ) );
-				if ( !$fits || ++$resultOffset >= $limit && !$isLastRow ) {
-					$this->setContinueEnumParameter( 'continue', $offset + $resultOffset );
-					break;
-				}
-			}
+			$this->run();
 		} catch ( ReadingListRepositoryException $e ) {
 			$this->dieWithException( $e );
+		}
+	}
+
+	/**
+	 * @inheritdoc
+	 * @param ApiPageSet $resultPageSet All output should be appended to this object
+	 * @return void
+	 */
+	public function executeGenerator( $resultPageSet ) {
+		try {
+			$this->run( $resultPageSet );
+		} catch ( ReadingListRepositoryException $e ) {
+			$this->dieWithException( $e );
+		}
+	}
+
+	/**
+	 * Main API logic.
+	 * @param ApiPageSet|null $resultPageSet
+	 */
+	private function run( ApiPageSet $resultPageSet = null ) {
+		if ( $this->getUser()->isAnon() ) {
+			$this->dieWithError( [ 'apierror-mustbeloggedin',
+				$this->msg( 'action-viewmyprivateinfo' ) ], 'notloggedin' );
+		}
+		$this->checkUserRightsAny( 'viewmyprivateinfo' );
+
+		$lists = $this->getParameter( 'lists' );
+		$changedSince = $this->getParameter( 'changedsince' );
+		$limit = $this->getParameter( 'limit' );
+		$offset = $this->getParameter( 'continue' );
+
+		$mode = $changedSince !== null ? self::MODE_CHANGES : self::MODE_ALL;
+
+		$this->requireOnlyOneParameter( $this->extractRequestParams(), 'lists', 'changedsince' );
+		if ( $mode === self::MODE_CHANGES ) {
+			$expiry = Utils::getDeletedExpiry();
+			if ( $changedSince < $expiry ) {
+				$errorMessage = $this->msg( 'readinglists-apierror-too-old', static::$prefix,
+					wfTimestamp( TS_ISO_8601, $expiry ) );
+				$this->dieWithError( $errorMessage );
+			}
+		}
+
+		$path = [ 'query', $this->getModuleName() ];
+		$result = $this->getResult();
+		$result->addIndexedTagName( $path, 'entry' );
+
+		$repository = $this->getReadingListRepository( $this->getUser() );
+		if ( $mode === self::MODE_CHANGES ) {
+			$res = $repository->getListEntriesByDateUpdated( $changedSince, $limit + 1, $offset );
+		} else {
+			$res = $repository->getListEntries( $lists, $limit + 1, $offset );
+		}
+		$titles = [];
+		$resultOffset = 0;
+		$fits = true;
+		foreach ( $res as $row ) {
+			$isLastRow = ( $resultOffset === $res->numRows() - 1 );
+			if ( $resultPageSet ) {
+				$titles[] = $this->getResultTitle( $row );
+			} else {
+				$fits = $result->addValue( $path, null, $this->getResultItem( $row, $mode ) );
+			}
+			if ( !$fits || ++$resultOffset >= $limit && !$isLastRow ) {
+				$this->setContinueEnumParameter( 'continue', $offset + $resultOffset );
+				break;
+			}
+		}
+		if ( $resultPageSet ) {
+			$resultPageSet->populateFromTitles( $titles );
 		}
 	}
 
@@ -149,6 +183,14 @@ class ApiQueryReadingListEntries extends ApiQueryBase {
 	}
 
 	/**
+	 * Initialize a reverse interwiki lookup helper.
+	 * @return ReverseInterwikiLookup
+	 */
+	private function getReverseInterwikiLookup() {
+		return MediaWikiServices::getInstance()->getService( 'ReverseInterwikiLookup' );
+	}
+
+	/**
 	 * Transform a row into an API result item
 	 * @param ReadingListEntryRow $row
 	 * @param string $mode One of the MODE_* constants.
@@ -163,6 +205,27 @@ class ApiQueryReadingListEntries extends ApiQueryBase {
 			'created' => wfTimestamp( TS_ISO_8601, $row->rle_date_created ),
 			'updated' => wfTimestamp( TS_ISO_8601, $row->rle_date_updated ),
 	   ] + ( $mode === self::MODE_CHANGES ? [ 'deleted' => (bool)$row->rle_deleted ] : [] );
+	}
+
+	/**
+	 * Transform a row into an API result item
+	 * @param ReadingListEntryRow $row
+	 * @return Title|string
+	 */
+	private function getResultTitle( $row ) {
+		$interwikiPrefix = $this->getReverseInterwikiLookup()->lookup( $row->rle_project );
+		if ( is_string( $interwikiPrefix ) ) {
+			// This will handle correctly the case of $interwikiPrefix === '' as well.
+			return Title::makeTitle( NS_MAIN, $row->rle_title, '', $interwikiPrefix );
+		} elseif ( is_array( $interwikiPrefix ) ) {
+			$title = implode( ':', array_slice( $interwikiPrefix, 1 ) ). ':' . $row->rle_title;
+			$prefix = $interwikiPrefix[0];
+			return Title::makeTitle( NS_MAIN, $title, '', $prefix );
+		}
+		// For lack of a better option let's create an invalid title.
+		// ApiPageSet::populateFromTitles() is not documented to accept strings
+		// but it will actually work.
+		return 'Invalid project|' . $row->rle_project . '|' . $row->rle_title;
 	}
 
 }
