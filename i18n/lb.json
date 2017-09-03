@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"Robby"
+		]
+	},
+	"readinglists-db-error-cannot-delete-default-list": "D'Standardlëscht däerf net geläscht ginn.",
+	"readinglists-db-error-no-such-list": "Lëscht $1 gëtt et net.",
+	"readinglists-db-error-list-deleted": "Lëscht $1 gouf geläscht.",
+	"readinglists-db-error-duplicate-page": "Déi Säit ass schonn an där Lëscht.",
+	"apihelp-readinglists+create-param-name": "Numm vun der Lëscht.",
+	"apihelp-readinglists+create-param-description": "Beschreiwung vun der Lëscht",
+	"apihelp-readinglists+update-param-name": "Neien Numm vun der Lëscht.",
+	"apihelp-readinglists+update-param-description": "Nei Beschreiwung vun der Lëscht.",
+	"apihelp-readinglists+createentry-param-title": "Säitentitel."
+}

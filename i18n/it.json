@@ -1,8 +1,14 @@
 {
 	"@metadata": {
 		"authors": [
-			"Greis"
+			"Greis",
+			"Beta16"
 		]
 	},
-	"readinglists-desc": "Permette agli utenti di gestire elenchi privati di articoli, come segnalibri o elenchi di \"Leggere Dopo\"."
+	"readinglists-desc": "Permette agli utenti di gestire elenchi privati di articoli, come segnalibri o elenchi di \"Leggere Dopo\".",
+	"readinglists-db-error-list-deleted": "L'elenco $1 è stato cancellato.",
+	"apihelp-readinglists+update-param-list": "ID elenco.",
+	"apihelp-readinglists+delete-param-list": "ID elenco.",
+	"apihelp-readinglists+createentry-param-list": "ID elenco.",
+	"apihelp-readinglists+orderentry-param-list": "ID elenco."
 }

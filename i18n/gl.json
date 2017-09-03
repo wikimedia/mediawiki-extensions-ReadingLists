@@ -4,5 +4,12 @@
 			"Banjo"
 		]
 	},
-	"readinglists-desc": "Permítelle ós usuarios manexar listas privadas de artigos, coma páxinas marcadas ou listas de \"ler máis tarde\"."
+	"readinglists-desc": "Permítelle ós usuarios manexar listas privadas de artigos, coma páxinas marcadas ou listas de \"ler máis tarde\".",
+	"readinglists-db-error-cannot-delete-default-list": "A lista por defecto non pode eliminarse.",
+	"readinglists-db-error-no-such-list": "A lista $1 non existe.",
+	"readinglists-db-error-not-own-list": "A lista $1 pertence a outro usuario.",
+	"readinglists-db-error-list-deleted": "Eliminouse a lista $1.",
+	"readinglists-db-error-duplicate-page": "A lista xa contén esta páxina.",
+	"apihelp-readinglists+create-param-name": "Nome da lista.",
+	"apihelp-readinglists+create-param-description": "Descrición da lista."
 }

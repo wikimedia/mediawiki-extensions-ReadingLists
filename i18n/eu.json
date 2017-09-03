@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Mikel Ibaiba"
+		]
+	},
+	"apihelp-readinglists+update-param-list": "ID zerrenda.",
+	"apihelp-readinglists+delete-param-list": "ID zerrenda.",
+	"apihelp-readinglists+createentry-param-list": "ID zerrenda.",
+	"apihelp-readinglists+deleteentry-param-entry": "IDa sartu.",
+	"apihelp-readinglists+orderentry-param-list": "ID zerrenda."
+}

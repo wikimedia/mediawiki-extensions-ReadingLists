@@ -1,8 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
-			"Belkacem77"
+			"Belkacem77",
+			"Sayem AtVkm"
 		]
 	},
-	"readinglists-desc": "Sireg iseqdacen ad sferken tibdarin tusligin n imagraden, am ticraḍ n isebtar neɣ tibdarin \"Ɣeṛ ticki\"."
+	"readinglists-desc": "Sireg iseqdacen ad sferken tibdarin tusligin n imagraden, am ticraḍ n isebtar neɣ tibdarin \"Ɣeṛ ticki\".",
+	"readinglists-db-error-list-deleted": "Tettwakkes tebdart $1",
+	"apihelp-readinglists+create-param-description": "Aglam n tebdart.",
+	"apihelp-readinglists+update-param-description": "Aglam n tebdart amaynut.",
+	"apihelp-readinglists+createentry-param-title": "Azwel n usebter."
 }

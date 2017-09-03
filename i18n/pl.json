@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Chrumps"
+		]
+	},
+	"readinglists-apierror-project-title-param": "<var>$1project</var> i <var>$1title</var> muszą być używane razem."
+}

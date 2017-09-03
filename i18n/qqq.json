@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Tgr"
+			"Tgr",
+			"Umherirrender"
 		]
 	},
 	"readinglists-desc": "{{desc|name=ReadingLists|url=https://www.mediawiki.org/wiki/Extension:ReadingLists}}",
@@ -43,9 +44,9 @@
 	"apihelp-query+readinglistorder-param-lists": "{{doc-apihelp-param|query+readinglistorder|lists}}",
 	"apihelp-query+readinglistorder-example-1": "{{doc-apihelp-example|query+readinglistorder}}",
 	"apihelp-query+readinglistorder-example-2": "{{doc-apihelp-example|query+readinglistorder}}",
-	"apihelp-readinglists-summary": "{{doc-apihelp-summary|readinglists+setup}}",
-	"apihelp-readinglists-extended-description": "{{doc-apihelp-extended-description|readinglists+setup}}",
+	"apihelp-readinglists-summary": "{{doc-apihelp-summary|readinglists}}",
 	"apihelp-readinglists-param-command": "{{doc-apihelp-param|readinglists|command}}",
+	"apihelp-readinglists-extended-description": "{{doc-apihelp-extended-description|readinglists}}",
 	"apihelp-readinglists+setup-summary": "{{doc-apihelp-summary|readinglists+setup}}",
 	"apihelp-readinglists+setup-extended-description": "{{doc-apihelp-extended-description|readinglists+setup}}",
 	"apihelp-readinglists+setup-example-1": "{{doc-apihelp-example|readinglists+setup}}",
@@ -61,7 +62,7 @@
 	"apihelp-readinglists+create-example-1": "{{doc-apihelp-example|readinglists+create}}",
 	"apihelp-readinglists+create-example-2": "{{doc-apihelp-example|readinglists+create}}",
 	"apihelp-readinglists+update-summary": "{{doc-apihelp-summary|readinglists+update}}",
-	"apihelp-readinglists+update-param-list": "{{doc-apihelp-param|readinglists+update|lists}}",
+	"apihelp-readinglists+update-param-list": "{{doc-apihelp-param|readinglists+update|list}}",
 	"apihelp-readinglists+update-param-name": "{{doc-apihelp-param|readinglists+update|name}}",
 	"apihelp-readinglists+update-param-description": "{{doc-apihelp-param|readinglists+update|description}}",
 	"apihelp-readinglists+update-param-color": "{{doc-apihelp-param|readinglists+update|color}}",
@@ -69,7 +70,7 @@
 	"apihelp-readinglists+update-param-icon": "{{doc-apihelp-param|readinglists+update|icon}}",
 	"apihelp-readinglists+update-example-1": "{{doc-apihelp-example|readinglists+update}}",
 	"apihelp-readinglists+delete-summary": "{{doc-apihelp-summary|readinglists+delete}}",
-	"apihelp-readinglists+delete-extended-description": "{{doc-apihelp-extended-description|readinglists+update}}",
+	"apihelp-readinglists+delete-extended-description": "{{doc-apihelp-extended-description|readinglists+delete}}",
 	"apihelp-readinglists+delete-param-list": "{{doc-apihelp-param|readinglists+delete|list}}",
 	"apihelp-readinglists+delete-example-1": "{{doc-apihelp-example|readinglists+delete}}",
 	"apihelp-readinglists+createentry-summary": "{{doc-apihelp-summary|readinglists+createentry}}",

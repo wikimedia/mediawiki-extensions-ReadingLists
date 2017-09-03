@@ -1,0 +1,18 @@
+{
+	"@metadata": {
+		"authors": [
+			"WikiPhoenix"
+		]
+	},
+	"readinglists-db-error-list-deleted": "Listan $1 har raderats.",
+	"readinglists-db-error-duplicate-page": "Listan innehåller redan denna sida.",
+	"apihelp-readinglists+create-param-name": "Listnamn.",
+	"apihelp-readinglists+create-param-description": "Listbeskrivning.",
+	"apihelp-readinglists+update-param-list": "List-ID.",
+	"apihelp-readinglists+update-param-description": "Ny listbeskrivning.",
+	"apihelp-readinglists+update-param-color": "Ny listfärg.",
+	"apihelp-readinglists+update-param-image": "Ny listbild.",
+	"apihelp-readinglists+update-param-icon": "Ny listikon.",
+	"apihelp-readinglists+createentry-param-list": "List-ID.",
+	"apihelp-readinglists+orderentry-param-list": "List-ID."
+}

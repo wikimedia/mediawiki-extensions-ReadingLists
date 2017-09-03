@@ -1,8 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
-			"Macofe"
+			"Macofe",
+			"Fitoschido"
 		]
 	},
-	"readinglists-desc": "Permite a los usuarios gestionar listas privadas de artículos, como marcadores o listas de \"Leer después\"."
+	"readinglists-desc": "Permite a los usuarios gestionar listas privadas de artículos, como marcadores o listas de \"Leer después\".",
+	"readinglists-db-error-cannot-delete-default-list": "No se puede borrar la lista predeterminada.",
+	"readinglists-db-error-list-deleted": "Se eliminó la lista $1.",
+	"apihelp-readinglists+update-param-list": "Identificador de lista.",
+	"apihelp-readinglists+update-param-image": "Imagen de lista nueva.",
+	"apihelp-readinglists+createentry-param-list": "Identificador de lista.",
+	"apihelp-readinglists+orderentry-param-list": "Identificador de lista."
 }
