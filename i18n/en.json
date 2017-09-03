@@ -85,7 +85,7 @@
 	"apihelp-readinglists+order-extended-description": "The order will be used by the <kbd>[[Special:ApiHelp/query+readinglists|readinglists]]</kbd> module. Clients might also make use of it for their own display purposes.",
 	"apihelp-readinglists+order-param-order": "All list IDs of the user, in the desired order.",
 	"apihelp-readinglists+order-example-1": "Reorder reading lists of the current user.",
-	"apihelp-readinglists+orderentry-summary": "Set the order of entries of a list belnging to the current user.",
+	"apihelp-readinglists+orderentry-summary": "Set the order of entries of a list belonging to the current user.",
 	"apihelp-readinglists+orderentry-extended-description": "The order will be used by the <kbd>[[Special:ApiHelp/query+readinglistentries|readinglistentries]]</kbd> module. Clients might also make use of it for their own display purposes.",
 	"apihelp-readinglists+orderentry-param-list": "List ID.",
 	"apihelp-readinglists+orderentry-param-order": "All entry IDs of the list, in the desired order.",
