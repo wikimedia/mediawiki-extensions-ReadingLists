@@ -5,6 +5,9 @@
 		]
 	},
 	"readinglists-desc": "Им овозможува на корисниците да раководат со приватни списоци на статии како обележувачи или „За читање подоцна“.",
+	"readinglists-db-error-not-set-up": "Нема поставени списоци за читање за овој корисник.",
+	"readinglists-db-error-already-set-up": "Веќе се поставен и списоци за читање за овој корисник.",
+	"readinglists-db-error-cannot-delete-default-list": "Основниот список не може да се избрише.",
 	"readinglists-db-error-no-such-list": "Списокот $1 не постои.",
 	"readinglists-db-error-no-such-list-entry": "Ставката $1 не постои.",
 	"readinglists-db-error-not-own-list": "Списокот $1 му припаѓа на друг корисник.",
@@ -12,5 +15,7 @@
 	"readinglists-db-error-list-deleted": "Списокот $1 е избришан.",
 	"readinglists-db-error-list-entry-deleted": "Ставката $1 е избришана.",
 	"readinglists-db-error-duplicate-page": "Страницата е веќе во списокот.",
-	"readinglists-db-error-empty-list-ids": "Параметарот со списочни назнаки не постои."
+	"readinglists-db-error-empty-list-ids": "Параметарот со списочни назнаки не постои.",
+	"readinglists-db-error-empty-order": "Параметарот за редослед не може да биде празен.",
+	"readinglists-db-error-entry-not-in-list": "Ставката $1 не припаѓа во овој список."
 }

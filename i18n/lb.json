@@ -6,11 +6,19 @@
 	},
 	"readinglists-db-error-cannot-delete-default-list": "D'Standardlëscht däerf net geläscht ginn.",
 	"readinglists-db-error-no-such-list": "Lëscht $1 gëtt et net.",
+	"readinglists-db-error-not-own-list": "D'Lëscht $1 gehéiert engem anere Benotzer.",
 	"readinglists-db-error-list-deleted": "Lëscht $1 gouf geläscht.",
 	"readinglists-db-error-duplicate-page": "Déi Säit ass schonn an där Lëscht.",
+	"apihelp-readinglists+teardown-summary": "Lëschte fir den aktuelle Benotzer desaktivéieren.",
+	"apihelp-readinglists+teardown-example-1": "Lieslëschte fir den aktuelle Benotzer desaktivéieren.",
 	"apihelp-readinglists+create-param-name": "Numm vun der Lëscht.",
 	"apihelp-readinglists+create-param-description": "Beschreiwung vun der Lëscht",
+	"apihelp-readinglists+update-param-list": "ID vun der Lëscht.",
 	"apihelp-readinglists+update-param-name": "Neien Numm vun der Lëscht.",
 	"apihelp-readinglists+update-param-description": "Nei Beschreiwung vun der Lëscht.",
-	"apihelp-readinglists+createentry-param-title": "Säitentitel."
+	"apihelp-readinglists+delete-summary": "Eng Lëscht läschen déi dem aktuelle Benotzer gehéiert.",
+	"apihelp-readinglists+delete-param-list": "ID vun der Lëscht.",
+	"apihelp-readinglists+createentry-param-list": "ID vun der Lëscht.",
+	"apihelp-readinglists+createentry-param-title": "Säitentitel.",
+	"apihelp-readinglists+orderentry-param-list": "ID vun der Lëscht."
 }
