@@ -4,7 +4,15 @@
 			"Mikel Ibaiba"
 		]
 	},
+	"readinglists-db-error-list-deleted": "$1 zerrenda ezabatu egin da.",
+	"apihelp-readinglists+create-param-name": "Zerrenda izena.",
+	"apihelp-readinglists+create-param-description": "Zerrenda deskribapena.",
 	"apihelp-readinglists+update-param-list": "ID zerrenda.",
+	"apihelp-readinglists+update-param-name": "Zerrenda berriaren izena.",
+	"apihelp-readinglists+update-param-description": "Zerrenda berriaren deskribapena.",
+	"apihelp-readinglists+update-param-color": "Zerrenda kolore berria.",
+	"apihelp-readinglists+update-param-image": "Zerrenda irudi berria.",
+	"apihelp-readinglists+update-param-icon": "Ikono zerrenda berria.",
 	"apihelp-readinglists+delete-param-list": "ID zerrenda.",
 	"apihelp-readinglists+createentry-param-list": "ID zerrenda.",
 	"apihelp-readinglists+createentry-param-title": "Orriaren izenburua.",
