@@ -4,5 +4,22 @@
 			"Hamilton Abreu"
 		]
 	},
-	"readinglists-desc": "Permite que os utilizadores mantenham listas privadas de artigos, tais como listas de marcadores de páginas ou listas de artigos para \"Ler Mais Tarde\""
+	"readinglists-desc": "Permite que os utilizadores mantenham listas privadas de artigos, tais como listas de marcadores de páginas ou listas de artigos para \"Ler Mais Tarde\"",
+	"readinglists-db-error-not-set-up": "Não foram criadas listas de leitura para este utilizador.",
+	"readinglists-db-error-already-set-up": "Já foram criadas listas de leitura para este utilizador.",
+	"readinglists-db-error-cannot-delete-default-list": "A lista por omissão não pode ser eliminada.",
+	"readinglists-db-error-no-such-list": "A lista $1 não existe.",
+	"readinglists-db-error-no-such-list-entry": "Não existe uma entrada $1 na lista.",
+	"readinglists-db-error-not-own-list": "A lista $1 pertence a outro utilizador.",
+	"readinglists-db-error-not-own-list-entry": "A entrada $1 da lista pertence a outro utilizador.",
+	"readinglists-db-error-list-deleted": "A lista $1 foi eliminada.",
+	"readinglists-db-error-list-entry-deleted": "A entrada $1 da lista foi eliminada.",
+	"readinglists-db-error-duplicate-page": "A lista já contém esta página.",
+	"readinglists-db-error-empty-list-ids": "O parâmetro de identificadores de listas não pode estar vazio.",
+	"readinglists-db-error-empty-order": "O parâmetro de ordenação não pode estar vazio.",
+	"readinglists-db-error-entry-not-in-list": "A entrada $1 não pertence a esta lista.",
+	"readinglists-db-error-user-required": "Este método não pode ser chamado sem especificar o utilizador.",
+	"readinglists-apierror-project-title-param": "<var>$1project</var> e <var>$1title</var> têm de ser usados em conjunto.",
+	"readinglists-apierror-too-old": "As datas e horas passadas a <var>$1changedsince</var> não podem ser anteriores a <kbd>$2</kbd>.",
+	"apihelp-query+readinglists-summary": "Listar ou filtrar as listas de leitura do utilizador e mostrar metadados sobre elas."
 }
