@@ -21,5 +21,7 @@
 	"readinglists-db-error-user-required": "Este método não pode ser chamado sem especificar o utilizador.",
 	"readinglists-apierror-project-title-param": "<var>$1project</var> e <var>$1title</var> têm de ser usados em conjunto.",
 	"readinglists-apierror-too-old": "As datas e horas passadas a <var>$1changedsince</var> não podem ser anteriores a <kbd>$2</kbd>.",
-	"apihelp-query+readinglists-summary": "Listar ou filtrar as listas de leitura do utilizador e mostrar metadados sobre elas."
+	"apihelp-query+readinglists-summary": "Listar ou filtrar as listas de leitura do utilizador e mostrar metadados sobre elas.",
+	"apihelp-query+readinglists-extended-description": "Este módulo tem três modos de operação. Com o parâmetro <var>$1changedsince</var>, ele devolve todas as listas do utilizador corrente alteradas após a data fornecida. (Este modo é usado para sincronização de dispositivos e, ao contrário dos restantes, inclui listas eliminadas. Só são consideradas as alterações aos metadados das listas, não às entradas das listas.) Com os parâmetros <var>$1project</var> e <var>$1title</var>, ele devolve todas as listas que incluem essa página. Sem nenhum destes parâmetros, devolve todas as listas.",
+	"apihelp-query+readinglists-param-changedsince": "Mostrar as listas que foram alteradas após esta data e hora. Tem se ser posterior a <kbd>$1</kbd>."
 }
