@@ -22,6 +22,14 @@
 	"readinglists-apierror-project-title-param": "<var>$1project</var> e <var>$1title</var> têm de ser usados em conjunto.",
 	"readinglists-apierror-too-old": "As datas e horas passadas a <var>$1changedsince</var> não podem ser anteriores a <kbd>$2</kbd>.",
 	"apihelp-query+readinglists-summary": "Listar ou filtrar as listas de leitura do utilizador e mostrar metadados sobre elas.",
-	"apihelp-query+readinglists-extended-description": "Este módulo tem três modos de operação. Com o parâmetro <var>$1changedsince</var>, ele devolve todas as listas do utilizador corrente alteradas após a data fornecida. (Este modo é usado para sincronização de dispositivos e, ao contrário dos restantes, inclui listas eliminadas. Só são consideradas as alterações aos metadados das listas, não às entradas das listas.) Com os parâmetros <var>$1project</var> e <var>$1title</var>, ele devolve todas as listas que incluem essa página. Sem nenhum destes parâmetros, devolve todas as listas.",
-	"apihelp-query+readinglists-param-changedsince": "Mostrar as listas que foram alteradas após esta data e hora. Tem se ser posterior a <kbd>$1</kbd>."
+	"apihelp-query+readinglists-extended-description": "Este módulo tem três modos de operação. Com o parâmetro <var>$1changedsince</var>, ele devolve todas as listas do utilizador corrente alteradas após a data fornecida. (Este modo destina-se à sincronização de dispositivos e, ao contrário dos restantes, inclui listas eliminadas. Só são consideradas as alterações aos metadados das listas, não às entradas das listas.) Com os parâmetros <var>$1project</var> e <var>$1title</var>, ele devolve todas as listas que incluem essa página. Sem nenhum destes parâmetros, devolve todas as listas.",
+	"apihelp-query+readinglists-param-changedsince": "Mostrar as listas que foram alteradas após esta data e hora. Tem se ser posterior a <kbd>$1</kbd>.",
+	"apihelp-query+readinglists-param-project": "Projeto da página a filtrar. Tem de ser usado em conjunto com <var>$1title</var>.",
+	"apihelp-query+readinglists-param-title": "Título da página a filtrar. Tem de ser usado em conjunto com <var>$1project</var>.",
+	"apihelp-query+readinglists-param-limit": "O número de resultados a serem devolvidos.",
+	"apihelp-query+readinglists-example-1": "Obter as listas de leitura do utilizador corrente.",
+	"apihelp-query+readinglists-example-2": "Obter as listas de leitura do utilizador corrente que tenham sido alteradas após <kbd>2013-01-01T00:00:00Z</kbd>.",
+	"apihelp-query+readinglists-example-3": "Obter as listas de leitura do utilizador corrente que contenham a página <kbd>Dog</kbd> do projeto <kbd>en.wikipedia.org</kbd>",
+	"apihelp-query+readinglistentries-summary": "Listar as páginas de uma certa lista.",
+	"apihelp-query+readinglistentries-extended-description": "Este módulo tem dois modos de operação. Com o parâmetro <var>$1lists</var>, devolve as páginas nas listas especificadas. Com o parâmetro <var>$1changedsince</var>, devolve todas as entradas de todas as listas do utilizador corrente que tenham sido alteradas após a data fornecida. (Este modo destina-se à sincronização de dispositivos e, ao contrário dos restantes modos inclui entradas eliminadas, mas não inclui entradas de listas eliminadas)."
 }

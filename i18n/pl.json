@@ -1,8 +1,19 @@
 {
 	"@metadata": {
 		"authors": [
-			"Chrumps"
+			"Chrumps",
+			"Wojtas"
 		]
 	},
-	"readinglists-apierror-project-title-param": "<var>$1project</var> i <var>$1title</var> muszą być używane razem."
+	"readinglists-db-error-not-own-list": "Lista $1 należy do innego użytkownika.",
+	"readinglists-apierror-project-title-param": "<var>$1project</var> i <var>$1title</var> muszą być używane razem.",
+	"apihelp-readinglists+create-param-name": "Nazwa listy",
+	"apihelp-readinglists+create-param-description": "Opis listy",
+	"apihelp-readinglists+update-param-name": "Nowa nazwa listy",
+	"apihelp-readinglists+update-param-description": "Nowy opis listy",
+	"apihelp-readinglists+update-param-color": "Nowy kolor listy.",
+	"apihelp-readinglists+update-param-icon": "Nowq ikona listy",
+	"apihelp-readinglists+delete-param-list": "Identyfikator listy",
+	"apihelp-readinglists+createentry-param-title": "Tyruł strony.",
+	"apihelp-readinglists+deleteentry-param-entry": "Identyfikator wpisu"
 }
