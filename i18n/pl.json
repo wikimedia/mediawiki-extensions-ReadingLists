@@ -5,6 +5,7 @@
 			"Wojtas"
 		]
 	},
+	"readinglists-db-error-no-such-list": "Lista $1 nie istnieje.",
 	"readinglists-db-error-not-own-list": "Lista $1 należy do innego użytkownika.",
 	"readinglists-apierror-project-title-param": "<var>$1project</var> i <var>$1title</var> muszą być używane razem.",
 	"apihelp-readinglists+create-param-name": "Nazwa listy",
