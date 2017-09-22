@@ -531,7 +531,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		if ( !$ids ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
-		return $ids;
+		return array_map( 'intval', $ids );
 	}
 
 	/**
@@ -645,7 +645,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			}
 		}
 
-		return $ids;
+		return array_map( 'intval', $ids );
 	}
 
 	/**

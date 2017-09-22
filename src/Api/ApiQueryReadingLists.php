@@ -190,14 +190,14 @@ class ApiQueryReadingLists extends ApiQueryBase {
 
 	/**
 	 * Transform a row into an API result item
-	 * @param ReadingListRow $row
+	 * @param ReadingListRow $row List row, with additions from addExtraData().
 	 * @param string $mode One of the MODE_* constants.
 	 * @return array
 	 */
 	private function getResultItem( $row, $mode ) {
 		$item = [
 			'id' => (int)$row->rl_id,
-			'name' => (int)$row->rl_name,
+			'name' => $row->rl_name,
 			'default' => (bool)$row->rl_is_default,
 			'description' => $row->rl_description,
 			'color' => $row->rl_color,

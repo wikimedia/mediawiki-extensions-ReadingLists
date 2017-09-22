@@ -40,7 +40,7 @@ trait ApiTrait {
 	 */
 	public static function factory( ApiBase $parent, $name ) {
 		$services = MediaWikiServices::getInstance();
-		$loadBalancerFactory = $services ->getDBLoadBalancerFactory();
+		$loadBalancerFactory = $services->getDBLoadBalancerFactory();
 		$dbw = Utils::getDB( DB_MASTER, $services );
 		$dbr = Utils::getDB( DB_REPLICA, $services );
 		if ( static::$prefix ) {
