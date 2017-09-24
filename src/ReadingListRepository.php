@@ -11,7 +11,6 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Wikimedia\Rdbms\IDatabase;
-use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\LBFactory;
 
 /**

@@ -3,15 +3,8 @@
 namespace MediaWiki\Extensions\ReadingLists\Api;
 
 use ApiBase;
-use ApiMain;
-use ApiQueryBase;
 use CentralIdLookup;
-use MediaWiki\Extensions\ReadingLists\Api\ApiQueryReadingListChanges;
-use MediaWiki\Extensions\ReadingLists\Api\ApiQueryReadingListEntries;
-use MediaWiki\Extensions\ReadingLists\Api\ApiQueryReadingLists;
-use MediaWiki\Extensions\ReadingLists\Api\ApiReadingLists;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
-use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extensions\ReadingLists\Utils;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;

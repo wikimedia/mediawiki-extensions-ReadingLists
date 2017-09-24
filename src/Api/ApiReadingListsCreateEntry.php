@@ -3,7 +3,6 @@
 namespace MediaWiki\Extensions\ReadingLists\Api;
 
 use ApiBase;
-use ApiModuleManager;
 
 /**
  * API module for all write operations.
@@ -18,7 +17,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 
 	/**
 	 * Entry point for executing the module
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return void
 	 */
 	public function execute() {
@@ -32,7 +31,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	protected function getAllowedParams() {
@@ -53,7 +52,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	public function getHelpUrls() {
@@ -63,7 +62,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	protected function getExamplesMessages() {
@@ -77,7 +76,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 	// The parent module already enforces these but they make documentation nicer.
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function isWriteMode() {
@@ -85,7 +84,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function mustBePosted() {
@@ -93,7 +92,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function isInternal() {

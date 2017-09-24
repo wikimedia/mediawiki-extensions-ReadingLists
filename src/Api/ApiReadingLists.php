@@ -31,7 +31,7 @@ class ApiReadingLists extends ApiBase {
 
 	/**
 	 * Entry point for executing the module
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return void
 	 */
 	public function execute() {
@@ -54,7 +54,7 @@ class ApiReadingLists extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return ApiModuleManager
 	 */
 	public function getModuleManager() {
@@ -72,7 +72,7 @@ class ApiReadingLists extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	protected function getAllowedParams() {
@@ -85,7 +85,7 @@ class ApiReadingLists extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	public function getHelpUrls() {
@@ -95,7 +95,7 @@ class ApiReadingLists extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function isWriteMode() {
@@ -103,7 +103,7 @@ class ApiReadingLists extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function needsToken() {
@@ -111,7 +111,7 @@ class ApiReadingLists extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function isInternal() {

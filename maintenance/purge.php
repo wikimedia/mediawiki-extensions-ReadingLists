@@ -30,7 +30,7 @@ class Purge extends Maintenance {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 */
 	public function execute() {
 		$now = wfTimestampNow();

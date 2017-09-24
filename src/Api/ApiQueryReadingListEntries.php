@@ -37,7 +37,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	private static $prefix = 'rle';
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return void
 	 */
 	public function execute() {
@@ -49,7 +49,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @param ApiPageSet $resultPageSet All output should be appended to this object
 	 * @return void
 	 */
@@ -120,7 +120,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	protected function getAllowedParams() {
@@ -150,7 +150,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	public function getHelpUrls() {
@@ -160,7 +160,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	protected function getExamplesMessages() {
@@ -174,7 +174,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function isInternal() {

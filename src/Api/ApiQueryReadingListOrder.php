@@ -4,7 +4,6 @@ namespace MediaWiki\Extensions\ReadingLists\Api;
 
 use ApiQueryBase;
 use ApiResult;
-use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
 
 /**
@@ -18,7 +17,7 @@ class ApiQueryReadingListOrder extends ApiQueryBase {
 	private static $prefix = 'rlo';
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return void
 	 */
 	public function execute() {
@@ -54,7 +53,7 @@ class ApiQueryReadingListOrder extends ApiQueryBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	protected function getAllowedParams() {
@@ -70,7 +69,7 @@ class ApiQueryReadingListOrder extends ApiQueryBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	public function getHelpUrls() {
@@ -80,7 +79,7 @@ class ApiQueryReadingListOrder extends ApiQueryBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	protected function getExamplesMessages() {
@@ -94,7 +93,7 @@ class ApiQueryReadingListOrder extends ApiQueryBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function isInternal() {

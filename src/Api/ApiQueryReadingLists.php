@@ -41,7 +41,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 	private static $prefix = 'rl';
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return void
 	 */
 	public function execute() {
@@ -106,7 +106,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	protected function getAllowedParams() {
@@ -138,7 +138,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	public function getHelpUrls() {
@@ -148,7 +148,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	protected function getExamplesMessages() {
@@ -164,7 +164,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function isInternal() {

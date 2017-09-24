@@ -3,7 +3,6 @@
 namespace MediaWiki\Extensions\ReadingLists\Api;
 
 use ApiBase;
-use ApiModuleManager;
 
 /**
  * API module for all write operations.
@@ -18,7 +17,7 @@ class ApiReadingListsCreate extends ApiBase {
 
 	/**
 	 * Entry point for executing the module
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return void
 	 */
 	public function execute() {
@@ -30,7 +29,7 @@ class ApiReadingListsCreate extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	protected function getAllowedParams() {
@@ -59,7 +58,7 @@ class ApiReadingListsCreate extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	public function getHelpUrls() {
@@ -69,7 +68,7 @@ class ApiReadingListsCreate extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return array
 	 */
 	protected function getExamplesMessages() {
@@ -85,7 +84,7 @@ class ApiReadingListsCreate extends ApiBase {
 	// The parent module already enforces these but they make documentation nicer.
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function isWriteMode() {
@@ -93,7 +92,7 @@ class ApiReadingListsCreate extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function mustBePosted() {
@@ -101,7 +100,7 @@ class ApiReadingListsCreate extends ApiBase {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function isInternal() {
