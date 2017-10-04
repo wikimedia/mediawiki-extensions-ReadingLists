@@ -1,0 +1,18 @@
+{
+	"@metadata": {
+		"authors": [
+			"Srdjan m"
+		]
+	},
+	"readinglists-desc": "Omogućava korisnicima upravljanje privatnim spiskovima članaka poput favorita i spiskova \"Za čitanje kasnije\".",
+	"readinglists-db-error-not-set-up": "Nema postavljenih spiskova za čitanje za ovog korisnika.",
+	"readinglists-db-error-already-set-up": "Već su postavljeni spiskovi za čitanje za ovog korisnika.",
+	"readinglists-db-error-cannot-delete-default-list": "Predodređeni spisak ne može se obrisati.",
+	"readinglists-db-error-no-such-list": "Spisak $1 ne postoji.",
+	"readinglists-db-error-no-such-list-entry": "Stavka $1 ne postoji.",
+	"readinglists-db-error-not-own-list": "Spisak $1 pripada drugom korisniku.",
+	"readinglists-db-error-not-own-list-entry": "Stavka $1 pripada drugom korisniku.",
+	"readinglists-db-error-list-deleted": "Spisak $1 je obrisan.",
+	"readinglists-db-error-list-entry-deleted": "Stavka $1 je obrisana.",
+	"readinglists-db-error-duplicate-page": "Stranica je već na spisku."
+}
