@@ -3,6 +3,7 @@
 namespace MediaWiki\Extensions\ReadingLists\Api;
 
 use ApiBase;
+use Message;
 
 /**
  * API module for all write operations.
@@ -55,6 +56,15 @@ class ApiReadingListsCreate extends ApiBase {
 				self::PARAM_DFLT => '',
 			],
 		];
+	}
+
+	/**
+	 * @inheritDoc
+	 * @return Message
+	 */
+	protected function getExtendedDescription() {
+		$limit = $this->getConfig()->get( 'ReadingListsMaxListsPerUser' );
+		return wfMessage( 'apihelp-readinglists+create-extended-description', $limit );
 	}
 
 	/**

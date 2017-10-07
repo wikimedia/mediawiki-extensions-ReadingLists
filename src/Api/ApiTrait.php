@@ -85,10 +85,13 @@ trait ApiTrait {
 	 * @return ReadingListRepository
 	 */
 	protected function getReadingListRepository( User $user = null ) {
+		$config = $this->getConfig();
 		$centralId = CentralIdLookup::factory()->centralIdFromLocalUser( $user,
 			CentralIdLookup::AUDIENCE_RAW );
 		$repository = new ReadingListRepository( $centralId, $this->dbw, $this->dbr,
 			$this->loadBalancerFactory );
+		$repository->setLimits( $config->get( 'ReadingListsMaxListsPerUser' ),
+			$config->get( 'ReadingListsMaxEntriesPerList' ) );
 		$repository->setLogger( LoggerFactory::getInstance( 'readinglists' ) );
 		return $repository;
 	}
