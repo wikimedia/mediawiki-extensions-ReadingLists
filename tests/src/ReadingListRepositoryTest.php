@@ -390,6 +390,18 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertTimestampEquals( wfTimestampNow(), $row->rle_date_updated );
 		$this->assertEquals( 0, $row->rle_deleted );
 
+		// test that deletion + recreation does not trip the unique contstraint
+		$repository->deleteListEntry( $entryId );
+		$entryId2 = $repository->addListEntry( $listId, 'en.wikipedia.org', 'Foo' );
+		/** @var ReadingListEntryRow $row */
+		$row = $this->db->selectRow( 'reading_list_entry', '*', [ 'rle_id' => $entryId2 ] );
+		$this->assertEquals( 1, $row->rle_user_id );
+		$this->assertEquals( 'en.wikipedia.org', $row->rle_project );
+		$this->assertEquals( 'Foo', $row->rle_title );
+		$this->assertTimestampEquals( wfTimestampNow(), $row->rle_date_created );
+		$this->assertTimestampEquals( wfTimestampNow(), $row->rle_date_updated );
+		$this->assertEquals( 0, $row->rle_deleted );
+
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
 			function () use ( $repository ) {
 				$repository->addListEntry( 123, 'en.wikipedia.org', 'A' );
