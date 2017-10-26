@@ -180,7 +180,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 	 * @fixme If apps really need this, find a more performant way to get the data
 	 */
 	private function addExtraData( &$row, $repository, $mode ) {
-		if ( $mode !== self::MODE_PAGE ) {
+		if ( $mode !== self::MODE_PAGE && empty( $row->rl_deleted ) ) {
 			$row->order = $repository->getListEntryOrder( $row->rl_id );
 			if ( $row->rl_is_default ) {
 				$row->list_order = $repository->getListOrder();
