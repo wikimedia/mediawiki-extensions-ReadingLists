@@ -290,7 +290,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 	public function testUpdateList() {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$repository->setupForUser();
-		list( $listId ) = $this->addLists( 1, [
+		list( $listId, $deletedListId ) = $this->addLists( 1, [
 			[
 				'rl_name' => 'foo',
 				'rl_description' => 'xxx',
@@ -301,6 +301,17 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_icon' => 'ICON',
 				'rl_deleted' => '0',
 				'rls_index' => 1,
+			],
+			[
+				'rl_name' => 'bar',
+				'rl_description' => 'yyy',
+				'rl_date_created' => '20100101000000',
+				'rl_date_updated' => '20120101000000',
+				'rl_color' => 'blue',
+				'rl_image' => 'image',
+				'rl_icon' => 'ICON',
+				'rl_deleted' => '1',
+				'rls_index' => 2,
 			],
 		] );
 
@@ -335,16 +346,26 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				$repository->updateList( $listId, 'foo' );
 			}
 		);
+		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
+			function () use ( $repository, $deletedListId ) {
+				$repository->updateList( $deletedListId, 'bar' );
+			}
+		);
 	}
 
 	public function testDeleteList() {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$repository->setupForUser();
-		list( $listId ) = $this->addLists( 1, [
+		list( $listId, $deletedListId ) = $this->addLists( 1, [
 			[
 				'rl_name' => 'foo',
 				'rl_deleted' => '0',
 				'rls_index' => 1,
+			],
+			[
+				'rl_name' => 'bar',
+				'rl_deleted' => '1',
+				'rls_index' => 2,
 			],
 		] );
 
@@ -365,6 +386,11 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				$repository->deleteList( $listId );
 			}
 		);
+		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
+			function () use ( $repository, $deletedListId ) {
+				$repository->deleteList( $deletedListId );
+			}
+		);
 		$this->assertFailsWith( 'readinglists-db-error-cannot-delete-default-list',
 			function () use ( $repository ) {
 				$defaultId = $this->db->selectField( 'reading_list', 'rl_id',
@@ -378,7 +404,18 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 	public function testAddListEntry() {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$repository->setupForUser();
-		$listId = $repository->addList( 'foo' );
+		list( $listId, $deletedListId ) = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+				'rls_index' => 1,
+			],
+			[
+				'rl_name' => 'bar',
+				'rl_deleted' => '1',
+				'rls_index' => 2,
+			],
+		] );
 
 		$entryId = $repository->addListEntry( $listId, 'en.wikipedia.org', 'Foo' );
 		/** @var ReadingListEntryRow $row */
@@ -411,6 +448,11 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			function () use ( $listId ) {
 				$repository = new ReadingListRepository( 123, $this->db, $this->db, $this->lbFactory );
 				$repository->addListEntry( $listId, 'en.wikipedia.org', 'B' );
+			}
+		);
+		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
+			function () use ( $repository, $deletedListId ) {
+				$repository->addListEntry( $deletedListId, 'en.wikipedia.org', 'C' );
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-duplicate-page',
@@ -566,7 +608,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 	public function testDeleteListEntry() {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$repository->setupForUser();
-		list( $listId ) = $this->addLists( 1, [
+		list( $listId, $deletedListId ) = $this->addLists( 1, [
 			[
 				'rl_is_default' => 0,
 				'rl_name' => 'test',
@@ -575,8 +617,13 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_deleted' => 0,
 				'rls_index' => 1,
 			],
+			[
+				'rl_name' => 'bar',
+				'rl_deleted' => '1',
+				'rls_index' => 2,
+			],
 		] );
-		list( $fooId, $foo2Id ) = $this->addListEntries( $listId, 1, [
+		list( $fooId, $foo2Id, $deletedId ) = $this->addListEntries( $listId, 1, [
 			[
 				'rle_project' => 'foo',
 				'rle_title' => 'bar',
@@ -592,6 +639,24 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rle_date_updated' => wfTimestampNow(),
 				'rle_deleted' => 0,
 				'rles_index' => 2,
+			],
+			[
+				'rle_project' => 'foo3',
+				'rle_title' => 'bar3',
+				'rle_date_created' => wfTimestampNow(),
+				'rle_date_updated' => wfTimestampNow(),
+				'rle_deleted' => 1,
+				'rles_index' => 3,
+			],
+		] );
+		list( $parentDeletedId ) = $this->addListEntries( $deletedListId, 1, [
+			[
+				'rle_project' => 'foo4',
+				'rle_title' => 'bar4',
+				'rle_date_created' => wfTimestampNow(),
+				'rle_date_updated' => wfTimestampNow(),
+				'rle_deleted' => 0,
+				'rles_index' => 1,
 			],
 		] );
 
@@ -613,6 +678,16 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			function () use ( $foo2Id ) {
 				$repository = new ReadingListRepository( 123, $this->db, $this->db, $this->lbFactory );
 				$repository->deleteListEntry( $foo2Id );
+			}
+		);
+		$this->assertFailsWith( 'readinglists-db-error-list-entry-deleted',
+			function () use ( $repository, $deletedId ) {
+				$repository->deleteListEntry( $deletedId );
+			}
+		);
+		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
+			function () use ( $repository, $parentDeletedId ) {
+				$repository->deleteListEntry( $parentDeletedId );
 			}
 		);
 	}
@@ -686,9 +761,22 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 	public function testListEntryOrder() {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$repository->setupForUser();
-		list( $emptyListId ) = $this->addLists( 1, [ [ 'rl_name' => 'empty', 'rls_index' => 10 ] ] );
-		list( $listId ) = $this->addLists( 1, [ [ 'rl_name' => 'foo', 'rls_index' => 1,
-			'rl_date_updated' => '20100101000000' ] ] );
+		list( $emptyListId, $listId, $deletedListId ) = $this->addLists( 1, [
+			[
+				'rl_name' => 'empty',
+				'rls_index' => 10,
+			],
+			[
+				'rl_name' => 'foo',
+				'rls_index' => 1,
+				'rl_date_updated' => '20100101000000',
+			],
+			[
+				'rl_name' => 'deleted',
+				'rl_deleted' => '1',
+				'rls_index' => 2,
+			],
+		] );
 		list( $entry1, $entry2, $entry3, $deletedEntry ) = $this->addListEntries( $listId, 1, [
 			[
 				'rle_project' => 'foo',
@@ -712,6 +800,8 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rles_index' => 4,
 			],
 		] );
+		list( $parentDeletedEntry ) = $this->addListEntries( $deletedListId, 1,
+			[ [ 'rle_project' => 'foo5', 'rle_title' => 'bar5', 'rles_index' => 1 ] ] );
 		list( $foreignListId ) = $this->addLists( 100, [ [ 'rl_name' => 'foo', 'rls_index' => 1 ] ] );
 		list( $foreignEntry ) = $this->addListEntries( $foreignListId, 100,
 			[ [ 'rle_project' => 'foo', 'rle_title' => 'bar' ] ] );
@@ -729,6 +819,22 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			[ 'rl_id' => $listId ] );
 		$this->assertTimestampEquals( wfTimestampNow(), $listTimestamp );
 
+		$this->assertFailsWith( 'readinglists-db-error-not-own-list',
+			function () use ( $repository, $foreignListId ) {
+				$repository->getListEntryOrder( $foreignListId );
+			}
+		);
+		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
+			function () use ( $repository, $deletedListId ) {
+				$repository->getListEntryOrder( $deletedListId );
+			}
+		);
+		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
+			function () use ( $repository ) {
+				$repository->getListEntryOrder( 123 );
+			}
+		);
+
 		$this->assertFailsWith( 'readinglists-db-error-empty-order',
 			function () use ( $repository, $listId ) {
 				$repository->setListEntryOrder( $listId, [] );
@@ -742,6 +848,11 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertFailsWith( 'readinglists-db-error-entry-not-in-list',
 			function () use ( $repository, $emptyListId, $entry1 ) {
 				$repository->setListEntryOrder( $emptyListId, [ $entry1 ] );
+			}
+		);
+		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
+			function () use ( $repository, $deletedListId, $parentDeletedEntry ) {
+				$repository->setListEntryOrder( $deletedListId, [ $parentDeletedEntry ] );
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-list-entry-deleted',
