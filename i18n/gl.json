@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Banjo"
+			"Banjo",
+			"Elisardojm"
 		]
 	},
 	"readinglists-desc": "Permítelle ós usuarios manexar listas privadas de artigos, coma páxinas marcadas ou listas de \"ler máis tarde\".",
@@ -10,6 +11,8 @@
 	"readinglists-db-error-not-own-list": "A lista $1 pertence a outro usuario.",
 	"readinglists-db-error-list-deleted": "Eliminouse a lista $1.",
 	"readinglists-db-error-duplicate-page": "A lista xa contén esta páxina.",
+	"apihelp-query+readinglists-param-limit": "Número de resultados a devolver.",
 	"apihelp-readinglists+create-param-name": "Nome da lista.",
-	"apihelp-readinglists+create-param-description": "Descrición da lista."
+	"apihelp-readinglists+create-param-description": "Descrición da lista.",
+	"apihelp-readinglists+createentry-param-title": "Título da páxina."
 }
