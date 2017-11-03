@@ -12,7 +12,22 @@
 	"readinglists-db-error-list-deleted": "Eliminouse a lista $1.",
 	"readinglists-db-error-duplicate-page": "A lista xa contén esta páxina.",
 	"apihelp-query+readinglists-param-limit": "Número de resultados a devolver.",
+	"apihelp-query+readinglistentries-param-limit": "Número de resultados a devolver.",
+	"apihelp-readinglists+setup-summary": "Activar as listas para o usuario actual.",
+	"apihelp-readinglists+setup-example-1": "Instalar as listas de lectura para o usuario actual.",
+	"apihelp-readinglists+teardown-summary": "Desactivar as listas para o usuario actual.",
+	"apihelp-readinglists+create-summary": "Crear unha nova lista para o usuario actual.",
 	"apihelp-readinglists+create-param-name": "Nome da lista.",
 	"apihelp-readinglists+create-param-description": "Descrición da lista.",
-	"apihelp-readinglists+createentry-param-title": "Título da páxina."
+	"apihelp-readinglists+create-example-1": "Crear unha lista de lectura nova.",
+	"apihelp-readinglists+update-param-list": "Identificador da lista.",
+	"apihelp-readinglists+update-param-name": "Novo nome de lista.",
+	"apihelp-readinglists+update-param-description": "Nova descrición de lista.",
+	"apihelp-readinglists+update-param-color": "Nova cor da lista.",
+	"apihelp-readinglists+update-param-image": "Nova imaxe de lista.",
+	"apihelp-readinglists+update-param-icon": "Nova icona de lista.",
+	"apihelp-readinglists+delete-param-list": "Identificador da lista.",
+	"apihelp-readinglists+createentry-param-list": "Identificador da lista.",
+	"apihelp-readinglists+createentry-param-title": "Título da páxina.",
+	"apihelp-readinglists+orderentry-param-list": "Identificador da lista."
 }
