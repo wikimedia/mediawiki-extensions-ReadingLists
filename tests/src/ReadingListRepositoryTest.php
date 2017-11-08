@@ -741,6 +741,11 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				$repository->setListOrder( [] );
 			}
 		);
+		$this->assertFailsWith( 'readinglists-db-error-missing-list',
+			function () use ( $repository, $fooId, $foo2Id ) {
+				$repository->setListOrder( [ $fooId, $foo2Id ] );
+			}
+		);
 		$this->assertFailsWith( 'readinglists-db-error-not-own-list',
 			function () use ( $repository, $fooId, $foo2Id, $foreignId ) {
 				$repository->setListOrder( [ $fooId, $foo2Id, $foreignId ] );
@@ -838,6 +843,11 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertFailsWith( 'readinglists-db-error-empty-order',
 			function () use ( $repository, $listId ) {
 				$repository->setListEntryOrder( $listId, [] );
+			}
+		);
+		$this->assertFailsWith( 'readinglists-db-error-missing-list-entry',
+			function () use ( $repository, $listId, $entry1, $entry2 ) {
+				$repository->setListEntryOrder( $listId, [ $entry1, $entry2 ] );
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-not-own-list-entry',

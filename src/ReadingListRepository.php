@@ -534,28 +534,40 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
 
-		// Make sure the lists exist and the user owns them.
-		$res = $this->dbw->select(
+		// Make sure the set of IDs match the actual lists.
+		$ids = $this->dbw->selectFieldValues(
 			'reading_list',
-			[ 'rl_id', 'rl_user_id', 'rl_deleted' ],
-			[ 'rl_id' => $order ]
-		);
-		$filtered = [];
-		foreach ( $res as $row ) {
+			'rl_id',
+			[
+				'rl_user_id' => $this->userId,
+				'rl_deleted' => 0,
+			]
+		) ?: [];
+		$nonExistent = array_diff( $order, $ids );
+		if ( $nonExistent ) {
 			/** @var ReadingListRow $row */
-			if ( $row->rl_user_id != $this->userId ) {
+			$row = $this->dbw->selectRow(
+				'reading_list',
+				[ 'rl_id', 'rl_user_id', 'rl_deleted' ],
+				[ 'rl_id' => reset( $nonExistent ) ]
+			);
+			if ( !$row ) {
+				throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list',
+					[ reset( $nonExistent ) ] );
+			} elseif ( $row->rl_user_id != $this->userId ) {
 				throw new ReadingListRepositoryException(
 					'readinglists-db-error-not-own-list', [ $row->rl_id ] );
 			} elseif ( $row->rl_deleted ) {
 				throw new ReadingListRepositoryException(
 					'readinglists-db-error-list-deleted', [ $row->rl_id ] );
+			} else {
+				throw new LogicException( 'setListOrder failed for unknown reason' );
 			}
-			$filtered[] = $row->rl_id;
 		}
-		$missing = array_diff( $order, $filtered );
+		$missing = array_diff( $ids, $order );
 		if ( $missing ) {
 			throw new ReadingListRepositoryException(
-				'readinglists-db-error-no-such-list', [ reset( $missing ) ] );
+				'readinglists-db-error-missing-list', [ reset( $missing ) ] );
 		}
 
 		$this->dbw->deleteJoin(
@@ -628,16 +640,27 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-empty-order' );
 		}
 
-		// Make sure the list entries exist and the user owns them.
-		$res = $this->dbw->select(
+		// Make sure the set of IDs match the actual list entries.
+		$ids = $this->dbw->selectFieldValues(
 			'reading_list_entry',
-			[ 'rle_id', 'rle_rl_id', 'rle_user_id', 'rle_deleted' ],
-			[ 'rle_id' => $order ]
-		);
-		$filtered = [];
-		foreach ( $res as $row ) {
+			'rle_id',
+			[
+				'rle_rl_id' => $id,
+				'rle_deleted' => 0,
+			]
+		) ?: [];
+		$nonExistent = array_diff( $order, $ids );
+		if ( $nonExistent ) {
 			/** @var ReadingListEntryRow $row */
-			if ( $row->rle_user_id != $this->userId ) {
+			$row = $this->dbw->selectRow(
+				'reading_list_entry',
+				[ 'rle_id', 'rle_rl_id', 'rle_user_id', 'rle_deleted' ],
+				[ 'rle_id' => reset( $nonExistent ) ]
+			);
+			if ( !$row ) {
+				throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list-entry',
+					[ reset( $nonExistent ) ] );
+			} elseif ( $row->rle_user_id != $this->userId ) {
 				throw new ReadingListRepositoryException(
 					'readinglists-db-error-not-own-list-entry', [ $row->rle_id ] );
 			} elseif ( $row->rle_rl_id != $id ) {
@@ -646,13 +669,14 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			} elseif ( $row->rle_deleted ) {
 				throw new ReadingListRepositoryException(
 					'readinglists-db-error-list-entry-deleted', [ $row->rle_id ] );
+			} else {
+				throw new LogicException( 'setListEntryOrder failed for unknown reason' );
 			}
-			$filtered[] = $row->rle_id;
 		}
-		$missing = array_diff( $order, $filtered );
+		$missing = array_diff( $ids, $order );
 		if ( $missing ) {
 			throw new ReadingListRepositoryException(
-				'readinglists-db-error-no-such-list-entry', [ reset( $missing ) ] );
+				'readinglists-db-error-missing-list-entry', [ reset( $missing ) ] );
 		}
 
 		$this->dbw->deleteJoin(

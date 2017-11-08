@@ -18,6 +18,8 @@
 	"readinglists-db-error-duplicate-page": "Error message used when trying to add a page to a list that already contains it.",
 	"readinglists-db-error-empty-list-ids": "Error message used when querying list entries without specifying any lists.",
 	"readinglists-db-error-empty-order": "Error message used when trying to set the order of lists or list entries but passing an empty order array.",
+	"readinglists-db-error-missing-list": "Error message used when trying to set the order of lists but omitting some list IDs.",
+	"readinglists-db-error-missing-list-entry": "Error message used when trying to set the order of list entries but omitting some entry IDs.",
 	"readinglists-db-error-entry-not-in-list": "Error message used when trying to set the order of list entries but some of them do not belong to the list.",
 	"readinglists-db-error-user-required": "Error message used when calling a method that operates on a single user, but the user was not specified when the repository object was constructed.",
 	"readinglists-apierror-project-title-param": "{{doc-apierror}}\n$1 is the module prefix.",

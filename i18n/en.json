@@ -17,6 +17,8 @@
 	"readinglists-db-error-duplicate-page": "The list already contains this page.",
 	"readinglists-db-error-empty-list-ids": "List ids parameter must not be empty.",
 	"readinglists-db-error-empty-order": "Order parameter must not be empty.",
+	"readinglists-db-error-missing-list": "All lists must be included in the order ($1 missing).",
+	"readinglists-db-error-missing-list-entry": "All list entries must be included in the order ($1 missing).",
 	"readinglists-db-error-entry-not-in-list": "List entry $1 does not belong to this list.",
 	"readinglists-db-error-user-required": "This method cannot be called without specifying the user.",
 	"readinglists-apierror-project-title-param": "<var>$1project</var> and <var>$1title</var> must be used together.",
