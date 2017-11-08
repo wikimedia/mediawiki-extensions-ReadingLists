@@ -65,6 +65,7 @@ class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 	 */
 	protected function getPrefixTable() {
 		if ( $this->prefixTable === null ) {
+			$this->prefixTable = [];
 			$iwData = $this->interwikiLookup->getAllPrefixes( true );
 			foreach ( $iwData as $iwRow ) {
 				$url = wfParseUrl( $iwRow['iw_url'] );

@@ -38,6 +38,7 @@ class ReverseInterwikiLookupTest extends \PHPUnit_Framework_TestCase {
 			'exact match 2' => [ 'b', 'en.wikibooks.org', $iwTable ],
 			'cross-project + cross-lang' => [ [ 'b', 'de', ], 'de.wikibooks.org', $iwTable ],
 			'invalid language code' => [ null, 'nosuchlang.wikipedia.org', $iwTable ],
+			'empty table' => [ null, 'foo.bar', [] ],
 		];
 	}
 
