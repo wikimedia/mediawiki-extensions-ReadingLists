@@ -32,6 +32,17 @@ use Wikimedia\Rdbms\LBFactory;
  */
 class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
+	/** @var array Database field lengths in bytes (only for the string types). */
+	public static $fieldLength = [
+		'rl_name' => 255,
+		'rl_description' => 767,
+		'rl_color' => 6,
+		'rl_image' => 255,
+		'rl_icon' => 32,
+		'rle_project' => 255,
+		'rle_title' => 255,
+	];
+
 	/** @var int|null Max allowed lists per user */
 	private $listLimit;
 
@@ -191,6 +202,11 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	public function addList( $name, $description = '', $color = '', $image = '', $icon = '' ) {
 		$this->assertUser();
+		$this->assertFieldLength( 'rl_name', $name );
+		$this->assertFieldLength( 'rl_description', $description );
+		$this->assertFieldLength( 'rl_color', $color );
+		$this->assertFieldLength( 'rl_image', $image );
+		$this->assertFieldLength( 'rl_icon', $icon );
 		if ( !$this->isSetupForUser( self::READ_LOCKING ) ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
@@ -274,6 +290,11 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$id, $name = null, $description = null, $color = null, $image = null, $icon = null
 	) {
 		$this->assertUser();
+		$this->assertFieldLength( 'rl_name', $name );
+		$this->assertFieldLength( 'rl_description', $description );
+		$this->assertFieldLength( 'rl_color', $color );
+		$this->assertFieldLength( 'rl_image', $image );
+		$this->assertFieldLength( 'rl_icon', $icon );
 		$this->selectValidList( $id, self::READ_LOCKING );
 
 		$data = array_filter( [
@@ -340,6 +361,8 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	public function addListEntry( $id, $project, $title ) {
 		$this->assertUser();
+		$this->assertFieldLength( 'rle_project', $project );
+		$this->assertFieldLength( 'rle_title', $title );
 		$this->selectValidList( $id, self::READ_LOCKING );
 		if ( $this->entryLimit && $this->getEntryCount( $id, self::READ_LATEST ) >= $this->entryLimit ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-entry-limit',
@@ -998,6 +1021,21 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		}
 	}
 
+	/**
+	 * Ensures that the value to be written to the database does not exceed the DB field length.
+	 * @param string $field Field name.
+	 * @param string $value Value to write.
+	 * @throws ReadingListRepositoryException
+	 */
+	private function assertFieldLength( $field, $value ) {
+		if ( !isset( self::$fieldLength[$field] ) ) {
+			throw new LogicException( 'Tried to assert length for invalid field ' . $field );
+		}
+		if ( strlen( $value ) > self::$fieldLength[$field] ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-too-long',
+				[ $field, self::$fieldLength[$field] ] );
+		}
+	}
 	/**
 	 * Get list data, and optionally lock the list.
 	 * List must exist, belong to the current user and not be deleted.
