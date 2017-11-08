@@ -371,29 +371,56 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-own-list', [ $id ] );
 		}
 
-		$this->dbw->insert(
+		// due to the combination of soft deletion + unique constraint on
+		// rle_rl_id + rle_project + rle_title, recreation needs special handling
+		/** @var ReadingListEntryRow $row */
+		$row = $this->dbw->selectRow(
 			'reading_list_entry',
+			[ 'rle_id', 'rle_deleted' ],
 			[
 				'rle_rl_id' => $id,
-				'rle_user_id' => $this->userId,
 				'rle_project' => $project,
 				'rle_title' => $title,
-				'rle_date_created' => $this->dbw->timestamp(),
-				'rle_date_updated' => $this->dbw->timestamp(),
-				'rle_deleted' => 0,
 			],
 			__METHOD__,
-			// throw custom exception for unique constraint on rle_rl_id + rle_project + rle_title
-			[ 'IGNORE' ]
+			// lock the row to avoid race conditions with purgeOldDeleted() in the update case
+			[ 'FOR UPDATE' ]
 		);
-		if ( !$this->dbw->affectedRows() ) {
+		if ( $row === false ) {
+			$this->dbw->insert(
+				'reading_list_entry',
+				[
+					'rle_rl_id' => $id,
+					'rle_user_id' => $this->userId,
+					'rle_project' => $project,
+					'rle_title' => $title,
+					'rle_date_created' => $this->dbw->timestamp(),
+					'rle_date_updated' => $this->dbw->timestamp(),
+					'rle_deleted' => 0,
+				]
+			);
+		} elseif ( $row->rle_deleted ) {
+			$this->dbw->update(
+				'reading_list_entry',
+				[
+					'rle_date_created' => $this->dbw->timestamp(),
+					'rle_date_updated' => $this->dbw->timestamp(),
+					'rle_deleted' => 0,
+				],
+				[
+					'rle_id' => $row->rle_id,
+				]
+			);
+		} else {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-duplicate-page' );
 		}
+		$insertId = $row ? (int)$row->rle_id : $this->dbw->insertId();
 		$this->logger->info( 'Added entry {entry} for user {user}', [
-			'entry' => $this->dbw->insertId(),
+			'entry' => $insertId,
 			'user' => $this->userId,
+			'recreated' => (bool)$row,
 		] );
-		return $this->dbw->insertId();
+		return $insertId;
 	}
 
 	/**
