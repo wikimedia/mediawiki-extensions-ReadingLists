@@ -11,6 +11,9 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Wikimedia\Rdbms\IDatabase;
+// @codingStandardsIgnoreStart MediaWiki.Classes.UnusedUseStatement.UnusedUse
+use Wikimedia\Rdbms\IResultWrapper;
+// @codingStandardsIgnoreEnd
 use Wikimedia\Rdbms\LBFactory;
 
 /**
@@ -132,6 +135,8 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	/**
 	 * Check whether reading lists have been set up for the given user (ie. setupForUser() was
 	 * called with $userId and teardownForUser() was not called with the same id afterwards).
+	 * Optionally also lock the DB row for the default list of the user (will be used as a
+	 * semaphore).
 	 * @param int $flags IDBAccessObject flags
 	 * @throws ReadingListRepositoryException
 	 * @return bool
@@ -249,6 +254,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$id, $name = null, $description = null, $color = null, $image = null, $icon = null
 	) {
 		$this->assertUser();
+		$this->selectValidList( $id, self::READ_LOCKING );
 
 		$data = array_filter( [
 			'rl_name' => $name,
@@ -264,29 +270,9 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$this->dbw->update(
 			'reading_list',
 			$data,
-			[
-				'rl_id' => $id,
-				'rl_user_id' => $this->userId,
-			],
-			__METHOD__
+			[ 'rl_id' => $id ]
 		);
-		if ( $this->dbw->affectedRows() ) {
-			return;
-		}
-
-		// failed; see what went wrong so we can return a useful error message
-		/** @var ReadingListRow $row */
-		$row = $this->dbw->selectRow(
-			'reading_list',
-			[ 'rl_user_id' ],
-			[ 'rl_id' => $id ],
-			__METHOD__
-		);
-		if ( !$row ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list', [ $id ] );
-		} elseif ( $row->rl_user_id != $this->userId ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-not-own-list', [ $id ] );
-		} else {
+		if ( !$this->dbw->affectedRows() ) {
 			throw new LogicException( 'updateList failed for unknown reason' );
 		}
 	}
@@ -299,6 +285,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	public function deleteList( $id ) {
 		$this->assertUser();
+		$row = $this->selectValidList( $id, self::READ_LOCKING );
+		if ( $row->rl_is_default ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-cannot-delete-default-list' );
+		}
 
 		$this->dbw->update(
 			'reading_list',
@@ -306,39 +296,16 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				'rl_deleted' => 1,
 				'rl_date_updated' => $this->dbw->timestamp(),
 			],
-			[
-				'rl_id' => $id,
-				'rl_user_id' => $this->userId,
-				// cannot delete the default list
-				'rl_is_default' => 0,
-			],
-			__METHOD__
+			[ 'rl_id' => $id ]
 		);
-		if ( $this->dbw->affectedRows() ) {
-			$this->logger->info( 'Deleted list {list} for user {user}', [
-				'list' => $id,
-				'user' => $this->userId,
-			] );
-			return;
-		}
-
-		// failed; see what went wrong so we can return a useful error message
-		/** @var ReadingListRow $row */
-		$row = $this->dbw->selectRow(
-			'reading_list',
-			[ 'rl_user_id', 'rl_is_default' ],
-			[ 'rl_id' => $id ],
-			__METHOD__
-		);
-		if ( !$row ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list', [ $id ] );
-		} elseif ( $row->rl_user_id != $this->userId ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-not-own-list', [ $id ] );
-		} elseif ( $row->rl_is_default ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-cannot-delete-default-list' );
-		} else {
+		if ( !$this->dbw->affectedRows() ) {
 			throw new LogicException( 'deleteList failed for unknown reason' );
 		}
+
+		$this->logger->info( 'Deleted list {list} for user {user}', [
+			'list' => $id,
+			'user' => $this->userId,
+		] );
 	}
 
 	// list entry CRUD
@@ -353,23 +320,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	public function addListEntry( $id, $project, $title ) {
 		$this->assertUser();
-
-		// verify that the list exists and we have access to it
-		/** @var ReadingListRow $row */
-		$row = $this->dbw->selectRow(
-			'reading_list',
-			'rl_user_id',
-			[
-				'rl_id' => $id,
-			],
-			__METHOD__,
-			[ 'FOR UPDATE' ]
-		);
-		if ( !$row ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list', [ $id ] );
-		} elseif ( $row->rl_user_id != $this->userId ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-not-own-list', [ $id ] );
-		}
+		$this->selectValidList( $id, self::READ_LOCKING );
 
 		// due to the combination of soft deletion + unique constraint on
 		// rle_rl_id + rle_project + rle_title, recreation needs special handling
@@ -414,6 +365,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		} else {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-duplicate-page' );
 		}
+		if ( !$this->dbw->affectedRows() ) {
+			throw new LogicException( 'addListEntry failed for unknown reason' );
+		}
+
 		$insertId = $row ? (int)$row->rle_id : $this->dbw->insertId();
 		$this->logger->info( 'Added entry {entry} for user {user}', [
 			'entry' => $insertId,
@@ -493,41 +448,44 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	public function deleteListEntry( $id ) {
 		$this->assertUser();
 
+		/** @var ReadingListRow|ReadingListEntryRow $row */
+		$row = $this->dbw->selectRow(
+			[ 'reading_list', 'reading_list_entry' ],
+			[ 'rl_id', 'rl_user_id', 'rl_deleted', 'rle_deleted' ],
+			[
+				'rle_id' => $id,
+				'rl_id = rle_rl_id',
+			],
+			__METHOD__,
+			[ 'FOR UPDATE' ]
+		);
+		if ( !$row ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list-entry', [ $id ] );
+		} elseif ( $row->rl_user_id != $this->userId ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-not-own-list-entry', [ $id ] );
+		} elseif ( $row->rl_deleted ) {
+			throw new ReadingListRepositoryException(
+				'readinglists-db-error-list-deleted', [ $row->rl_id ] );
+		} elseif ( $row->rle_deleted ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-list-entry-deleted', [ $id ] );
+		}
+
 		$this->dbw->update(
 			'reading_list_entry',
 			[
 				'rle_deleted' => 1,
 				'rle_date_updated' => $this->dbw->timestamp(),
 			],
-			[
-				'rle_id' => $id,
-				'rle_user_id' => $this->userId,
-			],
-			__METHOD__
+			[ 'rle_id' => $id ]
 		);
-		if ( $this->dbw->affectedRows() ) {
-			$this->logger->info( 'Deleted entry {entry} for user {user}', [
-				'entry' => $id,
-				'user' => $this->userId,
-			] );
-			return;
-		}
-
-		// failed; see what went wrong so we can return a useful error message
-		/** @var ReadingListEntryRow $row */
-		$row = $this->dbw->selectRow(
-			'reading_list_entry',
-			[ 'rle_user_id' ],
-			[ 'rle_id' => $id ],
-			__METHOD__
-		);
-		if ( !$row ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list-entry', [ $id ] );
-		} elseif ( $row->rle_user_id != $this->userId ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-not-own-list-entry', [ $id ] );
-		} else {
+		if ( !$this->dbw->affectedRows() ) {
 			throw new LogicException( 'deleteListEntry failed for unknown reason' );
 		}
+
+		$this->logger->info( 'Deleted entry {entry} for user {user}', [
+			'entry' => $id,
+			'user' => $this->userId,
+		] );
 	}
 
 	// sorting
@@ -635,13 +593,13 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	public function getListEntryOrder( $id ) {
 		$this->assertUser();
+		$this->selectValidList( $id );
 
 		$ids = $this->dbr->selectFieldValues(
 			[ 'reading_list_entry', 'reading_list_entry_sortkey' ],
 			'rle_id',
 			[
 				'rle_rl_id' => $id,
-				'rle_user_id' => $this->userId,
 				'rle_deleted' => 0,
 			],
 			__METHOD__,
@@ -652,25 +610,6 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				'reading_list_entry_sortkey' => [ 'LEFT JOIN', 'rle_id = rles_rle_id' ],
 			]
 		);
-
-		if ( !$ids ) {
-			/** @var ReadingListRow $row */
-			$row = $this->dbr->selectRow(
-				'reading_list',
-				[ 'rl_user_id', 'rl_deleted' ],
-				[ 'rl_id' => $id ]
-			);
-			if ( !$row ) {
-				throw new ReadingListRepositoryException(
-					'readinglists-db-error-no-such-list', [ $row->rl_id ] );
-			} elseif ( $row->rl_user_id != $this->userId ) {
-				throw new ReadingListRepositoryException(
-					'readinglists-db-error-not-own-list', [ $row->rl_id ] );
-			} elseif ( $row->rl_deleted ) {
-				throw new ReadingListRepositoryException(
-					'readinglists-db-error-list-deleted', [ $row->rl_id ] );
-			}
-		}
 
 		return array_map( 'intval', $ids );
 	}
@@ -684,16 +623,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	public function setListEntryOrder( $id, array $order ) {
 		$this->assertUser();
+		$this->selectValidList( $id, self::READ_LOCKING );
 		if ( !$order ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-empty-order' );
 		}
-		$this->dbw->select(
-			'reading_list',
-			'1',
-			[ 'rl_id' => $id ],
-			__METHOD__,
-			[ 'FOR UPDATE' ]
-		);
 
 		// Make sure the list entries exist and the user owns them.
 		$res = $this->dbw->select(
@@ -1015,6 +948,36 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		if ( !is_int( $this->userId ) ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-user-required' );
 		}
+	}
+
+	/**
+	 * Get list data, and optionally lock the list.
+	 * List must exist, belong to the current user and not be deleted.
+	 * @param int $id List id
+	 * @param int $flags IDBAccessObject flags
+	 * @return ReadingListRow
+	 * @throws ReadingListRepositoryException
+	 */
+	private function selectValidList( $id, $flags = 0 ) {
+		$this->assertUser();
+		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
+		$db = ( $index === DB_MASTER ) ? $this->dbw : $this->dbr;
+		/** @var ReadingListRow $row */
+		$row = $db->selectRow(
+			'reading_list',
+			array_merge( $this->getListFields(), [ 'rl_user_id' ] ),
+			[ 'rl_id' => $id ],
+			__METHOD__,
+			$options
+		);
+		if ( !$row ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list', [ $id ] );
+		} elseif ( $row->rl_user_id != $this->userId ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-not-own-list', [ $id ] );
+		} elseif ( $row->rl_deleted ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-list-deleted', [ $id ] );
+		}
+		return $row;
 	}
 
 }
