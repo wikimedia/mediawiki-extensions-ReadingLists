@@ -4,6 +4,7 @@ namespace MediaWiki\Extensions\ReadingLists\Api;
 
 use ApiBase;
 use Message;
+use Title;
 
 /**
  * API module for all write operations.
@@ -25,6 +26,16 @@ class ApiReadingListsCreateEntry extends ApiBase {
 		$listId = $this->getParameter( 'list' );
 		$project = $this->getParameter( 'project' );
 		$title = $this->getParameter( 'title' );
+
+		// Lists can contain titles from other wikis, and we have no idea of the exact title
+		// validation rules used there; but in practice it's unlikely the rules would differ,
+		// and allowing things like <> or # in the title could result in vulnerabilities in
+		// clients that assume they are getting something sane. So let's validate anyway.
+		// We do not normalize, that would contain too much local logic (e.g. title case), and
+		// clients are expected to submit already normalized titles (that they got from the API) anyway.
+		if ( !Title::newFromText( $title ) ) {
+			$this->dieWithError( 'apierror-invalidtitle', wfEscapeWikiText( $title ) );
+		}
 
 		$entryId = $this->getReadingListRepository( $this->getUser() )
 			->addListEntry( $listId, $project, $title );
