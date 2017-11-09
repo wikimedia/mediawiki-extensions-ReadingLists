@@ -215,8 +215,19 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	private function getResultTitle( $row ) {
 		$interwikiPrefix = $this->getReverseInterwikiLookup()->lookup( $row->rle_project );
 		if ( is_string( $interwikiPrefix ) ) {
-			// This will handle correctly the case of $interwikiPrefix === '' as well.
-			return Title::makeTitle( NS_MAIN, $row->rle_title, '', $interwikiPrefix );
+			if ( $interwikiPrefix === '' ) {
+				$title = Title::newFromText( $row->rle_title );
+				if ( !$title ) {
+					// Validation differences between wikis? Let's just return it as it is.
+					$title = Title::makeTitle( NS_MAIN, $row->rle_title );
+				}
+			} else {
+				// We have no way of telling what the namespace is, but Title does not support
+				// foreign namespaces anyway. Let's just pretend it's in the main namespace so
+				// the prefixed title string works out as expected.
+				$title = Title::makeTitle( NS_MAIN, $row->rle_title, '', $interwikiPrefix );
+			}
+			return $title;
 		} elseif ( is_array( $interwikiPrefix ) ) {
 			$title = implode( ':', array_slice( $interwikiPrefix, 1 ) ). ':' . $row->rle_title;
 			$prefix = $interwikiPrefix[0];
