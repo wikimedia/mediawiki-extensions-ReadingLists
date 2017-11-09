@@ -1,3 +1,6 @@
+-- On the application level, column length limits are enforced via
+-- ReadingListRepository::$fieldLength which should be kept in sync.
+
 -- Lists.
 CREATE TABLE /*_*/reading_list (
     rl_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,

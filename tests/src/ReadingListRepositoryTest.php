@@ -178,6 +178,10 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			'rl_is_default' => '0',
 			'rl_deleted' => '0',
 		], $data );
+
+		$this->assertFailsWith( 'readinglists-db-error-too-long', function () use ( $repository ) {
+			$repository->addList( 'boom',  str_pad( '', 1000, 'x' ) );
+		} );
 	}
 
 	// @codingStandardsIgnoreLine MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
