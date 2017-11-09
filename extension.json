@@ -65,12 +65,21 @@
 			"value": false,
 			"description": "Database name of the central wiki. This is unrelated to data storage (see ReadingListsDatabase for that) and only used to identify which wiki should be used for jobs and such."
 		},
+		"ReadingListsMaxListsPerUser": {
+			"value": 100,
+			"description": "Maximum allowed number of lists per user."
+		},
+		"ReadingListsMaxEntriesPerList": {
+			"value": 1000,
+			"description": "Maximum allowed number of entries per list."
+		},
 		"ReadingListsDeletedRetentionDays": {
 			"value": 30,
 			"description": "Purge deleted lists and list entries after this many days."
 		}
 	},
 	"Hooks": {
+		"APIQuerySiteInfoGeneralInfo": "MediaWiki\\Extensions\\ReadingLists\\HookHandler::onAPIQuerySiteInfoGeneralInfo",
 		"LoadExtensionSchemaUpdates": "MediaWiki\\Extensions\\ReadingLists\\HookHandler::onLoadExtensionSchemaUpdates",
 		"UnitTestsAfterDatabaseSetup": "MediaWiki\\Extensions\\ReadingLists\\HookHandler::onUnitTestsAfterDatabaseSetup",
 		"UnitTestsBeforeDatabaseTeardown": "MediaWiki\\Extensions\\ReadingLists\\HookHandler::onUnitTestsBeforeDatabaseTeardown"

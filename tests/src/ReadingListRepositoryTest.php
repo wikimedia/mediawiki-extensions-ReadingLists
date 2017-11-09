@@ -180,6 +180,20 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		], $data );
 	}
 
+	// @codingStandardsIgnoreLine MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
+	public function testAddList_count() {
+		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
+		$repository->setLimits( 2, null );
+		$repository->setupForUser();
+
+		$listId = $repository->addList( 'foo' );
+		$repository->deleteList( $listId );
+		$repository->addList( 'bar' );
+		$this->assertFailsWith( 'readinglists-db-error-list-limit', function () use ( $repository ) {
+			$repository->addList( 'baz' );
+		} );
+	}
+
 	public function testGetAllLists() {
 		$this->addDataForAnotherUser();
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
@@ -458,6 +472,29 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertFailsWith( 'readinglists-db-error-duplicate-page',
 			function () use ( $repository, $listId ) {
 				$repository->addListEntry( $listId, 'en.wikipedia.org', 'Foo' );
+			}
+		);
+	}
+
+	// @codingStandardsIgnoreLine MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
+	public function testAddListEntry_count() {
+		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
+		$repository->setLimits( null, 1 );
+		$repository->setupForUser();
+
+		list( $listId ) = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+				'rls_index' => 2,
+			],
+		] );
+		$entryId = $repository->addListEntry( $listId, 'en.wikipedia.org', 'Foo' );
+		$repository->deleteListEntry( $entryId );
+		$repository->addListEntry( $listId, 'en.wikipedia.org', 'Bar' );
+		$this->assertFailsWith( 'readinglists-db-error-entry-limit',
+			function () use ( $repository, $listId ) {
+				$repository->addListEntry( $listId, 'en.wikipedia.org', 'Baz' );
 			}
 		);
 	}

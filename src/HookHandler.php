@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extensions\ReadingLists;
 
+use ApiQuerySiteinfo;
 use DatabaseUpdater;
 use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\IMaintainableDatabase;
@@ -18,6 +19,22 @@ class HookHandler {
 		'reading_list_sortkey',
 		'reading_list_entry_sortkey',
 	];
+
+	/**
+	 * Add configuration data to the siteinfo API output.
+	 * Used by the RESTBase proxy for help messages in the Swagger doc.
+	 * @param ApiQuerySiteinfo $module
+	 * @param array &$result
+	 */
+	public static function onAPIQuerySiteInfoGeneralInfo( ApiQuerySiteinfo $module, array &$result ) {
+		global $wgReadingListsMaxListsPerUser, $wgReadingListsMaxEntriesPerList,
+			   $wgReadingListsDeletedRetentionDays;
+		$result['readinglists-config'] = [
+			'maxListsPerUser' => $wgReadingListsMaxListsPerUser,
+			'maxEntriesPerList' => $wgReadingListsMaxEntriesPerList,
+			'deletedRetentionDays' => $wgReadingListsDeletedRetentionDays,
+		];
+	}
 
 	/**
 	 * @param DatabaseUpdater $updater

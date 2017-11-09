@@ -32,6 +32,12 @@ use Wikimedia\Rdbms\LBFactory;
  */
 class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
+	/** @var int|null Max allowed lists per user */
+	private $listLimit;
+
+	/** @var int|null Max allowed entries lists per list */
+	private $entryLimit;
+
 	/** @var LoggerInterface */
 	private $logger;
 
@@ -59,6 +65,15 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$this->dbr = $dbr;
 		$this->lbFactory = $lbFactory;
 		$this->logger = new NullLogger();
+	}
+
+	/**
+	 * @param int|null $listLimit
+	 * @param int|null $entryLimit
+	 */
+	public function setLimits( $listLimit, $entryLimit ) {
+		$this->listLimit = $listLimit;
+		$this->entryLimit = $entryLimit;
 	}
 
 	/**
@@ -179,6 +194,11 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		if ( !$this->isSetupForUser( self::READ_LOCKING ) ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
+		if ( $this->listLimit && $this->getListCount( self::READ_LATEST ) >= $this->listLimit ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-list-limit',
+				[ $this->listLimit ] );
+		}
+
 		$this->dbw->insert(
 			'reading_list',
 			[
@@ -321,6 +341,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	public function addListEntry( $id, $project, $title ) {
 		$this->assertUser();
 		$this->selectValidList( $id, self::READ_LOCKING );
+		if ( $this->entryLimit && $this->getEntryCount( $id, self::READ_LATEST ) >= $this->entryLimit ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-entry-limit',
+				[ $id, $this->entryLimit ] );
+		}
 
 		// due to the combination of soft deletion + unique constraint on
 		// rle_rl_id + rle_project + rle_title, recreation needs special handling
@@ -1002,6 +1026,50 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-list-deleted', [ $id ] );
 		}
 		return $row;
+	}
+
+	/**
+	 * Returns the number of (non-deleted) lists of the current user.
+	 * @param int $flags IDBAccessObject flags
+	 * @return int
+	 */
+	private function getListCount( $flags = 0 ) {
+		$this->assertUser();
+		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
+		$db = ( $index === DB_MASTER ) ? $this->dbw : $this->dbr;
+		return $db->selectRowCount(
+			'reading_list',
+			'1',
+			[
+				'rl_user_id' => $this->userId,
+				'rl_deleted' => 0,
+			],
+			__METHOD__,
+			$options
+		);
+	}
+
+	/**
+	 * Returns the number of (non-deleted) list entries of the given list.
+	 * Verifying that the list is valid is caller's responsibility.
+	 * @param int $id List id
+	 * @param int $flags IDBAccessObject flags
+	 * @return int
+	 */
+	private function getEntryCount( $id, $flags = 0 ) {
+		$this->assertUser();
+		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
+		$db = ( $index === DB_MASTER ) ? $this->dbw : $this->dbr;
+		return $db->selectRowCount(
+			'reading_list_entry',
+			'1',
+			[
+				'rle_rl_id' => $id,
+				'rle_deleted' => 0,
+			],
+			__METHOD__,
+			$options
+		);
 	}
 
 }
