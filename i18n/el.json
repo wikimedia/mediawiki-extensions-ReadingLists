@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"KATRINE1992"
+		]
+	},
+	"readinglists-db-error-missing-list": "Όλες οι λίστες πρέπει να είναι στην σειρά (το $1 λείπει)",
+	"readinglists-db-error-missing-list-entry": "Όλες οι εγγραφές στην λίστα πρέπει να περιλαμβάνονται στη σειρά (το $1 λείπει)."
+}

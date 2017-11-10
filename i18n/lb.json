@@ -9,6 +9,8 @@
 	"readinglists-db-error-not-own-list": "D'Lëscht $1 gehéiert engem anere Benotzer.",
 	"readinglists-db-error-list-deleted": "Lëscht $1 gouf geläscht.",
 	"readinglists-db-error-duplicate-page": "Déi Säit ass schonn an där Lëscht.",
+	"readinglists-db-error-list-limit": "Benotzer däerfen net méi wéi $1 Lëschten hunn.",
+	"readinglists-db-error-entry-limit": "Lëscht $1 däerf net méi wéi $2 Elementer hunn.",
 	"apihelp-query+readinglists-example-1": "D'Lieslëschte vum aktuelle Benotzer kréien",
 	"apihelp-readinglists+teardown-summary": "Lëschte fir den aktuelle Benotzer desaktivéieren.",
 	"apihelp-readinglists+teardown-example-1": "Lieslëschte fir den aktuelle Benotzer desaktivéieren.",
