@@ -1,8 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Aftabuzzaman"
+			"Aftabuzzaman",
+			"Rasal Lia"
 		]
 	},
+	"readinglists-db-error-list-limit": "ব্যবহারকারীদের $1 এর বেশী তালিকা হতে পারেনা।",
+	"readinglists-db-error-entry-limit": "$1 নম্বর তালিকা $2 এর বেশী তালিকাভুক্ত করতে পারে না।",
+	"readinglists-db-error-too-long": "$1 এর মান $2 বাইটের বেশী হতে পারেনা।",
 	"apihelp-readinglists+update-param-image": "নতুন চিত্র তালিকা।"
 }
