@@ -5,8 +5,8 @@
 			"Rasal Lia"
 		]
 	},
-	"readinglists-db-error-list-limit": "ব্যবহারকারীদের $1 এর বেশী তালিকা হতে পারেনা।",
-	"readinglists-db-error-entry-limit": "$1 নম্বর তালিকা $2 এর বেশী তালিকাভুক্ত করতে পারে না।",
-	"readinglists-db-error-too-long": "$1 এর মান $2 বাইটের বেশী হতে পারেনা।",
+	"readinglists-db-error-list-limit": "ব্যবহারকারীদের $1টির বেশী {{PLURAL:$1|তালিকা}} থাকতে পারবে না।",
+	"readinglists-db-error-entry-limit": "$1 তালিকাটির $2টির বেশী {{PLURAL:$2|ভুক্তি}} থাকতে পারবে না।",
+	"readinglists-db-error-too-long": "$1 এর মান $2 বাইটের বেশী হতে পারবে না।",
 	"apihelp-readinglists+update-param-image": "নতুন চিত্র তালিকা।"
 }

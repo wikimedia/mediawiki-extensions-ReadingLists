@@ -2,14 +2,20 @@
 	"@metadata": {
 		"authors": [
 			"Macofe",
-			"Fitoschido"
+			"Fitoschido",
+			"KATRINE1992"
 		]
 	},
 	"readinglists-desc": "Permite a los usuarios gestionar listas privadas de artículos, como marcadores o listas de \"Leer después\".",
 	"readinglists-db-error-cannot-delete-default-list": "No se puede borrar la lista predeterminada.",
 	"readinglists-db-error-list-deleted": "Se eliminó la lista $1.",
+	"readinglists-db-error-list-limit": "Los usuarios no pueden tener mas que $1 {{PLURAL:$1|list|lists}}.",
+	"readinglists-db-error-entry-limit": "La lista $1 no puede tener mas de $2 {{PLURAL:$2|entry|entrie}}.",
+	"readinglists-db-error-too-long": "El valor del campo $1 no puede ser mas alto que $2 bytes.",
+	"apihelp-readinglists+create-extended-description": "El usuario debe tener menos de $1 (no eliminado) {{PLURAL:$1|list|lists}}.",
 	"apihelp-readinglists+update-param-list": "Identificador de lista.",
 	"apihelp-readinglists+update-param-image": "Imagen de lista nueva.",
+	"apihelp-readinglists+createentry-extended-description": "La entradas de lista deben ser unicas.Las paginas no son solamente de wiki donde hay acceso al API. El usuario debe tener menos que  $1 (no eliminado) {{PLURAL:$1|entry|entries}} en la lista.",
 	"apihelp-readinglists+createentry-param-list": "Identificador de lista.",
 	"apihelp-readinglists+orderentry-param-list": "Identificador de lista."
 }

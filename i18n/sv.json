@@ -17,6 +17,8 @@
 	"readinglists-db-error-duplicate-page": "Listan innehåller redan denna sida.",
 	"readinglists-db-error-empty-list-ids": "Parametern för list-ID:n får inte vara tom.",
 	"readinglists-db-error-empty-order": "Ordningsparametern får inte vara tom.",
+	"readinglists-db-error-missing-list": "Alla listor måste inkluderas i ordning ($1 saknas)",
+	"readinglists-db-error-missing-list-entry": "Alla listelement måste inkluderas i ordning ($1 saknas)",
 	"readinglists-db-error-entry-not-in-list": "Listelementet $1 tillhör inte i denna lista.",
 	"readinglists-db-error-user-required": "Denna metod kan inte anropas utan att ange användaren.",
 	"readinglists-apierror-project-title-param": "<var>$1project</var> och <var>$1title</var> måste användas tillsammans.",

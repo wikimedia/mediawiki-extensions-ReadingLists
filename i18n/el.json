@@ -5,5 +5,10 @@
 		]
 	},
 	"readinglists-db-error-missing-list": "Όλες οι λίστες πρέπει να είναι στην σειρά (το $1 λείπει)",
-	"readinglists-db-error-missing-list-entry": "Όλες οι εγγραφές στην λίστα πρέπει να περιλαμβάνονται στη σειρά (το $1 λείπει)."
+	"readinglists-db-error-missing-list-entry": "Όλες οι εγγραφές στην λίστα πρέπει να περιλαμβάνονται στη σειρά (το $1 λείπει).",
+	"readinglists-db-error-list-limit": "Οι χρήστες δεν μπορούν να έχουν περισσότερο από $1 {{PLURAL:$!|list|lists}}.",
+	"readinglists-db-error-entry-limit": "Η λίστα $1 δεν μπορεί να περιέχει περισσότερα από $2 {{PLURAL:$2|entry|entries}}.",
+	"readinglists-db-error-too-long": "Η τιμή πεδίου $1 δεν μπορεί να είναι μεγαλύτερη από $2 bytes.",
+	"apihelp-readinglists+create-extended-description": "Ο χρήστης πρέπει να έχει λιγότερο από  $1 (μη διαγραμμένα) {{PLURAL:$1|list|lists}}.",
+	"apihelp-readinglists+createentry-extended-description": "Οι εγγραφές στην λίστα πρέπει να είναι πρωτότυπες. Οι σελίδες δεν περιορίζονται στο  wiki όπου υπάρχει πρόσβαση στο ΑΡΙ. Ο χρήστης πρέπει να έχει λιγότερο απ $1 (μη διαγραμμένο) {{PLURAL:$1|entry|entries}} στη λίστα."
 }
