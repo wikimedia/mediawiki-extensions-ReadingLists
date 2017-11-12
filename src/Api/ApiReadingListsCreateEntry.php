@@ -3,6 +3,7 @@
 namespace MediaWiki\Extensions\ReadingLists\Api;
 
 use ApiBase;
+use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
 use Message;
 use Title;
 
@@ -55,10 +56,12 @@ class ApiReadingListsCreateEntry extends ApiBase {
 			'project' => [
 				self::PARAM_TYPE => 'string',
 				self::PARAM_REQUIRED => true,
+				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rle_project'],
 			],
 			'title' => [
 				self::PARAM_TYPE => 'string',
 				self::PARAM_REQUIRED => true,
+				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rle_title'],
 			],
 		];
 	}
