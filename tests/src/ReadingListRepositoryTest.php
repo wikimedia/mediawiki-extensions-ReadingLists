@@ -620,6 +620,11 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$res = $repository->getListEntries( [ $defaultId, $listId ], 2, 2 );
 		$compare( array_slice( $expectedData, 2, 2 ), $res );
 
+		$this->assertFailsWith( 'readinglists-db-error-empty-list-ids',
+			function () use ( $repository ) {
+				$repository->getListEntries( [] );
+			}
+		);
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
 			function () use ( $repository ) {
 				$repository->getListEntries( [ 123 ] );
