@@ -299,7 +299,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$this->assertFieldLength( 'rl_color', $color );
 		$this->assertFieldLength( 'rl_image', $image );
 		$this->assertFieldLength( 'rl_icon', $icon );
-		$this->selectValidList( $id, self::READ_LOCKING );
+		$row = $this->selectValidList( $id, self::READ_LOCKING );
+		if ( $row->rl_is_default ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-cannot-update-default-list' );
+		}
 
 		$data = array_filter( [
 			'rl_name' => $name,

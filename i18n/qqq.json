@@ -9,6 +9,7 @@
 	"readinglists-db-error-not-set-up": "Error message used when trying to perform an operation for a user without calling setup first.",
 	"readinglists-db-error-already-set-up": "Error message used when trying to call setup for a user when it has already been performed.",
 	"readinglists-db-error-cannot-delete-default-list": "Error message used when trying to delete the default list.",
+	"readinglists-db-error-cannot-update-default-list": "Error message used when trying to update the default list.",
 	"readinglists-db-error-no-such-list": "Error message used when trying to do something with a non-existent list.",
 	"readinglists-db-error-no-such-list-entry": "Error message used when trying to do something with a non-existent list entry.",
 	"readinglists-db-error-not-own-list": "Error message used when trying to do something with a list that belongs to another user.",

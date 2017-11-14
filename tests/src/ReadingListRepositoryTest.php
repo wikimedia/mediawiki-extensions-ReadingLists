@@ -361,6 +361,14 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				$repository->updateList( $deletedListId, 'bar' );
 			}
 		);
+		$this->assertFailsWith( 'readinglists-db-error-cannot-update-default-list',
+			function () use ( $repository ) {
+				$defaultId = $this->db->selectField( 'reading_list', 'rl_id',
+					[ 'rl_user_id' => 1, 'rl_is_default' => 1 ] );
+				$this->assertNotSame( false, $defaultId );
+				$repository->updateList( $defaultId, 'not default' );
+			}
+		);
 	}
 
 	public function testDeleteList() {
