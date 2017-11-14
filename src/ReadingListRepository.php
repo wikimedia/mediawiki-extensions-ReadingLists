@@ -71,7 +71,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * @param LBFactory $lbFactory
 	 */
 	public function __construct( $userId, IDatabase $dbw, IDatabase $dbr, LBFactory $lbFactory ) {
-		$this->userId = $userId;
+		$this->userId = (int)$userId ?: null;
 		$this->dbw = $dbw;
 		$this->dbr = $dbr;
 		$this->lbFactory = $lbFactory;
@@ -267,7 +267,11 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			]
 		);
 
-		if ( $res->numRows() === 0 && !$this->isSetupForUser() ) {
+		if (
+			$res->numRows() === 0
+			&& !$this->isSetupForUser()
+			&& !$this->isSetupForUser( self::READ_LATEST )
+		) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
 		return $res;
@@ -845,6 +849,14 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				'ORDER BY' => 'rl_id',
 			]
 		);
+
+		if (
+			$res->numRows() === 0
+			&& !$this->isSetupForUser()
+			&& !$this->isSetupForUser( self::READ_LATEST )
+		) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
+		}
 		return $res;
 	}
 
@@ -969,6 +981,14 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				'ORDER BY' => 'rl_id',
 			]
 		);
+
+		if (
+			$res->numRows() === 0
+			&& !$this->isSetupForUser()
+			&& !$this->isSetupForUser( self::READ_LATEST )
+		) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
+		}
 		return $res;
 	}
 

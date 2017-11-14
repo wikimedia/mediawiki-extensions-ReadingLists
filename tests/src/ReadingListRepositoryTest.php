@@ -25,9 +25,28 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 	}
 
-	public function testAssertUser() {
+	/**
+	 * @dataProvider provideAssertUser
+	 * @param string $method ReadingListRepository method name
+	 * @param mixed $param... Method parameters
+	 */
+	public function testAssertUser( $method ) {
 		$repository = new ReadingListRepository( null, $this->db, $this->db, $this->lbFactory );
-		$calls = [
+		$call = func_get_args();
+		$this->assertFailsWith( 'readinglists-db-error-user-required',
+			function () use ( $repository, $call ) {
+				$method = array_shift( $call );
+				$params = $call;
+				call_user_func_array( [ $repository, $method ], $params );
+			}
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function provideAssertUser() {
+		return [
 			[ 'setupForUser' ],
 			[ 'teardownForUser' ],
 			[ 'isSetupForUser' ],
@@ -45,66 +64,39 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			[ 'getListsByDateUpdated', wfTimestampNow() ],
 			[ 'getListsByPage', 'foo', 'bar' ],
 		];
-		foreach ( $calls as $call ) {
-			$this->assertFailsWith( 'readinglists-db-error-user-required',
-				function () use ( $repository, $call ) {
-					$method = array_shift( $call );
-					$params = $call;
-					call_user_func_array( [ $repository, $method ], $params );
-				}
-			);
-		}
-		$this->assertFailsWith( 'readinglists-db-error-user-required', function () use ( $repository ) {
-			$repository->teardownForUser();
-		} );
-		$this->assertFailsWith( 'readinglists-db-error-user-required', function () use ( $repository ) {
-			$repository->isSetupForUser();
-		} );
-		$this->assertFailsWith( 'readinglists-db-error-user-required', function () use ( $repository ) {
-			$repository->addList( 'foo' );
-		} );
-		$this->assertFailsWith( 'readinglists-db-error-user-required', function () use ( $repository ) {
-			$repository->addList( 'foo' );
-		} );
-		$this->assertFailsWith( 'readinglists-db-error-user-required', function () use ( $repository ) {
-			$repository->addList( 'foo' );
-		} );
-		$this->assertFailsWith( 'readinglists-db-error-user-required', function () use ( $repository ) {
-			$repository->addList( 'foo' );
-		} );
-		$this->assertFailsWith( 'readinglists-db-error-user-required', function () use ( $repository ) {
-			$repository->addList( 'foo' );
-		} );
-		$this->assertFailsWith( 'readinglists-db-error-user-required', function () use ( $repository ) {
-			$repository->addList( 'foo' );
-		} );
-		$this->assertFailsWith( 'readinglists-db-error-user-required', function () use ( $repository ) {
-			$repository->addList( 'foo' );
-		} );
 	}
 
-	public function testUninitializedErrors() {
+	/**
+	 * @dataProvider provideUninitializedErrors
+	 * @param string $method ReadingListRepository method name
+	 * @param mixed $param... Method parameters
+	 */
+	public function testUninitializedErrors( $method ) {
 		$this->addDataForAnotherUser();
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
+		$call = func_get_args();
+		$this->assertFailsWith( 'readinglists-db-error-not-set-up',
+			function () use ( $repository, $call ) {
+				$method = array_shift( $call );
+				$params = $call;
+				call_user_func_array( [ $repository, $method ], $params );
+			}
+		);
+	}
 
-		$this->assertFailsWith( 'readinglists-db-error-not-set-up', function () use ( $repository ) {
-			$repository->addList( 'foo' );
-		} );
-		$this->assertFailsWith( 'readinglists-db-error-not-set-up', function () use ( $repository ) {
-			$repository->getAllLists();
-		} );
-		$this->assertFailsWith( 'readinglists-db-error-not-set-up', function () use ( $repository ) {
-			$repository->getListOrder();
-		} );
-		$this->assertFailsWith( 'readinglists-db-error-not-set-up', function () use ( $repository ) {
-			$repository->teardownForUser();
-		} );
-		$this->assertFailsWith( 'readinglists-db-error-not-set-up', function () use ( $repository ) {
-			$repository->teardownForUser();
-		} );
-		$this->assertFailsWith( 'readinglists-db-error-not-set-up', function () use ( $repository ) {
-			$repository->teardownForUser();
-		} );
+	/**
+	 * @return array
+	 */
+	public function provideUninitializedErrors() {
+		return [
+			[ 'teardownForUser' ],
+			[ 'addList', 'foo' ],
+			[ 'getAllLists' ],
+			[ 'getListOrder' ],
+			[ 'setListOrder', [ 1 ] ],
+			[ 'getListsByDateUpdated', wfTimestampNow() ],
+			[ 'getListsByPage', 'foo', 'bar' ],
+		];
 	}
 
 	public function testSetupAndTeardown() {
