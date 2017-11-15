@@ -4,7 +4,6 @@ namespace MediaWiki\Extensions\ReadingLists\Api;
 
 use ApiQueryBase;
 use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRow;
-use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extensions\ReadingLists\Utils;
 
@@ -92,7 +91,6 @@ class ApiQueryReadingLists extends ApiQueryBase {
 			$resultOffset = 0;
 			foreach ( $res as $row ) {
 				$isLastRow = ( $resultOffset === $res->numRows() - 1 );
-				$this->addExtraData( $row, $repository, $mode );
 				$item = $this->getResultItem( $row, $mode );
 				$fits = $result->addValue( $path, null, $item );
 				if ( !$fits || ++$resultOffset >= $limit && !$isLastRow ) {
@@ -173,22 +171,6 @@ class ApiQueryReadingLists extends ApiQueryBase {
 	}
 
 	/**
-	 * @param ReadingListRow $row
-	 * @param ReadingListRepository $repository
-	 * @param string $mode One of the MODE_* constants.
-	 * @return void
-	 * @fixme If apps really need this, find a more performant way to get the data
-	 */
-	private function addExtraData( &$row, $repository, $mode ) {
-		if ( $mode !== self::MODE_PAGE && empty( $row->rl_deleted ) ) {
-			$row->order = $repository->getListEntryOrder( $row->rl_id );
-			if ( $row->rl_is_default ) {
-				$row->list_order = $repository->getListOrder();
-			}
-		}
-	}
-
-	/**
 	 * Transform a row into an API result item
 	 * @param ReadingListRow $row List row, with additions from addExtraData().
 	 * @param string $mode One of the MODE_* constants.
@@ -208,12 +190,6 @@ class ApiQueryReadingLists extends ApiQueryBase {
 		];
 		if ( $mode === self::MODE_CHANGES ) {
 			$item['deleted'] = (bool)$row->rl_deleted;
-		}
-		if ( isset( $row->order ) ) {
-			$item['order'] = $row->order;
-		}
-		if ( isset( $row->list_order ) ) {
-			$item['listOrder'] = $row->list_order;
 		}
 		return $item;
 	}

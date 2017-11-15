@@ -57,10 +57,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			[ 'addListEntry', 1, 'foo', 'bar' ],
 			[ 'getListEntries', [ 1 ] ],
 			[ 'deleteListEntry', 1 ],
-			[ 'getListOrder' ],
-			[ 'setListOrder', [ 1 ] ],
-			[ 'getListEntryOrder', 1 ],
-			[ 'setListEntryOrder', 1, [] ],
 			[ 'getListsByDateUpdated', wfTimestampNow() ],
 			[ 'getListsByPage', 'foo', 'bar' ],
 		];
@@ -92,8 +88,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			[ 'teardownForUser' ],
 			[ 'addList', 'foo' ],
 			[ 'getAllLists' ],
-			[ 'getListOrder' ],
-			[ 'setListOrder', [ 1 ] ],
 			[ 'getListsByDateUpdated', wfTimestampNow() ],
 			[ 'getListsByPage', 'foo', 'bar' ],
 		];
@@ -200,7 +194,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_date_created' => '20100101000000',
 				'rl_date_updated' => '20120101000000',
 				'rl_deleted' => '0',
-				'rls_index' => 1,
 			],
 			[
 				'rl_name' => 'foo',
@@ -208,31 +201,28 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_date_created' => wfTimestampNow(),
 				'rl_date_updated' => wfTimestampNow(),
 				'rl_deleted' => '0',
-				'rls_index' => 4,
 			],
 			[
 				'rl_name' => 'bar',
 				'rl_date_created' => '20010101000000',
 				'rl_date_updated' => '20020101000000',
 				'rl_deleted' => '0',
-				'rls_index' => 3,
 			],
 			[
+				'rl_name' => 'baz',
 				'rl_date_created' => wfTimestampNow(),
 				'rl_date_updated' => wfTimestampNow(),
-				'rl_name' => 'baz',
 				'rl_deleted' => '1',
-				'rls_index' => 2,
 			],
 		] );
-		$compareResultItems = function ( $expected, $actual ) {
+		$compareResultItems = function ( array $expected, array $actual ) {
 			$this->assertTimestampEquals( $expected['rl_date_created'], $actual['rl_date_created'] );
 			$this->assertTimestampEquals( $expected['rl_date_updated'], $actual['rl_date_updated'] );
 			unset( $expected['rl_date_created'], $expected['rl_date_updated'] );
 			unset( $actual['rl_id'], $actual['rl_date_created'], $actual['rl_date_updated'] );
 			$this->assertArrayEquals( $expected, $actual, false, true );
 		};
-		$compare = function ( $expected, $res ) use ( $compareResultItems ) {
+		$compare = function ( array $expected, IResultWrapper $res ) use ( $compareResultItems ) {
 			$data = $this->resultWrapperToArray( $res );
 			$this->assertEquals( count( $expected ), count( $data ), 'result length is different!' );
 			array_map( $compareResultItems, $expected, $data );
@@ -263,17 +253,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_deleted' => '0',
 			],
 			[
-				'rl_name' => 'bar',
-				'rl_description' => '',
-				'rl_color' => '',
-				'rl_image' => '',
-				'rl_icon' => '',
-				'rl_is_default' => '0',
-				'rl_date_created' => '20010101000000',
-				'rl_date_updated' => '20020101000000',
-				'rl_deleted' => '0',
-			],
-			[
 				'rl_name' => 'foo',
 				'rl_description' => 'this is the second foo',
 				'rl_color' => '',
@@ -282,6 +261,17 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_is_default' => '0',
 				'rl_date_created' => wfTimestampNow(),
 				'rl_date_updated' => wfTimestampNow(),
+				'rl_deleted' => '0',
+			],
+			[
+				'rl_name' => 'bar',
+				'rl_description' => '',
+				'rl_color' => '',
+				'rl_image' => '',
+				'rl_icon' => '',
+				'rl_is_default' => '0',
+				'rl_date_created' => '20010101000000',
+				'rl_date_updated' => '20020101000000',
 				'rl_deleted' => '0',
 			],
 		];
@@ -310,7 +300,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_image' => 'image',
 				'rl_icon' => 'ICON',
 				'rl_deleted' => '0',
-				'rls_index' => 1,
 			],
 			[
 				'rl_name' => 'bar',
@@ -321,7 +310,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_image' => 'image',
 				'rl_icon' => 'ICON',
 				'rl_deleted' => '1',
-				'rls_index' => 2,
 			],
 		] );
 
@@ -378,12 +366,10 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			[
 				'rl_name' => 'foo',
 				'rl_deleted' => '0',
-				'rls_index' => 1,
 			],
 			[
 				'rl_name' => 'bar',
 				'rl_deleted' => '1',
-				'rls_index' => 2,
 			],
 		] );
 
@@ -426,12 +412,10 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			[
 				'rl_name' => 'foo',
 				'rl_deleted' => '0',
-				'rls_index' => 1,
 			],
 			[
 				'rl_name' => 'bar',
 				'rl_deleted' => '1',
-				'rls_index' => 2,
 			],
 		] );
 
@@ -490,7 +474,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			[
 				'rl_name' => 'foo',
 				'rl_deleted' => '0',
-				'rls_index' => 2,
 			],
 		] );
 		$entryId = $repository->addListEntry( $listId, 'en.wikipedia.org', 'Foo' );
@@ -516,14 +499,12 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rle_date_created' => wfTimestampNow(),
 				'rle_date_updated' => wfTimestampNow(),
 				'rle_deleted' => 0,
-				'rles_index' => 1,
 			],
 		] );
 		list( $listId, $deletedListId ) = $this->addLists( 1, [
 			[
 				'rl_is_default' => 0,
 				'rl_name' => 'test',
-				'rls_index' => 1,
 				'entries' => [
 					[
 						'rle_project' => 'foo',
@@ -531,7 +512,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 						'rle_date_created' => wfTimestampNow(),
 						'rle_date_updated' => wfTimestampNow(),
 						'rle_deleted' => 0,
-						'rles_index' => 1,
 					],
 					[
 						'rle_project' => 'foo2',
@@ -539,7 +519,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 						'rle_date_created' => '20100101000000',
 						'rle_date_updated' => '20120101000000',
 						'rle_deleted' => 0,
-						'rles_index' => 3,
 					],
 					[
 						'rle_project' => 'foo3',
@@ -547,7 +526,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 						'rle_date_created' => wfTimestampNow(),
 						'rle_date_updated' => wfTimestampNow(),
 						'rle_deleted' => 0,
-						'rles_index' => 2,
 					],
 					[
 						'rle_project' => 'foo4',
@@ -555,7 +533,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 						'rle_date_created' => wfTimestampNow(),
 						'rle_date_updated' => wfTimestampNow(),
 						'rle_deleted' => 1,
-						'rles_index' => 4,
 					],
 				],
 			],
@@ -563,7 +540,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_is_default' => 0,
 				'rl_name' => 'test-deleted',
 				'rl_deleted' => 1,
-				'rls_index' => 2,
 			],
 		] );
 		$compareResultItems = function ( $expected, $actual, $n ) {
@@ -602,18 +578,18 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			],
 			[
 				'rle_rl_id' => $listId,
-				'rle_project' => 'foo3',
-				'rle_title' => 'bar3',
-				'rle_date_created' => wfTimestampNow(),
-				'rle_date_updated' => wfTimestampNow(),
-				'rle_deleted' => 0,
-			],
-			[
-				'rle_rl_id' => $listId,
 				'rle_project' => 'foo2',
 				'rle_title' => 'bar2',
 				'rle_date_created' => '20100101000000',
 				'rle_date_updated' => '20120101000000',
+				'rle_deleted' => 0,
+			],
+			[
+				'rle_rl_id' => $listId,
+				'rle_project' => 'foo3',
+				'rle_title' => 'bar3',
+				'rle_date_created' => wfTimestampNow(),
+				'rle_date_updated' => wfTimestampNow(),
 				'rle_deleted' => 0,
 			],
 		];
@@ -661,12 +637,10 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_date_created' => wfTimestampNow(),
 				'rl_date_updated' => wfTimestampNow(),
 				'rl_deleted' => 0,
-				'rls_index' => 1,
 			],
 			[
 				'rl_name' => 'bar',
 				'rl_deleted' => '1',
-				'rls_index' => 2,
 			],
 		] );
 		list( $fooId, $foo2Id, $deletedId ) = $this->addListEntries( $listId, 1, [
@@ -676,7 +650,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rle_date_created' => wfTimestampNow(),
 				'rle_date_updated' => wfTimestampNow(),
 				'rle_deleted' => 0,
-				'rles_index' => 1,
 			],
 			[
 				'rle_project' => 'foo2',
@@ -684,7 +657,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rle_date_created' => wfTimestampNow(),
 				'rle_date_updated' => wfTimestampNow(),
 				'rle_deleted' => 0,
-				'rles_index' => 2,
 			],
 			[
 				'rle_project' => 'foo3',
@@ -692,7 +664,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rle_date_created' => wfTimestampNow(),
 				'rle_date_updated' => wfTimestampNow(),
 				'rle_deleted' => 1,
-				'rles_index' => 3,
 			],
 		] );
 		list( $parentDeletedId ) = $this->addListEntries( $deletedListId, 1, [
@@ -702,7 +673,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rle_date_created' => wfTimestampNow(),
 				'rle_date_updated' => wfTimestampNow(),
 				'rle_deleted' => 0,
-				'rles_index' => 1,
 			],
 		] );
 
@@ -736,218 +706,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				$repository->deleteListEntry( $parentDeletedId );
 			}
 		);
-	}
-
-	public function testListOrder() {
-		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
-		$repository->setupForUser();
-		$defaultId = $this->db->selectField( 'reading_list', 'rl_id',
-			[ 'rl_user_id' => 1, 'rl_is_default' => 1 ] );
-		$this->db->update( 'reading_list',
-			[ 'rl_date_updated' => $this->db->timestamp( '20100101000000' ) ],
-			[ 'rl_id' => $defaultId ] );
-		list( $foreignId, $fooId, $foo2Id, $foo3Id, $deletedId ) = $this->addLists( 1, [
-			[
-				'rl_user_id' => 100,
-				'rl_name' => 'foo',
-				'rls_index' => 1,
-			],
-			[
-				'rl_name' => 'foo',
-				'rls_index' => 1,
-			],
-			[
-				'rl_name' => 'foo2',
-				'rls_index' => 4,
-			],
-			[
-				'rl_name' => 'foo3',
-				'rls_index' => 3,
-			],
-			[
-				'rl_name' => 'deleted',
-				'rl_deleted' => 1,
-				'rls_index' => 5,
-			],
-		] );
-
-		$order = $repository->getListOrder();
-		$this->assertArrayEquals( [ $defaultId, $fooId, $foo3Id, $foo2Id ], $order, true );
-
-		$newOrder = [ $fooId, $foo3Id, $foo2Id, $defaultId ];
-		$repository->setListOrder( $newOrder );
-		$order = $repository->getListOrder();
-		$this->assertArrayEquals( $newOrder, $order, true );
-		$defaultListTimestamp = $this->db->selectField( 'reading_list', 'rl_date_updated',
-			[ 'rl_id' => $defaultId ] );
-		$this->assertTimestampEquals( wfTimestampNow(), $defaultListTimestamp );
-
-		$this->assertFailsWith( 'readinglists-db-error-empty-order',
-			function () use ( $repository ) {
-				$repository->setListOrder( [] );
-			}
-		);
-		$this->assertFailsWith( 'readinglists-db-error-missing-list',
-			function () use ( $repository, $fooId, $foo2Id ) {
-				$repository->setListOrder( [ $fooId, $foo2Id ] );
-			}
-		);
-		$this->assertFailsWith( 'readinglists-db-error-not-own-list',
-			function () use ( $repository, $fooId, $foo2Id, $foreignId ) {
-				$repository->setListOrder( [ $fooId, $foo2Id, $foreignId ] );
-			}
-		);
-		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
-			function () use ( $repository, $fooId, $foo2Id, $deletedId ) {
-				$repository->setListOrder( [ $fooId, $foo2Id, $deletedId ] );
-			}
-		);
-		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
-			function () use ( $repository, $fooId, $foo2Id ) {
-				$repository->setListOrder( [ $fooId, $foo2Id, 1234 ] );
-			}
-		);
-	}
-
-	public function testListEntryOrder() {
-		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
-		$repository->setupForUser();
-		list( $emptyListId, $listId, $deletedListId ) = $this->addLists( 1, [
-			[
-				'rl_name' => 'empty',
-				'rls_index' => 10,
-			],
-			[
-				'rl_name' => 'foo',
-				'rls_index' => 1,
-				'rl_date_updated' => '20100101000000',
-			],
-			[
-				'rl_name' => 'deleted',
-				'rl_deleted' => '1',
-				'rls_index' => 2,
-			],
-		] );
-		list( $entry1, $entry2, $entry3, $deletedEntry ) = $this->addListEntries( $listId, 1, [
-			[
-				'rle_project' => 'foo',
-				'rle_title' => 'bar',
-				'rles_index' => 1,
-			],
-			[
-				'rle_project' => 'foo2',
-				'rle_title' => 'bar2',
-				'rles_index' => 3,
-			],
-			[
-				'rle_project' => 'foo3',
-				'rle_title' => 'bar3',
-				'rles_index' => 2,
-			],
-			[
-				'rle_project' => 'foo4',
-				'rle_title' => 'bar4',
-				'rle_deleted' => 1,
-				'rles_index' => 4,
-			],
-		] );
-		list( $parentDeletedEntry ) = $this->addListEntries( $deletedListId, 1,
-			[ [ 'rle_project' => 'foo5', 'rle_title' => 'bar5', 'rles_index' => 1 ] ] );
-		list( $foreignListId ) = $this->addLists( 100, [ [ 'rl_name' => 'foo', 'rls_index' => 1 ] ] );
-		list( $foreignEntry ) = $this->addListEntries( $foreignListId, 100,
-			[ [ 'rle_project' => 'foo', 'rle_title' => 'bar' ] ] );
-
-		$order = $repository->getListEntryOrder( $emptyListId );
-		$this->assertSame( [], $order );
-		$order = $repository->getListEntryOrder( $listId );
-		$this->assertArrayEquals( [ $entry1, $entry3, $entry2 ], $order, true );
-
-		$newOrder = [ $entry3, $entry1, $entry2 ];
-		$repository->setListEntryOrder( $listId, $newOrder );
-		$order = $repository->getListEntryOrder( $listId );
-		$this->assertArrayEquals( $newOrder, $order, true );
-		$listTimestamp = $this->db->selectField( 'reading_list', 'rl_date_updated',
-			[ 'rl_id' => $listId ] );
-		$this->assertTimestampEquals( wfTimestampNow(), $listTimestamp );
-
-		$this->assertFailsWith( 'readinglists-db-error-not-own-list',
-			function () use ( $repository, $foreignListId ) {
-				$repository->getListEntryOrder( $foreignListId );
-			}
-		);
-		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
-			function () use ( $repository, $deletedListId ) {
-				$repository->getListEntryOrder( $deletedListId );
-			}
-		);
-		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
-			function () use ( $repository ) {
-				$repository->getListEntryOrder( 123 );
-			}
-		);
-
-		$this->assertFailsWith( 'readinglists-db-error-empty-order',
-			function () use ( $repository, $listId ) {
-				$repository->setListEntryOrder( $listId, [] );
-			}
-		);
-		$this->assertFailsWith( 'readinglists-db-error-missing-list-entry',
-			function () use ( $repository, $listId, $entry1, $entry2 ) {
-				$repository->setListEntryOrder( $listId, [ $entry1, $entry2 ] );
-			}
-		);
-		$this->assertFailsWith( 'readinglists-db-error-not-own-list-entry',
-			function () use ( $repository, $listId, $foreignEntry ) {
-				$repository->setListEntryOrder( $listId, [ $foreignEntry ] );
-			}
-		);
-		$this->assertFailsWith( 'readinglists-db-error-entry-not-in-list',
-			function () use ( $repository, $emptyListId, $entry1 ) {
-				$repository->setListEntryOrder( $emptyListId, [ $entry1 ] );
-			}
-		);
-		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
-			function () use ( $repository, $deletedListId, $parentDeletedEntry ) {
-				$repository->setListEntryOrder( $deletedListId, [ $parentDeletedEntry ] );
-			}
-		);
-		$this->assertFailsWith( 'readinglists-db-error-list-entry-deleted',
-			function () use ( $repository, $listId, $entry1, $entry2, $entry3, $deletedEntry ) {
-				$repository->setListEntryOrder( $listId, [ $entry1, $entry2, $entry3, $deletedEntry ] );
-			}
-		);
-		$this->assertFailsWith( 'readinglists-db-error-no-such-list-entry',
-			function () use ( $repository, $listId, $entry1, $entry2, $entry3 ) {
-				$repository->setListEntryOrder( $listId, [ $entry1, $entry2, $entry3, 1234 ] );
-			}
-		);
-	}
-
-	public function testPurgeSortkeys() {
-		$repository = new ReadingListRepository( null, $this->db, $this->db, $this->lbFactory );
-		$this->addLists( 1, [ [
-			'rl_name' => 'list',
-			'rls_index' => 1,
-			'entries' => [
-				[
-					'rle_project' => 'foo',
-					'rle_title' => 'bar',
-					'rles_index' => 1,
-				],
-			],
-		] ] );
-		$this->db->insert( 'reading_list_sortkey', [ [ 'rls_rl_id' => 99, 'rls_index' => 2 ] ] );
-		$this->db->insert( 'reading_list_entry_sortkey', [ [ 'rles_rle_id' => 99, 'rles_index' => 2 ] ] );
-
-		$listSortkeys = $this->db->selectFieldValues( 'reading_list_sortkey', 'rls_index' );
-		$entrySortkeys = $this->db->selectFieldValues( 'reading_list_entry_sortkey', 'rles_index' );
-		$this->assertEquals( [ 1, 2 ], $listSortkeys );
-		$this->assertEquals( [ 1, 2 ], $entrySortkeys );
-		$repository->purgeSortkeys();
-		$listSortkeys = $this->db->selectFieldValues( 'reading_list_sortkey', 'rls_index' );
-		$entrySortkeys = $this->db->selectFieldValues( 'reading_list_entry_sortkey', 'rles_index' );
-		$this->assertEquals( [ 1 ], $listSortkeys );
-		$this->assertEquals( [ 1 ], $entrySortkeys );
 	}
 
 	public function testGetListsByDateUpdated() {
@@ -1246,9 +1004,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 	/**
 	 * Creates reading_list rows from the given data, with some magic fields:
 	 * - missing user ids will be added automatically
-	 * - 'rls_index' will be converted into an index row
 	 * - 'entries' (array of rows for reading_list_entry) willbe converted into their own rows
-	 * - 'entries' items can have an 'rles_index' field which is treated like 'rls_index'
 	 * @param int $userId Th central ID of the list owner
 	 * @param array[] $lists Array of rows for reading_list, with some magic fields
 	 * @return array The list IDs
@@ -1259,23 +1015,15 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			if ( !isset( $list['rl_user_id'] ) ) {
 				$list['rl_user_id'] = $userId;
 			}
-			$entries = $index = null;
+			$entries = null;
 			if ( isset( $list['entries'] ) ) {
 				$entries = $list['entries'];
 				unset( $list['entries'] );
-			}
-			if ( isset( $list['rls_index'] ) ) {
-				$index = $list['rls_index'];
-				unset( $list['rls_index'] );
 			}
 			$this->db->insert( 'reading_list', $list );
 			$listId = $this->db->insertId();
 			if ( $entries !== null ) {
 				$this->addListEntries( $listId, $list['rl_user_id'], $entries );
-			}
-			if ( $index !== null ) {
-				$this->db->insert( 'reading_list_sortkey',
-					[ 'rls_rl_id' => $listId, 'rls_index' => $index ] );
 			}
 			$listIds[] = $listId;
 		}
@@ -1285,7 +1033,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 	/**
 	 * Creates reading_list_entry rows from the given data, with some magic fields:
 	 * - missing list ids will be filled automatically
-	 * - 'rles_index' will be converted into an index row
 	 * @param int $listId The list to add entries to
 	 * @param int $userId Th central ID of the list owner
 	 * @param array[] $entries Array of rows for reading_list_entry, with some magic fields
@@ -1300,17 +1047,8 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			if ( !isset( $entry['rle_user_id'] ) ) {
 				$entry['rle_user_id'] = $userId;
 			}
-			$index = null;
-			if ( isset( $entry['rles_index'] ) ) {
-				$index = $entry['rles_index'];
-				unset( $entry['rles_index'] );
-			}
 			$this->db->insert( 'reading_list_entry', $entry );
 			$entryId = $this->db->insertId();
-			if ( $index !== null ) {
-				$this->db->insert( 'reading_list_entry_sortkey',
-					[ 'rles_rle_id' => $entryId, 'rles_index' => $index ] );
-			}
 			$entryIds[] = $entryId;
 		}
 		return $entryIds;
@@ -1324,7 +1062,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_date_created' => wfTimestampNow(),
 				'rl_date_updated' => wfTimestampNow(),
 				'rl_deleted' => 0,
-				'rls_index' => 0,
 				'entries' => [
 					[
 						'rle_project' => 'foo',
@@ -1332,7 +1069,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 						'rle_date_created' => wfTimestampNow(),
 						'rle_date_updated' => wfTimestampNow(),
 						'rle_deleted' => 0,
-						'rles_index' => 1,
 					],
 					[
 						'rle_project' => 'foo2',
@@ -1340,7 +1076,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 						'rle_date_created' => wfTimestampNow(),
 						'rle_date_updated' => wfTimestampNow(),
 						'rle_deleted' => 0,
-						'rles_index' => 2,
 					],
 				],
 			],

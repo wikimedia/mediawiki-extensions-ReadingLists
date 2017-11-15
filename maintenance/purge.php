@@ -45,8 +45,6 @@ class Purge extends Maintenance {
 		}
 		$this->output( "...purging deleted rows\n" );
 		$this->getReadingListRepository()->purgeOldDeleted( $before );
-		$this->output( "...purging orphaned sortkeys\n" );
-		$this->getReadingListRepository()->purgeSortkeys();
 		$this->output( "done.\n" );
 	}
 

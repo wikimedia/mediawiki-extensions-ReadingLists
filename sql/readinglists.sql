@@ -22,8 +22,8 @@ CREATE TABLE /*_*/reading_list (
     -- Creation timestamp.
     rl_date_created BINARY(14) NOT NULL default '19700101000000',
     -- Last modification timestamp.
-    -- This includes modifications to the reading_list record, and modifications to sort order
-    -- of the child entries, but not modifications/additions/deletions of child entries themselves.
+    -- This only reflects modifications to the reading_list record, not
+    -- modifications/additions/deletions of child entries.
     rl_date_updated BINARY(14) NOT NULL default '19700101000000',
     -- Deleted flag.
     -- Lists will be hard-deleted eventually but kept around for a while for sync.
@@ -70,22 +70,3 @@ CREATE UNIQUE INDEX /*i*/rle_list_project_title ON /*_*/reading_list_entry (rle_
 --     rld_domain VARBINARY(255) NOT NULL
 -- ) /*$wgDBTableOptions*/;
 -- CREATE UNIQUE INDEX /*i*/rld_domain ON /*_*/reading_list_domain (rld_domain);
-
--- Sort keys for lists.
--- Kept in a separate table as a typical sort operation will update the keys for all lists
--- and handling that with delete + insert is more convenient than with update.
--- The table is updated on demand. It's not safe to assume that lists always have a corresponding
--- sortkey row or that sortkey rows always belong to a list.
-CREATE TABLE /*_*/reading_list_sortkey (
-    rls_rl_id INTEGER UNSIGNED NOT NULL PRIMARY KEY,
-    rls_index INTEGER UNSIGNED NOT NULL
-) /*$wgDBTableOptions*/;
-CREATE INDEX /*i*/rls_index ON /*_*/reading_list_sortkey (rls_index);
-
--- Sort keys for list entries.
--- See reading_list_sortkey for details.
-CREATE TABLE /*_*/reading_list_entry_sortkey (
-    rles_rle_id INTEGER UNSIGNED NOT NULL PRIMARY KEY,
-    rles_index INTEGER UNSIGNED NOT NULL
-) /*$wgDBTableOptions*/;
-CREATE INDEX /*i*/rles_index ON /*_*/reading_list_entry_sortkey (rles_index);

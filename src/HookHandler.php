@@ -16,8 +16,6 @@ class HookHandler {
 	public static $testTables = [
 		'reading_list',
 		'reading_list_entry',
-		'reading_list_sortkey',
-		'reading_list_entry_sortkey',
 	];
 
 	/**
@@ -43,7 +41,9 @@ class HookHandler {
 	public static function onLoadExtensionSchemaUpdates( DatabaseUpdater $updater ) {
 		if ( Utils::isCentralWiki( MediaWikiServices::getInstance() ) ) {
 			$baseDir = dirname( __DIR__ );
+			$patchDir = "$baseDir/sql/patches";
 			$updater->addExtensionTable( 'reading_list', "$baseDir/sql/readinglists.sql" );
+			$updater->dropExtensionTable( 'reading_list_sortkey', "$patchDir/01-drop-sortkeys.sql" );
 		}
 		return true;
 	}

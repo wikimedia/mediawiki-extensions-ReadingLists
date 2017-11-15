@@ -124,13 +124,6 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			],
 			__METHOD__
 		);
-		$this->dbw->insert(
-			'reading_list_sortkey',
-			[
-				'rls_rl_id' => $this->dbw->insertId(),
-				'rls_index' => 0,
-			]
-		);
 		$this->logger->info( 'Set up for user {user}', [ 'user' => $this->userId ] );
 	}
 
@@ -246,11 +239,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * @throws ReadingListRepositoryException
 	 */
 	public function getAllLists( $limit = 1000, $offset = 0 ) {
-		// TODO sortkeys?
 		$this->assertUser();
 
 		$res = $this->dbr->select(
-			[ 'reading_list', 'reading_list_sortkey' ],
+			'reading_list',
 			$this->getListFields(),
 			[
 				'rl_user_id' => $this->userId,
@@ -260,10 +252,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			[
 				'LIMIT' => $limit,
 				'OFFSET' => $offset,
-				'ORDER BY' => 'rls_index',
-			],
-			[
-				'reading_list_sortkey' => [ 'LEFT JOIN', 'rl_id = rls_rl_id' ],
+				'ORDER BY' => 'rl_id',
 			]
 		);
 
@@ -441,7 +430,6 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * @throws ReadingListRepositoryException
 	 */
 	public function getListEntries( array $ids, $limit = 1000, $offset = 0 ) {
-		// TODO sortkeys?
 		$this->assertUser();
 		if ( !$ids ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-empty-list-ids' );
@@ -472,7 +460,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		}
 
 		$res = $this->dbr->select(
-			[ 'reading_list_entry', 'reading_list_entry_sortkey' ],
+			'reading_list_entry',
 			$this->getListEntryFields(),
 			[
 				'rle_rl_id' => $ids,
@@ -483,10 +471,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			[
 				'LIMIT' => $limit,
 				'OFFSET' => $offset,
-				'ORDER BY' => [ 'rle_rl_id', 'rles_index' ],
-			],
-			[
-				'reading_list_entry_sortkey' => [ 'LEFT JOIN', 'rle_id = rles_rle_id' ],
+				'ORDER BY' => [ 'rle_rl_id', 'rle_id' ],
 			]
 		);
 
@@ -540,288 +525,6 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			'entry' => $id,
 			'user' => $this->userId,
 		] );
-	}
-
-	// sorting
-
-	/**
-	 * Return the ids of all lists in order.
-	 * @return int[]
-	 * @throws ReadingListRepositoryException
-	 */
-	public function getListOrder() {
-		$this->assertUser();
-
-		$ids = $this->dbr->selectFieldValues(
-			[ 'reading_list', 'reading_list_sortkey' ],
-			'rl_id',
-			[
-				'rl_user_id' => $this->userId,
-				'rl_deleted' => 0,
-			],
-			__METHOD__,
-			[
-				'ORDER BY' => 'rls_index',
-			],
-			[
-				'reading_list_sortkey' => [ 'LEFT JOIN', 'rl_id = rls_rl_id' ],
-			]
-		);
-		if ( !$ids ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
-		}
-		return array_map( 'intval', $ids );
-	}
-
-	/**
-	 * Update the order of lists.
-	 * @param array $order A list of all reading list ids, in the desired order.
-	 * @return void
-	 * @throws ReadingListRepositoryException
-	 */
-	public function setListOrder( array $order ) {
-		$this->assertUser();
-		if ( !$order ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-empty-order' );
-		}
-		if ( !$this->isSetupForUser( self::READ_LOCKING ) ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
-		}
-
-		// Make sure the set of IDs match the actual lists.
-		$ids = $this->dbw->selectFieldValues(
-			'reading_list',
-			'rl_id',
-			[
-				'rl_user_id' => $this->userId,
-				'rl_deleted' => 0,
-			]
-		) ?: [];
-		$nonExistent = array_diff( $order, $ids );
-		if ( $nonExistent ) {
-			/** @var ReadingListRow $row */
-			$row = $this->dbw->selectRow(
-				'reading_list',
-				[ 'rl_id', 'rl_user_id', 'rl_deleted' ],
-				[ 'rl_id' => reset( $nonExistent ) ]
-			);
-			if ( !$row ) {
-				throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list',
-					[ reset( $nonExistent ) ] );
-			} elseif ( $row->rl_user_id != $this->userId ) {
-				throw new ReadingListRepositoryException(
-					'readinglists-db-error-not-own-list', [ $row->rl_id ] );
-			} elseif ( $row->rl_deleted ) {
-				throw new ReadingListRepositoryException(
-					'readinglists-db-error-list-deleted', [ $row->rl_id ] );
-			} else {
-				throw new LogicException( 'setListOrder failed for unknown reason' );
-			}
-		}
-		$missing = array_diff( $ids, $order );
-		if ( $missing ) {
-			throw new ReadingListRepositoryException(
-				'readinglists-db-error-missing-list', [ reset( $missing ) ] );
-		}
-
-		$this->dbw->deleteJoin(
-			'reading_list_sortkey',
-			'reading_list',
-			'rls_rl_id',
-			'rl_id',
-			[ 'rl_user_id' => $this->userId ]
-		);
-		$this->dbw->insert(
-			'reading_list_sortkey',
-			array_map( function ( $id, $index ) {
-				return [
-						'rls_rl_id' => $id,
-						'rls_index' => $index,
-				];
-			}, array_values( $order ), array_keys( $order ) )
-		);
-
-		// Touch timestamp of default list so that syncing devices know to update the list order.
-		$this->dbw->update( 'reading_list',
-			[ 'rl_date_updated' => $this->dbw->timestamp() ],
-			[
-				'rl_user_id' => $this->userId,
-				'rl_is_default' => 1,
-			]
-		);
-	}
-
-	/**
-	 * Return the ids of all entries of the list in order.
-	 * @param int $id List ID
-	 * @return int[]
-	 * @throws ReadingListRepositoryException
-	 */
-	public function getListEntryOrder( $id ) {
-		$this->assertUser();
-		$this->selectValidList( $id );
-
-		$ids = $this->dbr->selectFieldValues(
-			[ 'reading_list_entry', 'reading_list_entry_sortkey' ],
-			'rle_id',
-			[
-				'rle_rl_id' => $id,
-				'rle_deleted' => 0,
-			],
-			__METHOD__,
-			[
-				'ORDER BY' => 'rles_index',
-			],
-			[
-				'reading_list_entry_sortkey' => [ 'LEFT JOIN', 'rle_id = rles_rle_id' ],
-			]
-		);
-
-		return array_map( 'intval', $ids );
-	}
-
-	/**
-	 * Update the order of the entries of a list.
-	 * @param int $id List ID
-	 * @param array $order A list of IDs for all entries of the list, in the desired order.
-	 * @return void
-	 * @throws ReadingListRepositoryException
-	 */
-	public function setListEntryOrder( $id, array $order ) {
-		$this->assertUser();
-		$this->selectValidList( $id, self::READ_LOCKING );
-		if ( !$order ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-empty-order' );
-		}
-
-		// Make sure the set of IDs match the actual list entries.
-		$ids = $this->dbw->selectFieldValues(
-			'reading_list_entry',
-			'rle_id',
-			[
-				'rle_rl_id' => $id,
-				'rle_deleted' => 0,
-			]
-		) ?: [];
-		$nonExistent = array_diff( $order, $ids );
-		if ( $nonExistent ) {
-			/** @var ReadingListEntryRow $row */
-			$row = $this->dbw->selectRow(
-				'reading_list_entry',
-				[ 'rle_id', 'rle_rl_id', 'rle_user_id', 'rle_deleted' ],
-				[ 'rle_id' => reset( $nonExistent ) ]
-			);
-			if ( !$row ) {
-				throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list-entry',
-					[ reset( $nonExistent ) ] );
-			} elseif ( $row->rle_user_id != $this->userId ) {
-				throw new ReadingListRepositoryException(
-					'readinglists-db-error-not-own-list-entry', [ $row->rle_id ] );
-			} elseif ( $row->rle_rl_id != $id ) {
-				throw new ReadingListRepositoryException(
-					'readinglists-db-error-entry-not-in-list', [ $row->rle_id ] );
-			} elseif ( $row->rle_deleted ) {
-				throw new ReadingListRepositoryException(
-					'readinglists-db-error-list-entry-deleted', [ $row->rle_id ] );
-			} else {
-				throw new LogicException( 'setListEntryOrder failed for unknown reason' );
-			}
-		}
-		$missing = array_diff( $ids, $order );
-		if ( $missing ) {
-			throw new ReadingListRepositoryException(
-				'readinglists-db-error-missing-list-entry', [ reset( $missing ) ] );
-		}
-
-		$this->dbw->deleteJoin(
-			'reading_list_entry_sortkey',
-			'reading_list_entry',
-			'rles_rle_id',
-			'rle_id',
-			[ 'rle_rl_id' => $id ]
-		);
-		$this->dbw->insert(
-			'reading_list_entry_sortkey',
-			array_map( function ( $id, $index ) {
-				return [
-					'rles_rle_id' => $id,
-					'rles_index' => $index,
-				];
-			}, array_values( $order ), array_keys( $order ) )
-		);
-
-		// Touch timestamp of the list so that syncing devices know to update the list order.
-		$this->dbw->update( 'reading_list',
-			[ 'rl_date_updated' => $this->dbw->timestamp() ],
-			[ 'rl_id' => $id ]
-		);
-	}
-
-	/**
-	 * Purge sortkeys whose lists have been deleted.
-	 * Unlike most other methods in the class, this one ignores user IDs.
-	 * @return void
-	 */
-	public function purgeSortkeys() {
-		// purge list sortkeys
-		while ( true ) {
-			$ids = $this->dbw->selectFieldValues(
-				[ 'reading_list_sortkey', 'reading_list' ],
-				'rls_rl_id',
-				[
-					'rl_id' => null,
-				],
-				__METHOD__,
-				[
-					'GROUP BY' => 'rls_rl_id',
-					'LIMIT' => 1000,
-				],
-				[
-					'reading_list' => [ 'LEFT JOIN', 'rl_id = rls_rl_id' ],
-				]
-			);
-			if ( !$ids ) {
-				break;
-			}
-			$this->dbw->delete(
-				'reading_list_sortkey',
-				[
-					'rls_rl_id' => $ids,
-				]
-			);
-			$this->logger->debug( 'Purged {num} list sortkeys', [ 'num' => $this->dbw->affectedRows() ] );
-			$this->lbFactory->waitForReplication();
-		}
-
-		// purge entry sortkeys
-		while ( true ) {
-			$ids = $this->dbw->selectFieldValues(
-				[ 'reading_list_entry_sortkey', 'reading_list_entry' ],
-				'rles_rle_id',
-				[
-					'rle_id' => null,
-				],
-				__METHOD__,
-				[
-					'GROUP BY' => 'rles_rle_id',
-					'LIMIT' => 1000,
-				],
-				[
-					'reading_list_entry' => [ 'LEFT JOIN', 'rle_id = rles_rle_id' ],
-				]
-			);
-			if ( !$ids ) {
-				break;
-			}
-			$this->dbw->delete(
-				'reading_list_entry_sortkey',
-				[
-					'rles_rle_id' => $ids,
-				]
-			);
-			$this->logger->debug( 'Purged {num} entry sortkeys', [ 'num' => $this->dbw->affectedRows() ] );
-			$this->lbFactory->waitForReplication();
-		}
 	}
 
 	// sync
