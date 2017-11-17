@@ -1,13 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
-			"Hindustanilanguage"
+			"Hindustanilanguage",
+			"Zainab Meher"
 		]
 	},
 	"readinglists-db-error-no-such-list": "فہرست  $1 موجود نہیں ہے۔",
 	"readinglists-db-error-not-own-list": "فہرست $1 کسی اور صارف کی ہے۔",
 	"readinglists-db-error-list-deleted": "فہرست $1 کو حذف کردیا گیا۔",
 	"readinglists-db-error-duplicate-page": "فہرست میں یہ صفحہ پہلے سے موجود ہے۔",
+	"readinglists-db-error-missing-list": "تمام فہرستیں اس ضابطے میں شامل ہونی چاہیۓ($1 missing).",
+	"readinglists-db-error-missing-list-entry": "فہرست کے تمام اندراج اس سلسلے میں شامل ہونے چاہیۓ ($1 missing)۔",
 	"readinglists-db-error-user-required": "اس طریقہ کو صارف کی وضاحت کیے بنا برسرعمل نہیں کیا جا سکتا۔",
 	"apihelp-query+readinglists-example-1": "موجودہ صارف کی مطالعاتی فہرست حاصل ہو رہی ہے۔",
 	"apihelp-query+readinglistorder-param-listorder": "فہرستوں کی ترتیب پر لوٹنا چاہیے کیا۔",
