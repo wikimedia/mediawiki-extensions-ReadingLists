@@ -1,6 +1,8 @@
+.ackrc
 .*.swp
 *~
 /.project
+/.coverage
 /composer.lock
 /vendor
 /node_modules
