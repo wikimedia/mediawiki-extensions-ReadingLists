@@ -22,6 +22,7 @@
 	"readinglists-db-error-list-limit": "Error message used when the user has as many or more lists than the maximum allowed, and tries to add another one.\n\nParameters:\n* $1 - the maximum allowed number of lists per user.",
 	"readinglists-db-error-entry-limit": "Error message used when the user has as many or more entries in the given list than the maximum allowed, and tries to add another one.\n\nParameters:\n* $1 - the ID of the list in question.\n$2 - the maximum allowed number of entries per list.",
 	"readinglists-db-error-too-long": "Error message used when the user tries to set list/entry string fields to a longer value than what the database schema allows.\n\nParameters:\n* $1 - DB field name.\n$2 - DB field maximum length (in bytes).",
+	"readinglists-db-error-no-such-project": "Error message used when the user tries to add a new list entry, but the project does not match any of the known ones.\n\nParameters:\n* $1 - the project.",
 	"readinglists-apierror-project-title-param": "{{doc-apierror}}\n$1 is the module prefix.",
 	"readinglists-apierror-too-old": "{{doc-apierror}}\n$1 is the module prefix, $2 is the expiry date for deleted lists/entries.",
 	"apihelp-query+readinglists-summary": "{{doc-apihelp-summary|query+readinglists}}",

@@ -16,6 +16,7 @@ class HookHandler {
 	public static $testTables = [
 		'reading_list',
 		'reading_list_entry',
+		'reading_list_project',
 	];
 
 	/**
@@ -44,6 +45,8 @@ class HookHandler {
 			$patchDir = "$baseDir/sql/patches";
 			$updater->addExtensionTable( 'reading_list', "$baseDir/sql/readinglists.sql" );
 			$updater->dropExtensionTable( 'reading_list_sortkey', "$patchDir/01-drop-sortkeys.sql" );
+			$updater->addExtensionTable( 'reading_list_project',
+				"$patchDir/02-add-reading_list_project.sql" );
 		}
 		return true;
 	}

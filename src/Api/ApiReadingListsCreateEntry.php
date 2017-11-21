@@ -56,7 +56,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 			'project' => [
 				self::PARAM_TYPE => 'string',
 				self::PARAM_REQUIRED => true,
-				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rle_project'],
+				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rlp_project'],
 			],
 			'title' => [
 				self::PARAM_TYPE => 'string',
