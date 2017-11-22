@@ -8,6 +8,7 @@
 	"readinglists-db-error-not-set-up": "Reading lists have not been set up for this user.",
 	"readinglists-db-error-already-set-up": "Reading lists have already been set up for this user.",
 	"readinglists-db-error-cannot-delete-default-list": "The default list cannot be deleted.",
+	"readinglists-db-error-cannot-update-default-list": "The default list cannot be updated.",
 	"readinglists-db-error-no-such-list": "List $1 does not exist.",
 	"readinglists-db-error-no-such-list-entry": "List entry $1 does not exist.",
 	"readinglists-db-error-not-own-list": "List $1 belongs to another user.",
