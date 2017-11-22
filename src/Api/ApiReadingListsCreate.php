@@ -3,6 +3,7 @@
 namespace MediaWiki\Extensions\ReadingLists\Api;
 
 use ApiBase;
+use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
 use Message;
 
 /**
@@ -38,22 +39,27 @@ class ApiReadingListsCreate extends ApiBase {
 			'name' => [
 				self::PARAM_TYPE => 'string',
 				self::PARAM_REQUIRED => true,
+				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_name'],
 			],
 			'description' => [
 				self::PARAM_TYPE => 'string',
 				self::PARAM_DFLT => '',
+				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_description'],
 			],
 			'color' => [
 				self::PARAM_TYPE => 'string',
 				self::PARAM_DFLT => '',
+				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_color'],
 			],
 			'image' => [
 				self::PARAM_TYPE => 'string',
 				self::PARAM_DFLT => '',
+				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_image'],
 			],
 			'icon' => [
 				self::PARAM_TYPE => 'string',
 				self::PARAM_DFLT => '',
+				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_icon'],
 			],
 		];
 	}
