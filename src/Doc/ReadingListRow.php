@@ -46,8 +46,8 @@ trait ReadingListRow {
 
 	/**
 	 * Last modification timestamp.
-	 * This includes modifications to the reading_list record, and modifications to sort order
-	 * of the child entries, but not modifications/additions/deletions of child entries themselves.
+	 * This only reflects modifications to the reading_list record, not
+	 * modifications/additions/deletions of child entries.
 	 * @var string
 	 */
 	public $rl_date_updated;

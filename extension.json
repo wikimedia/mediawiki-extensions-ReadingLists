@@ -16,15 +16,12 @@
 		"MediaWiki\\Extensions\\ReadingLists\\ReverseInterwikiLookupInterface": "src/ReverseInterwikiLookupInterface.php",
 		"MediaWiki\\Extensions\\ReadingLists\\ReverseInterwikiLookup": "src/ReverseInterwikiLookup.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListEntries": "src/Api/ApiQueryReadingListEntries.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListOrder": "src/Api/ApiQueryReadingListOrder.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingLists": "src/Api/ApiQueryReadingLists.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingLists": "src/Api/ApiReadingLists.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsCreateEntry": "src/Api/ApiReadingListsCreateEntry.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsCreate": "src/Api/ApiReadingListsCreate.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsDeleteEntry": "src/Api/ApiReadingListsDeleteEntry.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsDelete": "src/Api/ApiReadingListsDelete.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsOrderEntry": "src/Api/ApiReadingListsOrderEntry.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsOrder": "src/Api/ApiReadingListsOrder.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsSetup": "src/Api/ApiReadingListsSetup.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsTeardown": "src/Api/ApiReadingListsTeardown.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsUpdate": "src/Api/ApiReadingListsUpdate.php",
@@ -40,10 +37,6 @@
 		}
 	},
 	"APIMetaModules": {
-		"readinglistorder": {
-			"class": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListOrder",
-			"factory": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListOrder::factory"
-		},
 		"readinglists": {
 			"class": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingLists",
 			"factory": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingLists::factory"

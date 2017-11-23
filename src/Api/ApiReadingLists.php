@@ -22,8 +22,6 @@ class ApiReadingLists extends ApiBase {
 		'delete' => ApiReadingListsDelete::class,
 		'createentry' => ApiReadingListsCreateEntry::class,
 		'deleteentry' => ApiReadingListsDeleteEntry::class,
-		'order' => ApiReadingListsOrder::class,
-		'orderentry' => ApiReadingListsOrderEntry::class,
 	];
 
 	/** @var ApiModuleManager */
