@@ -17,10 +17,6 @@
 	"readinglists-db-error-list-entry-deleted": "Der Listeneintrag $1 wurde gelöscht.",
 	"readinglists-db-error-duplicate-page": "Die Liste enthält bereits diese Seite.",
 	"readinglists-db-error-empty-list-ids": "Listenkennungsparameter dürfen nicht leer sein.",
-	"readinglists-db-error-empty-order": "Der Reihenfolgeparameter darf nicht leer sein.",
-	"readinglists-db-error-missing-list": "Alle Listen müssen in der Reihenfolge eingeschlossen werden ($1 fehlen).",
-	"readinglists-db-error-missing-list-entry": "Alle Listeneinträge müssen in der Reihenfolge eingeschlossen werden ($1 fehlen).",
-	"readinglists-db-error-entry-not-in-list": "Der Listeneintrag $1 gehört nicht dieser Liste.",
 	"readinglists-db-error-user-required": "Diese Methode kann ohne Angabe des Benutzers nicht aufgerufen werden.",
 	"readinglists-db-error-list-limit": "Benutzer können nicht mehr als {{PLURAL:$1|eine Liste|$1 Listen}} haben.",
 	"readinglists-db-error-entry-limit": "Die Liste $1 kann nicht mehr als {{PLURAL:$2|einen Eintrag|$2 Einträge}} haben.",
@@ -35,6 +31,5 @@
 	"apihelp-readinglists+update-param-name": "Neuer Listenname.",
 	"apihelp-readinglists+delete-param-list": "Listenkennung.",
 	"apihelp-readinglists+createentry-param-list": "Listenkennung.",
-	"apihelp-readinglists+deleteentry-param-entry": "Eintragskennung.",
-	"apihelp-readinglists+orderentry-param-list": "Listenkennung."
+	"apihelp-readinglists+deleteentry-param-entry": "Eintragskennung."
 }

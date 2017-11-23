@@ -6,6 +6,7 @@
 		]
 	},
 	"readinglists-desc": "Permette agli utenti di gestire elenchi privati di articoli, come segnalibri o elenchi di \"Leggere Dopo\".",
+	"readinglists-db-error-cannot-update-default-list": "L'elenco predefinito non può essere aggiornato.",
 	"readinglists-db-error-list-deleted": "L'elenco $1 è stato cancellato.",
 	"readinglists-db-error-list-limit": "Gli utenti non possono avere più di $1 {{PLURAL:$1|elenco|elenchi}}.",
 	"readinglists-db-error-entry-limit": "L'elenco $1 non può avere più di $2 {{PLURAL:$2|elemento|elementi}}.",
@@ -13,6 +14,5 @@
 	"apihelp-readinglists+create-extended-description": "L'utente deve avere meno di $1 {{PLURAL:$1|elenco|elenchi}} (non cancellati).",
 	"apihelp-readinglists+update-param-list": "ID elenco.",
 	"apihelp-readinglists+delete-param-list": "ID elenco.",
-	"apihelp-readinglists+createentry-param-list": "ID elenco.",
-	"apihelp-readinglists+orderentry-param-list": "ID elenco."
+	"apihelp-readinglists+createentry-param-list": "ID elenco."
 }
