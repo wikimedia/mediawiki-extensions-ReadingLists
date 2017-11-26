@@ -5,6 +5,7 @@
 		]
 	},
 	"readinglists-db-error-cannot-delete-default-list": "D'Standardlëscht däerf net geläscht ginn.",
+	"readinglists-db-error-cannot-update-default-list": "D'Standardlëscht kann net aktualiséiert ginn.",
 	"readinglists-db-error-no-such-list": "Lëscht $1 gëtt et net.",
 	"readinglists-db-error-not-own-list": "D'Lëscht $1 gehéiert engem anere Benotzer.",
 	"readinglists-db-error-list-deleted": "Lëscht $1 gouf geläscht.",
@@ -24,6 +25,5 @@
 	"apihelp-readinglists+delete-summary": "Eng Lëscht läschen déi dem aktuelle Benotzer gehéiert.",
 	"apihelp-readinglists+delete-param-list": "ID vun der Lëscht.",
 	"apihelp-readinglists+createentry-param-list": "ID vun der Lëscht.",
-	"apihelp-readinglists+createentry-param-title": "Säitentitel.",
-	"apihelp-readinglists+orderentry-param-list": "ID vun der Lëscht."
+	"apihelp-readinglists+createentry-param-title": "Säitentitel."
 }
