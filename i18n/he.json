@@ -6,5 +6,12 @@
 	},
 	"readinglists-desc": "ניהול רשימות פרטיות של ערכים, כגון סימניות או רשימות \"לקרוא מאוחר יותר\".",
 	"readinglists-db-error-not-set-up": "רשימות קריאה עוד לא הוגדרו עבור המשתמש הזה.",
-	"readinglists-db-error-already-set-up": "רשימות קריאה כבר הוגדרו עבור המשתמש הזה."
+	"readinglists-db-error-already-set-up": "רשימות קריאה כבר הוגדרו עבור המשתמש הזה.",
+	"readinglists-db-error-cannot-delete-default-list": "לא ניתן למחוק את הרשימה ההתחלתית.",
+	"readinglists-db-error-cannot-update-default-list": "לא ניתן לעדכן את הרשימה ההתחלתית.",
+	"readinglists-db-error-no-such-list": "הרשימה $1 אינה קיימת.",
+	"readinglists-db-error-no-such-list-entry": "פריט הרשימה $1 אינו קיים.",
+	"readinglists-db-error-not-own-list": "הרשימה $1 שייכת למשתמש אחר.",
+	"readinglists-db-error-not-own-list-entry": "פריט הרשימה $1 שייך למשתמש אחר.",
+	"readinglists-db-error-list-deleted": "הרשימה $1 נמחקה."
 }

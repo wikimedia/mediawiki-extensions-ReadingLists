@@ -13,6 +13,7 @@
 	"readinglists-db-error-not-set-up": "Les listes de lecture n’ont pas été définies pour cet utilisateur.",
 	"readinglists-db-error-already-set-up": "Les listes de lecture ont déja été définies pour cet utilisateur.",
 	"readinglists-db-error-cannot-delete-default-list": "La liste par défaut ne peut pas être supprimée.",
+	"readinglists-db-error-cannot-update-default-list": "La liste par défaut ne peut pas être mise à jour.",
 	"readinglists-db-error-no-such-list": "La liste $1 n’existe pas.",
 	"readinglists-db-error-no-such-list-entry": "L’entrée de liste $1 n’existe pas.",
 	"readinglists-db-error-not-own-list": "La liste $1 appartient à un autre utilisateur.",
