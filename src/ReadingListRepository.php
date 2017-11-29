@@ -10,6 +10,7 @@ use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRow;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
 // @codingStandardsIgnoreStart MediaWiki.Classes.UnusedUseStatement.UnusedUse
 use Wikimedia\Rdbms\IResultWrapper;
@@ -39,7 +40,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		'rl_color' => 6,
 		'rl_image' => 255,
 		'rl_icon' => 32,
-		'rle_project' => 255,
+		'rlp_project' => 255,
 		'rle_title' => 255,
 	];
 
@@ -357,7 +358,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	public function addListEntry( $id, $project, $title ) {
 		$this->assertUser();
-		$this->assertFieldLength( 'rle_project', $project );
+		$this->assertFieldLength( 'rlp_project', $project );
 		$this->assertFieldLength( 'rle_title', $title );
 		$this->selectValidList( $id, self::READ_LOCKING );
 		if ( $this->entryLimit && $this->getEntryCount( $id, self::READ_LATEST ) >= $this->entryLimit ) {
@@ -365,15 +366,21 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				[ $id, $this->entryLimit ] );
 		}
 
+		$projectId = $this->getProjectId( $project );
+		if ( !$projectId ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-project',
+				[ $project ] );
+		}
+
 		// due to the combination of soft deletion + unique constraint on
-		// rle_rl_id + rle_project + rle_title, recreation needs special handling
+		// rle_rl_id + rle_rlp_id + rle_title, recreation needs special handling
 		/** @var ReadingListEntryRow $row */
 		$row = $this->dbw->selectRow(
 			'reading_list_entry',
 			[ 'rle_id', 'rle_deleted' ],
 			[
 				'rle_rl_id' => $id,
-				'rle_project' => $project,
+				'rle_rlp_id' => $projectId,
 				'rle_title' => $title,
 			],
 			__METHOD__,
@@ -386,7 +393,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				[
 					'rle_rl_id' => $id,
 					'rle_user_id' => $this->userId,
-					'rle_project' => $project,
+					'rle_rlp_id' => $projectId,
 					'rle_title' => $title,
 					'rle_date_created' => $this->dbw->timestamp(),
 					'rle_date_updated' => $this->dbw->timestamp(),
@@ -460,9 +467,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		}
 
 		$res = $this->dbr->select(
-			'reading_list_entry',
+			[ 'reading_list_entry', 'reading_list_project' ],
 			$this->getListEntryFields(),
 			[
+				'rle_rlp_id = rlp_id',
 				'rle_rl_id' => $ids,
 				'rle_user_id' => $this->userId,
 				'rle_deleted' => 0,
@@ -579,10 +587,11 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	public function getListEntriesByDateUpdated( $date, $limit = 1000, $offset = 0 ) {
 		$this->assertUser();
 		$res = $this->dbr->select(
-			[ 'reading_list', 'reading_list_entry' ],
+			[ 'reading_list', 'reading_list_entry', 'reading_list_project' ],
 			$this->getListEntryFields(),
 			[
 				'rl_id = rle_rl_id',
+				'rle_rlp_id = rlp_id',
 				'rl_user_id' => $this->userId,
 				'rl_deleted' => 0,
 				'rle_date_updated > ' . $this->dbr->addQuotes( $this->dbr->timestamp( $date ) ),
@@ -668,13 +677,18 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	public function getListsByPage( $project, $title, $limit = 1000, $offset = 0 ) {
 		$this->assertUser();
+		$projectId = $this->getProjectId( $project );
+		if ( !$projectId ) {
+			return new FakeResultWrapper( [] );
+		}
+
 		$res = $this->dbr->select(
 			[ 'reading_list', 'reading_list_entry' ],
 			$this->getListFields(),
 			[
 				'rl_id = rle_rl_id',
 				'rl_user_id' => $this->userId,
-				'rle_project' => $project,
+				'rle_rlp_id' => $projectId,
 				'rle_title' => $title,
 				'rl_deleted' => 0,
 				'rle_deleted' => 0,
@@ -722,6 +736,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
 	/**
 	 * Get this list of reading_list_entry fields that normally need to be selected.
+	 * Can only be used with queries that join on reading_list_project.
 	 * @return array
 	 */
 	private function getListEntryFields() {
@@ -729,7 +744,8 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			'rle_id',
 			'rle_rl_id',
 			// returning rle_user_id is pointless as lists are only available to the owner
-			'rle_project',
+			// skip rle_rlp_id, it's only needed for the join
+			'rlp_project',
 			'rle_title',
 			'rle_date_created',
 			'rle_date_updated',
@@ -811,6 +827,20 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			__METHOD__,
 			$options
 		);
+	}
+
+	/**
+	 * Look up a project ID.
+	 * @param string $project
+	 * @return int|null
+	 */
+	private function getProjectId( $project ) {
+		$id = $this->dbr->selectField(
+			'reading_list_project',
+			'rlp_id',
+			[ 'rlp_project' => $project ]
+		);
+		return $id === false ? null : (int)$id;
 	}
 
 	/**

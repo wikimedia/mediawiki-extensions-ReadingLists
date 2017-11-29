@@ -22,8 +22,15 @@ trait ReadingListEntryRow {
 	/** @var string Central ID of user. */
 	public $rle_user_id;
 
-	/** @var string Wiki project domain. */
-	public $rle_project;
+	/** @var int Reference to reading_list_project.rlp_id. */
+	public $rle_rlp_id;
+
+	/**
+	 * Wiki project domain.
+	 * Only present when joined with reading_list_project (used for deduplicated storage).
+	 * @var string
+	 */
+	public $rlp_project;
 
 	/**
 	 * Page title.

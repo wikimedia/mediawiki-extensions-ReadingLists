@@ -42,8 +42,8 @@ CREATE TABLE /*_*/reading_list_entry (
     rle_rl_id INTEGER UNSIGNED NOT NULL,
     -- Central ID of user, denormalized for the benefit of the /pages/ route.
     rle_user_id INTEGER UNSIGNED NOT NULL,
-    -- Wiki project domain.
-    rle_project VARCHAR(255) BINARY NOT NULL,
+    -- Reference to reading_list_project.rlp_id.
+    rle_rlp_id INTEGER UNSIGNED NOT NULL,
     -- Page title.
     -- We can't easily use page ids due to the cross-wiki nature of the project;
     -- also, page ids don't age well when content is deleted/moved.
@@ -59,14 +59,14 @@ CREATE TABLE /*_*/reading_list_entry (
 -- For getting all entries in a list and for syncing list entries that changed since a given date.
 CREATE INDEX /*i*/rle_list_updated ON /*_*/reading_list_entry (rle_rl_id, rle_date_updated);
 -- For getting all lists of a given user which contain a specified page.
-CREATE INDEX /*i*/rle_user_project_title ON /*_*/reading_list_entry (rle_user_id, rle_project, rle_title);
+CREATE INDEX /*i*/rle_user_project_title ON /*_*/reading_list_entry (rle_user_id, rle_rlp_id, rle_title);
 -- For ensuring there are no duplicate pages on a single list.
-CREATE UNIQUE INDEX /*i*/rle_list_project_title ON /*_*/reading_list_entry (rle_rl_id, rle_project, rle_title);
+CREATE UNIQUE INDEX /*i*/rle_list_project_title ON /*_*/reading_list_entry (rle_rl_id, rle_rlp_id, rle_title);
 
--- TODO use lookup table to deduplicate domains
--- -- Table for storing domains efficiently.
--- CREATE TABLE /*_*/reading_list_domain (
---     rld_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
---     rld_domain VARBINARY(255) NOT NULL
--- ) /*$wgDBTableOptions*/;
--- CREATE UNIQUE INDEX /*i*/rld_domain ON /*_*/reading_list_domain (rld_domain);
+-- Table for storing projects (domains) efficiently.
+CREATE TABLE /*_*/reading_list_project (
+    rlp_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    -- Wiki project domain.
+    rlp_project VARCHAR(255) BINARY NOT NULL
+) /*$wgDBTableOptions*/;
+CREATE UNIQUE INDEX /*i*/rlp_project ON /*_*/reading_list_project (rlp_project);

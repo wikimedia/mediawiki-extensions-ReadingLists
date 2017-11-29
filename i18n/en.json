@@ -21,6 +21,7 @@
 	"readinglists-db-error-list-limit": "Users cannot have more than $1 {{PLURAL:$1|list|lists}}.",
 	"readinglists-db-error-entry-limit": "List $1 cannot have more than $2 {{PLURAL:$2|entry|entries}}.",
 	"readinglists-db-error-too-long": "Value for field $1 cannot be longer than $2 bytes.",
+	"readinglists-db-error-no-such-project": "'$1' is not a recognized project.",
 	"readinglists-apierror-project-title-param": "<var>$1project</var> and <var>$1title</var> must be used together.",
 	"readinglists-apierror-too-old": "Timestamps passed to <var>$1changedsince</var> cannot be older than <kbd>$2</kbd>.",
 	"apihelp-query+readinglists-summary": "List or filter the user's reading lists and show metadata about them.",

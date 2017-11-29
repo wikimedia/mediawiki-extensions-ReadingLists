@@ -200,7 +200,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 		return [
 			'id' => (int)$row->rle_id,
 			'listId' => (int)$row->rle_rl_id,
-			'project' => $row->rle_project,
+			'project' => $row->rlp_project,
 			'title' => $row->rle_title,
 			'created' => wfTimestamp( TS_ISO_8601, $row->rle_date_created ),
 			'updated' => wfTimestamp( TS_ISO_8601, $row->rle_date_updated ),
@@ -213,7 +213,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	 * @return Title|string
 	 */
 	private function getResultTitle( $row ) {
-		$interwikiPrefix = $this->getReverseInterwikiLookup()->lookup( $row->rle_project );
+		$interwikiPrefix = $this->getReverseInterwikiLookup()->lookup( $row->rlp_project );
 		if ( is_string( $interwikiPrefix ) ) {
 			if ( $interwikiPrefix === '' ) {
 				$title = Title::newFromText( $row->rle_title );
@@ -236,7 +236,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 		// For lack of a better option let's create an invalid title.
 		// ApiPageSet::populateFromTitles() is not documented to accept strings
 		// but it will actually work.
-		return 'Invalid project|' . $row->rle_project . '|' . $row->rle_title;
+		return 'Invalid project|' . $row->rlp_project . '|' . $row->rle_title;
 	}
 
 }
