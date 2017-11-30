@@ -13,6 +13,7 @@
 	"readinglists-db-error-list-limit": "Los usuarios no pueden tener mas que $1 {{PLURAL:$1|list|lists}}.",
 	"readinglists-db-error-entry-limit": "La lista $1 no puede tener mas de $2 {{PLURAL:$2|entry|entrie}}.",
 	"readinglists-db-error-too-long": "El valor del campo $1 no puede ser mayor que $2 bytes.",
+	"readinglists-db-error-no-such-project": "'$1' no es una proyecto identificado.",
 	"apihelp-readinglists+create-extended-description": "El usuario debe tener menos de $1 (no eliminado) {{PLURAL:$1|list|lists}}.",
 	"apihelp-readinglists+update-param-list": "Identificador de lista.",
 	"apihelp-readinglists+update-param-image": "Imagen de lista nueva.",

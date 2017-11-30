@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Omotecho"
+		]
+	},
+	"readinglists-db-error-cannot-update-default-list": "初期設定の一覧は変更できません。",
+	"readinglists-db-error-list-limit": "利用者ひとりが作成できる一覧の上限は$1 {{PLURAL:$1|list|件}}です。",
+	"readinglists-db-error-entry-limit": "$1 に入力できる上限は$2 {{PLURAL:$2|entry|件}}です。"
+}

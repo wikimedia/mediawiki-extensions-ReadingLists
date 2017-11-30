@@ -21,6 +21,7 @@
 	"readinglists-db-error-list-limit": "用户不能拥有超过$1个{{PLURAL:$1|列表}}。",
 	"readinglists-db-error-entry-limit": "列表$1不能有超过$2{{PLURAL:$2|项}}。",
 	"readinglists-db-error-too-long": "用于字段$1的值不能超过$2字节。",
+	"readinglists-db-error-no-such-project": "“$1”不是受认可的项目。",
 	"readinglists-apierror-project-title-param": "<var>$1project</var>和<var>$1title</var>必须一起使用。",
 	"readinglists-apierror-too-old": "传递给<var>$1changedsince</var>的时间戳不能早于<kbd>$2</kbd>。",
 	"apihelp-query+readinglists-summary": "列举或过滤用户的阅读列表，并显示与其相关的元数据。",

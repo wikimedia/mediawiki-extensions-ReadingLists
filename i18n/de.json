@@ -21,6 +21,7 @@
 	"readinglists-db-error-list-limit": "Benutzer können nicht mehr als {{PLURAL:$1|eine Liste|$1 Listen}} haben.",
 	"readinglists-db-error-entry-limit": "Die Liste $1 kann nicht mehr als {{PLURAL:$2|einen Eintrag|$2 Einträge}} haben.",
 	"readinglists-db-error-too-long": "Der Wert für das Feld $1 kann nicht länger als $2 Bytes sein.",
+	"readinglists-db-error-no-such-project": "Das Projekt „$1“ wurde nicht erkannt.",
 	"readinglists-apierror-project-title-param": "<var>$1project</var> und <var>$1title</var> müssen zusammen verwendet werden.",
 	"readinglists-apierror-too-old": "An <var>$1changedsince</var> übergebene Zeitstempel können nicht älter sein als <kbd>$2</kbd>.",
 	"apihelp-readinglists+teardown-summary": "Deaktiviert Listen für den aktuellen Benutzer.",
