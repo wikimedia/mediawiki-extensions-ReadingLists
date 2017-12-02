@@ -21,6 +21,7 @@
 	"readinglists-db-error-list-limit": "Användare kan inte ha fler än $1 {{PLURAL:$1|lista|listor}}.",
 	"readinglists-db-error-entry-limit": "Listan $1 kan inte ha fler än $2 {{PLURAL:$2|element}}.",
 	"readinglists-db-error-too-long": "Värdet för fältet $1 kan inte vara mer än $2 byte.",
+	"readinglists-db-error-no-such-project": "\"$1\" är inte ett igenkänt projekt.",
 	"readinglists-apierror-project-title-param": "<var>$1project</var> och <var>$1title</var> måste användas tillsammans.",
 	"readinglists-apierror-too-old": "Tidsstämplar som skickas till <var>$1changedsince</var> kan inte var äldre än <kbd>$2</kbd>.",
 	"apihelp-query+readinglists-summary": "Lista eller filtrera användarens läslistor och visa metadata om dem.",
