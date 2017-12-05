@@ -17,10 +17,6 @@
 	"readinglists-db-error-list-entry-deleted": "A entrada de lista $1 foi eliminada.",
 	"readinglists-db-error-duplicate-page": "A lista xa contén esta páxina.",
 	"readinglists-db-error-empty-list-ids": "O parámetro de identificadores de lista non pode estar baleiro.",
-	"readinglists-db-error-empty-order": "O parámetro de ordenación non pode estar baleiro.",
-	"readinglists-db-error-missing-list": "Todas as listas teñen que incluírse na orde (falta $1).",
-	"readinglists-db-error-missing-list-entry": "Todas entradas de listas teñen que incluírse na orde (falta $1).",
-	"readinglists-db-error-entry-not-in-list": "A entrada $1 non pertence a esta lista.",
 	"readinglists-db-error-user-required": "Este método non pode chamarse sen especificar o usuario.",
 	"readinglists-db-error-list-limit": "Os usuarios non poden ter máis de $1 listas.",
 	"readinglists-db-error-entry-limit": "A lista $1 non pode ter máis de $2 entradas.",
@@ -47,6 +43,5 @@
 	"apihelp-readinglists+delete-param-list": "Identificador da lista.",
 	"apihelp-readinglists+createentry-param-list": "Identificador da lista.",
 	"apihelp-readinglists+createentry-param-title": "Título da páxina.",
-	"apihelp-readinglists+deleteentry-param-entry": "Identificador de entrada.",
-	"apihelp-readinglists+orderentry-param-list": "Identificador da lista."
+	"apihelp-readinglists+deleteentry-param-entry": "Identificador de entrada."
 }

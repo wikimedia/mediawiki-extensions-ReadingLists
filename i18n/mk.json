@@ -15,7 +15,5 @@
 	"readinglists-db-error-list-deleted": "Списокот $1 е избришан.",
 	"readinglists-db-error-list-entry-deleted": "Ставката $1 е избришана.",
 	"readinglists-db-error-duplicate-page": "Страницата е веќе во списокот.",
-	"readinglists-db-error-empty-list-ids": "Параметарот со списочни назнаки не постои.",
-	"readinglists-db-error-empty-order": "Параметарот за редослед не може да биде празен.",
-	"readinglists-db-error-entry-not-in-list": "Ставката $1 не припаѓа во овој список."
+	"readinglists-db-error-empty-list-ids": "Параметарот со списочни назнаки не постои."
 }
