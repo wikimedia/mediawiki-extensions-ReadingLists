@@ -13,28 +13,7 @@ use MediaWiki\Extensions\ReadingLists\Utils;
 class ApiQueryReadingLists extends ApiQueryBase {
 
 	use ApiTrait;
-
-	/**
-	 * Return all lists.
-	 * Intended for initial copy of data to a new device, or for devices which have information
-	 * that's too outdated for normal sync. Might also be useful for devices with limited storage
-	 * capacity, such as web clients.
-	 */
-	const MODE_ALL = 'all';
-
-	/**
-	 * Return lists which have been changed (or deleted) recently.
-	 * Intended for syncing updates to a device which has an older snapshot of the data.
-	 * "Recently" is defined by the changedsince parameter.
-	 */
-	const MODE_CHANGES = 'changes';
-
-	/**
-	 * Return lists which include a given page.
-	 * Intended for status indicators and such (e.g. showing a star on the current page if it's
-	 * included in some list).
-	 */
-	const MODE_PAGE = 'page';
+	use ApiQueryTrait;
 
 	/** @var string API module prefix */
 	private static $prefix = 'rl';
@@ -54,8 +33,10 @@ class ApiQueryReadingLists extends ApiQueryBase {
 			$changedSince = $this->getParameter( 'changedsince' );
 			$project = $this->getParameter( 'project' );
 			$title = $this->getParameter( 'title' );
+			$sort = $this->getParameter( 'sort' );
+			$dir = $this->getParameter( 'dir' );
 			$limit = $this->getParameter( 'limit' );
-			$offset = $this->getParameter( 'continue' );
+			$continue = $this->getParameter( 'continue' );
 
 			$path = [ 'query', $this->getModuleName() ];
 			$result = $this->getResult();
@@ -65,7 +46,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 			$mode = null;
 			$this->requireMaxOneParameter( $this->extractRequestParams(), 'title', 'changedsince' );
 			if ( $project !== null && $title !== null ) {
-				$mode = self::MODE_PAGE;
+				$mode = self::$MODE_PAGE;
 			} elseif ( $project !== null || $title !== null ) {
 				$errorMessage = $this->msg( 'readinglists-apierror-project-title-param', static::$prefix );
 				$this->dieWithError( $errorMessage, 'missingparam' );
@@ -76,25 +57,37 @@ class ApiQueryReadingLists extends ApiQueryBase {
 						wfTimestamp( TS_ISO_8601, $expiry ) );
 					$this->dieWithError( $errorMessage );
 				}
-				$mode = self::MODE_CHANGES;
+				$mode = self::$MODE_CHANGES;
 			} else {
-				$mode = self::MODE_ALL;
+				$mode = self::$MODE_ALL;
 			}
 
-			if ( $mode === self::MODE_PAGE ) {
-				$res = $repository->getListsByPage( $project, $title, $limit + 1, $offset );
-			} elseif ( $mode === self::MODE_CHANGES ) {
-				$res = $repository->getListsByDateUpdated( $changedSince, $limit + 1, $offset );
-			} else {
-				$res = $repository->getAllLists( $limit + 1, $offset );
+			if ( $sort === null ) {
+				$sort = ( $mode === self::$MODE_CHANGES ) ? 'updated' : 'name';
 			}
-			$resultOffset = 0;
-			foreach ( $res as $row ) {
-				$isLastRow = ( $resultOffset === $res->numRows() - 1 );
+			$sort = self::$sortParamMap[$sort];
+			$dir = self::$sortParamMap[$dir];
+			$continue = $this->decodeContinuationParameter( $continue, $mode, $sort );
+
+			if ( $mode === self::$MODE_PAGE ) {
+				$res = $repository->getListsByPage( $project, $title, $limit + 1, $continue );
+			} elseif ( $mode === self::$MODE_CHANGES ) {
+				$res = $repository->getListsByDateUpdated( $changedSince, $sort, $dir, $limit + 1, $continue );
+			} else {
+				$res = $repository->getAllLists( $sort, $dir, $limit + 1, $continue );
+			}
+			foreach ( $res as $i => $row ) {
 				$item = $this->getResultItem( $row, $mode );
+				if ( $i > $limit ) {
+					// $i is 1-based so this means we reached the extra row.
+					$this->setContinueEnumParameter( 'continue',
+						$this->encodeContinuationParameter( $item, $mode, $sort ) );
+					break;
+				}
 				$fits = $result->addValue( $path, null, $item );
-				if ( !$fits || ++$resultOffset >= $limit && !$isLastRow ) {
-					$this->setContinueEnumParameter( 'continue', $offset + $resultOffset );
+				if ( !$fits ) {
+					$this->setContinueEnumParameter( 'continue',
+						$this->encodeContinuationParameter( $item, $mode, $sort ) );
 					break;
 				}
 			}
@@ -120,19 +113,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 				self::PARAM_HELP_MSG => $this->msg( 'apihelp-query+readinglists-param-changedsince',
 					wfTimestamp( TS_ISO_8601, Utils::getDeletedExpiry() ) ),
 			],
-			'limit' => [
-				self::PARAM_DFLT => 10,
-				self::PARAM_TYPE => 'limit',
-				self::PARAM_MIN => 1,
-				self::PARAM_MAX => self::LIMIT_BIG1,
-				self::PARAM_MAX2 => self::LIMIT_BIG2,
-			],
-			'continue' => [
-				self::PARAM_TYPE => 'integer',
-				self::PARAM_DFLT => 0,
-				self::PARAM_HELP_MSG => 'api-help-param-continue',
-			],
-		];
+		] + $this->getAllowedSortParams();
 	}
 
 	/**
@@ -188,7 +169,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 			'created' => wfTimestamp( TS_ISO_8601, $row->rl_date_created ),
 			'updated' => wfTimestamp( TS_ISO_8601, $row->rl_date_updated ),
 		];
-		if ( $mode === self::MODE_CHANGES ) {
+		if ( $mode === self::$MODE_CHANGES ) {
 			$item['deleted'] = (bool)$row->rl_deleted;
 		}
 		return $item;

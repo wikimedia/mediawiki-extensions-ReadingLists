@@ -17,21 +17,7 @@ use Title;
 class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 
 	use ApiTrait;
-
-	/**
-	 * Return all entries of the given list(s).
-	 * Intended for initial copy of data to a new device, or for devices which have information
-	 * that's too outdated for normal sync. Might also be useful for devices with limited storage
-	 * capacity, such as web clients.
-	 */
-	const MODE_ALL = 'all';
-
-	/**
-	 * Return list entries (from any list of the user) which have been changed (or deleted) recently.
-	 * Intended for syncing updates to a device which has an older snapshot of the data.
-	 * "Recently" is defined by the changedsince parameter.
-	 */
-	const MODE_CHANGES = 'changes';
+	use ApiQueryTrait;
 
 	/** @var string API module prefix */
 	private static $prefix = 'rle';
@@ -74,13 +60,26 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 
 		$lists = $this->getParameter( 'lists' );
 		$changedSince = $this->getParameter( 'changedsince' );
+		$sort = $this->getParameter( 'sort' );
+		$dir = $this->getParameter( 'dir' );
 		$limit = $this->getParameter( 'limit' );
-		$offset = $this->getParameter( 'continue' );
+		$continue = $this->getParameter( 'continue' );
 
-		$mode = $changedSince !== null ? self::MODE_CHANGES : self::MODE_ALL;
+		$mode = $changedSince !== null ? self::$MODE_CHANGES : self::$MODE_ALL;
+		if ( $sort === null ) {
+			$sort = ( $mode === self::$MODE_CHANGES ) ? 'updated' : 'name';
+		}
+		if ( $mode === self::$MODE_CHANGES && $sort === 'name' ) {
+			// We don't have the right DB index for this. Wouldn't make much sense anyways.
+			$errorMessage = $this->msg( 'readinglists-apierror-invalidsort-notbyname', static::$prefix );
+			$this->dieWithError( $errorMessage, 'invalidparammix' );
+		}
+		$sort = self::$sortParamMap[$sort];
+		$dir = self::$sortParamMap[$dir];
+		$continue = $this->decodeContinuationParameter( $continue, $mode, $sort );
 
 		$this->requireOnlyOneParameter( $this->extractRequestParams(), 'lists', 'changedsince' );
-		if ( $mode === self::MODE_CHANGES ) {
+		if ( $mode === self::$MODE_CHANGES ) {
 			$expiry = Utils::getDeletedExpiry();
 			if ( $changedSince < $expiry ) {
 				$errorMessage = $this->msg( 'readinglists-apierror-too-old', static::$prefix,
@@ -94,23 +93,29 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 		$result->addIndexedTagName( $path, 'entry' );
 
 		$repository = $this->getReadingListRepository( $this->getUser() );
-		if ( $mode === self::MODE_CHANGES ) {
-			$res = $repository->getListEntriesByDateUpdated( $changedSince, $limit + 1, $offset );
+		if ( $mode === self::$MODE_CHANGES ) {
+			$res = $repository->getListEntriesByDateUpdated( $changedSince, $dir, $limit + 1, $continue );
 		} else {
-			$res = $repository->getListEntries( $lists, $limit + 1, $offset );
+			$res = $repository->getListEntries( $lists, $sort, $dir, $limit + 1, $continue );
 		}
 		$titles = [];
-		$resultOffset = 0;
 		$fits = true;
-		foreach ( $res as $row ) {
-			$isLastRow = ( $resultOffset === $res->numRows() - 1 );
+		foreach ( $res as $i => $row ) {
+			$item = $this->getResultItem( $row, $mode );
+			if ( $i > $limit ) {
+				// $i is 1-based so this means we reached the extra row.
+				$this->setContinueEnumParameter( 'continue',
+					$this->encodeContinuationParameter( $item, $mode, $sort ) );
+				break;
+			}
 			if ( $resultPageSet ) {
 				$titles[] = $this->getResultTitle( $row );
 			} else {
-				$fits = $result->addValue( $path, null, $this->getResultItem( $row, $mode ) );
+				$fits = $result->addValue( $path, null, $item );
 			}
-			if ( !$fits || ++$resultOffset >= $limit && !$isLastRow ) {
-				$this->setContinueEnumParameter( 'continue', $offset + $resultOffset );
+			if ( !$fits ) {
+				$this->setContinueEnumParameter( 'continue',
+					$this->encodeContinuationParameter( $item, $mode, $sort ) );
 				break;
 			}
 		}
@@ -134,19 +139,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 				self::PARAM_HELP_MSG => $this->msg( 'apihelp-query+readinglistentries-param-changedsince',
 					wfTimestamp( TS_ISO_8601, Utils::getDeletedExpiry() ) ),
 			],
-			'limit' => [
-				self::PARAM_DFLT => 10,
-				self::PARAM_TYPE => 'limit',
-				self::PARAM_MIN => 1,
-				self::PARAM_MAX => self::LIMIT_BIG1,
-				self::PARAM_MAX2 => self::LIMIT_BIG2,
-			],
-			'continue' => [
-				self::PARAM_TYPE => 'integer',
-				self::PARAM_DFLT => 0,
-				self::PARAM_HELP_MSG => 'api-help-param-continue',
-			],
-		];
+		] + $this->getAllowedSortParams();
 	}
 
 	/**
@@ -204,7 +197,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 			'title' => $row->rle_title,
 			'created' => wfTimestamp( TS_ISO_8601, $row->rle_date_created ),
 			'updated' => wfTimestamp( TS_ISO_8601, $row->rle_date_updated ),
-	   ] + ( $mode === self::MODE_CHANGES ? [ 'deleted' => (bool)$row->rle_deleted ] : [] );
+	   ] + ( $mode === self::$MODE_CHANGES ? [ 'deleted' => (bool)$row->rle_deleted ] : [] );
 	}
 
 	/**

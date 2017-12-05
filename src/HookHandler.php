@@ -47,6 +47,8 @@ class HookHandler {
 			$updater->dropExtensionTable( 'reading_list_sortkey', "$patchDir/01-drop-sortkeys.sql" );
 			$updater->addExtensionTable( 'reading_list_project',
 				"$patchDir/02-add-reading_list_project.sql" );
+			$updater->addExtensionIndex( 'reading_list', 'rl_user_deleted_name_id',
+				"$patchDir/03-add-sort-indexes.sql" );
 		}
 		return true;
 	}
