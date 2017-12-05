@@ -29,11 +29,21 @@ CREATE TABLE /*_*/reading_list (
     -- Lists will be hard-deleted eventually but kept around for a while for sync.
     rl_deleted TINYINT NOT NULL DEFAULT 0
 ) /*$wgDBTableOptions*/;
--- For syncing lists that changed since a given date.
-CREATE INDEX /*i*/rl_user_updated ON /*_*/reading_list (rl_user_id, rl_date_updated);
--- For getting all non-deleted items.
-CREATE INDEX /*i*/rl_user_deleted ON /*_*/reading_list (rl_user_id, rl_deleted);
--- TODO date_updated + deleted for cleanup?
+-- For isSetupForUser() which is called a lot and used for row locks. Will only ever be used
+-- with rl_is_default = 1 so effectively a unique index.
+CREATE INDEX /*i*/rl_user_default ON /*_*/reading_list (rl_user_id, rl_is_default);
+-- For querying lists of a user by name (and then id as a tiebreaker). Covers getAllLists() with
+-- SORT_BY_NAME.
+CREATE UNIQUE INDEX /*i*/rl_user_deleted_name_id ON /*_*/reading_list (rl_user_id, rl_deleted, rl_name, rl_id);
+-- For querying lists of a user by last updated timestamp (and then id as a tiebreaker). Covers
+-- getAllLists() with SORT_BY_UPDATED.
+CREATE UNIQUE INDEX /*i*/rl_user_deleted_updated_id ON /*_*/reading_list (rl_user_id, rl_deleted, rl_date_updated, rl_id);
+-- Like the previous two, except for getListsByDateUpdated() which does not have rl_deleted=0.
+-- TODO this is the lazy option, the previous indexes could be made to work if the sort matched the condition.
+CREATE UNIQUE INDEX /*i*/rl_user_name_id ON /*_*/reading_list (rl_user_id, rl_name, rl_id);
+CREATE UNIQUE INDEX /*i*/rl_user_updated_id ON /*_*/reading_list (rl_user_id, rl_deleted, rl_date_updated, rl_id);
+-- For getting all deleted items older than a given date. Covers purgeOldDeleted().
+CREATE INDEX /*i*/rl_deleted_updated ON /*_*/reading_list (rl_deleted, rl_date_updated);
 
 -- List items.
 CREATE TABLE /*_*/reading_list_entry (
@@ -56,12 +66,28 @@ CREATE TABLE /*_*/reading_list_entry (
     -- Entries will be hard-deleted eventually but kept around for a while for sync.
     rle_deleted TINYINT NOT NULL DEFAULT 0
 ) /*$wgDBTableOptions*/;
--- For getting all entries in a list and for syncing list entries that changed since a given date.
-CREATE INDEX /*i*/rle_list_updated ON /*_*/reading_list_entry (rle_rl_id, rle_date_updated);
--- For getting all lists of a given user which contain a specified page.
-CREATE INDEX /*i*/rle_user_project_title ON /*_*/reading_list_entry (rle_user_id, rle_rlp_id, rle_title);
 -- For ensuring there are no duplicate pages on a single list.
+-- (What we actually need is "no duplicate non-deleted items" but there is no way to turn that
+-- into an index condition so the software will work around it by repurposing deleted items as needed.)
 CREATE UNIQUE INDEX /*i*/rle_list_project_title ON /*_*/reading_list_entry (rle_rl_id, rle_rlp_id, rle_title);
+-- For querying list entries in a given list by title (and then id as a tiebreaker). Covers
+-- getListEntries() with SORT_BY_NAME.
+CREATE UNIQUE INDEX /*i*/rle_list_deleted_title_id ON /*_*/reading_list_entry (rle_rl_id, rle_deleted, rle_title, rle_id);
+-- For querying list entries in a given list by last updated timestamp (and then id as a tiebreaker).
+-- Covers getListEntries() with SORT_BY_UPDATED.
+CREATE UNIQUE INDEX /*i*/rle_list_deleted_updated_id ON /*_*/reading_list_entry (rle_rl_id, rle_deleted, rle_date_updated, rle_id);
+-- For querying all list entries of a given user by last updated timestamp (and then id as a
+-- tiebreaker). Covers getListEntriesByDateUpdated() (almost; the results still have to be
+-- filtered on rl_deleted).
+CREATE UNIQUE INDEX /*i*/rle_user_updated_id ON /*_*/reading_list_entry (rle_user_id, rle_date_updated, rle_id);
+-- For getting all lists of a given user which contain a specified page. Covers getListsByPage().
+-- rle_rl_id is included to ensure consistent sorting within a fully covered query (the assumption
+-- being that result sets for this query will typically be small enough that we don't care about
+-- server-side sorting by name etc; if we do end up with an anomalously huge resultset, performance
+-- is preferred over returning the results in order.)
+CREATE UNIQUE INDEX /*i*/rle_user_project_title ON /*_*/reading_list_entry (rle_user_id, rle_rlp_id, rle_title, rle_rl_id);
+-- For getting all deleted items older than a given date. Covers purgeOldDeleted().
+CREATE INDEX /*i*/rle_deleted_updated ON /*_*/reading_list_entry (rle_deleted, rle_date_updated);
 
 -- Table for storing projects (domains) efficiently.
 CREATE TABLE /*_*/reading_list_project (

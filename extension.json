@@ -17,6 +17,7 @@
 		"MediaWiki\\Extensions\\ReadingLists\\ReverseInterwikiLookup": "src/ReverseInterwikiLookup.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListEntries": "src/Api/ApiQueryReadingListEntries.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingLists": "src/Api/ApiQueryReadingLists.php",
+		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryTrait": "src/Api/ApiQueryTrait.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingLists": "src/Api/ApiReadingLists.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsCreateEntry": "src/Api/ApiReadingListsCreateEntry.php",
 		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsCreate": "src/Api/ApiReadingListsCreate.php",

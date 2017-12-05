@@ -51,11 +51,13 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			[ 'teardownForUser' ],
 			[ 'isSetupForUser' ],
 			[ 'addList', 'foo' ],
-			[ 'getAllLists' ],
+			[ 'getAllLists', ReadingListRepository::SORT_BY_NAME,
+				ReadingListRepository::SORT_DIR_ASC ],
 			[ 'updateList', 1, 'foo' ],
 			[ 'deleteList', 1 ],
 			[ 'addListEntry', 1, 'foo', 'bar' ],
-			[ 'getListEntries', [ 1 ] ],
+			[ 'getListEntries', [ 1 ], ReadingListRepository::SORT_BY_NAME,
+				ReadingListRepository::SORT_DIR_ASC ],
 			[ 'deleteListEntry', 1 ],
 			[ 'getListsByDateUpdated', wfTimestampNow() ],
 			[ 'getListsByPage', 'foo', 'bar' ],
@@ -87,7 +89,8 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		return [
 			[ 'teardownForUser' ],
 			[ 'addList', 'foo' ],
-			[ 'getAllLists' ],
+			[ 'getAllLists', ReadingListRepository::SORT_BY_NAME,
+				ReadingListRepository::SORT_DIR_ASC ],
 			[ 'getListsByDateUpdated', wfTimestampNow() ],
 			[ 'getListsByPage', 'foo', 'bar' ],
 		];
@@ -184,7 +187,12 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		} );
 	}
 
-	public function testGetAllLists() {
+	/**
+	 * @dataProvider provideGetAllLists
+	 * @param array $args
+	 * @param array $expected
+	 */
+	public function testGetAllLists( array $args, array $expected ) {
 		$this->addDataForAnotherUser();
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$repository->setupForUser();
@@ -198,8 +206,8 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			[
 				'rl_name' => 'foo',
 				'rl_description' => 'this is the second foo',
-				'rl_date_created' => wfTimestampNow(),
-				'rl_date_updated' => wfTimestampNow(),
+				'rl_date_created' => '20170101000000',
+				'rl_date_updated' => '20170101000000',
 				'rl_deleted' => '0',
 			],
 			[
@@ -210,14 +218,16 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			],
 			[
 				'rl_name' => 'baz',
-				'rl_date_created' => wfTimestampNow(),
-				'rl_date_updated' => wfTimestampNow(),
+				'rl_date_created' => '20170101000000',
+				'rl_date_updated' => '20170101000000',
 				'rl_deleted' => '1',
 			],
 		] );
 		$compareResultItems = function ( array $expected, array $actual ) {
-			$this->assertTimestampEquals( $expected['rl_date_created'], $actual['rl_date_created'] );
-			$this->assertTimestampEquals( $expected['rl_date_updated'], $actual['rl_date_updated'] );
+			$this->assertTimestampEquals( $expected['rl_date_created'], $actual['rl_date_created'],
+				"expected: {$expected['rl_name']}; actual: {$actual['rl_name']}" );
+			$this->assertTimestampEquals( $expected['rl_date_updated'], $actual['rl_date_updated'],
+				"expected: {$expected['rl_name']}; actual: {$actual['rl_name']}" );
 			unset( $expected['rl_date_created'], $expected['rl_date_updated'] );
 			unset( $actual['rl_id'], $actual['rl_date_created'], $actual['rl_date_updated'] );
 			$this->assertArrayEquals( $expected, $actual, false, true );
@@ -228,9 +238,13 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			array_map( $compareResultItems, $expected, $data );
 		};
 
-		$res = $repository->getAllLists();
-		$expectedData = [
-			[
+		$res = call_user_func_array( [ $repository, 'getAllLists' ], $args );
+		$compare( $expected, $res );
+	}
+
+	public function provideGetAllLists() {
+		$entries = [
+			'default' => [
 				'rl_name' => 'default',
 				'rl_description' => '',
 				'rl_color' => '',
@@ -241,7 +255,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_date_updated' => wfTimestampNow(),
 				'rl_deleted' => '0',
 			],
-			[
+			'foo' => [
 				'rl_name' => 'foo',
 				'rl_description' => '',
 				'rl_color' => '',
@@ -252,18 +266,18 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_date_updated' => '20120101000000',
 				'rl_deleted' => '0',
 			],
-			[
+			'foo_2' => [
 				'rl_name' => 'foo',
 				'rl_description' => 'this is the second foo',
 				'rl_color' => '',
 				'rl_image' => '',
 				'rl_icon' => '',
 				'rl_is_default' => '0',
-				'rl_date_created' => wfTimestampNow(),
-				'rl_date_updated' => wfTimestampNow(),
+				'rl_date_created' => '20170101000000',
+				'rl_date_updated' => '20170101000000',
 				'rl_deleted' => '0',
 			],
-			[
+			'bar' => [
 				'rl_name' => 'bar',
 				'rl_description' => '',
 				'rl_color' => '',
@@ -275,16 +289,42 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_deleted' => '0',
 			],
 		];
-		$compare( $expectedData, $res );
+		// 1 list from addDataForAnotherUser, 1 from setupForUser, second list in addLists call
+		$foo2Id = 4;
 
-		$res = $repository->getAllLists( 1 );
-		$compare( array_slice( $expectedData, 0, 1 ), $res );
-
-		$res = $repository->getAllLists( 1, 1 );
-		$compare( array_slice( $expectedData, 1, 1 ), $res );
-
-		$res = $repository->getAllLists( 1, 10 );
-		$this->assertSame( 0, iterator_count( $res ) );
+		return [
+			'name, basic' => [
+				[ ReadingListRepository::SORT_BY_NAME, ReadingListRepository::SORT_DIR_ASC ],
+				[ $entries['bar'], $entries['default'], $entries['foo'], $entries['foo_2'] ],
+			],
+			'name, reverse' => [
+				[ ReadingListRepository::SORT_BY_NAME, ReadingListRepository::SORT_DIR_DESC ],
+				[ $entries['foo_2'], $entries['foo'], $entries['default'], $entries['bar'] ],
+			],
+			'name, limit' => [
+				[ ReadingListRepository::SORT_BY_NAME, ReadingListRepository::SORT_DIR_ASC, 1 ],
+				[ $entries['bar'] ],
+			],
+			'name, limit + offset' => [
+				[ ReadingListRepository::SORT_BY_NAME, ReadingListRepository::SORT_DIR_ASC,
+					1, [ 'default', 1 ] ],
+				[ $entries['default'] ],
+			],
+			'name, limit + other offset' => [
+				[ ReadingListRepository::SORT_BY_NAME, ReadingListRepository::SORT_DIR_ASC,
+					1, [ 'foo', $foo2Id ] ],
+				[ $entries['foo_2'] ],
+			],
+			'updated, basic' => [
+				[ ReadingListRepository::SORT_BY_UPDATED, ReadingListRepository::SORT_DIR_ASC ],
+				[ $entries['bar'], $entries['foo'], $entries['foo_2'], $entries['default'] ],
+			],
+			'updated, limit + offset' => [
+				[ ReadingListRepository::SORT_BY_UPDATED, ReadingListRepository::SORT_DIR_ASC,
+					1, [ '20170101000000', $foo2Id ] ],
+				[ $entries['foo_2'] ],
+			],
+		];
 	}
 
 	public function testUpdateList() {
@@ -493,11 +533,15 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		);
 	}
 
-	public function testGetListEntries() {
+	/**
+	 * @dataProvider provideGetListEntries
+	 * @param array $args
+	 * @param array $expected
+	 */
+	public function testGetListEntries( array $args, array $expected ) {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$repository->setupForUser();
-		$defaultId = $this->db->selectField( 'reading_list', 'rl_id',
-			[ 'rl_user_id' => 1, 'rl_is_default' => 1 ] );
+		$defaultId = 1;
 		$this->addListEntries( $defaultId, 1, [
 			[
 				'rle_user_id' => 1,
@@ -508,52 +552,49 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rle_deleted' => 0,
 			],
 		] );
-		list( $listId, $deletedListId ) = $this->addLists( 1, [
+		$this->addLists( 1, [
 			[
 				'rl_is_default' => 0,
 				'rl_name' => 'test',
 				'entries' => [
 					[
 						'rlp_project' => 'foo',
-						'rle_title' => 'bar',
-						'rle_date_created' => wfTimestampNow(),
-						'rle_date_updated' => wfTimestampNow(),
+						'rle_title' => 'Bar',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20150101000000',
 						'rle_deleted' => 0,
 					],
 					[
 						'rlp_project' => 'foo2',
-						'rle_title' => 'bar2',
+						'rle_title' => 'Bar2',
 						'rle_date_created' => '20100101000000',
 						'rle_date_updated' => '20120101000000',
 						'rle_deleted' => 0,
 					],
 					[
 						'rlp_project' => 'foo3',
-						'rle_title' => 'bar3',
-						'rle_date_created' => wfTimestampNow(),
-						'rle_date_updated' => wfTimestampNow(),
+						'rle_title' => 'Bar2',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20170101000000',
 						'rle_deleted' => 0,
 					],
 					[
 						'rlp_project' => 'foo4',
-						'rle_title' => 'bar4',
-						'rle_date_created' => wfTimestampNow(),
-						'rle_date_updated' => wfTimestampNow(),
+						'rle_title' => 'Bar4',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20160101000000',
 						'rle_deleted' => 1,
 					],
 				],
 			],
-			[
-				'rl_is_default' => 0,
-				'rl_name' => 'test-deleted',
-				'rl_deleted' => 1,
-			],
 		] );
 		$compareResultItems = function ( $expected, $actual, $n ) {
+			$error = "Mismatch in item $n (expected project/title: {$expected['rlp_project']}"
+				. "/{$expected['rle_title']}; actual: {$actual['rlp_project']}/{$actual['rle_title']})";
 			$this->assertTimestampEquals( $expected['rle_date_created'], $actual['rle_date_created'],
-				"Mismatch in item $n" );
+				$error );
 			$this->assertTimestampEquals( $expected['rle_date_updated'], $actual['rle_date_updated'],
-				"Mismatch in item $n" );
+				$error );
 			unset( $expected['rle_date_created'], $expected['rle_date_updated'] );
 			unset( $actual['rle_id'], $actual['rle_rlp_id'],
 				$actual['rle_date_created'], $actual['rle_date_updated'] );
@@ -565,9 +606,15 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			array_map( $compareResultItems, $expected, $data, range( 1, count( $expected ) ) );
 		};
 
-		$res = $repository->getListEntries( [ $defaultId, $listId ] );
-		$expectedData = [
-			[
+		$res = call_user_func_array( [ $repository, 'getListEntries' ], $args );
+		$compare( $expected, $res );
+	}
+
+	public function provideGetListEntries() {
+		$defaultId = 1;
+		$testId = 2;
+		$expected = [
+			'default-foo' => [
 				'rle_rl_id' => $defaultId,
 				'rlp_project' => 'foo',
 				'rle_title' => 'Foo',
@@ -575,61 +622,105 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rle_date_updated' => wfTimestampNow(),
 				'rle_deleted' => 0,
 			],
-			[
-				'rle_rl_id' => $listId,
+			'list-foo' => [
+				'rle_rl_id' => $testId,
 				'rlp_project' => 'foo',
-				'rle_title' => 'bar',
-				'rle_date_created' => wfTimestampNow(),
-				'rle_date_updated' => wfTimestampNow(),
+				'rle_title' => 'Bar',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20150101000000',
 				'rle_deleted' => 0,
 			],
-			[
-				'rle_rl_id' => $listId,
+			'list-foo2' => [
+				'rle_rl_id' => $testId,
 				'rlp_project' => 'foo2',
-				'rle_title' => 'bar2',
+				'rle_title' => 'Bar2',
 				'rle_date_created' => '20100101000000',
 				'rle_date_updated' => '20120101000000',
 				'rle_deleted' => 0,
 			],
-			[
-				'rle_rl_id' => $listId,
+			'list-foo3' => [
+				'rle_rl_id' => $testId,
 				'rlp_project' => 'foo3',
-				'rle_title' => 'bar3',
-				'rle_date_created' => wfTimestampNow(),
-				'rle_date_updated' => wfTimestampNow(),
+				'rle_title' => 'Bar2',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20170101000000',
 				'rle_deleted' => 0,
 			],
 		];
-		$compare( $expectedData, $res );
 
-		$res = $repository->getListEntries( [ $listId ] );
-		$compare( array_slice( $expectedData, 1 ), $res );
+		return [
+			'name, basic' => [
+				[ [ $defaultId, $testId ], ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_ASC ],
+				[ $expected['list-foo'], $expected['list-foo2'], $expected['list-foo3'],
+					$expected['default-foo'] ],
+			],
+			'name, desc' => [
+				[ [ $defaultId, $testId ], ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_DESC ],
+				[ $expected['default-foo'], $expected['list-foo3'], $expected['list-foo2'],
+					$expected['list-foo'] ],
+			],
+			'name, offset + limit' => [
+				[ [ $defaultId, $testId ], ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_ASC, 2, [ 'Bar2', 3 ] ],
+				[ $expected['list-foo2'], $expected['list-foo3'] ],
+			],
+			'tiebreaker' => [
+				[ [ $defaultId, $testId ], ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_ASC, 2, [ 'Bar2', 4 ] ],
+				[ $expected['list-foo3'], $expected['default-foo'] ],
+			],
+			'updated' => [
+				[ [ $defaultId, $testId ], ReadingListRepository::SORT_BY_UPDATED,
+					ReadingListRepository::SORT_DIR_ASC ],
+				[ $expected['list-foo2'], $expected['list-foo'], $expected['list-foo3'],
+					$expected['default-foo'] ],
+			],
+			'filter by list id' => [
+				[ [ $defaultId ], ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_ASC ],
+				[ $expected['default-foo'] ],
+			],
+		];
+	}
 
-		$res = $repository->getListEntries( [ $defaultId, $listId ], 2 );
-		$compare( array_slice( $expectedData, 0, 2 ), $res );
-
-		$res = $repository->getListEntries( [ $defaultId, $listId ], 2, 2 );
-		$compare( array_slice( $expectedData, 2, 2 ), $res );
+	// @codingStandardsIgnoreLine MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
+	public function testGetListEntries_error() {
+		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
+		$repository->setupForUser();
+		$defaultId = 1;
+		list( $deletedListId ) = $this->addLists( 1, [
+			[
+				'rl_is_default' => 0,
+				'rl_name' => 'test-deleted',
+				'rl_deleted' => 1,
+			],
+		] );
 
 		$this->assertFailsWith( 'readinglists-db-error-empty-list-ids',
 			function () use ( $repository ) {
-				$repository->getListEntries( [] );
+				$repository->getListEntries( [], ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_ASC );
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
 			function () use ( $repository ) {
-				$repository->getListEntries( [ 123 ] );
+				$repository->getListEntries( [ 123 ], ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_ASC );
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-not-own-list',
 			function () use ( $defaultId ) {
 				$repository = new ReadingListRepository( 123, $this->db, $this->db, $this->lbFactory );
-				$repository->getListEntries( [ $defaultId ] );
+				$repository->getListEntries( [ $defaultId ], ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_ASC );
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
 			function () use ( $repository, $deletedListId ) {
-				$repository->getListEntries( [ $deletedListId ] );
+				$repository->getListEntries( [ $deletedListId ], ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_ASC );
 			}
 		);
 	}
@@ -716,61 +807,106 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		);
 	}
 
-	public function testGetListsByDateUpdated() {
+	/**
+	 * @dataProvider provideGetListsByDateUpdated
+	 * @param array $args
+	 * @param array $expected
+	 */
+	public function testGetListsByDateUpdated( array $args, array $expected ) {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$this->addLists( 1, [
 			[
-				'rl_name' => 'new',
+				'rl_name' => 'foo',
+				'rl_description' => 'list1',
 				'rl_date_updated' => '20150101000000',
 			],
 			[
-				'rl_name' => 'deleted',
+				'rl_name' => 'foo',
+				'rl_description' => 'list2',
+				'rl_date_updated' => '20120101000000',
+			],
+			[
+				'rl_name' => 'foo2',
+				'rl_description' => 'list3',
+				'rl_date_updated' => '20150101000000',
+			],
+			[
+				'rl_name' => 'foo3',
+				'rl_description' => 'list4',
+				'rl_date_updated' => '20170101000000',
+			],
+			[
+				'rl_name' => 'foo',
+				'rl_description' => 'too-old',
+				'rl_date_updated' => '20080101000000',
+			],
+			[
+				'rl_name' => 'foo',
+				'rl_description' => 'deleted',
 				'rl_deleted' => 1,
 				'rl_date_updated' => '20150102000000',
 			],
-			[
-				'rl_name' => 'old',
-				'rl_date_updated' => '20080101000000',
-			],
 		] );
 
-		$expected = [ 'new', 'deleted' ];
-		$res = $repository->getListsByDateUpdated( '20100101000000' );
-		$data = $this->resultWrapperToArray( $res, 'rl_name' );
+		$res = call_user_func_array( [ $repository, 'getListsByDateUpdated' ], $args );
+		$data = $this->resultWrapperToArray( $res, 'rl_description' );
 		$this->assertArrayEquals( $expected, $data );
-
-		$res = $repository->getListsByDateUpdated( '20100101000000', 1 );
-		$data = $this->resultWrapperToArray( $res, 'rl_name' );
-		$this->assertCount( 1, $data );
-		$this->assertSubset( $data, $expected );
-
-		$res = $repository->getListsByDateUpdated( '20100101000000', 1, 1 );
-		$data2 = $this->resultWrapperToArray( $res, 'rl_name' );
-		$this->assertCount( 1, $data2 );
-		$this->assertSubset( $data2, $expected );
-		$this->assertNotEquals( $data, $data2 );
 	}
 
-	public function testGetListEntriesByDateUpdated() {
+	public function provideGetListsByDateUpdated() {
+		return [
+			'basic' => [
+				[ '20100101000000' ],
+				[ 'list2', 'list1', 'list3', 'deleted', 'list4' ],
+			],
+			'desc' => [
+				[ '20100101000000', ReadingListRepository::SORT_BY_UPDATED,
+					ReadingListRepository::SORT_DIR_DESC ],
+				[ 'list4', 'deleted', 'list3', 'list1', 'list2' ],
+			],
+			'limit + offset' => [
+				[ '20100101000000', ReadingListRepository::SORT_BY_UPDATED,
+					ReadingListRepository::SORT_DIR_ASC, 2, [ '20150101000000', 3 ] ],
+				[ 'list3', 'deleted' ],
+			],
+			'name' => [
+				[ '20100101000000', ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_ASC ],
+				[ 'list1', 'list2', 'deleted', 'list3', 'list4' ],
+			]
+		];
+	}
+
+	/**
+	 * @dataProvider provideGetListEntriesByDateUpdated
+	 * @param array $args
+	 * @param array $expected
+	 */
+	public function testGetListEntriesByDateUpdated( array $args, array $expected ) {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$this->addLists( 1, [
 			[
 				'rl_name' => 'one',
 				'entries' => [
 					[
-						'rlp_project' => 'new',
-						'rle_title' => 'new',
+						'rlp_project' => 'foo',
+						'rle_title' => 'foo',
 						'rle_date_updated' => '20150101000000',
 					],
 					[
-						'rlp_project' => 'deleted',
-						'rle_title' => 'deleted',
+						'rlp_project' => 'foo-deleted',
+						'rle_title' => 'foo',
 						'rle_deleted' => 1,
 						'rle_date_updated' => '20150101000000',
 					],
 					[
-						'rlp_project' => 'old',
-						'rle_title' => 'old',
+						'rlp_project' => 'foo2',
+						'rle_title' => 'foo',
+						'rle_date_updated' => '20170101000000',
+					],
+					[
+						'rlp_project' => 'too-old',
+						'rle_title' => 'foo',
 						'rle_date_updated' => '20080101000000',
 					],
 				],
@@ -779,8 +915,8 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_name' => 'two',
 				'entries' => [
 					[
-						'rlp_project' => 'other',
-						'rle_title' => 'other',
+						'rlp_project' => 'bar',
+						'rle_title' => 'bar',
 						'rle_date_updated' => '20150101000000',
 					],
 				],
@@ -791,28 +927,40 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'entries' => [
 					[
 						'rlp_project' => 'parent deleted',
-						'rle_title' => 'parent deleted',
+						'rle_title' => 'bar',
 						'rle_date_updated' => '20150101000000',
 					],
 				],
 			],
 		] );
-
-		$expected = [ 'new', 'deleted', 'other' ];
-		$res = $repository->getListEntriesByDateUpdated( '20100101000000' );
-		$data = $this->resultWrapperToArray( $res, 'rle_title' );
+		$res = call_user_func_array( [ $repository, 'getListEntriesByDateUpdated' ], $args );
+		$data = $this->resultWrapperToArray( $res, 'rlp_project' );
 		$this->assertArrayEquals( $expected, $data );
+	}
 
-		$res = $repository->getListEntriesByDateUpdated( '20100101000000', 1 );
-		$data = $this->resultWrapperToArray( $res, 'rle_title' );
-		$this->assertCount( 1, $data );
-		$this->assertSubset( $data, $expected );
-
-		$res = $repository->getListEntriesByDateUpdated( '20100101000000', 1, 1 );
-		$data2 = $this->resultWrapperToArray( $res, 'rle_title' );
-		$this->assertCount( 1, $data2 );
-		$this->assertSubset( $data2, $expected );
-		$this->assertNotEquals( $data, $data2 );
+	public function provideGetListEntriesByDateUpdated() {
+		return [
+			'basic' => [
+				[ '20100101000000' ],
+				[ 'foo', 'foo-deleted', 'bar', 'foo2' ],
+			],
+			'desc' => [
+				[ '20100101000000', ReadingListRepository::SORT_DIR_DESC ],
+				[ 'foo2', 'bar', 'foo-deleted', 'foo' ],
+			],
+			'limit + offset' => [
+				[ '20100101000000', ReadingListRepository::SORT_DIR_ASC, 2, [ '20150101000000', 2 ] ],
+				[ 'foo-deleted', 'bar' ],
+			],
+			'limit + offset 2' => [
+				[ '20100101000000', ReadingListRepository::SORT_DIR_ASC, 2, [ '20150101000000', 5 ] ],
+				[ 'bar', 'foo2' ],
+			],
+			'limit + offset 3' => [
+				[ '20100101000000', ReadingListRepository::SORT_DIR_ASC, 2, [ '20170101000000', 3 ] ],
+				[ 'foo2' ],
+			],
+		];
 	}
 
 	public function testPurgeOldDeleted() {
@@ -871,7 +1019,12 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			'kept-parent-deleted-new', 'deleted-new-parent-deleted-new' ], $keptEntries );
 	}
 
-	public function testGetListsByPage() {
+	/**
+	 * @dataProvider provideGetListsByPage
+	 * @param array $args
+	 * @param array $expected
+	 */
+	public function testGetListsByPage( array $args, array $expected ) {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$this->addLists( 1, [
 			[
@@ -936,21 +1089,30 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			],
 		] );
 
-		$expected = [ 'fourth', 'fifth' ];
-		$res = $repository->getListsByPage( '-', 'x' );
+		$res = call_user_func_array( [ $repository, 'getListsByPage' ], $args );
 		$data = $this->resultWrapperToArray( $res, 'rl_name' );
 		$this->assertArrayEquals( $expected, $data );
+	}
 
-		$res = $repository->getListsByPage( '-', 'x', 1 );
-		$data = $this->resultWrapperToArray( $res, 'rl_name' );
-		$this->assertCount( 1, $data );
-		$this->assertSubset( $data, $expected );
-
-		$res = $repository->getListsByPage( '-', 'x', 1, 1 );
-		$data2 = $this->resultWrapperToArray( $res, 'rl_name' );
-		$this->assertCount( 1, $data2 );
-		$this->assertSubset( $data2, $expected );
-		$this->assertNotEquals( $data, $data2 );
+	public function provideGetListsByPage() {
+		return [
+			'basic' => [
+				[ '-', 'x' ],
+				[ 'fourth', 'fifth' ],
+			],
+			'limit' => [
+				[ '-', 'x', 1 ],
+				[ 'fourth' ],
+			],
+			'limit + offset' => [
+				[ '-', 'x', 1, 4 ],
+				[ 'fourth' ],
+			],
+			'limit + offset 2' => [
+				[ '-', 'x', 1, 5 ],
+				[ 'fifth' ],
+			],
+		];
 	}
 
 	// -------------------------------------------
@@ -981,7 +1143,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		}
 		$delta = abs( wfTimestamp( TS_UNIX, $expectedTimestamp )
 			- wfTimestamp( TS_UNIX, $actualTimestamp ) );
-		$this->assertLessThanOrEqual( 3, $delta,
+		$this->assertLessThanOrEqual( 30, $delta,
 			"${msg}Difference between expected timestamp ($expectedTimestamp) "
 			. "and actual timetamp ($actualTimestamp) is too large" );
 	}

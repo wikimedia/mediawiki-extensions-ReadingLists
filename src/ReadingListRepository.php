@@ -33,6 +33,15 @@ use Wikimedia\Rdbms\LBFactory;
  */
 class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
+	/** Sort lists / entries alphabetically by name / title. */
+	const SORT_BY_NAME = 'name';
+	/** Sort lists / entries chronologically by last updated timestamp. */
+	const SORT_BY_UPDATED = 'updated';
+	/** Sort ascendingly (first letter / oldest date first). */
+	const SORT_DIR_ASC = 'asc';
+	/** Sort descendingly (last letter / newest date first). */
+	const SORT_DIR_DESC = 'desc';
+
 	/** @var array Database field lengths in bytes (only for the string types). */
 	public static $fieldLength = [
 		'rl_name' => 255,
@@ -234,27 +243,28 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
 	/**
 	 * Get all lists of the user.
+	 * @param string $sortBy One of the SORT_BY_* constants.
+	 * @param string $sortDir One of the SORT_DIR_* constants.
 	 * @param int $limit
-	 * @param int $offset
-	 * @return IResultWrapper<ReadingListRow>
+	 * @param array|null $from DB position to continue from (or null to start at the beginning/end).
+	 *   When sorting by name, this should be the name and id of a list; when sorting by update time,
+	 *   the updated timestamp (in some form accepted by MWTimestamp) and the id.
+	 * @return IResultWrapper <ReadingListRow>
 	 * @throws ReadingListRepositoryException
 	 */
-	public function getAllLists( $limit = 1000, $offset = 0 ) {
+	public function getAllLists( $sortBy, $sortDir, $limit = 1000, array $from = null ) {
 		$this->assertUser();
+		list( $conditions, $options ) = $this->processSort( 'rl', $sortBy, $sortDir, $limit, $from );
 
 		$res = $this->dbr->select(
 			'reading_list',
 			$this->getListFields(),
-			[
+			array_merge( [
 				'rl_user_id' => $this->userId,
 				'rl_deleted' => 0,
-			],
+			], $conditions ),
 			__METHOD__,
-			[
-				'LIMIT' => $limit,
-				'OFFSET' => $offset,
-				'ORDER BY' => 'rl_id',
-			]
+			$options
 		);
 
 		if (
@@ -431,16 +441,23 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	/**
 	 * Get the entries of one or more lists.
 	 * @param array $ids List ids
+	 * @param string $sortBy One of the SORT_BY_* constants.
+	 * @param string $sortDir One of the SORT_DIR_* constants.
 	 * @param int $limit
-	 * @param int $offset
+	 * @param array|null $from DB position to continue from (or null to start at the beginning/end).
+	 *   When sorting by name, this should be the name and id of a list; when sorting by update time,
+	 *   the updated timestamp (in some form accepted by MWTimestamp) and the id.
 	 * @return IResultWrapper<ReadingListEntryRow>
 	 * @throws ReadingListRepositoryException
 	 */
-	public function getListEntries( array $ids, $limit = 1000, $offset = 0 ) {
+	public function getListEntries(
+		array $ids, $sortBy, $sortDir, $limit = 1000, array $from = null
+	) {
 		$this->assertUser();
 		if ( !$ids ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-empty-list-ids' );
 		}
+		list( $conditions, $options ) = $this->processSort( 'rle', $sortBy, $sortDir, $limit, $from );
 
 		// sanity check for nice error messages
 		$res = $this->dbr->select(
@@ -469,18 +486,14 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$res = $this->dbr->select(
 			[ 'reading_list_entry', 'reading_list_project' ],
 			$this->getListEntryFields(),
-			[
+			array_merge( [
 				'rle_rlp_id = rlp_id',
 				'rle_rl_id' => $ids,
 				'rle_user_id' => $this->userId,
 				'rle_deleted' => 0,
-			],
+			], $conditions ),
 			__METHOD__,
-			[
-				'LIMIT' => $limit,
-				'OFFSET' => $offset,
-				'ORDER BY' => [ 'rle_rl_id', 'rle_id' ],
-			]
+			$options
 		);
 
 		return $res;
@@ -542,26 +555,29 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * Unlike other methods this returns deleted lists as well. Only changes to list metadata
 	 * (including deletion) are considered, not changes to list entries.
 	 * @param string $date The cutoff date in TS_MW format
+	 * @param string $sortBy One of the SORT_BY_* constants.
+	 * @param string $sortDir One of the SORT_DIR_* constants.
 	 * @param int $limit
-	 * @param int $offset
+	 * @param array|null $from DB position to continue from (or null to start at the beginning/end).
+	 *   When sorting by name, this should be the name and id of a list; when sorting by update time,
+	 *   the updated timestamp (in some form accepted by MWTimestamp) and the id.
 	 * @throws ReadingListRepositoryException
 	 * @return IResultWrapper<ReadingListRow>
 	 */
-	public function getListsByDateUpdated( $date, $limit = 1000, $offset = 0 ) {
+	public function getListsByDateUpdated( $date, $sortBy = self::SORT_BY_UPDATED,
+		$sortDir = self::SORT_DIR_ASC, $limit = 1000, array $from = null
+	) {
 		$this->assertUser();
+		list( $conditions, $options ) = $this->processSort( 'rl', $sortBy, $sortDir, $limit, $from );
 		$res = $this->dbr->select(
 			'reading_list',
 			$this->getListFields(),
-			[
+			array_merge( [
 				'rl_user_id' => $this->userId,
 				'rl_date_updated > ' . $this->dbr->addQuotes( $this->dbr->timestamp( $date ) ),
-			],
+			], $conditions ),
 			__METHOD__,
-			[
-				'LIMIT' => $limit,
-				'OFFSET' => $offset,
-				'ORDER BY' => 'rl_id',
-			]
+			$options
 		);
 
 		if (
@@ -579,29 +595,32 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * Unlike other methods this returns deleted entries as well (but not entries inside deleted
 	 * lists).
 	 * @param string $date The cutoff date in TS_MW format
+	 * @param string $sortDir One of the SORT_DIR_* constants.
 	 * @param int $limit
-	 * @param int $offset
+	 * @param array|null $from DB position to continue from (or null to start at the beginning/end).
+	 *   Should contain the updated timestamp (in some form accepted by MWTimestamp) and the id.
 	 * @throws ReadingListRepositoryException
 	 * @return IResultWrapper<ReadingListEntryRow>
 	 */
-	public function getListEntriesByDateUpdated( $date, $limit = 1000, $offset = 0 ) {
+	public function getListEntriesByDateUpdated(
+		$date, $sortDir = self::SORT_DIR_ASC, $limit = 1000, array $from = null
+	) {
 		$this->assertUser();
+		// Always sort by last updated; there is no supporting index for sorting by name.
+		list( $conditions, $options ) = $this->processSort( 'rle', self::SORT_BY_UPDATED,
+			$sortDir, $limit, $from );
 		$res = $this->dbr->select(
 			[ 'reading_list', 'reading_list_entry', 'reading_list_project' ],
 			$this->getListEntryFields(),
-			[
+			array_merge( [
 				'rl_id = rle_rl_id',
 				'rle_rlp_id = rlp_id',
-				'rl_user_id' => $this->userId,
+				'rle_user_id' => $this->userId,
 				'rl_deleted' => 0,
 				'rle_date_updated > ' . $this->dbr->addQuotes( $this->dbr->timestamp( $date ) ),
-			],
+			], $conditions ),
 			__METHOD__,
-			[
-				'LIMIT' => $limit,
-				'OFFSET' => $offset,
-				'ORDER BY' => [ 'rle_rl_id', 'rle_id' ],
-			]
+			$options
 		);
 		return $res;
 	}
@@ -671,34 +690,39 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * @param string $project Project identifier (typically a domain name)
 	 * @param string $title Page title (in localized prefixed DBkey format)
 	 * @param int $limit
-	 * @param int $offset
+	 * @param int|null $from List ID to continue from (or null to start at the beginning/end).
+	 *
 	 * @throws ReadingListRepositoryException
 	 * @return IResultWrapper<ReadingListRow>
 	 */
-	public function getListsByPage( $project, $title, $limit = 1000, $offset = 0 ) {
+	public function getListsByPage( $project, $title, $limit = 1000, $from = null ) {
 		$this->assertUser();
 		$projectId = $this->getProjectId( $project );
 		if ( !$projectId ) {
 			return new FakeResultWrapper( [] );
 		}
 
+		$conditions = [
+			'rl_id = rle_rl_id',
+			'rle_user_id' => $this->userId,
+			'rle_rlp_id' => $projectId,
+			'rle_title' => $title,
+			'rl_deleted' => 0,
+			'rle_deleted' => 0,
+		];
+		if ( $from !== null ) {
+			$conditions[] = 'rle_rl_id >= ' . (int)$from;
+		}
 		$res = $this->dbr->select(
 			[ 'reading_list', 'reading_list_entry' ],
 			$this->getListFields(),
-			[
-				'rl_id = rle_rl_id',
-				'rl_user_id' => $this->userId,
-				'rle_rlp_id' => $projectId,
-				'rle_title' => $title,
-				'rl_deleted' => 0,
-				'rle_deleted' => 0,
-			],
+			$conditions,
 			__METHOD__,
 			[
-				'LIMIT' => $limit,
-				'OFFSET' => $offset,
 				'GROUP BY' => $this->getListFields(),
-				'ORDER BY' => 'rl_id',
+				'ORDER BY' => 'rle_rl_id ASC',
+				'LIMIT' => (int)$limit,
+
 			]
 		);
 
@@ -778,6 +802,63 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				[ $field, self::$fieldLength[$field] ] );
 		}
 	}
+
+	/**
+	 * Validate sort paramters.
+	 * @param string $tablePrefix 'rl' or 'rle', depending on whether we are sorting lists or entries.
+	 * @param string $sortBy
+	 * @param string $sortDir
+	 * @param int $limit
+	 * @param array|null $from
+	 * @return array [ conditions, options ] Merge these into the corresponding IDatabase::select
+	 *   parameters.
+	 */
+	private function processSort( $tablePrefix, $sortBy, $sortDir, $limit, $from ) {
+		if ( !in_array( $sortBy, [ self::SORT_BY_NAME, self::SORT_BY_UPDATED ], true ) ) {
+			throw new LogicException( 'Invalid $sortBy parameter: ' . $sortBy );
+		}
+		if ( !in_array( $sortDir, [ self::SORT_DIR_ASC, self::SORT_DIR_DESC ], true ) ) {
+			throw new LogicException( 'Invalid $sortDir parameter: ' . $sortDir );
+		}
+		if ( is_array( $from ) ) {
+			if ( count( $from ) !== 2 || !is_string( $from[0] ) || !is_numeric( $from[1] ) ) {
+				throw new LogicException( 'Invalid $from parameter' );
+			}
+		} elseif ( $from !== null ) {
+			throw new LogicException( 'Invalid $from parameter type: ' . gettype( $from ) );
+		}
+
+		if ( $tablePrefix === 'rl' ) {
+			$mainField = ( $sortBy === self::SORT_BY_NAME ) ? 'rl_name' : 'rl_date_updated';
+		} else {
+			$mainField = ( $sortBy === self::SORT_BY_NAME ) ? 'rle_title' : 'rle_date_updated';
+		}
+		$idField = "${tablePrefix}_id";
+		$conditions = [];
+		$options = [
+			'ORDER BY' => [ "$mainField $sortDir", "$idField $sortDir" ],
+			'LIMIT' => (int)$limit,
+		];
+
+		if ( $from !== null ) {
+			$op = ( $sortDir === self::SORT_DIR_ASC ) ? '>' : '<';
+			$safeFromMain = ( $sortBy === self::SORT_BY_NAME )
+				? $this->dbr->addQuotes( $from[0] )
+				: $this->dbr->addQuotes( $this->dbr->timestamp( $from[0] ) );
+			$safeFromId = (int)$from[1];
+			$conditions[] = $this->dbr->makeList( [
+				"$mainField $op $safeFromMain",
+				$this->dbr->makeList( [
+					"$mainField = $safeFromMain",
+					"$idField $op= $safeFromId",
+				], IDatabase::LIST_AND ),
+			], IDatabase::LIST_OR );
+		}
+
+		// note: $conditions will be array_merge-d so it should not contain non-numeric keys
+		return [ $conditions, $options ];
+	}
+
 	/**
 	 * Get list data, and optionally lock the list.
 	 * List must exist, belong to the current user and not be deleted.
