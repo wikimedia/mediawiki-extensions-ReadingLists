@@ -46,9 +46,6 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	public static $fieldLength = [
 		'rl_name' => 255,
 		'rl_description' => 767,
-		'rl_color' => 6,
-		'rl_image' => 255,
-		'rl_icon' => 32,
 		'rlp_project' => 255,
 		'rle_title' => 255,
 	];
@@ -125,9 +122,6 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				'rl_is_default' => 1,
 				'rl_name' => 'default',
 				'rl_description' => '',
-				'rl_color' => '',
-				'rl_image' => '',
-				'rl_icon' => '',
 				'rl_date_created' => $this->dbw->timestamp(),
 				'rl_date_updated' => $this->dbw->timestamp(),
 				'rl_deleted' => 0,
@@ -197,19 +191,13 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * Create a new list.
 	 * @param string $name
 	 * @param string $description
-	 * @param string $color
-	 * @param string $image
-	 * @param string $icon
 	 * @return int The ID of the new list
 	 * @throws ReadingListRepositoryException
 	 */
-	public function addList( $name, $description = '', $color = '', $image = '', $icon = '' ) {
+	public function addList( $name, $description = '' ) {
 		$this->assertUser();
 		$this->assertFieldLength( 'rl_name', $name );
 		$this->assertFieldLength( 'rl_description', $description );
-		$this->assertFieldLength( 'rl_color', $color );
-		$this->assertFieldLength( 'rl_image', $image );
-		$this->assertFieldLength( 'rl_icon', $icon );
 		if ( !$this->isSetupForUser( self::READ_LOCKING ) ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
@@ -225,9 +213,6 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				'rl_is_default' => 0,
 				'rl_name' => $name,
 				'rl_description' => $description,
-				'rl_color' => $color,
-				'rl_image' => $image,
-				'rl_icon' => $icon,
 				'rl_date_created' => $this->dbw->timestamp(),
 				'rl_date_updated' => $this->dbw->timestamp(),
 				'rl_deleted' => 0,
@@ -283,22 +268,14 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * @param int $id
 	 * @param string|null $name
 	 * @param string|null $description
-	 * @param string|null $color
-	 * @param string|null $image
-	 * @param string|null $icon
 	 * @return void
 	 * @throws ReadingListRepositoryException
 	 * @throws LogicException
 	 */
-	public function updateList(
-		$id, $name = null, $description = null, $color = null, $image = null, $icon = null
-	) {
+	public function updateList( $id, $name = null, $description = null ) {
 		$this->assertUser();
 		$this->assertFieldLength( 'rl_name', $name );
 		$this->assertFieldLength( 'rl_description', $description );
-		$this->assertFieldLength( 'rl_color', $color );
-		$this->assertFieldLength( 'rl_image', $image );
-		$this->assertFieldLength( 'rl_icon', $icon );
 		$row = $this->selectValidList( $id, self::READ_LOCKING );
 		if ( $row->rl_is_default ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-cannot-update-default-list' );
@@ -307,9 +284,6 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$data = array_filter( [
 			'rl_name' => $name,
 			'rl_description' => $description,
-			'rl_color' => $color,
-			'rl_image' => $image,
-			'rl_icon' => $icon,
 			'rl_date_updated' => $this->dbw->timestamp(),
 		], function ( $field ) {
 			return $field !== null;
@@ -749,9 +723,6 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			'rl_is_default',
 			'rl_name',
 			'rl_description',
-			'rl_color',
-			'rl_image',
-			'rl_icon',
 			'rl_date_created',
 			'rl_date_updated',
 			'rl_deleted',

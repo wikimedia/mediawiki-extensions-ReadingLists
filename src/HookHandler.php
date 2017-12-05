@@ -49,6 +49,8 @@ class HookHandler {
 				"$patchDir/02-add-reading_list_project.sql" );
 			$updater->addExtensionIndex( 'reading_list', 'rl_user_deleted_name_id',
 				"$patchDir/03-add-sort-indexes.sql" );
+			$updater->dropExtensionField( 'reading_list', 'rl_color',
+				"$patchDir/04-drop-metadata-columns.sql" );
 		}
 		return true;
 	}

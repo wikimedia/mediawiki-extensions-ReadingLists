@@ -13,12 +13,6 @@ CREATE TABLE /*_*/reading_list (
     rl_name VARCHAR(255) BINARY NOT NULL,
     -- Description of the list.
     rl_description VARBINARY(767) NOT NULL DEFAULT '',
-    -- List color as 3x2 hex digits.
-    rl_color VARBINARY(6) DEFAULT NULL,
-    -- List image as file name to pass to wfFindFile() or the like.
-    rl_image VARBINARY(255) DEFAULT NULL,
-    -- List icon.
-    rl_icon VARBINARY(32) DEFAULT NULL,
     -- Creation timestamp.
     rl_date_created BINARY(14) NOT NULL default '19700101000000',
     -- Last modification timestamp.
