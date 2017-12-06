@@ -51,6 +51,8 @@ class HookHandler {
 				"$patchDir/03-add-sort-indexes.sql" );
 			$updater->dropExtensionField( 'reading_list', 'rl_color',
 				"$patchDir/04-drop-metadata-columns.sql" );
+			$updater->modifyExtensionField( 'reading_list_entry', 'rle_title',
+				"$patchDir/05-increase-rle_title-length.sql" );
 		}
 		return true;
 	}
