@@ -33,9 +33,12 @@ trait ReadingListEntryRow {
 	public $rlp_project;
 
 	/**
-	 * Page title.
+	 * Page title (including the localised namespace name).
 	 * We can't easily use page ids due to the cross-wiki nature of the project;
 	 * also, page ids don't age well when content is deleted/moved.
+	 * We also can't easily use namespace IDs since most APIs expect the namespace name so that's
+	 * what we need to provide to clients; and there is no easy way to map IDs to names of a
+	 * different wiki.
 	 * @var string
 	 */
 	public $rle_title;

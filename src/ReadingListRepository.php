@@ -47,7 +47,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		'rl_name' => 255,
 		'rl_description' => 767,
 		'rlp_project' => 255,
-		'rle_title' => 255,
+		'rle_title' => 383,
 	];
 
 	/** @var int|null Max allowed lists per user */
@@ -336,7 +336,8 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * Add a new page to a list.
 	 * @param int $id List ID
 	 * @param string $project Project identifier (typically a domain name)
-	 * @param string $title Page title (in localized prefixed DBkey format)
+	 * @param string $title Page title (treated as a plain string with no normalization;
+	 *   in localized namespace-prefixed format with spaces is recommended)
 	 * @return int The ID of the new list entry
 	 * @throws ReadingListRepositoryException
 	 */

@@ -48,10 +48,15 @@ CREATE TABLE /*_*/reading_list_entry (
     rle_user_id INTEGER UNSIGNED NOT NULL,
     -- Reference to reading_list_project.rlp_id.
     rle_rlp_id INTEGER UNSIGNED NOT NULL,
-    -- Page title.
+    -- Page title (including localised namespace name).
     -- We can't easily use page ids due to the cross-wiki nature of the project;
     -- also, page ids don't age well when content is deleted/moved.
-    rle_title VARCHAR(255) BINARY NOT NULL,
+    -- We also can't easily use namespace IDs since most APIs expect the namespace name so that's
+    -- what we need to provide to clients; and there is no easy way to map IDs to names of a
+    -- different wiki.
+    -- Titles are <=255 byte; we allow 128 more bytes for the namespace name, just to be on the
+    -- safe side.
+    rle_title VARCHAR(383) BINARY NOT NULL,
     -- Creation timestamp.
     rle_date_created BINARY(14) NOT NULL default '19700101000000',
     -- Last modification timestamp.

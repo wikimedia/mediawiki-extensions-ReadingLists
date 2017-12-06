@@ -76,7 +76,7 @@
 	"apihelp-readinglists+createentry-extended-description": "List entries must be unique. Pages are not limited to the wiki where the API is accessed. The user must have fewer than $1 (non-deleted) {{PLURAL:$1|entry|entries}} in the list.",
 	"apihelp-readinglists+createentry-param-list": "List ID.",
 	"apihelp-readinglists+createentry-param-project": "Project name of the wiki hosting the page. (Typically this is the domain name of the wiki.)",
-	"apihelp-readinglists+createentry-param-title": "Page title.",
+	"apihelp-readinglists+createentry-param-title": "Page title (including the localised namespace name). Human-readable format (spaces not underscores) is recommended. The API treats titles as raw strings; normalization (such as title casing) is left to the clients.",
 	"apihelp-readinglists+createentry-example-1": "Add the page <kbd>Dog</kbd> from project <kbd>en.wikipedia.org</bar> to the list with ID <kbd>33</kbd>.",
 	"apihelp-readinglists+deleteentry-summary": "Delete a page from a list belonging to the current user.",
 	"apihelp-readinglists+deleteentry-param-entry": "Entry ID.",
