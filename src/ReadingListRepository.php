@@ -694,10 +694,14 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			$conditions,
 			__METHOD__,
 			[
-				'GROUP BY' => $this->getListFields(),
+				// Grouping by rle_rl_id can be done efficiently with the same index used for
+				// the conditions. All other fields are functionally dependent on it; MySQL 5.7.5+
+				// can detect that ( https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html );
+				// MariaDB needs the other fields for ONLY_FULL_GROUP_BY compliance, but they don't
+				// seem to negatively affect the query plan.
+				'GROUP BY' => array_merge( [ 'rle_rl_id' ], $this->getListFields() ),
 				'ORDER BY' => 'rle_rl_id ASC',
 				'LIMIT' => (int)$limit,
-
 			]
 		);
 
