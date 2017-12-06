@@ -142,15 +142,11 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			'rl_user_id' => '1',
 			'rl_name' => 'foo',
 			'rl_description' => '',
-			'rl_color' => '',
-			'rl_image' => '',
-			'rl_icon' => '',
 			'rl_is_default' => '0',
 			'rl_deleted' => '0',
 		], $data );
 
-		$listId = $repository->addList( 'bar', 'here is some bar', 'blue',
-			'fake://example.png', 'fake://example_icon.png' );
+		$listId = $repository->addList( 'bar', 'here is some bar' );
 		/** @var ReadingListRow $row */
 		$row = $this->db->selectRow( 'reading_list', '*', [ 'rl_id' => $listId ] );
 		$this->assertTimestampEquals( wfTimestampNow(), $row->rl_date_created );
@@ -161,9 +157,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			'rl_user_id' => '1',
 			'rl_name' => 'bar',
 			'rl_description' => 'here is some bar',
-			'rl_color' => 'blue',
-			'rl_image' => 'fake://example.png',
-			'rl_icon' => 'fake://example_icon.png',
 			'rl_is_default' => '0',
 			'rl_deleted' => '0',
 		], $data );
@@ -247,9 +240,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			'default' => [
 				'rl_name' => 'default',
 				'rl_description' => '',
-				'rl_color' => '',
-				'rl_image' => '',
-				'rl_icon' => '',
 				'rl_is_default' => '1',
 				'rl_date_created' => wfTimestampNow(),
 				'rl_date_updated' => wfTimestampNow(),
@@ -258,9 +248,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			'foo' => [
 				'rl_name' => 'foo',
 				'rl_description' => '',
-				'rl_color' => '',
-				'rl_image' => '',
-				'rl_icon' => '',
 				'rl_is_default' => '0',
 				'rl_date_created' => '20100101000000',
 				'rl_date_updated' => '20120101000000',
@@ -269,9 +256,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			'foo_2' => [
 				'rl_name' => 'foo',
 				'rl_description' => 'this is the second foo',
-				'rl_color' => '',
-				'rl_image' => '',
-				'rl_icon' => '',
 				'rl_is_default' => '0',
 				'rl_date_created' => '20170101000000',
 				'rl_date_updated' => '20170101000000',
@@ -280,9 +264,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			'bar' => [
 				'rl_name' => 'bar',
 				'rl_description' => '',
-				'rl_color' => '',
-				'rl_image' => '',
-				'rl_icon' => '',
 				'rl_is_default' => '0',
 				'rl_date_created' => '20010101000000',
 				'rl_date_updated' => '20020101000000',
@@ -336,9 +317,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_description' => 'xxx',
 				'rl_date_created' => '20100101000000',
 				'rl_date_updated' => '20120101000000',
-				'rl_color' => 'blue',
-				'rl_image' => 'image',
-				'rl_icon' => 'ICON',
 				'rl_deleted' => '0',
 			],
 			[
@@ -346,9 +324,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_description' => 'yyy',
 				'rl_date_created' => '20100101000000',
 				'rl_date_updated' => '20120101000000',
-				'rl_color' => 'blue',
-				'rl_image' => 'image',
-				'rl_icon' => 'ICON',
 				'rl_deleted' => '1',
 			],
 		] );
@@ -358,20 +333,14 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$row = $this->db->selectRow( 'reading_list', '*', [ 'rl_id' => $listId ] );
 		$this->assertEquals( 'bar', $row->rl_name );
 		$this->assertEquals( 'xxx', $row->rl_description );
-		$this->assertEquals( 'blue', $row->rl_color );
-		$this->assertEquals( 'image', $row->rl_image );
-		$this->assertEquals( 'ICON', $row->rl_icon );
 		$this->assertTimestampEquals( '20100101000000', $row->rl_date_created );
 		$this->assertTimestampEquals( wfTimestampNow(), $row->rl_date_updated );
 
-		$repository->updateList( $listId, 'bar', 'yyy', 'red', 'img', 'ico' );
+		$repository->updateList( $listId, 'bar', 'yyy' );
 		/** @var ReadingListRow $row */
 		$row = $this->db->selectRow( 'reading_list', '*', [ 'rl_id' => $listId ] );
 		$this->assertEquals( 'bar', $row->rl_name );
 		$this->assertEquals( 'yyy', $row->rl_description );
-		$this->assertEquals( 'red', $row->rl_color );
-		$this->assertEquals( 'img', $row->rl_image );
-		$this->assertEquals( 'ico', $row->rl_icon );
 
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
 			function () use ( $repository ) {

@@ -163,9 +163,6 @@ class ApiQueryReadingLists extends ApiQueryBase {
 			'name' => $row->rl_name,
 			'default' => (bool)$row->rl_is_default,
 			'description' => $row->rl_description,
-			'color' => $row->rl_color,
-			'image' => $row->rl_image,
-			'icon' => $row->rl_icon,
 			'created' => wfTimestamp( TS_ISO_8601, $row->rl_date_created ),
 			'updated' => wfTimestamp( TS_ISO_8601, $row->rl_date_updated ),
 		];

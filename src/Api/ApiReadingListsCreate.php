@@ -26,7 +26,7 @@ class ApiReadingListsCreate extends ApiBase {
 		$params = $this->extractRequestParams();
 
 		$listId = $this->getReadingListRepository( $this->getUser() )->addList( $params['name'],
-			$params['description'], $params['color'], $params['image'], $params['icon'] );
+			$params['description'] );
 		$this->getResult()->addValue( null, $this->getModuleName(), [ 'id' => $listId ] );
 	}
 
@@ -45,21 +45,6 @@ class ApiReadingListsCreate extends ApiBase {
 				self::PARAM_TYPE => 'string',
 				self::PARAM_DFLT => '',
 				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_description'],
-			],
-			'color' => [
-				self::PARAM_TYPE => 'string',
-				self::PARAM_DFLT => '',
-				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_color'],
-			],
-			'image' => [
-				self::PARAM_TYPE => 'string',
-				self::PARAM_DFLT => '',
-				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_image'],
-			],
-			'icon' => [
-				self::PARAM_TYPE => 'string',
-				self::PARAM_DFLT => '',
-				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_icon'],
 			],
 		];
 	}
@@ -91,9 +76,6 @@ class ApiReadingListsCreate extends ApiBase {
 		return [
 			'action=readinglists&command=create&name=dogs&description=Woof!&token=123ABC'
 				=> 'apihelp-readinglists+create-example-1',
-			'action=readinglists&command=create&name=dogs&description=Woof!'
-				. '&color=brown&image=File:Australien_Kelpie.jpg&icon=File:Icon dog.gif&token=123ABC'
-				=> 'apihelp-readinglists+create-example-2',
 		];
 	}
 

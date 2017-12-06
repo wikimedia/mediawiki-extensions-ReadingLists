@@ -32,15 +32,6 @@ trait ReadingListRow {
 	/** @var string Description of the list. */
 	public $rl_description;
 
-	/** @var string List color as 3x2 hex digits. */
-	public $rl_color;
-
-	/** @var string List image as file name to pass to wfFindFile() or the like. */
-	public $rl_image;
-
-	/** @var string List icon. */
-	public $rl_icon;
-
 	/** @var string Creation timestamp. */
 	public $rl_date_created;
 

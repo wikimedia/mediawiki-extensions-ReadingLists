@@ -23,10 +23,10 @@ class ApiReadingListsUpdate extends ApiBase {
 	 */
 	public function execute() {
 		$params = $this->extractRequestParams();
-		$this->requireAtLeastOneParameter( $params, 'name', 'description', 'color', 'image', 'icon' );
+		$this->requireAtLeastOneParameter( $params, 'name', 'description' );
 
 		$this->getReadingListRepository( $this->getUser() )->updateList( $params['list'],
-			$params['name'], $params['description'], $params['color'], $params['image'], $params['icon'] );
+			$params['name'], $params['description'] );
 	}
 
 	/**
@@ -46,18 +46,6 @@ class ApiReadingListsUpdate extends ApiBase {
 			'description' => [
 				self::PARAM_TYPE => 'string',
 				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_description'],
-			],
-			'color' => [
-				self::PARAM_TYPE => 'string',
-				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_color'],
-			],
-			'image' => [
-				self::PARAM_TYPE => 'string',
-				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_image'],
-			],
-			'icon' => [
-				self::PARAM_TYPE => 'string',
-				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_icon'],
 			],
 		];
 	}
