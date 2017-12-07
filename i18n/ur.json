@@ -21,8 +21,6 @@
 	"apihelp-readinglists+update-summary": "موجودہ صارف کی فہرست کی تحدیث کیجیے۔",
 	"apihelp-readinglists+update-param-name": "نئی فہرست کا نام",
 	"apihelp-readinglists+update-param-description": "نئی فہرست کی تشریح",
-	"apihelp-readinglists+update-param-color": "نئی فہرست کا رنگ",
-	"apihelp-readinglists+update-param-image": "فہرست کی نئی تصویر",
 	"apihelp-readinglists+delete-summary": "موجودہ صارف کی ایک فہرست کو حذف کیجیے۔",
 	"apihelp-readinglists+createentry-summary": "موجودہ صارف کی فہرست میں ایک نیا صفحہ شامل کیجیے۔",
 	"apihelp-readinglists+createentry-param-title": "صفحہ کا عنوان۔"

@@ -16,7 +16,6 @@
 	"readinglists-db-error-no-such-project": "«$1» no es una proyecto reconocido.",
 	"apihelp-readinglists+create-extended-description": "El usuario debe tener menos de $1 (no eliminado) {{PLURAL:$1|list|lists}}.",
 	"apihelp-readinglists+update-param-list": "Identificador de lista.",
-	"apihelp-readinglists+update-param-image": "Imagen de lista nueva.",
 	"apihelp-readinglists+createentry-extended-description": "La entradas de lista deben ser unicas.Las paginas no son solamente de wiki donde hay acceso al API. El usuario debe tener menos que  $1 (no eliminado) {{PLURAL:$1|entry|entries}} en la lista.",
 	"apihelp-readinglists+createentry-param-list": "Identificador de lista."
 }
