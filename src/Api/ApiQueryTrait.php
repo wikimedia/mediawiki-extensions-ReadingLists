@@ -123,7 +123,7 @@ trait ApiQueryTrait {
 				self::PARAM_MIN => 1,
 				// Temporarily limit paging sizes per T164990#3264314 / T168984#3659998
 				self::PARAM_MAX => self::$prefix === 'rl' ? 10 : 100,
-				self::PARAM_MAX2 => null,
+				self::PARAM_MAX2 => self::$prefix === 'rl' ? 10 : 100,
 			],
 			'continue' => [
 				self::PARAM_TYPE => 'string',
