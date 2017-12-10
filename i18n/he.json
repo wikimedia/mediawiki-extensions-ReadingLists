@@ -13,5 +13,14 @@
 	"readinglists-db-error-no-such-list-entry": "פריט הרשימה $1 אינו קיים.",
 	"readinglists-db-error-not-own-list": "הרשימה $1 שייכת למשתמש אחר.",
 	"readinglists-db-error-not-own-list-entry": "פריט הרשימה $1 שייך למשתמש אחר.",
-	"readinglists-db-error-list-deleted": "הרשימה $1 נמחקה."
+	"readinglists-db-error-list-deleted": "הרשימה $1 נמחקה.",
+	"readinglists-db-error-list-entry-deleted": "פריט הרשימה $1 נמחק.",
+	"readinglists-db-error-duplicate-page": "הרשימה כבר מכילה את הדף הזה.",
+	"readinglists-db-error-empty-list-ids": "פרמטר מזהי רשימה (list ids) חייב לא להיות ריק.",
+	"readinglists-db-error-user-required": "לא ניתן לקרוא לשיטה הזאת בלי לציין את המשתמש.",
+	"readinglists-db-error-list-limit": "למשתמשים לא {{PLURAL:$1|יכולה להיות יותר מרשימה אחת|יכולות להיות יותר מ־$1 רשימות}}.",
+	"readinglists-db-error-entry-limit": "ברשימה $1 לא {{PLURAL:$2|יכול להיות יותר מפריט אחד|יכולים להיות יותר מ־$2 פריטים}}.",
+	"readinglists-db-error-too-long": "הערך עבור השדה $1 לא יכול להיות ארוך מ־$2 בתים.",
+	"readinglists-db-error-no-such-project": "\"$1\" אינו מיזם מוכר.",
+	"readinglists-apierror-project-title-param": "<var>$1project</var> ו־<var>$1title</var> צריכים לשמש יחד."
 }
