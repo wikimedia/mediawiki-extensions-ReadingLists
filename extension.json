@@ -8,25 +8,8 @@
 	"descriptionmsg": "readinglists-desc",
 	"license-name": "GPL-2.0+",
 	"type": "other",
-	"AutoloadClasses": {
-		"MediaWiki\\Extensions\\ReadingLists\\HookHandler": "src/HookHandler.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Utils": "src/Utils.php",
-		"MediaWiki\\Extensions\\ReadingLists\\ReadingListRepository": "src/ReadingListRepository.php",
-		"MediaWiki\\Extensions\\ReadingLists\\ReadingListRepositoryException": "src/ReadingListRepositoryException.php",
-		"MediaWiki\\Extensions\\ReadingLists\\ReverseInterwikiLookupInterface": "src/ReverseInterwikiLookupInterface.php",
-		"MediaWiki\\Extensions\\ReadingLists\\ReverseInterwikiLookup": "src/ReverseInterwikiLookup.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListEntries": "src/Api/ApiQueryReadingListEntries.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingLists": "src/Api/ApiQueryReadingLists.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryTrait": "src/Api/ApiQueryTrait.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingLists": "src/Api/ApiReadingLists.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsCreateEntry": "src/Api/ApiReadingListsCreateEntry.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsCreate": "src/Api/ApiReadingListsCreate.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsDeleteEntry": "src/Api/ApiReadingListsDeleteEntry.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsDelete": "src/Api/ApiReadingListsDelete.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsSetup": "src/Api/ApiReadingListsSetup.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsTeardown": "src/Api/ApiReadingListsTeardown.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingListsUpdate": "src/Api/ApiReadingListsUpdate.php",
-		"MediaWiki\\Extensions\\ReadingLists\\Api\\ApiTrait": "src/Api/ApiTrait.php"
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extensions\\ReadingLists\\": "src/"
 	},
 	"APIModules": {
 		"readinglists": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingLists"
