@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eduardo Addad de Oliveira"
+		]
+	},
+	"readinglists-desc": "Permite aos usuários gerenciar listas privadas de artigos, como marcadores ou listas \"Leia mais tarde\".",
+	"apihelp-readinglists+deleteentry-param-entry": "Identificador de entrada.",
+	"apihelp-readinglists+deleteentry-example-1": "Eliminar a entrada de lista que tem o identificador <kbd>8</kbd>."
+}
