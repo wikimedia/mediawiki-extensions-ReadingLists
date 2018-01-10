@@ -3,17 +3,19 @@
 namespace MediaWiki\Extensions\ReadingLists\Api;
 
 use ApiBase;
+use ApiUsageException;
 use CentralIdLookup;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
 use MediaWiki\Extensions\ReadingLists\Utils;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use Message;
 use User;
 use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
- * Shared initialization for the APIs.
+ * Shared initialization and helper methods for the APIs.
  * Classes using it must have a static $prefix property (the API module prefix).
  */
 trait ApiTrait {
@@ -94,6 +96,71 @@ trait ApiTrait {
 			$config->get( 'ReadingListsMaxEntriesPerList' ) );
 		$repository->setLogger( LoggerFactory::getInstance( 'readinglists' ) );
 		return $repository;
+	}
+
+	/**
+	 * Decode, validate and iterate the 'batch' parameter of write APIs.
+	 * @param string $rawBatch The raw value of the 'batch' parameter.
+	 * @return \Generator
+	 * @throws ApiUsageException
+	 */
+	protected function yieldBatchOps( $rawBatch ) {
+		$batch = json_decode( $rawBatch, true );
+
+		// Must be a real array, and not empty.
+		if ( !is_array( $batch ) || $batch !== array_values( $batch ) || !$batch ) {
+			if ( json_last_error() ) {
+				$jsonError = json_last_error_msg();
+				$this->dieWithError( wfMessage( 'apierror-readinglists-batch-invalid-json',
+					wfEscapeWikiText( $jsonError ) ) );
+			}
+			$this->dieWithError( 'apierror-readinglists-batch-invalid-structure' );
+		}
+
+		foreach ( $batch as $op ) {
+			// Each batch operation must be an associative array with scalar fields.
+			if (
+				!is_array( $op )
+				|| array_values( $op ) === $op
+				|| array_filter( $op, 'is_scalar' ) !== $op
+			) {
+				$this->dieWithError( 'apierror-readinglists-batch-invalid-structure' );
+			}
+			yield $op;
+		}
+	}
+
+	/**
+	 * Validate a single operation in the 'batch' parameter of write APIs. Works the same way as
+	 * requireAtLeastOneParameter.
+	 * @param array $op
+	 * @param string $param,...
+	 * @throws ApiUsageException
+	 */
+	// @codingStandardsIgnoreLine MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment
+	protected function requireAtLeastOneBatchParameter( array $op, $param /*...*/ ) {
+		$required = func_get_args();
+		array_shift( $required );
+
+		$intersection = array_intersect(
+			array_keys( array_filter( $op, function ( $val ) {
+				return !is_null( $val ) && $val !== false;
+			} ) ),
+			$required
+		);
+
+		if ( count( $intersection ) == 0 ) {
+			$this->dieWithError( [
+				'apierror-readinglists-batch-missingparam-at-least-one-of',
+				Message::listParam( array_map(
+					function ( $p ) {
+						return '<var>' . $this->encodeParamName( $p ) . '</var>';
+					},
+					array_values( $required )
+				) ),
+				count( $required ),
+			], 'missingparam' );
+		}
 	}
 
 }

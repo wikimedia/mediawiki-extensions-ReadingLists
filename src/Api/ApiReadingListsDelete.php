@@ -21,9 +21,18 @@ class ApiReadingListsDelete extends ApiBase {
 	 * @return void
 	 */
 	public function execute() {
-		$listId = $this->getParameter( 'list' );
+		$params = $this->extractRequestParams();
+		$this->requireOnlyOneParameter( $params, 'list', 'batch' );
 
-		$this->getReadingListRepository( $this->getUser() )->deleteList( $listId );
+		$repository = $this->getReadingListRepository( $this->getUser() );
+		if ( isset( $params['list'] ) ) {
+			$repository->deleteList( $params['list'] );
+		} else {
+			foreach ( $this->yieldBatchOps( $params['batch'] ) as $op ) {
+				$this->requireAtLeastOneBatchParameter( $op, 'list' );
+				$repository->deleteList( $op['list'] );
+			}
+		}
 	}
 
 	/**
@@ -34,8 +43,10 @@ class ApiReadingListsDelete extends ApiBase {
 		return [
 			'list' => [
 				self::PARAM_TYPE => 'integer',
-				self::PARAM_REQUIRED => true,
 			],
+			'batch' => [
+				self::PARAM_TYPE => 'string',
+			]
 		];
 	}
 
@@ -54,9 +65,15 @@ class ApiReadingListsDelete extends ApiBase {
 	 * @return array
 	 */
 	protected function getExamplesMessages() {
+		$batch = wfArrayToCgi( [ 'batch' => json_encode( [
+			[ 'list' => 11 ],
+			[ 'list' => 12 ],
+		] ) ] );
 		return [
 			'action=readinglists&command=delete&list=11&token=123ABC'
 				=> 'apihelp-readinglists+delete-example-1',
+			"action=readinglists&command=delete&$batch&token=123ABC"
+				=> 'apihelp-readinglists+delete-example-2',
 		];
 	}
 

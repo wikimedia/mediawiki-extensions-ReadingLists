@@ -24,10 +24,24 @@ class ApiReadingListsCreate extends ApiBase {
 	 */
 	public function execute() {
 		$params = $this->extractRequestParams();
+		$this->requireOnlyOneParameter( $params, 'name', 'batch' );
+		$this->requireOnlyOneParameter( $params, 'description', 'batch' );
 
-		$listId = $this->getReadingListRepository( $this->getUser() )->addList( $params['name'],
-			$params['description'] );
-		$this->getResult()->addValue( null, $this->getModuleName(), [ 'id' => $listId ] );
+		$repository = $this->getReadingListRepository( $this->getUser() );
+		if ( isset( $params['name'] ) ) {
+			$description = isset( $params['description'] ) ? $params['description'] : '';
+			$listId = $repository->addList( $params['name'], $params['description'] );
+			$this->getResult()->addValue( null, $this->getModuleName(), [ 'id' => $listId ] );
+		} else {
+			$listIds = [];
+			foreach ( $this->yieldBatchOps( $params['batch'] ) as $op ) {
+				$description = isset( $op['description'] ) ? $op['description'] : '';
+				$this->requireAtLeastOneBatchParameter( $op, 'name' );
+				$listIds[] = $repository->addList( $op['name'], $description );
+			}
+			$this->getResult()->addValue( null, $this->getModuleName(), [ 'ids' => $listIds ] );
+			$this->getResult()->addIndexedTagName( $this->getModuleName(), 'id' );
+		}
 	}
 
 	/**
@@ -38,14 +52,15 @@ class ApiReadingListsCreate extends ApiBase {
 		return [
 			'name' => [
 				self::PARAM_TYPE => 'string',
-				self::PARAM_REQUIRED => true,
 				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_name'],
 			],
 			'description' => [
 				self::PARAM_TYPE => 'string',
-				self::PARAM_DFLT => '',
 				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_description'],
 			],
+			'batch' => [
+				self::PARAM_TYPE => 'string',
+			]
 		];
 	}
 
@@ -73,9 +88,15 @@ class ApiReadingListsCreate extends ApiBase {
 	 * @return array
 	 */
 	protected function getExamplesMessages() {
+		$batch = wfArrayToCgi( [ 'batch' => json_encode( [
+			[ 'name' => 'dogs', 'description' => 'Woof!' ],
+			[ 'name' => 'cats', 'description' => 'Meow' ],
+		] ) ] );
 		return [
 			'action=readinglists&command=create&name=dogs&description=Woof!&token=123ABC'
 				=> 'apihelp-readinglists+create-example-1',
+			"action=readinglists&command=create&$batch&token=123ABC"
+				=> 'apihelp-readinglists+create-example-2',
 		];
 	}
 
