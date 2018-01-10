@@ -23,10 +23,23 @@ class ApiReadingListsUpdate extends ApiBase {
 	 */
 	public function execute() {
 		$params = $this->extractRequestParams();
-		$this->requireAtLeastOneParameter( $params, 'name', 'description' );
+		$this->requireOnlyOneParameter( $params, 'list', 'batch' );
+		$this->requireMaxOneParameter( $params, 'name', 'batch' );
+		$this->requireMaxOneParameter( $params, 'description', 'batch' );
 
-		$this->getReadingListRepository( $this->getUser() )->updateList( $params['list'],
-			$params['name'], $params['description'] );
+		$repository = $this->getReadingListRepository( $this->getUser() );
+		if ( isset( $params['list'] ) ) {
+			$this->requireAtLeastOneParameter( $params, 'name', 'description' );
+			$repository->updateList( $params['list'], $params['name'], $params['description'] );
+		} else {
+			foreach ( $this->yieldBatchOps( $params['batch'] ) as $op ) {
+				$this->requireAtLeastOneBatchParameter( $op, 'list' );
+				$this->requireAtLeastOneBatchParameter( $op, 'name', 'description' );
+				$name = isset( $op['name'] ) ? $op['name'] : null;
+				$description = isset( $op['description'] ) ? $op['description'] : null;
+				$repository->updateList( $op['list'], $name, $description );
+			}
+		}
 	}
 
 	/**
@@ -37,7 +50,6 @@ class ApiReadingListsUpdate extends ApiBase {
 		return [
 			'list' => [
 				self::PARAM_TYPE => 'integer',
-				self::PARAM_REQUIRED => true,
 			],
 			'name' => [
 				self::PARAM_TYPE => 'string',
@@ -47,6 +59,9 @@ class ApiReadingListsUpdate extends ApiBase {
 				self::PARAM_TYPE => 'string',
 				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_description'],
 			],
+			'batch' => [
+				self::PARAM_TYPE => 'string',
+			]
 		];
 	}
 
@@ -65,9 +80,15 @@ class ApiReadingListsUpdate extends ApiBase {
 	 * @return array
 	 */
 	protected function getExamplesMessages() {
+		$batch = wfArrayToCgi( [ 'batch' => json_encode( [
+			[ 'list' => 42, 'name' => 'New name' ],
+			[ 'list' => 43, 'description' => 'New description' ],
+		] ) ] );
 		return [
 			'action=readinglists&command=update&list=42&name=New+name&token=123ABC'
 				=> 'apihelp-readinglists+update-example-1',
+			"action=readinglists&command=update&$batch&token=123ABC"
+				=> 'apihelp-readinglists+update-example-2',
 		];
 	}
 

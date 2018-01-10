@@ -24,23 +24,39 @@ class ApiReadingListsCreateEntry extends ApiBase {
 	 * @return void
 	 */
 	public function execute() {
+		$params = $this->extractRequestParams();
 		$listId = $this->getParameter( 'list' );
-		$project = $this->getParameter( 'project' );
-		$title = $this->getParameter( 'title' );
+		$this->requireOnlyOneParameter( $params, 'project', 'batch' );
+		$this->requireOnlyOneParameter( $params, 'title', 'batch' );
 
-		// Lists can contain titles from other wikis, and we have no idea of the exact title
-		// validation rules used there; but in practice it's unlikely the rules would differ,
-		// and allowing things like <> or # in the title could result in vulnerabilities in
-		// clients that assume they are getting something sane. So let's validate anyway.
-		// We do not normalize, that would contain too much local logic (e.g. title case), and
-		// clients are expected to submit already normalized titles (that they got from the API) anyway.
-		if ( !Title::newFromText( $title ) ) {
-			$this->dieWithError( 'apierror-invalidtitle', wfEscapeWikiText( $title ) );
+		$repository = $this->getReadingListRepository( $this->getUser() );
+		if ( isset( $params['project'] ) ) {
+			// Lists can contain titles from other wikis, and we have no idea of the exact title
+			// validation rules used there; but in practice it's unlikely the rules would differ,
+			// and allowing things like <> or # in the title could result in vulnerabilities in
+			// clients that assume they are getting something sane. So let's validate anyway.
+			// We do not normalize, that would contain too much local logic (e.g. title case), and
+			// clients are expected to submit already normalized titles (that they got from the API)
+			// anyway.
+			if ( !Title::newFromText( $params['title'] ) ) {
+				$this->dieWithError( 'apierror-invalidtitle', wfEscapeWikiText( $params['title'] ) );
+			}
+
+			$entryId = $repository->addListEntry( $listId, $params['project'], $params['title'] );
+			$this->getResult()->addValue( null, $this->getModuleName(), [ 'id' => $entryId ] );
+		} else {
+			$entryIds = [];
+			foreach ( $this->yieldBatchOps( $params['batch'] ) as $op ) {
+				$this->requireAtLeastOneBatchParameter( $op, 'project' );
+				$this->requireAtLeastOneBatchParameter( $op, 'title' );
+				if ( !Title::newFromText( $op['title'] ) ) {
+					$this->dieWithError( 'apierror-invalidtitle', wfEscapeWikiText( $op['title'] ) );
+				}
+				$entryIds[] = $repository->addListEntry( $listId, $op['project'], $op['title'] );
+			}
+			$this->getResult()->addValue( null, $this->getModuleName(), [ 'ids' => $entryIds ] );
+			$this->getResult()->addIndexedTagName( $this->getModuleName(), 'id' );
 		}
-
-		$entryId = $this->getReadingListRepository( $this->getUser() )
-			->addListEntry( $listId, $project, $title );
-		$this->getResult()->addValue( null, $this->getModuleName(), [ 'id' => $entryId ] );
 	}
 
 	/**
@@ -55,14 +71,15 @@ class ApiReadingListsCreateEntry extends ApiBase {
 			],
 			'project' => [
 				self::PARAM_TYPE => 'string',
-				self::PARAM_REQUIRED => true,
 				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rlp_project'],
 			],
 			'title' => [
 				self::PARAM_TYPE => 'string',
-				self::PARAM_REQUIRED => true,
 				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rle_title'],
 			],
+			'batch' => [
+				self::PARAM_TYPE => 'string',
+			]
 		];
 	}
 
@@ -90,10 +107,16 @@ class ApiReadingListsCreateEntry extends ApiBase {
 	 * @return array
 	 */
 	protected function getExamplesMessages() {
+		$batch = wfArrayToCgi( [ 'batch' => json_encode( [
+			[ 'project' => 'https://en.wikipedia.org', 'title' => 'Dog' ],
+			[ 'project' => 'https://en.wikipedia.org', 'title' => 'Cat' ],
+		] ) ] );
 		return [
 			'action=readinglists&command=createentry&list=33&'
-				. 'project=en.wikipedia.org&title=Dog&token=123ABC'
+				. 'project=https%3A%2F%2Fen.wikipedia.org&title=Dog&token=123ABC'
 				=> 'apihelp-readinglists+createentry-example-1',
+			"action=readinglists&command=createentry&list=33&$batch&token=123ABC"
+				=> 'apihelp-readinglists+createentry-example-2',
 		];
 	}
 
