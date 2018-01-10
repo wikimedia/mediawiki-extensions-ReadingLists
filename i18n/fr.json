@@ -68,6 +68,7 @@
 	"apihelp-readinglists+create-param-name": "Nom de la liste.",
 	"apihelp-readinglists+create-param-description": "Description de la liste.",
 	"apihelp-readinglists+create-example-1": "Créer une nouvelle liste de lecture.",
+	"apihelp-readinglists+create-example-2": "Créer une nouvelle liste de lecture avec une présentation personnifiée.",
 	"apihelp-readinglists+update-summary": "Mettre à jour une liste qui appartient à l’utilisateur actuel.",
 	"apihelp-readinglists+update-param-list": "ID de liste.",
 	"apihelp-readinglists+update-param-name": "Nouveau nom de liste.",

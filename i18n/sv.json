@@ -63,6 +63,7 @@
 	"apihelp-readinglists+create-param-name": "Listnamn.",
 	"apihelp-readinglists+create-param-description": "Listbeskrivning.",
 	"apihelp-readinglists+create-example-1": "Skapa en ny läslista.",
+	"apihelp-readinglists+create-example-2": "Skapa en ny läslista med anpassat utseende.",
 	"apihelp-readinglists+update-summary": "Uppdatera en lista som tillhör nuvarande användare.",
 	"apihelp-readinglists+update-param-list": "List-ID.",
 	"apihelp-readinglists+update-param-name": "Nytt namn på lista.",

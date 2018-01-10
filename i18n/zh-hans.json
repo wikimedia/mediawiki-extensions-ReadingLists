@@ -63,6 +63,7 @@
 	"apihelp-readinglists+create-param-name": "列表名称。",
 	"apihelp-readinglists+create-param-description": "列表描述。",
 	"apihelp-readinglists+create-example-1": "创建新的阅读列表。",
+	"apihelp-readinglists+create-example-2": "创建自定义外观的新阅读列表。",
 	"apihelp-readinglists+update-summary": "更新与当前用户相关的列表。",
 	"apihelp-readinglists+update-param-list": "列表ID。",
 	"apihelp-readinglists+update-param-name": "新列表名称。",

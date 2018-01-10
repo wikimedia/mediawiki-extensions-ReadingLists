@@ -48,6 +48,7 @@
 	"apihelp-readinglists+create-param-name": "Назва списку.",
 	"apihelp-readinglists+create-param-description": "Опис списку.",
 	"apihelp-readinglists+create-example-1": "Створити новий список читання.",
+	"apihelp-readinglists+create-example-2": "Створити новий список читання зі стандартним виглядом.",
 	"apihelp-readinglists+update-summary": "Оновити список, який належить поточному користувачеві.",
 	"apihelp-readinglists+update-param-list": "Ідентифікатор списку.",
 	"apihelp-readinglists+update-param-name": "Нова назва списку.",

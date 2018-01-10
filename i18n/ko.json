@@ -53,6 +53,7 @@
 	"apihelp-readinglists+create-param-name": "목록 이름입니다.",
 	"apihelp-readinglists+create-param-description": "목록의 설명입니다.",
 	"apihelp-readinglists+create-example-1": "새로운 읽기 목록을 만듭니다.",
+	"apihelp-readinglists+create-example-2": "사용자 지정 표시를 사용하여 새로운 읽기 목록을 만듭니다.",
 	"apihelp-readinglists+update-summary": "현재 사용자에 속하는 목록을 업데이트합니다.",
 	"apihelp-readinglists+update-param-list": "목록 ID입니다.",
 	"apihelp-readinglists+update-param-name": "새로운 목록 이름입니다.",
