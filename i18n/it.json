@@ -12,7 +12,7 @@
 	"readinglists-db-error-entry-limit": "L'elenco $1 non può avere più di $2 {{PLURAL:$2|elemento|elementi}}.",
 	"readinglists-db-error-too-long": "Il valore per il campo $1 non può superare i $2 byte.",
 	"apihelp-readinglists+create-extended-description": "L'utente deve avere meno di $1 {{PLURAL:$1|elenco|elenchi}} (non cancellati).",
-	"apihelp-readinglists+update-param-list": "ID elenco.",
-	"apihelp-readinglists+delete-param-list": "ID elenco.",
+	"apihelp-readinglists+update-param-list": "ID elenco. Richiesto a meno che non si usi l'aggiornamento batch.",
+	"apihelp-readinglists+delete-param-list": "ID elenco. Richiesto a meno che non si esegua l'eliminazione batch.",
 	"apihelp-readinglists+createentry-param-list": "ID elenco."
 }

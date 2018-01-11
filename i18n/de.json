@@ -27,6 +27,7 @@
 	"readinglists-apierror-invalidsort-notbyname": "Die Sortieroption <kbd>name</kbd> kann nicht zusammen mit <var>$1changedsince</var> verwendet werden.",
 	"apierror-readinglists-batch-invalid-json": "Ungültiges JSON für den Parameter <var>batch</var>: $1",
 	"apierror-readinglists-batch-invalid-structure": "Ungültiges JSON für den Parameter <var>batch</var>: Es muss eine Anordnung von Objekten enthalten, die skalare Werte haben.",
+	"apierror-readinglists-batch-missingparam-at-least-one-of": "In jedem Objekt innerhalb der Eingabe <var>batch</var> ist {{PLURAL:$2|das Feld|mindestens eines der Felder}} $1 erforderlich.",
 	"apihelp-query+readinglists-paramvalue-sort-updated": "Zeitstempel der letzten Aktualisierung. Aktualisierungen enthalten Änderungen der Listenmetadaten, jedoch keine Änderungen an Listenelementen.",
 	"apihelp-query+readinglistentries-param-sort": "Zu sortierende Eigenschaft. <kbd>name</kbd> kann nicht zusammen mit <var>$1changedsince</var> verwendet werden. Standard ist <kbd>updated</kbd>, falls <var>$1changedsince</var> festgelegt ist, anderenfalls <kbd>name</kbd>.",
 	"apihelp-query+readinglistentries-paramvalue-sort-updated": "Zeitstempel der letzten Aktualisierung.",
