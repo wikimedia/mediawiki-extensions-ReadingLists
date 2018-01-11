@@ -38,7 +38,7 @@ class Purge extends Maintenance {
 			$before = wfTimestamp( TS_MW, $this->getOption( 'before' ) );
 			if ( !$before || $now <= $before ) {
 				// Let's not delete all rows if the user entered an invalid timestamp.
-				$this->error( 'Invalid timestamp', 1 );
+				$this->fatalError( 'Invalid timestamp' );
 			}
 		} else {
 			$before = Utils::getDeletedExpiry();
