@@ -36,7 +36,7 @@ class PopulateWithTestData extends Maintenance {
 		$this->addOption( 'entries', 'Entries per list (number or stats distribution)', false, true );
 		$this->addOption( 'cleanup', 'Delete lists which look like test data' );
 		if ( !extension_loaded( 'stats' ) ) {
-			$this->error( 'Requires the stats PHP extension', 1 );
+			$this->fatalError( 'Requires the stats PHP extension' );
 		}
 	}
 
@@ -61,7 +61,7 @@ class PopulateWithTestData extends Maintenance {
 
 		$projects = $this->dbw->selectFieldValues( 'reading_list_project', 'rlp_id' );
 		if ( !$projects ) {
-			$this->error( 'No projects! Please set up some', 1 );
+			$this->fatalError( 'No projects! Please set up some' );
 		}
 		$totalLists = $totalEntries = 0;
 		stats_rand_setall( mt_rand(), mt_rand() );
@@ -176,7 +176,7 @@ class PopulateWithTestData extends Maintenance {
 				|| $this->hasOption( 'lists' )
 				|| $this->hasOption( 'entries' )
 			) {
-				$this->error( "'cleanup' cannot be used together with other options", 1 );
+				$this->fatalError( "'cleanup' cannot be used together with other options" );
 			}
 		} else {
 			if (
@@ -184,7 +184,7 @@ class PopulateWithTestData extends Maintenance {
 				|| !$this->hasOption( 'lists' )
 				|| !$this->hasOption( 'entries' )
 			) {
-				$this->error( "'users', 'lists' and 'entries' are required in non-cleanup mode", 1 );
+				$this->fatalError( "'users', 'lists' and 'entries' are required in non-cleanup mode" );
 			}
 		}
 	}
