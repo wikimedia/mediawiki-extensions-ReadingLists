@@ -26,7 +26,7 @@ class Purge extends Maintenance {
 		parent::__construct();
 		$this->addDescription(
 			'Purge unneeded database rows (deleted lists/entries or orphaned sortkeys).' );
-		$this->addOption( 'before', 'Purge deleted lists/entries before this timestamp', true, true );
+		$this->addOption( 'before', 'Purge deleted lists/entries before this timestamp', false, true );
 	}
 
 	/**
