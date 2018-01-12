@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Banjo",
-			"Elisardojm"
+			"Elisardojm",
+			"Athena in Wonderland"
 		]
 	},
 	"readinglists-desc": "Permítelle ós usuarios manexar listas privadas de artigos, coma páxinas marcadas ou listas de \"ler máis tarde\".",
@@ -26,6 +27,7 @@
 	"readinglists-apierror-project-title-param": "<var>$1project</var> e <var>$1title</var> deben ser usados xuntos.",
 	"readinglists-apierror-too-old": "Os selos de tempo pasados a <var>$1changedsince</var> non poden ser anteriores a <kbd>$2</kbd>.",
 	"readinglists-apierror-invalidsort-notbyname": "A opción de ordenación <kbd>name</kbd> non pode usarse xunto con <var>$1changedsince</var>.",
+	"apierror-readinglists-batch-invalid-json": "JSON non válido para o parámetro <var>batch</var> (grupo): $1",
 	"apihelp-query+readinglists-param-limit": "Número de resultados a devolver.",
 	"apihelp-query+readinglists-example-1": "Obter as listas de lectura do usuario actual.",
 	"apihelp-query+readinglistentries-summary": "Listar as páxinas dunha lista dada.",
@@ -51,5 +53,5 @@
 	"apihelp-readinglists+delete-example-1": "Borrar a lista de lectura co identificador <kbd>11</kbd>.",
 	"apihelp-readinglists+createentry-param-list": "Identificador da lista.",
 	"apihelp-readinglists+createentry-param-title": "Título da páxina.",
-	"apihelp-readinglists+deleteentry-param-entry": "Identificador de entrada."
+	"apihelp-readinglists+deleteentry-param-entry": "Identificador de entrada. Obrigatorio, a non ser que se estea a facer un borrado por lotes."
 }

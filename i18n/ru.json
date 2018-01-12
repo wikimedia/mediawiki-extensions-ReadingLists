@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Edible Melon"
+		]
+	},
+	"apierror-readinglists-batch-invalid-json": "Неверный JSON для <var>batch</var> параметра: $1",
+	"apihelp-readinglists+delete-example-2": "Удалить несколько списков."
+}
