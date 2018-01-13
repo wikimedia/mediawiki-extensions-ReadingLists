@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jorn Ari"
+		]
+	},
+	"apihelp-readinglists+update-example-2": "Opdatér flere lister.",
+	"apihelp-readinglists+delete-example-2": "Slet flere lister."
+}
