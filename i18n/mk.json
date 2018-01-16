@@ -8,6 +8,7 @@
 	"readinglists-db-error-not-set-up": "Нема поставени списоци за читање за овој корисник.",
 	"readinglists-db-error-already-set-up": "Веќе се поставен и списоци за читање за овој корисник.",
 	"readinglists-db-error-cannot-delete-default-list": "Основниот список не може да се избрише.",
+	"readinglists-db-error-cannot-update-default-list": "Основниот список не може да се избрише.",
 	"readinglists-db-error-no-such-list": "Списокот $1 не постои.",
 	"readinglists-db-error-no-such-list-entry": "Ставката $1 не постои.",
 	"readinglists-db-error-not-own-list": "Списокот $1 му припаѓа на друг корисник.",
