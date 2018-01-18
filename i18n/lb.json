@@ -23,8 +23,11 @@
 	"apihelp-readinglists+update-param-list": "ID vun der Lëscht.",
 	"apihelp-readinglists+update-param-name": "Neien Numm vun der Lëscht.",
 	"apihelp-readinglists+update-param-description": "Nei Beschreiwung vun der Lëscht.",
+	"apihelp-readinglists+update-example-2": "Méi Lëschten aktualiséieren.",
 	"apihelp-readinglists+delete-summary": "Eng Lëscht läschen déi dem aktuelle Benotzer gehéiert.",
 	"apihelp-readinglists+delete-param-list": "ID vun der Lëscht.",
+	"apihelp-readinglists+delete-example-2": "Méi Lëschte läschen.",
 	"apihelp-readinglists+createentry-param-list": "ID vun der Lëscht.",
-	"apihelp-readinglists+createentry-param-title": "Säitentitel."
+	"apihelp-readinglists+createentry-param-title": "Säitentitel.",
+	"apihelp-readinglists+createentry-example-2": "Méi Säiten op eng Lëscht dobäisetzen"
 }
