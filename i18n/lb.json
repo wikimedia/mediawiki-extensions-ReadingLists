@@ -17,7 +17,7 @@
 	"apihelp-query+readinglists-example-1": "D'Lieslëschte vum aktuelle Benotzer kréien",
 	"apihelp-readinglists+teardown-summary": "Lëschte fir den aktuelle Benotzer desaktivéieren.",
 	"apihelp-readinglists+teardown-example-1": "Lieslëschte fir den aktuelle Benotzer desaktivéieren.",
-	"apihelp-readinglists+create-param-name": "Numm vun der Lëscht.",
+	"apihelp-readinglists+create-param-name": "Numm vun der Lëscht. Obligatoresch, ausser beim Uleeë mat engem Batch.",
 	"apihelp-readinglists+create-param-description": "Beschreiwung vun der Lëscht",
 	"apihelp-readinglists+create-example-1": "Eng nei Lieslëscht uleeën.",
 	"apihelp-readinglists+update-param-list": "ID vun der Lëscht.",
