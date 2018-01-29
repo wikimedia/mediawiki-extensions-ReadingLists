@@ -29,6 +29,7 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 		$this->addDescription(
 			'Populate (or update) the reading_list_project table from SiteMatrix data.' );
 		$this->setBatchSize( 100 );
+		$this->requireExtension( 'ReadingLists' );
 		$this->requireExtension( 'SiteMatrix' );
 	}
 

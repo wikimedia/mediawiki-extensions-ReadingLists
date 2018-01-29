@@ -35,6 +35,7 @@ class PopulateWithTestData extends Maintenance {
 		$this->addOption( 'lists', 'Lists per user (number or stats distribution)', false, true );
 		$this->addOption( 'entries', 'Entries per list (number or stats distribution)', false, true );
 		$this->addOption( 'cleanup', 'Delete lists which look like test data' );
+		$this->requireExtension( 'ReadingLists' );
 		if ( !extension_loaded( 'stats' ) ) {
 			$this->fatalError( 'Requires the stats PHP extension' );
 		}
