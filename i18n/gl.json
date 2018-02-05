@@ -28,6 +28,7 @@
 	"readinglists-apierror-too-old": "Os selos de tempo pasados a <var>$1changedsince</var> non poden ser anteriores a <kbd>$2</kbd>.",
 	"readinglists-apierror-invalidsort-notbyname": "A opción de ordenación <kbd>name</kbd> non pode usarse xunto con <var>$1changedsince</var>.",
 	"apierror-readinglists-batch-invalid-json": "JSON non válido para o parámetro <var>batch</var> (grupo): $1",
+	"apierror-readinglists-batch-invalid-structure": "JSON non válido para o parámetro <var>batch</var>: debe conter unha matriz de obxectos con valores escalares.",
 	"apihelp-query+readinglists-param-limit": "Número de resultados a devolver.",
 	"apihelp-query+readinglists-example-1": "Obter as listas de lectura do usuario actual.",
 	"apihelp-query+readinglistentries-summary": "Listar as páxinas dunha lista dada.",
