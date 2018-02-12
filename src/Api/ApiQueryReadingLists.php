@@ -3,9 +3,12 @@
 namespace MediaWiki\Extensions\ReadingLists\Api;
 
 use ApiQueryBase;
+use DateTime;
+use DateTimeZone;
 use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extensions\ReadingLists\Utils;
+use MWTimestamp;
 
 /**
  * API meta module for getting list metadata.
@@ -68,6 +71,8 @@ class ApiQueryReadingLists extends ApiQueryBase {
 			$sort = self::$sortParamMap[$sort];
 			$dir = self::$sortParamMap[$dir];
 			$continue = $this->decodeContinuationParameter( $continue, $mode, $sort );
+			// timestamp from before querying the DB
+			$timestamp = new DateTime( 'now', new DateTimeZone( 'GMT' ) );
 
 			if ( $mode === self::$MODE_PAGE ) {
 				$res = $repository->getListsByPage( $project, $title, $limit + 1, $continue );
@@ -90,6 +95,23 @@ class ApiQueryReadingLists extends ApiQueryBase {
 						$this->encodeContinuationParameter( $item, $mode, $sort ) );
 					break;
 				}
+			}
+
+			// Add a timestamp that, when used in the changedsince parameter in the readinglists
+			// and readinglistentries modules, guarantees that no change will be skipped (at the
+			// cost of possibly repeating some changes in the current query). See T182706 for details.
+			if ( !$continue ) {
+				// Ignore continuations (the client should just use the timestamp received in the
+				// first step). Otherwise, backdate more than the max transaction duration, to
+				// prevent the situation where a DB write happens before the current request
+				// but is only committed after it. (If there is no max transaction duration, the
+				// client is on its own.)
+				global $wgMaxUserDBWriteDuration;
+				if ( $wgMaxUserDBWriteDuration ) {
+					$timestamp->modify( '-' . ( $wgMaxUserDBWriteDuration + 1 ) . ' seconds' );
+				}
+				$syncTimestamp = ( new MWTimestamp( $timestamp ) )->getTimestamp( TS_ISO_8601 );
+				$result->addValue( 'query', 'readinglists-synctimestamp', $syncTimestamp );
 			}
 		} catch ( ReadingListRepositoryException $e ) {
 			$this->dieWithException( $e );
