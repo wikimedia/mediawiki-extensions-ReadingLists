@@ -30,7 +30,7 @@
 	"apierror-readinglists-batch-missingparam-at-least-one-of": "在每个<var>batch</var>输入中的对象中，都必须有{{PLURAL:$2|字段|至少以下字段之一：}}$1。",
 	"apihelp-query+readinglists-summary": "列举或过滤用户的阅读列表，并显示与其相关的元数据。",
 	"apihelp-query+readinglists-extended-description": "此模块有三种操作模式。与<var>$1changedsince</var>参数一起使用时，它返回自提供日期起，所有已更改的当前用户的列表。（这意味着用于设备同步，并且与其他模式不同，也包含删除的列表。只考虑对列表元数据的更改，而不考虑对列表项的更改。）与<var>$1project</var>和<var>$1title</var>参数一起使用时，它返回所有包含那个页面的列表。不与这些参数一起使用时，它返回所有列表。",
-	"apihelp-query+readinglists-param-changedsince": "显示自该时间戳以来，已更改的列表。必须在<kbd>$1</kbd>之后。",
+	"apihelp-query+readinglists-param-changedsince": "显示自该时间戳以来，已更改的列表。必须在<kbd>$1</kbd>之后。如果要确保不错过任何更改，客户端应使用从早期调用中<samp>readinglists-synctimestamp</samp>字段返回的时间戳，并应准备接收已在早期响应中返回的更改，并以幂等方法处理它们。",
 	"apihelp-query+readinglists-param-project": "要过滤的页面所属项目。不能与<var>$1title</var>一起使用。",
 	"apihelp-query+readinglists-param-title": "要过滤的页面标题。不能与<var>$1project</var>一起使用。",
 	"apihelp-query+readinglists-param-sort": "要排序的属性。当设置<var>$1project</var>和<var>$1title</var>时会忽略（结果以数据库顺序返回）。当设置<var>$1changedsince</var>时默认值为<kbd>updated</kbd>，除此之外的情况下默认值为<kbd>name</kbd>。",
