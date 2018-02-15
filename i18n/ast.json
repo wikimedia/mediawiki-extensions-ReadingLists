@@ -4,5 +4,24 @@
 			"Xuacu"
 		]
 	},
-	"readinglists-desc": "Permite a los usuarios xestionar llistes privaes d'artículos, como marcadores o llistes de \"Lleer dempués\"."
+	"readinglists-desc": "Permite a los usuarios xestionar llistes privaes d'artículos, como marcadores o llistes de \"Lleer dempués\".",
+	"readinglists-db-error-not-set-up": "Nun se configuraron llistes de llectura pa esti usuariu.",
+	"readinglists-db-error-already-set-up": "Yá se configuraron llistes de llectura pa esti usuariu.",
+	"readinglists-db-error-cannot-delete-default-list": "La llista predeterminada nun puede desaniciase.",
+	"readinglists-db-error-cannot-update-default-list": "La llista predeterminada nun puede anovase.",
+	"readinglists-db-error-no-such-list": "La llista $1 nun esiste.",
+	"readinglists-db-error-no-such-list-entry": "La entrada de llista $1 nun esiste.",
+	"readinglists-db-error-not-own-list": "La llista $1 pertenez a otru usuariu.",
+	"readinglists-db-error-not-own-list-entry": "La entrada de llista $1 pertenez a otru usuariu.",
+	"readinglists-db-error-list-deleted": "Desanicióse la llista $1.",
+	"readinglists-db-error-list-entry-deleted": "Desanicióse la entrada de llista $1.",
+	"readinglists-db-error-duplicate-page": "La llista yá contien esta páxina.",
+	"readinglists-db-error-empty-list-ids": "El parámetru d'identificadores de llista nun puede tar vacíu.",
+	"readinglists-db-error-user-required": "Nun puede llamase a esti métodu ensin especificar l'usuariu.",
+	"readinglists-db-error-list-limit": "Los usuarios nun pueden tener mas de $1 {{PLURAL:$1|llista|llistes}}.",
+	"readinglists-db-error-entry-limit": "La llista $1 nun puede tener mas de $2 {{PLURAL:$2|entrada|entraes}}.",
+	"readinglists-db-error-too-long": "El valor del campu $1 nun puede ser mayor de $2 bytes.",
+	"readinglists-db-error-no-such-project": "'$1' nun ye un proyectu reconocíu.",
+	"readinglists-apierror-project-title-param": "<var>$1project</var> y <var>$1title</var> tienen d'usase xuntos.",
+	"readinglists-apierror-too-old": "Les marques de tiempu pasaes a <var>$1changedsince</var> nun pueden ser anteriores a <kbd>$2</kbd>."
 }
