@@ -4,7 +4,7 @@ namespace MediaWiki\Extensions\ReadingLists;
 
 use MediaWiki\Interwiki\InterwikiLookup;
 
-class ReverseInterwikiLookupTest extends \PHPUnit_Framework_TestCase {
+class ReverseInterwikiLookupTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider provideLookup
