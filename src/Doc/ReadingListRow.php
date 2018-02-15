@@ -44,6 +44,13 @@ trait ReadingListRow {
 	public $rl_date_updated;
 
 	/**
+	 * Number of items in the list.
+	 * Intended as a temporary performance optimization until T177462 is sorted out.
+	 * @var string
+	 */
+	public $rl_size;
+
+	/**
 	 * Deleted flag.
 	 * Lists will be hard-deleted eventually but kept around for a while for sync.
 	 * @var string

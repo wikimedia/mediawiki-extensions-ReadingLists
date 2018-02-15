@@ -14,11 +14,14 @@ CREATE TABLE /*_*/reading_list (
     -- Description of the list.
     rl_description VARBINARY(767) NOT NULL DEFAULT '',
     -- Creation timestamp.
-    rl_date_created BINARY(14) NOT NULL default '19700101000000',
+    rl_date_created BINARY(14) NOT NULL DEFAULT '19700101000000',
     -- Last modification timestamp.
     -- This only reflects modifications to the reading_list record, not
     -- modifications/additions/deletions of child entries.
-    rl_date_updated BINARY(14) NOT NULL default '19700101000000',
+    rl_date_updated BINARY(14) NOT NULL DEFAULT '19700101000000',
+    -- Number of items in the list.
+    -- Intended as a temporary performance optimization until T177462 is sorted out.
+    rl_size INTEGER UNSIGNED NOT NULL DEFAULT 0,
     -- Deleted flag.
     -- Lists will be hard-deleted eventually but kept around for a while for sync.
     rl_deleted TINYINT NOT NULL DEFAULT 0
@@ -58,9 +61,9 @@ CREATE TABLE /*_*/reading_list_entry (
     -- safe side.
     rle_title VARCHAR(383) BINARY NOT NULL,
     -- Creation timestamp.
-    rle_date_created BINARY(14) NOT NULL default '19700101000000',
+    rle_date_created BINARY(14) NOT NULL DEFAULT '19700101000000',
     -- Last modification timestamp.
-    rle_date_updated BINARY(14) NOT NULL default '19700101000000',
+    rle_date_updated BINARY(14) NOT NULL DEFAULT '19700101000000',
     -- Deleted flag.
     -- Entries will be hard-deleted eventually but kept around for a while for sync.
     rle_deleted TINYINT NOT NULL DEFAULT 0

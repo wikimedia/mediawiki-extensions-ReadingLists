@@ -53,6 +53,8 @@ class HookHandler {
 				"$patchDir/04-drop-metadata-columns.sql" );
 			$updater->modifyExtensionField( 'reading_list_entry', 'rle_title',
 				"$patchDir/05-increase-rle_title-length.sql" );
+			$updater->addExtensionField( 'reading_list', 'rl_size',
+				"$patchDir/06-add-rl_size.sql" );
 		}
 		return true;
 	}

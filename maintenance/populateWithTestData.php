@@ -107,6 +107,11 @@ class PopulateWithTestData extends Maintenance {
 					'reading_list_entry',
 					$rows
 				);
+				$this->dbw->update(
+					'reading_list',
+					[ 'rl_size' => $entries ],
+					[ 'rl_id' => $listId ]
+				);
 			}
 			$this->output( '.' );
 		}

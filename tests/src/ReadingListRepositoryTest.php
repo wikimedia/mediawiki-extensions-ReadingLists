@@ -143,8 +143,9 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			'rl_name' => 'foo',
 			'rl_description' => '',
 			'rl_is_default' => '0',
+			'rl_size' => '0',
 			'rl_deleted' => '0',
-		], $data );
+		], $data, false, true );
 
 		$listId = $repository->addList( 'bar', 'here is some bar' );
 		/** @var ReadingListRow $row */
@@ -158,8 +159,9 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			'rl_name' => 'bar',
 			'rl_description' => 'here is some bar',
 			'rl_is_default' => '0',
+			'rl_size' => '0',
 			'rl_deleted' => '0',
-		], $data );
+		], $data, false, true );
 
 		$this->assertFailsWith( 'readinglists-db-error-too-long', function () use ( $repository ) {
 			$repository->addList( 'boom',  str_pad( '', 1000, 'x' ) );
@@ -1196,6 +1198,8 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			$entryId = $this->db->insertId();
 			$entryIds[] = $entryId;
 		}
+		$entryCount = $this->db->selectRowCount( 'reading_list_entry', '*', [ 'rle_rl_id' => $listId ] );
+		$this->db->update( 'reading_list', [ 'rl_size' => $entryCount ], [ 'rl_id' => $listId ] );
 		return $entryIds;
 	}
 

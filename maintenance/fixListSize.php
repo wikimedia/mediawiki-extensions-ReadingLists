@@ -1,0 +1,127 @@
+<?php
+
+namespace MediaWiki\Extensions\ReadingLists\Maintenance;
+
+use CentralIdLookup;
+use Maintenance;
+use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
+use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
+use MediaWiki\Extensions\ReadingLists\Utils;
+use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MediaWikiServices;
+use User;
+use Wikimedia\Rdbms\DBConnRef;
+use Wikimedia\Rdbms\LBFactory;
+
+require_once getenv( 'MW_INSTALL_PATH' ) !== false
+	? getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php'
+	: __DIR__ . '/../../../maintenance/Maintenance.php';
+
+/**
+ * Fill the database with test data, or remove it.
+ */
+class FixListSize extends Maintenance {
+
+	/** @var LBFactory */
+	private $loadBalancerFactory;
+
+	/** @var DBConnRef */
+	private $dbw;
+
+	public function __construct() {
+		parent::__construct();
+		$this->addDescription( 'Recalculate the reading_list.rl_size field.' );
+		$this->addOption( 'list', 'List ID', false, true );
+		$this->requireExtension( 'ReadingLists' );
+	}
+
+	private function setupServices() {
+		// Can't do this in the constructor, initialization not done yet.
+		$services = MediaWikiServices::getInstance();
+		$this->loadBalancerFactory = $services->getDBLoadBalancerFactory();
+		$this->dbw = Utils::getDB( DB_MASTER, $services );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function execute() {
+		$this->setupServices();
+
+		$this->beginTransaction( $this->dbw, __METHOD__ );
+		if ( $this->hasOption( 'list' ) ) {
+			$this->fixRow( $this->getOption( 'list' ) );
+		} else {
+			$i = $maxId = 0;
+			while ( true ) {
+				$ids = $this->dbw->selectFieldValues(
+					'reading_list',
+					'rl_id',
+					[
+						"rl_id > $maxId",
+						// No point in wasting resources on fixing deleted lists.
+						'rl_deleted' => 0,
+					],
+					__METHOD__,
+					[
+						'ORDER BY' => 'rl_id ASC',
+						'LIMIT' => 1000,
+					]
+				);
+				if ( !$ids ) {
+					break;
+				}
+				foreach ( $ids as $id ) {
+					$this->fixRow( $id );
+					$i++;
+					$maxId = (int)$id;
+				}
+				$this->loadBalancerFactory->waitForReplication();
+			}
+			$this->output( "Fixed $i lists.\n" );
+		}
+		$this->commitTransaction( $this->dbw, __METHOD__ );
+	}
+
+	/**
+	 * Recalculate the size of the given list.
+	 * @param int $listId
+	 * @throws ReadingListRepositoryException
+	 */
+	private function fixRow( $listId ) {
+		$repo = $this->getReadingListRepository();
+		try {
+			$this->output( "Fixing list $listId... " );
+			$repo->fixListSize( $listId );
+		} catch ( ReadingListRepositoryException $e ) {
+			if ( $e->getMessageObject()->getKey() === 'readinglists-db-error-no-such-list' ) {
+				$this->error( "not found, skipping\n" );
+				return;
+			} else {
+				throw $e;
+			}
+		}
+		$this->output( "done\n" );
+	}
+
+	/**
+	 * Initializes the repository.
+	 * @return ReadingListRepository
+	 */
+	private function getReadingListRepository() {
+		$services = MediaWikiServices::getInstance();
+		$loadBalancerFactory = $services->getDBLoadBalancerFactory();
+		$dbw = Utils::getDB( DB_MASTER, $services );
+		$dbr = Utils::getDB( DB_REPLICA, $services );
+		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
+		// There isn't really any way for this user to be non-local, but let's be future-proof.
+		$centralId = CentralIdLookup::factory()->centralIdFromLocalUser( $user );
+		$repository = new ReadingListRepository( $centralId, $dbw, $dbr, $loadBalancerFactory );
+		$repository->setLogger( LoggerFactory::getInstance( 'readinglists' ) );
+		return $repository;
+	}
+
+}
+
+$maintClass = FixListSize::class;
+require_once RUN_MAINTENANCE_IF_MAIN;
