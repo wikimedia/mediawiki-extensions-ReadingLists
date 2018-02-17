@@ -46,7 +46,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 			$this->getResult()->addValue( null, $this->getModuleName(), [ 'id' => $entryId ] );
 		} else {
 			$entryIds = [];
-			foreach ( $this->yieldBatchOps( $params['batch'] ) as $op ) {
+			foreach ( $this->getBatchOps( $params['batch'] ) as $op ) {
 				$this->requireAtLeastOneBatchParameter( $op, 'project' );
 				$this->requireAtLeastOneBatchParameter( $op, 'title' );
 				if ( !Title::newFromText( $op['title'] ) ) {

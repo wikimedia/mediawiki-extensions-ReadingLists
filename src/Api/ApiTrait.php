@@ -99,12 +99,12 @@ trait ApiTrait {
 	}
 
 	/**
-	 * Decode, validate and iterate the 'batch' parameter of write APIs.
+	 * Decode, validate and normalize the 'batch' parameter of write APIs.
 	 * @param string $rawBatch The raw value of the 'batch' parameter.
-	 * @return \Generator
+	 * @return array One operation, typically a flat associative array.
 	 * @throws ApiUsageException
 	 */
-	protected function yieldBatchOps( $rawBatch ) {
+	protected function getBatchOps( $rawBatch ) {
 		$batch = json_decode( $rawBatch, true );
 
 		// Must be a real array, and not empty.
@@ -117,7 +117,13 @@ trait ApiTrait {
 			$this->dieWithError( 'apierror-readinglists-batch-invalid-structure' );
 		}
 
-		foreach ( $batch as $op ) {
+		$i = 0;
+		$request = $this->getContext()->getRequest();
+		foreach ( $batch as &$op ) {
+			if ( ++$i > ApiBase::LIMIT_BIG1 ) {
+				$msg = wfMessage( 'apierror-readinglists-batch-toomanyvalues', ApiBase::LIMIT_BIG1 );
+				$this->dieWithError( $msg, 'toomanyvalues' );
+			}
 			// Each batch operation must be an associative array with scalar fields.
 			if (
 				!is_array( $op )
@@ -126,8 +132,14 @@ trait ApiTrait {
 			) {
 				$this->dieWithError( 'apierror-readinglists-batch-invalid-structure' );
 			}
-			yield $op;
+			// JSON-escaped characters might have skipped WebRequest's normalization, repeat it.
+			array_walk_recursive( $op, function ( &$value ) use ( $request ) {
+				if ( is_string( $value ) ) {
+					$value = $request->normalizeUnicode( $value );
+				}
+			} );
 		}
+		return $batch;
 	}
 
 	/**

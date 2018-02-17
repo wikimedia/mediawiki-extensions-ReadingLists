@@ -34,7 +34,7 @@ class ApiReadingListsCreate extends ApiBase {
 			$this->getResult()->addValue( null, $this->getModuleName(), [ 'id' => $listId ] );
 		} else {
 			$listIds = [];
-			foreach ( $this->yieldBatchOps( $params['batch'] ) as $op ) {
+			foreach ( $this->getBatchOps( $params['batch'] ) as $op ) {
 				$description = isset( $op['description'] ) ? $op['description'] : '';
 				$this->requireAtLeastOneBatchParameter( $op, 'name' );
 				$listIds[] = $repository->addList( $op['name'], $description );

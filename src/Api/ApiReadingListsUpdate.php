@@ -32,7 +32,7 @@ class ApiReadingListsUpdate extends ApiBase {
 			$this->requireAtLeastOneParameter( $params, 'name', 'description' );
 			$repository->updateList( $params['list'], $params['name'], $params['description'] );
 		} else {
-			foreach ( $this->yieldBatchOps( $params['batch'] ) as $op ) {
+			foreach ( $this->getBatchOps( $params['batch'] ) as $op ) {
 				$this->requireAtLeastOneBatchParameter( $op, 'list' );
 				$this->requireAtLeastOneBatchParameter( $op, 'name', 'description' );
 				$name = isset( $op['name'] ) ? $op['name'] : null;

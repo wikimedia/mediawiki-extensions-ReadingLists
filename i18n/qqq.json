@@ -28,6 +28,7 @@
 	"readinglists-apierror-invalidsort-notbyname": "{{doc-apierror}}\n$1 is the module prefix.",
 	"apierror-readinglists-batch-invalid-json": "{{doc-apierror}}\n\nParameters:\n* $1 - Error message from JSON decoder.",
 	"apierror-readinglists-batch-invalid-structure": "{{doc-apierror}}",
+	"apierror-readinglists-batch-toomanyvalues": "{{doc-apierror}}\n\nParameters:\n* $1 - Maximum allowed number of items.",
 	"apierror-readinglists-batch-missingparam-at-least-one-of": "{{doc-apierror}}\n\nParameters:\n* $1 - List of parameter names.\n* $2 - Number of parameters.",
 	"apihelp-query+readinglists-summary": "{{doc-apihelp-summary|query+readinglists}}",
 	"apihelp-query+readinglists-extended-description": "{{doc-apihelp-extended-description|query+readinglists}}",
