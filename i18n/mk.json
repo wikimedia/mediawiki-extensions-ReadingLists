@@ -22,9 +22,9 @@
 	"readinglists-db-error-entry-limit": "Списокот $1 не може да има повеќе од $2 {{PLURAL:$2|ставка|ставки}}.",
 	"readinglists-db-error-too-long": "Вреднсота за полето $1 не може да е подолга од $2 бајти.",
 	"readinglists-db-error-no-such-project": "„$1“ не е признаен проект.",
-	"readinglists-apierror-project-title-param": "<var>$1project</var> и <var>$1title</var> мора да се користат заедно.",
-	"readinglists-apierror-too-old": "Временско-датумските ознаки што се му даваат на <var>$1changedsince</var> не може да бидат постари од <kbd>$2</kbd>.",
-	"readinglists-apierror-invalidsort-notbyname": "Можноста за подредување <kbd>name</kbd> не може да се користи заедно со <var>$1changedsince</var>.",
+	"apierror-readinglists-project-title-param": "<var>$1project</var> и <var>$1title</var> мора да се користат заедно.",
+	"apierror-readinglists-too-old": "Временско-датумските ознаки што се му даваат на <var>$1changedsince</var> не може да бидат постари од <kbd>$2</kbd>.",
+	"apierror-readinglists-invalidsort-notbyname": "Можноста за подредување <kbd>name</kbd> не може да се користи заедно со <var>$1changedsince</var>.",
 	"apierror-readinglists-batch-invalid-json": "Неважечки JSON за параметарот <var>batch</var>: $1",
 	"apihelp-query+readinglistentries-summary": "Наведување на страниците на даден список."
 }

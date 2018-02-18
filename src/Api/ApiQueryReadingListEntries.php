@@ -71,7 +71,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 		}
 		if ( $mode === self::$MODE_CHANGES && $sort === 'name' ) {
 			// We don't have the right DB index for this. Wouldn't make much sense anyways.
-			$errorMessage = $this->msg( 'readinglists-apierror-invalidsort-notbyname', static::$prefix );
+			$errorMessage = $this->msg( 'apierror-readinglists-invalidsort-notbyname', static::$prefix );
 			$this->dieWithError( $errorMessage, 'invalidparammix' );
 		}
 		$sort = self::$sortParamMap[$sort];
@@ -82,7 +82,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 		if ( $mode === self::$MODE_CHANGES ) {
 			$expiry = Utils::getDeletedExpiry();
 			if ( $changedSince < $expiry ) {
-				$errorMessage = $this->msg( 'readinglists-apierror-too-old', static::$prefix,
+				$errorMessage = $this->msg( 'apierror-readinglists-too-old', static::$prefix,
 					wfTimestamp( TS_ISO_8601, $expiry ) );
 				$this->dieWithError( $errorMessage );
 			}

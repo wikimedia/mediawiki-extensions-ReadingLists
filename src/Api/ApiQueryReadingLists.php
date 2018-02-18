@@ -51,12 +51,12 @@ class ApiQueryReadingLists extends ApiQueryBase {
 			if ( $project !== null && $title !== null ) {
 				$mode = self::$MODE_PAGE;
 			} elseif ( $project !== null || $title !== null ) {
-				$errorMessage = $this->msg( 'readinglists-apierror-project-title-param', static::$prefix );
+				$errorMessage = $this->msg( 'apierror-readinglists-project-title-param', static::$prefix );
 				$this->dieWithError( $errorMessage, 'missingparam' );
 			} elseif ( $changedSince !== null ) {
 				$expiry = Utils::getDeletedExpiry();
 				if ( $changedSince < $expiry ) {
-					$errorMessage = $this->msg( 'readinglists-apierror-too-old', static::$prefix,
+					$errorMessage = $this->msg( 'apierror-readinglists-too-old', static::$prefix,
 						wfTimestamp( TS_ISO_8601, $expiry ) );
 					$this->dieWithError( $errorMessage );
 				}

@@ -22,5 +22,5 @@
 	"readinglists-db-error-entry-limit": "ברשימה $1 לא {{PLURAL:$2|יכול להיות יותר מפריט אחד|יכולים להיות יותר מ־$2 פריטים}}.",
 	"readinglists-db-error-too-long": "הערך עבור השדה $1 לא יכול להיות ארוך מ־$2 בתים.",
 	"readinglists-db-error-no-such-project": "\"$1\" אינו מיזם מוכר.",
-	"readinglists-apierror-project-title-param": "<var>$1project</var> ו־<var>$1title</var> צריכים לשמש יחד."
+	"apierror-readinglists-project-title-param": "<var>$1project</var> ו־<var>$1title</var> צריכים לשמש יחד."
 }
