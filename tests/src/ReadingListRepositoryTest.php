@@ -176,10 +176,17 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 
 		$listId = $repository->addList( 'foo' );
 		$repository->deleteList( $listId );
-		$repository->addList( 'bar' );
+		$listId2 = $repository->addList( 'bar' );
 		$this->assertFailsWith( 'readinglists-db-error-list-limit', function () use ( $repository ) {
 			$repository->addList( 'baz' );
 		} );
+
+		// test that duplicates do not count towards the limit; since limit check is done before
+		// checking duplicates, the duplicate cannot be the limit+1th item
+		$repository->deleteList( $listId2 );
+		$repository->addList( 'default' );
+		$repository->addList( 'default' );
+		$repository->addList( 'bar' );
 	}
 
 	/**
@@ -193,13 +200,13 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$repository->setupForUser();
 		$this->addLists( 1, [
 			[
-				'rl_name' => 'foo',
+				'rl_name' => 'foo1',
 				'rl_date_created' => '20100101000000',
 				'rl_date_updated' => '20120101000000',
 				'rl_deleted' => '0',
 			],
 			[
-				'rl_name' => 'foo',
+				'rl_name' => 'foo2',
 				'rl_description' => 'this is the second foo',
 				'rl_date_created' => '20170101000000',
 				'rl_date_updated' => '20170101000000',
@@ -208,13 +215,14 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			[
 				'rl_name' => 'bar',
 				'rl_date_created' => '20010101000000',
-				'rl_date_updated' => '20020101000000',
+				'rl_date_updated' => '20120101000000',
 				'rl_deleted' => '0',
 			],
 			[
-				'rl_name' => 'baz',
+				'rl_name' => 'deleted-123',
+				'rl_description' => 'deleted',
 				'rl_date_created' => '20170101000000',
-				'rl_date_updated' => '20170101000000',
+				'rl_date_updated' => '20110101000000',
 				'rl_deleted' => '1',
 			],
 		] );
@@ -238,7 +246,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 	}
 
 	public function provideGetAllLists() {
-		$entries = [
+		$lists = [
 			'default' => [
 				'rl_name' => 'default',
 				'rl_description' => '',
@@ -248,7 +256,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_deleted' => '0',
 			],
 			'foo' => [
-				'rl_name' => 'foo',
+				'rl_name' => 'foo1',
 				'rl_description' => '',
 				'rl_is_default' => '0',
 				'rl_date_created' => '20100101000000',
@@ -256,7 +264,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_deleted' => '0',
 			],
 			'foo_2' => [
-				'rl_name' => 'foo',
+				'rl_name' => 'foo2',
 				'rl_description' => 'this is the second foo',
 				'rl_is_default' => '0',
 				'rl_date_created' => '20170101000000',
@@ -268,44 +276,50 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_description' => '',
 				'rl_is_default' => '0',
 				'rl_date_created' => '20010101000000',
-				'rl_date_updated' => '20020101000000',
+				'rl_date_updated' => '20120101000000',
 				'rl_deleted' => '0',
 			],
 		];
-		// 1 list from addDataForAnotherUser, 1 from setupForUser, second list in addLists call
+		// 1 list from addDataForAnotherUser, 1 from setupForUser, plus 1-based index in addLists()
+		$fooId = 3;
 		$foo2Id = 4;
+		$barId = 5;
 
 		return [
 			'name, basic' => [
 				[ ReadingListRepository::SORT_BY_NAME, ReadingListRepository::SORT_DIR_ASC ],
-				[ $entries['bar'], $entries['default'], $entries['foo'], $entries['foo_2'] ],
+				[ $lists['bar'], $lists['default'], $lists['foo'], $lists['foo_2'] ],
 			],
 			'name, reverse' => [
 				[ ReadingListRepository::SORT_BY_NAME, ReadingListRepository::SORT_DIR_DESC ],
-				[ $entries['foo_2'], $entries['foo'], $entries['default'], $entries['bar'] ],
+				[ $lists['foo_2'], $lists['foo'], $lists['default'], $lists['bar'] ],
 			],
 			'name, limit' => [
 				[ ReadingListRepository::SORT_BY_NAME, ReadingListRepository::SORT_DIR_ASC, 1 ],
-				[ $entries['bar'] ],
+				[ $lists['bar'] ],
 			],
 			'name, limit + offset' => [
 				[ ReadingListRepository::SORT_BY_NAME, ReadingListRepository::SORT_DIR_ASC,
 					1, [ 'default', 1 ] ],
-				[ $entries['default'] ],
-			],
-			'name, limit + other offset' => [
-				[ ReadingListRepository::SORT_BY_NAME, ReadingListRepository::SORT_DIR_ASC,
-					1, [ 'foo', $foo2Id ] ],
-				[ $entries['foo_2'] ],
+				[ $lists['default'] ],
 			],
 			'updated, basic' => [
 				[ ReadingListRepository::SORT_BY_UPDATED, ReadingListRepository::SORT_DIR_ASC ],
-				[ $entries['bar'], $entries['foo'], $entries['foo_2'], $entries['default'] ],
+				[ $lists['foo'], $lists['bar'], $lists['foo_2'], $lists['default'] ],
+			],
+			'updated, limit' => [
+				[ ReadingListRepository::SORT_BY_UPDATED, ReadingListRepository::SORT_DIR_ASC, 1 ],
+				[ $lists['foo'] ],
 			],
 			'updated, limit + offset' => [
 				[ ReadingListRepository::SORT_BY_UPDATED, ReadingListRepository::SORT_DIR_ASC,
-					1, [ '20170101000000', $foo2Id ] ],
-				[ $entries['foo_2'] ],
+				  1, [ '20120101000000', $fooId ] ],
+				[ $lists['foo'] ],
+			],
+			'updated, limit + other offset' => [
+				[ ReadingListRepository::SORT_BY_UPDATED, ReadingListRepository::SORT_DIR_ASC,
+				  1, [ '20120101000000', $barId ] ],
+				[ $lists['bar'] ],
 			],
 		];
 	}
@@ -313,7 +327,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 	public function testUpdateList() {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$repository->setupForUser();
-		list( $listId, $deletedListId ) = $this->addLists( 1, [
+		list( $listId, $listId2, $deletedListId ) = $this->addLists( 1, [
 			[
 				'rl_name' => 'foo',
 				'rl_description' => 'xxx',
@@ -322,7 +336,14 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_deleted' => '0',
 			],
 			[
-				'rl_name' => 'bar',
+				'rl_name' => 'foo2',
+				'rl_description' => 'xxx',
+				'rl_date_created' => '20100101000000',
+				'rl_date_updated' => '20120101000000',
+				'rl_deleted' => '0',
+			],
+			[
+				'rl_name' => 'deleted-123',
 				'rl_description' => 'yyy',
 				'rl_date_created' => '20100101000000',
 				'rl_date_updated' => '20120101000000',
@@ -360,6 +381,11 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				$repository->updateList( $deletedListId, 'bar' );
 			}
 		);
+		$this->assertFailsWith( 'readinglists-db-error-duplicate-list',
+			function () use ( $repository, $listId ) {
+				$repository->updateList( $listId, 'foo2' );
+			}
+		);
 		$this->assertFailsWith( 'readinglists-db-error-cannot-update-default-list',
 			function () use ( $repository ) {
 				$defaultId = $this->db->selectField( 'reading_list', 'rl_id',
@@ -379,7 +405,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_deleted' => '0',
 			],
 			[
-				'rl_name' => 'bar',
+				'rl_name' => 'deleted-123',
 				'rl_deleted' => '1',
 			],
 		] );
@@ -419,19 +445,20 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 	public function testAddListEntry() {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$repository->setupForUser();
-		list( $projectId ) = $this->addProjects( [ 'en.wikipedia.org' ] );
+		list( $projectId ) = $this->addProjects( [ 'https://en.wikipedia.org',
+			'https://de.wikipedia.org' ] );
 		list( $listId, $deletedListId ) = $this->addLists( 1, [
 			[
 				'rl_name' => 'foo',
 				'rl_deleted' => '0',
 			],
 			[
-				'rl_name' => 'bar',
+				'rl_name' => 'deleted-123',
 				'rl_deleted' => '1',
 			],
 		] );
 
-		$entryId = $repository->addListEntry( $listId, 'en.wikipedia.org', 'Foo' );
+		$entryId = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
 		/** @var ReadingListEntryRow $row */
 		$row = $this->db->selectRow( 'reading_list_entry', '*', [ 'rle_id' => $entryId ] );
 		$this->assertEquals( 1, $row->rle_user_id );
@@ -443,7 +470,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 
 		// test that deletion + recreation does not trip the unique contstraint
 		$repository->deleteListEntry( $entryId );
-		$entryId2 = $repository->addListEntry( $listId, 'en.wikipedia.org', 'Foo' );
+		$entryId2 = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
 		/** @var ReadingListEntryRow $row */
 		$row = $this->db->selectRow( 'reading_list_entry', '*', [ 'rle_id' => $entryId2 ] );
 		$this->assertEquals( 1, $row->rle_user_id );
@@ -453,30 +480,32 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertTimestampEquals( wfTimestampNow(), $row->rle_date_updated );
 		$this->assertEquals( 0, $row->rle_deleted );
 
+		$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Bar' );
+		$repository->addListEntry( $listId, 'https://de.wikipedia.org', 'Foo' );
+
+		// test that adding a duplicate is a no-op
+		$dupeEntryId = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
+		$this->assertEquals( $dupeEntryId, $entryId2 );
+
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
 			function () use ( $repository ) {
-				$repository->addListEntry( 123, 'en.wikipedia.org', 'A' );
+				$repository->addListEntry( 123, 'https://en.wikipedia.org', 'A' );
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-not-own-list',
 			function () use ( $listId ) {
 				$repository = new ReadingListRepository( 123, $this->db, $this->db, $this->lbFactory );
-				$repository->addListEntry( $listId, 'en.wikipedia.org', 'B' );
+				$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'B' );
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
 			function () use ( $repository, $deletedListId ) {
-				$repository->addListEntry( $deletedListId, 'en.wikipedia.org', 'C' );
-			}
-		);
-		$this->assertFailsWith( 'readinglists-db-error-duplicate-page',
-			function () use ( $repository, $listId ) {
-				$repository->addListEntry( $listId, 'en.wikipedia.org', 'Foo' );
+				$repository->addListEntry( $deletedListId, 'https://en.wikipedia.org', 'C' );
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-no-such-project',
 			function () use ( $repository, $listId ) {
-				$repository->addListEntry( $listId, 'nosuch.project.org', 'Foo' );
+				$repository->addListEntry( $listId, 'https://nosuch.project.org', 'Foo' );
 			}
 		);
 	}
@@ -487,19 +516,52 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$repository->setLimits( null, 1 );
 		$repository->setupForUser();
 
-		$this->addProjects( [ 'en.wikipedia.org' ] );
+		$this->addProjects( [ 'https://en.wikipedia.org' ] );
 		list( $listId ) = $this->addLists( 1, [
 			[
 				'rl_name' => 'foo',
 				'rl_deleted' => '0',
 			],
 		] );
-		$entryId = $repository->addListEntry( $listId, 'en.wikipedia.org', 'Foo' );
-		$repository->deleteListEntry( $entryId );
-		$repository->addListEntry( $listId, 'en.wikipedia.org', 'Bar' );
+		// assert that limits work
+		$entryId = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
 		$this->assertFailsWith( 'readinglists-db-error-entry-limit',
 			function () use ( $repository, $listId ) {
-				$repository->addListEntry( $listId, 'en.wikipedia.org', 'Baz' );
+				$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Baz' );
+			}
+		);
+		// assert that deleting frees up space on the list
+		$repository->deleteListEntry( $entryId );
+		$entryId2 = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Bar' );
+		$this->assertFailsWith( 'readinglists-db-error-entry-limit',
+			function () use ( $repository, $listId ) {
+				$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Baz' );
+			}
+		);
+		// assert that recreating a deleted entry is counted normally
+		$repository->deleteListEntry( $entryId2 );
+		$entryId3 = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Bar' );
+		$this->assertFailsWith( 'readinglists-db-error-entry-limit',
+			function () use ( $repository, $listId ) {
+				$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Baz' );
+			}
+		);
+
+		// assert that duplicates do not take up space; we must do a deletion first since inserting
+		// into a full list would be rejected even if it's a duplicate
+		$repository->setLimits( null, 2 );
+		list( $listId2 ) = $this->addLists( 1, [
+			[
+				'rl_name' => 'bar',
+				'rl_deleted' => '0',
+			],
+		] );
+		$repository->addListEntry( $listId2, 'https://en.wikipedia.org', 'Foo' );
+		$repository->addListEntry( $listId2, 'https://en.wikipedia.org', 'Foo' );
+		$repository->addListEntry( $listId2, 'https://en.wikipedia.org', 'Bar' );
+		$this->assertFailsWith( 'readinglists-db-error-entry-limit',
+			function () use ( $repository, $listId2 ) {
+				$repository->addListEntry( $listId2, 'https://en.wikipedia.org', 'Baz' );
 			}
 		);
 	}
@@ -664,7 +726,8 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		list( $deletedListId ) = $this->addLists( 1, [
 			[
 				'rl_is_default' => 0,
-				'rl_name' => 'test-deleted',
+				'rl_name' => 'deleted-123',
+				'rl_description' => 'test-deleted',
 				'rl_deleted' => 1,
 			],
 		] );
@@ -709,7 +772,8 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_deleted' => 0,
 			],
 			[
-				'rl_name' => 'bar',
+				'rl_name' => 'deleted-123',
+				'rl_description' => 'deleted',
 				'rl_deleted' => '1',
 			],
 		] );
@@ -787,12 +851,12 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$this->addLists( 1, [
 			[
-				'rl_name' => 'foo',
+				'rl_name' => 'foo-1',
 				'rl_description' => 'list1',
 				'rl_date_updated' => '20150101000000',
 			],
 			[
-				'rl_name' => 'foo',
+				'rl_name' => 'foo-2',
 				'rl_description' => 'list2',
 				'rl_date_updated' => '20120101000000',
 			],
@@ -812,7 +876,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_date_updated' => '20080101000000',
 			],
 			[
-				'rl_name' => 'foo',
+				'rl_name' => 'deleted-123',
 				'rl_description' => 'deleted',
 				'rl_deleted' => 1,
 				'rl_date_updated' => '20150102000000',
@@ -893,7 +957,8 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				],
 			],
 			[
-				'rl_name' => 'deleted',
+				'rl_name' => 'deleted-123',
+				'rl_description' => 'deleted',
 				'rl_deleted' => 1,
 				'entries' => [
 					[
@@ -965,17 +1030,20 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->addLists( 1, [
 			[
 				'rl_name' => 'kept',
+				'rl_description' => 'kept',
 				'rl_date_updated' => wfTimestampNow(),
 				'entries' => $appendName( 'parent-kept' ),
 			],
 			[
-				'rl_name' => 'deleted-new',
+				'rl_name' => 'deleted-123',
+				'rl_description' => 'deleted-new',
 				'rl_date_updated' => '20150101000000',
 				'rl_deleted' => 1,
 				'entries' => $appendName( 'parent-deleted-new' ),
 			],
 			[
-				'rl_name' => 'deleted-old',
+				'rl_name' => 'deleted-456',
+				'rl_description' => 'deleted-old',
 				'rl_date_updated' => '20080101000000',
 				'rl_deleted' => 1,
 				'entries' => $appendName( 'parent-deleted-old' ),
@@ -983,7 +1051,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		] );
 
 		$repository->purgeOldDeleted( '20100101000000' );
-		$keptLists = $this->db->selectFieldValues( 'reading_list', 'rl_name' );
+		$keptLists = $this->db->selectFieldValues( 'reading_list', 'rl_description' );
 		$keptEntries = $this->db->selectFieldValues( 'reading_list_entry', 'rle_title' );
 		$this->assertArrayEquals( [ 'kept', 'deleted-new' ], $keptLists );
 		$this->assertArrayEquals( [ 'kept-parent-kept', 'deleted-new-parent-kept',
@@ -1021,7 +1089,8 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			],
 			[
 				// list deleted, no match
-				'rl_name' => 'third',
+				'rl_name' => 'deleted-123',
+				'rl_description' => 'third',
 				'rl_deleted' => 1,
 				'entries' => [
 					[

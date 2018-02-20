@@ -17,6 +17,7 @@
 	"readinglists-db-error-not-own-list-entry": "Error message used when trying to do something with a list entry that belongs to another user.",
 	"readinglists-db-error-list-deleted": "Error message used when trying to do something with a list that has been deleted.",
 	"readinglists-db-error-list-entry-deleted": "Error message used when trying to do something with a list entry that has been deleted.",
+	"readinglists-db-error-duplicate-list": "Error message used when trying to update a list with a name that's already in use.",
 	"readinglists-db-error-duplicate-page": "Error message used when trying to add a page to a list that already contains it.",
 	"readinglists-db-error-empty-list-ids": "Error message used when querying list entries without specifying any lists.",
 	"readinglists-db-error-user-required": "Error message used when calling a method that operates on a single user, but the user was not specified when the repository object was constructed.",

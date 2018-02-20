@@ -9,7 +9,8 @@ CREATE TABLE /*_*/reading_list (
     -- Flag to tell apart the initial list from the rest, for UX purposes and to forbid deleting it.
     -- Users with more than zero lists always have exactly one default list.
     rl_is_default TINYINT NOT NULL DEFAULT 0,
-    -- Human-readable non-unique name of the list.
+    -- Human-readable name of the list.
+    -- (Enforced by software to be unique.)
     rl_name VARCHAR(255) BINARY NOT NULL,
     -- Description of the list.
     rl_description VARBINARY(767) NOT NULL DEFAULT '',

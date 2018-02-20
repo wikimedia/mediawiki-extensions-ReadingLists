@@ -190,6 +190,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
 	/**
 	 * Create a new list.
+	 * List name is unique for a given user; on conflict, update the existing list.
 	 * @param string $name
 	 * @param string $description
 	 * @return int The ID of the new list
@@ -203,29 +204,68 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
 		if ( $this->listLimit && $this->getListCount( self::READ_LATEST ) >= $this->listLimit ) {
+			// We could check whether the list exists already, in which case we could just
+			// update the existing list and return success, but that's too much of an edge case
+			// to be worth bothering with.
 			throw new ReadingListRepositoryException( 'readinglists-db-error-list-limit',
 				[ $this->listLimit ] );
 		}
 
-		$this->dbw->insert(
+		// rl_user_id + rlname is unique for non-deleted lists. On conflict, update the
+		// existing page instead. Also enforce that deleted lists cannot have the same name,
+		// in anticipation of eventually using a unique index for list names.
+		/** @var ReadingListRow $row */
+		$row = $this->dbw->selectRow(
 			'reading_list',
+			self::getListFields(),
 			[
 				'rl_user_id' => $this->userId,
-				'rl_is_default' => 0,
 				'rl_name' => $name,
-				'rl_description' => $description,
-				'rl_date_created' => $this->dbw->timestamp(),
-				'rl_date_updated' => $this->dbw->timestamp(),
-				'rl_size' => 0,
-				'rl_deleted' => 0,
 			],
-			__METHOD__
+			__METHOD__,
+			[ 'FOR UPDATE' ]
 		);
-		$this->logger->info( 'Added list {list} for user {user}', [
-			'list' => $this->dbw->insertId(),
-			'user' => $this->userId,
-		] );
-		return $this->dbw->insertId();
+		if ( $row === false ) {
+			$this->dbw->insert(
+				'reading_list',
+				[
+					'rl_user_id' => $this->userId,
+					'rl_is_default' => 0,
+					'rl_name' => $name,
+					'rl_description' => $description,
+					'rl_date_created' => $this->dbw->timestamp(),
+					'rl_date_updated' => $this->dbw->timestamp(),
+					'rl_size' => 0,
+					'rl_deleted' => 0,
+				],
+				__METHOD__
+			);
+			$id = $this->dbw->insertId();
+		} elseif ( $row->rl_deleted ) {
+			throw new LogicException( 'Encountered deleted list with non-unique name' );
+		} elseif ( $row->rl_description === $description ) {
+			// List already exists with the same details; nothing to do, just return the ID.
+			$id = $row->rl_id;
+		} else {
+			$this->dbw->update(
+				'reading_list',
+				[
+					'rl_description' => $description,
+					'rl_date_updated' => $this->dbw->timestamp(),
+				],
+				[
+					'rl_id' => $row->rl_id,
+				],
+				__METHOD__
+			);
+			$id = $row->rl_id;
+			$this->logger->info( 'Added list {list} for user {user}', [
+				'list' => $this->dbw->insertId(),
+				'user' => $this->userId,
+				'merged' => (bool)$row,
+			] );
+		}
+		return $id;
 	}
 
 	/**
@@ -283,6 +323,27 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-cannot-update-default-list' );
 		}
 
+		if ( $name !== null ) {
+			/** @var ReadingListRow $row2 */
+			$row2 = $this->dbw->selectRow(
+				'reading_list',
+				self::getListFields(),
+				[
+					'rl_user_id' => $this->userId,
+					'rl_name' => $name,
+				],
+				__METHOD__,
+				[ 'FOR UPDATE' ]
+			);
+			if ( $row2 !== false && (int)$row2->rl_id !== $id ) {
+				if ( $row2->rl_deleted ) {
+					throw new LogicException( 'Encountered deleted list with non-unique name' );
+				} else {
+					throw new ReadingListRepositoryException( 'readinglists-db-error-duplicate-list' );
+				}
+			}
+		}
+
 		$data = array_filter( [
 			'rl_name' => $name,
 			'rl_description' => $description,
@@ -318,6 +379,9 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$this->dbw->update(
 			'reading_list',
 			[
+				// Randomize the name of deleted lists in anticipation of eventually enforcing
+				// uniqueness with an index (in which case it can't be limited to non-deleted lists).
+				'rl_name' => 'deleted-' . substr( md5( uniqid( rand(), true ) ), 0, 5 ),
 				'rl_deleted' => 1,
 				'rl_date_updated' => $this->dbw->timestamp(),
 			],
@@ -338,21 +402,28 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
 	/**
 	 * Add a new page to a list.
-	 * @param int $id List ID
+	 * When the given page is already on the list, do nothing, just return it.
+	 * @param int $listId List ID
 	 * @param string $project Project identifier (typically a domain name)
 	 * @param string $title Page title (treated as a plain string with no normalization;
 	 *   in localized namespace-prefixed format with spaces is recommended)
 	 * @return int The ID of the new list entry
 	 * @throws ReadingListRepositoryException
 	 */
-	public function addListEntry( $id, $project, $title ) {
+	public function addListEntry( $listId, $project, $title ) {
 		$this->assertUser();
 		$this->assertFieldLength( 'rlp_project', $project );
 		$this->assertFieldLength( 'rle_title', $title );
-		$this->selectValidList( $id, self::READ_EXCLUSIVE );
-		if ( $this->entryLimit && $this->getEntryCount( $id, self::READ_LATEST ) >= $this->entryLimit ) {
+		$this->selectValidList( $listId, self::READ_EXCLUSIVE );
+		if (
+			$this->entryLimit
+			&& $this->getEntryCount( $listId, self::READ_LATEST ) >= $this->entryLimit
+		) {
+			// We could check whether the entry exists already, in which case we could just
+			// return success without modifying the entry, but that's too much of an edge case
+			// to be worth bothering with.
 			throw new ReadingListRepositoryException( 'readinglists-db-error-entry-limit',
-				[ $id, $this->entryLimit ] );
+				[ $listId, $this->entryLimit ] );
 		}
 
 		$projectId = $this->getProjectId( $project );
@@ -368,7 +439,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			'reading_list_entry',
 			[ 'rle_id', 'rle_deleted' ],
 			[
-				'rle_rl_id' => $id,
+				'rle_rl_id' => $listId,
 				'rle_rlp_id' => $projectId,
 				'rle_title' => $title,
 			],
@@ -380,7 +451,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			$this->dbw->insert(
 				'reading_list_entry',
 				[
-					'rle_rl_id' => $id,
+					'rle_rl_id' => $listId,
 					'rle_user_id' => $this->userId,
 					'rle_rlp_id' => $projectId,
 					'rle_title' => $title,
@@ -390,6 +461,8 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				],
 				__METHOD__
 			);
+			$entryId = $this->dbw->insertId();
+			$type = 'inserted';
 		} elseif ( $row->rle_deleted ) {
 			$this->dbw->update(
 				'reading_list_entry',
@@ -403,26 +476,28 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				],
 				__METHOD__
 			);
+			$entryId = (int)$row->rle_id;
+			$type = 'recreated';
 		} else {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-duplicate-page' );
+			// The entry already exists, we just need to return its ID.
+			$entryId = (int)$row->rle_id;
+			$type = 'merged';
 		}
-		if ( !$this->dbw->affectedRows() ) {
-			throw new LogicException( 'addListEntry failed for unknown reason' );
+		if ( $type !== 'merged' ) {
+			$this->dbw->update(
+				'reading_list',
+				[ 'rl_size = rl_size + 1' ],
+				[ 'rl_id' => $listId ],
+				__METHOD__
+			);
 		}
-		$insertId = $row ? (int)$row->rle_id : $this->dbw->insertId();
-		$this->dbw->update(
-			'reading_list',
-			[ 'rl_size = rl_size + 1' ],
-			[ 'rl_id' => $id ],
-			__METHOD__
-		);
 
 		$this->logger->info( 'Added entry {entry} for user {user}', [
-			'entry' => $insertId,
+			'entry' => $entryId,
 			'user' => $this->userId,
-			'recreated' => (bool)$row,
+			'type' => $type,
 		] );
-		return $insertId;
+		return $entryId;
 	}
 
 	/**
@@ -848,7 +923,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * @param string $sortBy
 	 * @param string $sortDir
 	 * @param int $limit
-	 * @param array|null $from
+	 * @param array|null $from [sortby-value, id]
 	 * @return array [ conditions, options ] Merge these into the corresponding IDatabase::select
 	 *   parameters.
 	 */
@@ -875,9 +950,13 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$idField = "${tablePrefix}_id";
 		$conditions = [];
 		$options = [
-			'ORDER BY' => [ "$mainField $sortDir", "$idField $sortDir" ],
+			'ORDER BY' => [ "$mainField $sortDir" ],
 			'LIMIT' => (int)$limit,
 		];
+		// List names are unique and need no tiebreaker.
+		if ( $sortBy !== self::SORT_BY_NAME || $tablePrefix !== 'rl' ) {
+			$options['ORDER BY'][] = "$idField $sortDir";
+		}
 
 		if ( $from !== null ) {
 			$op = ( $sortDir === self::SORT_DIR_ASC ) ? '>' : '<';
@@ -885,13 +964,19 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				? $this->dbr->addQuotes( $from[0] )
 				: $this->dbr->addQuotes( $this->dbr->timestamp( $from[0] ) );
 			$safeFromId = (int)$from[1];
-			$conditions[] = $this->dbr->makeList( [
-				"$mainField $op $safeFromMain",
-				$this->dbr->makeList( [
-					"$mainField = $safeFromMain",
-					"$idField $op= $safeFromId",
-				], IDatabase::LIST_AND ),
-			], IDatabase::LIST_OR );
+			// List names are unique and need no tiebreaker.
+			if ( $sortBy === self::SORT_BY_NAME && $tablePrefix === 'rl' ) {
+				$condition = "$mainField $op= $safeFromMain";
+			} else {
+				$condition = $this->dbr->makeList( [
+					"$mainField $op $safeFromMain",
+					$this->dbr->makeList( [
+						"$mainField = $safeFromMain",
+						"$idField $op= $safeFromId",
+					], IDatabase::LIST_AND ),
+				], IDatabase::LIST_OR );
+			}
+			$conditions[] = $condition;
 		}
 
 		// note: $conditions will be array_merge-d so it should not contain non-numeric keys
