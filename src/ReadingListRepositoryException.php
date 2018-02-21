@@ -22,7 +22,7 @@ class ReadingListRepositoryException extends Exception implements ILocalizedExce
 	 */
 	public function __construct( $messageKey, array $params = [] ) {
 		$this->messageObject = new Message( $messageKey, $params );
-		$messageText = $this->messageObject->inLanguage( 'en' )->useDatabase( false )->plain();
+		$messageText = $this->messageObject->inLanguage( 'en' )->useDatabase( false )->text();
 		parent::__construct( "$messageText ($messageKey)" );
 	}
 
