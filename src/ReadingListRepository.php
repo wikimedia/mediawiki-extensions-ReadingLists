@@ -193,7 +193,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * List name is unique for a given user; on conflict, update the existing list.
 	 * @param string $name
 	 * @param string $description
-	 * @return int The ID of the new list
+	 * @return ReadingListRow The new (or updated) list.
 	 * @throws ReadingListRepositoryException
 	 */
 	public function addList( $name, $description = '' ) {
@@ -265,7 +265,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				'merged' => (bool)$row,
 			] );
 		}
-		return $id;
+
+		// We could just construct the result ourselves but let's be paranoid and re-query it
+		// in case some conversion or corruption happens in MySQL.
+		return $this->selectValidList( $id, self::READ_LATEST );
 	}
 
 	/**
@@ -310,7 +313,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * @param int $id
 	 * @param string|null $name
 	 * @param string|null $description
-	 * @return void
+	 * @return ReadingListRow The updated list.
 	 * @throws ReadingListRepositoryException
 	 * @throws LogicException
 	 */
@@ -361,6 +364,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		if ( !$this->dbw->affectedRows() ) {
 			throw new LogicException( 'updateList failed for unknown reason' );
 		}
+
+		// We could just construct the result ourselves but let's be paranoid and re-query it
+		// in case some conversion or corruption happens in MySQL.
+		return $this->selectValidList( $id, self::READ_LATEST );
 	}
 
 	/**
@@ -407,7 +414,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * @param string $project Project identifier (typically a domain name)
 	 * @param string $title Page title (treated as a plain string with no normalization;
 	 *   in localized namespace-prefixed format with spaces is recommended)
-	 * @return int The ID of the new list entry
+	 * @return ReadingListEntryRow The new (or existing) list entry.
 	 * @throws ReadingListRepositoryException
 	 */
 	public function addListEntry( $listId, $project, $title ) {
@@ -436,8 +443,8 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		// rle_rl_id + rle_rlp_id + rle_title, recreation needs special handling
 		/** @var ReadingListEntryRow $row */
 		$row = $this->dbw->selectRow(
-			'reading_list_entry',
-			[ 'rle_id', 'rle_deleted' ],
+			[ 'reading_list_entry', 'reading_list_project' ],
+			self::getListEntryFields(),
 			[
 				'rle_rl_id' => $listId,
 				'rle_rlp_id' => $projectId,
@@ -445,7 +452,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			],
 			__METHOD__,
 			// lock the row to avoid race conditions with purgeOldDeleted() in the update case
-			[ 'FOR UPDATE' ]
+			[ 'FOR UPDATE' ],
+			[
+				'reading_list_project' => [ 'LEFT JOIN', 'rle_rlp_id = rlp_id' ],
+			]
 		);
 		if ( $row === false ) {
 			$this->dbw->insert(
@@ -497,7 +507,25 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			'user' => $this->userId,
 			'type' => $type,
 		] );
-		return $entryId;
+
+		if ( $type === 'merged' ) {
+			return $row;
+		} else {
+			$row = $this->dbw->selectRow(
+				[ 'reading_list_entry', 'reading_list_project' ],
+				self::getListEntryFields(),
+				[ 'rle_id' => $entryId ],
+				__METHOD__,
+				[],
+				[
+					'reading_list_project' => [ 'LEFT JOIN', 'rle_rlp_id = rlp_id' ],
+				]
+			);
+			if ( $row === false ) {
+				throw new LogicException( 'Failed to retrieve stored entry' );
+			}
+			return $row;
+		}
 	}
 
 	/**

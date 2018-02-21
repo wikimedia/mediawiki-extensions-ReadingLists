@@ -181,18 +181,10 @@ class ApiQueryReadingLists extends ApiQueryBase {
 	 * @return array
 	 */
 	private function getResultItem( $row, $mode ) {
-		$item = [
-			'id' => (int)$row->rl_id,
-			'name' => $row->rl_name,
-			'default' => (bool)$row->rl_is_default,
-			'description' => $row->rl_description,
-			'created' => wfTimestamp( TS_ISO_8601, $row->rl_date_created ),
-			'updated' => wfTimestamp( TS_ISO_8601, $row->rl_date_updated ),
-		];
-		if ( $mode === self::$MODE_CHANGES ) {
-			$item['deleted'] = (bool)$row->rl_deleted;
+		if ( $row->rl_deleted && $mode !== self::$MODE_CHANGES ) {
+			throw new LogicException( 'Deleted row returned in non-changes mode' );
 		}
-		return $item;
+		return $this->getListFromRow( $row );
 	}
 
 }

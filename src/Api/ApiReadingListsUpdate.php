@@ -30,15 +30,25 @@ class ApiReadingListsUpdate extends ApiBase {
 		$repository = $this->getReadingListRepository( $this->getUser() );
 		if ( isset( $params['list'] ) ) {
 			$this->requireAtLeastOneParameter( $params, 'name', 'description' );
-			$repository->updateList( $params['list'], $params['name'], $params['description'] );
+			$list = $repository->updateList( $params['list'], $params['name'], $params['description'] );
+			$listData = $this->getListFromRow( $list );
+			$this->getResult()->addValue( null, $this->getModuleName(),
+				[ 'id' => $list->rl_id, 'list' => $listData ] );
 		} else {
+			$listData = $listIds = [];
 			foreach ( $this->getBatchOps( $params['batch'] ) as $op ) {
 				$this->requireAtLeastOneBatchParameter( $op, 'list' );
 				$this->requireAtLeastOneBatchParameter( $op, 'name', 'description' );
 				$name = isset( $op['name'] ) ? $op['name'] : null;
 				$description = isset( $op['description'] ) ? $op['description'] : null;
-				$repository->updateList( $op['list'], $name, $description );
+				$list = $repository->updateList( $op['list'], $name, $description );
+				$listIds[] = $list->rl_id;
+				$listData[] = $this->getListFromRow( $list );
 			}
+			$this->getResult()->addValue( null, $this->getModuleName(),
+				[ 'ids' => $listIds, 'lists' => $listData ] );
+			$this->getResult()->addIndexedTagName( [ $this->getModuleName(), 'ids' ], 'id' );
+			$this->getResult()->addIndexedTagName( [ $this->getModuleName(), 'lists' ], 'list' );
 		}
 	}
 

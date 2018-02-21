@@ -4,6 +4,7 @@ namespace MediaWiki\Extensions\ReadingLists\Api;
 
 use ApiPageSet;
 use ApiQueryGeneratorBase;
+use LogicException;
 use MediaWiki\Extensions\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extensions\ReadingLists\ReverseInterwikiLookup;
@@ -190,14 +191,10 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	 * @return array
 	 */
 	private function getResultItem( $row, $mode ) {
-		return [
-			'id' => (int)$row->rle_id,
-			'listId' => (int)$row->rle_rl_id,
-			'project' => $row->rlp_project,
-			'title' => $row->rle_title,
-			'created' => wfTimestamp( TS_ISO_8601, $row->rle_date_created ),
-			'updated' => wfTimestamp( TS_ISO_8601, $row->rle_date_updated ),
-	   ] + ( $mode === self::$MODE_CHANGES ? [ 'deleted' => (bool)$row->rle_deleted ] : [] );
+		if ( $row->rle_deleted && $mode === self::$MODE_CHANGES ) {
+			throw new LogicException( 'Deleted row returned in non-changes mode' );
+		}
+		return $this->getListEntryFromRow( $row );
 	}
 
 	/**

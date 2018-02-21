@@ -42,20 +42,26 @@ class ApiReadingListsCreateEntry extends ApiBase {
 				$this->dieWithError( 'apierror-invalidtitle', wfEscapeWikiText( $params['title'] ) );
 			}
 
-			$entryId = $repository->addListEntry( $listId, $params['project'], $params['title'] );
-			$this->getResult()->addValue( null, $this->getModuleName(), [ 'id' => $entryId ] );
+			$entry = $repository->addListEntry( $listId, $params['project'], $params['title'] );
+			$entryData = $this->getListEntryFromRow( $entry );
+			$this->getResult()->addValue( null, $this->getModuleName(),
+				[ 'id' => $entry->rle_id, 'entry' => $entryData ] );
 		} else {
-			$entryIds = [];
+			$entryIds = $entryData = [];
 			foreach ( $this->getBatchOps( $params['batch'] ) as $op ) {
 				$this->requireAtLeastOneBatchParameter( $op, 'project' );
 				$this->requireAtLeastOneBatchParameter( $op, 'title' );
 				if ( !Title::newFromText( $op['title'] ) ) {
 					$this->dieWithError( 'apierror-invalidtitle', wfEscapeWikiText( $op['title'] ) );
 				}
-				$entryIds[] = $repository->addListEntry( $listId, $op['project'], $op['title'] );
+				$entry = $repository->addListEntry( $listId, $op['project'], $op['title'] );
+				$entryIds[] = $entry->rle_id;
+				$entryData[] = $this->getListEntryFromRow( $entry );
 			}
-			$this->getResult()->addValue( null, $this->getModuleName(), [ 'ids' => $entryIds ] );
-			$this->getResult()->addIndexedTagName( $this->getModuleName(), 'id' );
+			$this->getResult()->addValue( null, $this->getModuleName(),
+				[ 'ids' => $entryIds, 'entries' => $entryData ] );
+			$this->getResult()->addIndexedTagName( [ $this->getModuleName(), 'ids' ], 'id' );
+			$this->getResult()->addIndexedTagName( [ $this->getModuleName(), 'entries' ], 'entry' );
 		}
 	}
 

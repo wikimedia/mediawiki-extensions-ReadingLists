@@ -131,35 +131,38 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$repository->setupForUser();
 
-		$listId = $repository->addList( 'foo' );
-		/** @var ReadingListRow $row */
-		$row = $this->db->selectRow( 'reading_list', '*', [ 'rl_id' => $listId ] );
-		$this->assertTimestampEquals( wfTimestampNow(), $row->rl_date_created );
-		$this->assertTimestampEquals( wfTimestampNow(), $row->rl_date_updated );
-		unset( $row->rl_id, $row->rl_date_created, $row->rl_date_updated );
-		$data = (array)$row;
+		$list = $repository->addList( 'foo' );
+		$this->assertTimestampEquals( wfTimestampNow(), $list->rl_date_created );
+		$this->assertTimestampEquals( wfTimestampNow(), $list->rl_date_updated );
+		$data = (array)$list;
+		unset( $data['rl_id'], $data['rl_date_created'], $data['rl_date_updated'] );
 		$this->assertArrayEquals( [
 			'rl_user_id' => '1',
 			'rl_name' => 'foo',
 			'rl_description' => '',
 			'rl_is_default' => '0',
-			'rl_size' => '0',
 			'rl_deleted' => '0',
 		], $data, false, true );
-
-		$listId = $repository->addList( 'bar', 'here is some bar' );
 		/** @var ReadingListRow $row */
-		$row = $this->db->selectRow( 'reading_list', '*', [ 'rl_id' => $listId ] );
+		$row = $this->db->selectRow( 'reading_list', '*', [ 'rl_id' => $list->rl_id ] );
 		$this->assertTimestampEquals( wfTimestampNow(), $row->rl_date_created );
 		$this->assertTimestampEquals( wfTimestampNow(), $row->rl_date_updated );
 		unset( $row->rl_id, $row->rl_date_created, $row->rl_date_updated );
-		$data = (array)$row;
+		$data2 = (array)$row;
+		$this->assertArrayEquals( $data + [
+			'rl_size' => '0',
+		], $data2, false, true );
+
+		$list = $repository->addList( 'bar', 'here is some bar' );
+		$this->assertTimestampEquals( wfTimestampNow(), $list->rl_date_created );
+		$this->assertTimestampEquals( wfTimestampNow(), $list->rl_date_updated );
+		$data = (array)$list;
+		unset( $data['rl_id'], $data['rl_date_created'], $data['rl_date_updated'] );
 		$this->assertArrayEquals( [
 			'rl_user_id' => '1',
 			'rl_name' => 'bar',
 			'rl_description' => 'here is some bar',
 			'rl_is_default' => '0',
-			'rl_size' => '0',
 			'rl_deleted' => '0',
 		], $data, false, true );
 
@@ -174,16 +177,16 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$repository->setLimits( 2, null );
 		$repository->setupForUser();
 
-		$listId = $repository->addList( 'foo' );
-		$repository->deleteList( $listId );
-		$listId2 = $repository->addList( 'bar' );
+		$list = $repository->addList( 'foo' );
+		$repository->deleteList( $list->rl_id );
+		$list2 = $repository->addList( 'bar' );
 		$this->assertFailsWith( 'readinglists-db-error-list-limit', function () use ( $repository ) {
 			$repository->addList( 'baz' );
 		} );
 
 		// test that duplicates do not count towards the limit; since limit check is done before
 		// checking duplicates, the duplicate cannot be the limit+1th item
-		$repository->deleteList( $listId2 );
+		$repository->deleteList( $list2->rl_id );
 		$repository->addList( 'default' );
 		$repository->addList( 'default' );
 		$repository->addList( 'bar' );
@@ -351,19 +354,21 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			],
 		] );
 
-		$repository->updateList( $listId, 'bar' );
+		$list = $repository->updateList( $listId, 'bar' );
+		$this->assertEquals( 'bar', $list->rl_name );
+		$this->assertEquals( 'xxx', $list->rl_description );
+		$this->assertTimestampEquals( '20100101000000', $list->rl_date_created );
+		$this->assertTimestampEquals( wfTimestampNow(), $list->rl_date_updated );
 		/** @var ReadingListRow $row */
 		$row = $this->db->selectRow( 'reading_list', '*', [ 'rl_id' => $listId ] );
-		$this->assertEquals( 'bar', $row->rl_name );
-		$this->assertEquals( 'xxx', $row->rl_description );
-		$this->assertTimestampEquals( '20100101000000', $row->rl_date_created );
-		$this->assertTimestampEquals( wfTimestampNow(), $row->rl_date_updated );
+		$this->assertEquals( $list->rl_name, $row->rl_name );
+		$this->assertEquals( $list->rl_description, $row->rl_description );
+		$this->assertTimestampEquals( $list->rl_date_created, $row->rl_date_created );
+		$this->assertTimestampEquals( $list->rl_date_updated, $row->rl_date_updated );
 
-		$repository->updateList( $listId, 'bar', 'yyy' );
-		/** @var ReadingListRow $row */
-		$row = $this->db->selectRow( 'reading_list', '*', [ 'rl_id' => $listId ] );
-		$this->assertEquals( 'bar', $row->rl_name );
-		$this->assertEquals( 'yyy', $row->rl_description );
+		$list = $repository->updateList( $listId, 'bar', 'yyy' );
+		$this->assertEquals( 'bar', $list->rl_name );
+		$this->assertEquals( 'yyy', $list->rl_description );
 
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
 			function () use ( $repository ) {
@@ -458,34 +463,34 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			],
 		] );
 
-		$entryId = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
+		$entry = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
+		$this->assertEquals( 'Foo', $entry->rle_title );
+		$this->assertTimestampEquals( wfTimestampNow(), $entry->rle_date_created );
+		$this->assertTimestampEquals( wfTimestampNow(), $entry->rle_date_updated );
+		$this->assertEquals( 0, $entry->rle_deleted );
 		/** @var ReadingListEntryRow $row */
-		$row = $this->db->selectRow( 'reading_list_entry', '*', [ 'rle_id' => $entryId ] );
+		$row = $this->db->selectRow( 'reading_list_entry', '*', [ 'rle_id' => $entry->rle_id ] );
 		$this->assertEquals( 1, $row->rle_user_id );
 		$this->assertEquals( $projectId, $row->rle_rlp_id );
-		$this->assertEquals( 'Foo', $row->rle_title );
-		$this->assertTimestampEquals( wfTimestampNow(), $row->rle_date_created );
-		$this->assertTimestampEquals( wfTimestampNow(), $row->rle_date_updated );
-		$this->assertEquals( 0, $row->rle_deleted );
+		$this->assertEquals( $entry->rle_title, $row->rle_title );
+		$this->assertTimestampEquals( $entry->rle_date_created, $row->rle_date_created );
+		$this->assertTimestampEquals( $entry->rle_date_updated, $row->rle_date_updated );
+		$this->assertEquals( $entry->rle_deleted, $row->rle_deleted );
 
 		// test that deletion + recreation does not trip the unique contstraint
-		$repository->deleteListEntry( $entryId );
-		$entryId2 = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
-		/** @var ReadingListEntryRow $row */
-		$row = $this->db->selectRow( 'reading_list_entry', '*', [ 'rle_id' => $entryId2 ] );
-		$this->assertEquals( 1, $row->rle_user_id );
-		$this->assertEquals( $projectId, $row->rle_rlp_id );
-		$this->assertEquals( 'Foo', $row->rle_title );
-		$this->assertTimestampEquals( wfTimestampNow(), $row->rle_date_created );
-		$this->assertTimestampEquals( wfTimestampNow(), $row->rle_date_updated );
-		$this->assertEquals( 0, $row->rle_deleted );
+		$repository->deleteListEntry( $entry->rle_id );
+		$entry2 = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
+		$this->assertEquals( 'Foo', $entry2->rle_title );
+		$this->assertTimestampEquals( wfTimestampNow(), $entry2->rle_date_created );
+		$this->assertTimestampEquals( wfTimestampNow(), $entry2->rle_date_updated );
+		$this->assertEquals( 0, $entry2->rle_deleted );
 
 		$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Bar' );
 		$repository->addListEntry( $listId, 'https://de.wikipedia.org', 'Foo' );
 
 		// test that adding a duplicate is a no-op
-		$dupeEntryId = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
-		$this->assertEquals( $dupeEntryId, $entryId2 );
+		$dupeEntry = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
+		$this->assertEquals( $dupeEntry->rle_id, $entry2->rle_id );
 
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
 			function () use ( $repository ) {
@@ -524,23 +529,23 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			],
 		] );
 		// assert that limits work
-		$entryId = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
+		$entry = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
 		$this->assertFailsWith( 'readinglists-db-error-entry-limit',
 			function () use ( $repository, $listId ) {
 				$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Baz' );
 			}
 		);
 		// assert that deleting frees up space on the list
-		$repository->deleteListEntry( $entryId );
-		$entryId2 = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Bar' );
+		$repository->deleteListEntry( $entry->rle_id );
+		$entry2 = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Bar' );
 		$this->assertFailsWith( 'readinglists-db-error-entry-limit',
 			function () use ( $repository, $listId ) {
 				$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Baz' );
 			}
 		);
 		// assert that recreating a deleted entry is counted normally
-		$repository->deleteListEntry( $entryId2 );
-		$entryId3 = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Bar' );
+		$repository->deleteListEntry( $entry2->rle_id );
+		$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Bar' );
 		$this->assertFailsWith( 'readinglists-db-error-entry-limit',
 			function () use ( $repository, $listId ) {
 				$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Baz' );

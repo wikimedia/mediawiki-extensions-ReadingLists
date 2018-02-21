@@ -90,14 +90,14 @@ class PopulateWithTestData extends Maintenance {
 			}
 			$lists = $this->getRandomValueFromDistribution( $this->getOption( 'lists' ) );
 			for ( $j = 0; $j < $lists; $j++, $totalLists++ ) {
-				$listId = $repository->addList( "test_$j", __FILE__ );
+				$list = $repository->addList( "test_$j", __FILE__ );
 				$entries = $this->getRandomValueFromDistribution( $this->getOption( 'entries' ) );
 				$rows = [];
 				for ( $k = 0; $k < $entries; $k++, $totalEntries++ ) {
 					$project = $projects[array_rand( $projects )];
 					// Calling addListEntry for each row separately would be a bit slow.
 					$rows[] = [
-						'rle_rl_id' => $listId,
+						'rle_rl_id' => $list->rl_id,
 						'rle_user_id' => $centralId,
 						'rle_rlp_id' => $project,
 						'rle_title' => "Test_$k",
@@ -110,7 +110,7 @@ class PopulateWithTestData extends Maintenance {
 				$this->dbw->update(
 					'reading_list',
 					[ 'rl_size' => $entries ],
-					[ 'rl_id' => $listId ]
+					[ 'rl_id' => $list->rl_id ]
 				);
 			}
 			$this->output( '.' );

@@ -5,6 +5,8 @@ namespace MediaWiki\Extensions\ReadingLists\Api;
 use ApiBase;
 use ApiUsageException;
 use CentralIdLookup;
+use MediaWiki\Extensions\ReadingLists\Doc\ReadingListEntryRow;
+use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
 use MediaWiki\Extensions\ReadingLists\Utils;
 use MediaWiki\Logger\LoggerFactory;
@@ -173,6 +175,48 @@ trait ApiTrait {
 				count( $required ),
 			], 'missingparam' );
 		}
+	}
+
+	/**
+	 * Convert a list record from ReadingListRepository into an array suitable for adding to
+	 * the API result.
+	 * @param ReadingListRow $row
+	 * @return array
+	 */
+	protected function getListFromRow( $row ) {
+		$item = [
+			'id' => (int)$row->rl_id,
+			'name' => $row->rl_name,
+			'default' => (bool)$row->rl_is_default,
+			'description' => $row->rl_description,
+			'created' => wfTimestamp( TS_ISO_8601, $row->rl_date_created ),
+			'updated' => wfTimestamp( TS_ISO_8601, $row->rl_date_updated ),
+		];
+		if ( $row->rl_deleted ) {
+			$item['deleted'] = (bool)$row->rl_deleted;
+		}
+		return $item;
+	}
+
+	/**
+	 * Convert a list entry record from ReadingListRepository into an array suitable for adding to
+	 * the API result.
+	 * @param ReadingListEntryRow $row
+	 * @return array
+	 */
+	protected function getListEntryFromRow( $row ) {
+		$item = [
+			'id' => (int)$row->rle_id,
+			'listId' => (int)$row->rle_rl_id,
+			'project' => $row->rlp_project,
+			'title' => $row->rle_title,
+			'created' => wfTimestamp( TS_ISO_8601, $row->rle_date_created ),
+			'updated' => wfTimestamp( TS_ISO_8601, $row->rle_date_updated ),
+		];
+		if ( $row->rle_deleted ) {
+			$item['deleted'] = true;
+		}
+		return $item;
 	}
 
 }

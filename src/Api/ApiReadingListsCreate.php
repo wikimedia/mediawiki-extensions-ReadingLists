@@ -30,17 +30,23 @@ class ApiReadingListsCreate extends ApiBase {
 		$repository = $this->getReadingListRepository( $this->getUser() );
 		if ( isset( $params['name'] ) ) {
 			$description = isset( $params['description'] ) ? $params['description'] : '';
-			$listId = $repository->addList( $params['name'], $params['description'] );
-			$this->getResult()->addValue( null, $this->getModuleName(), [ 'id' => $listId ] );
+			$list = $repository->addList( $params['name'], $description );
+			$listData = $this->getListFromRow( $list );
+			$this->getResult()->addValue( null, $this->getModuleName(),
+				[ 'id' => $list->rl_id, 'list' => $listData ] );
 		} else {
-			$listIds = [];
+			$listData = $listIds = [];
 			foreach ( $this->getBatchOps( $params['batch'] ) as $op ) {
 				$description = isset( $op['description'] ) ? $op['description'] : '';
 				$this->requireAtLeastOneBatchParameter( $op, 'name' );
-				$listIds[] = $repository->addList( $op['name'], $description );
+				$list = $repository->addList( $op['name'], $description );
+				$listIds[] = $list->rl_id;
+				$listData[] = $this->getListFromRow( $list );
 			}
-			$this->getResult()->addValue( null, $this->getModuleName(), [ 'ids' => $listIds ] );
-			$this->getResult()->addIndexedTagName( $this->getModuleName(), 'id' );
+			$this->getResult()->addValue( null, $this->getModuleName(),
+				[ 'ids' => $listIds, 'lists' => $listData ] );
+			$this->getResult()->addIndexedTagName( [ $this->getModuleName(), 'ids' ], 'id' );
+			$this->getResult()->addIndexedTagName( [ $this->getModuleName(), 'lists' ], 'list' );
 		}
 	}
 
