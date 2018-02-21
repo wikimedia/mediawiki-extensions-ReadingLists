@@ -28,7 +28,7 @@ class ApiReadingListsDeleteEntry extends ApiBase {
 		if ( isset( $params['entry'] ) ) {
 			$repository->deleteListEntry( $params['entry'] );
 		} else {
-			foreach ( $this->yieldBatchOps( $params['batch'] ) as $op ) {
+			foreach ( $this->getBatchOps( $params['batch'] ) as $op ) {
 				$this->requireAtLeastOneBatchParameter( $op, 'entry' );
 				$repository->deleteListEntry( $op['entry'] );
 			}
