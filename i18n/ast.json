@@ -22,9 +22,9 @@
 	"readinglists-db-error-entry-limit": "La llista $1 nun puede tener mas de $2 {{PLURAL:$2|entrada|entraes}}.",
 	"readinglists-db-error-too-long": "El valor del campu $1 nun puede ser mayor de $2 bytes.",
 	"readinglists-db-error-no-such-project": "'$1' nun ye un proyectu reconocíu.",
-	"readinglists-apierror-project-title-param": "<var>$1project</var> y <var>$1title</var> tienen d'usase xuntos.",
-	"readinglists-apierror-too-old": "Les marques de tiempu pasaes a <var>$1changedsince</var> nun pueden ser anteriores a <kbd>$2</kbd>.",
-	"readinglists-apierror-invalidsort-notbyname": "La opción d'ordenación <kbd>name</kbd> nun puede usase xunto con <var>$1changedsince</var>.",
+	"apierror-readinglists-project-title-param": "<var>$1project</var> y <var>$1title</var> tienen d'usase xuntos.",
+	"apierror-readinglists-too-old": "Les marques de tiempu pasaes a <var>$1changedsince</var> nun pueden ser anteriores a <kbd>$2</kbd>.",
+	"apierror-readinglists-invalidsort-notbyname": "La opción d'ordenación <kbd>name</kbd> nun puede usase xunto con <var>$1changedsince</var>.",
 	"apierror-readinglists-batch-invalid-json": "JSON non válidu pal parámetru <var>batch</var>: $1",
 	"apierror-readinglists-batch-invalid-structure": "JSON non válidu pal parámetru <var>batch</var>: tien de contener una matriz d'oxetos con valores escalares.",
 	"apierror-readinglists-batch-missingparam-at-least-one-of": "En cada oxetu dientro de la entrada de <var>batch</var>, ríquese{{PLURAL:$2|'l campu| polo menos unu de los campos}} $1."
