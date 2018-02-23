@@ -326,7 +326,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-cannot-update-default-list' );
 		}
 
-		if ( $name !== null ) {
+		if ( $name !== null && $name !== $row->rl_name ) {
 			/** @var ReadingListRow $row2 */
 			$row2 = $this->dbw->selectRow(
 				'reading_list',
@@ -354,6 +354,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		], function ( $field ) {
 			return $field !== null;
 		} );
+		if ( (array)$row === array_merge( (array)$row, $data ) ) {
+			// Besides being pointless, this would hit the LogicException below
+			return $row;
+		}
 
 		$this->dbw->update(
 			'reading_list',
