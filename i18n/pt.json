@@ -28,7 +28,7 @@
 	"apierror-readinglists-invalidsort-notbyname": "A opção de ordenação <kbd>name</kbd> não pode ser usada em conjunto com <var>$1changedsince</var>.",
 	"apierror-readinglists-batch-invalid-json": "JSON inválido para o parâmetro <var>batch</var> (grupo): $1",
 	"apierror-readinglists-batch-invalid-structure": "Entrada inválida para o parâmetro <var>batch</var> (grupo): tem de conter uma matriz de objetos que tenham valores escalares.",
-	"apierror-readinglists-batch-toomanyvalues": "Entrada inválida para o parâmetro <var>batch</var> (grupo): há demasiadas entradas, a validade máxima permitida é $1",
+	"apierror-readinglists-batch-toomanyvalues": "Entrada inválida para o parâmetro <var>batch</var> (grupo): há demasiadas entradas, o número máximo permitido é $1",
 	"apierror-readinglists-batch-missingparam-at-least-one-of": "Em todos os objetos dentro da entrada <var>batch</var> (grupo), {{PLURAL:$2|o campo|pelo menos um dos seguintes campos}} $1 é obrigatório.",
 	"apihelp-query+readinglists-summary": "Listar ou filtrar as listas de leitura do utilizador e mostrar metadados sobre elas.",
 	"apihelp-query+readinglists-extended-description": "Este módulo tem três modos de operação. Com o parâmetro <var>$1changedsince</var> (alteradas desde), ele devolve todas as listas do utilizador corrente alteradas após a data fornecida. (Este modo destina-se à sincronização de dispositivos e, ao contrário dos restantes, inclui listas eliminadas. Só são consideradas as alterações aos metadados das listas, não às entradas das listas.) Com os parâmetros <var>$1project</var> (projeto) e <var>$1title</var> (título), ele devolve todas as listas que incluem essa página. Sem nenhum destes parâmetros, devolve todas as listas.",
