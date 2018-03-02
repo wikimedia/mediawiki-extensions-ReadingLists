@@ -22,5 +22,11 @@
 	"readinglists-db-error-entry-limit": "ברשימה $1 לא {{PLURAL:$2|יכול להיות יותר מפריט אחד|יכולים להיות יותר מ־$2 פריטים}}.",
 	"readinglists-db-error-too-long": "הערך עבור השדה $1 לא יכול להיות ארוך מ־$2 בתים.",
 	"readinglists-db-error-no-such-project": "\"$1\" אינו מיזם מוכר.",
-	"apierror-readinglists-project-title-param": "<var>$1project</var> ו־<var>$1title</var> צריכים לשמש יחד."
+	"apierror-readinglists-project-title-param": "<var>$1project</var> ו־<var>$1title</var> צריכים לשמש יחד.",
+	"apihelp-readinglists+createentry-example-2": "הוספת דפים מרובים לרשימה.",
+	"apihelp-readinglists+deleteentry-summary": "מחיקת דף מרשימה ששייכת למשתמש הנוכחי.",
+	"apihelp-readinglists+deleteentry-param-entry": "מזהה רשומה. נדרש אלא אם נעשית מחיקת אצווה.",
+	"apihelp-readinglists+deleteentry-param-batch": "נתוני אצווה למחיקת רשומות מרובות בבקשה בודדת, בצורת מערך JSON אם עצם אחד או יותר בשדה <var>entry</var>.",
+	"apihelp-readinglists+deleteentry-example-1": "מחיקת רשומה עם מזהה <kbd>8</kbd>.",
+	"apihelp-readinglists+deleteentry-example-2": "מחיקת רשומות מרובות."
 }
