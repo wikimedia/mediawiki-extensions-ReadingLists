@@ -142,13 +142,14 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			'rl_description' => '',
 			'rl_is_default' => '0',
 			'rl_deleted' => '0',
+			'merged' => false,
 		], $data, false, true );
 		/** @var ReadingListRow $row */
 		$row = $this->db->selectRow( 'reading_list', '*', [ 'rl_id' => $list->rl_id ] );
 		$this->assertTimestampEquals( wfTimestampNow(), $row->rl_date_created );
 		$this->assertTimestampEquals( wfTimestampNow(), $row->rl_date_updated );
-		unset( $row->rl_id, $row->rl_date_created, $row->rl_date_updated );
 		$data2 = (array)$row;
+		unset( $data['merged'], $data2['rl_id'], $data2['rl_date_created'], $data2['rl_date_updated'] );
 		$this->assertArrayEquals( $data + [
 			'rl_size' => '0',
 		], $data2, false, true );
@@ -164,7 +165,17 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			'rl_description' => 'here is some bar',
 			'rl_is_default' => '0',
 			'rl_deleted' => '0',
+			'merged' => false,
 		], $data, false, true );
+
+		$mergedList = $repository->addList( 'bar', 'more bar' );
+		$this->assertEquals( $list->rl_id, $mergedList->rl_id );
+		$this->assertEquals( 'more bar', $mergedList->rl_description );
+		$this->assertEquals( true, $mergedList->merged );
+
+		$mergedList = $repository->addList( 'bar', 'more bar' );
+		$this->assertEquals( $list->rl_id, $mergedList->rl_id );
+		$this->assertEquals( true, $mergedList->merged );
 
 		$this->assertFailsWith( 'readinglists-db-error-too-long', function () use ( $repository ) {
 			$repository->addList( 'boom',  str_pad( '', 1000, 'x' ) );
@@ -468,6 +479,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertTimestampEquals( wfTimestampNow(), $entry->rle_date_created );
 		$this->assertTimestampEquals( wfTimestampNow(), $entry->rle_date_updated );
 		$this->assertEquals( 0, $entry->rle_deleted );
+		$this->assertEquals( false, $entry->merged );
 		/** @var ReadingListEntryRow $row */
 		$row = $this->db->selectRow( 'reading_list_entry', '*', [ 'rle_id' => $entry->rle_id ] );
 		$this->assertEquals( 1, $row->rle_user_id );
@@ -480,10 +492,12 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		// test that deletion + recreation does not trip the unique contstraint
 		$repository->deleteListEntry( $entry->rle_id );
 		$entry2 = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
+		$this->assertEquals( $entry->rle_id, $entry2->rle_id );
 		$this->assertEquals( 'Foo', $entry2->rle_title );
 		$this->assertTimestampEquals( wfTimestampNow(), $entry2->rle_date_created );
 		$this->assertTimestampEquals( wfTimestampNow(), $entry2->rle_date_updated );
 		$this->assertEquals( 0, $entry2->rle_deleted );
+		$this->assertEquals( false, $entry->merged );
 
 		$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Bar' );
 		$repository->addListEntry( $listId, 'https://de.wikipedia.org', 'Foo' );
@@ -491,6 +505,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		// test that adding a duplicate is a no-op
 		$dupeEntry = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
 		$this->assertEquals( $dupeEntry->rle_id, $entry2->rle_id );
+		$this->assertEquals( true, $dupeEntry->merged );
 
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
 			function () use ( $repository ) {

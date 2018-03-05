@@ -6,7 +6,9 @@ use DBAccessObjectUtils;
 use IDBAccessObject;
 use LogicException;
 use MediaWiki\Extensions\ReadingLists\Doc\ReadingListEntryRow;
+use MediaWiki\Extensions\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
 use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRow;
+use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -193,7 +195,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * List name is unique for a given user; on conflict, update the existing list.
 	 * @param string $name
 	 * @param string $description
-	 * @return ReadingListRow The new (or updated) list.
+	 * @return ReadingListRowWithMergeFlag The new (or updated) list.
 	 * @throws ReadingListRepositoryException
 	 */
 	public function addList( $name, $description = '' ) {
@@ -241,11 +243,13 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				__METHOD__
 			);
 			$id = $this->dbw->insertId();
+			$merged = false;
 		} elseif ( $row->rl_deleted ) {
 			throw new LogicException( 'Encountered deleted list with non-unique name' );
 		} elseif ( $row->rl_description === $description ) {
 			// List already exists with the same details; nothing to do, just return the ID.
 			$id = $row->rl_id;
+			$merged = true;
 		} else {
 			$this->dbw->update(
 				'reading_list',
@@ -259,16 +263,20 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				__METHOD__
 			);
 			$id = $row->rl_id;
-			$this->logger->info( 'Added list {list} for user {user}', [
-				'list' => $this->dbw->insertId(),
-				'user' => $this->userId,
-				'merged' => (bool)$row,
-			] );
+			$merged = true;
 		}
+		$this->logger->info( 'Added list {list} for user {user}', [
+			'list' => $id,
+			'user' => $this->userId,
+			'merged' => $merged,
+		] );
 
 		// We could just construct the result ourselves but let's be paranoid and re-query it
 		// in case some conversion or corruption happens in MySQL.
-		return $this->selectValidList( $id, self::READ_LATEST );
+		/** @var ReadingListRowWithMergeFlag $list */
+		$list = $this->selectValidList( $id, self::READ_LATEST );
+		$list->merged = $merged;
+		return $list;
 	}
 
 	/**
@@ -418,7 +426,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * @param string $project Project identifier (typically a domain name)
 	 * @param string $title Page title (treated as a plain string with no normalization;
 	 *   in localized namespace-prefixed format with spaces is recommended)
-	 * @return ReadingListEntryRow The new (or existing) list entry.
+	 * @return ReadingListEntryRowWithMergeFlag The new (or existing) list entry.
 	 * @throws ReadingListRepositoryException
 	 */
 	public function addListEntry( $listId, $project, $title ) {
@@ -512,7 +520,9 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			'type' => $type,
 		] );
 
+		/** @var ReadingListEntryRowWithMergeFlag $row */
 		if ( $type === 'merged' ) {
+			$row->merged = true;
 			return $row;
 		} else {
 			$row = $this->dbw->selectRow(
@@ -528,6 +538,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			if ( $row === false ) {
 				throw new LogicException( 'Failed to retrieve stored entry' );
 			}
+			$row->merged = false;
 			return $row;
 		}
 	}

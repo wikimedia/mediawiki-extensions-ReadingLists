@@ -6,7 +6,9 @@ use ApiBase;
 use ApiUsageException;
 use CentralIdLookup;
 use MediaWiki\Extensions\ReadingLists\Doc\ReadingListEntryRow;
+use MediaWiki\Extensions\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
 use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRow;
+use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
 use MediaWiki\Extensions\ReadingLists\Utils;
 use MediaWiki\Logger\LoggerFactory;
@@ -180,7 +182,7 @@ trait ApiTrait {
 	/**
 	 * Convert a list record from ReadingListRepository into an array suitable for adding to
 	 * the API result.
-	 * @param ReadingListRow $row
+	 * @param ReadingListRow|ReadingListRowWithMergeFlag $row
 	 * @return array
 	 */
 	protected function getListFromRow( $row ) {
@@ -192,6 +194,9 @@ trait ApiTrait {
 			'created' => wfTimestamp( TS_ISO_8601, $row->rl_date_created ),
 			'updated' => wfTimestamp( TS_ISO_8601, $row->rl_date_updated ),
 		];
+		if ( isset( $row->merged ) ) {
+			$item['duplicate'] = (bool)$row->merged;
+		}
 		if ( $row->rl_deleted ) {
 			$item['deleted'] = (bool)$row->rl_deleted;
 		}
@@ -201,7 +206,7 @@ trait ApiTrait {
 	/**
 	 * Convert a list entry record from ReadingListRepository into an array suitable for adding to
 	 * the API result.
-	 * @param ReadingListEntryRow $row
+	 * @param ReadingListEntryRow|ReadingListEntryRowWithMergeFlag $row
 	 * @return array
 	 */
 	protected function getListEntryFromRow( $row ) {
@@ -213,6 +218,9 @@ trait ApiTrait {
 			'created' => wfTimestamp( TS_ISO_8601, $row->rle_date_created ),
 			'updated' => wfTimestamp( TS_ISO_8601, $row->rle_date_updated ),
 		];
+		if ( isset( $row->merged ) ) {
+			$item['duplicate'] = (bool)$row->merged;
+		}
 		if ( $row->rle_deleted ) {
 			$item['deleted'] = true;
 		}
