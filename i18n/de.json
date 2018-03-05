@@ -15,6 +15,7 @@
 	"readinglists-db-error-not-own-list-entry": "Der Listeneintrag $1 gehört einem anderen Benutzer.",
 	"readinglists-db-error-list-deleted": "Die Liste $1 wurde gelöscht.",
 	"readinglists-db-error-list-entry-deleted": "Der Listeneintrag $1 wurde gelöscht.",
+	"readinglists-db-error-duplicate-list": "Eine Liste mit diesem Namen ist bereits vorhanden.",
 	"readinglists-db-error-duplicate-page": "Die Liste enthält bereits diese Seite.",
 	"readinglists-db-error-empty-list-ids": "Listenkennungsparameter dürfen nicht leer sein.",
 	"readinglists-db-error-user-required": "Diese Methode kann ohne Angabe des Benutzers nicht aufgerufen werden.",
