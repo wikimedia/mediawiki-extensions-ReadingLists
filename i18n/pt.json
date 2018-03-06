@@ -16,6 +16,7 @@
 	"readinglists-db-error-not-own-list-entry": "A entrada $1 da lista pertence a outro utilizador.",
 	"readinglists-db-error-list-deleted": "A lista $1 foi eliminada.",
 	"readinglists-db-error-list-entry-deleted": "A entrada $1 da lista foi eliminada.",
+	"readinglists-db-error-duplicate-list": "Já existe uma lista com este nome.",
 	"readinglists-db-error-duplicate-page": "A lista já contém esta página.",
 	"readinglists-db-error-empty-list-ids": "O parâmetro de identificadores de listas não pode estar vazio.",
 	"readinglists-db-error-user-required": "Este método não pode ser chamado sem especificar o utilizador.",

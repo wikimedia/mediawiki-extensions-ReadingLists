@@ -20,6 +20,7 @@
 	"readinglists-db-error-not-own-list-entry": "L’entrée de liste $1 appartient à un autre utilisateur.",
 	"readinglists-db-error-list-deleted": "La liste $1 a été supprimée.",
 	"readinglists-db-error-list-entry-deleted": "L’entrée de liste $1 a été supprimée.",
+	"readinglists-db-error-duplicate-list": "Une liste avec ce nom existe déjà.",
 	"readinglists-db-error-duplicate-page": "La liste contient déja cette page.",
 	"readinglists-db-error-empty-list-ids": "Le paramètre ids de liste ne doit pas être vide.",
 	"readinglists-db-error-user-required": "Cette méthode ne peut pas être appelée sans spécifier l’utilisateur.",

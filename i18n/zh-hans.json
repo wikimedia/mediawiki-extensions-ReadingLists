@@ -15,6 +15,7 @@
 	"readinglists-db-error-not-own-list-entry": "列表项$1与另一用户相关。",
 	"readinglists-db-error-list-deleted": "列表$1已删除。",
 	"readinglists-db-error-list-entry-deleted": "列表项$1已删除。",
+	"readinglists-db-error-duplicate-list": "已存在使用此名称的列表。",
 	"readinglists-db-error-duplicate-page": "列表已包含该页面。",
 	"readinglists-db-error-empty-list-ids": "列表id参数不能为空。",
 	"readinglists-db-error-user-required": "在没有指定用户的情况下不能取消此方法。",

@@ -15,6 +15,7 @@
 	"readinglists-db-error-not-own-list-entry": "$1 목록 엔트리는 다른 사용자에 속해 있습니다.",
 	"readinglists-db-error-list-deleted": "$1 목록이 삭제되었습니다.",
 	"readinglists-db-error-list-entry-deleted": "$1 목록 엔트리가 삭제되었습니다.",
+	"readinglists-db-error-duplicate-list": "이 이름의 목록은 이미 존재합니다.",
 	"readinglists-db-error-duplicate-page": "목록에 이미 이 문서가 포함되어 있습니다.",
 	"readinglists-db-error-empty-list-ids": "목록 id 변수는 비어 있으면 안 됩니다.",
 	"readinglists-db-error-user-required": "사용자 지정 없이 이 메소드를 호출할 수 없습니다.",
