@@ -17,6 +17,7 @@
 	"readinglists-db-error-not-own-list-entry": "La entrada de lista $1 pertenece a otro usuario.",
 	"readinglists-db-error-list-deleted": "Se eliminó la lista $1.",
 	"readinglists-db-error-list-entry-deleted": "Se eliminó la entrada de lista $1.",
+	"readinglists-db-error-duplicate-list": "Ya existe otra lista con este nombre.",
 	"readinglists-db-error-duplicate-page": "La lista ya contiene esta página.",
 	"readinglists-db-error-user-required": "No se puede llamar a este método sin especificar el usuario.",
 	"readinglists-db-error-list-limit": "Los usuarios no pueden tener mas que $1 {{PLURAL:$1|list|lists}}.",
