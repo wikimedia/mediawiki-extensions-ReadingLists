@@ -25,7 +25,7 @@
 	"readinglists-db-error-too-long": "El valor del campo $1 no puede ser mayor que $2 bytes.",
 	"readinglists-db-error-no-such-project": "«$1» no es una proyecto reconocido.",
 	"apierror-readinglists-batch-invalid-json": "JSON no válido para el parámetro <var>batch</var>: $1",
-	"apierror-readinglists-batch-invalid-structure": "JSON no válido para el parámetro <var>batch</var>: debe contener una matriz de objetos con valores escalares.",
+	"apierror-readinglists-batch-invalid-structure": "El valor de entrada del parámetro <var>batch</var> no es válido: este debe contener una matriz de objetos con valores escalares.",
 	"apihelp-query+readinglists-paramvalue-sort-name": "Nombre de la lista. (El ordenamiento es por valor binario; p. ej., cualquier carácter ASCII mayúsculo se ordenará antes que los minúsculos.)",
 	"apihelp-query+readinglists-paramvalue-sort-updated": "Fecha y hora de la última actualización. (Entre las actualizaciones hay cambios a los metadatos pero no se incluyen los cambios a los elementos de la lista.)",
 	"apihelp-query+readinglistentries-paramvalue-sort-updated": "Fecha y hora de la última actualización.",
