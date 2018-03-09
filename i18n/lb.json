@@ -9,6 +9,7 @@
 	"readinglists-db-error-no-such-list": "Lëscht $1 gëtt et net.",
 	"readinglists-db-error-not-own-list": "D'Lëscht $1 gehéiert engem anere Benotzer.",
 	"readinglists-db-error-list-deleted": "Lëscht $1 gouf geläscht.",
+	"readinglists-db-error-duplicate-list": "Et gëtt schonn eng Lëscht mat deem Numm.",
 	"readinglists-db-error-duplicate-page": "Déi Säit ass schonn an där Lëscht.",
 	"readinglists-db-error-list-limit": "Benotzer däerfen net méi wéi  {{PLURAL:$1|en Lëscht|$1 Lëschten}} hunn.",
 	"readinglists-db-error-entry-limit": "Lëscht $1 däerf net méi wéi {{PLURAL:$2|een Element|$2 Elementer}} hunn.",

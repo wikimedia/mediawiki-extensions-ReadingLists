@@ -15,6 +15,7 @@
 	"readinglists-db-error-not-own-list-entry": "Listelementet $1 tillhör en annan användare.",
 	"readinglists-db-error-list-deleted": "Listan $1 har raderats.",
 	"readinglists-db-error-list-entry-deleted": "Listelementet $1 har raderats.",
+	"readinglists-db-error-duplicate-list": "En lista med detta namn finns redan.",
 	"readinglists-db-error-duplicate-page": "Listan innehåller redan denna sida.",
 	"readinglists-db-error-empty-list-ids": "Parametern för list-ID:n får inte vara tom.",
 	"readinglists-db-error-user-required": "Denna metod kan inte anropas utan att ange användaren.",
