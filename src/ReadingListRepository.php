@@ -859,6 +859,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	/**
 	 * Recalculate the size of the given list.
 	 * @param int $id
+	 * @return bool True if the list needed to be fixed.
 	 * @throws ReadingListRepositoryException
 	 */
 	public function fixListSize( $id ) {
@@ -893,6 +894,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		);
 		// Release the lock when using explicit transactions (called from a long-running script).
 		$this->dbw->endAtomic( __METHOD__ );
+		return (bool)$this->dbw->affectedRows();
 	}
 
 	// helper methods

@@ -72,8 +72,10 @@ class FixListSize extends Maintenance {
 					break;
 				}
 				foreach ( $ids as $id ) {
-					$this->fixRow( $id );
-					$i++;
+					$changed = $this->fixRow( $id );
+					if ( $changed ) {
+						$i++;
+					}
 					$maxId = (int)$id;
 				}
 				$this->loadBalancerFactory->waitForReplication();
@@ -86,22 +88,24 @@ class FixListSize extends Maintenance {
 	/**
 	 * Recalculate the size of the given list.
 	 * @param int $listId
+	 * @return bool True if the row was changed.
 	 * @throws ReadingListRepositoryException
 	 */
 	private function fixRow( $listId ) {
 		$repo = $this->getReadingListRepository();
 		try {
 			$this->output( "Fixing list $listId... " );
-			$repo->fixListSize( $listId );
+			$changed = $repo->fixListSize( $listId );
 		} catch ( ReadingListRepositoryException $e ) {
 			if ( $e->getMessageObject()->getKey() === 'readinglists-db-error-no-such-list' ) {
 				$this->error( "not found, skipping\n" );
-				return;
+				return false;
 			} else {
 				throw $e;
 			}
 		}
-		$this->output( "done\n" );
+		$this->output( $changed ? "done\n" : "no change needed\n" );
+		return $changed;
 	}
 
 	/**
