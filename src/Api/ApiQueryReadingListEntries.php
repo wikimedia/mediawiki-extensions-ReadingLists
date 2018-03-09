@@ -191,7 +191,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	 * @return array
 	 */
 	private function getResultItem( $row, $mode ) {
-		if ( $row->rle_deleted && $mode === self::$MODE_CHANGES ) {
+		if ( $row->rle_deleted && $mode !== self::$MODE_CHANGES ) {
 			throw new LogicException( 'Deleted row returned in non-changes mode' );
 		}
 		return $this->getListEntryFromRow( $row );
