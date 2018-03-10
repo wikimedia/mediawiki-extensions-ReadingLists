@@ -5,6 +5,7 @@ namespace MediaWiki\Extensions\ReadingLists\Api;
 use ApiQueryBase;
 use DateTime;
 use DateTimeZone;
+use LogicException;
 use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extensions\ReadingLists\Utils;
@@ -182,6 +183,10 @@ class ApiQueryReadingLists extends ApiQueryBase {
 	 */
 	private function getResultItem( $row, $mode ) {
 		if ( $row->rl_deleted && $mode !== self::$MODE_CHANGES ) {
+			$this->logger->error( 'Deleted row returned in non-changes mode', [
+				'rl_id' => $row->rl_id,
+				'user_central_id' => $row->rl_user_id,
+			] );
 			throw new LogicException( 'Deleted row returned in non-changes mode' );
 		}
 		return $this->getListFromRow( $row );

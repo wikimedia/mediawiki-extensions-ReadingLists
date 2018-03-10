@@ -245,7 +245,12 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			$id = $this->dbw->insertId();
 			$merged = false;
 		} elseif ( $row->rl_deleted ) {
-			throw new LogicException( 'Encountered deleted list with non-unique name' );
+			$this->logger->error( 'Encountered deleted list with non-unique name on insert', [
+				'rl_id' => $row->rl_id,
+				'rl_name' => $row->rl_name,
+				'user_central_id' => $row->rl_user_id,
+			] );
+			throw new LogicException( 'Encountered deleted list with non-unique name on insert' );
 		} elseif ( $row->rl_description === $description ) {
 			// List already exists with the same details; nothing to do, just return the ID.
 			$id = $row->rl_id;
@@ -348,7 +353,13 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			);
 			if ( $row2 !== false && (int)$row2->rl_id !== $id ) {
 				if ( $row2->rl_deleted ) {
-					throw new LogicException( 'Encountered deleted list with non-unique name' );
+					$this->logger->error( 'Encountered deleted list with non-unique name on update', [
+						'this_rl_id' => $row->rl_id,
+						'that_rl_id' => $row2->rl_id,
+						'rl_name' => $row2->rl_name,
+						'user_central_id' => $row->rl_user_id,
+					] );
+					throw new LogicException( 'Encountered deleted list with non-unique name on update' );
 				} else {
 					throw new ReadingListRepositoryException( 'readinglists-db-error-duplicate-list' );
 				}
@@ -374,6 +385,11 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			__METHOD__
 		);
 		if ( !$this->dbw->affectedRows() ) {
+			$this->logger->error( 'updateList failed for unknown reason', [
+				'rl_id' => $row->rl_id,
+				'user_central_id' => $row->rl_user_id,
+				'data' => $data,
+			] );
 			throw new LogicException( 'updateList failed for unknown reason' );
 		}
 
@@ -408,6 +424,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			__METHOD__
 		);
 		if ( !$this->dbw->affectedRows() ) {
+			$this->logger->error( 'deleteList failed for unknown reason', [
+				'rl_id' => $row->rl_id,
+				'user_central_id' => $row->rl_user_id,
+			] );
 			throw new LogicException( 'deleteList failed for unknown reason' );
 		}
 
@@ -536,6 +556,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				]
 			);
 			if ( $row === false ) {
+				$this->logger->error( 'Failed to retrieve stored entry', [
+					'rle_id' => $entryId,
+					'user_central_id' => $this->userId,
+				] );
 				throw new LogicException( 'Failed to retrieve stored entry' );
 			}
 			$row->merged = false;
@@ -646,6 +670,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			__METHOD__
 		);
 		if ( !$this->dbw->affectedRows() ) {
+			$this->logger->error( 'deleteListEntry failed for unknown reason', [
+				'rle_id' => $row->rle_id,
+				'user_central_id' => $row->rl_user_id,
+			] );
 			throw new LogicException( 'deleteListEntry failed for unknown reason' );
 		}
 		$this->dbw->update(

@@ -14,6 +14,7 @@ use MediaWiki\Extensions\ReadingLists\Utils;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use Message;
+use Psr\Log\LoggerInterface;
 use User;
 use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\LBFactory;
@@ -23,6 +24,10 @@ use Wikimedia\Rdbms\LBFactory;
  * Classes using it must have a static $prefix property (the API module prefix).
  */
 trait ApiTrait {
+
+	/** @var LoggerInterface */
+	private $logger;
+
 	/** @var ReadingListRepository */
 	private $repository;
 
@@ -45,10 +50,6 @@ trait ApiTrait {
 	 * @return static
 	 */
 	public static function factory( ApiBase $parent, $name ) {
-		$services = MediaWikiServices::getInstance();
-		$loadBalancerFactory = $services->getDBLoadBalancerFactory();
-		$dbw = Utils::getDB( DB_MASTER, $services );
-		$dbr = Utils::getDB( DB_REPLICA, $services );
 		if ( static::$prefix ) {
 			// We are in one of the read modules, $parent is ApiQuery.
 			// This is an ApiQueryBase subclass so we need to pass ApiQuery.
@@ -59,7 +60,15 @@ trait ApiTrait {
 			$module = new static( $parent->getMain(), $name, static::$prefix );
 		}
 		$module->parent = $parent;
+
+		$services = MediaWikiServices::getInstance();
+		$loadBalancerFactory = $services->getDBLoadBalancerFactory();
+		$dbw = Utils::getDB( DB_MASTER, $services );
+		$dbr = Utils::getDB( DB_REPLICA, $services );
 		$module->injectDatabaseDependencies( $loadBalancerFactory, $dbw, $dbr );
+
+		$module->logger = LoggerFactory::getInstance( 'readinglists' );
+
 		return $module;
 	}
 
@@ -98,7 +107,7 @@ trait ApiTrait {
 			$this->loadBalancerFactory );
 		$repository->setLimits( $config->get( 'ReadingListsMaxListsPerUser' ),
 			$config->get( 'ReadingListsMaxEntriesPerList' ) );
-		$repository->setLogger( LoggerFactory::getInstance( 'readinglists' ) );
+		$repository->setLogger( $this->logger );
 		return $repository;
 	}
 
