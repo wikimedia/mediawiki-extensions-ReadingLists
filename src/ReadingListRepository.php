@@ -248,7 +248,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			$this->logger->error( 'Encountered deleted list with non-unique name on insert', [
 				'rl_id' => $row->rl_id,
 				'rl_name' => $row->rl_name,
-				'user_central_id' => $row->rl_user_id,
+				'user_central_id' => $this->userId,
 			] );
 			throw new LogicException( 'Encountered deleted list with non-unique name on insert' );
 		} elseif ( $row->rl_description === $description ) {
@@ -357,7 +357,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 						'this_rl_id' => $row->rl_id,
 						'that_rl_id' => $row2->rl_id,
 						'rl_name' => $row2->rl_name,
-						'user_central_id' => $row->rl_user_id,
+						'user_central_id' => $this->userId,
 					] );
 					throw new LogicException( 'Encountered deleted list with non-unique name on update' );
 				} else {
@@ -387,7 +387,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		if ( !$this->dbw->affectedRows() ) {
 			$this->logger->error( 'updateList failed for unknown reason', [
 				'rl_id' => $row->rl_id,
-				'user_central_id' => $row->rl_user_id,
+				'user_central_id' => $this->userId,
 				'data' => $data,
 			] );
 			throw new LogicException( 'updateList failed for unknown reason' );
@@ -426,7 +426,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		if ( !$this->dbw->affectedRows() ) {
 			$this->logger->error( 'deleteList failed for unknown reason', [
 				'rl_id' => $row->rl_id,
-				'user_central_id' => $row->rl_user_id,
+				'user_central_id' => $this->userId,
 			] );
 			throw new LogicException( 'deleteList failed for unknown reason' );
 		}
@@ -672,7 +672,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		if ( !$this->dbw->affectedRows() ) {
 			$this->logger->error( 'deleteListEntry failed for unknown reason', [
 				'rle_id' => $row->rle_id,
-				'user_central_id' => $row->rl_user_id,
+				'user_central_id' => $this->userId,
 			] );
 			throw new LogicException( 'deleteListEntry failed for unknown reason' );
 		}
