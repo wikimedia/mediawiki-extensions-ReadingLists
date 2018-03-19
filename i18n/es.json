@@ -42,6 +42,7 @@
 	"apihelp-readinglists+update-summary": "Actualizar una lista perteneciente al usuario actual.",
 	"apihelp-readinglists+update-param-list": "Identificador de lista. Necesario a menos que se esté utilizando una actualización por lotes.",
 	"apihelp-readinglists+update-param-name": "Nombre nuevo de la lista. Se necesita este o la descripción, a menos que se esté realizando una actualización por lotes.",
+	"apihelp-readinglists+update-param-description": "Descripción nueva de la lista.",
 	"apihelp-readinglists+update-example-2": "Actualizar varias listas.",
 	"apihelp-readinglists+delete-summary": "Eliminar una lista perteneciente al usuario actual.",
 	"apihelp-readinglists+delete-param-list": "Identificador de lista. Necesario a menos que se esté realizando un borrado por lotes.",

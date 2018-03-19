@@ -15,6 +15,7 @@
 	"readinglists-db-error-not-own-list-entry": "פריט הרשימה $1 שייך למשתמש אחר.",
 	"readinglists-db-error-list-deleted": "הרשימה $1 נמחקה.",
 	"readinglists-db-error-list-entry-deleted": "פריט הרשימה $1 נמחק.",
+	"readinglists-db-error-duplicate-list": "כבר יש רשימה עם שם כזה.",
 	"readinglists-db-error-duplicate-page": "הרשימה כבר מכילה את הדף הזה.",
 	"readinglists-db-error-empty-list-ids": "פרמטר מזהי רשימה (list ids) חייב לא להיות ריק.",
 	"readinglists-db-error-user-required": "לא ניתן לקרוא לשיטה הזאת בלי לציין את המשתמש.",
