@@ -313,7 +313,6 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		if (
 			$res->numRows() === 0
 			&& !$this->isSetupForUser()
-			&& !$this->isSetupForUser( self::READ_LATEST )
 		) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
@@ -724,7 +723,6 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		if (
 			$res->numRows() === 0
 			&& !$this->isSetupForUser()
-			&& !$this->isSetupForUser( self::READ_LATEST )
 		) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
@@ -877,7 +875,6 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		if (
 			$res->numRows() === 0
 			&& !$this->isSetupForUser()
-			&& !$this->isSetupForUser( self::READ_LATEST )
 		) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
