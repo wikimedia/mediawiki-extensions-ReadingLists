@@ -15,6 +15,7 @@
 	"readinglists-db-error-not-own-list-entry": "Ставката $1 му припаѓа на друг корисник.",
 	"readinglists-db-error-list-deleted": "Списокот $1 е избришан.",
 	"readinglists-db-error-list-entry-deleted": "Ставката $1 е избришана.",
+	"readinglists-db-error-duplicate-list": "Веќе постои список со тоа име.",
 	"readinglists-db-error-duplicate-page": "Страницата е веќе во списокот.",
 	"readinglists-db-error-empty-list-ids": "Параметарот со списочни назнаки не постои.",
 	"readinglists-db-error-user-required": "Не може да се повика овој начин без да се укаже корисник.",
