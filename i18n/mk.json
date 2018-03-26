@@ -27,5 +27,7 @@
 	"apierror-readinglists-too-old": "Временско-датумските ознаки што се му даваат на <var>$1changedsince</var> не може да бидат постари од <kbd>$2</kbd>.",
 	"apierror-readinglists-invalidsort-notbyname": "Можноста за подредување <kbd>name</kbd> не може да се користи заедно со <var>$1changedsince</var>.",
 	"apierror-readinglists-batch-invalid-json": "Неважечки JSON за параметарот <var>batch</var>: $1",
+	"apierror-readinglists-batch-invalid-structure": "Неважечки внос за параметарот <var>batch</var>: мора да содржи низа објекти кои имаат скаларни вредности.",
+	"apierror-readinglists-batch-toomanyvalues": "Неважечки внос за параметарот <var>batch</var>: премногу ставки, а се допуштаат највеќе $1",
 	"apihelp-query+readinglistentries-summary": "Наведување на страниците на даден список."
 }
