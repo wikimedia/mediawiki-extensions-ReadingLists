@@ -182,7 +182,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		} );
 	}
 
-	// @codingStandardsIgnoreLine MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
 	public function testAddList_count() {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$repository->setLimits( 2, null );
@@ -530,7 +529,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		);
 	}
 
-	// @codingStandardsIgnoreLine MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
 	public function testAddListEntry_count() {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$repository->setLimits( null, 1 );
@@ -738,7 +736,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		];
 	}
 
-	// @codingStandardsIgnoreLine MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
 	public function testGetListEntries_error() {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$repository->setupForUser();
