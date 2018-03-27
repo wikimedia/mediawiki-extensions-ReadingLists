@@ -14,9 +14,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
-// @codingStandardsIgnoreStart MediaWiki.Classes.UnusedUseStatement.UnusedUse
 use Wikimedia\Rdbms\IResultWrapper;
-// @codingStandardsIgnoreEnd
 use Wikimedia\Rdbms\LBFactory;
 
 /**
@@ -292,7 +290,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * @param array|null $from DB position to continue from (or null to start at the beginning/end).
 	 *   When sorting by name, this should be the name and id of a list; when sorting by update time,
 	 *   the updated timestamp (in some form accepted by MWTimestamp) and the id.
-	 * @return IResultWrapper <ReadingListRow>
+	 * @return IResultWrapper<ReadingListRow>
 	 * @throws ReadingListRepositoryException
 	 */
 	public function getAllLists( $sortBy, $sortDir, $limit = 1000, array $from = null ) {
