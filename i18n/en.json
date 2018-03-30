@@ -89,7 +89,7 @@
 	"apihelp-readinglists+createentry-param-project": "Project name of the wiki hosting the page. (Typically this is the domain name of the wiki.) Required unless doing batch creation.",
 	"apihelp-readinglists+createentry-param-title": "Page title (including the localised namespace name).  Required unless doing batch creation. Human-readable format (spaces not underscores) is recommended. The API treats titles as raw strings; normalization (such as title casing) is left to the clients.",
 	"apihelp-readinglists+createentry-param-batch": "Batch data for creating multiple list entries (in the same list) in a single request, in the form of a JSON array with one or more objects with <var>project</var> and <var>title</var> fields.",
-	"apihelp-readinglists+createentry-example-1": "Add the page <kbd>Dog</kbd> from project <kbd>en.wikipedia.org</bar> to the list with ID <kbd>33</kbd>.",
+	"apihelp-readinglists+createentry-example-1": "Add the page <kbd>Dog</kbd> from project <kbd>en.wikipedia.org</kbd> to the list with ID <kbd>33</kbd>.",
 	"apihelp-readinglists+createentry-example-2": "Add multiple pages to a list.",
 	"apihelp-readinglists+deleteentry-summary": "Delete a page from a list belonging to the current user.",
 	"apihelp-readinglists+deleteentry-param-entry": "Entry ID. Required unless doing batch deletion.",
