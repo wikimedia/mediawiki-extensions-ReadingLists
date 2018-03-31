@@ -63,7 +63,7 @@
 	"apihelp-readinglists+createentry-param-list": "Ідентифікатор списку.",
 	"apihelp-readinglists+createentry-param-project": "Назва проекту тієї вікі, у якій зберігається сторінка. (Зазвичай це — доменна назва вікі.)",
 	"apihelp-readinglists+createentry-param-title": "Назва сторінки.",
-	"apihelp-readinglists+createentry-example-1": "Додати сторінку <kbd>Dog</kbd> з проекту <kbd>en.wikipedia.org</bar> до списку з ідентифікатором <kbd>33</kbd>.",
+	"apihelp-readinglists+createentry-example-1": "Додати сторінку <kbd>Dog</kbd> з проекту <kbd>en.wikipedia.org</kbd> до списку з ідентифікатором <kbd>33</kbd>.",
 	"apihelp-readinglists+deleteentry-summary": "Вилучити сторінку зі списку, який належить поточному користувачеві.",
 	"apihelp-readinglists+deleteentry-param-entry": "Ідентифікатор елемента.",
 	"apihelp-readinglists+deleteentry-example-1": "Вилучити елемент списку з ідентифікатором <kbd>8</kbd>."

@@ -72,7 +72,7 @@
 	"apihelp-readinglists+createentry-param-list": "목록 ID입니다.",
 	"apihelp-readinglists+createentry-param-project": "문서를 호스팅하는 위키의 프로젝트 이름입니다. (일반적으로 이것은 위키의 도메인 이름입니다)",
 	"apihelp-readinglists+createentry-param-title": "문서 제목(지역화된 이름공간 이름 포함)입니다. 사람이 읽을 수 있는 형식(언더바가 아닌 공백)을 권장합니다. API는 제목을 순수 문자열로 취급합니다. 정규화(예: 제목 대소문자 변경)는 고객이 설정합니다.",
-	"apihelp-readinglists+createentry-example-1": "프로젝트 <kbd>en.wikipedia.org</bar>의 <kbd>Dog</kbd> 문서를 ID <kbd>33</kbd>의 목록에 추가합니다.",
+	"apihelp-readinglists+createentry-example-1": "프로젝트 <kbd>en.wikipedia.org</kbd>의 <kbd>Dog</kbd> 문서를 ID <kbd>33</kbd>의 목록에 추가합니다.",
 	"apihelp-readinglists+createentry-example-2": "여러 문서를 목록에 추가합니다.",
 	"apihelp-readinglists+deleteentry-summary": "현재 사용자에 속하는 목록의 문서를 삭제합니다.",
 	"apihelp-readinglists+deleteentry-param-entry": "엔트리 ID입니다. 일괄 삭제가 아니라면 필수입니다.",

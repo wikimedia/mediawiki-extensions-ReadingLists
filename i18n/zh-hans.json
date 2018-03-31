@@ -89,7 +89,7 @@
 	"apihelp-readinglists+createentry-param-project": "存储页面的wiki的项目名称。（基本上这是wiki的域名。）除非进行批量创建否则必要。",
 	"apihelp-readinglists+createentry-param-title": "页面标题（包含本地化的名字空间名称）。除非进行批量创建否则必要。推荐使用人类可读格式（空格而不是下划线）。API将标题视作原始字符串；标准化（例如标题嵌套）则留给客户端。",
 	"apihelp-readinglists+createentry-param-batch": "用于在单一请求中创建多个列表项（在相同列表中）的批量数据，有一个或多个带<var>project</var>和<var>title</var> 字段对象的JSON数组形式。",
-	"apihelp-readinglists+createentry-example-1": "添加来自项目<kbd>en.wikipedia.org</bar>的页面<kbd>Dog</kbd>至ID为<kbd>33</kbd>的列表。",
+	"apihelp-readinglists+createentry-example-1": "添加来自项目<kbd>en.wikipedia.org</kbd>的页面<kbd>Dog</kbd>至ID为<kbd>33</kbd>的列表。",
 	"apihelp-readinglists+createentry-example-2": "添加多个页面至某一列表。",
 	"apihelp-readinglists+deleteentry-summary": "删除来自与当前用户相关的列表中的页面。",
 	"apihelp-readinglists+deleteentry-param-entry": "项目ID。除非进行批量删除否则必要。",

@@ -89,7 +89,7 @@
 	"apihelp-readinglists+createentry-param-project": "Projektnamn på wikin som driver sidan. (Detta är vanligtvis wikins domännamn.) Krävs såvida en batch skapas.",
 	"apihelp-readinglists+createentry-param-title": "Sidtitel (inklusive det lokaliserade namnet på namnrymden). Krävs såvida en batch skapas. Läsbart format (mellanrum istället för understreck) rekommenderas. API:et behandlar titlar som vanliga strängar; normalisering (som titels skiftläge) är till vänster om klienterna.",
 	"apihelp-readinglists+createentry-param-batch": "Batchdata för att skapa flera listelement (i samma lista) i en enda begäran i form av en JSON-array med en eller flera objekt med fälten <var>project</var> och <var>title</var>.",
-	"apihelp-readinglists+createentry-example-1": "Lägg till sidan <kbd>Dog</kbd> från projektet <kbd>en.wikipedia.org</bar> i listan med ID <kbd>33</kbd>.",
+	"apihelp-readinglists+createentry-example-1": "Lägg till sidan <kbd>Dog</kbd> från projektet <kbd>en.wikipedia.org</kbd> i listan med ID <kbd>33</kbd>.",
 	"apihelp-readinglists+createentry-example-2": "Lägg till flera sidor i en lista.",
 	"apihelp-readinglists+deleteentry-summary": "Radera en sida från en lista som tillhör nuvarande användare.",
 	"apihelp-readinglists+deleteentry-param-entry": "Element-ID. Krävs såvida en batch raderas.",

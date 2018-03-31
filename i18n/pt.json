@@ -90,7 +90,7 @@
 	"apihelp-readinglists+createentry-param-project": "Nome de projeto da wiki que aloja a página (tipicamente, é o nome de domínio da wiki). Obrigatório, a menos que esteja a ser feita uma criação em grupo.",
 	"apihelp-readinglists+createentry-param-title": "Título da página (incluindo o nome localizado do espaço nominal). Obrigatório, a menos que esteja a ser feita uma criação em grupo. É recomendado um formato legível pelos utilizadores (usando espaços, não sublinhados). A API trata os títulos como texto em bruto; normalizações (como a letra inicial maiúscula) são deixadas aos clientes.",
 	"apihelp-readinglists+createentry-param-batch": "Dados agrupados para criar mais do que uma entrada de lista (na mesma lista) num único pedido, na forma de uma matriz JSON com um ou mais objetos com campos <var>project</var> (projeto) e <var>title</var> (título).",
-	"apihelp-readinglists+createentry-example-1": "Adicionar a página <kbd>Dog</kbd> do projeto <kbd>en.wikipedia.org</bar> à lista que tem o identificador <kbd>33</kbd>.",
+	"apihelp-readinglists+createentry-example-1": "Adicionar a página <kbd>Dog</kbd> do projeto <kbd>en.wikipedia.org</kbd> à lista que tem o identificador <kbd>33</kbd>.",
 	"apihelp-readinglists+createentry-example-2": "Adicionar várias páginas a uma lista.",
 	"apihelp-readinglists+deleteentry-summary": "Eliminar uma página de uma lista que pertence ao utilizador corrente.",
 	"apihelp-readinglists+deleteentry-param-entry": "Identificador de entrada. Obrigatório, a menos que esteja a ser feita uma eliminação em grupo.",
