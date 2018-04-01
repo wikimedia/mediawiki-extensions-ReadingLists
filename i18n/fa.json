@@ -1,0 +1,24 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ladsgroup"
+		]
+	},
+	"readinglists-desc": "به کاربران اجازه داشتن فهرست خصوصی مقاله‌ها را می‌دهد، مانند بوک‌مارک یا فهرست برای بعدا خواندن.",
+	"readinglists-db-error-not-set-up": "فهرست مطالعه برای این کاربر ساخته نشده‌است.",
+	"readinglists-db-error-already-set-up": "فهرست مطالعه برای این کاربر قبلا ساخته شده‌است.",
+	"readinglists-db-error-cannot-delete-default-list": "فهرست پیش‌فرض را نمی‌توان حذف کرد.",
+	"readinglists-db-error-cannot-update-default-list": "فهرست پیش‌فرض را نمی‌توان تغییر داد.",
+	"readinglists-db-error-no-such-list": "فهرست $1 وحود ندارد.",
+	"readinglists-db-error-no-such-list-entry": "عضو فهرست $1 وجود ندارد.",
+	"readinglists-db-error-not-own-list": "فهرست $1 به یک کاربر دیگر تعلق دارد.",
+	"readinglists-db-error-not-own-list-entry": "عضو فهرست $1 به کاربر دیگری تعلق دارد.",
+	"readinglists-db-error-list-deleted": "فهرست $1 حذف شده‌است.",
+	"readinglists-db-error-list-entry-deleted": "عضو فهرست $1 حذف شده‌است.",
+	"readinglists-db-error-duplicate-list": "یک فهرست با این نام قبلا وجود دارد.",
+	"readinglists-db-error-duplicate-page": "فهرست این صفحه را دارد.",
+	"readinglists-db-error-empty-list-ids": "پارامتر شناسه فهرست نمی‌تواند خالی باشد.",
+	"readinglists-db-error-list-limit": "کاربران نمی‌توانند بیشتر از $1 {{PLURAL:$1|فهرست}} داشته‌باشند.",
+	"apihelp-readinglists+create-param-description": "توضیحات فهرست.",
+	"apihelp-readinglists+createentry-param-list": "شناسه فهرست."
+}
