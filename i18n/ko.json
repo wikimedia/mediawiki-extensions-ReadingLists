@@ -44,6 +44,7 @@
 	"apihelp-query+readinglistentries-param-dir": "정렬 방향: <kbd>ascending</kbd> (A부터 Z, 가장 오래된 것부터 가장 새로운 것) 또는 <kbd>descending</kbd>.",
 	"apihelp-query+readinglistentries-param-limit": "반환할 결과 항목의 수입니다.",
 	"apihelp-query+readinglistentries-example-2": "<kbd>2013-01-01T00:00:00Z</kbd> 이후로 변경된 현재 사용자의 목록 엔트리를 가져옵니다.",
+	"apihelp-readinglists-summary": "읽기 목록 쓰기 명령입니다.",
 	"apihelp-readinglists-param-command": "읽기 목록 쓰기 명령을 위한 명령어(API 하위 모듈)입니다.",
 	"apihelp-readinglists-extended-description": "읽기 목록과 엔트리를 생성/업데이트/삭제/정렬합니다. 자세한 내용을 보려면 다양한 명령어의 문서를 참고하십시오.",
 	"apihelp-readinglists+setup-summary": "현재 사용자의 목록을 활성화합니다.",
