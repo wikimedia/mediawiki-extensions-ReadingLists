@@ -106,7 +106,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertEquals( 0, $res->numRows() );
 
 		// one row after setup; isSetupForUser() is true
-		$repository->setupForUser();
+		$list = $repository->setupForUser();
 		$this->assertFailsWith( 'readinglists-db-error-already-set-up',
 			function () use ( $repository ) {
 				$repository->setupForUser();
@@ -119,6 +119,17 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$row = $res->fetchObject();
 		$this->assertEquals( 1, $row->rl_is_default );
 		$this->assertEquals( 'default', $row->rl_name );
+
+		// default list data is returned from setupForUser()
+		$data = (array)$list;
+		unset( $data['rl_id'], $data['rl_date_created'], $data['rl_date_updated'] );
+		$this->assertArrayEquals( [
+			'rl_user_id' => '1',
+			'rl_name' => 'default',
+			'rl_description' => '',
+			'rl_is_default' => '1',
+			'rl_deleted' => '0',
+		], $data, false, true );
 
 		// no rows after teardown; isSetupForUser() is false
 		$repository->teardownForUser();

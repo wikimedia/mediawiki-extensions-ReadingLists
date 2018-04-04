@@ -109,7 +109,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	/**
 	 * Set up the service for the given user.
 	 * This is a pre-requisite for doing anything else. It will create a default list.
-	 * @return void
+	 * @return ReadingListRow The default list for the user.
 	 * @throws ReadingListRepositoryException
 	 */
 	public function setupForUser() {
@@ -132,6 +132,8 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			__METHOD__
 		);
 		$this->logger->info( 'Set up for user {user}', [ 'user' => $this->userId ] );
+		$list = $this->selectValidList( $this->dbw->insertId(), self::READ_LATEST );
+		return $list;
 	}
 
 	/**
