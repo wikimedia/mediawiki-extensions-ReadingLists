@@ -29,5 +29,6 @@
 	"apierror-readinglists-batch-invalid-json": "Неважечки JSON за параметарот <var>batch</var>: $1",
 	"apierror-readinglists-batch-invalid-structure": "Неважечки внос за параметарот <var>batch</var>: мора да содржи низа објекти кои имаат скаларни вредности.",
 	"apierror-readinglists-batch-toomanyvalues": "Неважечки внос за параметарот <var>batch</var>: премногу ставки, а се допуштаат највеќе $1",
+	"apierror-readinglists-batch-missingparam-at-least-one-of": "Во секој објект во вносот <var>batch</var>, се бара {{PLURAL:$2|полето|барем едно од полињата}} $1.",
 	"apihelp-query+readinglistentries-summary": "Наведување на страниците на даден список."
 }
