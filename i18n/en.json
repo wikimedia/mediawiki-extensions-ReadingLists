@@ -95,5 +95,11 @@
 	"apihelp-readinglists+deleteentry-param-entry": "Entry ID. Required unless doing batch deletion.",
 	"apihelp-readinglists+deleteentry-param-batch": "Batch data for deleting multiple list entries in a single request, in the form of a JSON array with one or more objects with an <var>entry</var> field.",
 	"apihelp-readinglists+deleteentry-example-1": "Delete the list entry with ID <kbd>8</kbd>.",
-	"apihelp-readinglists+deleteentry-example-2": "Delete multiple list entries."
+	"apihelp-readinglists+deleteentry-example-2": "Delete multiple list entries.",
+	"readinglists-browser-add-entry-success": "$1 saved to your reading list",
+	"readinglists-browser-login-prompt": "Log in to save articles",
+	"readinglists-browser-error-intro": "An error has occurred: $1",
+	"readinglists-browser-enable-sync-prompt": "Enable syncing on your Wikipedia app to begin saving articles",
+	"readinglists-browser-extension-info-link-text": "Learn more",
+	"readinglists-browser-list-entry-limit-exceeded": "Article cannot be saved. You have reached the limit of $1 articles per list"
 }
