@@ -67,5 +67,11 @@
 	"apihelp-readinglists+deleteentry-param-entry": "מזהה רשומה. נדרש אלא אם נעשית מחיקת אצווה.",
 	"apihelp-readinglists+deleteentry-param-batch": "נתוני אצווה למחיקת רשומות מרובות בבקשה בודדת, בצורת מערך JSON אם עצם אחד או יותר בשדה <var>entry</var>.",
 	"apihelp-readinglists+deleteentry-example-1": "מחיקת רשומה עם מזהה <kbd>8</kbd>.",
-	"apihelp-readinglists+deleteentry-example-2": "מחיקת רשומות מרובות."
+	"apihelp-readinglists+deleteentry-example-2": "מחיקת רשומות מרובות.",
+	"readinglists-browser-add-entry-success": "הדף $1 נשמר ברשימת הקריאה שלך",
+	"readinglists-browser-login-prompt": "יש להיכנס לחשבון כדי לשמור ערכים",
+	"readinglists-browser-error-intro": "אירעה שגיאה: $1",
+	"readinglists-browser-enable-sync-prompt": "יש להפעיל את הסנכרון ביישום הוויקיפדיה שלך כדי להתחיל לשמור ערכים",
+	"readinglists-browser-extension-info-link-text": "מידע נוסף",
+	"readinglists-browser-list-entry-limit-exceeded": "לא ניתן לשמור את הערך. הגעת למגבלה של $1 ערכים ברשימה אחת"
 }

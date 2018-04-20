@@ -15,5 +15,11 @@
 	"apihelp-readinglists+create-extended-description": "L'utente deve avere meno di $1 {{PLURAL:$1|elenco|elenchi}} (non cancellati).",
 	"apihelp-readinglists+update-param-list": "ID elenco. Richiesto a meno che non si usi l'aggiornamento batch.",
 	"apihelp-readinglists+delete-param-list": "ID elenco. Richiesto a meno che non si esegua l'eliminazione batch.",
-	"apihelp-readinglists+createentry-param-list": "ID elenco."
+	"apihelp-readinglists+createentry-param-list": "ID elenco.",
+	"readinglists-browser-add-entry-success": "$1 salvato nel tuo elenco di lettura",
+	"readinglists-browser-login-prompt": "Accedi per salvare le voci",
+	"readinglists-browser-error-intro": "Si è verificato un errore: $1",
+	"readinglists-browser-enable-sync-prompt": "Attiva la sincronizzazione sulla tua applicazione di Wikipedia per iniziare a salvare le voci",
+	"readinglists-browser-extension-info-link-text": "Ulteriori informazioni",
+	"readinglists-browser-list-entry-limit-exceeded": "La voce non può essere salvata. Hai raggiunto il limite di $1 voci per elenco"
 }

@@ -2,10 +2,13 @@
 	"@metadata": {
 		"authors": [
 			"Edible Melon",
-			"Happy13241"
+			"Happy13241",
+			"Kareyac"
 		]
 	},
 	"apierror-readinglists-batch-invalid-json": "Неверный JSON для <var>batch</var> параметра: $1",
 	"apihelp-readinglists+delete-example-2": "Удалить несколько списков.",
-	"apihelp-readinglists+createentry-example-1": "Добавьте страницу <kbd>Dog</kbd> из проекта <kbd>en.wikipedia.org</kbd> в список с идентификатором <kbd>33</kbd>."
+	"apihelp-readinglists+createentry-example-1": "Добавьте страницу <kbd>Dog</kbd> из проекта <kbd>en.wikipedia.org</kbd> в список с идентификатором <kbd>33</kbd>.",
+	"readinglists-browser-error-intro": "Произошла ошибка:$1",
+	"readinglists-browser-extension-info-link-text": "Узнать больше"
 }

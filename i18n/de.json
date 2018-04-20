@@ -52,5 +52,11 @@
 	"apihelp-readinglists+createentry-param-list": "Listenkennung.",
 	"apihelp-readinglists+createentry-example-2": "Fügt mehrere Seiten zu einer Liste hinzu.",
 	"apihelp-readinglists+deleteentry-param-entry": "Kennung des Eintrags. Nicht erforderlich bei Ausführung der Stapellöschung.",
-	"apihelp-readinglists+deleteentry-example-2": "Löscht mehrere Listeneinträge."
+	"apihelp-readinglists+deleteentry-example-2": "Löscht mehrere Listeneinträge.",
+	"readinglists-browser-add-entry-success": "$1 in deine Leseliste gespeichert",
+	"readinglists-browser-login-prompt": "Melde dich an, um Artikel zu speichern.",
+	"readinglists-browser-error-intro": "Es ist ein Fehler aufgetreten: $1",
+	"readinglists-browser-enable-sync-prompt": "Aktiviere die Synchronisierung auf deiner Wikipedia-App, um mit dem Speichern von Artikeln zu beginnen.",
+	"readinglists-browser-extension-info-link-text": "Mehr erfahren",
+	"readinglists-browser-list-entry-limit-exceeded": "Der Artikel konnte nicht gespeichert werden. Du hast die Grenze von $1 Artikeln pro Liste erreicht."
 }

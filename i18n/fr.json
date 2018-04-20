@@ -100,5 +100,11 @@
 	"apihelp-readinglists+deleteentry-param-entry": "ID de l’entrée. Nécessaire sauf en cas de suppression par batch.",
 	"apihelp-readinglists+deleteentry-param-batch": "Données de script pour supprimer des entrées de listes multiples en une seule passe, sous forme de tableau JSON avec un ou plusieurs objets avec un champs <var>entry</var>.",
 	"apihelp-readinglists+deleteentry-example-1": "Supprimer l’entrée de liste qui a l’ID <kbd>8</kbd>.",
-	"apihelp-readinglists+deleteentry-example-2": "Suppression des entrées de listes multiples."
+	"apihelp-readinglists+deleteentry-example-2": "Suppression des entrées de listes multiples.",
+	"readinglists-browser-add-entry-success": "$1 enregistré dans votre liste de lecture",
+	"readinglists-browser-login-prompt": "Se connecter pour enregistrer des articles",
+	"readinglists-browser-error-intro": "Une erreur s’est produite : $1",
+	"readinglists-browser-enable-sync-prompt": "Activer la synchronisation sur votre application Wikipédia pour commencer à enregistrer des articles",
+	"readinglists-browser-extension-info-link-text": "En savoir plus",
+	"readinglists-browser-list-entry-limit-exceeded": "L’article n’a pas pu être enregistré. Vous avez atteint la limite de $1 articles par liste"
 }
