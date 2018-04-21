@@ -96,5 +96,11 @@
 	"apihelp-readinglists+deleteentry-param-entry": "Identificador de entrada. Obrigatório, a menos que esteja a ser feita uma eliminação em grupo.",
 	"apihelp-readinglists+deleteentry-param-batch": "Dados agrupados para eliminar mais do que uma entrada de lista num único pedido, na forma de uma matriz JSON com um ou mais objetos com um campo <var>entry</var> (entrada).",
 	"apihelp-readinglists+deleteentry-example-1": "Eliminar a entrada de lista que tem o identificador <kbd>8</kbd>.",
-	"apihelp-readinglists+deleteentry-example-2": "Eliminar várias entradas de lista."
+	"apihelp-readinglists+deleteentry-example-2": "Eliminar várias entradas de lista.",
+	"readinglists-browser-add-entry-success": "$1 guardada na sua lista de leitura",
+	"readinglists-browser-login-prompt": "Inicie sessão para guardar artigos",
+	"readinglists-browser-error-intro": "Ocorreu um erro: $1",
+	"readinglists-browser-enable-sync-prompt": "Ative a sincronização na sua aplicação da Wikipédia para começar a guardar artigos",
+	"readinglists-browser-extension-info-link-text": "Saiba mais",
+	"readinglists-browser-list-entry-limit-exceeded": "O artigo não pode ser guardado. Atingiu o limite de $1 artigos por lista"
 }

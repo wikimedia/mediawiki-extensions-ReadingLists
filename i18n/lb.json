@@ -31,6 +31,7 @@
 	"apihelp-readinglists+createentry-param-list": "ID vun der Lëscht.",
 	"apihelp-readinglists+createentry-param-title": "Säitentitel.",
 	"apihelp-readinglists+createentry-example-2": "Méi Säiten op eng Lëscht dobäisetzen",
+	"readinglists-browser-login-prompt": "Alogge fir Artikelen ze späicheren",
 	"readinglists-browser-error-intro": "Et ass e Feeler geschitt: $1",
 	"readinglists-browser-extension-info-link-text": "Fir méi ze wëssen"
 }
