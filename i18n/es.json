@@ -51,5 +51,8 @@
 	"apihelp-readinglists+createentry-param-list": "Identificador de lista.",
 	"apihelp-readinglists+createentry-example-2": "Añadir varias páginas a una lista.",
 	"apihelp-readinglists+deleteentry-param-entry": "Identificador de entrada. Necesario a menos que se esté realizando un borrado por lotes.",
-	"apihelp-readinglists+deleteentry-example-2": "Eliminar varias entradas de la lista."
+	"apihelp-readinglists+deleteentry-example-2": "Eliminar varias entradas de la lista.",
+	"readinglists-browser-login-prompt": "Accede a tu cuenta para guardar artículos",
+	"readinglists-browser-error-intro": "Se produjo un error: $1",
+	"readinglists-browser-extension-info-link-text": "Más información"
 }
