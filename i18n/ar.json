@@ -96,5 +96,11 @@
 	"apihelp-readinglists+deleteentry-param-entry": "معرف الإدخال، مطلوب ما لم يُستخدَم حذف دفعة.",
 	"apihelp-readinglists+deleteentry-param-batch": "بيانات مجمعة لحذف إدخالات قوائم متعددة في طلب واحد، في شكل مصفوفة JSON مع كائن أو أكثر مع حقل <var>entry</var>.",
 	"apihelp-readinglists+deleteentry-example-1": "حذف إدخال القائمة بالمعرف <kbd>8</kbd>.",
-	"apihelp-readinglists+deleteentry-example-2": "حذف إدخالات قائمة متعددة."
+	"apihelp-readinglists+deleteentry-example-2": "حذف إدخالات قائمة متعددة.",
+	"readinglists-browser-add-entry-success": "تم حفظ $1 في قائمة القراءة الخاصة بك",
+	"readinglists-browser-login-prompt": "سجل الدخول لحفظ المقالات",
+	"readinglists-browser-error-intro": "حدث خطأ: $1",
+	"readinglists-browser-enable-sync-prompt": "مكن مزامنة تطبيق ويكيبيديا الخاص بك لبدء حفظ المقالات",
+	"readinglists-browser-extension-info-link-text": "معرفة المزيد",
+	"readinglists-browser-list-entry-limit-exceeded": "المقالة لا يمكن حفظها; لقد بلغت الحد الأقصى $1 مقالة لكل قائمة"
 }

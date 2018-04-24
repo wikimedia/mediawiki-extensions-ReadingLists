@@ -31,7 +31,9 @@
 	"apihelp-readinglists+createentry-param-list": "ID vun der Lëscht.",
 	"apihelp-readinglists+createentry-param-title": "Säitentitel.",
 	"apihelp-readinglists+createentry-example-2": "Méi Säiten op eng Lëscht dobäisetzen",
+	"readinglists-browser-add-entry-success": "$1 op Ärer Lieslëscht gespäichert",
 	"readinglists-browser-login-prompt": "Alogge fir Artikelen ze späicheren",
 	"readinglists-browser-error-intro": "Et ass e Feeler geschitt: $1",
-	"readinglists-browser-extension-info-link-text": "Fir méi ze wëssen"
+	"readinglists-browser-extension-info-link-text": "Fir méi ze wëssen",
+	"readinglists-browser-list-entry-limit-exceeded": "Artikel kann net gespäichert ginn. Dir hutt d'Limitt vu(n) $1 Artikele pro Lëscht erreecht"
 }
