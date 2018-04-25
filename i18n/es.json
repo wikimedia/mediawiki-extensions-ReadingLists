@@ -54,5 +54,7 @@
 	"apihelp-readinglists+deleteentry-example-2": "Eliminar varias entradas de la lista.",
 	"readinglists-browser-login-prompt": "Accede a tu cuenta para guardar artículos",
 	"readinglists-browser-error-intro": "Se produjo un error: $1",
-	"readinglists-browser-extension-info-link-text": "Más información"
+	"readinglists-browser-enable-sync-prompt": "Activa la sincronización en tu apli Wikipedia para empezar a guardar artículos",
+	"readinglists-browser-extension-info-link-text": "Más información",
+	"readinglists-browser-list-entry-limit-exceeded": "No se puede guardar el artículo. Has superado el límite de $1 artículos por lista"
 }

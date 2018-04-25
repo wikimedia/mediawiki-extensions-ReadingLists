@@ -14,5 +14,9 @@
 	"apihelp-readinglists+update-param-description": "Nowy opis listy",
 	"apihelp-readinglists+delete-param-list": "Identyfikator listy",
 	"apihelp-readinglists+createentry-param-title": "Tyruł strony.",
-	"apihelp-readinglists+deleteentry-param-entry": "Identyfikator wpisu"
+	"apihelp-readinglists+deleteentry-param-entry": "Identyfikator wpisu",
+	"readinglists-browser-login-prompt": "Zaloguj się, aby zapisać artykuły",
+	"readinglists-browser-error-intro": "Wystąpił błąd: $1",
+	"readinglists-browser-extension-info-link-text": "Dowiedz się więcej",
+	"readinglists-browser-list-entry-limit-exceeded": "Artykuł nie może zostać zapisany. Osiągnąłeś limit $1 artykułów na liście"
 }
