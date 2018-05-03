@@ -17,6 +17,7 @@
 	"readinglists-db-error-not-own-list-entry": "A entrada $1 da lista pertence a outro usuario.",
 	"readinglists-db-error-list-deleted": "Eliminouse a lista $1.",
 	"readinglists-db-error-list-entry-deleted": "A entrada de lista $1 foi eliminada.",
+	"readinglists-db-error-duplicate-list": "Xa existe unha lista con este nome.",
 	"readinglists-db-error-duplicate-page": "A lista xa contén esta páxina.",
 	"readinglists-db-error-empty-list-ids": "O parámetro de identificadores de lista non pode estar baleiro.",
 	"readinglists-db-error-user-required": "Este método non pode chamarse sen especificar o usuario.",
@@ -28,7 +29,7 @@
 	"apierror-readinglists-too-old": "Os selos de tempo pasados a <var>$1changedsince</var> non poden ser anteriores a <kbd>$2</kbd>.",
 	"apierror-readinglists-invalidsort-notbyname": "A opción de ordenación <kbd>name</kbd> non pode usarse xunto con <var>$1changedsince</var>.",
 	"apierror-readinglists-batch-invalid-json": "JSON non válido para o parámetro <var>batch</var> (grupo): $1",
-	"apierror-readinglists-batch-invalid-structure": "JSON non válido para o parámetro <var>batch</var>: debe conter unha matriz de obxectos con valores escalares.",
+	"apierror-readinglists-batch-invalid-structure": "Entrada non válida para o parámetro <var>batch</var>: debe conter unha matriz de obxectos con valores escalares.",
 	"apihelp-query+readinglists-param-limit": "Número de resultados a devolver.",
 	"apihelp-query+readinglists-example-1": "Obter as listas de lectura do usuario actual.",
 	"apihelp-query+readinglistentries-summary": "Listar as páxinas dunha lista dada.",
@@ -61,5 +62,7 @@
 	"apihelp-readinglists+deleteentry-summary": "Eliminar unha páxina dunha lista pertencente ó usuario actual.",
 	"apihelp-readinglists+deleteentry-param-entry": "Identificador de entrada. Obrigatorio, a non ser que se estea a facer un borrado por lotes.",
 	"apihelp-readinglists+deleteentry-example-1": "Eliminar a entrada de lista que ten o identificador <kbd>8</kbd>.",
-	"apihelp-readinglists+deleteentry-example-2": "Eliminar varias entradas de lista."
+	"apihelp-readinglists+deleteentry-example-2": "Eliminar varias entradas de lista.",
+	"readinglists-browser-error-intro": "Houbo un erroː $1",
+	"readinglists-browser-extension-info-link-text": "Máis información"
 }
