@@ -30,5 +30,16 @@
 	"apierror-readinglists-batch-invalid-structure": "Неважечки внос за параметарот <var>batch</var>: мора да содржи низа објекти кои имаат скаларни вредности.",
 	"apierror-readinglists-batch-toomanyvalues": "Неважечки внос за параметарот <var>batch</var>: премногу ставки, а се допуштаат највеќе $1",
 	"apierror-readinglists-batch-missingparam-at-least-one-of": "Во секој објект во вносот <var>batch</var>, се бара {{PLURAL:$2|полето|барем едно од полињата}} $1.",
-	"apihelp-query+readinglistentries-summary": "Наведување на страниците на даден список."
+	"apihelp-query+readinglistentries-summary": "Наведување на страниците на даден список.",
+	"apihelp-readinglists+create-param-name": "Назив на списокот. Задолжително, освен при збирно создавање.",
+	"apihelp-readinglists+update-example-2": "Поднови повеќе списоци наеднаш.",
+	"apihelp-readinglists+deleteentry-param-entry": "Назнака на ставката. Задолжително, освен при збирно бришење.",
+	"apihelp-readinglists+deleteentry-example-1": "Избриши ставка во списокот со назнака <kbd>8</kbd>.",
+	"apihelp-readinglists+deleteentry-example-2": "Избриши повеќе ставки во списокот наеднаш.",
+	"readinglists-browser-add-entry-success": "„$1“ е зачувана во вашите набљудувани",
+	"readinglists-browser-login-prompt": "Најавете се за да зачувувате статии",
+	"readinglists-browser-error-intro": "Се појави грешка: $1",
+	"readinglists-browser-enable-sync-prompt": "Овозможете усогласување на вашиот прилог за Википедија за да почнете со зачувување на статиите",
+	"readinglists-browser-extension-info-link-text": "Дознајте повеќе",
+	"readinglists-browser-list-entry-limit-exceeded": "Статијата не може да се зачува. Ја достигнавте границата од $1 статии по список"
 }
