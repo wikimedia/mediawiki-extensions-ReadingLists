@@ -103,5 +103,7 @@
 	"readinglists-browser-error-intro": "Message indicating that an error has occurred\n\nParameters:\n* $1 - The error message from the server.",
 	"readinglists-browser-enable-sync-prompt": "Message prompting the user to enable reading list syncing in the Wikipedia mobile app.",
 	"readinglists-browser-extension-info-link-text": "Text for a link where the user can learn about the reading lists browser extension",
-	"readinglists-browser-list-entry-limit-exceeded": "Message informing the user that a page cannot be added to a list because the list has reached its maximum number of entries.\n\nParameters:\n* $1 - The maximum number of entries per list."
+	"readinglists-browser-list-entry-limit-exceeded": "Message informing the user that a page cannot be added to a list because the list has reached its maximum number of entries.\n\nParameters:\n* $1 - The maximum number of entries per list.",
+	"readinglists-browser-extension-product-title": "Name of the browser extension for adding wiki pages to a reading list",
+	"readinglists-browser-page-not-supported": "Tooltip shown when the user hovers over the browser extension's toolbar icon on an unsupported page.\n\nParameters:\n* $1 - The extension name."
 }

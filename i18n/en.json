@@ -101,5 +101,7 @@
 	"readinglists-browser-error-intro": "An error has occurred: $1",
 	"readinglists-browser-enable-sync-prompt": "Enable syncing on your Wikipedia app to begin saving articles",
 	"readinglists-browser-extension-info-link-text": "Learn more",
-	"readinglists-browser-list-entry-limit-exceeded": "Article cannot be saved. You have reached the limit of $1 articles per list"
+	"readinglists-browser-list-entry-limit-exceeded": "Article cannot be saved. You have reached the limit of $1 articles per list",
+	"readinglists-browser-extension-product-title": "Wikipedia Reading Lists",
+	"readinglists-browser-page-not-supported": "$1 does not support this page"
 }
