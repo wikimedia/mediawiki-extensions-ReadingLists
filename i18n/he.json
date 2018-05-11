@@ -102,5 +102,7 @@
 	"readinglists-browser-error-intro": "אירעה שגיאה: $1",
 	"readinglists-browser-enable-sync-prompt": "יש להפעיל את הסנכרון ביישום הוויקיפדיה שלך כדי להתחיל לשמור ערכים",
 	"readinglists-browser-extension-info-link-text": "מידע נוסף",
-	"readinglists-browser-list-entry-limit-exceeded": "לא ניתן לשמור את הערך. הגעת למגבלה של $1 ערכים ברשימה אחת"
+	"readinglists-browser-list-entry-limit-exceeded": "לא ניתן לשמור את הערך. הגעת למגבלה של $1 ערכים ברשימה אחת",
+	"readinglists-browser-extension-product-title": "רשימות קריאה בוויקיפדיה",
+	"readinglists-browser-page-not-supported": "ההרחבה \"$1\" אינה תומכת בדף זה"
 }

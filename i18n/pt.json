@@ -102,5 +102,7 @@
 	"readinglists-browser-error-intro": "Ocorreu um erro: $1",
 	"readinglists-browser-enable-sync-prompt": "Ative a sincronização na sua aplicação da Wikipédia para começar a guardar artigos",
 	"readinglists-browser-extension-info-link-text": "Saiba mais",
-	"readinglists-browser-list-entry-limit-exceeded": "O artigo não pode ser guardado. Atingiu o limite de $1 artigos por lista"
+	"readinglists-browser-list-entry-limit-exceeded": "O artigo não pode ser guardado. Atingiu o limite de $1 artigos por lista",
+	"readinglists-browser-extension-product-title": "Listas de leitura da Wikipédia",
+	"readinglists-browser-page-not-supported": "$1 não tem suporte para esta página"
 }

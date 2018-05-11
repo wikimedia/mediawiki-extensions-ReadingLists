@@ -101,5 +101,7 @@
 	"readinglists-browser-error-intro": "发生错误：$1",
 	"readinglists-browser-enable-sync-prompt": "在您的维基百科应用上启用同步以开始保存条目",
 	"readinglists-browser-extension-info-link-text": "了解更多",
-	"readinglists-browser-list-entry-limit-exceeded": "条目不能保存。您已达到每列表$1个条目的限制"
+	"readinglists-browser-list-entry-limit-exceeded": "条目不能保存。您已达到每列表$1个条目的限制",
+	"readinglists-browser-extension-product-title": "维基百科阅读列表",
+	"readinglists-browser-page-not-supported": "$1不支持此页面"
 }
