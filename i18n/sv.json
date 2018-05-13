@@ -101,5 +101,7 @@
 	"readinglists-browser-error-intro": "Ett fel har uppstått: $1",
 	"readinglists-browser-enable-sync-prompt": "Aktivera synkronisering på din Wikipedia-app för att börja spara artiklar",
 	"readinglists-browser-extension-info-link-text": "Läs mer",
-	"readinglists-browser-list-entry-limit-exceeded": "Artikeln kan inte sparas. Du har nått gränsen på $1 artiklar per lista"
+	"readinglists-browser-list-entry-limit-exceeded": "Artikeln kan inte sparas. Du har nått gränsen på $1 artiklar per lista",
+	"readinglists-browser-extension-product-title": "Wikipedia-läslistor",
+	"readinglists-browser-page-not-supported": "$1 stöder inte denna sida"
 }

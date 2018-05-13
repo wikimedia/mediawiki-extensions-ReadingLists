@@ -102,5 +102,7 @@
 	"readinglists-browser-error-intro": "حدث خطأ: $1",
 	"readinglists-browser-enable-sync-prompt": "مكن مزامنة تطبيق ويكيبيديا الخاص بك لبدء حفظ المقالات",
 	"readinglists-browser-extension-info-link-text": "معرفة المزيد",
-	"readinglists-browser-list-entry-limit-exceeded": "المقالة لا يمكن حفظها; لقد بلغت الحد الأقصى $1 مقالة لكل قائمة"
+	"readinglists-browser-list-entry-limit-exceeded": "المقالة لا يمكن حفظها; لقد بلغت الحد الأقصى $1 مقالة لكل قائمة",
+	"readinglists-browser-extension-product-title": "قوائم قراءة ويكيبيديا",
+	"readinglists-browser-page-not-supported": "لا يدعم $1 هذه الصفحة"
 }

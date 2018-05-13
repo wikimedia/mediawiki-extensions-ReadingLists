@@ -56,5 +56,7 @@
 	"readinglists-browser-error-intro": "Se produjo un error: $1",
 	"readinglists-browser-enable-sync-prompt": "Activa la sincronización en tu apli Wikipedia para empezar a guardar artículos",
 	"readinglists-browser-extension-info-link-text": "Más información",
-	"readinglists-browser-list-entry-limit-exceeded": "No se puede guardar el artículo. Has superado el límite de $1 artículos por lista"
+	"readinglists-browser-list-entry-limit-exceeded": "No se puede guardar el artículo. Has superado el límite de $1 artículos por lista",
+	"readinglists-browser-extension-product-title": "Listas de lectura de Wikipedia",
+	"readinglists-browser-page-not-supported": "$1 no admite esta página"
 }
