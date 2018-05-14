@@ -13,5 +13,7 @@
 	"readinglists-browser-error-intro": "একটি ত্রুটি দেখা দিয়েছে: $1",
 	"readinglists-browser-enable-sync-prompt": "নিবন্ধ সংরক্ষণ শুরু করতে আপনার উইকিপিডিয়া অ্যাপে সিঙ্কিং সক্ষম করুন",
 	"readinglists-browser-extension-info-link-text": "আরও জানুন",
-	"readinglists-browser-list-entry-limit-exceeded": "নিবন্ধ সংরক্ষণ করা যাবে না। আপনি তালিকা প্রতি $1টি নিবন্ধের সীমাতে পৌঁছেছেন"
+	"readinglists-browser-list-entry-limit-exceeded": "নিবন্ধ সংরক্ষণ করা যাবে না। আপনি তালিকা প্রতি $1টি নিবন্ধের সীমাতে পৌঁছেছেন",
+	"readinglists-browser-extension-product-title": "উইকিপিডিয়ার পড়ার তালিকা",
+	"readinglists-browser-page-not-supported": "$1 এই পৃষ্ঠাটি সমর্থন করে না"
 }
