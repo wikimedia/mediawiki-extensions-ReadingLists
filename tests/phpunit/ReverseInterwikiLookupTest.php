@@ -15,7 +15,12 @@ class ReverseInterwikiLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testLookup( $expectedPrefix, $domain, $iwTable ) {
 		$iwLookup = $this->getMockForAbstractClass( InterwikiLookup::class );
 		$iwLookup->expects( $this->any() )->method( 'getAllPrefixes' )->willReturn( $iwTable );
+
 		$lookup = new ReverseInterwikiLookup( $iwLookup, 'en.wikipedia.org' );
+		$actualPrefix = $lookup->lookup( $domain );
+		$this->assertSame( $expectedPrefix, $actualPrefix );
+
+		$lookup = new ReverseInterwikiLookup( $iwLookup, 'https://en.wikipedia.org/' );
 		$actualPrefix = $lookup->lookup( $domain );
 		$this->assertSame( $expectedPrefix, $actualPrefix );
 	}
@@ -34,8 +39,10 @@ class ReverseInterwikiLookupTest extends \PHPUnit\Framework\TestCase {
 		return [
 			'no match' => [ null, 'foo.bar.baz', $iwTable ],
 			'local' => [ '', 'en.wikipedia.org', $iwTable ],
+			'local, full domain' => [ '', 'https://en.wikipedia.org/', $iwTable ],
 			'exact match' => [ 'de', 'de.wikipedia.org', $iwTable ],
 			'exact match 2' => [ 'b', 'en.wikibooks.org', $iwTable ],
+			'exact match, full domain' => [ 'de', 'https://de.wikipedia.org/', $iwTable ],
 			'cross-project + cross-lang' => [ [ 'b', 'de', ], 'de.wikibooks.org', $iwTable ],
 			'invalid language code' => [ null, 'nosuchlang.wikipedia.org', $iwTable ],
 			'empty table' => [ null, 'foo.bar', [] ],

@@ -26,7 +26,7 @@ class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 	 */
 	public function __construct( InterwikiLookup $interwikiLookup, $ownDomain ) {
 		$this->interwikiLookup = $interwikiLookup;
-		$this->ownDomain = $ownDomain;
+		$this->ownDomain = $this->getDomain( $ownDomain );
 	}
 
 	/**
@@ -34,6 +34,7 @@ class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 	 */
 	public function lookup( $domain ) {
 		$prefixTable = $this->getPrefixTable();
+		$domain = $this->getDomain( $domain );
 
 		if ( $domain === $this->ownDomain ) {
 			return '';
@@ -76,6 +77,20 @@ class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 			}
 		}
 		return $this->prefixTable;
+	}
+
+	/**
+	 * Get the domain part of a domain or URL.
+	 * @param string $domainOrUrl
+	 * @return string
+	 */
+	protected function getDomain( $domainOrUrl ) {
+		$parts = wfParseUrl( $domainOrUrl );
+		if ( empty( $parts['host'] ) ) {
+			// assume it's just a bare domain name
+			return $domainOrUrl;
+		}
+		return $parts['host'];
 	}
 
 }

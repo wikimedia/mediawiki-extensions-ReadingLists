@@ -18,7 +18,7 @@ interface ReverseInterwikiLookupInterface {
 	 *   first interwiki prefix, and so on),
 	 *   So e.g. [ 'b', 'de' ] on English Wikipedia would point to German Wikibooks,
 	 *   much like MediaWiki would handle the title 'b:de:Foo'.
-	 * @param string $domain
+	 * @param string $domain Wiki domain (could be a full URL, extra parts will be stripped)
 	 * @return string|array|null Interwiki prefix, or an array of interwiki prefixes,
 	 *   or null if the lookup failed.
 	 */
