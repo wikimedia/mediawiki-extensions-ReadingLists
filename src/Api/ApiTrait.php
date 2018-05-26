@@ -96,7 +96,7 @@ trait ApiTrait {
 
 	/**
 	 * Get the repository for the given user.
-	 * @param User $user
+	 * @param User|null $user
 	 * @return ReadingListRepository
 	 */
 	protected function getReadingListRepository( User $user = null ) {
