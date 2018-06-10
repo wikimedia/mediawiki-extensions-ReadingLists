@@ -34,6 +34,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 			}
 			$this->checkUserRightsAny( 'viewmyprivateinfo' );
 
+			$listId = $this->getParameter( 'list' );
 			$changedSince = $this->getParameter( 'changedsince' );
 			$project = $this->getParameter( 'project' );
 			$title = $this->getParameter( 'title' );
@@ -48,7 +49,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 			$repository = $this->getReadingListRepository( $this->getUser() );
 
 			$mode = null;
-			$this->requireMaxOneParameter( $this->extractRequestParams(), 'title', 'changedsince' );
+			$this->requireMaxOneParameter( $this->extractRequestParams(), 'list', 'title', 'changedsince' );
 			if ( $project !== null && $title !== null ) {
 				$mode = self::$MODE_PAGE;
 			} elseif ( $project !== null || $title !== null ) {
@@ -62,6 +63,14 @@ class ApiQueryReadingLists extends ApiQueryBase {
 					$this->dieWithError( $errorMessage );
 				}
 				$mode = self::$MODE_CHANGES;
+			} elseif ( $listId !== null ) {
+				// FIXME 'dir' and 'limit' aren't compatible either but requireMaxOneParameter
+				// does not work with parameters which have a default value
+				$params = [ 'sort', 'continue' ];
+				foreach ( $params as $name ) {
+					$this->requireMaxOneParameter( $this->extractRequestParams(), 'list', $name );
+				}
+				$mode = self::$MODE_ID;
 			} else {
 				$mode = self::$MODE_ALL;
 			}
@@ -79,6 +88,8 @@ class ApiQueryReadingLists extends ApiQueryBase {
 				$res = $repository->getListsByPage( $project, $title, $limit + 1, $continue );
 			} elseif ( $mode === self::$MODE_CHANGES ) {
 				$res = $repository->getListsByDateUpdated( $changedSince, $sort, $dir, $limit + 1, $continue );
+			} elseif ( $mode === self::$MODE_ID ) {
+				$res = [ $repository->selectValidList( $listId ) ];
 			} else {
 				$res = $repository->getAllLists( $sort, $dir, $limit + 1, $continue );
 			}
@@ -125,6 +136,12 @@ class ApiQueryReadingLists extends ApiQueryBase {
 	 */
 	protected function getAllowedParams() {
 		return [
+			'list' => [
+				self::PARAM_TYPE => 'integer',
+				self::PARAM_REQUIRED => false,
+				self::PARAM_MIN => 1,
+				self::PARAM_DFLT => null,
+			],
 			'project' => [
 				self::PARAM_TYPE => 'string',
 			],

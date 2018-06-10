@@ -35,6 +35,7 @@
 	"apierror-readinglists-batch-missingparam-at-least-one-of": "{{doc-apierror}}\n\nParameters:\n* $1 - List of parameter names.\n* $2 - Number of parameters.",
 	"apihelp-query+readinglists-summary": "{{doc-apihelp-summary|query+readinglists}}",
 	"apihelp-query+readinglists-extended-description": "{{doc-apihelp-extended-description|query+readinglists}}",
+	"apihelp-query+readinglists-param-list": "{{doc-apihelp-param|query+readinglists|list}}",
 	"apihelp-query+readinglists-param-changedsince": "{{doc-apihelp-param|query+readinglists|changedsince|paramstart=2|params=* $1 - Oldest allowed value}}",
 	"apihelp-query+readinglists-param-project": "{{doc-apihelp-param|query+readinglists|project}}",
 	"apihelp-query+readinglists-param-title": "{{doc-apihelp-param|query+readinglists|title}}",
