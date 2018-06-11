@@ -2,11 +2,12 @@
 	"@metadata": {
 		"authors": [
 			"KATRINE1992",
-			"Nikosgranturismogt"
+			"Nikosgranturismogt",
+			"Matěj Suchánek"
 		]
 	},
 	"readinglists-db-error-cannot-update-default-list": "Η προεπιλεγμένη λίστα δεν μπορεί να ανανεωθεί.",
-	"readinglists-db-error-list-limit": "Οι χρήστες δεν μπορούν να έχουν περισσότερο από $1 {{PLURAL:$!|list|lists}}.",
+	"readinglists-db-error-list-limit": "Οι χρήστες δεν μπορούν να έχουν περισσότερο από $1 {{PLURAL:$1|list|lists}}.",
 	"readinglists-db-error-entry-limit": "Η λίστα $1 δεν μπορεί να περιέχει περισσότερα από $2 {{PLURAL:$2|entry|entries}}.",
 	"readinglists-db-error-too-long": "Η τιμή πεδίου $1 δεν μπορεί να είναι μεγαλύτερη από $2 bytes.",
 	"readinglists-db-error-no-such-project": "'$1' δεν είναι αναγνωρισμένο πρότζεκτ.",
