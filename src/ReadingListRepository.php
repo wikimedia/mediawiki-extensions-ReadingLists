@@ -191,6 +191,36 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	// list CRUD
 
 	/**
+	 * Get list data, and optionally lock the list.
+	 * List must exist, belong to the current user and not be deleted.
+	 * @param int $id List id
+	 * @param int $flags IDBAccessObject flags
+	 * @return ReadingListRow
+	 * @throws ReadingListRepositoryException
+	 */
+	public function selectValidList( $id, $flags = 0 ) {
+		$this->assertUser();
+		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
+		$db = ( $index === DB_MASTER ) ? $this->dbw : $this->dbr;
+		/** @var ReadingListRow $row */
+		$row = $db->selectRow(
+			'reading_list',
+			array_merge( $this->getListFields(), [ 'rl_user_id' ] ),
+			[ 'rl_id' => $id ],
+			__METHOD__,
+			$options
+		);
+		if ( !$row ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list', [ $id ] );
+		} elseif ( $row->rl_user_id != $this->userId ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-not-own-list', [ $id ] );
+		} elseif ( $row->rl_deleted ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-list-deleted', [ $id ] );
+		}
+		return $row;
+	}
+
+	/**
 	 * Create a new list.
 	 * List name is unique for a given user; on conflict, update the existing list.
 	 * @param string $name
@@ -1051,36 +1081,6 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
 		// note: $conditions will be array_merge-d so it should not contain non-numeric keys
 		return [ $conditions, $options ];
-	}
-
-	/**
-	 * Get list data, and optionally lock the list.
-	 * List must exist, belong to the current user and not be deleted.
-	 * @param int $id List id
-	 * @param int $flags IDBAccessObject flags
-	 * @return ReadingListRow
-	 * @throws ReadingListRepositoryException
-	 */
-	private function selectValidList( $id, $flags = 0 ) {
-		$this->assertUser();
-		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
-		$db = ( $index === DB_MASTER ) ? $this->dbw : $this->dbr;
-		/** @var ReadingListRow $row */
-		$row = $db->selectRow(
-			'reading_list',
-			array_merge( $this->getListFields(), [ 'rl_user_id' ] ),
-			[ 'rl_id' => $id ],
-			__METHOD__,
-			$options
-		);
-		if ( !$row ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list', [ $id ] );
-		} elseif ( $row->rl_user_id != $this->userId ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-not-own-list', [ $id ] );
-		} elseif ( $row->rl_deleted ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-list-deleted', [ $id ] );
-		}
-		return $row;
 	}
 
 	/**

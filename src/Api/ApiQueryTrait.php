@@ -36,6 +36,12 @@ trait ApiQueryTrait {
 	 */
 	private static $MODE_PAGE = 'page';
 
+	/**
+	 * Return lists/entries by ID.
+	 * Intended for clients which have a limited local caching ability.
+	 */
+	private static $MODE_ID = 'id';
+
 	/** @var string[] Map of sort keywords used by the API to sort keywords used by the repo. */
 	private static $sortParamMap = [
 		'name' => ReadingListRepository::SORT_BY_NAME,
