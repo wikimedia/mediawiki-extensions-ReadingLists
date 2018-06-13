@@ -30,6 +30,7 @@
 	"apierror-readinglists-batch-invalid-structure": "Ungültige Eingabe für den Parameter <var>batch</var>: Es muss eine Anordnung von Objekten enthalten, die skalare Werte haben.",
 	"apierror-readinglists-batch-toomanyvalues": "Ungültige Eingabe für den Parameter <var>batch</var>: zu viele Einträge, maximal erlaubt ist $1",
 	"apierror-readinglists-batch-missingparam-at-least-one-of": "In jedem Objekt innerhalb der Eingabe <var>batch</var> ist {{PLURAL:$2|das Feld|mindestens eines der Felder}} $1 erforderlich.",
+	"apihelp-query+readinglists-param-list": "Listenkennung.",
 	"apihelp-query+readinglists-paramvalue-sort-updated": "Zeitstempel der letzten Aktualisierung. Aktualisierungen enthalten Änderungen der Listenmetadaten, jedoch keine Änderungen an Listenelementen.",
 	"apihelp-query+readinglists-param-limit": "Anzahl der zurückzugebenden Ergebniseinträge.",
 	"apihelp-query+readinglistentries-summary": "Listet die Seiten einer bestimmten Liste auf.",
