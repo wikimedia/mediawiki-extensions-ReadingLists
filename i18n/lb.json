@@ -15,6 +15,7 @@
 	"readinglists-db-error-entry-limit": "Lëscht $1 däerf net méi wéi {{PLURAL:$2|een Element|$2 Elementer}} hunn.",
 	"readinglists-db-error-too-long": "De Wäert fir d'Feld $1 däerf net méi grouss wéi $2 Byten.",
 	"readinglists-db-error-no-such-project": "'$1' ass keen unerkannte Projet.",
+	"apihelp-query+readinglists-param-list": "ID vun der Lëscht.",
 	"apihelp-query+readinglists-example-1": "D'Lieslëschte vum aktuelle Benotzer kréien",
 	"apihelp-readinglists+teardown-summary": "Lëschte fir den aktuelle Benotzer desaktivéieren.",
 	"apihelp-readinglists+teardown-example-1": "Lieslëschte fir den aktuelle Benotzer desaktivéieren.",
