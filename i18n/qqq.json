@@ -4,7 +4,8 @@
 			"Tgr",
 			"Umherirrender",
 			"Raymond",
-			"Liuxinyu970226"
+			"Liuxinyu970226",
+			"Tacsipacsi"
 		]
 	},
 	"readinglists-desc": "{{desc|name=ReadingLists|url=https://www.mediawiki.org/wiki/Extension:ReadingLists}}",
@@ -24,7 +25,7 @@
 	"readinglists-db-error-user-required": "Error message used when calling a method that operates on a single user, but the user was not specified when the repository object was constructed.",
 	"readinglists-db-error-list-limit": "Error message used when the user has as many or more lists than the maximum allowed, and tries to add another one.\n\nParameters:\n* $1 - the maximum allowed number of lists per user.",
 	"readinglists-db-error-entry-limit": "Error message used when the user has as many or more entries in the given list than the maximum allowed, and tries to add another one.\n\nParameters:\n* $1 - the ID of the list in question.\n$2 - the maximum allowed number of entries per list.",
-	"readinglists-db-error-too-long": "Error message used when the user tries to set list/entry string fields to a longer value than what the database schema allows.\n\nParameters:\n* $1 - DB field name.\n$2 - DB field maximum length (in bytes).",
+	"readinglists-db-error-too-long": "Error message used when the user tries to set list/entry string fields to a longer value than what the database schema allows.\n\nParameters:\n* $1 - DB field name.\n* $2 - DB field maximum length (in bytes).",
 	"readinglists-db-error-no-such-project": "Error message used when the user tries to add a new list entry, but the project does not match any of the known ones.\n\nParameters:\n* $1 - the project.",
 	"apierror-readinglists-project-title-param": "{{doc-apierror}}\n$1 is the module prefix.",
 	"apierror-readinglists-too-old": "{{doc-apierror}}\n$1 is the module prefix, $2 is the expiry date for deleted lists/entries.",

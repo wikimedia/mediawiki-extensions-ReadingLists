@@ -1,0 +1,33 @@
+{
+	"@metadata": {
+		"authors": [
+			"Tacsipacsi"
+		]
+	},
+	"readinglists-desc": "Lehetővé teszi a felhasználóknak privát szócikklisták, például könyvjelzők vagy „elolvasandó” listák létrehozását.",
+	"readinglists-db-error-not-set-up": "Az olvasólisták nincsenek beállítva ennek a felhasználónak.",
+	"readinglists-db-error-already-set-up": "Az olvasólisták már be vannak állítva ennek a felhasználónak.",
+	"readinglists-db-error-cannot-delete-default-list": "Az alapértelmezett lista nem törölhető.",
+	"readinglists-db-error-cannot-update-default-list": "Az alapértelmezett lista nem frissíthető.",
+	"readinglists-db-error-no-such-list": "A(z) $1 lista nem létezik.",
+	"readinglists-db-error-no-such-list-entry": "A(z) $1 listabejegyzés nem létezik.",
+	"readinglists-db-error-not-own-list": "A(z) $1 lista másik felhasználóhoz tartozik.",
+	"readinglists-db-error-not-own-list-entry": "A(z) $1 listabejegyzés másik felhasználóhoz tartozik.",
+	"readinglists-db-error-list-deleted": "A(z) $1 lista törölve van.",
+	"readinglists-db-error-list-entry-deleted": "A(z) $1 listabejegyzés törölve van.",
+	"readinglists-db-error-duplicate-list": "Ilyen nevű lista már létezik.",
+	"readinglists-db-error-duplicate-page": "A lista már tartalmazza ezt a lapot.",
+	"readinglists-db-error-user-required": "Ez a metódus nem hívható meg a felhasználó megadása nélkül.",
+	"readinglists-db-error-list-limit": "Egy felhasználónak nem lehet több mint $1 listája.",
+	"readinglists-db-error-entry-limit": "A(z) $1 listának nem lehet több mint $2 bejegyzése.",
+	"readinglists-db-error-too-long": "A(z) $1 mező értéke nem lehet hosszabb $2 bájtnál.",
+	"readinglists-db-error-no-such-project": "A(z) „$1” nem egy ismert projekt.",
+	"readinglists-browser-add-entry-success": "$1 hozzáadva az olvasólistádhoz",
+	"readinglists-browser-login-prompt": "Jelentkezz be a szócikkek elmentéséhez",
+	"readinglists-browser-error-intro": "Hiba történt: $1",
+	"readinglists-browser-enable-sync-prompt": "Engedélyezd a szinkronizálást a Wikipédia-mobilalkalmazásodban a szócikkek mentésének elkezdéséhez",
+	"readinglists-browser-extension-info-link-text": "További információk",
+	"readinglists-browser-list-entry-limit-exceeded": "A szócikk mentése sikertelen. Elérted a listánkénti szócikkek számának korlátját ($1).",
+	"readinglists-browser-extension-product-title": "Wikipédia-olvasólisták",
+	"readinglists-browser-page-not-supported": "A(z) $1 nem támogatja ezt a lapot"
+}
