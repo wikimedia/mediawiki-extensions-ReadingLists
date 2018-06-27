@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Aftabuzzaman",
-			"Rasal Lia"
+			"Rasal Lia",
+			"আফতাবুজ্জামান"
 		]
 	},
 	"readinglists-db-error-list-limit": "ব্যবহারকারীদের $1টির বেশী {{PLURAL:$1|তালিকা}} থাকতে পারবে না।",
