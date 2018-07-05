@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Piramidion"
+			"Piramidion",
+			"Ата"
 		]
 	},
 	"readinglists-desc": "Дозволяє користувачам керувати приватними списками статей, такими як списки закладок чи «Прочитати пізніше».",
@@ -20,8 +21,8 @@
 	"apierror-readinglists-project-title-param": "<var>$1project</var> і <var>$1title</var> слід використовувати разом.",
 	"apierror-readinglists-too-old": "Мітки часу, передані <var>$1changedsince</var>, не можуть бути старшими ніж <kbd>$2</kbd>.",
 	"apihelp-query+readinglists-summary": "Перелічити або фільтрувати списки читання користувача і показати показати метадані щодо них.",
-	"apihelp-query+readinglists-extended-description": "Цей модуль має три режими роботи. З параметром <var>$1changedsince</var> він виводить всі списки поточного користувача, які змінилися, починаючи із вказаної дати. (Це призначено для синхронізації пристроїв, а тому, на відміну від інших режимів, у цьому режимі серед результатів також є вилучені списки. Розглядаються лише зміни метаданих списків, а не зміни в елементах списків.) З параметрами <var>$1project</var> та <var>$1title</var> він виводить всі списки, в яких містяться вказана сторінка. Якщо не заповнено жоден із цих параметрів, модуль виводить усі списки.",
-	"apihelp-query+readinglists-param-changedsince": "Показати списки, що змінилися, починаючи з цієї мітки часу. Має бути після <kbd>$1</kbd>.",
+	"apihelp-query+readinglists-extended-description": "Цей модуль має чотири режими роботи. З параметром <var>$1list</var> він видає інформацію про вказаний список. З параметром <var>$1changedsince</var> він виводить усі списки поточного користувача, які змінилися, починаючи із вказаної дати. (Це призначено для синхронізації пристроїв, а тому, на відміну від інших режимів, у цьому режимі серед результатів також є вилучені списки. Розглядаються лише зміни метаданих списків, а не зміни в елементах списків). З параметрами <var>$1project</var> та <var>$1title</var> він виводить всі списки, в яких містяться вказана сторінка. Якщо не заповнено жоден із цих параметрів, модуль виводить усі списки.",
+	"apihelp-query+readinglists-param-changedsince": "Показати списки, що змінилися, починаючи з цієї мітки часу. Має бути після <kbd>$1</kbd>. Клієнти мають використовувати мітку часу, подану в полі <samp>readinglists-synctimestamp</samp> у ранішому запиті, якщо хочуть переконатися, що не втрачено жодних змін, і мають бути готові отримати зміни, які вже виводилися у ранішій відповіді, та обробити їх ідемпотентно.",
 	"apihelp-query+readinglists-param-project": "Проект сторінки, на якій слід здійснити фільтрування. Слід використовувати разом із <var>$1title</var>.",
 	"apihelp-query+readinglists-param-title": "Назва сторінки, на якій слід здійснити фільтрування. Слід використовувати разом із <var>$1project</var>.",
 	"apihelp-query+readinglists-param-limit": "Кількість елементів, які слід вивести в результаті.",
@@ -45,12 +46,12 @@
 	"apihelp-readinglists+teardown-extended-description": "Вилучає всі дані щодо списків читання для користувача. Якщо користувач бажає використовувати списки читання знову, слід скористатися командою <kbd>[[Special:ApiHelp/readinglists+setup|setup]]</kbd>.",
 	"apihelp-readinglists+teardown-example-1": "Вимкнути списки читання для поточного користувача.",
 	"apihelp-readinglists+create-summary": "Створити новий список для поточного користувача.",
-	"apihelp-readinglists+create-param-name": "Назва списку.",
+	"apihelp-readinglists+create-param-name": "Назва списку. Вимагається, крім випадків масового створення.",
 	"apihelp-readinglists+create-param-description": "Опис списку.",
 	"apihelp-readinglists+create-example-1": "Створити новий список читання.",
-	"apihelp-readinglists+create-example-2": "Створити новий список читання зі стандартним виглядом.",
+	"apihelp-readinglists+create-example-2": "Створити кілька нових списків читання.",
 	"apihelp-readinglists+update-summary": "Оновити список, який належить поточному користувачеві.",
-	"apihelp-readinglists+update-param-list": "Ідентифікатор списку.",
+	"apihelp-readinglists+update-param-list": "Ідентифікатор списку. Вимагається, окрім випадків використання масового оновлення.",
 	"apihelp-readinglists+update-param-name": "Нова назва списку.",
 	"apihelp-readinglists+update-param-description": "Новий опис списку.",
 	"apihelp-readinglists+update-example-1": "Змінити назву списку читання з ідентифікатором <kbd>42</kbd>.",
