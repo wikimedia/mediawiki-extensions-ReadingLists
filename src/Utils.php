@@ -37,8 +37,17 @@ class Utils {
 	 * @return bool
 	 */
 	public static function isCentralWiki( $services ) {
-		$extensionConfig = $services->getConfigFactory()->makeConfig( 'ReadingLists' );
-		$centralWiki = $extensionConfig->get( 'ReadingListsCentralWiki' );
+		$config = $services->getMainConfig();
+		$configFactory = $services->getConfigFactory();
+
+		// At install time, extension configuration is not loaded T196567
+		if ( ! in_array( 'ReadingLists', $configFactory->getConfigNames() ) ) {
+			$centralWiki = false;
+		} else {
+			$extensionConfig = $configFactory->makeConfig( 'ReadingLists' );
+			$centralWiki = $extensionConfig->get( 'ReadingListsCentralWiki' );
+		}
+
 		if ( $centralWiki === false ) {
 			return true;
 		}
