@@ -29,6 +29,7 @@
 	"apihelp-readinglists+createentry-param-list": "شناسه فهرست.",
 	"apihelp-readinglists+deleteentry-example-2": "حذف چند عضو از فهرست.",
 	"readinglists-browser-login-prompt": "برای ذخیره مقاله وارد شوید",
+	"readinglists-browser-error-intro": "یک خطا رخ داده‌است: $1",
 	"readinglists-browser-extension-info-link-text": "اطلاعات بیشتر",
 	"readinglists-browser-extension-product-title": "فهرست‌های خواندن ویکی‌پدیا",
 	"readinglists-browser-page-not-supported": "$1 از این صفحه پشتیبانی نمی‌کند"
