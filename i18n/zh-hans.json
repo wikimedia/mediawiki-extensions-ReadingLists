@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Liuxinyu970226"
+			"Liuxinyu970226",
+			"Hanyanbo98"
 		]
 	},
 	"readinglists-desc": "允许用户管理私有条目列表，例如书签或“稍后阅读”列表。",
@@ -34,8 +35,8 @@
 	"apihelp-query+readinglists-extended-description": "此模块有四种操作模式。与<var>$1list</var>参数一起使用时，它返回有关指定列表的信息。与<var>$1changedsince</var>参数一起使用时，它返回自提供日期起，所有已更改的当前用户的列表。（这意味着用于设备同步，并且与其他模式不同，也包含删除的列表。只考虑对列表元数据的更改，而不考虑对列表项的更改。）与<var>$1project</var>和<var>$1title</var>参数一起使用时，它返回所有包含那个页面的列表。不与这些参数一起使用时，它返回所有列表。",
 	"apihelp-query+readinglists-param-list": "列表ID。",
 	"apihelp-query+readinglists-param-changedsince": "显示自该时间戳以来，已更改的列表。必须在<kbd>$1</kbd>之后。如果要确保不错过任何更改，客户端应使用从早期调用中<samp>readinglists-synctimestamp</samp>字段返回的时间戳，并应准备接收已在早期响应中返回的更改，并以幂等方法处理它们。",
-	"apihelp-query+readinglists-param-project": "要过滤的页面所属项目。不能与<var>$1title</var>一起使用。",
-	"apihelp-query+readinglists-param-title": "要过滤的页面标题。不能与<var>$1project</var>一起使用。",
+	"apihelp-query+readinglists-param-project": "要过滤的页面所属项目。不能与<var>$1title</var>一起使用。只会返回包含此项目和标题的列表。",
+	"apihelp-query+readinglists-param-title": "要过滤的页面标题。不能与<var>$1project</var>一起使用。只会返回包含此项目和标题的列表。",
 	"apihelp-query+readinglists-param-sort": "要排序的属性。当设置<var>$1project</var>和<var>$1title</var>时会忽略（结果以数据库顺序返回）。当设置<var>$1changedsince</var>时默认值为<kbd>updated</kbd>，除此之外的情况下默认值为<kbd>name</kbd>。",
 	"apihelp-query+readinglists-paramvalue-sort-name": "列表名称。（排序按二进制值；例如任何大写ASCII字符都将排序在小写字符前。）",
 	"apihelp-query+readinglists-paramvalue-sort-updated": "上次更新时间戳。（更新包括列表元数据更改，但不包括对列表项的更改。）",
