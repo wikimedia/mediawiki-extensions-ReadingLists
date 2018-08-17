@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Dr Lotus Black"
+		]
+	},
+	"readinglists-db-error-not-set-up": "ဤအသုံးပြူသူအတွက် စာဖတ်စာရင်းများကို မပြင်ဆင်ထားရသေးပါ။",
+	"readinglists-db-error-already-set-up": "ဤအသုံးပြူသူအတွက် စာဖတ်စာရင်းများကို ပြင်ဆင်ထားပြီးဖြစ်သည်။",
+	"readinglists-db-error-cannot-delete-default-list": "နဂိုစာဖတ်စာရင်းကို မဖျက်ပစ်နိုင်ပါ။",
+	"readinglists-db-error-cannot-update-default-list": "နဂိုစာဖတ်စာရင်းကို မမွမ်းမံနိုင်ပါ။",
+	"readinglists-db-error-no-such-list": "စာရင်း $1 မတည်ရှိပါ။",
+	"readinglists-db-error-no-such-list-entry": "အဝင်စာရင်း $1 မတည်ရှိပါ။",
+	"readinglists-db-error-not-own-list": "စာရင်း $1 သည် အခြားအသုံးပြုသူနှင့် သက်ဆိုင်သည်။",
+	"readinglists-db-error-not-own-list-entry": "အဝင်စာရင်း $1 သည် အခြားအသုံးပြုသူနှင့် သက်ဆိုင်သည်။",
+	"readinglists-db-error-list-deleted": "စာရင်း $1 ကို ဖျက်ပစ်ပြီးဖြစ်သည်။",
+	"readinglists-db-error-list-entry-deleted": "အဝင်စာရင်း $1 ကို ဖျက်ပစ်ပြီးဖြစ်သည်။",
+	"readinglists-db-error-duplicate-list": "ဤအမည်ဖြင့် စာရင်းတစ်ခု ရှိနှင့်ပြီးဖြစ်သည်။",
+	"readinglists-db-error-duplicate-page": "စာရင်းတွင် ဤစာမျက်နှာ ပါဝင်ပြီးဖြစ်သည်။",
+	"readinglists-db-error-empty-list-ids": "စာရင်းအိုင်ဒီ ပါရာမီတာသည် ဗလာမဖြစ်ရပါ။",
+	"readinglists-db-error-list-limit": "အသုံးပြုသူများသည် စာဖတ်စာရင်း $1 {{PLURAL:$1|ခု|ခု}}ထက် ပို၍မရပါ။",
+	"readinglists-db-error-no-such-project": "'$1' သည် အသိအမှတ်ပြုထားသော ပရောဂျက်တစ်ခု မဟုတ်ပါ။",
+	"apierror-readinglists-project-title-param": "<var>$1project</var> နှင့် <var>$1title</var> တို့သည် အတူတကွ အသုံးပြုရပါမည်။",
+	"apihelp-readinglists+create-summary": "လက်ရှိအသုံးပြုသူအတွက် စာရင်းသစ်တစ်ခု ဖန်တီးရန်",
+	"apihelp-readinglists+create-param-description": "စာရင်း ဖော်ပြချက်",
+	"apihelp-readinglists+create-example-1": "စာဖတ်စာရင်း အသစ်တစ်ခု ဖန်တီးရန်",
+	"apihelp-readinglists+create-example-2": "များစွာသော စာရင်းသစ်များ ဖန်တီးရန်",
+	"apihelp-readinglists+update-param-description": "စာရင်းသစ် ဖော်ပြချက်",
+	"apihelp-readinglists+delete-summary": "လက်ရှိအသုံးပြုသူနှင့်သက်ဆိုင်သော စာရင်းတစ်ခုကို ဖျက်ပစ်ရန်",
+	"readinglists-browser-add-entry-success": "$1 ကို သင်၏စာဖတ်စာရင်းသို့ သိမ်ဆည်းခဲ့သည်",
+	"readinglists-browser-login-prompt": "ဆောင်းပါးများကို သိမ်းဆည်းရန် အကောင့်ထဲဝင်ပါ",
+	"readinglists-browser-error-intro": "အမှားတစ်ခု ဖြစ်ပွားခဲ့ပါသည်: $1",
+	"readinglists-browser-enable-sync-prompt": "သင်၏ဝီကီပီးဒီးယား app ထဲတွင် ဆောင်းပါးများကို စတင်သိမ်းဆည်းရန် sync လုပ်ခြင်းကို ဖွင့်ပေးပါ",
+	"readinglists-browser-extension-info-link-text": "ပိုမိုလေ့လာရန်",
+	"readinglists-browser-list-entry-limit-exceeded": "ဆောင်းပါးကို မသိမ်းဆည်းနိုင်ပါ။ စာရင်းတစ်ခုလျင် $1 ဆောင်းပါးနှုန်း ကန့်သတ်ချက်ကို ရောက်ပါပြီ။",
+	"readinglists-browser-extension-product-title": "ဝီကီပီဒီးယား စာဖတ်စာရင်းများ",
+	"readinglists-browser-page-not-supported": "ဤစာမျက်နှာအား $1 က မထောက်ပံ့ထားပါ"
+}
