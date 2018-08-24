@@ -13,6 +13,8 @@ use Wikimedia\Rdbms\LBFactory;
 
 /**
  * @group Database
+ * @covers \MediaWiki\Extensions\ReadingLists\ReadingListRepository
+ * @covers \MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException
  */
 class ReadingListRepositoryTest extends MediaWikiTestCase {
 

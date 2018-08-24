@@ -4,6 +4,9 @@ namespace MediaWiki\Extensions\ReadingLists;
 
 use MediaWiki\MediaWikiServices;
 
+/**
+ * @coversNothing
+ */
 class ServiceWiringTest extends \PHPUnit\Framework\TestCase {
 
 	public function testService() {

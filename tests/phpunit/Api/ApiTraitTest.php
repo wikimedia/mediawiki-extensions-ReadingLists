@@ -11,6 +11,9 @@ use StatusValue;
 use Title;
 use Wikimedia\TestingAccessWrapper;
 
+/**
+ * @covers \MediaWiki\Extensions\ReadingLists\Api\ApiTrait
+ */
 class ApiTraitTest extends TestCase {
 	/** @var ApiTrait */
 	private $api;

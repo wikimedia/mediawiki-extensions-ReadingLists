@@ -4,6 +4,10 @@ namespace MediaWiki\Extensions\ReadingLists;
 
 use MediaWiki\Interwiki\InterwikiLookup;
 
+/**
+ * @covers \MediaWiki\Extensions\ReadingLists\ReverseInterwikiLookup
+ * @covers \MediaWiki\Extensions\ReadingLists\ReverseInterwikiLookupException
+ */
 class ReverseInterwikiLookupTest extends \PHPUnit\Framework\TestCase {
 
 	/**

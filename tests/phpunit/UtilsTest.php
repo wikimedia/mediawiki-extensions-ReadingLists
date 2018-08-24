@@ -9,6 +9,9 @@ use Wikimedia\Rdbms\DBConnRef;
 
 class UtilsTest extends MediaWikiTestCase {
 
+	/**
+	 * @covers \MediaWiki\Extensions\ReadingLists\Utils::getDB
+	 */
 	public function testGetDB() {
 		$dbw = Utils::getDB( DB_MASTER, MediaWikiServices::getInstance() );
 		$dbr = Utils::getDB( DB_REPLICA, MediaWikiServices::getInstance() );
@@ -18,6 +21,7 @@ class UtilsTest extends MediaWikiTestCase {
 
 	/**
 	 * @dataProvider provideIsCentralWiki
+	 * @covers \MediaWiki\Extensions\ReadingLists\Utils::isCentralWiki
 	 */
 	public function testIsCentralWiki( $wgReadingListsCentralWiki, $expectedResult ) {
 		// Wiki name is changed between the data provider and the test so allow delayed lookup.
