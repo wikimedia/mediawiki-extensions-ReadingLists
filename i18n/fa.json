@@ -22,6 +22,7 @@
 	"readinglists-db-error-list-limit": "کاربران نمی‌توانند بیشتر از $1 {{PLURAL:$1|فهرست}} داشته‌باشند.",
 	"readinglists-db-error-entry-limit": "فهرست $1 نمی‌تواند بیش از $2 {{PLURAL:$2|عضو}} داشته باشد.",
 	"apihelp-query+readinglists-param-list": "شناسه فهرست",
+	"apihelp-query+readinglistentries-paramvalue-sort-updated": "زمان آخرین بروزرسانی.",
 	"apihelp-readinglists+create-param-description": "توضیحات فهرست.",
 	"apihelp-readinglists+create-example-1": "ایجاد یک فهرست مطالعه جدید.",
 	"apihelp-readinglists+update-example-2": "تغییر چند فهرست.",
