@@ -224,7 +224,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 			}
 			return $title;
 		} elseif ( is_array( $interwikiPrefix ) ) {
-			$title = implode( ':', array_slice( $interwikiPrefix, 1 ) ). ':' . $row->rle_title;
+			$title = implode( ':', array_slice( $interwikiPrefix, 1 ) ) . ':' . $row->rle_title;
 			$prefix = $interwikiPrefix[0];
 			return Title::makeTitle( NS_MAIN, $title, '', $prefix );
 		}
