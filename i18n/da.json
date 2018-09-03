@@ -7,6 +7,7 @@
 	},
 	"readinglists-db-error-no-such-list": "Listen $1 findes ikke.",
 	"readinglists-db-error-list-deleted": "Listen $1 er blevet slettet.",
+	"apihelp-readinglists+create-param-description": "Listebeskrivelse.",
 	"apihelp-readinglists+update-example-2": "Opdatér flere lister.",
 	"apihelp-readinglists+delete-example-2": "Slet flere lister.",
 	"readinglists-browser-error-intro": "Der opstod en fejl: $1",
