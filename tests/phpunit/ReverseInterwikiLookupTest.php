@@ -1,8 +1,9 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists;
+namespace MediaWiki\Extensions\ReadingLists\Tests;
 
 use MediaWiki\Interwiki\InterwikiLookup;
+use MediaWiki\Extensions\ReadingLists\ReverseInterwikiLookup;
 
 /**
  * @covers \MediaWiki\Extensions\ReadingLists\ReverseInterwikiLookup

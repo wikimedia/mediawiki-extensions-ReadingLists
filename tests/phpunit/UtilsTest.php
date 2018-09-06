@@ -1,11 +1,12 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists;
+namespace MediaWiki\Extensions\ReadingLists\Tests;
 
 use Closure;
 use MediaWiki\MediaWikiServices;
 use MediaWikiTestCase;
 use Wikimedia\Rdbms\DBConnRef;
+use MediaWiki\Extensions\ReadingLists\Utils;
 
 class UtilsTest extends MediaWikiTestCase {
 

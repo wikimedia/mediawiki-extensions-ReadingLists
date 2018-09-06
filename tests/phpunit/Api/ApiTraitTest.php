@@ -1,6 +1,6 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Api;
+namespace MediaWiki\Extensions\ReadingLists\Tests\Api;
 
 use ApiMessage;
 use ApiUsageException;
@@ -10,11 +10,16 @@ use RequestContext;
 use StatusValue;
 use Title;
 use Wikimedia\TestingAccessWrapper;
+use MediaWiki\Extensions\ReadingLists\Api\ApiTrait;
+use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
 
 /**
  * @covers \MediaWiki\Extensions\ReadingLists\Api\ApiTrait
  */
 class ApiTraitTest extends TestCase {
+
+	use ReadingListsTestHelperTrait;
+
 	/** @var ApiTrait */
 	private $api;
 
@@ -89,33 +94,5 @@ class ApiTraitTest extends TestCase {
 			'one required parameters present' => [ [ 'foo' => 1 ], [ 'foo', 'bar' ], null ],
 			'no required parameters present' => [ [ 'baz' => 1, 'boom' => 2 ], [ 'foo', 'bar' ], $missing ],
 		];
-	}
-
-	/**
-	 * If $expectedErrorMessage is null, verify that the callback does not throw a usage error.
-	 * If it isn't, verify that it throws that error.
-	 * @param string $expectedErrorMessage
-	 * @param callable $callback
-	 * @return mixed The return value of the callback, or null if there was an exception.
-	 */
-	private function assertApiUsage( $expectedErrorMessage, callable $callback, array $params = [] ) {
-		try {
-			$ret = call_user_func_array( $callback, $params );
-		} catch ( ApiUsageException $e ) {
-			$errorMessage = $e->getMessageObject()->getKey();
-			if ( $expectedErrorMessage ) {
-				$this->assertEquals( $expectedErrorMessage, $errorMessage,
-					"Wrong exception (expected '$expectedErrorMessage', got '$errorMessage')" );
-				return null;
-			} else {
-				$this->fail( "Unexpected exception '$errorMessage'" );
-			}
-		}
-		if ( $expectedErrorMessage ) {
-			$this->fail( "Expected exception '$errorMessage' missing" );
-		}
-		// Make sure there is at least one assertion so the test won't be marked risky.
-		$this->assertTrue( true );
-		return $ret;
 	}
 }
