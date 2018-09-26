@@ -2,9 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Chrumps",
-			"Wojtas"
+			"Wojtas",
+			"Railfail536"
 		]
 	},
+	"readinglists-desc": "Umożliwia użytkownikom zarządzanie prywatnymi listami artykułów, takimi jak zakładki czy listy „Przeczytaj później”",
 	"readinglists-db-error-no-such-list": "Lista $1 nie istnieje.",
 	"readinglists-db-error-not-own-list": "Lista $1 należy do innego użytkownika.",
 	"apierror-readinglists-project-title-param": "<var>$1project</var> i <var>$1title</var> muszą być używane razem.",
