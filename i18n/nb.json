@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Jon Harald Søby"
+			"Jon Harald Søby",
+			"Orf3us"
 		]
 	},
 	"readinglists-db-error-no-such-list": "Lista $1 finnes ikke.",
@@ -11,7 +12,7 @@
 	"readinglists-db-error-list-deleted": "Lista $1 har blitt slettet.",
 	"readinglists-db-error-list-entry-deleted": "Listeoppføringen $1 har blitt slettet.",
 	"readinglists-db-error-duplicate-list": "Ei liste med det navnet finnes allerede.",
-	"readinglists-db-error-duplicate-page": "Lista innohelder allerede denne siden.",
+	"readinglists-db-error-duplicate-page": "Lista inneholder allerede denne siden.",
 	"readinglists-db-error-user-required": "Metoden kan ikke kalles uten å angi brukeren.",
 	"readinglists-db-error-list-limit": "Brukere kan ikke ha mer enn {{PLURAL:$1|éi|$1 lister}}.",
 	"readinglists-db-error-entry-limit": "Lista $1 kan ikke ha mer enn {{PLURAL:$2|én oppføring|$2 oppføringer}}.",
