@@ -7,7 +7,7 @@ use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use ApiTestCase;
 
 /**
- * @covers \MediaWiki\Extensions\ReadingLists\Api\ApiReadingListsCreate
+ * @covers \MediaWiki\Extensions\ReadingLists\Api\ApiReadingListsUpdate
  * @covers \MediaWiki\Extensions\ReadingLists\Api\ApiReadingLists
  * @group medium
  * @group API
