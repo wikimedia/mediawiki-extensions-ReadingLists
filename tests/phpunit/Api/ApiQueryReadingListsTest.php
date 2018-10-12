@@ -22,6 +22,14 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 		'meta'    => 'readinglists',
 	];
 
+	// Create date that isn't older than one month to test rlchangedsince
+	private $lastUpdate;
+
+	public function __construct( $name = null, array $data = [], $dataName = '' ) {
+		parent::__construct( $name, $data, $dataName );
+		$this->lastUpdate = wfTimestamp( TS_MW );
+	}
+
 	protected function setUp() {
 		parent::setUp();
 		$this->tablesUsed = array_merge( $this->tablesUsed, HookHandler::$testTables );
@@ -32,16 +40,16 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 				'rl_is_default' => 1,
 				'rl_name' => 'default',
 				'rl_description' => 'default list',
-				'rl_date_created' => 20170913205936,
-				'rl_date_updated' => 20170913205936,
+				'rl_date_created' => '20170913205936',
+				'rl_date_updated' => '20170913205936',
 				'rl_deleted' => 0,
 			],
 			[
 				'rl_is_default' => 0,
 				'rl_name' => 'dogs',
 				'rl_description' => 'Woof!',
-				'rl_date_created' => 20170913205936,
-				'rl_date_updated' => 20170913205936,
+				'rl_date_created' => '20170913205936',
+				'rl_date_updated' => '20170913205936',
 				'rl_deleted' => 0,
 				'entries' => [
 					[
@@ -57,8 +65,8 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 				'rl_is_default' => 0,
 				'rl_name' => 'cats',
 				'rl_description' => "Meow!",
-				'rl_date_created' => 20180913205936,
-				'rl_date_updated' => 20180913205936,
+				'rl_date_created' => '20180914205936',
+				'rl_date_updated' => $this->lastUpdate,
 				'rl_deleted' => 0,
 			]
 		] );
@@ -76,6 +84,9 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 	}
 
 	public function apiQueryProvider() {
+		$mwLastUpdate = wfTimestamp( TS_ISO_8601, $this->lastUpdate );
+		// Create date 7 days before the last update to test rlchangedsince
+		$rlChangedSince = wfTimestamp( TS_ISO_8601, strtotime( "-7 days" ) );
 		return [
 			[ [ 'rllist' => 2 ],
 				[
@@ -120,8 +131,8 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 								"name" => "cats",
 								"default" => false,
 								"description" => "Meow!",
-								"created" => "2018-09-13T20:59:36Z",
-								"updated" => "2018-09-13T20:59:36Z"
+								"created" => "2018-09-14T20:59:36Z",
+								"updated" => $mwLastUpdate
 							],
 						],
 					]
@@ -144,7 +155,7 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 					]
 				],
 			],
-			[ [ 'rlchangedsince' => '2018-09-10T00:00:00Z' ],
+			[ [ 'rlchangedsince' => $rlChangedSince ],
 				[
 					"batchcomplete" => true,
 					"query" => [
@@ -154,8 +165,8 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 								"name" => "cats",
 								"default" => false,
 								"description" => "Meow!",
-								"created" => "2018-09-13T20:59:36Z",
-								"updated" => "2018-09-13T20:59:36Z"
+								"created" => "2018-09-14T20:59:36Z",
+								"updated" => $mwLastUpdate
 							],
 						],
 					]
@@ -171,8 +182,8 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 								"name" => "cats",
 								"default" => false,
 								"description" => "Meow!",
-								"created" => "2018-09-13T20:59:36Z",
-								"updated" => "2018-09-13T20:59:36Z"
+								"created" => "2018-09-14T20:59:36Z",
+								"updated" => $mwLastUpdate
 							],
 						],
 					],
