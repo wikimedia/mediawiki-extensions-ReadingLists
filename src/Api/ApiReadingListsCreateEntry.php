@@ -39,7 +39,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 			// clients are expected to submit already normalized titles (that they got from the API)
 			// anyway.
 			if ( !Title::newFromText( $params['title'] ) ) {
-				$this->dieWithError( 'apierror-invalidtitle', wfEscapeWikiText( $params['title'] ) );
+				$this->dieWithError( [ 'apierror-invalidtitle', wfEscapeWikiText( $params['title'] ) ] );
 			}
 
 			$entry = $repository->addListEntry( $listId, $params['project'], $params['title'] );
@@ -52,7 +52,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 				$this->requireAtLeastOneBatchParameter( $op, 'project' );
 				$this->requireAtLeastOneBatchParameter( $op, 'title' );
 				if ( !Title::newFromText( $op['title'] ) ) {
-					$this->dieWithError( 'apierror-invalidtitle', wfEscapeWikiText( $op['title'] ) );
+					$this->dieWithError( [ 'apierror-invalidtitle', wfEscapeWikiText( $op['title'] ) ] );
 				}
 				$entry = $repository->addListEntry( $listId, $op['project'], $op['title'] );
 				$entryIds[] = $entry->rle_id;
