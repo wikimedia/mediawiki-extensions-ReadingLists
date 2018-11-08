@@ -145,16 +145,44 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		if ( !$this->isSetupForUser() ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
-		$this->dbw->delete(
+
+		// We use a one-time salt to randomize the deleted list's new
+		// name. We can't allow the new name to be fully deterministic,
+		// since we could create another list by the same name w/in 30
+		// days. We also can't generate a random name by calling RAND()
+		// within the query, since that breaks under statement-level
+		// replication. Hence, we hash the current rl_name with a
+		// one-time salt.
+		$salt = $this->dbw->addQuotes( md5( uniqid( rand(), true ) ) );
+
+		// Soft-delete. Note that no reading list entries are updated;
+		// they are effectively orphaned by soft-deletion of their lists
+		// and will be batch-removed in purgeOldDeleted().
+		$this->dbw->update(
 			'reading_list',
+			[
+				// 'rl_name' is randomized in anticipation of
+				// eventually enforcing uniqueness with an
+				// index (in which case it can't be limited to
+				// non-deleted lists).
+				//
+				// 'rl_is_default' is cleared so deleted lists
+				// aren't detected as defaults.
+				"rl_name = CONCAT('deleted-', MD5(CONCAT( $salt , rl_name)))",
+				'rl_is_default' => 0,
+				'rl_deleted' => 1,
+				'rl_date_updated' => $this->dbw->timestamp(),
+			],
 			[ 'rl_user_id' => $this->userId ],
 			__METHOD__
 		);
-		$this->dbw->delete(
-			'reading_list_entry',
-			[ 'rle_user_id' => $this->userId ],
-			__METHOD__
-		);
+		if ( !$this->dbw->affectedRows() ) {
+			$this->logger->error( 'teardownForUser failed for unknown reason', [
+				'user_central_id' => $this->userId,
+			] );
+			throw new LogicException( 'teardownForUser failed for unknown reason' );
+		}
+
 		$this->logger->info( 'Tore down for user {user}', [ 'user' => $this->userId ] );
 	}
 
@@ -185,7 +213,16 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			__METHOD__,
 			$options
 		);
-		return (bool)$res->numRows();
+
+		// Until a better 'rl_is_default', log warnings so the bugs are caught.
+		$n = $res->numRows();
+		if ( $n > 1 ) {
+			$this->logger->warning( 'isSetupForUser for user {user} found {n} default lists', [
+				'n' => $n,
+				'user' => $this->userId,
+			] );
+		}
+		return (bool)$n;
 	}
 
 	// list CRUD
@@ -445,7 +482,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			[
 				// Randomize the name of deleted lists in anticipation of eventually enforcing
 				// uniqueness with an index (in which case it can't be limited to non-deleted lists).
-				'rl_name' => 'deleted-' . substr( md5( uniqid( rand(), true ) ), 0, 5 ),
+				'rl_name' => 'deleted-' . md5( uniqid( rand(), true ) ),
 				'rl_deleted' => 1,
 				'rl_date_updated' => $this->dbw->timestamp(),
 			],
@@ -801,43 +838,16 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function purgeOldDeleted( $before ) {
-		// purge deleted lists and their entries
-		while ( true ) {
-			$ids = $this->dbw->selectFieldValues(
-				'reading_list',
-				'rl_id',
-				[
-					'rl_deleted' => 1,
-					'rl_date_updated < ' . $this->dbw->addQuotes( $this->dbw->timestamp( $before ) ),
-				],
-				__METHOD__,
-				[ 'LIMIT' => 1000 ]
-			);
-			if ( !$ids ) {
-				break;
-			}
-			$this->dbw->delete(
-				'reading_list_entry',
-				[ 'rle_rl_id' => $ids ],
-				__METHOD__
-			);
-			$this->dbw->delete(
-				'reading_list',
-				[ 'rl_id' => $ids ],
-				__METHOD__
-			);
-			$this->logger->debug( 'Purged {num} deleted lists', [ 'num' => $this->dbw->affectedRows() ] );
-			$this->lbFactory->waitForReplication();
-		}
+		$before = $this->dbw->addQuotes( $this->dbw->timestamp( $before ) );
 
-		// purge deleted list entries
+		// Purge all soft-deleted, expired entries
 		while ( true ) {
 			$ids = $this->dbw->selectFieldValues(
 				'reading_list_entry',
 				'rle_id',
 				[
 					'rle_deleted' => 1,
-					'rle_date_updated < ' . $this->dbw->addQuotes( $this->dbw->timestamp( $before ) ),
+					'rle_date_updated < ' . $before,
 				],
 				__METHOD__,
 				[ 'LIMIT' => 1000 ]
@@ -850,7 +860,56 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				[ 'rle_id' => $ids ],
 				__METHOD__
 			);
-			$this->logger->debug( 'Purged {num} deleted entries', [ 'num' => $this->dbw->affectedRows() ] );
+			$this->logger->debug( 'Purged {n} entries', [ 'n' => $this->dbw->affectedRows() ] );
+			$this->lbFactory->waitForReplication();
+		}
+
+		// Purge all entries on soft-deleted, expired lists
+		while ( true ) {
+			$ids = $this->dbw->selectFieldValues(
+				[ 'reading_list_entry', 'reading_list' ],
+				'rle_id',
+				[
+					'rl_deleted' => 1,
+					'rl_date_updated < ' . $before,
+				],
+				__METHOD__,
+				[ 'LIMIT' => 1000 ],
+				[ 'reading_list' => [ 'JOIN', 'rle_rl_id = rl_id' ] ]
+			);
+			if ( !$ids ) {
+				break;
+			}
+			$this->dbw->delete(
+				'reading_list_entry',
+				[ 'rle_id' => $ids ],
+				__METHOD__
+			);
+			$this->logger->debug( 'Purged {n} entries', [ 'n' => $this->dbw->affectedRows() ] );
+			$this->lbFactory->waitForReplication();
+		}
+
+		// Purge all soft-deleted, expired lists
+		while ( true ) {
+			$ids = $this->dbw->selectFieldValues(
+				'reading_list',
+				'rl_id',
+				[
+					'rl_deleted' => 1,
+					'rl_date_updated < ' . $before,
+				],
+				__METHOD__,
+				[ 'LIMIT' => 1000 ]
+			);
+			if ( !$ids ) {
+				break;
+			}
+			$this->dbw->delete(
+				'reading_list',
+				[ 'rl_id' => $ids ],
+				__METHOD__
+			);
+			$this->logger->debug( 'Purged {n} lists', [ 'n' => $this->dbw->affectedRows() ] );
 			$this->lbFactory->waitForReplication();
 		}
 	}

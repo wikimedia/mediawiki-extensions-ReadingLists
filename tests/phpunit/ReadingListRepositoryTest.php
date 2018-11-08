@@ -129,6 +129,9 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 
 		// default list data is returned from setupForUser()
 		$data = (array)$list;
+		// Save the default list id, to compare with later.
+		$oldDefaultListId = $data['rl_id'];
+
 		unset( $data['rl_id'], $data['rl_date_created'], $data['rl_date_updated'] );
 		$this->assertArrayEquals( [
 			'rl_user_id' => '1',
@@ -138,11 +141,31 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			'rl_deleted' => '0',
 		], $data, false, true );
 
-		// no rows after teardown; isSetupForUser() is false
+		// Add a non-default list to the table to ensure it gets
+		// torn down as well as the default one.
+		$this->addLists( 1, [
+			[
+				'rl_name' => 'not-a-default-list',
+				'rl_date_created' => '20100101000000',
+				'rl_date_updated' => '20120101000000',
+			],
+		] );
+
 		$repository->teardownForUser();
-		$this->assertFalse( $repository->isSetupForUser() );
-		$res = $this->db->select( 'reading_list', '*', [ 'rl_user_id' => 1 ] );
-		$this->assertEquals( 0, $res->numRows() );
+
+		$this->assertFalse( $repository->isSetupForUser(),
+			"teardownForUser failed to reset isSetupForUser value"
+		);
+
+		$res = $this->db->select( 'reading_list', '*', [ 'rl_user_id' => 1, 'rl_deleted' => 0 ] );
+		$this->assertEquals( 0, $res->numRows(),
+			"teardownForUser failed to soft-delete all lists"
+		);
+
+		$list = (array)$repository->setupForUser();
+		$this->assertNotEquals( $list['rl_id'], $oldDefaultListId,
+			"new default list has same id as old default list"
+		);
 	}
 
 	public function testAddList() {
@@ -1036,61 +1059,168 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 
 	public function testPurgeOldDeleted() {
 		$repository = new ReadingListRepository( null, $this->db, $this->db, $this->lbFactory );
-		$entries = [
+
+		// User ID to associate the lists and entries with.
+		$userID = 1;
+
+		// Soft-deleted lists and entries will be purged if
+		// their last date updated is before $cutoff.
+		$cutoff = '20010101000000';
+		$after = '20020101000000';
+		$before = '20000101000000';
+
+		// Add test lists and entries for all 4*4=16 configurations
+		//
+		// CODING
+		// OO: {rl,rle}_deleted = 0, {rl,rle}_date_updated > $cutoff
+		// OX: {rl,rle}_deleted = 1, {rl,rle}_date_updated > $cutoff
+		// XO: {rl,rle}_deleted = 0, {rl,rle}_date_updated <= $cutoff
+		// XX: {rl,rle}_deleted = 1, {rl,rle}_date_updated <= $cutoff
+		//
+		// It's easy to see the only items marked 'XX' get purged.
+		$this->addLists( $userID, [
 			[
-				'rlp_project' => '-',
-				'rle_title' => 'kept',
-				'rle_date_updated' => wfTimestampNow(),
+				'rl_name' => 'OO',
+				'rl_description' => 'OO',
+				'rl_date_updated' => $after,
+				'rl_deleted' => 0,
+				'entries' => [
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'OO-OO',
+						'rle_date_updated' => $after,
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'OO-OX',
+						'rle_date_updated' => $after,
+						'rle_deleted' => 1,
+					],
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'OO-XO',
+						'rle_date_updated' => $before,
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'OO-XX',
+						'rle_date_updated' => $before,
+						'rle_deleted' => 1,
+					],
+				],
 			],
 			[
-				'rlp_project' => '-',
-				'rle_title' => 'deleted-new',
-				'rle_date_updated' => '20150101000000',
-				'rle_deleted' => 1,
-			],
-			[
-				'rlp_project' => '-',
-				'rle_title' => 'deleted-old',
-				'rle_date_updated' => '20080101000000',
-				'rle_deleted' => 1,
-			],
-		];
-		// transform title depending on parent, e.g. 'kept' => 'kept-parent-deleted'
-		$appendName = function ( $name ) use ( $entries ) {
-			return array_map( function ( $entry ) use ( $name ) {
-				$entry['rle_title'] .= '-' . $name;
-				return $entry;
-			}, $entries );
-		};
-		$this->addLists( 1, [
-			[
-				'rl_name' => 'kept',
-				'rl_description' => 'kept',
-				'rl_date_updated' => wfTimestampNow(),
-				'entries' => $appendName( 'parent-kept' ),
-			],
-			[
-				'rl_name' => 'deleted-123',
-				'rl_description' => 'deleted-new',
-				'rl_date_updated' => '20150101000000',
+				'rl_name' => 'OX',
+				'rl_description' => 'OX',
+				'rl_date_updated' => $after,
 				'rl_deleted' => 1,
-				'entries' => $appendName( 'parent-deleted-new' ),
+				'entries' => [
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'OX-OO',
+						'rle_date_updated' => $after,
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'OX-OX',
+						'rle_date_updated' => $after,
+						'rle_deleted' => 1,
+					],
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'OX-XO',
+						'rle_date_updated' => $before,
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'OX-XX',
+						'rle_date_updated' => $before,
+						'rle_deleted' => 1,
+					],
+				],
 			],
 			[
-				'rl_name' => 'deleted-456',
-				'rl_description' => 'deleted-old',
-				'rl_date_updated' => '20080101000000',
+				'rl_name' => 'XO',
+				'rl_description' => 'XO',
+				'rl_date_updated' => $before,
+				'rl_deleted' => 0,
+				'entries' => [
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'XO-OO',
+						'rle_date_updated' => $after,
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'XO-OX',
+						'rle_date_updated' => $after,
+						'rle_deleted' => 1,
+					],
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'XO-XO',
+						'rle_date_updated' => $before,
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'XO-XX',
+						'rle_date_updated' => $before,
+						'rle_deleted' => 1,
+					],
+				],
+			],
+			[
+				'rl_name' => 'XX',
+				'rl_description' => 'XX',
+				'rl_date_updated' => $before,
 				'rl_deleted' => 1,
-				'entries' => $appendName( 'parent-deleted-old' ),
+				'entries' => [
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'XX-OO',
+						'rle_date_updated' => $after,
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'XX-OX',
+						'rle_date_updated' => $after,
+						'rle_deleted' => 1,
+					],
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'XX-XO',
+						'rle_date_updated' => $before,
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => '-',
+						'rle_title' => 'XX-XX',
+						'rle_date_updated' => $before,
+						'rle_deleted' => 1,
+					],
+				],
 			],
 		] );
 
-		$repository->purgeOldDeleted( '20100101000000' );
-		$keptLists = $this->db->selectFieldValues( 'reading_list', 'rl_description' );
-		$keptEntries = $this->db->selectFieldValues( 'reading_list_entry', 'rle_title' );
-		$this->assertArrayEquals( [ 'kept', 'deleted-new' ], $keptLists );
-		$this->assertArrayEquals( [ 'kept-parent-kept', 'deleted-new-parent-kept',
-			'kept-parent-deleted-new', 'deleted-new-parent-deleted-new' ], $keptEntries );
+		// Run the function
+		$repository->purgeOldDeleted( $cutoff );
+
+		$lists = $this->db->selectFieldValues( 'reading_list', 'rl_name' );
+		$this->assertArrayEquals( $lists, [ 'OO', 'OX', 'XO'
+ ] );
+
+		$entries = $this->db->selectFieldValues( 'reading_list_entry', 'rle_title' );
+		$this->assertArrayEquals( $entries, [ 'OO-OO', 'OO-OX', 'OO-XO',
+			'OX-OO', 'OX-OX', 'OX-XO',
+			'XO-OO', 'XO-OX', 'XO-XO',
+		] );
 	}
 
 	/**
