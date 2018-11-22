@@ -1,8 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"Fitoschido"
+			"Fitoschido",
+			"Vriullop"
 		]
 	},
+	"readinglists-browser-extension-info-link-text": "Més informació",
 	"readinglists-browser-extension-product-title": "Llistes de lectura de la Viquipèdia"
 }
