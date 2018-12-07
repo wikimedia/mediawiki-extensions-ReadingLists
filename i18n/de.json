@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Metalhead64"
+			"Metalhead64",
+			"Hwboehm"
 		]
 	},
 	"readinglists-desc": "Erlaubt Benutzern die Verwaltung privater Artikellisten wie Lesezeichen- oder „Später lesen“-Listen.",
@@ -77,6 +78,7 @@
 	"apihelp-readinglists+delete-example-2": "Löscht mehrere Listen.",
 	"apihelp-readinglists+createentry-summary": "Fügt eine neue Seite einer Liste hinzu, die dem aktuellen Benutzer gehört.",
 	"apihelp-readinglists+createentry-param-list": "Listenkennung.",
+	"apihelp-readinglists+createentry-param-project": "Projektname des Wikis, das die Seite hostet. (Typischerweise ist dies der Domainname des Wikis.) Erforderlich, es sei denn, es wird eine Stapelerstellung durchgeführt.",
 	"apihelp-readinglists+createentry-example-1": "Fügt die Seite <kbd>Hund</kbd> aus dem Projekt <kbd>de.wikipedia.org</kbd> zur Liste mit der Kennung <kbd>33</kbd> hinzu.",
 	"apihelp-readinglists+createentry-example-2": "Fügt mehrere Seiten zu einer Liste hinzu.",
 	"apihelp-readinglists+deleteentry-summary": "Löscht eine Seite aus einer Liste, die dem aktuellen Benutzer gehört.",
