@@ -1348,7 +1348,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		}
 		$delta = abs( wfTimestamp( TS_UNIX, $expectedTimestamp )
 			- wfTimestamp( TS_UNIX, $actualTimestamp ) );
-		$this->assertLessThanOrEqual( 600, $delta,
+		$this->assertLessThanOrEqual( 800, $delta,
 			"${msg}Difference between expected timestamp ($expectedTimestamp) "
 			. "and actual timetamp ($actualTimestamp) is too large" );
 	}

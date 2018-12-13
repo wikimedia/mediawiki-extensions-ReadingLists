@@ -7,7 +7,6 @@ use MediaWiki\Extensions\ReadingLists\ReverseInterwikiLookup;
 
 /**
  * @covers \MediaWiki\Extensions\ReadingLists\ReverseInterwikiLookup
- * @covers \MediaWiki\Extensions\ReadingLists\ReverseInterwikiLookupException
  */
 class ReverseInterwikiLookupTest extends \PHPUnit\Framework\TestCase {
 
@@ -50,6 +49,7 @@ class ReverseInterwikiLookupTest extends \PHPUnit\Framework\TestCase {
 			'exact match, full domain' => [ 'de', 'https://de.wikipedia.org/', $iwTable ],
 			'cross-project + cross-lang' => [ [ 'b', 'de', ], 'de.wikibooks.org', $iwTable ],
 			'invalid language code' => [ null, 'nosuchlang.wikipedia.org', $iwTable ],
+			'invalid language code with special char' => [ null, '[ang.wikipedia.org', $iwTable ],
 			'empty table' => [ null, 'foo.bar', [] ],
 		];
 	}
