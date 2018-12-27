@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Pyscowicz"
+		]
+	},
+	"readinglists-browser-extension-info-link-text": "Lisätietoja",
+	"readinglists-browser-extension-product-title": "Wikipedia-lukulistat",
+	"readinglists-browser-page-not-supported": "$1 ei tue tätä sivua"
+}
