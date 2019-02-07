@@ -41,7 +41,7 @@ class Utils {
 		$configFactory = $services->getConfigFactory();
 
 		// At install time, extension configuration is not loaded T196567
-		if ( ! in_array( 'ReadingLists', $configFactory->getConfigNames() ) ) {
+		if ( !in_array( 'ReadingLists', $configFactory->getConfigNames() ) ) {
 			$centralWiki = false;
 		} else {
 			$extensionConfig = $configFactory->makeConfig( 'ReadingLists' );
