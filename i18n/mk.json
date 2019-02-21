@@ -42,5 +42,7 @@
 	"readinglists-browser-error-intro": "Се појави грешка: $1",
 	"readinglists-browser-enable-sync-prompt": "Овозможете усогласување на вашиот прилог за Википедија за да почнете со зачувување на статиите",
 	"readinglists-browser-extension-info-link-text": "Дознајте повеќе",
-	"readinglists-browser-list-entry-limit-exceeded": "Статијата не може да се зачува. Ја достигнавте границата од $1 статии по список"
+	"readinglists-browser-list-entry-limit-exceeded": "Статијата не може да се зачува. Ја достигнавте границата од $1 статии по список",
+	"readinglists-browser-extension-product-title": "Списоци за читање на Википедија",
+	"readinglists-browser-page-not-supported": "$1 не ја поддржува страницава"
 }
