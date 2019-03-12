@@ -39,8 +39,8 @@ class ApiReadingListsUpdate extends ApiBase {
 			foreach ( $this->getBatchOps( $params['batch'] ) as $op ) {
 				$this->requireAtLeastOneBatchParameter( $op, 'list' );
 				$this->requireAtLeastOneBatchParameter( $op, 'name', 'description' );
-				$name = isset( $op['name'] ) ? $op['name'] : null;
-				$description = isset( $op['description'] ) ? $op['description'] : null;
+				$name = $op['name'] ?? null;
+				$description = $op['description'] ?? null;
 				$list = $repository->updateList( $op['list'], $name, $description );
 				$listIds[] = $list->rl_id;
 				$listData[] = $this->getListFromRow( $list );

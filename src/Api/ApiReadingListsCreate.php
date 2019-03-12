@@ -29,7 +29,7 @@ class ApiReadingListsCreate extends ApiBase {
 
 		$repository = $this->getReadingListRepository( $this->getUser() );
 		if ( isset( $params['name'] ) ) {
-			$description = isset( $params['description'] ) ? $params['description'] : '';
+			$description = $params['description'] ?? '';
 			$list = $repository->addList( $params['name'], $description );
 			$listData = $this->getListFromRow( $list );
 			$this->getResult()->addValue( null, $this->getModuleName(),
@@ -37,7 +37,7 @@ class ApiReadingListsCreate extends ApiBase {
 		} else {
 			$listData = $listIds = [];
 			foreach ( $this->getBatchOps( $params['batch'] ) as $op ) {
-				$description = isset( $op['description'] ) ? $op['description'] : '';
+				$description = $op['description'] ?? '';
 				$this->requireAtLeastOneBatchParameter( $op, 'name' );
 				$list = $repository->addList( $op['name'], $description );
 				$listIds[] = $list->rl_id;
