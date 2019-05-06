@@ -1,0 +1,17 @@
+{
+	"@metadata": {
+		"authors": [
+			"Praveenp"
+		]
+	},
+	"readinglists-desc": "ബുക്ക്‌മാർക്കുകളോ, \"പിന്നീട് വായിക്കേണ്ടവയോ\" പോലുള്ള ലേഖനങ്ങളുടെ സ്വകാര്യ പട്ടികകൾ പരിപാലിക്കാൻ ഉപയോക്താക്കൾക്ക് സൗകര്യം നൽകുന്നു.",
+	"readinglists-db-error-not-set-up": "ഈ ഉപയോക്താവിന് വായനാപട്ടിക സജ്ജമാക്കിയിട്ടില്ല.",
+	"readinglists-db-error-already-set-up": "ഈ ഉപയോക്താവിന് വായനാപട്ടിക സജ്ജമാക്കിയതാണ്.",
+	"readinglists-db-error-cannot-delete-default-list": "സ്വതേയുള്ള പട്ടിക മായ്ക്കാനാവില്ല.",
+	"readinglists-db-error-cannot-update-default-list": "സ്വതേയുള്ള പട്ടിക പുതുക്കാനാവില്ല.",
+	"readinglists-db-error-no-such-list": "\"$1\" എന്ന പട്ടിക നിലവിലില്ല.",
+	"readinglists-db-error-no-such-list-entry": "പട്ടികയിലെ ഉൾപ്പെടുത്തൽ $1 നിലവിലില്ല.",
+	"readinglists-db-error-not-own-list": "$1 എന്ന പട്ടിക മറ്റൊരു ഉപയോക്താവിന്റെതാണ്.",
+	"readinglists-browser-extension-info-link-text": "കൂടുതൽ അറിയുക",
+	"readinglists-browser-extension-product-title": "വിക്കിപീഡിയ വായനാപട്ടികകൾ"
+}
