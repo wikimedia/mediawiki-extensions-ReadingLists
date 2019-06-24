@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Bjankuloski06"
+			"Bjankuloski06",
+			"Vlad5250"
 		]
 	},
 	"readinglists-desc": "Им овозможува на корисниците да раководат со приватни списоци на статии како обележувачи или „За читање подоцна“.",
@@ -31,8 +32,13 @@
 	"apierror-readinglists-batch-toomanyvalues": "Неважечки внос за параметарот <var>batch</var>: премногу ставки, а се допуштаат највеќе $1",
 	"apierror-readinglists-batch-missingparam-at-least-one-of": "Во секој објект во вносот <var>batch</var>, се бара {{PLURAL:$2|полето|барем едно од полињата}} $1.",
 	"apihelp-query+readinglists-summary": "Наведи или филтрирај ги списоците за читање на корисникот и прикажи метаподатоци за нив.",
+	"apihelp-query+readinglists-param-list": "Назнака на списокот.",
 	"apihelp-query+readinglistentries-summary": "Наведување на страниците на даден список.",
+	"apihelp-readinglists+setup-summary": "Овозможи ги списоците за тековниот корисник.",
+	"apihelp-readinglists+teardown-summary": "Оневозможи ги списоците за тековниот корисник.",
+	"apihelp-readinglists+create-summary": "Создај нов список за тековниот корисник.",
 	"apihelp-readinglists+create-param-name": "Назив на списокот. Задолжително, освен при збирно создавање.",
+	"apihelp-readinglists+create-param-description": "Опис на списокот.",
 	"apihelp-readinglists+update-example-2": "Поднови повеќе списоци наеднаш.",
 	"apihelp-readinglists+deleteentry-param-entry": "Назнака на ставката. Задолжително, освен при збирно бришење.",
 	"apihelp-readinglists+deleteentry-example-1": "Избриши ставка во списокот со назнака <kbd>8</kbd>.",
