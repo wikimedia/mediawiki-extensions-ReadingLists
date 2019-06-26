@@ -103,8 +103,8 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 		$fits = true;
 		foreach ( $res as $i => $row ) {
 			$item = $this->getResultItem( $row, $mode );
-			if ( $i > $limit ) {
-				// $i is 1-based so this means we reached the extra row.
+			if ( $i >= $limit ) {
+				// we reached the extra row.
 				$this->setContinueEnumParameter( 'continue',
 					$this->encodeContinuationParameter( $item, $mode, $sort ) );
 				break;
