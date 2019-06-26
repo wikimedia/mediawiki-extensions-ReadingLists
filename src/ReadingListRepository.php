@@ -707,7 +707,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		/** @var ReadingListRow|ReadingListEntryRow $row */
 		$row = $this->dbw->selectRow(
 			[ 'reading_list', 'reading_list_entry' ],
-			[ 'rl_id', 'rl_user_id', 'rl_deleted', 'rle_deleted' ],
+			[ 'rl_id', 'rl_user_id', 'rl_deleted', 'rle_id', 'rle_deleted' ],
 			[
 				'rle_id' => $id,
 				'rl_id = rle_rl_id',
