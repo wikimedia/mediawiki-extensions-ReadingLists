@@ -216,6 +216,7 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 			],
 		];
 	}
+
 	protected function tearDown() {
 		parent::tearDown();
 	}

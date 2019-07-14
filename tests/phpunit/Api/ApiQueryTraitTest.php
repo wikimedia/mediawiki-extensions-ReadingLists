@@ -91,6 +91,7 @@ class ApiQueryTraitTest extends TestCase {
 			[ 'rle', $rleItem, null, ReadingListRepository::SORT_BY_NAME, 'Foo|2' ],
 		];
 	}
+
 	/**
 	 * @dataProvider decodeContinuationParameterProvider
 	 */
