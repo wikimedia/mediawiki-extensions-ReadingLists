@@ -3,10 +3,11 @@
 		"authors": [
 			"Omotecho",
 			"Yusuke1109",
-			"Otokoume"
+			"Otokoume",
+			"Afaz"
 		]
 	},
-	"readinglists-desc": "ブックマークや「後で読む」リストなどの記事のプライベートリストを管理することができます。",
+	"readinglists-desc": "ブックマークや「後で読む」リストなどの記事のプライベートリストを管理",
 	"readinglists-db-error-not-set-up": "この利用者に対してリストの閲覧は設定されていません。",
 	"readinglists-db-error-cannot-delete-default-list": "既定のリストは削除できません。",
 	"readinglists-db-error-cannot-update-default-list": "初期設定の一覧は変更できません。",
