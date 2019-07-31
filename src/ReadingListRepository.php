@@ -1003,7 +1003,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$this->dbw->update(
 			'reading_list',
 			[ 'rl_size' => $count ],
-			[ 'rl_id' => $id ],
+			[ 'rl_id' => $id, 'rl_size != ' . (int)$count ],
 			__METHOD__
 		);
 		// Release the lock when using explicit transactions (called from a long-running script).
