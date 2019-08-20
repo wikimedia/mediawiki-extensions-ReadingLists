@@ -1077,7 +1077,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	}
 
 	/**
-	 * Validate sort paramters.
+	 * Validate sort parameters.
 	 * @param string $tablePrefix 'rl' or 'rle', depending on whether we are sorting lists or entries.
 	 * @param string $sortBy
 	 * @param string $sortDir
