@@ -70,7 +70,8 @@
 	],
 	"MessagesDirs": {
 		"ReadingLists": [
-			"i18n"
+			"i18n",
+			"i18n/api"
 		]
 	},
 	"manifest_version": 2
