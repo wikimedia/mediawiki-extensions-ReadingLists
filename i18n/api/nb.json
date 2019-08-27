@@ -1,0 +1,21 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jon Harald Søby"
+		]
+	},
+	"apierror-readinglists-project-title-param": "<var>$1project</var> og <var>$1title</var> må ikke brukes sammen.",
+	"apierror-readinglists-too-old": "Tidsstempler som sendes til <var>$1changedsince</var> kan ikke være eldre enn <kbd>$2</kbd>.",
+	"apierror-readinglists-invalidsort-notbyname": "Sorteringsvalget <kbd>name</kbd> kan ikke brukes sammen med <var>$1changedsince</var>.",
+	"apierror-readinglists-batch-invalid-json": "Ugyldig JSON for <var>batch</var>-parameter: $1",
+	"apihelp-readinglists+create-param-description": "Listebeskrivelse.",
+	"apihelp-readinglists+create-example-1": "Opprett ei ny leseliste.",
+	"apihelp-readinglists+create-example-2": "Opprett flere nye lister.",
+	"apihelp-readinglists+update-summary": "Oppdater ei liste som tilhører den gjeldende brukeren.",
+	"apihelp-readinglists+update-param-description": "Ny listebeskrivelse.",
+	"apihelp-readinglists+update-example-2": "Oppdater flere lister.",
+	"apihelp-readinglists+delete-summary": "Slett ei liste som tilhører den gjeldende brukeren.",
+	"apihelp-readinglists+createentry-param-list": "Liste-ID.",
+	"apihelp-readinglists+createentry-example-2": "Legger til flere sider i ei liste.",
+	"apihelp-readinglists+deleteentry-summary": "Slett ei side fra ei liste som tilhører den gjeldende brukeren."
+}

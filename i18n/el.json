@@ -11,8 +11,6 @@
 	"readinglists-db-error-entry-limit": "Η λίστα $1 δεν μπορεί να περιέχει περισσότερα από $2 {{PLURAL:$2|entry|entries}}.",
 	"readinglists-db-error-too-long": "Η τιμή πεδίου $1 δεν μπορεί να είναι μεγαλύτερη από $2 bytes.",
 	"readinglists-db-error-no-such-project": "'$1' δεν είναι αναγνωρισμένο πρότζεκτ.",
-	"apihelp-readinglists+create-extended-description": "Ο χρήστης πρέπει να έχει λιγότερο από  $1 (μη διαγραμμένα) {{PLURAL:$1|list|lists}}.",
-	"apihelp-readinglists+createentry-extended-description": "Οι εγγραφές στην λίστα πρέπει να είναι πρωτότυπες. Οι σελίδες δεν περιορίζονται στο  wiki όπου υπάρχει πρόσβαση στο ΑΡΙ. Ο χρήστης πρέπει να έχει λιγότερο απ $1 (μη διαγραμμένο) {{PLURAL:$1|entry|entries}} στη λίστα.",
 	"readinglists-browser-add-entry-success": "το $1 αποθηκεύτηκε στην λίστα ανάγνωσής σας",
 	"readinglists-browser-login-prompt": "Συνδεθείτε για να αποθηκεύσετε άρθρα",
 	"readinglists-browser-error-intro": "Ενα σφάλμα συνέβη: $1",

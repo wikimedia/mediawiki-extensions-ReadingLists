@@ -1,0 +1,24 @@
+{
+	"@metadata": {
+		"authors": [
+			"Robby"
+		]
+	},
+	"apihelp-query+readinglists-param-list": "ID vun der Lëscht.",
+	"apihelp-query+readinglists-example-1": "D'Lieslëschte vum aktuelle Benotzer kréien",
+	"apihelp-readinglists+teardown-summary": "Lëschte fir den aktuelle Benotzer desaktivéieren.",
+	"apihelp-readinglists+teardown-example-1": "Lieslëschte fir den aktuelle Benotzer desaktivéieren.",
+	"apihelp-readinglists+create-param-name": "Numm vun der Lëscht. Obligatoresch, ausser beim Uleeë mat engem Batch.",
+	"apihelp-readinglists+create-param-description": "Beschreiwung vun der Lëscht",
+	"apihelp-readinglists+create-example-1": "Eng nei Lieslëscht uleeën.",
+	"apihelp-readinglists+update-param-list": "ID vun der Lëscht.",
+	"apihelp-readinglists+update-param-name": "Neien Numm vun der Lëscht.",
+	"apihelp-readinglists+update-param-description": "Nei Beschreiwung vun der Lëscht.",
+	"apihelp-readinglists+update-example-2": "Méi Lëschten aktualiséieren.",
+	"apihelp-readinglists+delete-summary": "Eng Lëscht läschen déi dem aktuelle Benotzer gehéiert.",
+	"apihelp-readinglists+delete-param-list": "ID vun der Lëscht.",
+	"apihelp-readinglists+delete-example-2": "Méi Lëschte läschen.",
+	"apihelp-readinglists+createentry-param-list": "ID vun der Lëscht.",
+	"apihelp-readinglists+createentry-param-title": "Säitentitel.",
+	"apihelp-readinglists+createentry-example-2": "Méi Säiten op eng Lëscht dobäisetzen"
+}

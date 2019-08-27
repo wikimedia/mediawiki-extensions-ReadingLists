@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Yusuke1109"
+		]
+	},
+	"apihelp-query+readinglists-summary": "利用者の閲覧リストを一覧表示またはフィルタリングし、それらのメタデータを表示します。"
+}

@@ -1,0 +1,20 @@
+{
+	"@metadata": {
+		"authors": [
+			"Xuacu"
+		]
+	},
+	"apierror-readinglists-project-title-param": "<var>$1project</var> y <var>$1title</var> tienen d'usase xuntos.",
+	"apierror-readinglists-too-old": "Les marques de tiempu pasaes a <var>$1changedsince</var> nun pueden ser anteriores a <kbd>$2</kbd>.",
+	"apierror-readinglists-invalidsort-notbyname": "La opción d'ordenación <kbd>name</kbd> nun puede usase xunto con <var>$1changedsince</var>.",
+	"apierror-readinglists-batch-invalid-json": "JSON non válidu pal parámetru <var>batch</var>: $1",
+	"apierror-readinglists-batch-invalid-structure": "Entraba non válida pal parámetru <var>batch</var>: tien de contener una matriz d'oxetos con valores escalares.",
+	"apierror-readinglists-batch-toomanyvalues": "Entraba non válida pal parámetru <var>batch</var>: demasiaes entraes, el máximu permitíu ye $1",
+	"apierror-readinglists-batch-missingparam-at-least-one-of": "En cada oxetu dientro de la entrada de <var>batch</var>, ríquese{{PLURAL:$2|'l campu| polo menos unu de los campos}} $1.",
+	"apihelp-query+readinglists-param-title": "Títulu de la páxina a filtriar. Tien d'utilizase xunto con <var>$1project</var>.",
+	"apihelp-query+readinglists-param-limit": "Númberu d'elementos de resultáu a devolver.",
+	"apihelp-query+readinglists-example-1": "Llograr les llistes de llectura del usuariu actual.",
+	"apihelp-query+readinglists-example-2": "Llograr les llistes de llectura del usuariu actual que cambiaron dende <kbd>2013-01-01T00:00:00Z</kbd>.",
+	"apihelp-query+readinglists-example-3": "Llograr les llistes de llectura del usuariu actual que contienen la páxina <kbd>Dog</kbd> del proyectu <kbd>en.wikipedia.org</kbd>",
+	"apihelp-query+readinglistentries-summary": "Llista de páxines d'una llista determinada."
+}

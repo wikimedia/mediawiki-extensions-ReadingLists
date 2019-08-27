@@ -10,9 +10,6 @@
 		]
 	},
 	"readinglists-desc": "Позволяет пользователям управлять приватными списками статей, такими как закладки или списки «читать потом».",
-	"apierror-readinglists-batch-invalid-json": "Неверный JSON для <var>batch</var> параметра: $1",
-	"apihelp-readinglists+delete-example-2": "Удалить несколько списков.",
-	"apihelp-readinglists+createentry-example-1": "Добавить страницу <kbd>Dog</kbd> из проекта <kbd>en.wikipedia.org</kbd> в список с идентификатором <kbd>33</kbd>.",
 	"readinglists-browser-add-entry-success": "«$1» сохранена в ваш список чтения",
 	"readinglists-browser-login-prompt": "Войдите, чтобы сохранять статьи",
 	"readinglists-browser-error-intro": "Произошла ошибка:$1",

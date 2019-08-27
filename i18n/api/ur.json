@@ -1,0 +1,21 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hindustanilanguage"
+		]
+	},
+	"apihelp-query+readinglists-example-1": "موجودہ صارف کی مطالعاتی فہرست حاصل ہو رہی ہے۔",
+	"apihelp-readinglists-summary": "فہرست لکھنے کے عملوں کو پڑھا جا رہا ہے۔",
+	"apihelp-readinglists+setup-example-1": "موجودہ صارف کے لیے مطالعاتی فہرستوں کو قائم کیجیے۔",
+	"apihelp-readinglists+teardown-summary": "موجودہ صارف کے لیے فہرستوں کو عدم دستیاب کیجیے۔",
+	"apihelp-readinglists+create-summary": "موجودہ صارف کے لیے نئی فہرست بنایئے۔",
+	"apihelp-readinglists+create-param-name": "فہرست کا نام",
+	"apihelp-readinglists+create-param-description": "فہرست کی تشریح",
+	"apihelp-readinglists+create-example-1": "نئی مطالعاتی فہرست بنایئے",
+	"apihelp-readinglists+update-summary": "موجودہ صارف کی فہرست کی تحدیث کیجیے۔",
+	"apihelp-readinglists+update-param-name": "نئی فہرست کا نام",
+	"apihelp-readinglists+update-param-description": "نئی فہرست کی تشریح",
+	"apihelp-readinglists+delete-summary": "موجودہ صارف کی ایک فہرست کو حذف کیجیے۔",
+	"apihelp-readinglists+createentry-summary": "موجودہ صارف کی فہرست میں ایک نیا صفحہ شامل کیجیے۔",
+	"apihelp-readinglists+createentry-param-title": "صفحہ کا عنوان۔"
+}

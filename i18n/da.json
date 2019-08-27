@@ -10,12 +10,6 @@
 	"readinglists-db-error-no-such-list": "Listen $1 findes ikke.",
 	"readinglists-db-error-list-deleted": "Listen $1 er blevet slettet.",
 	"readinglists-db-error-duplicate-list": "En liste ved dette navn findes allerede.",
-	"apihelp-readinglists+create-param-description": "Listebeskrivelse.",
-	"apihelp-readinglists+create-example-1": "Opret en ny læseliste.",
-	"apihelp-readinglists+create-example-2": "Opret flere nye lister.",
-	"apihelp-readinglists+update-example-2": "Opdatér flere lister.",
-	"apihelp-readinglists+delete-example-2": "Slet flere lister.",
-	"apihelp-readinglists+createentry-example-2": "Tilføj flere sider til en liste.",
 	"readinglists-browser-login-prompt": "Log ind for at gemme artikler",
 	"readinglists-browser-error-intro": "Der opstod en fejl: $1",
 	"readinglists-browser-extension-info-link-text": "Lær mere"

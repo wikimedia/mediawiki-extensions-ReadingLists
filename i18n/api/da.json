@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jorn Ari",
+			"Saederup92"
+		]
+	},
+	"apihelp-readinglists+create-param-description": "Listebeskrivelse.",
+	"apihelp-readinglists+create-example-1": "Opret en ny læseliste.",
+	"apihelp-readinglists+create-example-2": "Opret flere nye lister.",
+	"apihelp-readinglists+update-example-2": "Opdatér flere lister.",
+	"apihelp-readinglists+delete-example-2": "Slet flere lister.",
+	"apihelp-readinglists+createentry-example-2": "Tilføj flere sider til en liste."
+}

@@ -18,6 +18,5 @@
 	"readinglists-db-error-list-limit": "利用者ひとりが作成できる一覧の上限は$1 {{PLURAL:$1|list|件}}です。",
 	"readinglists-db-error-entry-limit": "$1 に入力できる上限は$2 {{PLURAL:$2|entry|件}}です。",
 	"readinglists-db-error-too-long": "フィールド「$1」の値は$2バイトを超えることはできません。",
-	"apihelp-query+readinglists-summary": "利用者の閲覧リストを一覧表示またはフィルタリングし、それらのメタデータを表示します。",
 	"readinglists-browser-error-intro": "エラーが発生しました: $1"
 }

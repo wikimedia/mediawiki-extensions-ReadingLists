@@ -6,8 +6,5 @@
 			"Mormegil"
 		]
 	},
-	"readinglists-desc": "Umožňuje uživatelům spravovat si soukromé seznamy článků, např. záložek nebo seznamů „Přečíst později“.",
-	"apierror-readinglists-batch-invalid-structure": "Neplatný vstup pro <var>daný</var> parametr: musí obsahovat pole objektů, které mají skalární hodnoty.",
-	"apierror-readinglists-batch-toomanyvalues": "Neplatný vstup pro <var>daný</var> parametr: příliš mnoho záznamů, maximální povolený počet je $1.",
-	"apihelp-query+readinglists-param-changedsince": "Zobrazit seznamy, které se změnily během tohoto času. Musí být po <kbd>$1</kbd>. Uživatelé mohou použít časový údaj v parametru <samp>readinglists-synctimestamp</samp>."
+	"readinglists-desc": "Umožňuje uživatelům spravovat si soukromé seznamy článků, např. záložek nebo seznamů „Přečíst později“."
 }
