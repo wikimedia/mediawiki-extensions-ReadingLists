@@ -14,6 +14,7 @@
 	"apierror-readinglists-batch-missingparam-at-least-one-of": "Во секој објект во вносот <var>batch</var>, се бара {{PLURAL:$2|полето|барем едно од полињата}} $1.",
 	"apihelp-query+readinglists-summary": "Наведи или филтрирај ги списоците за читање на корисникот и прикажи метаподатоци за нив.",
 	"apihelp-query+readinglists-param-list": "Назнака на списокот.",
+	"apihelp-query+readinglists-param-limit": "Колку исходни ставки да се даваат.",
 	"apihelp-query+readinglistentries-summary": "Наведување на страниците на даден список.",
 	"apihelp-readinglists+setup-summary": "Овозможи ги списоците за тековниот корисник.",
 	"apihelp-readinglists+teardown-summary": "Оневозможи ги списоците за тековниот корисник.",
