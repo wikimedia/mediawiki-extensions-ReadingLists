@@ -5,6 +5,7 @@ namespace MediaWiki\Extensions\ReadingLists\Api;
 use ApiBase;
 use ApiModuleManager;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
+use MediaWiki\MediaWikiServices;
 
 /**
  * API parent module for all write operations.
@@ -63,7 +64,10 @@ class ApiReadingLists extends ApiBase {
 					'factory' => "$class::factory",
 				];
 			}, self::$submodules );
-			$this->moduleManager = new ApiModuleManager( $this );
+			$this->moduleManager = new ApiModuleManager(
+				$this,
+				MediaWikiServices::getInstance()->getObjectFactory()
+			);
 			$this->moduleManager->addModules( $modules, 'command' );
 		}
 		return $this->moduleManager;
