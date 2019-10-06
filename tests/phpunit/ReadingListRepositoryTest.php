@@ -9,7 +9,7 @@ use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extensions\ReadingLists\HookHandler;
 use MediaWiki\MediaWikiServices;
 use MediaWikiTestCase;
-use PHPUnit_Framework_Constraint_Exception;
+use PHPUnit\Framework\Constraint\Exception;
 use SebastianBergmann\Exporter\Exporter;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\LBFactory;
@@ -1333,8 +1333,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			$this->assertEquals( $message, $e->getMessageObject()->getKey() );
 			return;
 		}
-		$this->assertThat( null, new PHPUnit_Framework_Constraint_Exception(
-			ReadingListRepositoryException::class ) );
+		$this->assertThat( null, new Exception( ReadingListRepositoryException::class ) );
 	}
 
 	/**
