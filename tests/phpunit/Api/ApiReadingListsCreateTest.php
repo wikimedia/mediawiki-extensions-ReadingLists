@@ -25,7 +25,7 @@ class ApiReadingListsCreateTest extends ApiTestCase {
 
 	private $user;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->tablesUsed = array_merge( $this->tablesUsed, HookHandler::$testTables );
 		$this->user = parent::getTestSysop()->getUser();
@@ -72,7 +72,7 @@ class ApiReadingListsCreateTest extends ApiTestCase {
 
 	// TODO: Create a test provide that pass the apiParams
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 		$this->readingListsTeardown();
 	}

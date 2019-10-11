@@ -28,7 +28,7 @@ class ApiQueryTraitTest extends TestCase {
 	private $rlApi;
 	private $rleApi;
 
-	public function setUp() {
+	public function setUp() : void {
 		$request = new FauxRequest();
 		$context = RequestContext::newExtraneousContext( Title::newMainPage() );
 		$context->setRequest( $request );

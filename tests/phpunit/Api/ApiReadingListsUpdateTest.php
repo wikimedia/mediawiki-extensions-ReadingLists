@@ -25,7 +25,7 @@ class ApiReadingListsUpdateTest extends ApiTestCase {
 
 	private $user;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->tablesUsed = array_merge( $this->tablesUsed, HookHandler::$testTables );
 		$this->user = parent::getTestSysop()->getUser();
@@ -127,7 +127,7 @@ class ApiReadingListsUpdateTest extends ApiTestCase {
 		$this->assertEquals( $expected, $result[0]['update']['result'] );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 		$this->readingListsTeardown();
 	}

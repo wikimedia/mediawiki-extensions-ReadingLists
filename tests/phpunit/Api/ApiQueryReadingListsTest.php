@@ -30,7 +30,7 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 		$this->lastUpdate = wfTimestamp( TS_MW );
 	}
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->tablesUsed = array_merge( $this->tablesUsed, HookHandler::$testTables );
 		$this->user = parent::getTestSysop()->getUser();
@@ -217,7 +217,7 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 		];
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 }

@@ -26,7 +26,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 	/** @var LBFactory $lbFactory */
 	private $lbFactory;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 		$this->tablesUsed = array_merge( $this->tablesUsed, HookHandler::$testTables );
 		$this->lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();

@@ -23,7 +23,7 @@ class ApiReadingListsSetupAndTeardownTest extends ApiTestCase {
 		'format' => 'json',
 	];
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->tablesUsed = array_merge( $this->tablesUsed, HookHandler::$testTables );
 		$this->user = parent::getTestSysop()->getUser();
@@ -46,7 +46,7 @@ class ApiReadingListsSetupAndTeardownTest extends ApiTestCase {
 		$this->assertEquals( "Success", $result[0]['teardown']['result'] );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 }
