@@ -7,6 +7,8 @@ use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
 
 /**
  * Shared sorting / paging for the query APIs.
+ *
+ * Issue with phan and traits - https://github.com/phan/phan/issues/1067
  */
 trait ApiQueryTrait {
 
@@ -56,6 +58,7 @@ trait ApiQueryTrait {
 	 * @param string $mode One of the MODE_* constants.
 	 * @param string $sort One of the SORT_BY_* constants.
 	 * @return string
+	 * @suppress PhanUndeclaredStaticProperty
 	 */
 	private function encodeContinuationParameter( array $item, $mode, $sort ) {
 		if ( $mode === self::$MODE_PAGE ) {
@@ -83,6 +86,7 @@ trait ApiQueryTrait {
 	 *   - [ rl(e)_date_updated, rl(e)_id ] for MODE_ALL/MODE_CHANGES when sorting by updated time;
 	 *   - rle_id for MODE_PAGE.
 	 * @throws ApiUsageException
+	 * @suppress PhanUndeclaredMethod
 	 */
 	private function decodeContinuationParameter( $continue, $mode, $sort ) {
 		if ( $continue === null ) {
@@ -112,6 +116,7 @@ trait ApiQueryTrait {
 	/**
 	 * Get common sorting/paging related params for getAllowedParams().
 	 * @return array
+	 * @suppress PhanUndeclaredStaticProperty, PhanUndeclaredConstant
 	 */
 	private function getAllowedSortParams() {
 		return [

@@ -234,6 +234,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * @param int $flags IDBAccessObject flags
 	 * @return ReadingListRow
 	 * @throws ReadingListRepositoryException
+	 * @suppress PhanTypeMismatchReturn Use of doc traits
 	 */
 	public function selectValidList( $id, $flags = 0 ) {
 		$this->assertUser();
@@ -347,6 +348,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		// in case some conversion or corruption happens in MySQL.
 		/** @var ReadingListRowWithMergeFlag $list */
 		$list = $this->selectValidList( $id, self::READ_LATEST );
+		// @phan-suppress-next-line PhanUndeclaredProperty Use of doc trait
 		$list->merged = $merged;
 		return $list;
 	}
@@ -514,6 +516,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 *   in localized namespace-prefixed format with spaces is recommended)
 	 * @return ReadingListEntryRowWithMergeFlag The new (or existing) list entry.
 	 * @throws ReadingListRepositoryException
+	 * @suppress PhanTypeMismatchReturn Use of doc traits
 	 */
 	public function addListEntry( $listId, $project, $title ) {
 		$this->assertUser();
