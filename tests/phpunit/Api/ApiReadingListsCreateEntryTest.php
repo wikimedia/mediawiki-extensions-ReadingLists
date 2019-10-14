@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extensions\ReadingLists\Tests\Api;
 
+use ApiUsageException;
 use MediaWiki\Extensions\ReadingLists\HookHandler;
 use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use ApiTestCase;
@@ -107,8 +108,6 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 
 	/**
 	 * @dataProvider createEntryUnrecognizedProjectProvider
-	 * @expectedException ApiUsageException
-	 * @expectedExceptionMessage is not a recognized project
 	 */
 	public function testCreateEntryUnrecognizedProject( $projects, $apiParams, $expected ) {
 		$this->addProjects( $projects );
@@ -125,8 +124,9 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 		$this->apiParams['list'] = $listIds[0];
 		$this->apiParams['project'] = $apiParams['project'];
 		$this->apiParams['title'] = $apiParams['title'];
+		$this->expectException( ApiUsageException::class );
+		$this->expectExceptionMessage( 'is not a recognized project' );
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
-		$this->assertEquals( $expected, $result[0]['createentry']['result'] );
 	}
 
 	public function createEntryUnrecognizedProjectProvider() {

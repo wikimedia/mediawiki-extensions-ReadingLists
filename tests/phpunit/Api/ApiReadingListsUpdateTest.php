@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extensions\ReadingLists\Tests\Api;
 
+use ApiUsageException;
 use MediaWiki\Extensions\ReadingLists\HookHandler;
 use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use ApiTestCase;
@@ -106,8 +107,6 @@ class ApiReadingListsUpdateTest extends ApiTestCase {
 
 	/**
 	 * @dataProvider updateProvider
-	 * @expectedException ApiUsageException
-	 * @expectedExceptionMessage The default list cannot be updated.
 	 */
 	public function testUpdateDefault() {
 		$listIds = $this->addLists( $this->user->mId, [
@@ -123,8 +122,10 @@ class ApiReadingListsUpdateTest extends ApiTestCase {
 		$this->apiParams['list'] = $listIds[0];
 		$this->apiParams['name'] = 'new dogs';
 		$this->apiParams['description'] = 'Woof! Woof!';
+
+		$this->expectException( ApiUsageException::class );
+		$this->expectExceptionMessage( 'The default list cannot be updated.' );
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
-		$this->assertEquals( $expected, $result[0]['update']['result'] );
 	}
 
 	protected function tearDown() : void {

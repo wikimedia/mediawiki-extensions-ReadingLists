@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extensions\ReadingLists\Tests\Api;
 
+use ApiUsageException;
 use MediaWiki\Extensions\ReadingLists\HookHandler;
 use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use ApiTestCase;
@@ -73,10 +74,6 @@ class ApiReadingListsDeleteTest extends ApiTestCase {
 		$this->assertEquals( "Success", $result[0]['delete']['result'] );
 	}
 
-	/**
-	 * @expectedException ApiUsageException
-	 * @expectedExceptionMessage The default list cannot be deleted
-	 */
 	public function testDeleteDefault() {
 		$listIds = $this->addLists( $this->user->mId, [
 			[
@@ -89,6 +86,8 @@ class ApiReadingListsDeleteTest extends ApiTestCase {
 		] );
 		$this->apiParams['list'] = $listIds[0];
 
+		$this->expectException( ApiUsageException::class );
+		$this->expectExceptionMessage( 'The default list cannot be deleted' );
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
 	}
 
