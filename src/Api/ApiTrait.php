@@ -22,6 +22,8 @@ use Wikimedia\Rdbms\LBFactory;
 /**
  * Shared initialization and helper methods for the APIs.
  * Classes using it must have a static $prefix property (the API module prefix).
+ *
+ * Issue with phan and traits - https://github.com/phan/phan/issues/1067
  */
 trait ApiTrait {
 
@@ -48,6 +50,7 @@ trait ApiTrait {
 	 * @param ApiBase $parent Parent module
 	 * @param string $name Module name
 	 * @return static
+	 * @suppress PhanUndeclaredStaticProperty, PhanUndeclaredMethod
 	 */
 	public static function factory( ApiBase $parent, $name ) {
 		if ( static::$prefix ) {
@@ -98,6 +101,7 @@ trait ApiTrait {
 	 * Get the repository for the given user.
 	 * @param User|null $user
 	 * @return ReadingListRepository
+	 * @suppress PhanUndeclaredMethod
 	 */
 	protected function getReadingListRepository( User $user = null ) {
 		$config = $this->getConfig();
@@ -116,6 +120,7 @@ trait ApiTrait {
 	 * @param string $rawBatch The raw value of the 'batch' parameter.
 	 * @return array One operation, typically a flat associative array.
 	 * @throws ApiUsageException
+	 * @suppress PhanUndeclaredMethod
 	 */
 	protected function getBatchOps( $rawBatch ) {
 		$batch = json_decode( $rawBatch, true );
@@ -175,10 +180,12 @@ trait ApiTrait {
 		);
 
 		if ( count( $intersection ) == 0 ) {
+			// @phan-suppress-next-line PhanUndeclaredMethod
 			$this->dieWithError( [
 				'apierror-readinglists-batch-missingparam-at-least-one-of',
 				Message::listParam( array_map(
 					function ( $p ) {
+						// @phan-suppress-next-line PhanUndeclaredMethod
 						return '<var>' . $this->encodeParamName( $p ) . '</var>';
 					},
 					array_values( $required )
