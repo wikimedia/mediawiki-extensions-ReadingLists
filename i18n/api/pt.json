@@ -22,7 +22,7 @@
 	"apihelp-query+readinglists-param-sort": "Propriedade pela qual ordenar. Ignorado quando <var>$1project</var> e <var>$1title</var> está definido (resultados são devolvidos pela ordem na BD). Por omissão, é <kbd>updated</kbd> quando <var>$1changedsince</var> está definido, e <kbd>name</kbd> quando não está.",
 	"apihelp-query+readinglists-paramvalue-sort-name": "Nome da lista (o ordenamento é por valor binário; por exemplo, qualquer carácter ASCII maiúsculo será listado antes de qualquer minúsculo).",
 	"apihelp-query+readinglists-paramvalue-sort-updated": "Data e hora da última atualização (nas atualizações incluem-se mudanças aos metadados da lista mas não se incluem mudanças aos elementos da lista).",
-	"apihelp-query+readinglists-param-dir": "Direção de ordenação: <kbd>ascending</kbd> (A -> Z, mais antigo para mais recente) ou <kbd>descending</kbd>. Ignorado quando <var>$1project</var> e <var>$1title</var> estão definidos.",
+	"apihelp-query+readinglists-param-dir": "Direção de ordenação: <kbd>ascending</kbd> (ascendente, de A a Z, do mais antigo ao mais recente) ou <kbd>descending</kbd> (descendente). Ignorado quando <var>$1project</var> e <var>$1title</var> estão definidos.",
 	"apihelp-query+readinglists-param-limit": "O número de resultados a serem devolvidos.",
 	"apihelp-query+readinglists-example-1": "Obter as listas de leitura do utilizador corrente.",
 	"apihelp-query+readinglists-example-2": "Obter as listas de leitura do utilizador corrente que tenham sido alteradas após <kbd>2013-01-01T00:00:00Z</kbd>.",
