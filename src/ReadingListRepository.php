@@ -677,6 +677,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			$filtered[] = $row->rl_id;
 		}
 		$missing = array_diff( $ids, $filtered );
+		// @phan-suppress-next-line PhanRedundantCondition
 		if ( $missing ) {
 			throw new ReadingListRepositoryException(
 				'readinglists-db-error-no-such-list', [ reset( $missing ) ] );

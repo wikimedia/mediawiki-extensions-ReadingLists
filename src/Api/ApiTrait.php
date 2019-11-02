@@ -118,7 +118,7 @@ trait ApiTrait {
 	/**
 	 * Decode, validate and normalize the 'batch' parameter of write APIs.
 	 * @param string $rawBatch The raw value of the 'batch' parameter.
-	 * @return array One operation, typically a flat associative array.
+	 * @return array[] One operation, typically a flat associative array.
 	 * @throws ApiUsageException
 	 * @suppress PhanUndeclaredMethod
 	 */
