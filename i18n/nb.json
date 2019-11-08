@@ -5,6 +5,11 @@
 			"Orf3us"
 		]
 	},
+	"readinglists-desc": "Lar brukere behandle private lister over artikler, som bokmerker eller «Les senere»-lister.",
+	"readinglists-db-error-not-set-up": "Leselister har ikke blitt satt opp for denne brukeren.",
+	"readinglists-db-error-already-set-up": "Leselister har allerede blitt satt opp for denne brukeren.",
+	"readinglists-db-error-cannot-delete-default-list": "Standardlista kan ikke slettes.",
+	"readinglists-db-error-cannot-update-default-list": "Standardlista kan ikke oppdateres.",
 	"readinglists-db-error-no-such-list": "Lista $1 finnes ikke.",
 	"readinglists-db-error-no-such-list-entry": "Listeoppføringen $1 finnes ikke.",
 	"readinglists-db-error-not-own-list": "Lista $1 tilhører en annen bruker.",
@@ -13,12 +18,18 @@
 	"readinglists-db-error-list-entry-deleted": "Listeoppføringen $1 har blitt slettet.",
 	"readinglists-db-error-duplicate-list": "Ei liste med det navnet finnes allerede.",
 	"readinglists-db-error-duplicate-page": "Lista inneholder allerede denne siden.",
+	"readinglists-db-error-empty-list-ids": "Listens ID-parameter kan ikke være tomt.",
 	"readinglists-db-error-user-required": "Metoden kan ikke kalles uten å angi brukeren.",
 	"readinglists-db-error-list-limit": "Brukere kan ikke ha mer enn {{PLURAL:$1|éi|$1 lister}}.",
 	"readinglists-db-error-entry-limit": "Lista $1 kan ikke ha mer enn {{PLURAL:$2|én oppføring|$2 oppføringer}}.",
 	"readinglists-db-error-too-long": "Verdien for feltet $1 kan ikke være lengre enn $2 byte.",
 	"readinglists-db-error-no-such-project": "«$1» er ikke et kjent prosjekt.",
+	"readinglists-browser-add-entry-success": "$1 lagret i leselista di",
+	"readinglists-browser-login-prompt": "Logg inn for å lagre artikler",
+	"readinglists-browser-error-intro": "En feil oppsto: $1",
+	"readinglists-browser-enable-sync-prompt": "Slå på synkronisering i Wikipedia-appen din for å begynne å lagre artikler",
 	"readinglists-browser-extension-info-link-text": "Lær mer",
 	"readinglists-browser-list-entry-limit-exceeded": "Artikkelen kan ikke lagres. Du har nådd grensa på $1 artikler per liste",
+	"readinglists-browser-extension-product-title": "Wikipedia-leselister",
 	"readinglists-browser-page-not-supported": "$1 støtter ikke denne siden"
 }
