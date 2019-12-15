@@ -18,7 +18,6 @@ class ApiReadingListsTeardown extends ApiBase {
 	/**
 	 * Entry point for executing the module
 	 * @inheritDoc
-	 * @return void
 	 */
 	public function execute() {
 		$this->getReadingListRepository( $this->getUser() )->teardownForUser();
@@ -26,7 +25,6 @@ class ApiReadingListsTeardown extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return array
 	 */
 	protected function getAllowedParams() {
 		return [];
@@ -34,7 +32,6 @@ class ApiReadingListsTeardown extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return array
 	 */
 	public function getHelpUrls() {
 		return [
@@ -44,7 +41,6 @@ class ApiReadingListsTeardown extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return array
 	 */
 	protected function getExamplesMessages() {
 		return [
@@ -57,7 +53,6 @@ class ApiReadingListsTeardown extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return bool
 	 */
 	public function isWriteMode() {
 		return true;
@@ -65,7 +60,6 @@ class ApiReadingListsTeardown extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return bool
 	 */
 	public function mustBePosted() {
 		return true;
@@ -73,7 +67,6 @@ class ApiReadingListsTeardown extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return bool
 	 */
 	public function isInternal() {
 		// ReadingLists API is still experimental

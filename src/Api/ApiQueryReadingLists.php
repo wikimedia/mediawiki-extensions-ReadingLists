@@ -24,7 +24,6 @@ class ApiQueryReadingLists extends ApiQueryBase {
 
 	/**
 	 * @inheritDoc
-	 * @return void
 	 */
 	public function execute() {
 		try {
@@ -132,7 +131,6 @@ class ApiQueryReadingLists extends ApiQueryBase {
 
 	/**
 	 * @inheritDoc
-	 * @return array
 	 */
 	protected function getAllowedParams() {
 		return [
@@ -158,7 +156,6 @@ class ApiQueryReadingLists extends ApiQueryBase {
 
 	/**
 	 * @inheritDoc
-	 * @return array
 	 */
 	public function getHelpUrls() {
 		return [
@@ -168,7 +165,6 @@ class ApiQueryReadingLists extends ApiQueryBase {
 
 	/**
 	 * @inheritDoc
-	 * @return array
 	 */
 	protected function getExamplesMessages() {
 		$prefix = static::$prefix;
@@ -185,7 +181,6 @@ class ApiQueryReadingLists extends ApiQueryBase {
 
 	/**
 	 * @inheritDoc
-	 * @return bool
 	 */
 	public function isInternal() {
 		// ReadingLists API is still experimental

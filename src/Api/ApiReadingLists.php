@@ -31,7 +31,6 @@ class ApiReadingLists extends ApiBase {
 	/**
 	 * Entry point for executing the module
 	 * @inheritDoc
-	 * @return void
 	 */
 	public function execute() {
 		if ( $this->getUser()->isAnon() ) {
@@ -54,7 +53,6 @@ class ApiReadingLists extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return ApiModuleManager
 	 */
 	public function getModuleManager() {
 		if ( !$this->moduleManager ) {
@@ -75,7 +73,6 @@ class ApiReadingLists extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return array
 	 */
 	protected function getAllowedParams() {
 		return [
@@ -88,7 +85,6 @@ class ApiReadingLists extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return array
 	 */
 	public function getHelpUrls() {
 		return [
@@ -98,7 +94,6 @@ class ApiReadingLists extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return bool
 	 */
 	public function isWriteMode() {
 		return true;
@@ -106,7 +101,6 @@ class ApiReadingLists extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return bool
 	 */
 	public function needsToken() {
 		return 'csrf';
@@ -114,7 +108,6 @@ class ApiReadingLists extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return bool
 	 */
 	public function isInternal() {
 		// ReadingLists API is still experimental

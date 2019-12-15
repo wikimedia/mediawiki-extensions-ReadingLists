@@ -4,7 +4,6 @@ namespace MediaWiki\Extensions\ReadingLists\Api;
 
 use ApiBase;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
-use Message;
 use Title;
 
 /**
@@ -21,7 +20,6 @@ class ApiReadingListsCreateEntry extends ApiBase {
 	/**
 	 * Entry point for executing the module
 	 * @inheritDoc
-	 * @return void
 	 */
 	public function execute() {
 		$params = $this->extractRequestParams();
@@ -67,7 +65,6 @@ class ApiReadingListsCreateEntry extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return array
 	 */
 	protected function getAllowedParams() {
 		return [
@@ -91,7 +88,6 @@ class ApiReadingListsCreateEntry extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return Message
 	 */
 	protected function getExtendedDescription() {
 		$limit = $this->getConfig()->get( 'ReadingListsMaxEntriesPerList' );
@@ -100,7 +96,6 @@ class ApiReadingListsCreateEntry extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return array
 	 */
 	public function getHelpUrls() {
 		return [
@@ -110,7 +105,6 @@ class ApiReadingListsCreateEntry extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return array
 	 */
 	protected function getExamplesMessages() {
 		$batch = wfArrayToCgi( [ 'batch' => json_encode( [
@@ -130,7 +124,6 @@ class ApiReadingListsCreateEntry extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return bool
 	 */
 	public function isWriteMode() {
 		return true;
@@ -138,7 +131,6 @@ class ApiReadingListsCreateEntry extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return bool
 	 */
 	public function mustBePosted() {
 		return true;
@@ -146,7 +138,6 @@ class ApiReadingListsCreateEntry extends ApiBase {
 
 	/**
 	 * @inheritDoc
-	 * @return bool
 	 */
 	public function isInternal() {
 		// ReadingLists API is still experimental
