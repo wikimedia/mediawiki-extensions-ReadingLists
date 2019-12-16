@@ -4,7 +4,8 @@
 			"Gomoko",
 			"Pamputt",
 			"Verdy p",
-			"Wladek92"
+			"Wladek92",
+			"Thibaut120094"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var> et <var>$1title</var> doivent être utilisés ensemble.",
@@ -21,7 +22,7 @@
 	"apihelp-query+readinglists-param-project": "Projet de la page à filtrer. Doit être utilisé avec <var>$1title</var>. Ne renverra que les listes qui incluent ce projet et ce titre.",
 	"apihelp-query+readinglists-param-title": "Titre de la page sur lequel appliquer le filtre. Doit être utilisé avec <var>$1project</var>. Ne renverra que les listes qui incluent ce projet et ce titre.",
 	"apihelp-query+readinglists-param-sort": "Propriété selon laquelle trier. Ignoré quand <var>$1project</var> et <var>$1title</var> sont positionnés (les résultats sont renvoyés dans l’ordre de la base de données). Par défaut, <kbd>updated</kbd> quand <var>$1changedsince</var> est positionné, et <kbd>name</kbd> autrement.",
-	"apihelp-query+readinglists-paramvalue-sort-name": "Nom de la liste (le tri est par valeur binaire ; par ex. tout caractère ASCII majuscule sera trié avant tout caractère minuscule).",
+	"apihelp-query+readinglists-paramvalue-sort-name": "Nom de la liste (le tri est par valeur binaire ; par ex. tout caractère ASCII majuscule sera trié avant tout caractère minuscule).",
 	"apihelp-query+readinglists-paramvalue-sort-updated": "Horodatage de la dernière mise à jour (les mises à jour incluent les modifications des métadonnées de la liste, mais pas les modifications des éléments de la liste).",
 	"apihelp-query+readinglists-param-dir": "Direction de tri : <kbd>ascending</kbd> (A à Z, du plus ancien au plus récent) ou <kbd>descending</kbd>. Ignoré quand <var>$1project</var> et <var>$1title</var> sont positionnés.",
 	"apihelp-query+readinglists-param-limit": "Nombre d’éléments de résultats à retourner.",
@@ -33,7 +34,7 @@
 	"apihelp-query+readinglistentries-param-lists": "Les ID des listes pour lesquelles il faut renvoyer les pages.",
 	"apihelp-query+readinglistentries-param-changedsince": "Afficher les entrées de la liste qui ont été modifiées depuis cet horodatage. Doit être postérieur à <kbd>$1</kbd>.",
 	"apihelp-query+readinglistentries-param-sort": "Propriété selon laquelle trier. <kbd>name</kbd> ne peut pas être utilisé avec <var>$1changedsince</var>. Par défaut, <kbd>updated</kbd> quand <var>$1changedsince</var> est positionné, et <kbd>name</kbd> sinon.",
-	"apihelp-query+readinglistentries-paramvalue-sort-name": "Titre de l’article (Le nom du projet est ignoré. Le tri est par valeur binaire ; par ex., tout caractère ASCII majuscule sera trié avant tout caractère minuscule).",
+	"apihelp-query+readinglistentries-paramvalue-sort-name": "Titre de l’article (Le nom du projet est ignoré. Le tri est par valeur binaire ; par ex., tout caractère ASCII majuscule sera trié avant tout caractère minuscule).",
 	"apihelp-query+readinglistentries-paramvalue-sort-updated": "Horodatage de dernière mise à jour.",
 	"apihelp-query+readinglistentries-param-dir": "Direction du tri : <kbd>ascending</kbd> (A à Z, du plus ancien au plus récent) ou <kbd>descending</kbd>.",
 	"apihelp-query+readinglistentries-param-limit": "Nombre d’éléments de résultats à retourner.",
@@ -72,7 +73,7 @@
 	"apihelp-readinglists+createentry-extended-description": "Les entrées dans la liste doivent être uniques. Les pages ne sont pas limitées au wiki sur lequel l’API est accédée. L’utilisateur doit avoir moins de $1 {{PLURAL:$1|entrée (non supprimée)|entrées (non supprimés)}} dans la liste.",
 	"apihelp-readinglists+createentry-param-list": "ID de liste.",
 	"apihelp-readinglists+createentry-param-project": "Nom de projet du wiki qui héberge la page (typiquement c’est le nom de domaine du wiki). Nécessaire sauf si la création est faite par script.",
-	"apihelp-readinglists+createentry-param-title": "Titre de la page (comprenant le nom de l’espace de noms localisé). Nécessaire sauf si la création est faite par script. Un format lisible (avec des espaces et non des  soulignés) est recommandé. L’API traite les titres comme des chaînes brutes ; la normalisation (comme la casse des titres) est  laissée aux clients.",
+	"apihelp-readinglists+createentry-param-title": "Titre de la page (comprenant le nom de l’espace de noms localisé). Nécessaire sauf si la création est faite par script. Un format lisible (avec des espaces et non des  soulignés) est recommandé. L’API traite les titres comme des chaînes brutes ; la normalisation (comme la casse des titres) est  laissée aux clients.",
 	"apihelp-readinglists+createentry-param-batch": "Données de script pour créer des entrées de liste multiple (de la même liste) en une seule passe, sous forme de tableau JSON avec un ou plusieurs objets avec les champs <var>project</var> et <var>title</var>.",
 	"apihelp-readinglists+createentry-example-1": "Ajouter la page <kbd><em>Dog</em></kbd> du projet <kbd>en.wikipedia.org</kbd> à la liste avec l’ID <kbd>33</kbd>.",
 	"apihelp-readinglists+createentry-example-2": "Ajouter des pages multiples à une liste.",
