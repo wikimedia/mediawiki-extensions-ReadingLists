@@ -9,7 +9,7 @@ return [
 		$interwikiLookup = $services->getInterwikiLookup();
 		$ownServer = $services->getMainConfig()->get( 'CanonicalServer' );
 		$ownServerParts = wfParseUrl( $ownServer );
-		$ownDomain = null;
+		$ownDomain = '';
 		if ( !empty( $ownServerParts['host'] ) ) {
 			$ownDomain = $ownServerParts['host'];
 		}
