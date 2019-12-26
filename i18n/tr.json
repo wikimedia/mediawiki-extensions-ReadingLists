@@ -1,9 +1,35 @@
 {
 	"@metadata": {
 		"authors": [
-			"Hedda"
+			"Hedda",
+			"BaRaN6161 TURK"
 		]
 	},
+	"readinglists-desc": "Kullanıcıların yer imleri veya \"Daha Sonra Oku\" listeleri gibi özel makale listelerini yönetmesine olanak tanır.",
+	"readinglists-db-error-not-set-up": "Bu kullanıcı için okuma listeleri ayarlanmadı.",
+	"readinglists-db-error-already-set-up": "Bu kullanıcı için okuma listeleri zaten oluşturulmuş.",
+	"readinglists-db-error-cannot-delete-default-list": "Varsayılan liste silinemez.",
+	"readinglists-db-error-cannot-update-default-list": "Varsayılan liste güncellenemez.",
+	"readinglists-db-error-no-such-list": "$1 listesi mevcut değil.",
+	"readinglists-db-error-no-such-list-entry": "Liste girişi $1 mevcut değil.",
+	"readinglists-db-error-not-own-list": "$1 listesi başka bir kullanıcıya ait.",
+	"readinglists-db-error-not-own-list-entry": "$1 liste girişi başka bir kullanıcıya ait.",
+	"readinglists-db-error-list-deleted": "$1 listesi silindi.",
+	"readinglists-db-error-list-entry-deleted": "Liste girişi $1 silindi.",
+	"readinglists-db-error-duplicate-list": "Bu adda bir liste zaten var.",
+	"readinglists-db-error-duplicate-page": "Liste zaten bu sayfayı içeriyor.",
+	"readinglists-db-error-empty-list-ids": "Liste kimlikleri parametresi boş olmamalıdır.",
+	"readinglists-db-error-user-required": "Bu yöntem, kullanıcı belirtilmeden çağrılamaz.",
+	"readinglists-db-error-list-limit": "Kullanıcıların $1'den fazla {{PLURAL:$1|liste|liste}} sahibi olamaz.",
+	"readinglists-db-error-entry-limit": "$1 listesinde $2'den fazla {{PLURAL:$2|giriş|giriş}} olamaz.",
+	"readinglists-db-error-too-long": "$1 alanı için değer $2 bayttan uzun olamaz.",
+	"readinglists-db-error-no-such-project": "'$1' tanınmış bir proje değil.",
+	"readinglists-browser-add-entry-success": "$1 okuma listenize kaydedildi",
+	"readinglists-browser-login-prompt": "Makaleleri kaydetmek için giriş yapın",
+	"readinglists-browser-error-intro": "Bir hata oluştu: $1",
+	"readinglists-browser-enable-sync-prompt": "Makaleleri kaydetmeye başlamak için Vikipedi uygulamanızda senkronizasyonu etkinleştirin",
+	"readinglists-browser-extension-info-link-text": "Daha fazla bilgi edin",
+	"readinglists-browser-list-entry-limit-exceeded": "Makale kaydedilemez. Liste başına $1 makale sınırına ulaştınız",
 	"readinglists-browser-extension-product-title": "Vikipedi Okuma Listeleri",
 	"readinglists-browser-page-not-supported": "$1, bu sayfayı desteklemiyor"
 }
