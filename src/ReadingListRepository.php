@@ -153,7 +153,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		// within the query, since that breaks under statement-level
 		// replication. Hence, we hash the current rl_name with a
 		// one-time salt.
-		$salt = $this->dbw->addQuotes( md5( uniqid( rand(), true ) ) );
+		$salt = $this->dbw->addQuotes( md5( uniqid( (string)rand(), true ) ) );
 
 		// Soft-delete. Note that no reading list entries are updated;
 		// they are effectively orphaned by soft-deletion of their lists
@@ -484,7 +484,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			[
 				// Randomize the name of deleted lists in anticipation of eventually enforcing
 				// uniqueness with an index (in which case it can't be limited to non-deleted lists).
-				'rl_name' => 'deleted-' . md5( uniqid( rand(), true ) ),
+				'rl_name' => 'deleted-' . md5( uniqid( (string)rand(), true ) ),
 				'rl_deleted' => 1,
 				'rl_date_updated' => $this->dbw->timestamp(),
 			],
@@ -677,7 +677,6 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			$filtered[] = $row->rl_id;
 		}
 		$missing = array_diff( $ids, $filtered );
-		// @phan-suppress-next-line PhanRedundantCondition
 		if ( $missing ) {
 			throw new ReadingListRepositoryException(
 				'readinglists-db-error-no-such-list', [ reset( $missing ) ] );

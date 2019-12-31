@@ -96,9 +96,11 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 		} else {
 			$res = $repository->getListEntries( $lists, $sort, $dir, $limit + 1, $continue );
 		}
+		'@phan-var stdClass[] $res';
 		$titles = [];
 		$fits = true;
 		foreach ( $res as $i => $row ) {
+			// @phan-suppress-next-line PhanTypeMismatchArgument
 			$item = $this->getResultItem( $row, $mode );
 			if ( $i >= $limit ) {
 				// we reached the extra row.
@@ -107,6 +109,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 				break;
 			}
 			if ( $resultPageSet ) {
+				// @phan-suppress-next-line PhanTypeMismatchArgument
 				$titles[] = $this->getResultTitle( $row );
 			} else {
 				$fits = $result->addValue( $path, null, $item );

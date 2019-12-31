@@ -79,6 +79,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 			}
 			$sort = self::$sortParamMap[$sort];
 			$dir = self::$sortParamMap[$dir];
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable T240141
 			$continue = $this->decodeContinuationParameter( $continue, $mode, $sort );
 			// timestamp from before querying the DB
 			$timestamp = new DateTime( 'now', new DateTimeZone( 'GMT' ) );
@@ -93,16 +94,19 @@ class ApiQueryReadingLists extends ApiQueryBase {
 				$res = $repository->getAllLists( $sort, $dir, $limit + 1, $continue );
 			}
 			foreach ( $res as $i => $row ) {
+				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable T240141
 				$item = $this->getResultItem( $row, $mode );
 				if ( $i >= $limit ) {
 					// we reached the extra row.
 					$this->setContinueEnumParameter( 'continue',
+						// @phan-suppress-next-line PhanTypeMismatchArgumentNullable T240141
 						$this->encodeContinuationParameter( $item, $mode, $sort ) );
 					break;
 				}
 				$fits = $result->addValue( $path, null, $item );
 				if ( !$fits ) {
 					$this->setContinueEnumParameter( 'continue',
+						// @phan-suppress-next-line PhanTypeMismatchArgumentNullable T240141
 						$this->encodeContinuationParameter( $item, $mode, $sort ) );
 					break;
 				}
