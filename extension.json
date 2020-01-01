@@ -12,7 +12,9 @@
 		"MediaWiki": ">= 1.31.0"
 	},
 	"AutoloadNamespaces": {
-		"MediaWiki\\Extensions\\ReadingLists\\": "src/",
+		"MediaWiki\\Extensions\\ReadingLists\\": "src/"
+	},
+	"TestAutoloadNamespaces": {
 		"MediaWiki\\Extensions\\ReadingLists\\Tests\\": "tests/phpunit/"
 	},
 	"APIModules": {
