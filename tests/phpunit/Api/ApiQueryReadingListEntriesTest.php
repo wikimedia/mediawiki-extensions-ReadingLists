@@ -2,8 +2,8 @@
 
 namespace MediaWiki\Extensions\ReadingLists\Tests\Api;
 
-use MediaWiki\Extensions\ReadingLists\HookHandler;
 use ApiTestCase;
+use MediaWiki\Extensions\ReadingLists\HookHandler;
 use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
 
 /**

@@ -5,15 +5,15 @@ namespace MediaWiki\Extensions\ReadingLists\Tests\Api;
 use ApiMessage;
 use ApiUsageException;
 use FauxRequest;
+use MediaWiki\Extensions\ReadingLists\Api\ApiQueryReadingListEntries;
+use MediaWiki\Extensions\ReadingLists\Api\ApiQueryReadingLists;
+use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
+use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use PHPUnit\Framework\TestCase;
 use RequestContext;
 use StatusValue;
 use Title;
 use Wikimedia\TestingAccessWrapper;
-use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
-use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
-use MediaWiki\Extensions\ReadingLists\Api\ApiQueryReadingLists;
-use MediaWiki\Extensions\ReadingLists\Api\ApiQueryReadingListEntries;
 
 /**
  * @covers \MediaWiki\Extensions\ReadingLists\Api\ApiQueryTrait
@@ -118,7 +118,7 @@ class ApiQueryTraitTest extends TestCase {
 		$expected = [ 'sort' => [], 'dir' => [], 'limit' => [], 'continue' => [] ];
 		$actual = $this->assertApiUsage( null,
 			[ TestingAccessWrapper::newFromObject( $this->rlApi ), 'getAllowedSortParams' ] );
-		$this->assertInternalType( 'array', $actual );
+		$this->assertIsArray( $actual );
 		$this->assertArraySubset( $expected, $actual );
 	}
 }
