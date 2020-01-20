@@ -28,7 +28,7 @@
 	"readinglists-browser-login-prompt": "Makaleleri kaydetmek için giriş yapın",
 	"readinglists-browser-error-intro": "Bir hata oluştu: $1",
 	"readinglists-browser-enable-sync-prompt": "Makaleleri kaydetmeye başlamak için Vikipedi uygulamanızda senkronizasyonu etkinleştirin",
-	"readinglists-browser-extension-info-link-text": "Daha fazla bilgi edin",
+	"readinglists-browser-extension-info-link-text": "Daha fazla bilgi",
 	"readinglists-browser-list-entry-limit-exceeded": "Makale kaydedilemez. Liste başına $1 makale sınırına ulaştınız",
 	"readinglists-browser-extension-product-title": "Vikipedi Okuma Listeleri",
 	"readinglists-browser-page-not-supported": "$1, bu sayfayı desteklemiyor"
