@@ -1,8 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"Vlad5250"
+			"Vlad5250",
+			"StanProg"
 		]
 	},
+	"readinglists-browser-extension-info-link-text": "Научете повече",
 	"readinglists-browser-page-not-supported": "$1 не поддържа страницата"
 }
