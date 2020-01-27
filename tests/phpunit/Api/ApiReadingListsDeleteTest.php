@@ -2,10 +2,10 @@
 
 namespace MediaWiki\Extensions\ReadingLists\Tests\Api;
 
+use ApiTestCase;
 use ApiUsageException;
 use MediaWiki\Extensions\ReadingLists\HookHandler;
 use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
-use ApiTestCase;
 
 /**
  * @covers \MediaWiki\Extensions\ReadingLists\Api\ApiReadingListsDelete

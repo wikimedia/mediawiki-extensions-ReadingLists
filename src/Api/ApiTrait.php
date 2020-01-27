@@ -174,7 +174,7 @@ trait ApiTrait {
 
 		$intersection = array_intersect(
 			array_keys( array_filter( $op, function ( $val ) {
-				return !is_null( $val ) && $val !== false;
+				return $val !== null && $val !== false;
 			} ) ),
 			$required
 		);

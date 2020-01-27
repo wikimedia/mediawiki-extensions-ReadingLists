@@ -5,13 +5,13 @@ namespace MediaWiki\Extensions\ReadingLists\Tests\Api;
 use ApiMessage;
 use ApiUsageException;
 use FauxRequest;
+use MediaWiki\Extensions\ReadingLists\Api\ApiTrait;
+use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use PHPUnit\Framework\TestCase;
 use RequestContext;
 use StatusValue;
 use Title;
 use Wikimedia\TestingAccessWrapper;
-use MediaWiki\Extensions\ReadingLists\Api\ApiTrait;
-use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
 
 /**
  * @covers \MediaWiki\Extensions\ReadingLists\Api\ApiTrait

@@ -4,9 +4,9 @@ namespace MediaWiki\Extensions\ReadingLists\Tests;
 
 use MediaWiki\Extensions\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRow;
+use MediaWiki\Extensions\ReadingLists\HookHandler;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
-use MediaWiki\Extensions\ReadingLists\HookHandler;
 use MediaWiki\MediaWikiServices;
 use MediaWikiTestCase;
 use PHPUnit\Framework\Constraint\Exception;
@@ -110,7 +110,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		// no rows initially; isSetupForUser() is false
 		$this->assertFalse( $repository->isSetupForUser() );
 		$res = $this->db->select( 'reading_list', '*', [ 'rl_user_id' => 1 ] );
-		$this->assertEquals( 0, $res->numRows() );
+		$this->assertSame( 0, $res->numRows() );
 
 		// one row after setup; isSetupForUser() is true
 		$list = $repository->setupForUser();
@@ -158,7 +158,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		);
 
 		$res = $this->db->select( 'reading_list', '*', [ 'rl_user_id' => 1, 'rl_deleted' => 0 ] );
-		$this->assertEquals( 0, $res->numRows(),
+		$this->assertSame( 0, $res->numRows(),
 			"teardownForUser failed to soft-delete all lists"
 		);
 
@@ -212,11 +212,11 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$mergedList = $repository->addList( 'bar', 'more bar' );
 		$this->assertEquals( $list->rl_id, $mergedList->rl_id );
 		$this->assertEquals( 'more bar', $mergedList->rl_description );
-		$this->assertEquals( true, $mergedList->merged );
+		$this->assertTrue( $mergedList->merged );
 
 		$mergedList = $repository->addList( 'bar', 'more bar' );
 		$this->assertEquals( $list->rl_id, $mergedList->rl_id );
-		$this->assertEquals( true, $mergedList->merged );
+		$this->assertTrue( $mergedList->merged );
 
 		$this->assertFailsWith( 'readinglists-db-error-too-long', function () use ( $repository ) {
 			$repository->addList( 'boom',  str_pad( '', 1000, 'x' ) );
@@ -467,7 +467,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		] );
 
 		$repository->deleteList( $listId );
-		$this->assertEquals( 0, $this->db->selectRowCount( 'reading_list',
+		$this->assertSame( 0, $this->db->selectRowCount( 'reading_list',
 			'1', [ 'rl_user_id' => 1, 'rl_name' => 'foo', 'rl_deleted' => 0 ] ) );
 		$this->assertTimestampEquals( wfTimestampNow(), $this->db->selectField( 'reading_list',
 			'rl_date_updated', [ 'rl_id' => $listId ] ) );
@@ -518,8 +518,8 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertEquals( 'Foo', $entry->rle_title );
 		$this->assertTimestampEquals( wfTimestampNow(), $entry->rle_date_created );
 		$this->assertTimestampEquals( wfTimestampNow(), $entry->rle_date_updated );
-		$this->assertEquals( 0, $entry->rle_deleted );
-		$this->assertEquals( false, $entry->merged );
+		$this->assertSame( '0', $entry->rle_deleted );
+		$this->assertFalse( $entry->merged );
 		/** @var ReadingListEntryRow $row */
 		$row = $this->db->selectRow( 'reading_list_entry', '*', [ 'rle_id' => $entry->rle_id ] );
 		$this->assertEquals( 1, $row->rle_user_id );
@@ -536,8 +536,8 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertEquals( 'Foo', $entry2->rle_title );
 		$this->assertTimestampEquals( wfTimestampNow(), $entry2->rle_date_created );
 		$this->assertTimestampEquals( wfTimestampNow(), $entry2->rle_date_updated );
-		$this->assertEquals( 0, $entry2->rle_deleted );
-		$this->assertEquals( false, $entry->merged );
+		$this->assertSame( '0', $entry2->rle_deleted );
+		$this->assertFalse( $entry->merged );
 
 		$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Bar' );
 		$repository->addListEntry( $listId, 'https://de.wikipedia.org', 'Foo' );
@@ -545,7 +545,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		// test that adding a duplicate is a no-op
 		$dupeEntry = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
 		$this->assertEquals( $dupeEntry->rle_id, $entry2->rle_id );
-		$this->assertEquals( true, $dupeEntry->merged );
+		$this->assertTrue( $dupeEntry->merged );
 
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
 			function () use ( $repository ) {

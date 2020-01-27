@@ -2,8 +2,8 @@
 
 namespace MediaWiki\Extensions\ReadingLists\Tests;
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Extensions\ReadingLists\ReverseInterwikiLookupInterface;
+use MediaWiki\MediaWikiServices;
 
 /**
  * @coversNothing

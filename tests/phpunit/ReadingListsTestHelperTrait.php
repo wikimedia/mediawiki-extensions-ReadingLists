@@ -113,6 +113,7 @@ trait ReadingListsTestHelperTrait {
 	 * If it isn't, verify that it throws that error.
 	 * @param string $expectedErrorMessage
 	 * @param callable $callback
+	 * @param array $params
 	 * @return mixed The return value of the callback, or null if there was an exception.
 	 */
 	private function assertApiUsage( $expectedErrorMessage, callable $callback, array $params = [] ) {
