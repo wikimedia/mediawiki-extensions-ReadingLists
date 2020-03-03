@@ -11,6 +11,7 @@ use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
 use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use PHPUnit\Framework\TestCase;
 use RequestContext;
+use SebastianBergmann\Exporter\Exporter;
 use StatusValue;
 use Title;
 use Wikimedia\TestingAccessWrapper;
@@ -119,6 +120,30 @@ class ApiQueryTraitTest extends TestCase {
 		$actual = $this->assertApiUsage( null,
 			[ TestingAccessWrapper::newFromObject( $this->rlApi ), 'getAllowedSortParams' ] );
 		$this->assertIsArray( $actual );
-		$this->assertArraySubset( $expected, $actual );
+		$this->assertSubset( $expected, $actual );
 	}
+
+	/**
+	 * Non-crappy implementation of assertArraySubset.
+	 * @param array $subset
+	 * @param array $array
+	 */
+	private function assertSubset( array $subset, array $array ) {
+		foreach ( $array as $key => $value ) {
+			if ( is_numeric( $key ) ) {
+				$pos = array_search( $value, $subset, true );
+				if ( $pos !== false && is_numeric( $pos ) ) {
+					unset( $subset[$pos] );
+				}
+			} else {
+				unset( $subset[$key] );
+			}
+		}
+		if ( $subset ) {
+			$exporter = new Exporter();
+			$this->fail( 'Failed asserting that ' . $exporter->export( $subset ) . ' is a subset of '
+				. $exporter->export( $array ) );
+		}
+	}
+
 }

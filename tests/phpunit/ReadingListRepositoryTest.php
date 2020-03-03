@@ -10,7 +10,6 @@ use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\MediaWikiServices;
 use MediaWikiTestCase;
 use PHPUnit\Framework\Constraint\Exception;
-use SebastianBergmann\Exporter\Exporter;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\LBFactory;
 
@@ -1350,29 +1349,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertLessThanOrEqual( 800, $delta,
 			"${msg}Difference between expected timestamp ($expectedTimestamp) "
 			. "and actual timetamp ($actualTimestamp) is too large" );
-	}
-
-	/**
-	 * Non-crappy implementation of assertArraySubset.
-	 * @param array $subset
-	 * @param array $array
-	 */
-	private function assertSubset( array $subset, array $array ) {
-		foreach ( $array as $key => $value ) {
-			if ( is_numeric( $key ) ) {
-				$pos = array_search( $value, $subset, true );
-				if ( $pos !== false && is_numeric( $pos ) ) {
-					unset( $subset[$pos] );
-				}
-			} else {
-				unset( $subset[$key] );
-			}
-		}
-		if ( $subset ) {
-			$exporter = new Exporter();
-			$this->fail( 'Failed asserting that ' . $exporter->export( $subset ) . ' is a subset of '
-				. $exporter->export( $array ) );
-		}
 	}
 
 	private function addDataForAnotherUser() {
