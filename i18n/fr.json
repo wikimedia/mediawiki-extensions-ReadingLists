@@ -35,5 +35,5 @@
 	"readinglists-browser-extension-info-link-text": "En savoir plus",
 	"readinglists-browser-list-entry-limit-exceeded": "L’article n’a pas pu être enregistré. Vous avez atteint la limite de $1 articles par liste",
 	"readinglists-browser-extension-product-title": "Listes de lecture de Wikipédia",
-	"readinglists-browser-page-not-supported": "$1 ne supporte pas cette page"
+	"readinglists-browser-page-not-supported": "$1 ne prend pas en charge cette page"
 }
