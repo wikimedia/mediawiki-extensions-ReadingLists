@@ -2,10 +2,10 @@
 	"@metadata": {
 		"authors": [
 			"Chrumps",
-			"Wojtas",
-			"Railfail536",
 			"CiaPan",
-			"Rail"
+			"Rail",
+			"Railfail536",
+			"Wojtas"
 		]
 	},
 	"readinglists-desc": "Umożliwia użytkownikom zarządzanie prywatnymi listami artykułów, takimi jak zakładki czy listy „Przeczytaj później”",

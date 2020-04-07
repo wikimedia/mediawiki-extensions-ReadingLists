@@ -1,11 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Tgr",
-			"Umherirrender",
-			"Raymond",
 			"Liuxinyu970226",
-			"Tacsipacsi"
+			"Raymond",
+			"Tacsipacsi",
+			"Tgr",
+			"Umherirrender"
 		]
 	},
 	"readinglists-desc": "{{desc|name=ReadingLists|url=https://www.mediawiki.org/wiki/Extension:ReadingLists}}",

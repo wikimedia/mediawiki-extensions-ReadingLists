@@ -3,9 +3,9 @@
 		"authors": [
 			"Gomoko",
 			"Pamputt",
+			"Thibaut120094",
 			"Verdy p",
-			"Wladek92",
-			"Thibaut120094"
+			"Wladek92"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var> et <var>$1title</var> doivent être utilisés ensemble.",

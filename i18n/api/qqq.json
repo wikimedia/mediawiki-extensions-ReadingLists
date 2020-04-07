@@ -1,11 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Tgr",
-			"Umherirrender",
-			"Raymond",
 			"Liuxinyu970226",
-			"Tacsipacsi"
+			"Raymond",
+			"Tacsipacsi",
+			"Tgr",
+			"Umherirrender"
 		]
 	},
 	"apierror-readinglists-project-title-param": "{{doc-apierror}}\n$1 is the module prefix.",

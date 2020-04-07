@@ -1,9 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Macofe",
 			"Fitoschido",
-			"KATRINE1992"
+			"KATRINE1992",
+			"Macofe"
 		]
 	},
 	"readinglists-desc": "Permite a los usuarios gestionar listas privadas de artículos, como marcadores o listas de \"Leer después\".",
