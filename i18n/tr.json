@@ -5,7 +5,7 @@
 			"Hedda"
 		]
 	},
-	"readinglists-desc": "Kullanıcıların yer imleri veya \"Daha Sonra Oku\" listeleri gibi özel makale listelerini yönetmesine olanak tanır.",
+	"readinglists-desc": "Kullanıcıların yer imleri veya \"Daha Sonra Oku\" listeleri gibi özel madde listelerini yönetmesine olanak tanır.",
 	"readinglists-db-error-not-set-up": "Bu kullanıcı için okuma listeleri ayarlanmadı.",
 	"readinglists-db-error-already-set-up": "Bu kullanıcı için okuma listeleri zaten oluşturulmuş.",
 	"readinglists-db-error-cannot-delete-default-list": "Varsayılan liste silinemez.",

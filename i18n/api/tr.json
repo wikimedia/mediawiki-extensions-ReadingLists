@@ -30,7 +30,7 @@
 	"apihelp-query+readinglistentries-param-lists": "Sayfaları döndürülecek liste kimlikleri.",
 	"apihelp-query+readinglistentries-param-changedsince": "Bu zaman damgasından beri değiştirilen liste girişlerini göster. <kbd>$1</kbd>'den sonra gelmelidir.",
 	"apihelp-query+readinglistentries-param-sort": "Sıralama özelliği. <kbd>name</kbd> <var>$1changedsince</var> ile birlikte kullanılamaz. <var>$1changedsince</var> ayarlandığında varsayılan olarak <kbd>updated</kbd>, aksi takdirde <kbd>name</kbd> olarak ayarlanır.",
-	"apihelp-query+readinglistentries-paramvalue-sort-name": "Makale başlığı. (Proje adı yok sayılır. Sıralama ikili değerdir; örneğin, büyük harf ASCII karakterleri küçük harflerden önce sıralanır.)",
+	"apihelp-query+readinglistentries-paramvalue-sort-name": "Madde başlığı. (Proje adı yok sayılır. Sıralama ikili değerdir; örneğin, büyük harf ASCII karakterleri küçük harflerden önce sıralanır.)",
 	"apihelp-query+readinglistentries-paramvalue-sort-updated": "Son güncelleme zaman damgası.",
 	"apihelp-query+readinglistentries-param-dir": "Yönü sırala: <kbd>ascending</kbd> (A'dan Z'ye, en eskiden yeniye) veya <kbd>descending</kbd>.",
 	"apihelp-query+readinglistentries-param-limit": "Döndürülecek sonuç öğelerinin sayısı.",
