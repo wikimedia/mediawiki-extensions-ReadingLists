@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Mikel Ibaiba"
+			"Mikel Ibaiba",
+			"Xabier Armendaritz"
 		]
 	},
-	"readinglists-db-error-list-deleted": "$1 zerrenda ezabatu egin da."
+	"readinglists-db-error-list-deleted": "«$1» zerrenda ezabatu da."
 }
