@@ -34,13 +34,13 @@ use Wikimedia\Rdbms\LBFactory;
 class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
 	/** Sort lists / entries alphabetically by name / title. */
-	const SORT_BY_NAME = 'name';
+	public const SORT_BY_NAME = 'name';
 	/** Sort lists / entries chronologically by last updated timestamp. */
-	const SORT_BY_UPDATED = 'updated';
+	public const SORT_BY_UPDATED = 'updated';
 	/** Sort ascendingly (first letter / oldest date first). */
-	const SORT_DIR_ASC = 'asc';
+	public const SORT_DIR_ASC = 'asc';
 	/** Sort descendingly (last letter / newest date first). */
-	const SORT_DIR_DESC = 'desc';
+	public const SORT_DIR_DESC = 'desc';
 
 	/** @var array Database field lengths in bytes (only for the string types). */
 	public static $fieldLength = [
