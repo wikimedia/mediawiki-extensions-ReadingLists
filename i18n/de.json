@@ -2,10 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Hwboehm",
+			"Kghbln",
 			"Metalhead64"
 		]
 	},
-	"readinglists-desc": "Erlaubt Benutzern die Verwaltung privater Artikellisten wie Lesezeichen- oder „Später lesen“-Listen.",
+	"readinglists-desc": "Ermöglicht Benutzern die Verwaltung privater Artikellisten wie bspw. Lesezeichen- oder „Später-lesen“-Listen",
 	"readinglists-db-error-not-set-up": "Leselisten wurden für diesen Benutzer nicht aufgesetzt.",
 	"readinglists-db-error-already-set-up": "Leselisten wurden bereits für diesen Benutzer aufgesetzt.",
 	"readinglists-db-error-cannot-delete-default-list": "Die Standardliste kann nicht gelöscht werden.",
