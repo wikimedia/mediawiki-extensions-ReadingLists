@@ -120,10 +120,10 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		);
 		$this->assertTrue( $repository->isSetupForUser() );
 		$res = $this->db->select( 'reading_list', '*', [ 'rl_user_id' => 1 ] );
-		$this->assertEquals( 1, $res->numRows() );
+		$this->assertSame( 1, $res->numRows() );
 		/** @var ReadingListRow $row */
 		$row = $res->fetchObject();
-		$this->assertEquals( 1, $row->rl_is_default );
+		$this->assertSame( '1', $row->rl_is_default );
 		$this->assertEquals( 'default', $row->rl_name );
 
 		// default list data is returned from setupForUser()
@@ -521,7 +521,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertFalse( $entry->merged );
 		/** @var ReadingListEntryRow $row */
 		$row = $this->db->selectRow( 'reading_list_entry', '*', [ 'rle_id' => $entry->rle_id ] );
-		$this->assertEquals( 1, $row->rle_user_id );
+		$this->assertSame( '1', $row->rle_user_id );
 		$this->assertEquals( $projectId, $row->rle_rlp_id );
 		$this->assertEquals( $entry->rle_title, $row->rle_title );
 		$this->assertTimestampEquals( $entry->rle_date_created, $row->rle_date_created );
@@ -868,7 +868,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		] );
 
 		$repository->deleteListEntry( $fooId );
-		$this->assertEquals( 1, $this->db->selectRowCount( 'reading_list_entry',
+		$this->assertSame( 1, $this->db->selectRowCount( 'reading_list_entry',
 			'1', [ 'rle_rl_id' => $listId, 'rle_deleted' => 0 ] ) );
 		/** @var ReadingListEntryRow $row */
 		$row = $this->db->selectRow( 'reading_list_entry', '*',
