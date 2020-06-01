@@ -116,7 +116,7 @@ trait ApiQueryTrait {
 	/**
 	 * Get common sorting/paging related params for getAllowedParams().
 	 * @return array
-	 * @suppress PhanUndeclaredStaticProperty, PhanUndeclaredConstant
+	 * @suppress PhanUndeclaredStaticProperty, PhanUndeclaredConstantOfClass
 	 */
 	private function getAllowedSortParams() {
 		return [
