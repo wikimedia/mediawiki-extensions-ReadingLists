@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Diman Russkov",
 			"Edible Melon",
 			"Happy13241",
 			"Kareyac",
@@ -10,6 +11,18 @@
 		]
 	},
 	"readinglists-desc": "Позволяет пользователям управлять приватными списками статей, такими как закладки или списки «читать потом».",
+	"readinglists-db-error-no-such-list": "Список $1 не существует.",
+	"readinglists-db-error-no-such-list-entry": "Запись в списке $1 не существует.",
+	"readinglists-db-error-not-own-list": "Список $1 принадлежит другому участнику.",
+	"readinglists-db-error-not-own-list-entry": "Запись списка $1 принадлежит другому участнику.",
+	"readinglists-db-error-list-deleted": "Список $1 был удалён.",
+	"readinglists-db-error-list-entry-deleted": "Запись списка $1 была удалена.",
+	"readinglists-db-error-duplicate-list": "Список с таким именем уже существует.",
+	"readinglists-db-error-duplicate-page": "Список уже содержит эту страницу.",
+	"readinglists-db-error-user-required": "Этот метод не может быть вызван без указания пользователя.",
+	"readinglists-db-error-list-limit": "Пользователи не могут иметь более $1 {{PLURAL:$1|списка|списков}}.",
+	"readinglists-db-error-entry-limit": "Список $1 не может содержать более $2 {{PLURAL:$2|записи|записей}}.",
+	"readinglists-db-error-too-long": "Значение для поля $1 не может быть длиннее $2 байт.",
 	"readinglists-browser-add-entry-success": "«$1» сохранена в ваш список чтения",
 	"readinglists-browser-login-prompt": "Войдите, чтобы сохранять статьи",
 	"readinglists-browser-error-intro": "Произошла ошибка:$1",
