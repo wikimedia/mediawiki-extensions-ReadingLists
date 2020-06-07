@@ -60,7 +60,7 @@ class PopulateWithTestData extends Maintenance {
 			return;
 		}
 
-		$projects = $this->dbw->selectFieldValues( 'reading_list_project', 'rlp_id' );
+		$projects = $this->dbw->selectFieldValues( 'reading_list_project', 'rlp_id', [], __METHOD__ );
 		if ( !$projects ) {
 			$this->fatalError( 'No projects! Please set up some' );
 		}
@@ -82,7 +82,8 @@ class PopulateWithTestData extends Maintenance {
 					[
 						'rl_user_id' => $centralId,
 						'rl_is_default' => 1,
-					]
+					],
+					__METHOD__
 				);
 			} catch ( ReadingListRepositoryException $e ) {
 				// Instead of trying to find a user ID that's not used yet, we'll be lazy
@@ -105,12 +106,14 @@ class PopulateWithTestData extends Maintenance {
 				}
 				$this->dbw->insert(
 					'reading_list_entry',
-					$rows
+					$rows,
+					__METHOD__
 				);
 				$this->dbw->update(
 					'reading_list',
 					[ 'rl_size' => $entries ],
-					[ 'rl_id' => $list->rl_id ]
+					[ 'rl_id' => $list->rl_id ],
+					__METHOD__
 				);
 			}
 			$this->output( '.' );
@@ -124,7 +127,8 @@ class PopulateWithTestData extends Maintenance {
 		$ids = $dbw->selectFieldValues(
 			'reading_list',
 			'rl_id',
-			[ 'rl_description' => __FILE__ ]
+			[ 'rl_description' => __FILE__ ],
+			__METHOD__
 		);
 		if ( !$ids ) {
 			$this->output( "Noting to clean up\n" );
@@ -132,12 +136,14 @@ class PopulateWithTestData extends Maintenance {
 		}
 		$dbw->delete(
 			'reading_list_entry',
-			[ 'rle_rl_id' => $ids ]
+			[ 'rle_rl_id' => $ids ],
+			__METHOD__
 		);
 		$entries = $dbw->affectedRows();
 		$dbw->delete(
 			'reading_list',
-			[ 'rl_description' => __FILE__ ]
+			[ 'rl_description' => __FILE__ ],
+			__METHOD__
 		);
 		$lists = $dbw->affectedRows();
 		$this->output( "Deleted $lists lists and $entries entries\n" );

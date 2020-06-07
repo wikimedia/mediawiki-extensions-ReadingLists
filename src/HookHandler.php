@@ -76,7 +76,7 @@ class HookHandler {
 
 		$originalPrefix = $db->tablePrefix();
 		$db->tablePrefix( $prefix );
-		if ( !$db->tableExists( 'reading_list' ) ) {
+		if ( !$db->tableExists( 'reading_list', __METHOD__ ) ) {
 			$baseDir = dirname( __DIR__ );
 			$db->sourceFile( "$baseDir/sql/readinglists.sql" );
 		}
