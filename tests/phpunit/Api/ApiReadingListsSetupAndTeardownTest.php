@@ -45,8 +45,4 @@ class ApiReadingListsSetupAndTeardownTest extends ApiTestCase {
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
 		$this->assertEquals( "Success", $result[0]['teardown']['result'] );
 	}
-
-	protected function tearDown() : void {
-		parent::tearDown();
-	}
 }
