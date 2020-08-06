@@ -20,7 +20,7 @@
 	"apihelp-query+readinglists-param-sort": "Property to sort by. Ignored when <var>$1project</var> and <var>$1title</var> is set (results are returned in DB order). Defaults to <kbd>updated</kbd> when <var>$1changedsince</var> is set, and to <kbd>name</kbd> otherwise.",
 	"apihelp-query+readinglists-paramvalue-sort-name": "List name. (Sorting is by binary value; e.g. any uppercase ASCII character will sort before any lowercase one.)",
 	"apihelp-query+readinglists-paramvalue-sort-updated": "Last update timestamp. (Updates include list metadata changes but not changes to list items.)",
-	"apihelp-query+readinglists-param-dir": "Sort direction: <kbd>ascending</kbd> (A to Z, oldest to newest) or <kbd>descending</kbd>. Ignored when <var>$1project</var> and <var>$1title</var> is set. ",
+	"apihelp-query+readinglists-param-dir": "Sort direction: <kbd>ascending</kbd> (A to Z, oldest to newest) or <kbd>descending</kbd>. Ignored when <var>$1project</var> and <var>$1title</var> is set.",
 	"apihelp-query+readinglists-param-limit": "Number of result items to return.",
 	"apihelp-query+readinglists-example-1": "Get the reading lists of the current user.",
 	"apihelp-query+readinglists-example-2": "Get the reading lists of the current user which have changed since <kbd>2013-01-01T00:00:00Z</kbd>.",
