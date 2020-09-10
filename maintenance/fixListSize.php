@@ -48,7 +48,6 @@ class FixListSize extends Maintenance {
 	public function execute() {
 		$this->setupServices();
 
-		$this->beginTransaction( $this->dbw, __METHOD__ );
 		if ( $this->hasOption( 'list' ) ) {
 			$this->fixRow( $this->getOption( 'list' ) );
 		} else {
@@ -82,7 +81,6 @@ class FixListSize extends Maintenance {
 			}
 			$this->output( "Fixed $i lists.\n" );
 		}
-		$this->commitTransaction( $this->dbw, __METHOD__ );
 	}
 
 	/**
