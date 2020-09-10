@@ -820,7 +820,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$repository->setupForUser();
 		list( $fooProjectId ) = $this->addProjects( [ 'foo' ] );
-		list( $listId, $deletedListId ) = $this->addLists( 1, [
+		list( $listId, $deletedListId, $outOfSyncId ) = $this->addLists( 1, [
 			[
 				'rl_is_default' => 0,
 				'rl_name' => 'test',
@@ -833,8 +833,15 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rl_description' => 'deleted',
 				'rl_deleted' => '1',
 			],
+			[
+				'rl_is_default' => 0,
+				'rl_name' => 'outOfSync',
+				'rl_date_created' => wfTimestampNow(),
+				'rl_date_updated' => wfTimestampNow(),
+				'rl_deleted' => 0,
+			],
 		] );
-		list( $fooId, $foo2Id, $deletedId ) = $this->addListEntries( $listId, 1, [
+		list( $fooId, $foo2Id, $foo3Id ) = $this->addListEntries( $listId, 1, [
 			[
 				'rlp_project' => 'foo',
 				'rle_title' => 'bar',
@@ -854,7 +861,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rle_title' => 'bar3',
 				'rle_date_created' => wfTimestampNow(),
 				'rle_date_updated' => wfTimestampNow(),
-				'rle_deleted' => 1,
+				'rle_deleted' => 0,
 			],
 		] );
 		list( $parentDeletedId ) = $this->addListEntries( $deletedListId, 1, [
@@ -866,15 +873,33 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 				'rle_deleted' => 0,
 			],
 		] );
+		list( $parentOutOfSyncId ) = $this->addListEntries( $outOfSyncId, 1, [
+			[
+				'rlp_project' => 'foo5',
+				'rle_title' => 'bar5',
+				'rle_date_created' => wfTimestampNow(),
+				'rle_date_updated' => wfTimestampNow(),
+				'rle_deleted' => 0,
+			]
+		] );
 
 		$repository->deleteListEntry( $fooId );
-		$this->assertSame( 1, $this->db->selectRowCount( 'reading_list_entry',
+		$this->assertSame( 2, $this->db->selectRowCount( 'reading_list_entry',
 			'1', [ 'rle_rl_id' => $listId, 'rle_deleted' => 0 ] ) );
 		/** @var ReadingListEntryRow $row */
 		$row = $this->db->selectRow( 'reading_list_entry', '*',
 			[ 'rle_rl_id' => $listId, 'rle_deleted' => 1 ] );
 		$this->assertEquals( $fooProjectId, $row->rle_rlp_id );
 		$this->assertTimestampEquals( wfTimestampNow(), $row->rle_date_updated );
+		$newListSize = $this->db->selectField( 'reading_list', 'rl_size', [ 'rl_id' => $listId ] );
+		$this->assertSame( 2, intval( $newListSize ) );
+
+		// Manually set size to 0, and test that rl_size does not go negative on list entry delete
+		$this->db->update( 'reading_list', [ 'rl_size' => 0 ], [ 'rl_id' => $outOfSyncId ] );
+		$repository->deleteListEntry( $parentOutOfSyncId );
+		$outOfSyncSize = $this->db->selectField( 'reading_list', 'rl_size',
+			[ 'rl_id' => $outOfSyncId ] );
+		$this->assertSame( 0, intval( $outOfSyncSize ) );
 
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list-entry',
 			function () use ( $repository ) {
@@ -888,8 +913,8 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-list-entry-deleted',
-			function () use ( $repository, $deletedId ) {
-				$repository->deleteListEntry( $deletedId );
+			function () use ( $repository, $fooId ) {
+				$repository->deleteListEntry( $fooId );
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-list-deleted',

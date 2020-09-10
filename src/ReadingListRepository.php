@@ -748,7 +748,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$this->dbw->update(
 			'reading_list',
 			[ 'rl_size = rl_size - 1' ],
-			[ 'rl_id' => $row->rl_id ],
+			[
+				'rl_id' => $row->rl_id,
+				'rl_size > 0'
+			],
 			__METHOD__
 		);
 
