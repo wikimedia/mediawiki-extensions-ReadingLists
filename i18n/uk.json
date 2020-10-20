@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Andriy.v",
 			"Piramidion",
 			"Ата"
 		]
@@ -23,7 +24,7 @@
 	"readinglists-db-error-list-limit": "Користувачі не можуть мати більше $1 {{PLURAL:$1|списку|списків}}.",
 	"readinglists-db-error-entry-limit": "Список $1 не може мати більше $2 {{PLURAL:$2|пункту|пунктів}}.",
 	"readinglists-db-error-too-long": "Значення поля $1 не може бути довшим $2 байтів.",
-	"readinglists-db-error-no-such-project": "«$1» — не розпізнається як проект.",
+	"readinglists-db-error-no-such-project": "«$1» — не розпізнається як проєкт.",
 	"readinglists-browser-add-entry-success": "$1 збережено у Вашому списку для читання",
 	"readinglists-browser-login-prompt": "Увійдіть, щоб зберігати статті",
 	"readinglists-browser-error-intro": "Виникла помилка: $1",
