@@ -22,7 +22,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 
 	use ReadingListsTestHelperTrait;
 
-	/** @var LBFactory $lbFactory */
+	/** @var LBFactory */
 	private $lbFactory;
 
 	public function setUp() : void {
@@ -445,7 +445,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			function () use ( $repository ) {
 				$defaultId = $this->db->selectField( 'reading_list', 'rl_id',
 					[ 'rl_user_id' => 1, 'rl_is_default' => 1 ] );
-				$this->assertNotSame( false, $defaultId );
+				$this->assertNotFalse( $defaultId );
 				$repository->updateList( $defaultId, 'not default' );
 			}
 		);
@@ -491,7 +491,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			function () use ( $repository ) {
 				$defaultId = $this->db->selectField( 'reading_list', 'rl_id',
 					[ 'rl_user_id' => 1, 'rl_is_default' => 1 ] );
-				$this->assertNotSame( false, $defaultId );
+				$this->assertNotFalse( $defaultId );
 				$repository->deleteList( $defaultId );
 			}
 		);
