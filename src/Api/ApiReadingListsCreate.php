@@ -72,7 +72,7 @@ class ApiReadingListsCreate extends ApiBase {
 	 */
 	protected function getExtendedDescription() {
 		$limit = $this->getConfig()->get( 'ReadingListsMaxListsPerUser' );
-		return wfMessage( 'apihelp-readinglists+create-extended-description', $limit );
+		return $this->msg( 'apihelp-readinglists+create-extended-description', $limit );
 	}
 
 	/**

@@ -91,7 +91,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 	 */
 	protected function getExtendedDescription() {
 		$limit = $this->getConfig()->get( 'ReadingListsMaxEntriesPerList' );
-		return wfMessage( 'apihelp-readinglists+createentry-extended-description', $limit );
+		return $this->msg( 'apihelp-readinglists+createentry-extended-description', $limit );
 	}
 
 	/**

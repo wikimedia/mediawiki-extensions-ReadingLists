@@ -121,9 +121,9 @@ class ApiQueryReadingLists extends ApiQueryBase {
 				// prevent the situation where a DB write happens before the current request
 				// but is only committed after it. (If there is no max transaction duration, the
 				// client is on its own.)
-				global $wgMaxUserDBWriteDuration;
-				if ( $wgMaxUserDBWriteDuration ) {
-					$timestamp->modify( '-' . ( $wgMaxUserDBWriteDuration + 1 ) . ' seconds' );
+				$maxUserDBWriteDuration = $this->getConfig()->get( 'MaxUserDBWriteDuration' );
+				if ( $maxUserDBWriteDuration ) {
+					$timestamp->modify( '-' . ( $maxUserDBWriteDuration + 1 ) . ' seconds' );
 				}
 				$syncTimestamp = ( new MWTimestamp( $timestamp ) )->getTimestamp( TS_ISO_8601 );
 				$result->addValue( 'query', 'readinglists-synctimestamp', $syncTimestamp );

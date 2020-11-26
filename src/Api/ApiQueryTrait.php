@@ -21,6 +21,8 @@ trait ApiQueryTrait {
 	 * Intended for initial copy of data to a new device, or for devices which have information
 	 * that's too outdated for normal sync. Might also be useful for devices with limited storage
 	 * capacity, such as web clients.
+	 *
+	 * @var string
 	 */
 	private static $MODE_ALL = 'all';
 
@@ -28,6 +30,8 @@ trait ApiQueryTrait {
 	 * Return lists/entries which have been changed (or deleted) recently.
 	 * Intended for syncing updates to a device which has an older snapshot of the data.
 	 * "Recently" is defined by the changedsince parameter.
+	 *
+	 * @var string
 	 */
 	private static $MODE_CHANGES = 'changes';
 
@@ -35,12 +39,16 @@ trait ApiQueryTrait {
 	 * Return lists which include a given page.
 	 * Intended for status indicators and such (e.g. showing a star on the current page if it's
 	 * included in some list).
+	 *
+	 * @var string
 	 */
 	private static $MODE_PAGE = 'page';
 
 	/**
 	 * Return lists/entries by ID.
 	 * Intended for clients which have a limited local caching ability.
+	 *
+	 * @var string
 	 */
 	private static $MODE_ID = 'id';
 

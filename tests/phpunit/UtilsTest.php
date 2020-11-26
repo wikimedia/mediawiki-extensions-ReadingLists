@@ -24,12 +24,12 @@ class UtilsTest extends MediaWikiTestCase {
 	 * @dataProvider provideIsCentralWiki
 	 * @covers \MediaWiki\Extensions\ReadingLists\Utils::isCentralWiki
 	 */
-	public function testIsCentralWiki( $wgReadingListsCentralWiki, $expectedResult ) {
+	public function testIsCentralWiki( $readingListsCentralWiki, $expectedResult ) {
 		// Wiki name is changed between the data provider and the test so allow delayed lookup.
-		if ( $wgReadingListsCentralWiki instanceof Closure ) {
-			$wgReadingListsCentralWiki = $wgReadingListsCentralWiki();
+		if ( $readingListsCentralWiki instanceof Closure ) {
+			$readingListsCentralWiki = $readingListsCentralWiki();
 		}
-		$this->setMwGlobals( 'wgReadingListsCentralWiki', $wgReadingListsCentralWiki );
+		$this->setMwGlobals( 'wgReadingListsCentralWiki', $readingListsCentralWiki );
 		$this->assertSame( $expectedResult, Utils::isCentralWiki( MediaWikiServices::getInstance() ) );
 	}
 
