@@ -18,6 +18,7 @@ class ApiReadingListsSetupAndTeardownTest extends ApiTestCase {
 
 	use ReadingListsTestHelperTrait;
 
+	/** @var array */
 	private $apiParams = [
 		'action' => 'readinglists',
 		'format' => 'json',

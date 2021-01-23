@@ -16,13 +16,14 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 
 	use ReadingListsTestHelperTrait;
 
+	/** @var array */
 	private $apiParams = [
 		'action'  => 'query',
 		'format'  => 'json',
 		'meta'    => 'readinglists',
 	];
 
-	// Create date that isn't older than one month to test rlchangedsince
+	/** @var string Create date that isn't older than one month to test rlchangedsince */
 	private $lastUpdate;
 
 	public function __construct( $name = null, array $data = [], $dataName = '' ) {

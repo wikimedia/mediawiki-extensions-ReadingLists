@@ -27,6 +27,7 @@ class ApiQueryTraitTest extends TestCase {
 
 	/** @var ApiTrait */
 	private $rlApi;
+	/** @var ApiQueryReadingListEntries */
 	private $rleApi;
 
 	public function setUp() : void {
