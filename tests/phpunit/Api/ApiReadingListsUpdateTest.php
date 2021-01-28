@@ -18,12 +18,14 @@ class ApiReadingListsUpdateTest extends ApiTestCase {
 
 	use ReadingListsTestHelperTrait;
 
+	/** @var array */
 	private $apiParams = [
 		'action'  => 'readinglists',
 		'format'  => 'json',
 		'command' => 'update',
 	];
 
+	/** @var \User */
 	private $user;
 
 	protected function setUp() : void {

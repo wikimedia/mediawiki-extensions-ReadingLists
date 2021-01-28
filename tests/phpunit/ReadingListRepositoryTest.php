@@ -33,8 +33,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 
 	/**
 	 * @dataProvider provideAssertUser
-	 * @param string $method ReadingListRepository method name
-	 * @param mixed $param... Method parameters
 	 */
 	public function testAssertUser( $method ) {
 		$repository = new ReadingListRepository( null, $this->db, $this->db, $this->lbFactory );
@@ -72,8 +70,6 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 
 	/**
 	 * @dataProvider provideUninitializedErrors
-	 * @param string $method ReadingListRepository method name
-	 * @param mixed $param... Method parameters
 	 */
 	public function testUninitializedErrors( $method ) {
 		$this->addDataForAnotherUser();
@@ -1362,7 +1358,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 
 	/**
 	 * @param string $expectedTimestamp
-	 * @param $actualTimestamp
+	 * @param string $actualTimestamp
 	 * @param string $msg
 	 */
 	private function assertTimestampEquals( $expectedTimestamp, $actualTimestamp, $msg = '' ) {

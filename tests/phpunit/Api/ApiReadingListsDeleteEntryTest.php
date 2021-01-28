@@ -17,12 +17,14 @@ class ApiReadingListsDeleteEntryTest extends ApiTestCase {
 
 	use ReadingListsTestHelperTrait;
 
+	/** @var array */
 	private $apiParams = [
 		'action'  => 'readinglists',
 		'format'  => 'json',
 		'command' => 'deleteentry',
 	];
 
+	/** @var \User */
 	private $user;
 
 	protected function setUp() : void {

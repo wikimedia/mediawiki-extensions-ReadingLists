@@ -17,12 +17,14 @@ class ApiReadingListsCreateTest extends ApiTestCase {
 
 	use ReadingListsTestHelperTrait;
 
+	/** @var array */
 	private $apiParams = [
 		'action' => 'readinglists',
 		'format' => 'json',
 		'command' => 'create',
 	];
 
+	/** @var \User */
 	private $user;
 
 	protected function setUp() : void {
