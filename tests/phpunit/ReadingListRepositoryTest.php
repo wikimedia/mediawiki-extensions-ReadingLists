@@ -286,7 +286,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		};
 		$compare = function ( array $expected, IResultWrapper $res ) use ( $compareResultItems ) {
 			$data = $this->resultWrapperToArray( $res );
-			$this->assertEquals( count( $expected ), count( $data ), 'result length is different!' );
+			$this->assertCount( count( $expected ), $data, 'result length is different!' );
 			array_map( $compareResultItems, $expected, $data );
 		};
 
@@ -689,7 +689,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		};
 		$compare = function ( $expected, $res ) use ( $compareResultItems ) {
 			$data = $this->resultWrapperToArray( $res );
-			$this->assertEquals( count( $expected ), count( $data ), 'result length is different!' );
+			$this->assertCount( count( $expected ), $data, 'result length is different!' );
 			array_map( $compareResultItems, $expected, $data, range( 1, count( $expected ) ) );
 		};
 
