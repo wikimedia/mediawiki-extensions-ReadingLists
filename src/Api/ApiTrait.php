@@ -164,19 +164,15 @@ trait ApiTrait {
 	 * Validate a single operation in the 'batch' parameter of write APIs. Works the same way as
 	 * requireAtLeastOneParameter.
 	 * @param array $op
-	 * @param string $param,...
+	 * @param string ...$param
 	 * @throws ApiUsageException
 	 */
-	// @codingStandardsIgnoreLine MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment
-	protected function requireAtLeastOneBatchParameter( array $op, $param /*...*/ ) {
-		$required = func_get_args();
-		array_shift( $required );
-
+	protected function requireAtLeastOneBatchParameter( array $op, ...$param ) {
 		$intersection = array_intersect(
 			array_keys( array_filter( $op, function ( $val ) {
 				return $val !== null && $val !== false;
 			} ) ),
-			$required
+			$param
 		);
 
 		if ( count( $intersection ) == 0 ) {
@@ -188,9 +184,9 @@ trait ApiTrait {
 						// @phan-suppress-next-line PhanUndeclaredMethod
 						return '<var>' . $this->encodeParamName( $p ) . '</var>';
 					},
-					array_values( $required )
+					$param
 				) ),
-				count( $required ),
+				count( $param ),
 			], 'missingparam' );
 		}
 	}
