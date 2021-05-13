@@ -28,7 +28,7 @@ class ApiTraitTest extends TestCase {
 		$context = RequestContext::newExtraneousContext( Title::newMainPage() );
 		$context->setRequest( $request );
 		$this->api = $this->getMockBuilder( ApiTrait::class )
-			->setMethods( [ 'getContext', 'dieWithError', 'encodeParamName' ] )
+			->addMethods( [ 'getContext', 'dieWithError', 'encodeParamName' ] )
 			->disableOriginalConstructor()
 			->getMockForTrait();
 		$this->api->expects( $this->any() )
@@ -36,7 +36,7 @@ class ApiTraitTest extends TestCase {
 			->willReturn( $context );
 		$this->api->expects( $this->any() )
 			->method( 'dieWithError' )
-			->willReturnCallback( function ( $msg ) {
+			->willReturnCallback( static function ( $msg ) {
 				throw new ApiUsageException( null,
 					StatusValue::newFatal( ApiMessage::create( $msg ) ) );
 			} );

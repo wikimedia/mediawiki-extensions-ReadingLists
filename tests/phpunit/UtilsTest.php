@@ -34,7 +34,7 @@ class UtilsTest extends MediaWikiTestCase {
 	}
 
 	public function provideIsCentralWiki() {
-		$wfWikiID = function () {
+		$wfWikiID = static function () {
 			return wfWikiID();
 		};
 		return [

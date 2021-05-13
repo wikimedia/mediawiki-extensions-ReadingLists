@@ -438,7 +438,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			'rl_name' => $name,
 			'rl_description' => $description,
 			'rl_date_updated' => $this->dbw->timestamp(),
-		], function ( $field ) {
+		], static function ( $field ) {
 			return $field !== null;
 		} );
 		if ( (array)$row === array_merge( (array)$row, $data ) ) {

@@ -35,7 +35,7 @@ class ApiQueryTraitTest extends TestCase {
 		$context = RequestContext::newExtraneousContext( Title::newMainPage() );
 		$context->setRequest( $request );
 		$this->rlApi = $this->getMockBuilder( ApiQueryReadingLists::class )
-			->setMethods( [ 'getContext', 'dieContinueUsageIf', 'dieWithError', 'encodeParamName' ] )
+			->onlyMethods( [ 'getContext', 'dieContinueUsageIf', 'dieWithError', 'encodeParamName' ] )
 			->disableOriginalConstructor()
 			->getMock();
 		$this->rlApi->expects( $this->any() )
@@ -43,7 +43,7 @@ class ApiQueryTraitTest extends TestCase {
 			->willReturn( $context );
 		$this->rlApi->expects( $this->any() )
 			->method( 'dieWithError' )
-			->willReturnCallback( function ( $msg ) {
+			->willReturnCallback( static function ( $msg ) {
 				throw new ApiUsageException( null,
 					StatusValue::newFatal( ApiMessage::create( $msg ) ) );
 			} );

@@ -56,7 +56,7 @@ class ApiReadingLists extends ApiBase {
 	 */
 	public function getModuleManager() {
 		if ( !$this->moduleManager ) {
-			$modules = array_map( function ( $class ) {
+			$modules = array_map( static function ( $class ) {
 				return [
 					'class' => $class,
 					'factory' => "$class::factory",

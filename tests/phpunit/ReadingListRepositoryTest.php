@@ -38,7 +38,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$repository = new ReadingListRepository( null, $this->db, $this->db, $this->lbFactory );
 		$call = func_get_args();
 		$this->assertFailsWith( 'readinglists-db-error-user-required',
-			function () use ( $repository, $call ) {
+			static function () use ( $repository, $call ) {
 				$method = array_shift( $call );
 				$params = $call;
 				call_user_func_array( [ $repository, $method ], $params );
@@ -76,7 +76,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
 		$call = func_get_args();
 		$this->assertFailsWith( 'readinglists-db-error-not-set-up',
-			function () use ( $repository, $call ) {
+			static function () use ( $repository, $call ) {
 				$method = array_shift( $call );
 				$params = $call;
 				call_user_func_array( [ $repository, $method ], $params );
@@ -110,7 +110,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		// one row after setup; isSetupForUser() is true
 		$list = $repository->setupForUser();
 		$this->assertFailsWith( 'readinglists-db-error-already-set-up',
-			function () use ( $repository ) {
+			static function () use ( $repository ) {
 				$repository->setupForUser();
 			}
 		);
@@ -213,7 +213,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertEquals( $list->rl_id, $mergedList->rl_id );
 		$this->assertTrue( $mergedList->merged );
 
-		$this->assertFailsWith( 'readinglists-db-error-too-long', function () use ( $repository ) {
+		$this->assertFailsWith( 'readinglists-db-error-too-long', static function () use ( $repository ) {
 			$repository->addList( 'boom',  str_pad( '', 1000, 'x' ) );
 		} );
 	}
@@ -226,7 +226,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$list = $repository->addList( 'foo' );
 		$repository->deleteList( $list->rl_id );
 		$list2 = $repository->addList( 'bar' );
-		$this->assertFailsWith( 'readinglists-db-error-list-limit', function () use ( $repository ) {
+		$this->assertFailsWith( 'readinglists-db-error-list-limit', static function () use ( $repository ) {
 			$repository->addList( 'baz' );
 		} );
 
@@ -417,7 +417,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertEquals( 'yyy', $list->rl_description );
 
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
-			function () use ( $repository ) {
+			static function () use ( $repository ) {
 				$repository->updateList( 123, 'foo' );
 			}
 		);
@@ -428,12 +428,12 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
-			function () use ( $repository, $deletedListId ) {
+			static function () use ( $repository, $deletedListId ) {
 				$repository->updateList( $deletedListId, 'bar' );
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-duplicate-list',
-			function () use ( $repository, $listId ) {
+			static function () use ( $repository, $listId ) {
 				$repository->updateList( $listId, 'foo2' );
 			}
 		);
@@ -468,7 +468,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			'rl_date_updated', [ 'rl_id' => $listId ] ) );
 
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
-			function () use ( $repository ) {
+			static function () use ( $repository ) {
 				$repository->deleteList( 123 );
 			}
 		);
@@ -479,7 +479,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
-			function () use ( $repository, $deletedListId ) {
+			static function () use ( $repository, $deletedListId ) {
 				$repository->deleteList( $deletedListId );
 			}
 		);
@@ -543,7 +543,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertTrue( $dupeEntry->merged );
 
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
-			function () use ( $repository ) {
+			static function () use ( $repository ) {
 				$repository->addListEntry( 123, 'https://en.wikipedia.org', 'A' );
 			}
 		);
@@ -554,12 +554,12 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
-			function () use ( $repository, $deletedListId ) {
+			static function () use ( $repository, $deletedListId ) {
 				$repository->addListEntry( $deletedListId, 'https://en.wikipedia.org', 'C' );
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-no-such-project',
-			function () use ( $repository, $listId ) {
+			static function () use ( $repository, $listId ) {
 				$repository->addListEntry( $listId, 'https://nosuch.project.org', 'Foo' );
 			}
 		);
@@ -580,7 +580,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		// assert that limits work
 		$entry = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
 		$this->assertFailsWith( 'readinglists-db-error-entry-limit',
-			function () use ( $repository, $listId ) {
+			static function () use ( $repository, $listId ) {
 				$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Baz' );
 			}
 		);
@@ -588,7 +588,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$repository->deleteListEntry( $entry->rle_id );
 		$entry2 = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Bar' );
 		$this->assertFailsWith( 'readinglists-db-error-entry-limit',
-			function () use ( $repository, $listId ) {
+			static function () use ( $repository, $listId ) {
 				$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Baz' );
 			}
 		);
@@ -596,7 +596,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$repository->deleteListEntry( $entry2->rle_id );
 		$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Bar' );
 		$this->assertFailsWith( 'readinglists-db-error-entry-limit',
-			function () use ( $repository, $listId ) {
+			static function () use ( $repository, $listId ) {
 				$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Baz' );
 			}
 		);
@@ -614,7 +614,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$repository->addListEntry( $listId2, 'https://en.wikipedia.org', 'Foo' );
 		$repository->addListEntry( $listId2, 'https://en.wikipedia.org', 'Bar' );
 		$this->assertFailsWith( 'readinglists-db-error-entry-limit',
-			function () use ( $repository, $listId2 ) {
+			static function () use ( $repository, $listId2 ) {
 				$repository->addListEntry( $listId2, 'https://en.wikipedia.org', 'Baz' );
 			}
 		);
@@ -786,13 +786,13 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		] );
 
 		$this->assertFailsWith( 'readinglists-db-error-empty-list-ids',
-			function () use ( $repository ) {
+			static function () use ( $repository ) {
 				$repository->getListEntries( [], ReadingListRepository::SORT_BY_NAME,
 					ReadingListRepository::SORT_DIR_ASC );
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
-			function () use ( $repository ) {
+			static function () use ( $repository ) {
 				$repository->getListEntries( [ 123 ], ReadingListRepository::SORT_BY_NAME,
 					ReadingListRepository::SORT_DIR_ASC );
 			}
@@ -805,7 +805,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
-			function () use ( $repository, $deletedListId ) {
+			static function () use ( $repository, $deletedListId ) {
 				$repository->getListEntries( [ $deletedListId ], ReadingListRepository::SORT_BY_NAME,
 					ReadingListRepository::SORT_DIR_ASC );
 			}
@@ -898,7 +898,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 		$this->assertSame( 0, intval( $outOfSyncSize ) );
 
 		$this->assertFailsWith( 'readinglists-db-error-no-such-list-entry',
-			function () use ( $repository ) {
+			static function () use ( $repository ) {
 				$repository->deleteListEntry( 123 );
 			}
 		);
@@ -909,12 +909,12 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-list-entry-deleted',
-			function () use ( $repository, $fooId ) {
+			static function () use ( $repository, $fooId ) {
 				$repository->deleteListEntry( $fooId );
 			}
 		);
 		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
-			function () use ( $repository, $parentDeletedId ) {
+			static function () use ( $repository, $parentDeletedId ) {
 				$repository->deleteListEntry( $parentDeletedId );
 			}
 		);
@@ -1409,7 +1409,7 @@ class ReadingListRepositoryTest extends MediaWikiTestCase {
 	 * @return array
 	 */
 	private function resultWrapperToArray( IResultWrapper $res, $filter = null ) {
-		return array_values( array_map( function ( $row ) use ( $filter ) {
+		return array_values( array_map( static function ( $row ) use ( $filter ) {
 			$row = (array)$row;
 			if ( is_array( $filter ) ) {
 				$row = array_intersect_key( $row, array_fill_keys( $filter, true ) );
