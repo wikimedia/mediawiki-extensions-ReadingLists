@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ajeje Brazorf",
 			"DePlusJean",
 			"Gomoko",
 			"Pamputt",
@@ -11,7 +12,7 @@
 	},
 	"readinglists-desc": "Autorise les utilisateurs à gérer des listes privées d'articles, comme les listes de favoris ou \"A lire plus tard\".",
 	"readinglists-db-error-not-set-up": "Les listes de lecture n’ont pas été définies pour cet utilisateur.",
-	"readinglists-db-error-already-set-up": "Les listes de lecture ont déja été définies pour cet utilisateur.",
+	"readinglists-db-error-already-set-up": "Les listes de lecture ont déjà été définies pour cet utilisateur.",
 	"readinglists-db-error-cannot-delete-default-list": "La liste par défaut ne peut pas être supprimée.",
 	"readinglists-db-error-cannot-update-default-list": "La liste par défaut ne peut pas être mise à jour.",
 	"readinglists-db-error-no-such-list": "La liste $1 n’existe pas.",
@@ -21,7 +22,7 @@
 	"readinglists-db-error-list-deleted": "La liste $1 a été supprimée.",
 	"readinglists-db-error-list-entry-deleted": "L’entrée de liste $1 a été supprimée.",
 	"readinglists-db-error-duplicate-list": "Une liste avec ce nom existe déjà.",
-	"readinglists-db-error-duplicate-page": "La liste contient déja cette page.",
+	"readinglists-db-error-duplicate-page": "La liste contient déjà cette page.",
 	"readinglists-db-error-empty-list-ids": "Le paramètre ids de liste ne doit pas être vide.",
 	"readinglists-db-error-user-required": "Cette méthode ne peut pas être appelée sans spécifier l’utilisateur.",
 	"readinglists-db-error-list-limit": "Les utilisateurs ne peuvent pas avoir plus de $1 {{PLURAL:$1|liste|listes}}.",
