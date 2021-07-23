@@ -28,7 +28,7 @@ class ApiReadingListsDeleteTest extends ApiTestCase {
 	/** @var \User */
 	private $user;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->tablesUsed = array_merge( $this->tablesUsed, HookHandler::$testTables );
 		$this->user = parent::getTestSysop()->getUser();
@@ -93,7 +93,7 @@ class ApiReadingListsDeleteTest extends ApiTestCase {
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 		$this->readingListsTeardown();
 	}
