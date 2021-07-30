@@ -66,7 +66,7 @@ trait ApiTrait {
 
 		$services = MediaWikiServices::getInstance();
 		$loadBalancerFactory = $services->getDBLoadBalancerFactory();
-		$dbw = Utils::getDB( DB_MASTER, $services );
+		$dbw = Utils::getDB( DB_PRIMARY, $services );
 		$dbr = Utils::getDB( DB_REPLICA, $services );
 		$module->injectDatabaseDependencies( $loadBalancerFactory, $dbw, $dbr );
 

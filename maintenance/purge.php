@@ -56,7 +56,7 @@ class Purge extends Maintenance {
 	private function getReadingListRepository() {
 		$services = MediaWikiServices::getInstance();
 		$loadBalancerFactory = $services->getDBLoadBalancerFactory();
-		$dbw = Utils::getDB( DB_MASTER, $services );
+		$dbw = Utils::getDB( DB_PRIMARY, $services );
 		$dbr = Utils::getDB( DB_REPLICA, $services );
 		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
 		// There isn't really any way for this user to be non-local, but let's be future-proof.

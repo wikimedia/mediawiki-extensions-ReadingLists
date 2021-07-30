@@ -87,7 +87,7 @@ class HookHandler {
 	 * Cleans up tables created by onUnitTestsAfterDatabaseSetup() above
 	 */
 	public static function onUnitTestsBeforeDatabaseTeardown() {
-		$db = wfGetDB( DB_MASTER );
+		$db = wfGetDB( DB_PRIMARY );
 		foreach ( self::$testTables as $table ) {
 			$db->dropTable( $table );
 		}

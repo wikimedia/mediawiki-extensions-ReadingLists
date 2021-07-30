@@ -39,7 +39,7 @@ class FixListSize extends Maintenance {
 		// Can't do this in the constructor, initialization not done yet.
 		$services = MediaWikiServices::getInstance();
 		$this->loadBalancerFactory = $services->getDBLoadBalancerFactory();
-		$this->dbw = Utils::getDB( DB_MASTER, $services );
+		$this->dbw = Utils::getDB( DB_PRIMARY, $services );
 	}
 
 	/**
@@ -113,7 +113,7 @@ class FixListSize extends Maintenance {
 	private function getReadingListRepository() {
 		$services = MediaWikiServices::getInstance();
 		$loadBalancerFactory = $services->getDBLoadBalancerFactory();
-		$dbw = Utils::getDB( DB_MASTER, $services );
+		$dbw = Utils::getDB( DB_PRIMARY, $services );
 		$dbr = Utils::getDB( DB_REPLICA, $services );
 		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
 		// There isn't really any way for this user to be non-local, but let's be future-proof.

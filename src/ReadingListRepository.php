@@ -198,7 +198,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	public function isSetupForUser( $flags = 0 ) {
 		$this->assertUser();
 		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
-		$db = ( $index === DB_MASTER ) ? $this->dbw : $this->dbr;
+		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
 		$options = array_merge( $options, [ 'LIMIT' => 1 ] );
 		$res = $db->select(
 			'reading_list',
@@ -239,7 +239,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	public function selectValidList( $id, $flags = 0 ) {
 		$this->assertUser();
 		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
-		$db = ( $index === DB_MASTER ) ? $this->dbw : $this->dbr;
+		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
 		/** @var ReadingListRow $row */
 		$row = $db->selectRow(
 			'reading_list',
@@ -1156,7 +1156,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	private function getListCount( $flags = 0 ) {
 		$this->assertUser();
 		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
-		$db = ( $index === DB_MASTER ) ? $this->dbw : $this->dbr;
+		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
 		return $db->selectRowCount(
 			'reading_list',
 			'1',
@@ -1194,7 +1194,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	private function getEntryCount( $id, $flags = 0 ) {
 		$this->assertUser();
 		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
-		$db = ( $index === DB_MASTER ) ? $this->dbw : $this->dbr;
+		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
 		return (int)$db->selectField(
 			'reading_list',
 			'rl_size',

@@ -42,7 +42,7 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 
 		$services = MediaWikiServices::getInstance();
 		$loadBalancerFactory = $services->getDBLoadBalancerFactory();
-		$dbw = Utils::getDB( DB_MASTER, $services );
+		$dbw = Utils::getDB( DB_PRIMARY, $services );
 		$inserted = 0;
 
 		$this->output( "populating...\n" );

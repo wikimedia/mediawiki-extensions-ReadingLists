@@ -14,7 +14,7 @@ class UtilsTest extends MediaWikiTestCase {
 	 * @covers \MediaWiki\Extensions\ReadingLists\Utils::getDB
 	 */
 	public function testGetDB() {
-		$dbw = Utils::getDB( DB_MASTER, MediaWikiServices::getInstance() );
+		$dbw = Utils::getDB( DB_PRIMARY, MediaWikiServices::getInstance() );
 		$dbr = Utils::getDB( DB_REPLICA, MediaWikiServices::getInstance() );
 		$this->assertInstanceOf( DBConnRef::class, $dbw );
 		$this->assertInstanceOf( DBConnRef::class, $dbr );

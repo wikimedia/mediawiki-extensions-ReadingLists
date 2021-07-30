@@ -45,7 +45,7 @@ class PopulateWithTestData extends Maintenance {
 		// Can't do this in the constructor, initialization not done yet.
 		$services = MediaWikiServices::getInstance();
 		$this->loadBalancerFactory = $services->getDBLoadBalancerFactory();
-		$this->dbw = Utils::getDB( DB_MASTER, $services );
+		$this->dbw = Utils::getDB( DB_PRIMARY, $services );
 		$this->dbr = Utils::getDB( DB_REPLICA, $services );
 	}
 
@@ -123,7 +123,7 @@ class PopulateWithTestData extends Maintenance {
 
 	private function cleanupTestData() {
 		$services = MediaWikiServices::getInstance();
-		$dbw = Utils::getDB( DB_MASTER, $services );
+		$dbw = Utils::getDB( DB_PRIMARY, $services );
 		$ids = $dbw->selectFieldValues(
 			'reading_list',
 			'rl_id',
