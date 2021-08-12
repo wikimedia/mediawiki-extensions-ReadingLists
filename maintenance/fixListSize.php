@@ -2,7 +2,6 @@
 
 namespace MediaWiki\Extensions\ReadingLists\Maintenance;
 
-use CentralIdLookup;
 use Maintenance;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
@@ -117,7 +116,9 @@ class FixListSize extends Maintenance {
 		$dbr = Utils::getDB( DB_REPLICA, $services );
 		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
 		// There isn't really any way for this user to be non-local, but let's be future-proof.
-		$centralId = CentralIdLookup::factory()->centralIdFromLocalUser( $user );
+		$centralId = $services->getCentralIdLookupFactory()
+			->getLookup()
+			->centralIdFromLocalUser( $user );
 		$repository = new ReadingListRepository( $centralId, $dbw, $dbr, $loadBalancerFactory );
 		$repository->setLogger( LoggerFactory::getInstance( 'readinglists' ) );
 		return $repository;

@@ -13,9 +13,9 @@ use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
 use MediaWiki\Extensions\ReadingLists\Utils;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\UserIdentity;
 use Message;
 use Psr\Log\LoggerInterface;
-use User;
 use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\LBFactory;
 
@@ -99,14 +99,16 @@ trait ApiTrait {
 
 	/**
 	 * Get the repository for the given user.
-	 * @param User|null $user
+	 * @param UserIdentity|null $user
 	 * @return ReadingListRepository
 	 * @suppress PhanUndeclaredMethod
 	 */
-	protected function getReadingListRepository( User $user = null ) {
+	protected function getReadingListRepository( UserIdentity $user = null ) {
 		$config = $this->getConfig();
-		$centralId = CentralIdLookup::factory()->centralIdFromLocalUser( $user,
-			CentralIdLookup::AUDIENCE_RAW );
+		$centralId = MediaWikiServices::getInstance()
+			->getCentralIdLookupFactory()
+			->getLookup()
+			->centralIdFromLocalUser( $user, CentralIdLookup::AUDIENCE_RAW );
 		$repository = new ReadingListRepository( $centralId, $this->dbw, $this->dbr,
 			$this->loadBalancerFactory );
 		$repository->setLimits( $config->get( 'ReadingListsMaxListsPerUser' ),
