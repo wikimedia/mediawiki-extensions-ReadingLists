@@ -13,7 +13,7 @@ class Utils {
 
 	/**
 	 * Get a database connection for the reading lists database.
-	 * @param int $db Index of the connection to get, e.g. DB_MASTER or DB_REPLICA.
+	 * @param int $db Index of the connection to get, e.g. DB_PRIMARY or DB_REPLICA.
 	 * @param MediaWikiServices $services
 	 * @return DBConnRef
 	 */
