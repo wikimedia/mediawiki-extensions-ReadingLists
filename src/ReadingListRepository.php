@@ -348,7 +348,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		// in case some conversion or corruption happens in MySQL.
 		/** @var ReadingListRowWithMergeFlag $list */
 		$list = $this->selectValidList( $id, self::READ_LATEST );
-		// @phan-suppress-next-line PhanUndeclaredProperty Use of doc trait
+		'@phan-var ReadingListRowWithMergeFlag $list';
 		$list->merged = $merged;
 		return $list;
 	}
