@@ -8,7 +8,7 @@ use MediaWiki\Extensions\ReadingLists\HookHandler;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\MediaWikiServices;
-use MediaWikiTestCase;
+use MediaWikiIntegrationTestCase;
 use PHPUnit\Framework\Constraint\Exception;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\LBFactory;
@@ -18,7 +18,7 @@ use Wikimedia\Rdbms\LBFactory;
  * @covers \MediaWiki\Extensions\ReadingLists\ReadingListRepository
  * @covers \MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException
  */
-class ReadingListRepositoryTest extends MediaWikiTestCase {
+class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	use ReadingListsTestHelperTrait;
 

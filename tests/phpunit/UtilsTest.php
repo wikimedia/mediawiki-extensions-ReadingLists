@@ -5,10 +5,10 @@ namespace MediaWiki\Extensions\ReadingLists\Tests;
 use Closure;
 use MediaWiki\Extensions\ReadingLists\Utils;
 use MediaWiki\MediaWikiServices;
-use MediaWikiTestCase;
+use MediaWikiIntegrationTestCase;
 use Wikimedia\Rdbms\DBConnRef;
 
-class UtilsTest extends MediaWikiTestCase {
+class UtilsTest extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @covers \MediaWiki\Extensions\ReadingLists\Utils::getDB
