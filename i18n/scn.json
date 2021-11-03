@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ajeje Brazorf"
+		]
+	},
+	"readinglists-db-error-no-such-list": "L'elencu $1 nun esisti.",
+	"readinglists-db-error-list-deleted": "L'elencu $1 fu cancillatu.",
+	"readinglists-db-error-duplicate-list": "N'elencu cu stu nomu già esisti.",
+	"readinglists-browser-extension-info-link-text": "Àutri nfurmazzioni"
+}
