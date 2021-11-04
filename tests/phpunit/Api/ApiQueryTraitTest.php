@@ -38,24 +38,20 @@ class ApiQueryTraitTest extends TestCase {
 			->onlyMethods( [ 'getContext', 'dieContinueUsageIf', 'dieWithError', 'encodeParamName' ] )
 			->disableOriginalConstructor()
 			->getMock();
-		$this->rlApi->expects( $this->any() )
-			->method( 'getContext' )
+		$this->rlApi->method( 'getContext' )
 			->willReturn( $context );
-		$this->rlApi->expects( $this->any() )
-			->method( 'dieWithError' )
+		$this->rlApi->method( 'dieWithError' )
 			->willReturnCallback( static function ( $msg ) {
 				throw new ApiUsageException( null,
 					StatusValue::newFatal( ApiMessage::create( $msg ) ) );
 			} );
-		$this->rlApi->expects( $this->any() )
-			->method( 'dieWithError' )
+		$this->rlApi->method( 'dieWithError' )
 			->willReturnCallback( function ( $condition ) {
 				if ( $condition ) {
 					$this->dieWithError( 'apierror-badcontinue' );
 				}
 			} );
-		$this->rlApi->expects( $this->any() )
-			->method( 'encodeParamName' )
+		$this->rlApi->method( 'encodeParamName' )
 			->willReturnArgument( 0 );
 		// Mock Reading Lists Entries API to test encoded continuation parameter
 		$this->rleApi = $this->getMockBuilder( ApiQueryReadingListEntries::class )

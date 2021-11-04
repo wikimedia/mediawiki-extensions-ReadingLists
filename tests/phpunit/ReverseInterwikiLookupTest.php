@@ -18,7 +18,7 @@ class ReverseInterwikiLookupTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testLookup( $expectedPrefix, $domain, $iwTable ) {
 		$iwLookup = $this->getMockForAbstractClass( InterwikiLookup::class );
-		$iwLookup->expects( $this->any() )->method( 'getAllPrefixes' )->willReturn( $iwTable );
+		$iwLookup->method( 'getAllPrefixes' )->willReturn( $iwTable );
 
 		$lookup = new ReverseInterwikiLookup( $iwLookup, 'en.wikipedia.org' );
 		$actualPrefix = $lookup->lookup( $domain );

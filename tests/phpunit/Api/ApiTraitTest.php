@@ -31,17 +31,14 @@ class ApiTraitTest extends TestCase {
 			->addMethods( [ 'getContext', 'dieWithError', 'encodeParamName' ] )
 			->disableOriginalConstructor()
 			->getMockForTrait();
-		$this->api->expects( $this->any() )
-			->method( 'getContext' )
+		$this->api->method( 'getContext' )
 			->willReturn( $context );
-		$this->api->expects( $this->any() )
-			->method( 'dieWithError' )
+		$this->api->method( 'dieWithError' )
 			->willReturnCallback( static function ( $msg ) {
 				throw new ApiUsageException( null,
 					StatusValue::newFatal( ApiMessage::create( $msg ) ) );
 			} );
-		$this->api->expects( $this->any() )
-			->method( 'encodeParamName' )
+		$this->api->method( 'encodeParamName' )
 			->willReturnArgument( 0 );
 	}
 

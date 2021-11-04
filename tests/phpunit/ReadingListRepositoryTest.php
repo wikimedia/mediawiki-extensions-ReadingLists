@@ -240,8 +240,6 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @dataProvider provideGetAllLists
-	 * @param array $args
-	 * @param array $expected
 	 */
 	public function testGetAllLists( array $args, array $expected ) {
 		$this->addDataForAnotherUser();
@@ -622,8 +620,6 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @dataProvider provideGetListEntries
-	 * @param array $args
-	 * @param array $expected
 	 */
 	public function testGetListEntries( array $args, array $expected ) {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
@@ -922,8 +918,6 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @dataProvider provideGetListsByDateUpdated
-	 * @param array $args
-	 * @param array $expected
 	 */
 	public function testGetListsByDateUpdated( array $args, array $expected ) {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
@@ -992,8 +986,6 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @dataProvider provideGetListEntriesByDateUpdated
-	 * @param array $args
-	 * @param array $expected
 	 */
 	public function testGetListEntriesByDateUpdated( array $args, array $expected ) {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
@@ -1245,8 +1237,6 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @dataProvider provideGetListsByPage
-	 * @param array $args
-	 * @param array $expected
 	 */
 	public function testGetListsByPage( array $args, array $expected ) {
 		$repository = new ReadingListRepository( 1, $this->db, $this->db, $this->lbFactory );
