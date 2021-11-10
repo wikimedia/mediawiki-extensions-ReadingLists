@@ -50,7 +50,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	 * @param ApiPageSet|null $resultPageSet
 	 */
 	private function run( ApiPageSet $resultPageSet = null ) {
-		if ( $this->getUser()->isAnon() ) {
+		if ( !$this->getUser()->isRegistered() ) {
 			$this->dieWithError( [ 'apierror-mustbeloggedin',
 				$this->msg( 'action-viewmyprivateinfo' ) ], 'notloggedin' );
 		}
