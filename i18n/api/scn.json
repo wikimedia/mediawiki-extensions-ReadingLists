@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ajeje Brazorf"
+		]
+	},
+	"apihelp-query+readinglists-param-list": "ID elencu.",
+	"apihelp-readinglists+create-param-description": "Discrizzioni di l'elencu.",
+	"apihelp-readinglists+update-param-description": "Discrizzioni dû novu elencu.",
+	"apihelp-readinglists+createentry-param-list": "ID elencu."
+}
