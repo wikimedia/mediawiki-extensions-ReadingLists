@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Kly"
+			"Kly",
+			"Winston Sung"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var> 與 <var>$1title</var> 必須同時使用。",
@@ -20,7 +21,7 @@
 	"apihelp-query+readinglists-param-sort": "排序的屬性。當有設定 <var>$1project</var> 與 <var>$1title</var> 時會忽略（結果會以資料庫的排序來回傳）。當有設定 <var>$1changedsince</var> 時預設值為 <kbd>updated</kbd>，否則則是 <kbd>name</kbd>。",
 	"apihelp-query+readinglists-paramvalue-sort-name": "清單名稱。（排序是依照二位元值，例如：任何大寫的 ASCII 字元會排在小寫字元前面。）",
 	"apihelp-query+readinglists-paramvalue-sort-updated": "上次更新的時間戳記。（更新有包含清單詮釋資料更改，但清單項目更改不會包含到。）",
-	"apihelp-query+readinglists-param-dir": "排序方向：<kbd>ascending</kbd>（從 A 到 Z，最舊到最新）或 <kbd>descending</kbd>。當有設定 <var>$1project</var> 與 <var>$1title</var> 時會忽略。",
+	"apihelp-query+readinglists-param-dir": "排序方向：<kbd>ascending</kbd>（從 A 到 Z，最早到最新）或 <kbd>descending</kbd>。當有設定 <var>$1project</var> 與 <var>$1title</var> 時會忽略。",
 	"apihelp-query+readinglists-param-limit": "回傳的結果項目數量。",
 	"apihelp-query+readinglists-example-1": "取得目前使用者的閱讀清單",
 	"apihelp-query+readinglists-example-2": "取得目前使用者自 <kbd>2013-01-01T00:00:00Z</kbd> 以來更改的閱讀清單。",
@@ -32,7 +33,7 @@
 	"apihelp-query+readinglistentries-param-sort": "排序的屬性。<kbd>name</kbd> 不可與 <var>$1changedsince</var> 一同使用。當有設定 <var>$1changedsince</var> 時預設值為 <kbd>updated</kbd>，否則則是 <kbd>name</kbd>。",
 	"apihelp-query+readinglistentries-paramvalue-sort-name": "條目標題。（會忽略專案名稱。排序是依照二位元值，例如：任何大寫的 ASCII 字元會排在小寫字元前面。）",
 	"apihelp-query+readinglistentries-paramvalue-sort-updated": "上次更新的時間戳記。",
-	"apihelp-query+readinglistentries-param-dir": "排序方向：<kbd>ascending</kbd>（從 A 到 Z，最舊到最新）或 <kbd>descending</kbd>。",
+	"apihelp-query+readinglistentries-param-dir": "排序方向：<kbd>ascending</kbd>（從 A 到 Z，最早到最新）或 <kbd>descending</kbd>。",
 	"apihelp-query+readinglistentries-param-limit": "回傳的結果項目數量。",
 	"apihelp-query+readinglistentries-example-1": "取得 ID 為 <kbd>10</kbd>、<kbd>11</kbd>，和 <kbd>12</kbd> 的閱讀清單裡頭頁面。",
 	"apihelp-query+readinglistentries-example-2": "取得目前使用者自 <kbd>2013-01-01T00:00:00Z</kbd> 以來更改的清單項目。",
