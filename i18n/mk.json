@@ -22,7 +22,7 @@
 	"readinglists-db-error-user-required": "Не може да се повика овој начин без да се укаже корисник.",
 	"readinglists-db-error-list-limit": "Корисниците не можат да имаат повеќе од $1 {{PLURAL:$1|список|списоци}}.",
 	"readinglists-db-error-entry-limit": "Списокот $1 не може да има повеќе од $2 {{PLURAL:$2|ставка|ставки}}.",
-	"readinglists-db-error-too-long": "Вреднсота за полето $1 не може да е подолга од $2 бајти.",
+	"readinglists-db-error-too-long": "Вредноста за полето $1 не може да е подолга од $2 бајти.",
 	"readinglists-db-error-no-such-project": "„$1“ не е признаен проект.",
 	"readinglists-browser-add-entry-success": "„$1“ е зачувана во вашите набљудувани",
 	"readinglists-browser-login-prompt": "Најавете се за да зачувувате статии",
