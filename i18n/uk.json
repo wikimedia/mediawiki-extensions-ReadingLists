@@ -2,7 +2,9 @@
 	"@metadata": {
 		"authors": [
 			"Piramidion",
-			"Ата"
+			"Ата",
+			"Andriy.v",
+			"DDPAT"
 		]
 	},
 	"readinglists-desc": "Дозволяє користувачам керувати приватними списками статей, такими як списки закладок чи «Прочитати пізніше».",
@@ -23,10 +25,10 @@
 	"readinglists-db-error-list-limit": "Користувачі не можуть мати більше $1 {{PLURAL:$1|списку|списків}}.",
 	"readinglists-db-error-entry-limit": "Список $1 не може мати більше $2 {{PLURAL:$2|пункту|пунктів}}.",
 	"readinglists-db-error-too-long": "Значення поля $1 не може бути довшим $2 байтів.",
-	"readinglists-db-error-no-such-project": "«$1» — не розпізнається як проект.",
+	"readinglists-db-error-no-such-project": "«$1» — не розпізнається як проєкт.",
 	"readinglists-browser-add-entry-success": "$1 збережено у Вашому списку для читання",
 	"readinglists-browser-login-prompt": "Увійдіть, щоб зберігати статті",
-	"readinglists-browser-error-intro": "Виникла помилка: $1",
+	"readinglists-browser-error-intro": "Сталася помилка: $1",
 	"readinglists-browser-enable-sync-prompt": "Увімкнути синхронцзацію на Вашому додатку Вікіпедії, щоб почати зберігати статті",
 	"readinglists-browser-extension-info-link-text": "Дізнатись більше",
 	"readinglists-browser-list-entry-limit-exceeded": "Статтю зберегти не вдалося. Ви досягли ліміту ($1) статей на список",

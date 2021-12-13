@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"BaRaN6161 TURK",
-			"Hedda"
+			"Hedda",
+			"ToprakM"
 		]
 	},
 	"readinglists-desc": "Kullanıcıların yer imleri veya \"Daha Sonra Oku\" listeleri gibi özel madde listelerini yönetmesine olanak tanır.",
@@ -25,9 +26,9 @@
 	"readinglists-db-error-too-long": "$1 alanı için değer $2 bayttan uzun olamaz.",
 	"readinglists-db-error-no-such-project": "'$1' tanınmış bir proje değil.",
 	"readinglists-browser-add-entry-success": "$1 okuma listenize kaydedildi",
-	"readinglists-browser-login-prompt": "Makaleleri kaydetmek için giriş yapın",
+	"readinglists-browser-login-prompt": "Maddeleri kaydetmek için giriş yapın",
 	"readinglists-browser-error-intro": "Bir hata oluştu: $1",
-	"readinglists-browser-enable-sync-prompt": "Makaleleri kaydetmeye başlamak için Vikipedi uygulamanızda senkronizasyonu etkinleştirin",
+	"readinglists-browser-enable-sync-prompt": "Maddeleri kaydetmeye başlamak için Vikipedi uygulamanızda senkronizasyonu etkinleştirin",
 	"readinglists-browser-extension-info-link-text": "Daha fazla bilgi",
 	"readinglists-browser-list-entry-limit-exceeded": "Madde kaydedilemez. Liste başına $1 madde sınırına ulaştınız",
 	"readinglists-browser-extension-product-title": "Vikipedi Okuma Listeleri",

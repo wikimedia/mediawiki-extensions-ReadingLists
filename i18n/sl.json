@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eleassar"
+		]
+	},
+	"readinglists-browser-add-entry-success": "Članek »$1« je shranjen na vaš bralni seznam.",
+	"readinglists-browser-extension-info-link-text": "Več o tem",
+	"readinglists-browser-list-entry-limit-exceeded": "Članka ni bilo mogoče shraniti. Dosegli ste omejitev $1 člankov na seznam."
+}

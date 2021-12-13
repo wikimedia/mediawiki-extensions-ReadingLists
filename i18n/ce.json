@@ -4,5 +4,6 @@
 			"Умар"
 		]
 	},
-	"apihelp-query+readinglists-param-list": "МогӀаман ID."
+	"readinglists-desc": "Лелорхошна аьтто бо приватан могӀамашна урхалладан, йукъайуьллургаш йа «йеша тӀаьхьо» санна йолу.",
+	"readinglists-browser-error-intro": "ГӀалат даьлла: $1"
 }
