@@ -6,6 +6,7 @@ use Closure;
 use MediaWiki\Extensions\ReadingLists\Utils;
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
+use WikiMap;
 use Wikimedia\Rdbms\DBConnRef;
 
 class UtilsTest extends MediaWikiIntegrationTestCase {
@@ -34,12 +35,12 @@ class UtilsTest extends MediaWikiIntegrationTestCase {
 	}
 
 	public function provideIsCentralWiki() {
-		$wfWikiID = static function () {
-			return wfWikiID();
+		$currentWikiId = static function () {
+			return WikiMap::getCurrentWikiId();
 		};
 		return [
 			[ false, true ],
-			[ $wfWikiID, true ],
+			[ $currentWikiId, true ],
 			[ 'foo', false ],
 		];
 	}

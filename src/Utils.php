@@ -4,6 +4,7 @@ namespace MediaWiki\Extensions\ReadingLists;
 
 use MediaWiki\MediaWikiServices;
 use UnexpectedValueException;
+use WikiMap;
 use Wikimedia\Rdbms\DBConnRef;
 
 /**
@@ -51,7 +52,7 @@ class Utils {
 		if ( $centralWiki === false ) {
 			return true;
 		}
-		return ( wfWikiID() === $centralWiki );
+		return ( WikiMap::getCurrentWikiId() === $centralWiki );
 	}
 
 	/**
