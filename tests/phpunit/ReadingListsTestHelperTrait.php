@@ -25,7 +25,13 @@ trait ReadingListsTestHelperTrait {
 				$entries = $list['entries'];
 				unset( $list['entries'] );
 			}
-			$this->db->insert( 'reading_list', $list );
+			if ( isset( $list['rl_date_created'] ) ) {
+				$list['rl_date_created'] = $this->db->timestamp( $list['rl_date_created'] );
+			}
+			if ( isset( $list['rl_date_updated'] ) ) {
+				$list['rl_date_updated'] = $this->db->timestamp( $list['rl_date_updated'] );
+			}
+			$this->db->insert( 'reading_list', $list, __METHOD__ );
 			$listId = $this->db->insertId();
 			if ( $entries !== null ) {
 				$this->addListEntries( $listId, $list['rl_user_id'], $entries );
@@ -58,11 +64,17 @@ trait ReadingListsTestHelperTrait {
 				unset( $entry['rlp_project'] );
 				$entry['rle_rlp_id'] = $projectId;
 			}
-			$this->db->insert( 'reading_list_entry', $entry );
+			if ( isset( $entry['rle_date_created'] ) ) {
+				$entry['rle_date_created'] = $this->db->timestamp( $entry['rle_date_created'] );
+			}
+			if ( isset( $entry['rle_date_updated'] ) ) {
+				$entry['rle_date_updated'] = $this->db->timestamp( $entry['rle_date_updated'] );
+			}
+			$this->db->insert( 'reading_list_entry', $entry, __METHOD__ );
 			$entryId = $this->db->insertId();
 			$entryIds[] = $entryId;
 		}
-		$entryCount = $this->db->selectRowCount( 'reading_list_entry', '*', [ 'rle_rl_id' => $listId ] );
+		$entryCount = $this->db->selectRowCount( 'reading_list_entry', '*', [ 'rle_rl_id' => $listId ], __METHOD__ );
 		$this->db->update( 'reading_list', [ 'rl_size' => $entryCount ], [ 'rl_id' => $listId ] );
 		return $entryIds;
 	}
@@ -86,7 +98,8 @@ trait ReadingListsTestHelperTrait {
 				$projectId = $this->db->selectField(
 					'reading_list_project',
 					'rlp_id',
-					[ 'rlp_project' => $project ]
+					[ 'rlp_project' => $project ],
+					__METHOD__
 				);
 			}
 			$ids[] = $projectId;
