@@ -1,0 +1,217 @@
+[
+	{
+		"name": "reading_list",
+		"comment": "Lists.",
+		"columns": [
+			{
+				"name": "rl_id",
+				"type": "integer",
+				"options": { "autoincrement": true, "notnull": true, "unsigned": true }
+			},
+			{
+				"name": "rl_user_id",
+				"comment": "Central ID of user.",
+				"type": "integer",
+				"options": { "notnull": true, "unsigned": true }
+			},
+			{
+				"name": "rl_is_default",
+				"comment": "Flag to tell apart the initial list from the rest, for UX purposes and to forbid deleting it. Users with more than zero lists always have exactly one default list.",
+				"type": "mwtinyint",
+				"options": { "notnull": true, "default": 0 }
+			},
+			{
+				"name": "rl_name",
+				"comment": "Human-readable name of the list. (Enforced by software to be unique.)",
+				"type": "binary",
+				"options": { "notnull": true, "length": 255 }
+			},
+			{
+				"name": "rl_description",
+				"comment": "Description of the list.",
+				"type": "binary",
+				"options": { "notnull": true, "length": 767, "default": "" }
+			},
+			{
+				"name": "rl_date_created",
+				"comment": "Creation timestamp.",
+				"type": "mwtimestamp",
+				"options": { "notnull": true, "default": "19700101000000" }
+			},
+			{
+				"name": "rl_date_updated",
+				"comment": "Last modification timestamp. This only reflects modifications to the reading_list record, not modifications/additions/deletions of child entries.",
+				"type": "mwtimestamp",
+				"options": { "notnull": true, "default": "19700101000000" }
+			},
+			{
+				"name": "rl_size",
+				"comment": "Number of items in the list. Intended as a temporary performance optimization until T177462 is sorted out.",
+				"type": "integer",
+				"options": { "notnull": true, "unsigned": true, "default": 0 }
+			},
+			{
+				"name": "rl_deleted",
+				"comment": "Deleted flag. Lists will be hard-deleted eventually but kept around for a while for sync.",
+				"type": "mwtinyint",
+				"options": { "notnull": true, "default": 0 }
+			}
+		],
+		"indexes": [
+			{
+				"name": "rl_user_default",
+				"comment": "For isSetupForUser() which is called a lot and used for row locks. Will only ever be used with rl_is_default = 1 so effectively a unique index.",
+				"columns": [ "rl_user_id", "rl_is_default" ],
+				"unique": false
+			},
+			{
+				"name": "rl_user_deleted_name_id",
+				"comment": "For querying lists of a user by name (and then id as a tiebreaker). Covers getAllLists() with SORT_BY_NAME.",
+				"columns": [ "rl_user_id", "rl_deleted", "rl_name", "rl_id" ],
+				"unique": true
+			},
+			{
+				"name": "rl_user_deleted_updated_id",
+				"comment": "For querying lists of a user by last updated timestamp (and then id as a tiebreaker). Covers getAllLists() with SORT_BY_UPDATED.",
+				"columns": [ "rl_user_id", "rl_deleted", "rl_date_updated", "rl_id" ],
+				"unique": true
+			},
+			{
+				"name": "rl_user_name_id",
+				"comment": "Like rl_user_deleted_name_id, except for getListsByDateUpdated() which does not have rl_deleted=0. TODO this is the lazy option, the index rl_user_deleted_name_id could be made to work if the sort matched the condition.",
+				"columns": [ "rl_user_id", "rl_name", "rl_id" ],
+				"unique": true
+			},
+			{
+				"name": "rl_user_updated_id",
+				"comment": "Like rl_user_deleted_updated_id, except for getListsByDateUpdated() which does not have rl_deleted=0. TODO this is the lazy option, the index rl_user_deleted_updated_id could be made to work if the sort matched the condition.",
+				"columns": [ "rl_user_id", "rl_deleted", "rl_date_updated", "rl_id" ],
+				"unique": true
+			},
+			{
+				"name": "rl_deleted_updated",
+				"comment": "For getting all deleted items older than a given date. Covers purgeOldDeleted().",
+				"columns": [ "rl_deleted", "rl_date_updated" ],
+				"unique": false
+			}
+		],
+		"pk": [ "rl_id" ]
+	},
+	{
+		"name": "reading_list_entry",
+		"comment": "List items.",
+		"columns": [
+			{
+				"name": "rle_id",
+				"type": "integer",
+				"options": { "autoincrement": true, "notnull": true, "unsigned": true }
+			},
+			{
+				"name": "rle_rl_id",
+				"comment": "Reference to reading_list.rl_id.",
+				"type": "integer",
+				"options": { "notnull": true, "unsigned": true }
+			},
+			{
+				"name": "rle_user_id",
+				"comment": "Central ID of user, denormalized for the benefit of the /pages/ route.",
+				"type": "integer",
+				"options": { "notnull": true, "unsigned": true }
+			},
+			{
+				"name": "rle_rlp_id",
+				"comment": "Reference to reading_list_project.rlp_id.",
+				"type": "integer",
+				"options": { "notnull": true, "unsigned": true }
+			},
+			{
+				"name": "rle_title",
+				"comment": "Page title (including localised namespace name). We can't easily use page ids due to the cross-wiki nature of the project; also, page ids don't age well when content is deleted/moved. We also can't easily use namespace IDs since most APIs expect the namespace name so that's what we need to provide to clients; and there is no easy way to map IDs to names of a different wiki. Titles are <=255 byte; we allow 128 more bytes for the namespace name, just to be on the safe side.",
+				"type": "binary",
+				"options": { "notnull": true, "length": 383 }
+			},
+			{
+				"name": "rle_date_created",
+				"comment": "Creation timestamp.",
+				"type": "mwtimestamp",
+				"options": { "notnull": true, "default": "19700101000000" }
+			},
+			{
+				"name": "rle_date_updated",
+				"comment": "Last modification timestamp.",
+				"type": "mwtimestamp",
+				"options": { "notnull": true, "default": "19700101000000" }
+			},
+			{
+				"name": "rle_deleted",
+				"comment": "Deleted flag. Entries will be hard-deleted eventually but kept around for a while for sync.",
+				"type": "mwtinyint",
+				"options": { "notnull": true, "default": 0 }
+			}
+		],
+		"indexes": [
+			{
+				"name": "rle_list_project_title",
+				"comment": "For ensuring there are no duplicate pages on a single list. (What we actually need is 'no duplicate non-deleted items' but there is no way to turn that into an index condition so the software will work around it by repurposing deleted items as needed.)",
+				"columns": [ "rle_rl_id", "rle_rlp_id", "rle_title" ],
+				"unique": true
+			},
+			{
+				"name": "rle_list_deleted_title_id",
+				"comment": "For querying list entries in a given list by title (and then id as a tiebreaker). Covers getListEntries() with SORT_BY_NAME.",
+				"columns": [ "rle_rl_id", "rle_deleted", "rle_title", "rle_id" ],
+				"unique": true
+			},
+			{
+				"name": "rle_list_deleted_updated_id",
+				"comment": "For querying list entries in a given list by last updated timestamp (and then id as a tiebreaker). Covers getListEntries() with SORT_BY_UPDATED.",
+				"columns": [ "rle_rl_id", "rle_deleted", "rle_date_updated", "rle_id" ],
+				"unique": true
+			},
+			{
+				"name": "rle_user_updated_id",
+				"comment": "For querying all list entries of a given user by last updated timestamp (and then id as a tiebreaker). Covers getListEntriesByDateUpdated() (almost; the results still have to be filtered on rl_deleted).",
+				"columns": [ "rle_user_id", "rle_date_updated", "rle_id" ],
+				"unique": true
+			},
+			{
+				"name": "rle_user_project_title",
+				"comment": "For getting all lists of a given user which contain a specified page. Covers getListsByPage(). rle_rl_id is included to ensure consistent sorting within a fully covered query (the assumption being that result sets for this query will typically be small enough that we don't care about server-side sorting by name etc; if we do end up with an anomalously huge resultset, performance is preferred over returning the results in order.)",
+				"columns": [ "rle_user_id", "rle_rlp_id", "rle_title", "rle_rl_id" ],
+				"unique": true
+			},
+			{
+				"name": "rle_deleted_updated",
+				"comment": "For getting all deleted items older than a given date. Covers purgeOldDeleted().",
+				"columns": [ "rle_deleted", "rle_date_updated" ],
+				"unique": false
+			}
+		],
+		"pk": [ "rle_id" ]
+	},
+	{
+		"name": "reading_list_project",
+		"comment": "Table for storing projects (domains) efficiently.",
+		"columns": [
+			{
+				"name": "rlp_id",
+				"type": "integer",
+				"options": { "autoincrement": true, "notnull": true, "unsigned": true }
+			},
+			{
+				"name": "rlp_project",
+				"comment": "Wiki project domain.",
+				"type": "binary",
+				"options": { "notnull": true, "length": 255 }
+			}
+		],
+		"indexes": [
+			{
+				"name": "rlp_project",
+				"columns": [ "rlp_project" ],
+				"unique": true
+			}
+		],
+		"pk": [ "rlp_id" ]
+	}
+]
