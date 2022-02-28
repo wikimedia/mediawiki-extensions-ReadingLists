@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Mainframe98"
+			"Mainframe98",
+			"Romaine"
 		]
 	},
 	"readinglists-desc": "Biedt gebruikers de mogelijkheid om afgeschermde artikellijsten te beheren, zoals bladwijzers of \"Later Lezen\" lijsten.",
+	"readinglists-browser-error-intro": "Er is een fout opgetreden: $1",
 	"readinglists-browser-extension-info-link-text": "Meer leren"
 }
