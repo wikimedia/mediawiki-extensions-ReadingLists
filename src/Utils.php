@@ -27,7 +27,7 @@ class Utils {
 		$loadBalancer = $cluster
 			? $loadBalancerFactory->getExternalLB( $cluster )
 			: $loadBalancerFactory->getMainLB( $database );
-		return $loadBalancer->getLazyConnectionRef( $db, [], $database );
+		return $loadBalancer->getConnectionRef( $db, [], $database );
 	}
 
 	/**
