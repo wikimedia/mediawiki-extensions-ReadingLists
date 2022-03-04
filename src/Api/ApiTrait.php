@@ -16,7 +16,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserIdentity;
 use Message;
 use Psr\Log\LoggerInterface;
-use Wikimedia\Rdbms\DBConnRef;
+use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
@@ -36,10 +36,10 @@ trait ApiTrait {
 	/** @var LBFactory */
 	private $loadBalancerFactory;
 
-	/** @var DBConnRef */
+	/** @var IDatabase */
 	private $dbw;
 
-	/** @var DBConnRef */
+	/** @var IDatabase */
 	private $dbr;
 
 	/** @var ApiBase */
@@ -86,11 +86,11 @@ trait ApiTrait {
 	/**
 	 * Set database-related dependencies. Required when initializing a module that uses this trait.
 	 * @param LBFactory $loadBalancerFactory
-	 * @param DBConnRef $dbw Master connection
-	 * @param DBConnRef $dbr Replica connection
+	 * @param IDatabase $dbw Master connection
+	 * @param IDatabase $dbr Replica connection
 	 */
 	protected function injectDatabaseDependencies(
-		LBFactory $loadBalancerFactory, DBConnRef $dbw, DBConnRef $dbr
+		LBFactory $loadBalancerFactory, IDatabase $dbw, IDatabase $dbr
 	) {
 		$this->loadBalancerFactory = $loadBalancerFactory;
 		$this->dbw = $dbw;

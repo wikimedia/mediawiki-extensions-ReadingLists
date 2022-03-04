@@ -7,7 +7,7 @@ use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
 use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extensions\ReadingLists\Utils;
 use MediaWiki\MediaWikiServices;
-use Wikimedia\Rdbms\DBConnRef;
+use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\LBFactory;
 
 require_once getenv( 'MW_INSTALL_PATH' ) !== false
@@ -22,10 +22,10 @@ class PopulateWithTestData extends Maintenance {
 	/** @var LBFactory */
 	private $loadBalancerFactory;
 
-	/** @var DBConnRef */
+	/** @var IDatabase */
 	private $dbw;
 
-	/** @var DBConnRef */
+	/** @var IDatabase */
 	private $dbr;
 
 	public function __construct() {

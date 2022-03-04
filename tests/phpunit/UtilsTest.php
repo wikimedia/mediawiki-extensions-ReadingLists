@@ -7,7 +7,7 @@ use MediaWiki\Extensions\ReadingLists\Utils;
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use WikiMap;
-use Wikimedia\Rdbms\DBConnRef;
+use Wikimedia\Rdbms\IDatabase;
 
 class UtilsTest extends MediaWikiIntegrationTestCase {
 
@@ -17,8 +17,8 @@ class UtilsTest extends MediaWikiIntegrationTestCase {
 	public function testGetDB() {
 		$dbw = Utils::getDB( DB_PRIMARY, MediaWikiServices::getInstance() );
 		$dbr = Utils::getDB( DB_REPLICA, MediaWikiServices::getInstance() );
-		$this->assertInstanceOf( DBConnRef::class, $dbw );
-		$this->assertInstanceOf( DBConnRef::class, $dbr );
+		$this->assertInstanceOf( IDatabase::class, $dbw );
+		$this->assertInstanceOf( IDatabase::class, $dbr );
 	}
 
 	/**

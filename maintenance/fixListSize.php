@@ -9,7 +9,7 @@ use MediaWiki\Extensions\ReadingLists\Utils;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use User;
-use Wikimedia\Rdbms\DBConnRef;
+use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\LBFactory;
 
 require_once getenv( 'MW_INSTALL_PATH' ) !== false
@@ -24,7 +24,7 @@ class FixListSize extends Maintenance {
 	/** @var LBFactory */
 	private $loadBalancerFactory;
 
-	/** @var DBConnRef */
+	/** @var IDatabase */
 	private $dbw;
 
 	public function __construct() {

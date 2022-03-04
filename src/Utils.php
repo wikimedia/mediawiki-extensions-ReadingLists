@@ -5,7 +5,7 @@ namespace MediaWiki\Extensions\ReadingLists;
 use MediaWiki\MediaWikiServices;
 use UnexpectedValueException;
 use WikiMap;
-use Wikimedia\Rdbms\DBConnRef;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * Static utility methods.
@@ -16,7 +16,7 @@ class Utils {
 	 * Get a database connection for the reading lists database.
 	 * @param int $db Index of the connection to get, e.g. DB_PRIMARY or DB_REPLICA.
 	 * @param MediaWikiServices $services
-	 * @return DBConnRef
+	 * @return IDatabase
 	 */
 	public static function getDB( $db, $services ) {
 		$extensionConfig = $services->getConfigFactory()->makeConfig( 'ReadingLists' );
