@@ -5,7 +5,7 @@
  * For the benefit of IDEs only, won't be used outside phpdoc.
  */
 
-namespace MediaWiki\Extensions\ReadingLists\Doc;
+namespace MediaWiki\Extension\ReadingLists\Doc;
 
 /**
  * Database row for reading_list.

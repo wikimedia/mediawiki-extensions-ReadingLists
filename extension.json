@@ -12,24 +12,24 @@
 		"MediaWiki": ">= 1.37.0"
 	},
 	"AutoloadNamespaces": {
-		"MediaWiki\\Extensions\\ReadingLists\\": "src/"
+		"MediaWiki\\Extension\\ReadingLists\\": "src/"
 	},
 	"TestAutoloadNamespaces": {
-		"MediaWiki\\Extensions\\ReadingLists\\Tests\\": "tests/phpunit/"
+		"MediaWiki\\Extension\\ReadingLists\\Tests\\": "tests/phpunit/"
 	},
 	"APIModules": {
-		"readinglists": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiReadingLists"
+		"readinglists": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiReadingLists"
 	},
 	"APIListModules": {
 		"readinglistentries": {
-			"class": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListEntries",
-			"factory": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingListEntries::factory"
+			"class": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiQueryReadingListEntries",
+			"factory": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiQueryReadingListEntries::factory"
 		}
 	},
 	"APIMetaModules": {
 		"readinglists": {
-			"class": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingLists",
-			"factory": "MediaWiki\\Extensions\\ReadingLists\\Api\\ApiQueryReadingLists::factory"
+			"class": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiQueryReadingLists",
+			"factory": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiQueryReadingLists::factory"
 		}
 	},
 	"ConfigRegistry": {
@@ -62,10 +62,10 @@
 		}
 	},
 	"Hooks": {
-		"APIQuerySiteInfoGeneralInfo": "MediaWiki\\Extensions\\ReadingLists\\HookHandler::onAPIQuerySiteInfoGeneralInfo",
-		"LoadExtensionSchemaUpdates": "MediaWiki\\Extensions\\ReadingLists\\HookHandler::onLoadExtensionSchemaUpdates",
-		"UnitTestsAfterDatabaseSetup": "MediaWiki\\Extensions\\ReadingLists\\HookHandler::onUnitTestsAfterDatabaseSetup",
-		"UnitTestsBeforeDatabaseTeardown": "MediaWiki\\Extensions\\ReadingLists\\HookHandler::onUnitTestsBeforeDatabaseTeardown"
+		"APIQuerySiteInfoGeneralInfo": "MediaWiki\\Extension\\ReadingLists\\HookHandler::onAPIQuerySiteInfoGeneralInfo",
+		"LoadExtensionSchemaUpdates": "MediaWiki\\Extension\\ReadingLists\\HookHandler::onLoadExtensionSchemaUpdates",
+		"UnitTestsAfterDatabaseSetup": "MediaWiki\\Extension\\ReadingLists\\HookHandler::onUnitTestsAfterDatabaseSetup",
+		"UnitTestsBeforeDatabaseTeardown": "MediaWiki\\Extension\\ReadingLists\\HookHandler::onUnitTestsBeforeDatabaseTeardown"
 	},
 	"ServiceWiringFiles": [
 		"ServiceWiring.php"

@@ -1,14 +1,14 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists;
+namespace MediaWiki\Extension\ReadingLists;
 
 use DBAccessObjectUtils;
 use IDBAccessObject;
 use LogicException;
-use MediaWiki\Extensions\ReadingLists\Doc\ReadingListEntryRow;
-use MediaWiki\Extensions\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
-use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRow;
-use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRowWithMergeFlag;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;

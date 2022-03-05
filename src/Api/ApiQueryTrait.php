@@ -1,9 +1,9 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Api;
+namespace MediaWiki\Extension\ReadingLists\Api;
 
 use ApiUsageException;
-use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
+use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 
 /**
  * Shared sorting / paging for the query APIs.

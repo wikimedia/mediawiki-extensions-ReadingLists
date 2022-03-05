@@ -5,7 +5,7 @@
  * For the benefit of IDEs only, won't be used outside phpdoc.
  */
 
-namespace MediaWiki\Extensions\ReadingLists\Doc;
+namespace MediaWiki\Extension\ReadingLists\Doc;
 
 /**
  * A hacky way to add an extra flag telling the client that they asked for a duplicate list entry

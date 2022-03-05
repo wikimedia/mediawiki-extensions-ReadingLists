@@ -1,6 +1,6 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Tests;
+namespace MediaWiki\Extension\ReadingLists\Tests;
 
 use ApiUsageException;
 

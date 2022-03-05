@@ -1,6 +1,6 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists;
+namespace MediaWiki\Extension\ReadingLists;
 
 use Language;
 use MediaWiki\Interwiki\InterwikiLookup;

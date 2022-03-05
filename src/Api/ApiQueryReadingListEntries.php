@@ -1,14 +1,14 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Api;
+namespace MediaWiki\Extension\ReadingLists\Api;
 
 use ApiPageSet;
 use ApiQueryGeneratorBase;
 use LogicException;
-use MediaWiki\Extensions\ReadingLists\Doc\ReadingListEntryRow;
-use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
-use MediaWiki\Extensions\ReadingLists\ReverseInterwikiLookup;
-use MediaWiki\Extensions\ReadingLists\Utils;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
+use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
+use MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup;
+use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\MediaWikiServices;
 use Title;
 

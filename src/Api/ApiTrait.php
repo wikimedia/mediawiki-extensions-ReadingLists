@@ -1,16 +1,16 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Api;
+namespace MediaWiki\Extension\ReadingLists\Api;
 
 use ApiBase;
 use ApiUsageException;
 use CentralIdLookup;
-use MediaWiki\Extensions\ReadingLists\Doc\ReadingListEntryRow;
-use MediaWiki\Extensions\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
-use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRow;
-use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRowWithMergeFlag;
-use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
-use MediaWiki\Extensions\ReadingLists\Utils;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
+use MediaWiki\Extension\ReadingLists\ReadingListRepository;
+use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserIdentity;

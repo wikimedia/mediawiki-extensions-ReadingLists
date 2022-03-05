@@ -1,12 +1,12 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Tests;
+namespace MediaWiki\Extension\ReadingLists\Tests;
 
-use MediaWiki\Extensions\ReadingLists\ReverseInterwikiLookup;
+use MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup;
 use MediaWiki\Interwiki\InterwikiLookup;
 
 /**
- * @covers \MediaWiki\Extensions\ReadingLists\ReverseInterwikiLookup
+ * @covers \MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup
  */
 class ReverseInterwikiLookupTest extends \PHPUnit\Framework\TestCase {
 

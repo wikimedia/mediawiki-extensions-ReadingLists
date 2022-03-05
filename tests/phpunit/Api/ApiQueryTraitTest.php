@@ -1,14 +1,14 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Tests\Api;
+namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
 use ApiMessage;
 use ApiUsageException;
 use FauxRequest;
-use MediaWiki\Extensions\ReadingLists\Api\ApiQueryReadingListEntries;
-use MediaWiki\Extensions\ReadingLists\Api\ApiQueryReadingLists;
-use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
-use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
+use MediaWiki\Extension\ReadingLists\Api\ApiQueryReadingListEntries;
+use MediaWiki\Extension\ReadingLists\Api\ApiQueryReadingLists;
+use MediaWiki\Extension\ReadingLists\ReadingListRepository;
+use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use PHPUnit\Framework\TestCase;
 use RequestContext;
 use SebastianBergmann\Exporter\Exporter;
@@ -17,7 +17,7 @@ use Title;
 use Wikimedia\TestingAccessWrapper;
 
 /**
- * @covers \MediaWiki\Extensions\ReadingLists\Api\ApiQueryTrait
+ * @covers \MediaWiki\Extension\ReadingLists\Api\ApiQueryTrait
  * @group  medium
  * @group  API
  */

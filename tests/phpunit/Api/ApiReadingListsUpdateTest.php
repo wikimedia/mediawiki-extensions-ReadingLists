@@ -1,15 +1,15 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Tests\Api;
+namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
 use ApiTestCase;
 use ApiUsageException;
-use MediaWiki\Extensions\ReadingLists\HookHandler;
-use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
+use MediaWiki\Extension\ReadingLists\HookHandler;
+use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
 
 /**
- * @covers \MediaWiki\Extensions\ReadingLists\Api\ApiReadingListsUpdate
- * @covers \MediaWiki\Extensions\ReadingLists\Api\ApiReadingLists
+ * @covers \MediaWiki\Extension\ReadingLists\Api\ApiReadingListsUpdate
+ * @covers \MediaWiki\Extension\ReadingLists\Api\ApiReadingLists
  * @group medium
  * @group API
  * @group Database

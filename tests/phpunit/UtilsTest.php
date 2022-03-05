@@ -1,9 +1,9 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Tests;
+namespace MediaWiki\Extension\ReadingLists\Tests;
 
 use Closure;
-use MediaWiki\Extensions\ReadingLists\Utils;
+use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use WikiMap;
@@ -12,7 +12,7 @@ use Wikimedia\Rdbms\IDatabase;
 class UtilsTest extends MediaWikiIntegrationTestCase {
 
 	/**
-	 * @covers \MediaWiki\Extensions\ReadingLists\Utils::getDB
+	 * @covers \MediaWiki\Extension\ReadingLists\Utils::getDB
 	 */
 	public function testGetDB() {
 		$dbw = Utils::getDB( DB_PRIMARY, MediaWikiServices::getInstance() );
@@ -23,7 +23,7 @@ class UtilsTest extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @dataProvider provideIsCentralWiki
-	 * @covers \MediaWiki\Extensions\ReadingLists\Utils::isCentralWiki
+	 * @covers \MediaWiki\Extension\ReadingLists\Utils::isCentralWiki
 	 */
 	public function testIsCentralWiki( $readingListsCentralWiki, $expectedResult ) {
 		// Wiki name is changed between the data provider and the test so allow delayed lookup.
@@ -46,7 +46,7 @@ class UtilsTest extends MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * @covers \MediaWiki\Extensions\ReadingLists\Utils::getDeletedExpiry
+	 * @covers \MediaWiki\Extension\ReadingLists\Utils::getDeletedExpiry
 	 */
 	public function testGetDeletedExpiry() {
 		$this->setMwGlobals( 'wgReadingListsDeletedRetentionDays', 15 );

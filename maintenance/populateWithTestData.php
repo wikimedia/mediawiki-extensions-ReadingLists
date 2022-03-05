@@ -1,11 +1,11 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Maintenance;
+namespace MediaWiki\Extension\ReadingLists\Maintenance;
 
 use Maintenance;
-use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
-use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
-use MediaWiki\Extensions\ReadingLists\Utils;
+use MediaWiki\Extension\ReadingLists\ReadingListRepository;
+use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
+use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\LBFactory;

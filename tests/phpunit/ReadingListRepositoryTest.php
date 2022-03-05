@@ -1,12 +1,12 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Tests;
+namespace MediaWiki\Extension\ReadingLists\Tests;
 
-use MediaWiki\Extensions\ReadingLists\Doc\ReadingListEntryRow;
-use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRow;
-use MediaWiki\Extensions\ReadingLists\HookHandler;
-use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
-use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
+use MediaWiki\Extension\ReadingLists\HookHandler;
+use MediaWiki\Extension\ReadingLists\ReadingListRepository;
+use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use PHPUnit\Framework\Constraint\Exception;
@@ -15,8 +15,8 @@ use Wikimedia\Rdbms\LBFactory;
 
 /**
  * @group Database
- * @covers \MediaWiki\Extensions\ReadingLists\ReadingListRepository
- * @covers \MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException
+ * @covers \MediaWiki\Extension\ReadingLists\ReadingListRepository
+ * @covers \MediaWiki\Extension\ReadingLists\ReadingListRepositoryException
  */
 class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 

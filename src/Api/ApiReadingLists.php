@@ -1,10 +1,10 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Api;
+namespace MediaWiki\Extension\ReadingLists\Api;
 
 use ApiBase;
 use ApiModuleManager;
-use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
+use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\MediaWikiServices;
 
 /**

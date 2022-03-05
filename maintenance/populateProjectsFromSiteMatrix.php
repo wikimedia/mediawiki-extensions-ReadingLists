@@ -1,11 +1,11 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Maintenance;
+namespace MediaWiki\Extension\ReadingLists\Maintenance;
 
 use Generator;
 use Maintenance;
+use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Extension\SiteMatrix\SiteMatrix;
-use MediaWiki\Extensions\ReadingLists\Utils;
 use MediaWiki\MediaWikiServices;
 
 require_once getenv( 'MW_INSTALL_PATH' ) !== false

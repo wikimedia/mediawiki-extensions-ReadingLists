@@ -1,12 +1,12 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Tests\Api;
+namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
 use ApiMessage;
 use ApiUsageException;
 use FauxRequest;
-use MediaWiki\Extensions\ReadingLists\Api\ApiTrait;
-use MediaWiki\Extensions\ReadingLists\Tests\ReadingListsTestHelperTrait;
+use MediaWiki\Extension\ReadingLists\Api\ApiTrait;
+use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use PHPUnit\Framework\TestCase;
 use RequestContext;
 use StatusValue;
@@ -14,7 +14,7 @@ use Title;
 use Wikimedia\TestingAccessWrapper;
 
 /**
- * @covers \MediaWiki\Extensions\ReadingLists\Api\ApiTrait
+ * @covers \MediaWiki\Extension\ReadingLists\Api\ApiTrait
  */
 class ApiTraitTest extends TestCase {
 

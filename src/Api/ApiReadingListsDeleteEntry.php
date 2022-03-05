@@ -1,6 +1,6 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Api;
+namespace MediaWiki\Extension\ReadingLists\Api;
 
 use ApiBase;
 

@@ -1,14 +1,14 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Api;
+namespace MediaWiki\Extension\ReadingLists\Api;
 
 use ApiQueryBase;
 use DateTime;
 use DateTimeZone;
 use LogicException;
-use MediaWiki\Extensions\ReadingLists\Doc\ReadingListRow;
-use MediaWiki\Extensions\ReadingLists\ReadingListRepositoryException;
-use MediaWiki\Extensions\ReadingLists\Utils;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
+use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
+use MediaWiki\Extension\ReadingLists\Utils;
 use MWTimestamp;
 
 /**

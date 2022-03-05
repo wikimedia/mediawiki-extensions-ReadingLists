@@ -1,9 +1,9 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists\Api;
+namespace MediaWiki\Extension\ReadingLists\Api;
 
 use ApiBase;
-use MediaWiki\Extensions\ReadingLists\ReadingListRepository;
+use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 
 /**
  * API module for all write operations.

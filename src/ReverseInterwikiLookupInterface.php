@@ -1,6 +1,6 @@
 <?php
 
-namespace MediaWiki\Extensions\ReadingLists;
+namespace MediaWiki\Extension\ReadingLists;
 
 /**
  * Service interface for turning a domain name into an interwiki prefix so the API can
