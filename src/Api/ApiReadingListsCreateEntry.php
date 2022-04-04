@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\ReadingLists\Api;
 use ApiBase;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use Title;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * API module for all write operations.
@@ -69,19 +70,19 @@ class ApiReadingListsCreateEntry extends ApiBase {
 	protected function getAllowedParams() {
 		return [
 			'list' => [
-				self::PARAM_TYPE => 'integer',
-				self::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_REQUIRED => true,
 			],
 			'project' => [
-				self::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_TYPE => 'string',
 				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rlp_project'],
 			],
 			'title' => [
-				self::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_TYPE => 'string',
 				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rle_title'],
 			],
 			'batch' => [
-				self::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_TYPE => 'string',
 			]
 		];
 	}

@@ -11,6 +11,7 @@ use MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup;
 use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\MediaWikiServices;
 use Title;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * API list module for getting list contents.
@@ -131,11 +132,11 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	protected function getAllowedParams() {
 		return [
 			'lists' => [
-				self::PARAM_TYPE => 'integer',
-				self::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 			'changedsince' => [
-				self::PARAM_TYPE => 'timestamp',
+				ParamValidator::PARAM_TYPE => 'timestamp',
 				self::PARAM_HELP_MSG => $this->msg( 'apihelp-query+readinglistentries-param-changedsince',
 					wfTimestamp( TS_ISO_8601, Utils::getDeletedExpiry() ) ),
 			],

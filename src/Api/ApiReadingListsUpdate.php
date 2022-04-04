@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\ReadingLists\Api;
 
 use ApiBase;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * API module for all write operations.
@@ -57,18 +58,18 @@ class ApiReadingListsUpdate extends ApiBase {
 	protected function getAllowedParams() {
 		return [
 			'list' => [
-				self::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_TYPE => 'integer',
 			],
 			'name' => [
-				self::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_TYPE => 'string',
 				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_name'],
 			],
 			'description' => [
-				self::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_TYPE => 'string',
 				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_description'],
 			],
 			'batch' => [
-				self::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_TYPE => 'string',
 			]
 		];
 	}

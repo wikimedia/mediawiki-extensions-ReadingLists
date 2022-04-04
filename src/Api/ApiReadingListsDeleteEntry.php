@@ -3,6 +3,7 @@
 namespace MediaWiki\Extension\ReadingLists\Api;
 
 use ApiBase;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * API module for all write operations.
@@ -40,10 +41,10 @@ class ApiReadingListsDeleteEntry extends ApiBase {
 	protected function getAllowedParams() {
 		return [
 			'entry' => [
-				self::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_TYPE => 'integer',
 			],
 			'batch' => [
-				self::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_TYPE => 'string',
 			]
 		];
 	}

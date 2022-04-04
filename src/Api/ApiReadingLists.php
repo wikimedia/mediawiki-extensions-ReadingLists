@@ -6,6 +6,7 @@ use ApiBase;
 use ApiModuleManager;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\MediaWikiServices;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * API parent module for all write operations.
@@ -77,8 +78,8 @@ class ApiReadingLists extends ApiBase {
 	protected function getAllowedParams() {
 		return [
 			'command' => [
-				self::PARAM_TYPE => 'submodule',
-				self::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_TYPE => 'submodule',
+				ParamValidator::PARAM_REQUIRED => true,
 			],
 		];
 	}

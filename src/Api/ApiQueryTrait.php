@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\ReadingLists\Api;
 
 use ApiUsageException;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * Shared sorting / paging for the query APIs.
@@ -129,23 +130,23 @@ trait ApiQueryTrait {
 	private function getAllowedSortParams() {
 		return [
 			'sort' => [
-				self::PARAM_TYPE => [ 'name', 'updated' ],
+				ParamValidator::PARAM_TYPE => [ 'name', 'updated' ],
 				self::PARAM_HELP_MSG_PER_VALUE => [],
 			],
 			'dir' => [
 				self::PARAM_DFLT => 'ascending',
-				self::PARAM_TYPE => [ 'ascending', 'descending' ],
+				ParamValidator::PARAM_TYPE => [ 'ascending', 'descending' ],
 			],
 			'limit' => [
 				self::PARAM_DFLT => 10,
-				self::PARAM_TYPE => 'limit',
+				ParamValidator::PARAM_TYPE => 'limit',
 				self::PARAM_MIN => 1,
 				// Temporarily limit paging sizes per T164990#3264314 / T168984#3659998
 				self::PARAM_MAX => self::$prefix === 'rl' ? 10 : 100,
 				self::PARAM_MAX2 => self::$prefix === 'rl' ? 10 : 100,
 			],
 			'continue' => [
-				self::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_TYPE => 'string',
 				self::PARAM_DFLT => null,
 				self::PARAM_HELP_MSG => 'api-help-param-continue',
 			],

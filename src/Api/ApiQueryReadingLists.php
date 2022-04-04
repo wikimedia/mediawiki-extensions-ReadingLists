@@ -10,6 +10,7 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extension\ReadingLists\Utils;
 use MWTimestamp;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * API meta module for getting list metadata.
@@ -135,19 +136,19 @@ class ApiQueryReadingLists extends ApiQueryBase {
 	protected function getAllowedParams() {
 		return [
 			'list' => [
-				self::PARAM_TYPE => 'integer',
-				self::PARAM_REQUIRED => false,
+				ParamValidator::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_REQUIRED => false,
 				self::PARAM_MIN => 1,
 				self::PARAM_DFLT => null,
 			],
 			'project' => [
-				self::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_TYPE => 'string',
 			],
 			'title' => [
-				self::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_TYPE => 'string',
 			],
 			'changedsince' => [
-				self::PARAM_TYPE => 'timestamp',
+				ParamValidator::PARAM_TYPE => 'timestamp',
 				self::PARAM_HELP_MSG => $this->msg( 'apihelp-query+readinglists-param-changedsince',
 					wfTimestamp( TS_ISO_8601, Utils::getDeletedExpiry() ) ),
 			],
