@@ -139,7 +139,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 				ParamValidator::PARAM_TYPE => 'integer',
 				ParamValidator::PARAM_REQUIRED => false,
 				self::PARAM_MIN => 1,
-				self::PARAM_DFLT => null,
+				ParamValidator::PARAM_DEFAULT => null,
 			],
 			'project' => [
 				ParamValidator::PARAM_TYPE => 'string',

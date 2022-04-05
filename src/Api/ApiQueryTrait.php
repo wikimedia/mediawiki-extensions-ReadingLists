@@ -134,11 +134,11 @@ trait ApiQueryTrait {
 				self::PARAM_HELP_MSG_PER_VALUE => [],
 			],
 			'dir' => [
-				self::PARAM_DFLT => 'ascending',
+				ParamValidator::PARAM_DEFAULT => 'ascending',
 				ParamValidator::PARAM_TYPE => [ 'ascending', 'descending' ],
 			],
 			'limit' => [
-				self::PARAM_DFLT => 10,
+				ParamValidator::PARAM_DEFAULT => 10,
 				ParamValidator::PARAM_TYPE => 'limit',
 				self::PARAM_MIN => 1,
 				// Temporarily limit paging sizes per T164990#3264314 / T168984#3659998
@@ -147,7 +147,7 @@ trait ApiQueryTrait {
 			],
 			'continue' => [
 				ParamValidator::PARAM_TYPE => 'string',
-				self::PARAM_DFLT => null,
+				ParamValidator::PARAM_DEFAULT => null,
 				self::PARAM_HELP_MSG => 'api-help-param-continue',
 			],
 		];
