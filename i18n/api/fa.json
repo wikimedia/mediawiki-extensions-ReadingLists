@@ -1,18 +1,19 @@
 {
 	"@metadata": {
 		"authors": [
+			"Beginneruser",
 			"Ladsgroup"
 		]
 	},
 	"apihelp-query+readinglists-param-list": "شناسه فهرست",
 	"apihelp-query+readinglists-param-limit": "تعداد آیتم‌های نتایج برای بازگردانی.",
 	"apihelp-query+readinglists-example-1": "گرفتن فهرست خواندن کاربر کنونی.",
-	"apihelp-query+readinglistentries-paramvalue-sort-updated": "زمان آخرین بروزرسانی.",
+	"apihelp-query+readinglistentries-paramvalue-sort-updated": "زمان آخرین به‌روزرسانی.",
 	"apihelp-query+readinglistentries-param-limit": "تعداد آیتم‌های نتایج برای بازگردانی.",
 	"apihelp-readinglists+create-param-description": "توضیحات فهرست.",
 	"apihelp-readinglists+create-example-1": "ایجاد یک فهرست مطالعه جدید.",
 	"apihelp-readinglists+update-param-description": "توضیحات فهرست جدید.",
-	"apihelp-readinglists+update-example-2": "تغییر چند فهرست.",
+	"apihelp-readinglists+update-example-2": "به‌روزرسانی چند فهرست.",
 	"apihelp-readinglists+delete-example-2": "حذف چند فهرست",
 	"apihelp-readinglists+createentry-param-list": "شناسه فهرست.",
 	"apihelp-readinglists+deleteentry-example-2": "حذف چند عضو از فهرست."
