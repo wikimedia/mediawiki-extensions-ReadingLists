@@ -23,6 +23,7 @@
 	"apihelp-readinglists+create-param-description": "Опис на списокот.",
 	"apihelp-readinglists+update-param-description": "Нов опис на списокот.",
 	"apihelp-readinglists+update-example-2": "Поднови повеќе списоци наеднаш.",
+	"apihelp-readinglists+delete-example-2": "Избриши повеќе списоци.",
 	"apihelp-readinglists+createentry-param-list": "Назнака на списокот.",
 	"apihelp-readinglists+deleteentry-param-entry": "Назнака на ставката. Задолжително, освен при збирно бришење.",
 	"apihelp-readinglists+deleteentry-example-1": "Избриши ставка во списокот со назнака <kbd>8</kbd>.",
