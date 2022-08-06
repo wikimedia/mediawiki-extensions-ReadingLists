@@ -93,15 +93,14 @@ trait ReadingListsTestHelperTrait {
 				__METHOD__,
 				[ 'IGNORE' ]
 			);
-			$projectId = $this->db->insertId();
-			if ( !$projectId ) {
-				$projectId = $this->db->selectField(
+			$projectId = $this->db->affectedRows()
+				? $this->db->insertId()
+				: $this->db->selectField(
 					'reading_list_project',
 					'rlp_id',
 					[ 'rlp_project' => $project ],
 					__METHOD__
 				);
-			}
 			$ids[] = $projectId;
 		}
 		return $ids;
