@@ -17,6 +17,9 @@
 	"TestAutoloadNamespaces": {
 		"MediaWiki\\Extension\\ReadingLists\\Tests\\": "tests/phpunit/"
 	},
+	"ExtensionMessagesFiles": {
+		"ReadingListsAlias": "ReadingLists.alias.php"
+	},
 	"APIModules": {
 		"readinglists": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiReadingLists"
 	},
@@ -35,7 +38,26 @@
 	"ConfigRegistry": {
 		"ReadingLists": "GlobalVarConfig::newInstance"
 	},
+	"SpecialPages": {
+		"ReadingLists": "MediaWiki\\Extension\\ReadingLists\\SpecialReadingLists"
+	},
 	"config": {
+		"ReadingListAndroidAppDownloadLink": {
+			"value": "",
+			"description": "false or string representing an Android download link"
+		},
+		"ReadingListiOSAppDownloadLink": {
+			"value": "",
+			"description": "false or string representing an iOS download link"
+		},
+		"ReadingListsWeb": {
+			"value": false,
+			"description": "Temporary feature flag for web based features."
+		},
+		"ReadingListsDeveloperMode": {
+			"value": false,
+			"description": "Enable tools that make development easier."
+		},
 		"ReadingListsCluster": {
 			"value": false,
 			"description": "Database cluster to use for storing the lists. False means the cluster of the current wiki will be used."
@@ -66,6 +88,59 @@
 		"LoadExtensionSchemaUpdates": "MediaWiki\\Extension\\ReadingLists\\HookHandler::onLoadExtensionSchemaUpdates",
 		"UnitTestsAfterDatabaseSetup": "MediaWiki\\Extension\\ReadingLists\\HookHandler::onUnitTestsAfterDatabaseSetup",
 		"UnitTestsBeforeDatabaseTeardown": "MediaWiki\\Extension\\ReadingLists\\HookHandler::onUnitTestsBeforeDatabaseTeardown"
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "ReadingLists"
+	},
+	"ResourceModules": {
+		"special.readinglist.styles": {
+			"targets": [ "desktop", "mobile" ],
+			"styles": [ "resources/special.readinglist.styles.less" ]
+		},
+		"special.readinglist.scripts": {
+			"dependencies": [
+				"mediawiki.api",
+				"vue",
+				"@wikimedia/codex",
+				"mediawiki.Title",
+				"mediawiki.user"
+			],
+			"messages": [
+				"readinglists-import-error",
+				"readinglists-db-error-no-such-list",
+				"readinglists-db-error-list-deleted",
+				"readinglists-import-size-error",
+				"readinglists-no-title",
+				"readinglists-loading",
+				"readinglists-import-disclaimer",
+				"readinglists-special-title",
+				"readinglists-empty-message",
+				"readinglists-list-empty-message",
+				"readinglists-description",
+				"special-tab-readinglists-short",
+				"readinglists-default-title",
+				"readinglists-default-description"
+			],
+			"targets": [ "desktop", "mobile" ],
+			"es6": true,
+			"packageFiles": [
+				"resources/readinglist.scripts/index.js",
+				"resources/readinglist.scripts/special.js",
+				"resources/readinglist.scripts/utils.js",
+				"resources/readinglist.scripts/api.js",
+				{
+					"name": "resources/readinglist.scripts/config.json",
+					"config": [
+						"ReadingListAndroidAppDownloadLink",
+						"ReadingListiOSAppDownloadLink",
+						"ReadingListsDeveloperMode"
+					]
+				},
+				"resources/readinglist.scripts/views/IntermediateState.vue",
+				"resources/readinglist.scripts/views/ReadingListPage.vue"
+			]
+		}
 	},
 	"ServiceWiringFiles": [
 		"ServiceWiring.php"
