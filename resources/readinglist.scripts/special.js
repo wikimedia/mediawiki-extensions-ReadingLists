@@ -25,7 +25,7 @@ function init( Vue, username, initialCollection, importData, isImport ) {
 	} catch ( e ) {
 		// continue to render an errors
 	}
-	return Vue.createMwApp( ReadingListPage, {
+	const app = Vue.createMwApp( ReadingListPage, {
 		initialName,
 		initialDescription,
 		username,
@@ -36,6 +36,13 @@ function init( Vue, username, initialCollection, importData, isImport ) {
 		initialTitles,
 		initialCollection
 	} ).mount( '#reading-list-container' );
+
+	if ( !disclaimer ) {
+		$( document ).on( 'click', '#p-associated-pages ul li:first-child a', function () {
+			app.navigateHome();
+			return false;
+		} );
+	}
 }
 
 module.exports = {

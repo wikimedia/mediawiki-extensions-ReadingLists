@@ -1,3 +1,6 @@
+const DEFAULT_READING_LIST_NAME = mw.msg( 'readinglists-default-title' );
+const DEFAULT_READING_LIST_DESCRIPTION = mw.msg( 'readinglists-default-description' );
+const { getReadingListUrl } = require( './utils.js' );
 const config = require( './config.json' );
 const api = new mw.Api();
 
@@ -71,14 +74,34 @@ const api = new mw.Api();
  */
 
 /**
+ * Converts API response to WVUI compatible response.
+ *
+ * @param {ApiQueryResponseReadingListItem} collection from API response
+ * @param {string} ownerName of collection
+ * @return {Card} modified collection
+ */
+const readingListToCard = ( collection, ownerName ) => {
+	const description = collection.default ?
+		DEFAULT_READING_LIST_DESCRIPTION : collection.description;
+	const name = collection.default ? DEFAULT_READING_LIST_NAME : collection.name;
+	const url = getReadingListUrl( ownerName, collection.id, name );
+	return Object.assign( {}, collection, { ownerName, name, description, url } );
+};
+
+/**
+ * From a project identifier work out which API to use.
+ *
  * @param {string} project
  * @return {string}
  */
 function getProjectHost( project ) {
 	const isProjectCode = project.indexOf( '//' ) === -1;
 	if ( config.ReadingListsDeveloperMode ) {
-		const code = isProjectCode ? project : 'en';
-		return `https://${code}.wikipedia.org`;
+		if ( project.indexOf( 'localhost' ) > -1 ) {
+			return 'https://en.wikipedia.org';
+		} else {
+			return isProjectCode ? `https://${project}.wikipedia.org` : project;
+		}
 	}
 	if ( isProjectCode ) {
 		project = `https://${project}.${window.location.host.split( '.' ).slice( 1 ).join( '.' )}`;
@@ -91,17 +114,84 @@ function getProjectHost( project ) {
  * @return {function( ApiQueryResponsePage ): Card}
  */
 const transformPage = ( project ) => {
-	return ( page ) =>
-		Object.assign( page, {
+	return ( page ) => {
+		return Object.assign( page, {
 			project: getProjectHost( project ),
-			url: new mw.Title( page.title ).getUrl(),
+			// T320293
+			url: `${getProjectHost( project )}${new mw.Title( page.title ).getUrl()}`,
 			thumbnail: page.thumbnail ? {
 				width: page.thumbnail.width,
 				height: page.thumbnail.height,
 				url: page.thumbnail.source
 			} : null
 		} );
+	};
 };
+
+/**
+ * Sets up the reading list feature for new users who have never used it before.
+ *
+ * @return {jQuery.Promise<any>}
+ */
+function setupCollections() {
+	return api.postWithToken( 'csrf', {
+		action: 'readinglists',
+		command: 'setup'
+	} );
+}
+
+/**
+ *
+ * @param {string} ownerName (username)
+ * @param {number[]} marked a list of collection IDs which have a certain title
+ * @return {Promise<Card[]>}
+ */
+function getCollections( ownerName, marked ) {
+	return new Promise( ( resolve, reject ) => {
+		api.get( {
+			action: 'query',
+			format: 'json',
+			rldir: 'descending',
+			rlsort: 'updated',
+			meta: 'readinglists',
+			formatversion: 2
+		} ).then( function ( /** @type {ApiQueryResponseReadingLists} */ data ) {
+			resolve(
+				( data.query.readinglists || [] ).map( ( collection ) =>
+					readingListToCard( collection, ownerName, marked ) )
+			);
+		}, function ( /** @type {string} */ err ) {
+			// setup a reading list and try again.
+			if ( err === 'readinglists-db-error-not-set-up' ) {
+				setupCollections().then( () => getCollections( ownerName, marked ) )
+					.then( ( /** @type {Card[]} */ collections ) => resolve( collections ) );
+			} else {
+				reject( err );
+			}
+		} );
+	} );
+}
+
+/**
+ * Gets pages on a given reading list
+ *
+ * @param {string} ownerName
+ * @param {number} id of collection
+ * @return {jQuery.Promise<Card>}
+ */
+function getCollectionMeta( ownerName, id ) {
+	return api.get( { action: 'query', format: 'json', meta: 'readinglists', rllist: id, formatversion: 2 } )
+		.then( function ( /** @type {ApiQueryResponseReadingLists} */ data ) {
+			if ( data.error && data.error.code ) {
+				throw new Error( `Error: ${data.error.code}` );
+			}
+			return readingListToCard(
+				data.query.readinglists[ 0 ],
+				ownerName,
+				[]
+			);
+		} );
+}
 
 /**
  * @typedef {Object.<string, string[]>} ProjectTitleMap
@@ -148,6 +238,7 @@ function getThumbnailsAndDescriptions( project, pageidsOrPageTitles ) {
 	const isPageIds = pageidsOrPageTitles[ 0 ] && typeof pageidsOrPageTitles[ 0 ] === 'number';
 	const pageids = isPageIds ? pageidsOrPageTitles : undefined;
 	const titles = isPageIds ? undefined : pageidsOrPageTitles;
+
 	const ajaxOptions = {
 		url: `${getProjectApiUrl( project )}`
 	};
@@ -192,6 +283,55 @@ function getPagesFromPageIdentifiers( project, pageids ) {
 }
 
 /**
+ * @param {ApiQueryResponsePage} pages
+ * @return {ProjectTitleMap}
+ */
+function toProjectTitlesMap( pages ) {
+	const /** @type {ProjectTitleMap} */projectTitleMap = {};
+	pages.forEach( ( page ) => {
+		if ( !projectTitleMap[ page.project ] ) {
+			projectTitleMap[ page.project ] = [];
+		}
+		projectTitleMap[ page.project ].push( page.title );
+	} );
+	return projectTitleMap;
+}
+
+/**
+ * @param {ApiQueryResponsePage} pages
+ * @return {jQuery.Promise<any>}
+ */
+function getPagesFromReadingListPages( pages ) {
+	return getPagesFromProjectMap( toProjectTitlesMap( pages ) );
+}
+
+/**
+ * Gets pages on a given reading list
+ *
+ * @param {number} collectionId
+ * @return {jQuery.Promise<any>}
+ */
+function getPages( collectionId ) {
+	return api.get( {
+		action: 'query',
+		format: 'json',
+		formatversion: 2,
+		list: 'readinglistentries',
+		rlelimit: 100,
+		rlelists: collectionId
+	} ).then( ( /** @type {ApiQueryResponseReadingListEntries} */data ) => {
+		const readinglistpages = data.query.readinglistentries;
+		return getPagesFromReadingListPages(
+			readinglistpages
+		).then( function ( /** @type {ApiQueryResponsePage} */ pages ) {
+			// make sure project is passed down.
+			return pages.map( ( page, /** @type {number} */ i ) =>
+				Object.assign( readinglistpages[ i ], page ) );
+		} );
+	} );
+}
+
+/**
  * @param {string} name
  * @param {string} description
  * @param {string[]} titles
@@ -210,7 +350,15 @@ function fromBase64( data ) {
 }
 
 module.exports = {
+	test: {
+		readingListToCard,
+		getProjectHost,
+		getProjectApiUrl
+	},
 	fromBase64,
 	toBase64,
+	getPages,
+	getCollectionMeta,
+	getCollections,
 	getPagesFromProjectMap
 };

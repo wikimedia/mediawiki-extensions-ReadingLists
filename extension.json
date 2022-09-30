@@ -54,6 +54,10 @@
 			"value": false,
 			"description": "Temporary feature flag for web based features."
 		},
+		"ReadingListsWebAuthenticatedPreviews": {
+			"value": false,
+			"description": "Temporary feature flag for displaying private lists."
+		},
 		"ReadingListsAnonymizedPreviews": {
 			"value": false,
 			"description": "Whether previews of shared lists should be shown."

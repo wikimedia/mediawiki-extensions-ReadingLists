@@ -4,6 +4,7 @@
 /.project
 /.coverage
 /composer.lock
+/coverage
 /vendor
 /node_modules
 /.eslintcache

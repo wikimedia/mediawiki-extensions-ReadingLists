@@ -74,6 +74,10 @@
 const { CdxCard, CdxMessage, CdxButton } = require( '@wikimedia/codex' );
 const { ReadingListiOSAppDownloadLink,
 	ReadingListAndroidAppDownloadLink } = require( '../config.json' );
+const READING_LIST_SPECIAL_PAGE_NAME = 'Special:ReadingLists';
+const READING_LISTS_NAME_PLURAL = mw.msg( 'special-tab-readinglists-short' );
+const READING_LIST_TITLE = mw.msg( 'readinglists-special-title' );
+const HOME_URL = ( new mw.Title( 'ReadingLists', -1 ) ).getUrl();
 
 const getEnabledMessage = ( key ) => {
 	const text = mw.msg( key );
@@ -136,7 +140,7 @@ module.exports = {
 			default: ''
 		},
 		initialTitles: {
-			type: Array,
+			type: Object,
 			required: false
 		},
 		initialName: {
@@ -172,9 +176,18 @@ module.exports = {
 				this.iosDownloadLink || this.androidDownloadLink
 			);
 		},
+		shareUrl: function () {
+			return HOME_URL;
+		},
+		getHomeUrl: function () {
+			return HOME_URL;
+		},
 		viewDescription: function () {
 			return this.description ||
 				( this.collection ? '' : mw.msg( 'readinglists-description' ) );
+		},
+		readingListUrl: function () {
+			return getReadingListUrl( mw.user.getName() );
 		},
 		viewTitle: function () {
 			return this.name || mw.msg( 'special-tab-readinglists-short' );
@@ -221,6 +234,28 @@ module.exports = {
 			const titles = this.cards.map( ( card ) => card.title );
 			window.location.search = `?limport=${this.api.toBase64( this.name, this.description, titles )}`;
 		},
+		clickCard: function ( ev ) {
+			// If we are navigating to a list, navigate internally
+			if ( !this.collection ) {
+				this.navigate( ev.currentTarget.getAttribute( 'href' ), null );
+				ev.preventDefault();
+			}
+		},
+		/**
+		 * Can be used externally to navigate to the home page.
+		 */
+		navigateHome: function () {
+			this.navigate( HOME_URL, READING_LIST_TITLE );
+		},
+		getUrlFromHref: function ( href ) {
+			const query = href.split( '?' )[ 1 ];
+			const titleInQuery = query ? query.replace( /title=(.*)(&|$)/, '$1' ) : false;
+			if ( titleInQuery ) {
+				return '/wiki/' + titleInQuery;
+			} else {
+				return href;
+			}
+		},
 		getState: function () {
 			return {
 				name: this.name,
@@ -230,19 +265,48 @@ module.exports = {
 		},
 		load: function () {
 			if ( this.loaded ) {
+				if ( this.errorCode || !this.username ) {
+					return;
+				}
+				const state = this.getState();
+				document.title = this.name ||
+					READING_LISTS_NAME_PLURAL;
+				window.history.replaceState(
+					state,
+					null,
+					this.collection ?
+						mw.util.getUrl( `${READING_LIST_SPECIAL_PAGE_NAME}/${this.username}/${this.collection}/${this.name}` ) :
+						mw.util.getUrl( `${READING_LIST_SPECIAL_PAGE_NAME}/${this.username}` )
+				);
 				return;
 			}
 			if ( this.initialTitles ) {
 				this.api.getPagesFromProjectMap( this.initialTitles ).then( ( pages ) => {
 					this.collection = -1;
-					if ( !this.anonymizedPreviews ) {
-						this.cards = pages.map( ( page ) => getCard( page ) );
-					}
+					this.cards = pages.map( ( page ) => getCard( page ) );
 					this.loaded = true;
 				}, ( err ) => {
 					this.errorCode = err;
 					this.loaded = true;
 				} );
+			} else if ( this.collection ) {
+				this.api.getCollectionMeta( this.username, this.collection ).then( ( meta ) => {
+					this.api.getPages( this.collection ).then( ( pages ) => {
+						this.cards = pages.map( ( collection ) => getCard( collection ) );
+						this.loaded = true;
+						this.name = meta.name;
+						this.description = meta.description;
+					} );
+				}, function ( code ) {
+					this.collection = undefined;
+					this.errorCode = code;
+					this.loaded = true;
+				}.bind( this ) );
+			} else if ( this.username ) {
+				this.api.getCollections( this.username, [] ).then( function ( collections ) {
+					this.cards = collections.map( ( collection ) => getCard( collection ) );
+					this.loaded = true;
+				}.bind( this ) );
 			} else {
 				this.errorCode = 'readinglists-import-error';
 				this.loaded = true;
@@ -255,7 +319,24 @@ module.exports = {
 			this.cards = [];
 			this.collection = false;
 			this.loaded = false;
-		}
+		},
+		navigate: function ( url, title ) {
+			this.showDisclaimer = false;
+			const articlePathPrefix = mw.config.get( 'wgArticlePath' ).replace( '$1', '' );
+			this.reset();
+			const params = url.split( articlePathPrefix )[ 1 ];
+			const paramArray = params.split( '/' ).slice( 1 );
+			// <username>/<id>/<name>
+			this.collection = paramArray[ 1 ];
+			this.name = paramArray[ 2 ] ?
+				decodeURIComponent( paramArray[ 2 ].replace( /_/g, ' ' ) ) : '';
+
+			history.pushState(
+				this.getState(),
+				title,
+				url
+			);
+ 		}
 	},
 	updated: function () {
 		this.load();

@@ -41,6 +41,7 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 	 */
 	public function execute( $par = '' ) {
 		$out = $this->getOutput();
+		$config = $out->getConfig();
 		// If the feature isn't ready, redirect to Special:SpecialPages
 		$enabled = $out->getConfig()->get( 'ReadingListsWeb' );
 		$params = $par ? explode( '/', $par ) : [];
@@ -58,8 +59,11 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 			$this->requireLogin( 'reading-list-purpose' );
 		} else {
 			if ( $listOwner || $exportFeature ) {
-				$owner = $exportFeature || !$listOwner ? null : User::newFromName( $listOwner );
-				if ( $exportFeature || $owner->getId() === $user->getId() ) {
+				$owner = !$listOwner ? null : User::newFromName( $listOwner );
+				$privateEnabled = $config->get( 'ReadingListsWebAuthenticatedPreviews' );
+				$canDisplayPrivateLists = $privateEnabled && $owner &&
+					$owner->getId() === $user->getId();
+				if ( $exportFeature || $canDisplayPrivateLists ) {
 					$this->executeReadingList();
 				} else {
 					throw new PermissionsError( 'action-readinglist-private' );
@@ -70,6 +74,15 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 					$user->getName() )->getLocalURL() );
 			}
 		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getAssociatedNavigationLinks(): array {
+		return [
+			self::getTitleFor( $this->getName() )->getPrefixedText(),
+		];
 	}
 
 	/**
