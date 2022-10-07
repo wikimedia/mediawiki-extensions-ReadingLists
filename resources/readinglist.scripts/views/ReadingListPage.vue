@@ -8,7 +8,7 @@
 					{{ disclaimer }}
 					<div v-if="initialTitles">
 						<div v-if="hasApp">
-							<p>{{ $i18n( 'readinglists-import-app' ) }}</p>
+							<p>{{ importMessage }}</p>
 						</div>
 						<div v-if="isAndroid && hasApp">
 							<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
@@ -152,6 +152,10 @@ module.exports = {
 		},
 		viewTitle: function () {
 			return this.name || mw.msg( 'special-tab-readinglists-short' );
+		},
+		importMessage() {
+			const message = mw.message( 'readinglists-import-app' );
+			return message.isDisabled() ? '' : message.text();
 		},
 		emptyMessage: function () {
 			return this.collection ?
