@@ -32,5 +32,20 @@
 	"readinglists-browser-extension-info-link-text": "Mehr erfahren",
 	"readinglists-browser-list-entry-limit-exceeded": "Der Artikel konnte nicht gespeichert werden. Du hast die Grenze von $1 Artikeln pro Liste erreicht.",
 	"readinglists-browser-extension-product-title": "Wikipedia-Leselisten",
-	"readinglists-browser-page-not-supported": "$1 unterstützt diese Seite nicht"
+	"readinglists-browser-page-not-supported": "$1 unterstützt diese Seite nicht",
+	"readinglists-special-title": "Leselisten",
+	"readinglists-description": "Alle deine Leselisten an einem Ort.",
+	"readinglists-loading": "Bitte warten …",
+	"reading-list-purpose": "Bitte melde dich an, um deine privaten Leselisten zu sehen.",
+	"readinglists-error": "Dein Browser kann die Leselistenfunktion nicht verwenden. Bitte aktiviere JavaScript oder versuche es in einem anderen Browser.",
+	"readinglists-import-error": "Die Liste kann anhand der angegebenen Daten nicht angezeigt werden.",
+	"readinglists-import-size-error": "Die Liste ist zu groß zum Anzeigen.",
+	"special-tab-readinglists-short": "Deine Listen",
+	"readinglists-default-title": "Gespeicherte Seiten",
+	"readinglists-default-description": "Standardliste für deine gespeicherten Artikel.",
+	"action-action-readinglist-private": "Lesen der Leselisten anderer Benutzer",
+	"readinglists-empty-message": "Du hast keine Listen, warum erstellst du nicht eine?",
+	"readinglists-list-empty-message": "Diese Liste enthält keine Seiten. Lade die App herunter und verwende sie, um Artikel zu dieser Leseliste hinzuzufügen.",
+	"readinglists-no-title": "Liste ohne Titel",
+	"readinglists-import-disclaimer": "Diese Liste wurde von einem Benutzer dieser Website erstellt, um sie mit jemandem (wahrscheinlich dir) zu teilen. Diese Liste wurde nicht moderiert, und ihr Inhalt spiegelt nicht die Benutzer der Website wider."
 }

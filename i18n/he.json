@@ -31,5 +31,20 @@
 	"readinglists-browser-extension-info-link-text": "מידע נוסף",
 	"readinglists-browser-list-entry-limit-exceeded": "לא ניתן לשמור את הערך. הגעת למגבלה של $1 ערכים ברשימה אחת",
 	"readinglists-browser-extension-product-title": "רשימות קריאה בוויקיפדיה",
-	"readinglists-browser-page-not-supported": "ההרחבה \"$1\" אינה תומכת בדף זה"
+	"readinglists-browser-page-not-supported": "ההרחבה \"$1\" אינה תומכת בדף זה",
+	"readinglists-special-title": "רשימות קריאה",
+	"readinglists-description": "כל רשימות הקריאה שלך במקום אחד.",
+	"readinglists-loading": "נא להמתין...",
+	"reading-list-purpose": "נא להיכנס לחשבון כדי לראות את רשימות הקריאה הפרטיות שלך.",
+	"readinglists-error": "הדפדפן שלך לא יכול להשתמש בתכונת רשימות הקריאה. נא להפעיל JavaScript או לנסות בדפדפן אחר.",
+	"readinglists-import-error": "לא ניתן להציג את הרשימה מהנתונים שניתנו.",
+	"readinglists-import-size-error": "הרשימה גדולה מדי להצגה.",
+	"special-tab-readinglists-short": "הרשימות שלך",
+	"readinglists-default-title": "דפים שמורים",
+	"readinglists-default-description": "רשימת ברירת מחדל עבור הערכים השמורים שלך.",
+	"action-action-readinglist-private": "לקרוא את רשימות הקריאה של משתמשים אחרים",
+	"readinglists-empty-message": "אין לך רשימות, למה לא ליצור אחת?",
+	"readinglists-list-empty-message": "ברשימה הזאת אין דפים. יש להוריד את היישום ולהשתמש בו כדי להוסיף פריטים לרשימת הקריאה הזאת.",
+	"readinglists-no-title": "רשימה ללא כותרת",
+	"readinglists-import-disclaimer": "הרשימה הזאת נוצרה על־ידי משתמש באתר הזה לצורך שיתוף עם מישהו (כנראה איתך). הרשימה הזאת לא עברה ביקורת, והתוכן שלה אינו משקף את עורכי האתר."
 }

@@ -31,5 +31,7 @@
 	"readinglists-browser-extension-info-link-text": "معرفة المزيد",
 	"readinglists-browser-list-entry-limit-exceeded": "المقالة لا يمكن حفظها; لقد بلغت الحد الأقصى $1 مقالة لكل قائمة",
 	"readinglists-browser-extension-product-title": "قوائم قراءة ويكيبيديا",
-	"readinglists-browser-page-not-supported": "لا يدعم $1 هذه الصفحة"
+	"readinglists-browser-page-not-supported": "لا يدعم $1 هذه الصفحة",
+	"readinglists-special-title": "قوائم القراءة",
+	"readinglists-default-title": "الصفحات المحفوظة"
 }

@@ -18,5 +18,11 @@
 	"readinglists-browser-enable-sync-prompt": "Attiva la sincronizzazione sulla tua applicazione di Wikipedia per iniziare a salvare le voci",
 	"readinglists-browser-extension-info-link-text": "Ulteriori informazioni",
 	"readinglists-browser-list-entry-limit-exceeded": "La voce non può essere salvata. Hai raggiunto il limite di $1 voci per elenco",
-	"readinglists-browser-page-not-supported": "$1 non supporta questa pagina"
+	"readinglists-browser-page-not-supported": "$1 non supporta questa pagina",
+	"readinglists-special-title": "Elenchi di lettura",
+	"readinglists-description": "Tutti i tuoi elenchi di lettura in un unico posto.",
+	"readinglists-import-size-error": "L'elenco è troppo grande per essere visualizzato.",
+	"special-tab-readinglists-short": "I tuoi elenchi",
+	"readinglists-default-title": "Pagine salvate",
+	"readinglists-default-description": "Elenco predefinito per le tue voci salvate."
 }

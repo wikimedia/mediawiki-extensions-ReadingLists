@@ -4,5 +4,20 @@
 			"McDutchie"
 		]
 	},
-	"readinglists-db-error-cannot-update-default-list": "Le lista predefinite non pote esser actualisate."
+	"readinglists-db-error-cannot-update-default-list": "Le lista predefinite non pote esser actualisate.",
+	"readinglists-special-title": "Listas de lectura",
+	"readinglists-description": "Tote tu listas de lectura in un sol loco.",
+	"readinglists-loading": "Un momento…",
+	"reading-list-purpose": "Per favor aperi session pro vider tu listas de lectura private.",
+	"readinglists-error": "Tu navigator non pote usar le function de listas de lectura. Per favor activa JavaScript o tenta lo in un altere navigator.",
+	"readinglists-import-error": "Le lista non pote esser monstrate a partir del datos fornite.",
+	"readinglists-import-size-error": "Le lista es troppo grande pro esser monstrate.",
+	"special-tab-readinglists-short": "Tu listas",
+	"readinglists-default-title": "Paginas salveguardate",
+	"readinglists-default-description": "Lista predefinite pro tu articulos salveguardate.",
+	"action-action-readinglist-private": "leger le listas de lectura de altere usatores",
+	"readinglists-empty-message": "Tu non ha listas. Proque non crear un?",
+	"readinglists-list-empty-message": "Iste lista non contine paginas. Discarga e usa le app pro adder elementos a iste lista de lectura.",
+	"readinglists-no-title": "Lista sin titulo",
+	"readinglists-import-disclaimer": "Iste lista ha essite generate per un usator sur iste sito pro esser condividite con alcuno (probabilemente con te). Iste lista non ha essite moderate e su contento non reflecte le redactores del site."
 }

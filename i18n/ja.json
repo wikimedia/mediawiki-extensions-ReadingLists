@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Afaz",
+			"MathXplore",
 			"Omotecho",
 			"Otokoume",
 			"Yusuke1109"
@@ -18,5 +19,7 @@
 	"readinglists-db-error-list-limit": "利用者ひとりが作成できる一覧の上限は$1 {{PLURAL:$1|list|件}}です。",
 	"readinglists-db-error-entry-limit": "$1 に入力できる上限は$2 {{PLURAL:$2|entry|件}}です。",
 	"readinglists-db-error-too-long": "フィールド「$1」の値は$2バイトを超えることはできません。",
-	"readinglists-browser-error-intro": "エラーが発生しました: $1"
+	"readinglists-browser-error-intro": "エラーが発生しました: $1",
+	"readinglists-loading": "お待ちください…",
+	"readinglists-import-size-error": "リストが大きすぎて表示できません。"
 }

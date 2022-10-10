@@ -7,5 +7,20 @@
 	"readinglists-desc": "Uporabnikom omogoča upravljanje zasebnih seznamov člankov, kot so zaznamki ali seznami »Preberi pozneje«.",
 	"readinglists-browser-add-entry-success": "Članek »$1« je shranjen na vaš bralni seznam.",
 	"readinglists-browser-extension-info-link-text": "Več o tem",
-	"readinglists-browser-list-entry-limit-exceeded": "Članka ni bilo mogoče shraniti. Dosegli ste omejitev $1 člankov na seznam."
+	"readinglists-browser-list-entry-limit-exceeded": "Članka ni bilo mogoče shraniti. Dosegli ste omejitev $1 člankov na seznam.",
+	"readinglists-special-title": "Bralni seznami",
+	"readinglists-description": "Vsi vaši bralni seznami na enem mestu.",
+	"readinglists-loading": "Prosimo, počakajte ...",
+	"reading-list-purpose": "Če si želite ogledati svoje zasebne bralne sezname, se prijavite.",
+	"readinglists-error": "Vaš brskalnik ne more uporabljati funkcije bralnih seznamov. Omogočite JavaScript ali poskusite v drugem brskalniku.",
+	"readinglists-import-error": "Ni mogoče prikazati seznama iz navedenih podatkov.",
+	"readinglists-import-size-error": "Seznam je prevelik za prikaz.",
+	"special-tab-readinglists-short": "Vaši seznami",
+	"readinglists-default-title": "Shranjene strani",
+	"readinglists-default-description": "Privzeti seznam za vaše shranjene članke",
+	"action-action-readinglist-private": "branje bralnih seznamov drugih uporabnikov",
+	"readinglists-empty-message": "Nimate seznamov; zakaj ne bi enega ustvarili?",
+	"readinglists-list-empty-message": "Na tem seznamu ni nobene strani. Če želite na ta bralni seznam dodati predmete, prenesite in uporabite našo aplikacijo.",
+	"readinglists-no-title": "Seznam brez naslova",
+	"readinglists-import-disclaimer": "Ta seznam je uporabnik na tem mestu ustvaril za skupno rabo z nekom (verjetno vami). Ta seznam ni bil moderiran in njegova vsebina ne odraža urejevalcev projekta."
 }

@@ -1,13 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ajiniyaz",
 			"Diman Russkov",
 			"Edible Melon",
 			"Happy13241",
 			"Kareyac",
 			"Movses",
 			"Ole Yves",
-			"Stjn"
+			"Stjn",
+			"UniCollab",
+			"Артём 13327"
 		]
 	},
 	"readinglists-desc": "Позволяет пользователям управлять приватными списками статей, такими как закладки или списки «читать потом».",
@@ -30,5 +33,9 @@
 	"readinglists-browser-extension-info-link-text": "Подробнее",
 	"readinglists-browser-list-entry-limit-exceeded": "Статья не может быть сохранена. Вы достигли лимита статей на список ($1).",
 	"readinglists-browser-extension-product-title": "Списки чтения Википедии",
-	"readinglists-browser-page-not-supported": "$1 не поддерживает эту страницу"
+	"readinglists-browser-page-not-supported": "$1 не поддерживает эту страницу",
+	"readinglists-loading": "Пожалуйста, подождите…",
+	"readinglists-error": "Ваш браузер не может использовать функцию списков для чтения. Включите JavaScript или попробуйте в другом браузере.",
+	"readinglists-import-size-error": "Список слишком велик для отображения.",
+	"special-tab-readinglists-short": "Ваши списки"
 }

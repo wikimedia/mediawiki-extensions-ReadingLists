@@ -31,5 +31,20 @@
 	"readinglists-browser-extension-info-link-text": "Saiba mais",
 	"readinglists-browser-list-entry-limit-exceeded": "O artigo não pode ser guardado. Atingiu o limite de $1 artigos por lista",
 	"readinglists-browser-extension-product-title": "Listas de leitura da Wikipédia",
-	"readinglists-browser-page-not-supported": "$1 não tem suporte para esta página"
+	"readinglists-browser-page-not-supported": "$1 não tem suporte para esta página",
+	"readinglists-special-title": "Listas de leitura",
+	"readinglists-description": "Todas as suas listas de leitura num só lugar.",
+	"readinglists-loading": "Aguarde, por favor...",
+	"reading-list-purpose": "Inicie uma sessão para ver as suas listas de leitura privadas, por favor.",
+	"readinglists-error": "O seu ''browser'' não tem a capacidade de usar o funcionalidade de listas de leitura. Ative o JavaScript ou tente noutro ''browser''.",
+	"readinglists-import-error": "Não é possível apresentar a lista tendo por base os dados fornecidos.",
+	"readinglists-import-size-error": "A lista é demasiado grande para ser apresentada.",
+	"special-tab-readinglists-short": "Listas",
+	"readinglists-default-title": "Páginas gravadas",
+	"readinglists-default-description": "Lista por omissão para os seus artigos gravados.",
+	"action-action-readinglist-private": "ler as listas de leitura de outros utilizadores",
+	"readinglists-empty-message": "Não tem listas. Porque não cria uma?",
+	"readinglists-list-empty-message": "Esta lista não contém páginas. Descarregue e use a aplicação para adicionar elementos a esta lista de leitura.",
+	"readinglists-no-title": "Lista sem título",
+	"readinglists-import-disclaimer": "Esta lista foi gerada por um utilizador deste ''site'' para ser partilhada com alguém (provavelmente consigo). A lista não foi revista e o conteúdo da mesma não reflete a opinião dos editores do ''site''."
 }
