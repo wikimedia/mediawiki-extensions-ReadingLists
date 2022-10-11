@@ -1,0 +1,22 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ajiniyaz Nurniyazov"
+		]
+	},
+	"readinglists-special-title": "Oqıw dizimleri",
+	"readinglists-description": "Barlıq oqıw dizimlerińiz bir jerde.",
+	"readinglists-loading": "Ótinish kútińiz...",
+	"reading-list-purpose": "Jeke oqıw dizimlerińizdi kóriw ushın sistemaǵa kirińiz.",
+	"readinglists-error": "Brauzerińiz oqıw dizimleri funksiyasınan paydalana almaydı. Ótinish, JavaScriptti qosıń yamasa basqa brauzerde háreket etip kóriń.",
+	"readinglists-import-error": "Berilgen maǵlıwmattaǵı dizimdi kórsetiw ilajsız.",
+	"readinglists-import-size-error": "Bul dizim kórsetiw ushın kútá úlken.",
+	"special-tab-readinglists-short": "Siziń dizimlerińiz",
+	"readinglists-default-title": "Saqlanǵan betler",
+	"readinglists-default-description": "Saqlanǵan maqalalarıńız ushın standart dizim.",
+	"action-action-readinglist-private": "Basqa paydalanıwshılardıń oqıw dizimlerin oqıń",
+	"readinglists-empty-message": "Sizde dizimler joq, nege onı jaratpaysız?",
+	"readinglists-list-empty-message": "Bul dizimde hesh qanday bet joq. Bul oqıw dizimine zatlardı qosıw ushın tirkemeni júklep alıń hám paydalanıń.",
+	"readinglists-no-title": "Atamasız dizim",
+	"readinglists-import-disclaimer": "Bul dizim usı sayttaǵı paydalanıwshı tárepinen birew menen (itimal siz benen) bólisiw ushın jaratılǵan. Bul dizim moderatorlıqtan ótkerilmegen hám onıń mazmunı sayt redakciyasın sáwlelendirmeydi."
+}

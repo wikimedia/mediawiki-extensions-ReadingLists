@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Jon Harald Søby",
-			"Orf3us"
+			"Orf3us",
+			"Telaneo"
 		]
 	},
 	"readinglists-desc": "Lar brukere behandle private lister over artikler, som bokmerker eller «Les senere»-lister.",
@@ -31,5 +32,18 @@
 	"readinglists-browser-extension-info-link-text": "Lær mer",
 	"readinglists-browser-list-entry-limit-exceeded": "Artikkelen kan ikke lagres. Du har nådd grensa på $1 artikler per liste",
 	"readinglists-browser-extension-product-title": "Wikipedia-leselister",
-	"readinglists-browser-page-not-supported": "$1 støtter ikke denne siden"
+	"readinglists-browser-page-not-supported": "$1 støtter ikke denne siden",
+	"readinglists-special-title": "Leselister",
+	"readinglists-description": "Alle leselistene dine på ett sted.",
+	"readinglists-loading": "Vennligst vent…",
+	"reading-list-purpose": "Vennligst logg inn for å se dine private leselister.",
+	"readinglists-error": "Nettleseren din kan ikke ta i bruk leselistefunksjonen. Vennligst skru på JavaScript eller prøv en annen nettleser.",
+	"readinglists-import-error": "Kunne ikke vise listen utifra dataene som ble gitt.",
+	"readinglists-import-size-error": "Listen er for stor til å vises.",
+	"special-tab-readinglists-short": "Listene dine",
+	"readinglists-default-title": "Lagrede sider",
+	"readinglists-default-description": "Standardliste for dine lagrede artikler",
+	"action-action-readinglist-private": "Les andre brukeres leselister",
+	"readinglists-empty-message": "Du har ingen lister, hvorfor ikke lage en?",
+	"readinglists-list-empty-message": "Denne listen har ingen sider på seg. Last ned og bruk appen for å legge ting til denne leselisten."
 }
