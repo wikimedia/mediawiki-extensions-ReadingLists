@@ -1,0 +1,22 @@
+{
+	"@metadata": {
+		"authors": [
+			"Cakkaparla",
+			"ReyLon Mrat"
+		]
+	},
+	"readinglists-special-title": "ဖတ်ထားရေစာရင်း",
+	"readinglists-description": "မင်းစာဖတ်တေစာရင်းအားလုံးကိုတစ်နိန်ရာမှာထားပါ",
+	"readinglists-loading": "ကျေးဇူးပြုလို့စောင့်နိန်ပါ",
+	"reading-list-purpose": "သင့်​၏ ကိုယ်ပိုင် စာဖတ်စာရင်းကိုကြေ့ဖို့ အကောင့်ဝင်ပါ။",
+	"readinglists-error": "သင့်ရောက်ဆာက စုစီးစာဖတ်ခြင်းလုပ်ဆောင်မှုကို အသုံးမပြုနိင်ပါ။ ကျေးဇူးပြုပြီးကေ JavaScript ကိုဖွင့်ပီးပါ မဟု​တ်ကေ အခြားဘရောက်ဆာမှာစမ်းကြေ့ပါ။",
+	"readinglists-import-error": "ရရှိထားရေအချက်လက်တိထဲကစာရင်းကို မပြသနိင်ပါ။",
+	"readinglists-import-size-error": "စာရင်းကဖော်ပြဖို့ ကြီးလွန်းပါရေ။",
+	"special-tab-readinglists-short": "သင့်စာရင်းတိ",
+	"readinglists-default-title": "သိမ်းထားရေစာမျက်နှာတိ",
+	"readinglists-default-description": "သင်​၏မှတ်ထားရေစာရင်းအတွက် မူရင်းပုံစံ",
+	"action-action-readinglist-private": "တခြားအသုံးပြုရေလူတိ​၏ စာဖတ်ရင်းကိုဖတ်ပါ။",
+	"readinglists-list-empty-message": "ဒေစာရင်းမှာ စာမျက်နှာမရှိပါ။ ဆွဲယူပြီးခါ အက်ပ်ကိုအသုံးပြုလို့ ဒေစာရင်းထဲမှာ ဒေ အချက်လက်တိကိုထည့်ပါ။",
+	"readinglists-no-title": "ခေါင်းစဉ်မဟိရေစာရင်း",
+	"readinglists-import-disclaimer": "ဒေဆိုက်တိက တစ်စုံတစ်ယောက်နှင့်မျှဝေဖို့ စာရင်းပြုစုထားပါရေ (သင်ဖြိုက်နိုင်ပါရေ)။ ဒေစာရင်းကအတော်သင့်အဖြိုက်သိမ့်ပါ၊ ယင်းအချက်လက်တိက ဒေဆိုက်​၏ တည်းဖြတ်မှုပေါ် မသက်ရောက်စီပါ။"
+}
