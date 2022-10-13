@@ -2,8 +2,10 @@
 	<div class="readinglist-page">
 		<div class="readinglist-collection">
 			<div class="readinglist-collection-summary">
-				<h1 v-if="viewTitle">{{ viewTitle }}</h1>
-				<p class="readinglist-collection-description">&nbsp;{{ viewDescription }} </p>
+				<div v-if="!anonymizedPreviews">
+					<h1 v-if="viewTitle">{{ viewTitle }}</h1>
+					<p class="readinglist-collection-description">&nbsp;{{ viewDescription }} </p>
+				</div>
 				<cdx-message v-if="showDisclaimer" type="warning">
 					{{ disclaimer }}
 					<div v-if="initialTitles">
@@ -27,7 +29,7 @@
 				<cdx-message type="error">{{ errorMessage }}</cdx-message>
 			</div>
 			<div v-if="loaded && !errorCode">
-				<div class="readinglist-list">
+				<div :class="readingListClass">
 					<div class="readinglist-list__container" v-if="cards.length">
 						<cdx-card
 							v-for="(card) in cards"
@@ -45,9 +47,9 @@
 							</template>
 						</cdx-card>
 					</div>
-					<p v-else>
+					<div v-else>
 						{{ emptyMessage }}
-					</p>
+					</div>
 				</div>
 			</div>
 			<div v-if="!loaded">
@@ -94,6 +96,10 @@ module.exports = {
 			type: String,
 			default: ReadingListiOSAppDownloadLink
 		},
+		anonymizedPreviews: {
+			type: Boolean,
+			default: false
+		},
 		androidDownloadLink: {
 			type: String,
 			default: ReadingListAndroidAppDownloadLink
@@ -139,6 +145,12 @@ module.exports = {
 		}
 	},
 	computed: {
+		readingListClass() {
+			return {
+				'readinglist-list--hidden': this.anonymizedPreviews && this.showDisclaimer,
+				'readinglist-list': true
+			}
+		},
 		hasApp: function () {
 			return (
 				this.iosDownloadLink && this.isIOS
@@ -206,7 +218,10 @@ module.exports = {
 			}
 			if ( this.initialTitles ) {
 				this.api.getPagesFromProjectMap( this.initialTitles ).then( ( pages ) => {
-					this.cards = pages.map( ( page ) => getCard( page ) );
+					this.collection = -1;
+					if ( !this.anonymizedPreviews ) {
+						this.cards = pages.map( ( page ) => getCard( page ) );
+					}
 					this.loaded = true;
 				}, ( err ) => {
 					this.errorCode = err;
@@ -273,6 +288,10 @@ module.exports = {
 	p {
 		margin-top: 16px;
 	}
+}
+
+.readinglist-list--hidden {
+	display: none;
 }
 
 .app_store_images_sprite {

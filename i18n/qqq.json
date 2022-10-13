@@ -50,5 +50,6 @@
 	"readinglists-list-empty-message": "Message that shows on a list with no pages in it.",
 	"readinglists-no-title": "Name of a list without a name",
 	"readinglists-import-app": "{{notranslate}}. Configured on site basis. See [[Extension:WikimediaMessages]] for Wikimedia localizations.",
+	"readinglists-import-disclaimer-anonymized": "Same as {{mw-msg|readinglists-import-disclaimer}} but anonymized - no idea of the contents.",
 	"readinglists-import-disclaimer": "Explains how the list was generated."
 }

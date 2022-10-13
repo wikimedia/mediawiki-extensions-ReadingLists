@@ -54,6 +54,10 @@
 			"value": false,
 			"description": "Temporary feature flag for web based features."
 		},
+		"ReadingListsAnonymizedPreviews": {
+			"value": false,
+			"description": "Whether previews of shared lists should be shown."
+		},
 		"ReadingListsDeveloperMode": {
 			"value": false,
 			"description": "Enable tools that make development easier."
@@ -114,6 +118,7 @@
 				"readinglists-no-title",
 				"readinglists-import-app",
 				"readinglists-loading",
+				"readinglists-import-disclaimer-anonymized",
 				"readinglists-import-disclaimer",
 				"readinglists-special-title",
 				"readinglists-empty-message",
@@ -135,6 +140,7 @@
 					"config": [
 						"ReadingListAndroidAppDownloadLink",
 						"ReadingListiOSAppDownloadLink",
+						"ReadingListsAnonymizedPreviews",
 						"ReadingListsDeveloperMode"
 					]
 				},

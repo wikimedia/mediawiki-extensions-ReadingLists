@@ -1,5 +1,6 @@
 const api = require( './api.js' );
 const ReadingListPage = require( './views/ReadingListPage.vue' );
+const config = require( './config.json' );
 
 /**
  * Renders the special page.
@@ -11,13 +12,16 @@ const ReadingListPage = require( './views/ReadingListPage.vue' );
  * @param {boolean} isImport
  */
 function init( Vue, username, initialCollection, importData, isImport ) {
-	let initialTitles, initialName, initialDescription, disclaimer;
+	let initialTitles, initialName, initialDescription, disclaimer, anonymizedPreviews;
 	try {
 		const data = api.fromBase64( importData );
 		initialName = data.name || mw.msg( 'readinglists-no-title' );
 		initialDescription = data.description || '';
 		initialTitles = data.list;
-		disclaimer = mw.msg( 'readinglists-import-disclaimer' );
+		anonymizedPreviews = config.ReadingListsAnonymizedPreviews;
+		disclaimer = anonymizedPreviews ?
+			mw.msg( 'readinglists-import-disclaimer-anonymized' ) :
+			mw.msg( 'readinglists-import-disclaimer' );
 	} catch ( e ) {
 		// continue to render an errors
 	}
@@ -25,6 +29,7 @@ function init( Vue, username, initialCollection, importData, isImport ) {
 		initialName,
 		initialDescription,
 		username,
+		anonymizedPreviews,
 		disclaimer,
 		api,
 		isImport,
