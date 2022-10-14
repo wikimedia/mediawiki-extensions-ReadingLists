@@ -1,20 +1,21 @@
 {
 	"@metadata": {
 		"authors": [
-			"Boke"
+			"Boke",
+			"Cakkaparla"
 		]
 	},
-	"readinglists-special-title": "ဖတ်ရှုစာရင်းတိ",
-	"readinglists-description": "မင်း၏စာဖတ်ရေ စာရင်းအားလုံးကို တစ်နေရာတည်းမှာ ထားဟိန့်ပါ။",
-	"readinglists-loading": "ကျေးဇူးပြုပနာ တနားချေစောင့်နီပါ...",
-	"reading-list-purpose": "မင်း၏ သီးသန့်စာဖတ်ရေစာရင်းတိကို ကြည့်ဖို့အတွက်ကျေးဇူးပြုပနာ ဝင်ရောက်ပါ။",
-	"readinglists-import-error": "ပီးထားရေ data မှ စာရင်းကို မပြနိုင်ပါ။",
-	"readinglists-import-size-error": "ဖော်ပြရန်စာရင်းက တဝကြီးရေ",
-	"special-tab-readinglists-short": "မင်း၏စာရင်းတိ",
-	"readinglists-default-title": "သိမ်းပီးထားရေ စာမျက်နှာတိ",
-	"readinglists-default-description": "မင်းသိမ်းဆည်းထားရေ ဆောင်းပါးတိအတွက် ပင်မ စာရင်း။",
-	"action-action-readinglist-private": "တခြားအသုံးပြုသူတိ၏စာဖတ်ရေစာရင်းတိကိုဖတ်ပါ။",
-	"readinglists-empty-message": "မင်းမှာစာရင်းမဟိန့်ပါ၊ ဇာအတွက်ကြောင့်တစ်ခုမဖန်တီးစာလဲ။",
-	"readinglists-list-empty-message": "အေစာရင်းမှာ စာမျက်နှာတိ မဟိန့်ပါ။ ဒေစာဖက်ရေစာရင်းသို့ အကြောင်းအရာတိထည့်ဖို့အတွက် အက်ပ်ကို ဒေါင်းလုဒ်လုပ်ပနာ အသုံးပြုပါ။",
-	"readinglists-no-title": "ခေါင်းစဥ်မဟိန့်ရေစာရင်း"
+	"readinglists-special-title": "ဖတ်စာစာရင်းတိ",
+	"readinglists-description": "မင်းဖတ်ရေ စာရင်းတိအားလုံးကို တစ်နိန်ရာတည်းမှာ ထားပါ",
+	"readinglists-loading": "ကျီနပ်စွာစောင့်ပါ",
+	"reading-list-purpose": "မင်း၏ မင်းကိုမင်းစာဖတ်ရေစာရင်းတိကို ကြည့်ဖို့အတွက်ကျေးဇူးပြုပနာ ဝင်ရောက်ပါ။",
+	"readinglists-import-error": "ပီးခရေ အချက်လက် မှ စာရင်းကို မတင်ပြနိုင်ပါ။",
+	"readinglists-import-size-error": "တင်ပြဖို့စာရင်းက တပျင်းအရေးကြီးရေ",
+	"special-tab-readinglists-short": "မင်းစွာ၏စာရင်းတိ",
+	"readinglists-default-title": "သိမ်းထားခရေ စာမျက်နှာတိ",
+	"readinglists-default-description": "မင်းသိမ်းထားခရေ စာဝထုတိကို ပင်ကိုနိန်ရာမှာထားပါ",
+	"action-action-readinglist-private": "နောက်အထပ်သုံးပြုလူတိ၏စာဖတ်ရေစာရင်းတိကိုဖတ်ပါ။",
+	"readinglists-empty-message": "မင်းမှာစရင်းမဟိန့်ပါ၊ ဇာဖြစ်လို့တစ်ခုမဖန်တီးနိုင်ပါလေ",
+	"readinglists-list-empty-message": "ဒေစာရင်းမှာ စာမျက်နှာတိ မဟိန့်ပါ။ ဒေစာဖက်ရေစာရင်းကို အကြောင်းအရာတိထည့်ဖို့ဆိုကေ အက်ပ်ကို ဒေါင်းလုဒ်နှိပ်ပနာ အသုံးပြုကတ်ရပါဖို့။",
+	"readinglists-no-title": "ခေါင်းစီးမဟိရေစာရင်း"
 }

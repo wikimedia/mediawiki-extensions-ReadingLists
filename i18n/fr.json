@@ -5,6 +5,7 @@
 			"DePlusJean",
 			"Gomoko",
 			"Pamputt",
+			"SleaY",
 			"Urhixidur",
 			"Verdy p",
 			"Wladek92"
@@ -51,5 +52,6 @@
 	"readinglists-empty-message": "Vous n’avez aucune liste, pourquoi ne pas en créer une ?",
 	"readinglists-list-empty-message": "Cette liste ne contient aucune page. Téléchargez et utilisez l’application pour ajouter des éléments à cette liste de lecture.",
 	"readinglists-no-title": "Liste sans titre",
+	"readinglists-import-disclaimer-anonymized": "Une liste a été générée par un utilisateur sur ce site pour qu'elle soit partagée avec quelqu'un (probablement vous).",
 	"readinglists-import-disclaimer": "Cette liste a été générée par un utilisateur de ce site pour être partagée avec quelqu’un (probablement vous). Cette liste n’a pas été modérée et son contenu ne reflète pas les contributeurs du site."
 }
