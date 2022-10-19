@@ -30,5 +30,21 @@
 	"readinglists-browser-extension-info-link-text": "Läs mer",
 	"readinglists-browser-list-entry-limit-exceeded": "Artikeln kan inte sparas. Du har nått gränsen på $1 artiklar per lista",
 	"readinglists-browser-extension-product-title": "Wikipedia-läslistor",
-	"readinglists-browser-page-not-supported": "$1 stöder inte denna sida"
+	"readinglists-browser-page-not-supported": "$1 stöder inte denna sida",
+	"readinglists-special-title": "Läslistor",
+	"readinglists-description": "Alla dina läslistor på ett ställe.",
+	"readinglists-loading": "Var god vänta…",
+	"reading-list-purpose": "Var god logga in för att se dina privata läslistor.",
+	"readinglists-error": "Din webbläsare kan inte använda läslistsfunktionen. Var god aktivera JavaScript eller försök med en annan webbläsare.",
+	"readinglists-import-error": "Kan inte visas listan från angiven data.",
+	"readinglists-import-size-error": "Listan är för stor för att visas.",
+	"special-tab-readinglists-short": "Dina listor",
+	"readinglists-default-title": "Sparade sidor",
+	"readinglists-default-description": "Standardlista för dina sparade artiklar.",
+	"action-action-readinglist-private": "läsa andra användares läslistor",
+	"readinglists-empty-message": "Du har inga listor, varför inte skapa en?",
+	"readinglists-list-empty-message": "Denna lista har inga sidor. Ladda ned och använd appen för att lägga till objekt i denna läslista.",
+	"readinglists-no-title": "Namnlös lista",
+	"readinglists-import-disclaimer-anonymized": "En lista har genererats av en användare på denna webbplats i syfte att dela med någon (förmodligen dig).",
+	"readinglists-import-disclaimer": "En lista har genererats av en användare på denna webbplats i syfte att dela med någon (förmodligen dig). Listan har inte modererats och dess innehåll reflekterar inte webbplatsens redigerare."
 }
