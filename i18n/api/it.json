@@ -1,11 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Beta16"
+			"Beta16",
+			"McDutchie"
 		]
 	},
 	"apihelp-query+readinglists-param-list": "ID elenco.",
-	"apihelp-readinglists+create-extended-description": "L'utente deve avere meno di $1 {{PLURAL:$1|elenco|elenchi}} (non cancellati).",
+	"apihelp-readinglists+create-extended-description": "L'utente deve avere meno di $1 {{PLURAL:$1|elenco (non cancellato)|elenchi (non cancellati)}}.",
 	"apihelp-readinglists+update-param-list": "ID elenco. Richiesto a meno che non si usi l'aggiornamento batch.",
 	"apihelp-readinglists+delete-param-list": "ID elenco. Richiesto a meno che non si esegua l'eliminazione batch.",
 	"apihelp-readinglists+createentry-param-list": "ID elenco."
