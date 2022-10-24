@@ -3,7 +3,8 @@
 		"authors": [
 			"Fitoschido",
 			"KATRINE1992",
-			"DiegoAmbrocio"
+			"DiegoAmbrocio",
+			"McDutchie"
 		]
 	},
 	"apierror-readinglists-batch-invalid-json": "JSON no válido para el parámetro <var>batch</var>: $1",
@@ -18,7 +19,7 @@
 	"apihelp-readinglists+teardown-summary": "Desactivar las listas para el usuario actual.",
 	"apihelp-readinglists+teardown-example-1": "Desactivar las listas de lectura para el usuario actual.",
 	"apihelp-readinglists+create-summary": "Crear una lista nueva para el usuario actual.",
-	"apihelp-readinglists+create-extended-description": "El usuario debe tener menos de $1 (no eliminado) {{PLURAL:$1|list|lists}}.",
+	"apihelp-readinglists+create-extended-description": "El usuario debe tener menos de $1 {{PLURAL:$1|lista (no eliminada)|listas (no eliminadas)}}.",
 	"apihelp-readinglists+create-param-name": "Nombre de la lista. Necesario a menos que se esté realizando una creación por lotes.",
 	"apihelp-readinglists+create-param-description": "Descripción de la lista.",
 	"apihelp-readinglists+create-example-1": "Crear una lista de lectura nueva.",
@@ -31,7 +32,7 @@
 	"apihelp-readinglists+delete-summary": "Eliminar una lista perteneciente al usuario actual.",
 	"apihelp-readinglists+delete-param-list": "Identificador de lista. Necesario a menos que se esté realizando un borrado por lotes.",
 	"apihelp-readinglists+delete-example-2": "Eliminar varias listas.",
-	"apihelp-readinglists+createentry-extended-description": "La entradas de lista deben ser unicas.Las paginas no son solamente de wiki donde hay acceso al API. El usuario debe tener menos que  $1 (no eliminado) {{PLURAL:$1|entry|entries}} en la lista.",
+	"apihelp-readinglists+createentry-extended-description": "Las entradas de la lista deben ser únicas. Las páginas no se limitan al wiki donde se accede a la API. El usuario debe tener menos de $1 {{PLURAL:$1|entrada (no borrada)|entradas (no borradas)}} en la lista.",
 	"apihelp-readinglists+createentry-param-list": "Identificador de lista.",
 	"apihelp-readinglists+createentry-example-2": "Añadir varias páginas a una lista.",
 	"apihelp-readinglists+deleteentry-param-entry": "Identificador de entrada. Necesario a menos que se esté realizando un borrado por lotes.",
