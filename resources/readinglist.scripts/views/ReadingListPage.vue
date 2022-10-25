@@ -11,16 +11,27 @@
 					<div v-if="initialTitles">
 						<div v-if="hasApp">
 							<p>{{ importMessage }}</p>
+							<div v-if="isAndroid">
+								<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
+									<span class="app_store_images_sprite svg-badge_google_play_store"></span>
+								</a>
+							</div>
+							<div v-else-if="isIOS">
+								<a target="_blank" rel="noreferrer" :href="iosDownloadLink">
+									<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
+								</a>
+							</div>
+							<div v-else>
+								<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
+									<span class="app_store_images_sprite svg-badge_google_play_store"></span>
+								</a>
+								<a target="_blank" rel="noreferrer" :href="iosDownloadLink">
+									<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
+								</a>
+							</div>
 						</div>
-						<div v-if="isAndroid && hasApp">
-							<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
-								<span class="app_store_images_sprite svg-badge_google_play_store"></span>
-							</a>
-						</div>
-						<div v-if="isIOS && hasApp">
-							<a target="_blank" rel="noreferrer" :href="iosDownloadLink">
-								<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
-							</a>
+						<div v-else>
+							{{ noAppMessage }}
 						</div>
 					</div>
 				</cdx-message>
@@ -63,6 +74,11 @@
 const { CdxCard, CdxMessage, CdxButton } = require( '@wikimedia/codex' );
 const { ReadingListiOSAppDownloadLink,
 	ReadingListAndroidAppDownloadLink } = require( '../config.json' );
+
+const getEnabledMessage = ( key ) => {
+	const text = mw.msg( key );
+	return text === '-' ? '' : text;
+};
 
 /**
  * @param {number} id
@@ -153,9 +169,7 @@ module.exports = {
 		},
 		hasApp: function () {
 			return (
-				this.iosDownloadLink && this.isIOS
-			) || (
-				this.isAndroid && this.androidDownloadLink
+				this.iosDownloadLink || this.androidDownloadLink
 			);
 		},
 		viewDescription: function () {
@@ -165,9 +179,11 @@ module.exports = {
 		viewTitle: function () {
 			return this.name || mw.msg( 'special-tab-readinglists-short' );
 		},
+		noAppMessage() {
+			return getEnabledMessage( 'readinglists-import-app-misconfigured' );
+		},
 		importMessage() {
-			const message = mw.message( 'readinglists-import-app' );
-			return message.isDisabled() ? '' : message.text();
+			return getEnabledMessage( 'readinglists-import-app' );
 		},
 		emptyMessage: function () {
 			return this.collection ?
