@@ -111,6 +111,7 @@
 				"mediawiki.user"
 			],
 			"messages": [
+				"readinglists-import-app-misconfigured",
 				"readinglists-import-error",
 				"readinglists-db-error-no-such-list",
 				"readinglists-db-error-list-deleted",
