@@ -22,6 +22,7 @@
 	"readinglists-empty-message": "Nimate seznamov; zakaj ne bi enega ustvarili?",
 	"readinglists-list-empty-message": "Na tem seznamu ni nobene strani. Če želite na ta bralni seznam dodati predmete, prenesite in uporabite našo aplikacijo.",
 	"readinglists-no-title": "Seznam brez naslova",
+	"readinglists-import-app-misconfigured": "To spletno mesto trenutno ne podpira uvažanja seznamov.",
 	"readinglists-import-disclaimer-anonymized": "Nekdo je v tem projektu ustvaril seznam za skupno rabo z nekom (verjetno z vami).",
 	"readinglists-import-disclaimer": "Ta seznam je uporabnik na tem mestu ustvaril za skupno rabo z nekom (verjetno vami). Ta seznam ni bil moderiran in njegova vsebina ne odraža urejevalcev projekta."
 }
