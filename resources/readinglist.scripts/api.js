@@ -107,9 +107,10 @@ function getProjectHost( project ) {
 		}
 	}
 	if ( isProjectCode ) {
-		project = `https://${project}.${window.location.host.split( '.' ).slice( 1 ).join( '.' )}`;
+		return `https://${project}.${window.location.host.split( '.' ).slice( 1 ).join( '.' )}`;
+	} else {
+		return hasProtocol ? project : `https://${project}`;
 	}
-	return project;
 }
 
 /**
