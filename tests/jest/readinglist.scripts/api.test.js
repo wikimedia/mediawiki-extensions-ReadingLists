@@ -16,6 +16,11 @@ describe( 'Developer mode', () => {
 			'https://fr.wikipedia.org/w/api.php'
 		);
 	} );
+	test( 'getProjectApiUrl adds protocol to en.wikipedia.org', () => {
+		expect( api.test.getProjectApiUrl( 'en.wikipedia.org' ) ).toBe(
+			'https://en.wikipedia.org/w/api.php'
+		);
+	} );
 } );
 
 describe( 'readingListToCard', () => {

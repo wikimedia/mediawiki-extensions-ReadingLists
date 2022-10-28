@@ -95,12 +95,15 @@ const readingListToCard = ( collection, ownerName ) => {
  * @return {string}
  */
 function getProjectHost( project ) {
-	const isProjectCode = project.indexOf( '//' ) === -1;
+	const hasProtocol = project.indexOf( '//' ) > -1;
+	const isProjectCode = !hasProtocol && project.indexOf( '.' ) === -1;
 	if ( config.ReadingListsDeveloperMode ) {
 		if ( project.indexOf( 'localhost' ) > -1 ) {
 			return 'https://en.wikipedia.org';
+		} else if ( isProjectCode ) {
+			return `https://${project}.wikipedia.org`;
 		} else {
-			return isProjectCode ? `https://${project}.wikipedia.org` : project;
+			return hasProtocol ? project : `https://${project}`;
 		}
 	}
 	if ( isProjectCode ) {
