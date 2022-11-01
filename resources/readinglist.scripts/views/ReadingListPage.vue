@@ -8,7 +8,7 @@
 				</div>
 				<cdx-message v-if="showDisclaimer" type="warning">
 					{{ disclaimer }}
-					<div v-if="initialTitles">
+					<div v-if="titlesToLoad">
 						<div v-if="hasApp">
 							<p>{{ importMessage }}</p>
 							<div v-if="isAndroid">
@@ -219,6 +219,7 @@ module.exports = {
 		return {
 			showDisclaimer: this.disclaimer !== '',
 			ignore: [],
+			titlesToLoad: this.initialTitles,
 			loaded: false,
 			initialized: false,
 			cards: [],
@@ -280,14 +281,16 @@ module.exports = {
 				);
 				return;
 			}
-			if ( this.initialTitles ) {
-				this.api.getPagesFromProjectMap( this.initialTitles ).then( ( pages ) => {
+			if ( this.titlesToLoad ) {
+				this.api.getPagesFromProjectMap( this.titlesToLoad ).then( ( pages ) => {
 					this.collection = -1;
 					this.cards = pages.map( ( page ) => getCard( page ) );
 					this.loaded = true;
+					this.titlesToLoad = undefined;
 				}, ( err ) => {
 					this.errorCode = err;
 					this.loaded = true;
+					this.titlesToLoad = undefined;
 				} );
 			} else if ( this.collection ) {
 				this.api.getCollectionMeta( this.username, this.collection ).then( ( meta ) => {
