@@ -8,31 +8,29 @@
 				</div>
 				<cdx-message v-if="showDisclaimer" type="warning">
 					{{ disclaimer }}
-					<div v-if="titlesToLoad">
-						<div v-if="hasApp">
-							<p>{{ importMessage }}</p>
-							<div v-if="isAndroid">
-								<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
-									<span class="app_store_images_sprite svg-badge_google_play_store"></span>
-								</a>
-							</div>
-							<div v-else-if="isIOS">
-								<a target="_blank" rel="noreferrer" :href="iosDownloadLink">
-									<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
-								</a>
-							</div>
-							<div v-else>
-								<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
-									<span class="app_store_images_sprite svg-badge_google_play_store"></span>
-								</a>
-								<a target="_blank" rel="noreferrer" :href="iosDownloadLink">
-									<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
-								</a>
-							</div>
+					<div v-if="hasApp">
+						<p>{{ importMessage }}</p>
+						<div v-if="isAndroid">
+							<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
+								<span class="app_store_images_sprite svg-badge_google_play_store"></span>
+							</a>
+						</div>
+						<div v-else-if="isIOS">
+							<a target="_blank" rel="noreferrer" :href="iosDownloadLink">
+								<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
+							</a>
 						</div>
 						<div v-else>
-							{{ noAppMessage }}
+							<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
+								<span class="app_store_images_sprite svg-badge_google_play_store"></span>
+							</a>
+							<a target="_blank" rel="noreferrer" :href="iosDownloadLink">
+								<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
+							</a>
 						</div>
+					</div>
+					<div v-else>
+						{{ noAppMessage }}
 					</div>
 				</cdx-message>
 			</div>
