@@ -18,7 +18,7 @@ describe( 'Developer mode', () => {
 	} );
 	test( 'getProjectApiUrl adds protocol to en.wikipedia.org', () => {
 		expect( api.test.getProjectApiUrl( 'en.wikipedia.org' ) ).toBe(
-			'https://en.wikipedia.org/w/api.php'
+			'//en.wikipedia.org/w/api.php'
 		);
 	} );
 } );
@@ -36,5 +36,34 @@ describe( 'readingListToCard', () => {
 		description: 'A list',
 		ownerName: 'Jon',
 		url: '/wiki/ReadingLists/Jon/1/list'
+	} );
+} );
+
+describe( 'fromBase64', () => {
+	test( 'Import and Export works', () => {
+		const list = {
+			'http://en.wikipedia.org': [ 59874, 31883, 24868, 14381 ],
+			'http://ru.wikipedia.org': [ 59874, 31883, 24868, 14381 ]
+		};
+		const dataString = api.toBase64( 'A list', 'By me', list );
+		const imported = api.fromBase64( dataString );
+		expect( imported.list ).toStrictEqual( list );
+	} );
+
+	test( 'If language codes are passed as projects, these should be converted to project URLs', () => {
+		const dataString = api.toBase64( 'A list', 'By me',
+			{
+				en: [ 59874, 31883, 24868, 14381 ],
+				ru: [ 59874, 31883, 24868, 14381 ]
+			}
+		);
+		const list = api.fromBase64( dataString );
+
+		expect(
+			list.list
+		).toStrictEqual( {
+			'https://en.wikipedia.org': [ 59874, 31883, 24868, 14381 ],
+			'https://ru.wikipedia.org': [ 59874, 31883, 24868, 14381 ]
+		} );
 	} );
 } );

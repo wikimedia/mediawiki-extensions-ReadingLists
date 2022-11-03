@@ -10,6 +10,13 @@ const api = new mw.Api();
  */
 
 /**
+ * @typedef {Object} ImportedList
+ * @property {string} name
+ * @property {string} description
+ * @param {ProjectTitleMap|ProjectTitleMap} list
+ */
+
+/**
  * @typedef ApiQueryResponseReadingListEntryItem
  * @property {string} title
  * @property {number} id
@@ -89,27 +96,36 @@ const readingListToCard = ( collection, ownerName ) => {
 };
 
 /**
+ * @param {string} project
+ * @return {boolean}
+ */
+const isLanguageCode = ( project ) => {
+	const hasProtocol = project.indexOf( '//' ) > -1;
+	return !hasProtocol && project.indexOf( '.' ) === -1 && project.indexOf( ':' ) === -1;
+};
+
+/**
  * From a project identifier work out which API to use.
  *
  * @param {string} project
  * @return {string}
  */
 function getProjectHost( project ) {
+	const isLang = isLanguageCode( project );
 	const hasProtocol = project.indexOf( '//' ) > -1;
-	const isProjectCode = !hasProtocol && project.indexOf( '.' ) === -1;
 	if ( config.ReadingListsDeveloperMode ) {
 		if ( project.indexOf( 'localhost' ) > -1 ) {
 			return 'https://en.wikipedia.org';
-		} else if ( isProjectCode ) {
+		} else if ( isLang ) {
 			return `https://${project}.wikipedia.org`;
 		} else {
-			return hasProtocol ? project : `https://${project}`;
+			return hasProtocol ? project : `//${project}`;
 		}
 	}
-	if ( isProjectCode ) {
+	if ( isLang ) {
 		return `https://${project}.${window.location.host.split( '.' ).slice( 1 ).join( '.' )}`;
 	} else {
-		return hasProtocol ? project : `https://${project}`;
+		return hasProtocol ? project : `//${project}`;
 	}
 }
 
@@ -247,6 +263,10 @@ function getThumbnailsAndDescriptions( project, pageidsOrPageTitles ) {
 		url: `${getProjectApiUrl( project )}`
 	};
 
+	const filterOutMissingPagesIfIDsPassed = ( page ) => {
+		return isPageIds ? !page.missing : true;
+	};
+
 	return pageidsOrPageTitles.length ? api.get( {
 		action: 'query',
 		format: 'json',
@@ -259,7 +279,7 @@ function getThumbnailsAndDescriptions( project, pageidsOrPageTitles ) {
 		pithumbsize: 200
 	}, ajaxOptions ).then( function ( /** @type {ApiQueryResponseTitles} */ pageData ) {
 		return pageData && pageData.query ?
-			pageData.query.pages.map( transformPage( project ) ) : [];
+			pageData.query.pages.filter( filterOutMissingPagesIfIDsPassed ).map( transformPage( project ) ) : [];
 	} ) : Promise.resolve( [] );
 }
 /**
@@ -331,6 +351,8 @@ function getPages( collectionId ) {
 			// make sure project is passed down.
 			return pages.map( ( page, /** @type {number} */ i ) =>
 				Object.assign( readinglistpages[ i ], page ) );
+		}, () => {
+			return Promise.reject( 'readinglistentries-error' );
 		} );
 	} );
 }
@@ -338,11 +360,26 @@ function getPages( collectionId ) {
 /**
  * @param {string} name
  * @param {string} description
- * @param {string[]} titles
+ * @param {ProjectTitleMap|ProjectTitleMap} list
  * @return {string}
  */
-function toBase64( name, description, titles ) {
-	return btoa( JSON.stringify( { name, description, titles } ) );
+function toBase64( name, description, list ) {
+	return btoa( JSON.stringify( { name, description, list } ) );
+}
+
+/**
+ * @param {ImportedList} importedList
+ * @return {ImportedList}
+ */
+function normalizeImportedData( importedList ) {
+	Object.keys( importedList.list ).forEach( ( key ) => {
+		// If encounter a language code (no protocol or subdomain) assume Wikipedia
+		if ( isLanguageCode( key ) ) {
+			importedList.list[ `https://${key}.wikipedia.org` ] = importedList.list[ key ];
+			delete importedList.list[ key ];
+		}
+	} );
+	return importedList;
 }
 
 /**
@@ -350,7 +387,7 @@ function toBase64( name, description, titles ) {
  * @return {Object}
  */
 function fromBase64( data ) {
-	return JSON.parse( atob( data ) );
+	return normalizeImportedData( JSON.parse( atob( data ) ) );
 }
 
 module.exports = {

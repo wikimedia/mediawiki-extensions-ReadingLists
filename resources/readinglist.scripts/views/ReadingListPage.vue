@@ -2,9 +2,10 @@
 	<div class="readinglist-page">
 		<div class="readinglist-collection">
 			<div class="readinglist-collection-summary">
-				<div v-if="!anonymizedPreviews">
+				<div v-if="showMeta">
 					<h1 v-if="viewTitle">{{ viewTitle }}</h1>
 					<p class="readinglist-collection-description">&nbsp;{{ viewDescription }} </p>
+					<cdx-button v-if="!showDisclaimer" @click="clickImportList">{{ shareLabel }}</cdx-button>
 				</div>
 				<cdx-message v-if="showDisclaimer" type="warning">
 					{{ disclaimer }}
@@ -163,6 +164,9 @@ module.exports = {
 		}
 	},
 	computed: {
+		showMeta() {
+			return this.showDisclaimer ? !this.anonymizedPreviews : true;
+		},
 		readingListClass() {
 			return {
 				'readinglist-list--hidden': this.anonymizedPreviews && this.showDisclaimer,
@@ -196,6 +200,9 @@ module.exports = {
 		importMessage() {
 			return getEnabledMessage( 'readinglists-import-app' );
 		},
+		shareLabel() {
+			return mw.msg( 'readinglists-export' );
+		},
 		emptyMessage: function () {
 			return this.collection ?
 				mw.msg( 'readinglists-list-empty-message' ) :
@@ -228,10 +235,15 @@ module.exports = {
 		};
 	},
 	methods: {
-		importList: function () {
-			this.loaded = true;
-			const titles = this.cards.map( ( card ) => card.title );
-			window.location.search = `?limport=${this.api.toBase64( this.name, this.description, titles )}`;
+		clickImportList: function () {
+			const list = {};
+			this.cards.forEach( ( card ) => {
+				if ( !list[ card.project ] ) {
+					list[ card.project ] = [];
+				}
+				list[ card.project ].push( card.title );
+		 	} );
+			window.location.search = `?limport=${this.api.toBase64( this.name, this.description, list )}`;
 		},
 		clickCard: function ( ev ) {
 			// If we are navigating to a list, navigate internally

@@ -49,6 +49,7 @@
 	"readinglists-empty-message": "Message that shows when you have zero lists.",
 	"readinglists-list-empty-message": "Message that shows on a list with no pages in it.",
 	"readinglists-no-title": "Name of a list without a name",
+	"readinglists-export": "Share button label",
 	"readinglists-import-app": "{{notranslate}}. Configured on site basis. See [[Extension:WikimediaMessages]] for Wikimedia localizations.",
 	"readinglists-import-app-misconfigured": "Shows when something is setup incorrectly and the import URL is followed.",
 	"readinglists-import-disclaimer-anonymized": "Same as {{mw-msg|readinglists-import-disclaimer}} but anonymized - no idea of the contents.",
