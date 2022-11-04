@@ -158,9 +158,9 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	protected function getExamplesMessages() {
 		$prefix = static::$prefix;
 		return [
-			"action=query&list=readinglistentries&${prefix}lists=10|11|12"
+			"action=query&list=readinglistentries&{$prefix}lists=10|11|12"
 				=> 'apihelp-query+readinglistentries-example-1',
-			"action=query&list=readinglistentries&${prefix}changedsince=2013-01-01T00:00:00Z"
+			"action=query&list=readinglistentries&{$prefix}changedsince=2013-01-01T00:00:00Z"
 				=> 'apihelp-query+readinglistentries-example-2',
 		];
 	}

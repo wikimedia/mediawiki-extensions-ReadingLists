@@ -1112,7 +1112,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		} else {
 			$mainField = ( $sortBy === self::SORT_BY_NAME ) ? 'rle_title' : 'rle_date_updated';
 		}
-		$idField = "${tablePrefix}_id";
+		$idField = "{$tablePrefix}_id";
 		$conditions = [];
 		$options = [
 			'ORDER BY' => [ "$mainField $sortDir" ],

@@ -172,10 +172,10 @@ class ApiQueryReadingLists extends ApiQueryBase {
 		return [
 			'action=query&meta=readinglists'
 				=> 'apihelp-query+readinglists-example-1',
-			"action=query&meta=readinglists&${prefix}changedsince=2013-01-01T00:00:00Z"
+			"action=query&meta=readinglists&{$prefix}changedsince=2013-01-01T00:00:00Z"
 				=> 'apihelp-query+readinglists-example-2',
-			"action=query&meta=readinglists&${prefix}project=https%3A%2F%2Fen.wikipedia.org"
-				. "&${prefix}title=Dog"
+			"action=query&meta=readinglists&{$prefix}project=https%3A%2F%2Fen.wikipedia.org"
+				. "&{$prefix}title=Dog"
 				=> 'apihelp-query+readinglists-example-3',
 		];
 	}
