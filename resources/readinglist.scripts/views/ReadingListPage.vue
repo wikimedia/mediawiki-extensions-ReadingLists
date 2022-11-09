@@ -308,16 +308,23 @@ module.exports = {
 				return;
 			}
 			if ( this.titlesToLoad ) {
-				this.api.getPagesFromProjectMap( this.titlesToLoad ).then( ( pages ) => {
+				if (this.anonymizedPreviews) {
 					this.collection = -1;
-					this.cards = pages.map( ( page ) => getCard( page ) );
+					this.cards = [];
 					this.loaded = true;
 					this.titlesToLoad = undefined;
-				}, ( err ) => {
-					this.errorCode = err;
-					this.loaded = true;
-					this.titlesToLoad = undefined;
-				} );
+				} else {
+					this.api.getPagesFromProjectMap( this.titlesToLoad ).then( ( pages ) => {
+						this.collection = -1;
+						this.cards = pages.map( ( page ) => getCard( page ) );
+						this.loaded = true;
+						this.titlesToLoad = undefined;
+					}, ( err ) => {
+						this.errorCode = err;
+						this.loaded = true;
+						this.titlesToLoad = undefined;
+					} );
+				}
 			} else if ( this.collection ) {
 				this.api.getCollectionMeta( this.username, this.collection ).then( ( meta ) => {
 					this.api.getPages( this.collection ).then( ( pages ) => {
