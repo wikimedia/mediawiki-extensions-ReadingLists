@@ -29,6 +29,8 @@
 								<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
 							</a>
 						</div>
+						<p>{{ importButtonHint }}</p>
+						<cdx-button action="progressive" type="primary" @click="clickDeepLink">{{ importButtonLabel }}</cdx-button>
 					</div>
 					<div v-else>
 						{{ noAppMessage }}
@@ -203,6 +205,12 @@ module.exports = {
 		shareLabel() {
 			return mw.msg( 'readinglists-export' );
 		},
+		importButtonLabel() {
+			return mw.msg( 'readinglists-import-button-label' );
+		},
+		importButtonHint() {
+			return mw.msg( 'readinglists-import-button-hint' );
+		},
 		emptyMessage: function () {
 			return this.collection ?
 				mw.msg( 'readinglists-list-empty-message' ) :
@@ -244,6 +252,14 @@ module.exports = {
 				list[ card.project ].push( card.title );
 		 	} );
 			window.location.search = `?limport=${this.api.toBase64( this.name, this.description, list )}`;
+		},
+		clickDeepLink: function () {
+			try {
+				window.location.protocol = 'wikipedia'
+				setTimeout(() => mw.notify( mw.msg( 'readinglists-import-app-launch-hint' ) ), 1000 );
+			} catch {
+				// User does not have the app installed.
+			}
 		},
 		clickCard: function ( ev ) {
 			// If we are navigating to a list, navigate internally
