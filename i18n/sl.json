@@ -5,6 +5,7 @@
 		]
 	},
 	"readinglists-desc": "Uporabnikom omogoča upravljanje zasebnih seznamov člankov, kot so zaznamki ali seznami »Preberi pozneje«.",
+	"readinglists-db-error-no-such-list": "Seznam $1 ne obstaja.",
 	"readinglists-browser-add-entry-success": "Članek »$1« je shranjen na vaš bralni seznam.",
 	"readinglists-browser-extension-info-link-text": "Več o tem",
 	"readinglists-browser-list-entry-limit-exceeded": "Članka ni bilo mogoče shraniti. Dosegli ste omejitev $1 člankov na seznam.",
