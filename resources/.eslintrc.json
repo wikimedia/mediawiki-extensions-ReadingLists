@@ -10,6 +10,9 @@
 		"commonjs": true
 	},
 	"rules": {
-		"compat/compat": "off"
+		"compat/compat": "off",
+		"vue/no-boolean-default": "warn",
+		"no-undef": "warn",
+		"no-restricted-syntax": "warn"
 	}
 }
