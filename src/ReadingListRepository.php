@@ -1076,7 +1076,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		if ( !isset( self::$fieldLength[$field] ) ) {
 			throw new LogicException( 'Tried to assert length for invalid field ' . $field );
 		}
-		if ( strlen( $value ) > self::$fieldLength[$field] ) {
+		if ( strlen( $value ?? '' ) > self::$fieldLength[$field] ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-too-long',
 				[ $field, self::$fieldLength[$field] ] );
 		}
