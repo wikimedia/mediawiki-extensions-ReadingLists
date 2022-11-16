@@ -132,7 +132,10 @@
 				"readinglists-description",
 				"special-tab-readinglists-short",
 				"readinglists-default-title",
-				"readinglists-default-description"
+				"readinglists-default-description",
+				"readinglists-import-button-label",
+				"readinglists-import-button-hint",
+				"readinglists-import-app-launch-hint"
 			],
 			"targets": [ "desktop", "mobile" ],
 			"es6": true,
