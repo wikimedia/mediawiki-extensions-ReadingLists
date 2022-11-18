@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Къарачайлы"
+		]
+	},
+	"readinglists-import-button-label": "Импорт",
+	"readinglists-import-button-hint": "Программа къурулгъанындан сора, тизмени импорт этер ючюн бу тиекге басыгъыз:",
+	"readinglists-import-app-launch-hint": "Программа къурулгъанына ишексиз болугъуз."
+}

@@ -24,5 +24,6 @@
 	"readinglists-import-size-error": "L'elenco è troppo grande per essere visualizzato.",
 	"special-tab-readinglists-short": "I tuoi elenchi",
 	"readinglists-default-title": "Pagine salvate",
-	"readinglists-default-description": "Elenco predefinito per le tue voci salvate."
+	"readinglists-default-description": "Elenco predefinito per le tue voci salvate.",
+	"readinglists-import-button-label": "Importa"
 }

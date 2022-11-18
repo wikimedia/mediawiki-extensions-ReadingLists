@@ -22,5 +22,6 @@
 	"readinglists-browser-error-intro": "エラーが発生しました: $1",
 	"readinglists-loading": "お待ちください…",
 	"readinglists-import-size-error": "リストが大きすぎて表示できません。",
-	"readinglists-export": "リストを共有"
+	"readinglists-export": "リストを共有",
+	"readinglists-import-button-label": "インポート"
 }
