@@ -22,5 +22,6 @@
 	"readinglists-browser-list-entry-limit-exceeded": "Artikel kann net gespäichert ginn. Dir hutt d'Limitt vu(n) $1 Artikele pro Lëscht erreecht",
 	"readinglists-browser-extension-product-title": "Wikipedia-Lieslëschten",
 	"readinglists-browser-page-not-supported": "$1 ënnerstëtzt dës Säit net",
-	"readinglists-default-title": "Gespäichert Säiten"
+	"readinglists-default-title": "Gespäichert Säiten",
+	"readinglists-import-button-label": "Importéieren"
 }
