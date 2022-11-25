@@ -1,8 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
+			"EmyArt",
 			"Karuranga250"
 		]
 	},
-	"readinglists-export": "Sangira urutonde"
+	"readinglists-export": "Sangira urutonde",
+	"readinglists-import-app-launch-hint": "Nyamuneka menya neza ko verisiyo yanyuma ya porogaramu yashyizweho."
 }
