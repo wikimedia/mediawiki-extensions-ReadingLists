@@ -37,5 +37,6 @@
 	"readinglists-loading": "Пожалуйста, подождите…",
 	"readinglists-error": "Ваш браузер не может использовать функцию списков для чтения. Включите JavaScript или попробуйте в другом браузере.",
 	"readinglists-import-size-error": "Список слишком велик для отображения.",
-	"special-tab-readinglists-short": "Ваши списки"
+	"special-tab-readinglists-short": "Ваши списки",
+	"readinglists-import-app-launch-hint": "Убедитесь, что установлена последняя версия приложения."
 }
