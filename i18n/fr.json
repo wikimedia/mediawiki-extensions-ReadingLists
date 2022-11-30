@@ -28,7 +28,7 @@
 	"readinglists-db-error-user-required": "Cette méthode ne peut pas être appelée sans spécifier l’utilisateur.",
 	"readinglists-db-error-list-limit": "Les utilisateurs ne peuvent pas avoir plus de $1 liste{{PLURAL:$1||s}}.",
 	"readinglists-db-error-entry-limit": "La liste $1 ne peut pas avoir plus de $2 entrée{{PLURAL:$2||s}}.",
-	"readinglists-db-error-too-long": "La valeur du champ $1 ne peut pas dépasser $2 octet{{PLURAL:$2||s}}.",
+	"readinglists-db-error-too-long": "La valeur du champ $1 ne peut pas dépasser $2 octet{{PLURAL:$2||s}}.",
 	"readinglists-db-error-no-such-project": "« $1 » n’est pas un projet reconnu.",
 	"readinglists-browser-add-entry-success": "$1 enregistré dans votre liste de lecture",
 	"readinglists-browser-login-prompt": "Connectez-vous pour enregistrer des articles",
