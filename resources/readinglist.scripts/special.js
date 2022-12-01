@@ -19,9 +19,7 @@ function init( Vue, username, initialCollection, importData, isImport ) {
 		initialDescription = data.description || '';
 		initialTitles = data.list;
 		anonymizedPreviews = config.ReadingListsAnonymizedPreviews;
-		disclaimer = anonymizedPreviews ?
-			mw.msg( 'readinglists-import-disclaimer-anonymized' ) :
-			mw.msg( 'readinglists-import-disclaimer' );
+		disclaimer = mw.msg( 'readinglists-import-disclaimer' );
 	} catch ( e ) {
 		// continue to render an errors
 	}
