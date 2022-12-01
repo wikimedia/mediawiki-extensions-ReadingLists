@@ -3,7 +3,8 @@
 		"authors": [
 			"Hwboehm",
 			"Kghbln",
-			"Metalhead64"
+			"Metalhead64",
+			"Scblr"
 		]
 	},
 	"readinglists-desc": "Ermöglicht Benutzern die Verwaltung privater Artikellisten wie bspw. Lesezeichen- oder „Später-lesen“-Listen",
@@ -50,7 +51,7 @@
 	"readinglists-export": "Liste teilen",
 	"readinglists-import-app-misconfigured": "Diese Website unterstützt derzeit das Importieren von Listen nicht.",
 	"readinglists-import-disclaimer-anonymized": "Eine Liste wurde von einem Benutzer auf dieser Website erstellt, um sie mit jemandem (wahrscheinlich dir) zu teilen.",
-	"readinglists-import-disclaimer": "Diese Liste wurde von einem Benutzer dieser Website erstellt, um sie mit jemandem (wahrscheinlich dir) zu teilen. Diese Liste wurde nicht moderiert, und ihr Inhalt spiegelt nicht die Benutzer der Website wider.",
+	"readinglists-import-disclaimer": "Ein Nutzer auf dieser Website hat eine Leseliste erstellt, um sie mit anderen (vermutlich dir) zu teilen. Sie unterliegt keiner Moderation und ihre Inhalte spiegeln nicht die Ansichten der Herausgeber dieser Website wider.",
 	"readinglists-import-button-label": "Importieren",
 	"readinglists-import-button-hint": "Tippe nach der Installation der App auf diese Schaltfläche, um die Liste zu importieren:",
 	"readinglists-import-app-launch-hint": "Bitte stelle sicher, dass die neueste Version der App installiert ist."

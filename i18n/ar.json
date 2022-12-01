@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Scblr",
 			"ديفيد",
 			"محمد أحمد عبد الفتاح"
 		]
@@ -34,5 +35,8 @@
 	"readinglists-browser-page-not-supported": "لا يدعم $1 هذه الصفحة",
 	"readinglists-special-title": "قوائم القراءة",
 	"special-tab-readinglists-short": "قوائمك",
-	"readinglists-default-title": "الصفحات المحفوظة"
+	"readinglists-default-title": "الصفحات المحفوظة",
+	"readinglists-import-disclaimer": " أنشأ مستخدم على هذا الموقع قائمة قراءة لمشاركتها مع الآخرين (ربما أنت). إنها ليست خاضعة للإشراف ولا يعكس محتواها محرري الموقع.",
+	"readinglists-import-button-label": "استيراد",
+	"readinglists-import-button-hint": "بعد تثبيت التطبيق، انقر فوق هذا الزر لاستيراد القائمة:"
 }

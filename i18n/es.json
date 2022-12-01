@@ -3,7 +3,8 @@
 		"authors": [
 			"Fitoschido",
 			"KATRINE1992",
-			"Macofe"
+			"Macofe",
+			"Scblr"
 		]
 	},
 	"readinglists-desc": "Permite a los usuarios gestionar listas privadas de artículos, como marcadores o listas de \"Leer después\".",
@@ -30,5 +31,8 @@
 	"readinglists-browser-extension-info-link-text": "Más información",
 	"readinglists-browser-list-entry-limit-exceeded": "No se puede guardar el artículo. Has superado el límite de $1 artículos por lista",
 	"readinglists-browser-extension-product-title": "Listas de lectura de Wikipedia",
-	"readinglists-browser-page-not-supported": "$1 no admite esta página"
+	"readinglists-browser-page-not-supported": "$1 no admite esta página",
+	"readinglists-import-disclaimer": "Un usuario de este sitio ha creado una lista de lectura para compartir con otros (probablemente contigo). La misma no está moderada y sus contenidos no reflejan la opinión de los editores del sitio.",
+	"readinglists-import-button-label": "Importar",
+	"readinglists-import-button-hint": "Luego de instalar la aplicación, pulsa este botón para importar la lista:"
 }

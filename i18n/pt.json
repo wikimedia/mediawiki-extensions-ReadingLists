@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Athena in Wonderland",
-			"Hamilton Abreu"
+			"Hamilton Abreu",
+			"Scblr"
 		]
 	},
 	"readinglists-desc": "Permite que os utilizadores mantenham listas privadas de artigos, tais como listas de marcadores de páginas ou listas \"Para Ler Mais Tarde\".",
@@ -49,8 +50,8 @@
 	"readinglists-export": "Partilhar lista",
 	"readinglists-import-app-misconfigured": "Este ''site'' não suporta de momento a importação de listas.",
 	"readinglists-import-disclaimer-anonymized": "Uma lista foi gerada por um utilizador deste ''site'' para ser partilhada com alguém (provavelmente consigo).",
-	"readinglists-import-disclaimer": "Esta lista foi gerada por um utilizador deste ''site'' para ser partilhada com alguém (provavelmente consigo). A lista não foi revista e o conteúdo da mesma não reflete a opinião dos editores do ''site''.",
+	"readinglists-import-disclaimer": "Um usuário deste site criou uma lista de leitura para compartilhar com outras pessoas (provavelmente você). Ela não é moderada e seu conteúdo não representa os editores do site.",
 	"readinglists-import-button-label": "Importar",
-	"readinglists-import-button-hint": "Depois de instalar a aplicação móvel, prima este botão para importar a lista:",
+	"readinglists-import-button-hint": "Após instalar o aplicativo, toque neste botão para importar a lista:",
 	"readinglists-import-app-launch-hint": "Certifique-se de que está instalada a versão mais recente da aplicação móvel, por favor."
 }
