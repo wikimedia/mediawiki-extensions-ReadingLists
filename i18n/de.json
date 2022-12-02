@@ -50,8 +50,7 @@
 	"readinglists-no-title": "Liste ohne Titel",
 	"readinglists-export": "Liste teilen",
 	"readinglists-import-app-misconfigured": "Diese Website unterstützt derzeit das Importieren von Listen nicht.",
-	"readinglists-import-disclaimer-anonymized": "Eine Liste wurde von einem Benutzer auf dieser Website erstellt, um sie mit jemandem (wahrscheinlich dir) zu teilen.",
-	"readinglists-import-disclaimer": "Ein Nutzer auf dieser Website hat eine Leseliste erstellt, um sie mit anderen (vermutlich dir) zu teilen. Sie unterliegt keiner Moderation und ihre Inhalte spiegeln nicht die Ansichten der Herausgeber dieser Website wider.",
+	"readinglists-import-disclaimer": "Ein Benutzer dieser Website hat eine Leseliste erstellt, um sie mit anderen zu teilen (wahrscheinlich mit dir). Sie wird nicht moderiert, und ihr Inhalt gibt nicht den Standpunkt des Herausgebers der Website wieder.",
 	"readinglists-import-button-label": "Importieren",
 	"readinglists-import-button-hint": "Tippe nach der Installation der App auf diese Schaltfläche, um die Liste zu importieren:",
 	"readinglists-import-app-launch-hint": "Bitte stelle sicher, dass die neueste Version der App installiert ist."

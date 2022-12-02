@@ -45,6 +45,10 @@
 	"readinglists-empty-message": "Du har inga listor, varför inte skapa en?",
 	"readinglists-list-empty-message": "Denna lista har inga sidor. Ladda ned och använd appen för att lägga till objekt i denna läslista.",
 	"readinglists-no-title": "Namnlös lista",
-	"readinglists-import-disclaimer-anonymized": "En lista har genererats av en användare på denna webbplats i syfte att dela med någon (förmodligen dig).",
-	"readinglists-import-disclaimer": "En lista har genererats av en användare på denna webbplats i syfte att dela med någon (förmodligen dig). Listan har inte modererats och dess innehåll reflekterar inte webbplatsens redigerare."
+	"readinglists-export": "Dela lista",
+	"readinglists-import-app-misconfigured": "Denna webbplats saknar för närvarande stöd att importera listor.",
+	"readinglists-import-disclaimer": "En användare på denna webbplats har skapat en läslista att dela med andra (förmodligen dig). Den har inte modererats och dess innehåll reflekterar inte webbplatsens redigerare.",
+	"readinglists-import-button-label": "Importera",
+	"readinglists-import-button-hint": "När du har installerat appen trycker du på den här knappen för att importera listan:",
+	"readinglists-import-app-launch-hint": "Se till att den senaste versionen av appen är installerad."
 }

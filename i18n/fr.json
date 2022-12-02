@@ -55,8 +55,7 @@
 	"readinglists-no-title": "Liste sans titre",
 	"readinglists-export": "Partager la liste",
 	"readinglists-import-app-misconfigured": "Ce site Web ne prend actuellement pas en charge l’importation de listes.",
-	"readinglists-import-disclaimer-anonymized": "Une liste a été générée par un utilisateur sur ce site afin de la partager avec quelqu’un (probablement vous).",
-	"readinglists-import-disclaimer": "Cette liste a été générée par un utilisateur de ce site pour la partager avec quelqu’un (probablement vous). Cette liste n’a pas été modérée et son contenu peut ne pas refléter les éditeurs du site.",
+	"readinglists-import-disclaimer": "Cette liste a été générée par un utilisateur de ce site pour la partager avec quelqu’un (probablement vous). Elle n’est pas modérée et son contenu peut ne pas refléter les éditeurs du site.",
 	"readinglists-import-button-label": "Importer",
 	"readinglists-import-button-hint": "Après avoir installé l’application, appuyez sur ce bouton pour importer la liste :",
 	"readinglists-import-app-launch-hint": "Veuillez vous assurer que la dernière version de l’application est bien installée."

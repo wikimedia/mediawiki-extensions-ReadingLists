@@ -25,8 +25,7 @@
 	"readinglists-no-title": "Seznam brez naslova",
 	"readinglists-export": "Deli seznam",
 	"readinglists-import-app-misconfigured": "To spletno mesto trenutno ne podpira uvažanja seznamov.",
-	"readinglists-import-disclaimer-anonymized": "Nekdo je v tem projektu ustvaril seznam za skupno rabo z nekom (verjetno z vami).",
-	"readinglists-import-disclaimer": "Ta seznam je uporabnik na tem mestu ustvaril za skupno rabo z nekom (verjetno vami). Ta seznam ni bil moderiran in njegova vsebina ne odraža urejevalcev projekta.",
+	"readinglists-import-disclaimer": "Uporabnik v tem projektu je ustvaril bralni seznam za skupno rabo z drugimi (verjetno vami). Ta seznam ni moderiran in njegova vsebina ne odraža urejevalcev projekta.",
 	"readinglists-import-button-label": "Uvozi",
 	"readinglists-import-button-hint": "Po namestitvi aplikacije tapnite ta gumb, da uvozite seznam:",
 	"readinglists-import-app-launch-hint": "Preverite, ali je nameščena zadnja različica aplikacije."
