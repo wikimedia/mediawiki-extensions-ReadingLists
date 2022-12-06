@@ -31,7 +31,7 @@
 	"apihelp-query+readinglists-example-3": "Obtenir les listes de lecture de l’utilisateur actuel qui contiennent la page <kbd>Dog</kbd> du projet <kbd>en.wikipedia.org</kbd>",
 	"apihelp-query+readinglistentries-summary": "Lister les pages d’une liste donnée.",
 	"apihelp-query+readinglistentries-extended-description": "Ce module a deux modes d’opération. Avec le paramètre <var>$1lists</var>, il renvoie les pages de la ou des listes données. Avec le paramètre <var>$1changedsince</var>, il renvoie toutes les entrées de n’importe quelle liste de l’utilisateur actuel qui ont été changées depuis la date donnée (ceci sert pour la synchronisation des appareils et, contrairement aux autres modes, inclue les entrées supprimées, mais pas les entrées de listes supprimées).",
-	"apihelp-query+readinglistentries-param-lists": "Les ID des listes pour lesquelles il faut renvoyer les pages.",
+	"apihelp-query+readinglistentries-param-lists": "Les identifiants des listes pour lesquelles renvoyer les pages.",
 	"apihelp-query+readinglistentries-param-changedsince": "Afficher les entrées de la liste qui ont été modifiées depuis cet horodatage. Doit être postérieur à <kbd>$1</kbd>.",
 	"apihelp-query+readinglistentries-param-sort": "Propriété selon laquelle trier. <kbd>name</kbd> ne peut pas être utilisé avec <var>$1changedsince</var>. Par défaut, <kbd>updated</kbd> quand <var>$1changedsince</var> est positionné et <kbd>name</kbd> sinon.",
 	"apihelp-query+readinglistentries-paramvalue-sort-name": "Titre de l’article (le nom du projet est ignoré, le tri est par valeur binaire ; par ex., tout caractère ASCII majuscule sera trié avant tout caractère minuscule).",
