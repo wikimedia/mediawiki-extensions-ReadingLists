@@ -44,7 +44,7 @@
 				<div :class="readingListClass">
 					<div class="readinglist-list__container" v-if="cards.length">
 						<cdx-card
-							v-for="(card) in cards"
+							v-for="( card ) in cards"
 							:key="card.id"
 							:url="card.url"
 							:force-thumbnail="true"
@@ -81,6 +81,7 @@ const READING_LIST_TITLE = mw.msg( 'readinglists-special-title' );
 const HOME_URL = ( new mw.Title( 'ReadingLists', -1 ) ).getUrl();
 
 const getEnabledMessage = ( key ) => {
+	// eslint-disable-next-line mediawiki/msg-doc
 	const text = mw.msg( key );
 	return text === '-' ? '' : text;
 };
@@ -165,6 +166,20 @@ module.exports = {
 			default: window.navigator.userAgent.includes( 'iPhone' ) || window.navigator.userAgent.includes( 'iPad' )
 		}
 	},
+	data: function () {
+		return {
+			showDisclaimer: this.disclaimer !== '',
+			ignore: [],
+			titlesToLoad: this.initialTitles,
+			loaded: false,
+			initialized: false,
+			cards: [],
+			name: this.initialName,
+			description: this.initialDescription,
+			collection: this.initialCollection,
+			errorCode: 0
+		};
+	},
 	computed: {
 		showMeta() {
 			return this.showDisclaimer ? !this.anonymizedPreviews : true;
@@ -173,7 +188,7 @@ module.exports = {
 			return {
 				'readinglist-list--hidden': this.anonymizedPreviews && this.showDisclaimer,
 				'readinglist-list': true
-			}
+			};
 		},
 		hasApp: function () {
 			return (
@@ -222,25 +237,12 @@ module.exports = {
 				case 'readinglists-db-error-no-such-list':
 				case 'readinglists-db-error-list-deleted':
 				case 'readinglists-import-size-error':
+					// eslint-disable-next-line mediawiki/msg-doc
 					return mw.msg( this.errorCode, this.collection );
 				default:
 					return 'An unknown error occurred (' + this.errorCode + ')';
 			}
 		}
-	},
-	data: function () {
-		return {
-			showDisclaimer: this.disclaimer !== '',
-			ignore: [],
-			titlesToLoad: this.initialTitles,
-			loaded: false,
-			initialized: false,
-			cards: [],
-			name: this.initialName,
-			description: this.initialDescription,
-			collection: this.initialCollection,
-			errorCode: 0
-		};
 	},
 	methods: {
 		clickImportList: function () {
@@ -250,14 +252,14 @@ module.exports = {
 					list[ card.project ] = [];
 				}
 				list[ card.project ].push( card.title );
-		 	} );
+			} );
 			window.location.search = `?limport=${this.api.toBase64( this.name, this.description, list )}`;
 		},
 		clickDeepLink: function () {
 			try {
-				window.location.protocol = 'wikipedia'
-				setTimeout(() => mw.notify( mw.msg( 'readinglists-import-app-launch-hint' ) ), 1000 );
-			} catch {
+				window.location.protocol = 'wikipedia';
+				setTimeout( () => mw.notify( mw.msg( 'readinglists-import-app-launch-hint' ) ), 1000 );
+			} catch ( e ) {
 				// User does not have the app installed.
 			}
 		},
@@ -308,7 +310,7 @@ module.exports = {
 				return;
 			}
 			if ( this.titlesToLoad ) {
-				if (this.anonymizedPreviews) {
+				if ( this.anonymizedPreviews ) {
 					this.collection = -1;
 					this.cards = [];
 					this.loaded = true;
@@ -372,7 +374,7 @@ module.exports = {
 				title,
 				url
 			);
- 		}
+		}
 	},
 	updated: function () {
 		this.load();
@@ -399,10 +401,11 @@ module.exports = {
 }
 
 .readinglist-collection {
+	// stylelint-disable-next-line declaration-property-unit-disallowed-list
 	font-size: 16px;
 
 	&-summary {
-		color: #555555;
+		color: #555;
 		font-size: 0.85em;
 		margin: 7px 0 10px 0;
 		text-align: center;
@@ -428,8 +431,8 @@ module.exports = {
 }
 
 .app_store_images_sprite {
- 	background-image: linear-gradient(transparent,transparent),url(images/sprite.svg);
- 	background-repeat: no-repeat;
+	background-image: linear-gradient( transparent, transparent ), url( images/sprite.svg );
+	background-repeat: no-repeat;
 	display: inline-block;
 	vertical-align: middle;
 }
