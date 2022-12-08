@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Hanyanbo98",
+			"Lantianjialiang",
 			"Liuxinyu970226"
 		]
 	},
@@ -31,5 +32,6 @@
 	"readinglists-browser-extension-info-link-text": "了解更多",
 	"readinglists-browser-list-entry-limit-exceeded": "条目不能保存。您已达到每列表$1个条目的限制",
 	"readinglists-browser-extension-product-title": "维基百科阅读列表",
-	"readinglists-browser-page-not-supported": "$1不支持此页面"
+	"readinglists-browser-page-not-supported": "$1不支持此页面",
+	"readinglists-import-disclaimer": "此站点上的用户创建了一个阅读列表以与其他人（可能是您）共享。它没有经过审核，其内容不代表网站编辑的观点。"
 }
