@@ -26,5 +26,6 @@
 	"readinglists-browser-extension-info-link-text": "ပိုမိုလေ့လာရန်",
 	"readinglists-browser-list-entry-limit-exceeded": "ဆောင်းပါးကို မသိမ်းဆည်းနိုင်ပါ။ စာရင်းတစ်ခုလျင် $1 ဆောင်းပါးနှုန်း ကန့်သတ်ချက်ကို ရောက်ပါပြီ။",
 	"readinglists-browser-extension-product-title": "ဝီကီပီဒီးယား စာဖတ်စာရင်းများ",
-	"readinglists-browser-page-not-supported": "ဤစာမျက်နှာအား $1 က မထောက်ပံ့ထားပါ"
+	"readinglists-browser-page-not-supported": "ဤစာမျက်နှာအား $1 က မထောက်ပံ့ထားပါ",
+	"readinglists-import-button-label": "တင်သွင်းရန်"
 }
