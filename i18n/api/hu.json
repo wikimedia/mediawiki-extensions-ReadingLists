@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Tacsipacsi"
+		]
+	},
+	"apierror-readinglists-project-title-param": "A(z) <var>$1project</var> és <var>$1title</var> paraméterek együtt használandók.",
+	"apierror-readinglists-invalidsort-notbyname": "A <kbd>name</kbd> rendezési opció nem használható a(z) <var>$1changedsince</var> opcióval együtt.",
+	"apierror-readinglists-batch-invalid-json": "Érvénytelen JSON a <var>batch</var> paraméterben: $1"
+}
