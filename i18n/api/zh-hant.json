@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Kly",
-			"Winston Sung"
+			"Winston Sung",
+			"捍粵者"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var> 與 <var>$1title</var> 必須同時使用。",
@@ -62,7 +63,7 @@
 	"apihelp-readinglists+update-example-2": "更新多個清單。",
 	"apihelp-readinglists+delete-summary": "刪除屬於目前使用者的清單。",
 	"apihelp-readinglists+delete-extended-description": "透過 <kbd>[[Special:ApiHelp/query+readinglists|readinglists]]</kbd> 與 <kbd>[[Special:ApiHelp/query+readinglistentries|readinglistentries]]</kbd> 模組（以 <var>$1changedsince</var> 參數），能讓已刪除清單在持續一段時間內仍可用。另外刪除是無法取消的。",
-	"apihelp-readinglists+delete-param-list": "清單 ID。在進行批量刪除時為必要。",
+	"apihelp-readinglists+delete-param-list": "必須提供清單編號，除非批量刪除。",
 	"apihelp-readinglists+delete-param-batch": "用於在單一請求中刪除多個清單的批量資料，以帶有 <var>list</var> 欄位的一個或多個 JSON 陣列格式。",
 	"apihelp-readinglists+delete-example-1": "刪除 ID 為 <kbd>11</kbd> 的閱讀清單。",
 	"apihelp-readinglists+delete-example-2": "刪除多個清單。",
@@ -75,7 +76,7 @@
 	"apihelp-readinglists+createentry-example-1": "將來自 <kbd>en.wikipedia.org</kbd> 專案中 <kbd>Dog</kbd> 頁面添加至 ID 為 <kbd>33</kbd> 的清單。",
 	"apihelp-readinglists+createentry-example-2": "添加多個頁面至清單裡。",
 	"apihelp-readinglists+deleteentry-summary": "刪除來自屬於目前使用者的清單裡頭頁面。",
-	"apihelp-readinglists+deleteentry-param-entry": "項目 ID。在進行批量刪除時為必要。",
+	"apihelp-readinglists+deleteentry-param-entry": "必須提供項目編號，除非批量刪除。",
 	"apihelp-readinglists+deleteentry-param-batch": "用於在單一請求中刪除多個清單項目的批量資料，以帶有 <var>entry</var> 欄位的一個或多個 JSON 陣列格式。",
 	"apihelp-readinglists+deleteentry-example-1": "刪除 ID 為 <kbd>8</kbd> 的清單項目。",
 	"apihelp-readinglists+deleteentry-example-2": "刪除多個清單項目。"
