@@ -56,7 +56,7 @@
 	"apihelp-readinglists+create-example-2": "建立多個新的閱讀清單。",
 	"apihelp-readinglists+update-summary": "更新屬於目前使用者的清單。",
 	"apihelp-readinglists+update-param-list": "清單 ID。在使用批量更新時為必要。",
-	"apihelp-readinglists+update-param-name": "新清單名稱。在進行批量更新時，會需要用到此項或是描述。",
+	"apihelp-readinglists+update-param-name": "必需新清單名或描述，除非批量更新。",
 	"apihelp-readinglists+update-param-description": "新清單描述",
 	"apihelp-readinglists+update-param-batch": "用於在單一請求中更新多個清單的批量資料，以帶有 <var>list</var>、<var>name</var>，以及 <var>description</var> 欄位的一個或多個 JSON 陣列格式。其中 name 和 description 為可選，但必須提供兩者其中之一。",
 	"apihelp-readinglists+update-example-1": "更改 ID 為 <kbd>42</kbd> 的閱讀清單之名稱。",
