@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"MITO",
-			"Pyscowicz"
+			"Pyscowicz",
+			"SMAUG"
 		]
 	},
 	"readinglists-browser-extension-info-link-text": "Lisätietoja",
@@ -10,5 +11,5 @@
 	"readinglists-browser-page-not-supported": "$1 ei tue tätä sivua",
 	"readinglists-import-button-label": "Tuo",
 	"readinglists-import-button-hint": "Kun olet asentanut sovelluksen, napauta tätä painiketta tuodaksesi luettelon:",
-	"readinglists-import-app-launch-hint": "Varmista, että sovellus on asennettu."
+	"readinglists-import-app-launch-hint": "Varmista, että käytössäsi on sovelluksen viimeisin versio."
 }
