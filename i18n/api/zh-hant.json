@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Kly",
-			"Winston Sung"
+			"Winston Sung",
+			"捍粵者"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var> 與 <var>$1title</var> 必須同時使用。",
@@ -55,27 +56,27 @@
 	"apihelp-readinglists+create-example-2": "建立多個新的閱讀清單。",
 	"apihelp-readinglists+update-summary": "更新屬於目前使用者的清單。",
 	"apihelp-readinglists+update-param-list": "清單 ID。在使用批量更新時為必要。",
-	"apihelp-readinglists+update-param-name": "新清單名稱。在進行批量更新時，會需要用到此項或是描述。",
+	"apihelp-readinglists+update-param-name": "必需新清單名或描述，除非批量更新。",
 	"apihelp-readinglists+update-param-description": "新清單描述",
 	"apihelp-readinglists+update-param-batch": "用於在單一請求中更新多個清單的批量資料，以帶有 <var>list</var>、<var>name</var>，以及 <var>description</var> 欄位的一個或多個 JSON 陣列格式。其中 name 和 description 為可選，但必須提供兩者其中之一。",
 	"apihelp-readinglists+update-example-1": "更改 ID 為 <kbd>42</kbd> 的閱讀清單之名稱。",
 	"apihelp-readinglists+update-example-2": "更新多個清單。",
 	"apihelp-readinglists+delete-summary": "刪除屬於目前使用者的清單。",
 	"apihelp-readinglists+delete-extended-description": "透過 <kbd>[[Special:ApiHelp/query+readinglists|readinglists]]</kbd> 與 <kbd>[[Special:ApiHelp/query+readinglistentries|readinglistentries]]</kbd> 模組（以 <var>$1changedsince</var> 參數），能讓已刪除清單在持續一段時間內仍可用。另外刪除是無法取消的。",
-	"apihelp-readinglists+delete-param-list": "清單 ID。在進行批量刪除時為必要。",
+	"apihelp-readinglists+delete-param-list": "必須提供清單編號，除非批量刪除。",
 	"apihelp-readinglists+delete-param-batch": "用於在單一請求中刪除多個清單的批量資料，以帶有 <var>list</var> 欄位的一個或多個 JSON 陣列格式。",
 	"apihelp-readinglists+delete-example-1": "刪除 ID 為 <kbd>11</kbd> 的閱讀清單。",
 	"apihelp-readinglists+delete-example-2": "刪除多個清單。",
 	"apihelp-readinglists+createentry-summary": "添加新頁面至屬於目前使用者的清單裡。",
 	"apihelp-readinglists+createentry-extended-description": "清單項目必須為唯一。頁面不限於 API 所存取的 wiki。使用者必須在清單裡必須要少於 $1 個{{PLURAL:$1|項目|項目}}（未被刪除的）。",
 	"apihelp-readinglists+createentry-param-list": "清單 ID。",
-	"apihelp-readinglists+createentry-param-project": "wiki 託管頁面的專案名稱。在進行批量建立時為必要（基本上是 wiki 的網域名稱）。",
+	"apihelp-readinglists+createentry-param-project": "託管頁面的wiki專案名（通常是wiki網域名）為必要，除非批量建立。",
 	"apihelp-readinglists+createentry-param-title": "頁面標題（包含本地的命名空間名稱）。在進行批量建立時為必要。推薦採用人類可讀格式（空格而非底線）。API 視標題為原始字串，標準化則是留置給客戶端（例如首字母大寫原則）。",
 	"apihelp-readinglists+createentry-param-batch": "用於在單一請求中建立多個項目（於同一清單裡）的批量資料，以帶有 <var>project</var> 與 <var>title</var> 欄位的一個或多個 JSON 陣列格式。",
 	"apihelp-readinglists+createentry-example-1": "將來自 <kbd>en.wikipedia.org</kbd> 專案中 <kbd>Dog</kbd> 頁面添加至 ID 為 <kbd>33</kbd> 的清單。",
 	"apihelp-readinglists+createentry-example-2": "添加多個頁面至清單裡。",
 	"apihelp-readinglists+deleteentry-summary": "刪除來自屬於目前使用者的清單裡頭頁面。",
-	"apihelp-readinglists+deleteentry-param-entry": "項目 ID。在進行批量刪除時為必要。",
+	"apihelp-readinglists+deleteentry-param-entry": "必須提供項目編號，除非批量刪除。",
 	"apihelp-readinglists+deleteentry-param-batch": "用於在單一請求中刪除多個清單項目的批量資料，以帶有 <var>entry</var> 欄位的一個或多個 JSON 陣列格式。",
 	"apihelp-readinglists+deleteentry-example-1": "刪除 ID 為 <kbd>8</kbd> 的清單項目。",
 	"apihelp-readinglists+deleteentry-example-2": "刪除多個清單項目。"
