@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
+			"Agam Riyandana",
 			"DARMAS BUDI SANTOSO"
 		]
 	},
-	"readinglists-import-disclaimer": "A user on this site has created a reading list to share with others (probably you). It is not moderated, and its contents do not reflect the site's editors."
+	"readinglists-import-app-launch-hint": "Pastikan versi terbaru dari aplikasi diinstal."
 }
