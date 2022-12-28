@@ -2,8 +2,8 @@
 
 namespace MediaWiki\Extension\ReadingLists;
 
-use Language;
 use MediaWiki\Interwiki\InterwikiLookup;
+use MediaWiki\Languages\LanguageNameUtils;
 
 /**
  * Service for turning domain names into interwiki prefixes.
@@ -14,6 +14,9 @@ class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 	/** @var InterwikiLookup */
 	private $interwikiLookup;
 
+	/** @var LanguageNameUtils */
+	private $languageNameUtils;
+
 	/** @var string */
 	private $ownDomain;
 
@@ -22,10 +25,16 @@ class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 
 	/**
 	 * @param InterwikiLookup $interwikiLookup
+	 * @param LanguageNameUtils $languageNameUtils
 	 * @param string $ownDomain
 	 */
-	public function __construct( InterwikiLookup $interwikiLookup, $ownDomain ) {
+	public function __construct(
+		InterwikiLookup $interwikiLookup,
+		LanguageNameUtils $languageNameUtils,
+		$ownDomain
+	) {
 		$this->interwikiLookup = $interwikiLookup;
+		$this->languageNameUtils = $languageNameUtils;
 		$this->ownDomain = $this->getDomain( $ownDomain );
 	}
 
@@ -46,7 +55,7 @@ class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 
 		$domainParts = explode( '.', $domain );
 		$targetLang = $domainParts[0];
-		if ( !Language::isValidCode( $targetLang ) ) {
+		if ( !$this->languageNameUtils->isValidCode( $targetLang ) ) {
 			return null;
 		}
 		$ownDomainParts = explode( '.', $this->ownDomain );
