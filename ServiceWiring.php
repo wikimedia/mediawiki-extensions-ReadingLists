@@ -13,6 +13,10 @@ return [
 		if ( !empty( $ownServerParts['host'] ) ) {
 			$ownDomain = $ownServerParts['host'];
 		}
-		return new ReverseInterwikiLookup( $interwikiLookup, $ownDomain );
+		return new ReverseInterwikiLookup(
+			$interwikiLookup,
+			$services->getLanguageNameUtils(),
+			$ownDomain
+		);
 	},
 ];
