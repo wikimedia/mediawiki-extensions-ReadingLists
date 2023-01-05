@@ -4,5 +4,6 @@
 			"Eleassar"
 		]
 	},
-	"apihelp-readinglists+delete-extended-description": "Izbrisani seznami ostanejo nekaj časa na voljo prek <kbd>modulov [[Special:ApiHelp/query+readinglists|readinglists]]</kbd> in <kbd>[[Special:ApiHelp/query+readinglistentries|readinglistentries]]</kbd> (prek parametra <var>$1 changesince</var>). Izbrisa ni mogoče razveljaviti."
+	"apihelp-readinglists+delete-extended-description": "Izbrisani seznami ostanejo nekaj časa na voljo prek <kbd>modulov [[Special:ApiHelp/query+readinglists|readinglists]]</kbd> in <kbd>[[Special:ApiHelp/query+readinglistentries|readinglistentries]]</kbd> (prek parametra <var>$1 changesince</var>). Izbrisa ni mogoče razveljaviti.",
+	"apihelp-readinglists+createentry-summary": "Doda novo stran na seznam, ki pripada trenutnemu uporabniku."
 }
