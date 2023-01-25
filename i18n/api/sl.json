@@ -4,9 +4,12 @@
 			"Eleassar"
 		]
 	},
+	"apihelp-query+readinglistentries-paramvalue-sort-updated": "Časovni žig zadnje posodobitve.",
 	"apihelp-readinglists+create-param-description": "Opis seznama.",
 	"apihelp-readinglists+create-example-2": "Ustvari več novih seznamov.",
 	"apihelp-readinglists+update-param-description": "Nov opis seznama.",
+	"apihelp-readinglists+update-example-2": "Posodobi več seznamov.",
 	"apihelp-readinglists+delete-extended-description": "Izbrisani seznami ostanejo nekaj časa na voljo prek <kbd>modulov [[Special:ApiHelp/query+readinglists|readinglists]]</kbd> in <kbd>[[Special:ApiHelp/query+readinglistentries|readinglistentries]]</kbd> (prek parametra <var>$1 changesince</var>). Izbrisa ni mogoče razveljaviti.",
+	"apihelp-readinglists+delete-example-2": "Izbriši več računov.",
 	"apihelp-readinglists+createentry-summary": "Doda novo stran na seznam, ki pripada trenutnemu uporabniku."
 }
