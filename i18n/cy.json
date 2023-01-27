@@ -1,0 +1,18 @@
+{
+	"@metadata": {
+		"authors": [
+			"Afalau"
+		]
+	},
+	"readinglists-browser-login-prompt": "Mewngofnodi i gadw erthyglau",
+	"readinglists-browser-error-intro": "Digwyddodd gwall: $1",
+	"readinglists-browser-extension-info-link-text": "Dysgu mwy",
+	"readinglists-browser-extension-product-title": "Rhestrau Darllen Wicipedia",
+	"readinglists-special-title": "Rhestrau darllen",
+	"readinglists-loading": "Arhoswch…",
+	"special-tab-readinglists-short": "Eich rhestrau",
+	"readinglists-default-title": "Tudalennau wedi'u cadw",
+	"readinglists-no-title": "Rhestr heb deitl",
+	"readinglists-export": "Rhannu rhestr",
+	"readinglists-import-button-label": "Mewnforio"
+}
