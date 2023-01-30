@@ -4,6 +4,7 @@
 			"Eleassar"
 		]
 	},
+	"apihelp-query+readinglistentries-paramvalue-sort-updated": "Časovni žig zadnje posodobitve.",
 	"apihelp-readinglists+create-param-description": "Opis seznama.",
 	"apihelp-readinglists+create-example-2": "Ustvari več novih seznamov.",
 	"apihelp-readinglists+update-param-description": "Nov opis seznama.",
