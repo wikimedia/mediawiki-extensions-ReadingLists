@@ -9,7 +9,7 @@
 	"license-name": "GPL-2.0-or-later",
 	"type": "other",
 	"requires": {
-		"MediaWiki": ">= 1.37.0"
+		"MediaWiki": ">= 1.40.0"
 	},
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\ReadingLists\\": "src/"
@@ -103,7 +103,6 @@
 	},
 	"ResourceModules": {
 		"special.readinglist.styles": {
-			"targets": [ "desktop", "mobile" ],
 			"styles": [ "resources/special.readinglist.styles.less" ]
 		},
 		"special.readinglist.scripts": {
@@ -136,7 +135,6 @@
 				"readinglists-import-button-hint",
 				"readinglists-import-app-launch-hint"
 			],
-			"targets": [ "desktop", "mobile" ],
 			"es6": true,
 			"packageFiles": [
 				"resources/readinglist.scripts/index.js",
