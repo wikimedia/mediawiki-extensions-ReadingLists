@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Dbrant",
 			"Hindustanilanguage",
 			"Scblr",
 			"Zainab Meher"
@@ -11,6 +12,8 @@
 	"readinglists-db-error-list-deleted": "فہرست $1 کو حذف کردیا گیا۔",
 	"readinglists-db-error-duplicate-page": "فہرست میں یہ صفحہ پہلے سے موجود ہے۔",
 	"readinglists-db-error-user-required": "اس طریقہ کو صارف کی وضاحت کیے بنا برسرعمل نہیں کیا جا سکتا۔",
+	"readinglists-special-title": "مطالعہ شدہ صفحات",
+	"special-tab-readinglists-short": "آپ کی فہرستیں۔",
 	"readinglists-import-disclaimer": "اس سائٹ پر ایک صارف نے دوسروں کے ساتھ شیئر کرنے کے لیے ایک مطالعہ کی فہرست بنائی ہے (ممکنہ طور پر آپ نے)۔ یہ فہرست ماڈریٹ کردہ نہیں ہے اور اس کے مواد سے سائٹ کی ایڈیٹرز کی عکاسی نہیں ہوتی ہے۔",
 	"readinglists-import-button-label": "درآمد کریں",
 	"readinglists-import-button-hint": "ایپ انسٹال کرنے کے بعد، فہرست کو درآمد کرنے کے لیے اس بٹن پر ٹیپ کریں:"

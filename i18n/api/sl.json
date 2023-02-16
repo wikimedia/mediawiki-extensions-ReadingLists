@@ -4,12 +4,18 @@
 			"Eleassar"
 		]
 	},
+	"apierror-readinglists-batch-invalid-structure": "Neveljaven vnos za parameter <var>batch</var>: vsebovati mora matriko objektov s skalarnimi vrednostmi.",
 	"apihelp-query+readinglistentries-paramvalue-sort-updated": "Časovni žig zadnje posodobitve.",
 	"apihelp-readinglists+create-param-description": "Opis seznama.",
+	"apihelp-readinglists+create-param-batch": "Paketni podatki za ustvaritev več seznamov z enim samim zahtevkom, v obliki JSON-matrike z enim ali več objekti s poljema <var>name</var> in (izbirno) <var>opis</var>.",
 	"apihelp-readinglists+create-example-2": "Ustvari več novih seznamov.",
 	"apihelp-readinglists+update-param-description": "Nov opis seznama.",
+	"apihelp-readinglists+update-param-batch": "Paketni podatki za posodobitev več seznamov z enim samim zahtevkom v obliki JSON-matrike z enim ali več objekti s polji <var>list</var>, <var>name</var> in <var>description</var>. Ime in opis sta izbirna, vendar mora biti prisoten vsaj eden od njiju.",
 	"apihelp-readinglists+update-example-2": "Posodobi več seznamov.",
 	"apihelp-readinglists+delete-extended-description": "Izbrisani seznami ostanejo nekaj časa na voljo prek <kbd>modulov [[Special:ApiHelp/query+readinglists|readinglists]]</kbd> in <kbd>[[Special:ApiHelp/query+readinglistentries|readinglistentries]]</kbd> (prek parametra <var>$1 changesince</var>). Izbrisa ni mogoče razveljaviti.",
+	"apihelp-readinglists+delete-param-batch": "Paketni podatki za izbris več seznamov z enim samim zahtevkom, v obliki JSON-matrike z enim ali več objekti s poljem <var>list</var>.",
 	"apihelp-readinglists+delete-example-2": "Izbriši več računov.",
-	"apihelp-readinglists+createentry-summary": "Doda novo stran na seznam, ki pripada trenutnemu uporabniku."
+	"apihelp-readinglists+createentry-summary": "Doda novo stran na seznam, ki pripada trenutnemu uporabniku.",
+	"apihelp-readinglists+createentry-param-batch": "Paketni podatki za ustvaritev več seznamskih vnosov (v istem seznamu) z enim samim zahtevkom v obliki JSON-matrike z enim ali več objekti s poljema <var>project</var> in <var>title</var>.",
+	"apihelp-readinglists+deleteentry-param-batch": "Paketni podatki za izbris več seznamskih vnosov z enim samim zahtevkom, v obliki JSON-matrike z enim ali več objekti s poljem <var>entry</var>."
 }
