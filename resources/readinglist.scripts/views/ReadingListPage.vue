@@ -7,35 +7,43 @@
 					<p class="readinglist-collection-description">&nbsp;{{ viewDescription }} </p>
 					<cdx-button v-if="!showDisclaimer" @click="clickImportList">{{ shareLabel }}</cdx-button>
 				</div>
-				<cdx-message v-if="showDisclaimer" type="warning">
+				<div v-if="showDisclaimer">
 					{{ disclaimer }}
 					<div v-if="hasApp">
-						<p>{{ importMessage }}</p>
-						<div v-if="isAndroid">
-							<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
-								<span class="app_store_images_sprite svg-badge_google_play_store"></span>
-							</a>
-						</div>
-						<div v-else-if="isIOS">
-							<a target="_blank" rel="noreferrer" :href="iosDownloadLink">
-								<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
-							</a>
-						</div>
-						<div v-else>
-							<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
-								<span class="app_store_images_sprite svg-badge_google_play_store"></span>
-							</a>
-							<a target="_blank" rel="noreferrer" :href="iosDownloadLink">
-								<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
-							</a>
-						</div>
-						<p>{{ importButtonHint }}</p>
-						<cdx-button action="progressive" type="primary" @click="clickDeepLink">{{ importButtonLabel }}</cdx-button>
+						<ol>
+							<li>
+								<span v-html="importMessage"></span>
+								<div v-if="isAndroid">
+									<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
+										<span class="app_store_images_sprite svg-badge_google_play_store"></span>
+									</a>
+								</div>
+								<div v-else-if="isIOS">
+									<a target="_blank" rel="noreferrer" :href="iosDownloadLink">
+										<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
+									</a>
+								</div>
+								<div v-else>
+									<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
+										<span class="app_store_images_sprite svg-badge_google_play_store"></span>
+									</a>
+									<a target="_blank" rel="noreferrer" :href="iosDownloadLink">
+										<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
+									</a>
+								</div>
+							</li>
+							<li>
+								{{ importButtonHint }}
+								<div>
+									<cdx-button action="progressive" type="primary" @click="clickDeepLink">{{ importButtonLabel }}</cdx-button>
+								</div>
+							</li>
+						</ol>
 					</div>
 					<div v-else>
 						{{ noAppMessage }}
 					</div>
-				</cdx-message>
+				</div>
 			</div>
 			<div v-if="errorCode">
 				<cdx-message type="error">{{ errorMessage }}</cdx-message>
@@ -215,7 +223,8 @@ module.exports = {
 			return getEnabledMessage( 'readinglists-import-app-misconfigured' );
 		},
 		importMessage() {
-			return getEnabledMessage( 'readinglists-import-app' );
+			return getEnabledMessage( 'readinglists-import-app' )
+				.replace( '$1', this.isIOS ? this.iosDownloadLink : this.androidDownloadLink );
 		},
 		shareLabel() {
 			return mw.msg( 'readinglists-export' );
@@ -405,10 +414,7 @@ module.exports = {
 	font-size: 16px;
 
 	&-summary {
-		color: #555;
-		font-size: 0.85em;
 		margin: 7px 0 10px 0;
-		text-align: center;
 
 		h1 {
 			border-bottom: 0;
@@ -423,6 +429,12 @@ module.exports = {
 
 	p {
 		margin-top: 16px;
+	}
+
+	ol {
+		margin-top: 16px;
+		padding-left: 0;
+		list-style: inside decimal;
 	}
 }
 

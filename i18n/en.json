@@ -49,7 +49,7 @@
 	"readinglists-import-app": "-",
 	"readinglists-import-app-misconfigured": "This website currently does not support importing lists.",
 	"readinglists-import-disclaimer": "A user on this site has created a reading list to share with others (probably you). It is not moderated, and its contents do not reflect the site's editors.",
-	"readinglists-import-button-label": "Import",
-	"readinglists-import-button-hint": "After installing the app, tap this button to import the list:",
+	"readinglists-import-button-label": "View list",
+	"readinglists-import-button-hint": "Tap button:",
 	"readinglists-import-app-launch-hint": "Please make sure the latest version of the app is installed."
 }
