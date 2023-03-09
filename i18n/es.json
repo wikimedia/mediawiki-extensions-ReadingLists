@@ -5,6 +5,7 @@
 			"Fitoschido",
 			"KATRINE1992",
 			"Macofe",
+			"MarcoAurelio",
 			"Scblr"
 		]
 	},
@@ -34,6 +35,7 @@
 	"readinglists-browser-extension-product-title": "Listas de lectura de Wikipedia",
 	"readinglists-browser-page-not-supported": "$1 no admite esta página",
 	"readinglists-special-title": "Listas de lectura",
+	"readinglists-loading": "Espera un momento…",
 	"special-tab-readinglists-short": "Tus listas",
 	"readinglists-import-disclaimer": "Un usuario de este sitio ha creado una lista de lectura para compartir con otros (probablemente contigo). La misma no está moderada y sus contenidos no reflejan la opinión de los editores del sitio.",
 	"readinglists-import-button-label": "Importar",
