@@ -4,5 +4,6 @@
 			"Умар"
 		]
 	},
+	"apierror-readinglists-batch-invalid-json": "<var>batch</var> параметрна JSON нийса йац: $1",
 	"apihelp-query+readinglists-param-list": "МогӀаман ID."
 }
