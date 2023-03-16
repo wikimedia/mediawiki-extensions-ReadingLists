@@ -35,7 +35,7 @@
 							<li>
 								{{ importButtonHint }}
 								<div>
-									<cdx-button action="progressive" type="primary" @click="clickDeepLink">{{ importButtonLabel }}</cdx-button>
+									<cdx-button action="progressive" weight="primary" @click="clickDeepLink">{{ importButtonLabel }}</cdx-button>
 								</div>
 							</li>
 						</ol>
