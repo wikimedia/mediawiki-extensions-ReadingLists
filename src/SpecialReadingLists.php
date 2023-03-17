@@ -43,7 +43,6 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 		$out = $this->getOutput();
 		$config = $out->getConfig();
 		// If the feature isn't ready, redirect to Special:SpecialPages
-		$enabled = $out->getConfig()->get( 'ReadingListsWeb' );
 		$params = $par ? explode( '/', $par ) : [];
 		$listOwner = $params[0] ?? null;
 		$req = $this->getRequest();
@@ -51,9 +50,6 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 		$user = $this->getUser();
 		$this->setHeaders();
 		$this->outputHeader();
-		if ( !$enabled ) {
-			$out->redirect( SpecialPage::getTitleFor( 'Specialpages' )->getLocalURL() );
-		}
 
 		if ( $user->isAnon() && !$exportFeature ) {
 			$this->requireLogin( 'reading-list-purpose' );

@@ -50,10 +50,6 @@
 			"value": "",
 			"description": "false or string representing an iOS download link"
 		},
-		"ReadingListsWeb": {
-			"value": false,
-			"description": "Temporary feature flag for web based features."
-		},
 		"ReadingListsWebAuthenticatedPreviews": {
 			"value": false,
 			"description": "Temporary feature flag for displaying private lists."
