@@ -52,6 +52,7 @@
 	"readinglists-no-title": "Name of a list without a name",
 	"readinglists-export": "Share button label",
 	"readinglists-import-app": "{{notranslate}}. Configured on site basis. See [[Extension:WikimediaMessages]] for Wikimedia localizations.",
+	"readinglists-import-app-with-link": "{{notranslate}}. Configured on site basis. See [[Extension:WikimediaMessages]] for Wikimedia localizations.",
 	"readinglists-import-app-misconfigured": "Shows when something is setup incorrectly and the import URL is followed.",
 	"readinglists-import-disclaimer": "Explains how the list was generated.",
 	"readinglists-import-button-label": "Button label for importing the current list.\n{{identical|Import}}",

@@ -13,21 +13,21 @@
 						<ol>
 							<li>
 								<span v-html="importMessage"></span>
-								<div v-if="isAndroid">
+								<div v-if="isAndroid && androidDownloadLink">
 									<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
 										<span class="app_store_images_sprite svg-badge_google_play_store"></span>
 									</a>
 								</div>
-								<div v-else-if="isIOS">
+								<div v-else-if="isIOS && iosDownloadLink">
 									<a target="_blank" rel="noreferrer" :href="iosDownloadLink">
 										<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
 									</a>
 								</div>
 								<div v-else>
-									<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
+									<a target="_blank" rel="noreferrer" :href="androidDownloadLink" v-if="androidDownloadLink">
 										<span class="app_store_images_sprite svg-badge_google_play_store"></span>
 									</a>
-									<a target="_blank" rel="noreferrer" :href="iosDownloadLink">
+									<a target="_blank" rel="noreferrer" :href="iosDownloadLink" v-if="iosDownloadLink">
 										<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
 									</a>
 								</div>
@@ -88,9 +88,9 @@ const READING_LISTS_NAME_PLURAL = mw.msg( 'special-tab-readinglists-short' );
 const READING_LIST_TITLE = mw.msg( 'readinglists-special-title' );
 const HOME_URL = ( new mw.Title( 'ReadingLists', -1 ) ).getUrl();
 
-const getEnabledMessage = ( key ) => {
+const getEnabledMessage = ( key, params ) => {
 	// eslint-disable-next-line mediawiki/msg-doc
-	const text = mw.msg( key );
+	const text = mw.msg( key, params );
 	return text === '-' ? '' : text;
 };
 
@@ -223,8 +223,13 @@ module.exports = {
 			return getEnabledMessage( 'readinglists-import-app-misconfigured' );
 		},
 		importMessage() {
-			return getEnabledMessage( 'readinglists-import-app' )
-				.replace( '$1', this.isIOS ? this.iosDownloadLink : this.androidDownloadLink );
+			if ( this.isIOS && this.iosDownloadLink ) {
+				return getEnabledMessage( 'readinglists-import-app-with-link', this.iosDownloadLink );
+			} else if ( this.isAndroid && this.androidDownloadLink ) {
+				return getEnabledMessage( 'readinglists-import-app-with-link', this.androidDownloadLink );
+			} else {
+				return getEnabledMessage( 'readinglists-import-app' );
+			}
 		},
 		shareLabel() {
 			return mw.msg( 'readinglists-export' );
