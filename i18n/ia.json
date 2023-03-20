@@ -48,7 +48,7 @@
 	"readinglists-export": "Condivider lista",
 	"readinglists-import-app-misconfigured": "Iste sito web actualmente non supporta le importation de listas.",
 	"readinglists-import-disclaimer": "Un usator de iste sito ha create iste lista pro condivider lo con alteres (probabilemente con te). Iste lista non ha essite moderate e su contento non reflecte le redactores del sito.",
-	"readinglists-import-button-label": "Importar",
-	"readinglists-import-button-hint": "Post installar le app, tocca iste button pro importar le lista:",
+	"readinglists-import-button-label": "Vider lista",
+	"readinglists-import-button-hint": "Tocca button:",
 	"readinglists-import-app-launch-hint": "Assecura te que le ultime version del application ha essite installate."
 }

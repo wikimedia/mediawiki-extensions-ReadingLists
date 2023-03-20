@@ -51,7 +51,7 @@
 	"readinglists-export": "Liste teilen",
 	"readinglists-import-app-misconfigured": "Diese Website unterstützt derzeit das Importieren von Listen nicht.",
 	"readinglists-import-disclaimer": "Ein Benutzer dieser Website hat eine Leseliste erstellt, um sie mit anderen zu teilen (wahrscheinlich mit dir). Sie wird nicht moderiert, und ihr Inhalt gibt nicht den Standpunkt des Herausgebers der Website wieder.",
-	"readinglists-import-button-label": "Importieren",
-	"readinglists-import-button-hint": "Tippe nach der Installation der App auf diese Schaltfläche, um die Liste zu importieren:",
+	"readinglists-import-button-label": "Liste ansehen",
+	"readinglists-import-button-hint": "Schaltfläche antippen:",
 	"readinglists-import-app-launch-hint": "Bitte stelle sicher, dass die neueste Version der App installiert ist."
 }

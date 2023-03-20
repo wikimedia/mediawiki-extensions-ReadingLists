@@ -48,7 +48,7 @@
 	"readinglists-export": "Deli seznam",
 	"readinglists-import-app-misconfigured": "To spletno mesto trenutno ne podpira uvažanja seznamov.",
 	"readinglists-import-disclaimer": "Uporabnik v tem projektu je ustvaril bralni seznam za skupno rabo z drugimi (verjetno vami). Ta seznam ni moderiran in njegova vsebina ne odraža urejevalcev projekta.",
-	"readinglists-import-button-label": "Uvozi",
-	"readinglists-import-button-hint": "Po namestitvi aplikacije tapnite ta gumb, da uvozite seznam:",
+	"readinglists-import-button-label": "Ogled seznama",
+	"readinglists-import-button-hint": "Tapnite gumb:",
 	"readinglists-import-app-launch-hint": "Preverite, ali je nameščena zadnja različica aplikacije."
 }

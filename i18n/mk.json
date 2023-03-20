@@ -49,7 +49,7 @@
 	"readinglists-export": "Сподели список",
 	"readinglists-import-app-misconfigured": "Ова вики засега не поддржува увоз на списоци.",
 	"readinglists-import-disclaimer": "Овој список е создаден од корисник на ова вики со цел да го сподели со други (веројатно со вас). Не е модериран, и неговата содржина не ги одразува уредниците на викито.",
-	"readinglists-import-button-label": "Увези",
-	"readinglists-import-button-hint": "Откако ќе го воспоставите прилогот, допрете на копчево за да го увезете списокот:",
+	"readinglists-import-button-label": "Погл. списокот",
+	"readinglists-import-button-hint": "Допрете на копчето:",
 	"readinglists-import-app-launch-hint": "Водете сметка да биде воспоставена најновата верзија на прилогот."
 }
