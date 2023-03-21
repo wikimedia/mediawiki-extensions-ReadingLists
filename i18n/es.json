@@ -38,6 +38,6 @@
 	"readinglists-loading": "Espera un momento…",
 	"special-tab-readinglists-short": "Tus listas",
 	"readinglists-import-disclaimer": "Un usuario de este sitio ha creado una lista de lectura para compartir con otros (probablemente contigo). La misma no está moderada y sus contenidos no reflejan la opinión de los editores del sitio.",
-	"readinglists-import-button-label": "Importar",
-	"readinglists-import-button-hint": "Luego de instalar la aplicación, pulsa este botón para importar la lista:"
+	"readinglists-import-button-label": "Ver lista",
+	"readinglists-import-button-hint": "Pulse el botón:"
 }

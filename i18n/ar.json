@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Dbrant",
 			"Scblr",
 			"ديفيد",
 			"محمد أحمد عبد الفتاح"
@@ -37,6 +38,6 @@
 	"special-tab-readinglists-short": "قوائمك",
 	"readinglists-default-title": "الصفحات المحفوظة",
 	"readinglists-import-disclaimer": " أنشأ مستخدم على هذا الموقع قائمة قراءة لمشاركتها مع الآخرين (ربما أنت). إنها ليست خاضعة للإشراف ولا يعكس محتواها محرري الموقع.",
-	"readinglists-import-button-label": "استيراد",
-	"readinglists-import-button-hint": "بعد تثبيت التطبيق، انقر فوق هذا الزر لاستيراد القائمة:"
+	"readinglists-import-button-label": "عرض القائمة",
+	"readinglists-import-button-hint": "انقر فوق الزر:"
 }
