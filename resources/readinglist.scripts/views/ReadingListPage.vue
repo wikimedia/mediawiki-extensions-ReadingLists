@@ -5,7 +5,7 @@
 				<div v-if="showMeta">
 					<h1 v-if="viewTitle">{{ viewTitle }}</h1>
 					<p class="readinglist-collection-description">&nbsp;{{ viewDescription }} </p>
-					<cdx-button v-if="!showDisclaimer" @click="clickImportList">{{ shareLabel }}</cdx-button>
+					<cdx-button v-if="!showDisclaimer && collection" @click="clickImportList">{{ shareLabel }}</cdx-button>
 				</div>
 				<div v-if="showDisclaimer">
 					{{ disclaimer }}
