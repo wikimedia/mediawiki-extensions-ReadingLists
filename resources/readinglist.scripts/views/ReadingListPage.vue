@@ -98,11 +98,12 @@ const getEnabledMessage = ( key, params ) => {
  * @param {number} id
  * @return {Card}
  */
-function getCard( { id, url, name, description, title, thumbnail, project } ) {
+function getCard( { id, url, name, description, title, thumbnail, project, pageid } ) {
 	return {
 		loaded: false,
 		id,
 		url,
+		pageid,
 		project,
 		// If it's a list, name
 		// If it's a page on the list, title
@@ -261,11 +262,14 @@ module.exports = {
 	methods: {
 		clickImportList: function () {
 			const list = {};
+			// ID is preferred if available, as it results in a shorter URL
+			const shareField = this.cards.filter( ( card ) => !!card.pageid ).length === this.cards.length ?
+				'pageid' : 'title';
 			this.cards.forEach( ( card ) => {
 				if ( !list[ card.project ] ) {
 					list[ card.project ] = [];
 				}
-				list[ card.project ].push( card.title );
+				list[ card.project ].push( card[ shareField ] );
 			} );
 			window.location.search = `?limport=${this.api.toBase64( this.name, this.description, list )}`;
 		},
