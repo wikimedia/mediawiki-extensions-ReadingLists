@@ -51,7 +51,7 @@
 			"description": "false or string representing an iOS download link"
 		},
 		"ReadingListsWebAuthenticatedPreviews": {
-			"value": false,
+			"value": true,
 			"description": "Temporary feature flag for displaying private lists."
 		},
 		"ReadingListsAnonymizedPreviews": {
