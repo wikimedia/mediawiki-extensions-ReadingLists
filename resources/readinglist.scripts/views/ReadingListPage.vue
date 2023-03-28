@@ -5,7 +5,8 @@
 				<div v-if="showMeta">
 					<h1 v-if="viewTitle">{{ viewTitle }}</h1>
 					<p class="readinglist-collection-description">&nbsp;{{ viewDescription }} </p>
-					<cdx-button v-if="!showDisclaimer && collection" @click="clickImportList">{{ shareLabel }}</cdx-button>
+					<cdx-button v-if="!showDisclaimer && collection &&
+						isShareEnabled" @click="clickShareButton">{{ shareLabel }}</cdx-button>
 				</div>
 				<div v-if="showDisclaimer">
 					{{ disclaimer }}
@@ -260,7 +261,26 @@ module.exports = {
 		}
 	},
 	methods: {
-		clickImportList: function () {
+		isShareEnabled: () => navigator.share || navigator.clipboard,
+		/**
+		 * @param {string} title
+		 * @param {string} text
+		 * @param {string} url
+		 * @return {Promise}
+		 */
+		shareList: ( title, text, url ) => {
+			const shareData = { title, text, url };
+			if ( navigator.share && navigator.canShare( shareData ) ) {
+				return navigator.share( shareData );
+			} else {
+				return navigator.clipboard.writeText(
+					mw.msg( 'readinglists-share-url-text', title, text, url )
+				).then( () => {
+					mw.notify( mw.msg( 'readinglists-share-url-notify' ) );
+				} );
+			}
+		},
+		clickShareButton: function () {
 			const list = {};
 			// ID is preferred if available, as it results in a shorter URL
 			const shareField = this.cards.filter( ( card ) => !!card.pageid ).length === this.cards.length ?
@@ -271,7 +291,14 @@ module.exports = {
 				}
 				list[ card.project ].push( card[ shareField ] );
 			} );
-			window.location.search = `?limport=${this.api.toBase64( this.name, this.description, list )}`;
+			// https://wikitech.wikimedia.org/wiki/Provenance
+			// product reading list web 1
+			const wprov = 'prlw1';
+			const url = new URL(
+				`${location.pathname}?limport=${this.api.toBase64( this.name, this.description, list )}&wprov=${wprov}`,
+				`${location.protocol}//${location.host}`
+			);
+			this.shareList( this.name, this.description, url.toString() );
 		},
 		clickDeepLink: function () {
 			try {

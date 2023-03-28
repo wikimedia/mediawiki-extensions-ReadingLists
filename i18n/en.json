@@ -52,5 +52,7 @@
 	"readinglists-import-disclaimer": "A user on this site has created a reading list to share with others (probably you). It is not moderated, and its contents do not reflect the site's editors.",
 	"readinglists-import-button-label": "View list",
 	"readinglists-import-button-hint": "Tap button:",
+	"readinglists-share-url-text": "[$1] - $2\n $3",
+	"readinglists-share-url-notify": "Information relating to this reading list has been copied to your clipboard.",
 	"readinglists-import-app-launch-hint": "Please make sure the latest version of the app is installed."
 }

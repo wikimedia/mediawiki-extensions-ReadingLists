@@ -58,5 +58,7 @@
 	"readinglists-import-disclaimer": "Explains how the list was generated.",
 	"readinglists-import-button-label": "Button label for importing the current list.\n{{identical|Import}}",
 	"readinglists-import-button-hint": "Hint shown above the button for importing the current list.",
+	"readinglists-share-url-text": "Text that will be shared to clipboard. Parameters:\n- $1 list title\n- $2 list description\n- $3 URL of list",
+	"readinglists-share-url-notify": "Notifies user that something has been copied to clipboard.",
 	"readinglists-import-app-launch-hint": "Hint shown when attempting to import a list without the app installed."
 }
