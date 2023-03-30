@@ -73,7 +73,8 @@ const api = new mw.Api();
 
 /**
  * @typedef Card
- * @property {number} [id]
+ * @property {number} [id] id relating to reading list
+ * @property {number} [pageid] id relating to the page title
  * @property {string} url
  * @property {string} [ownerName]
  * @property {string} name
@@ -139,6 +140,7 @@ const transformPage = ( project ) => {
 			project: getProjectHost( project ),
 			// T320293
 			url: `${getProjectHost( project )}${new mw.Title( page.title ).getUrl()}`,
+			pageid: page.pageid,
 			thumbnail: page.thumbnail ? {
 				width: page.thumbnail.width,
 				height: page.thumbnail.height,
