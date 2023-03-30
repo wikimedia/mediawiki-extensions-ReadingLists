@@ -13,6 +13,7 @@
 		"compat/compat": "off",
 		"vue/no-boolean-default": "warn",
 		"no-undef": "warn",
-		"no-restricted-syntax": "warn"
+		"no-restricted-syntax": "warn",
+		"es-x/no-array-prototype-includes": "warn"
 	}
 }
