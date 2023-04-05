@@ -110,6 +110,8 @@
 				"mediawiki.user"
 			],
 			"messages": [
+				"readinglists-share-url-notify",
+				"readinglists-share-url-text",
 				"readinglists-import-app-misconfigured",
 				"readinglists-import-error",
 				"readinglists-db-error-no-such-list",
