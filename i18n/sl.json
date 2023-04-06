@@ -50,5 +50,6 @@
 	"readinglists-import-disclaimer": "Uporabnik v tem projektu je ustvaril bralni seznam za skupno rabo z drugimi (verjetno vami). Ta seznam ni moderiran in njegova vsebina ne odraža urejevalcev projekta.",
 	"readinglists-import-button-label": "Ogled seznama",
 	"readinglists-import-button-hint": "Tapnite gumb:",
+	"readinglists-share-url-notify": "Informacije o tem bralnem seznamu so kopirane v vaše odložišče.",
 	"readinglists-import-app-launch-hint": "Preverite, ali je nameščena zadnja različica aplikacije."
 }

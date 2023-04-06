@@ -53,5 +53,6 @@
 	"readinglists-import-disclaimer": "Ein Benutzer dieser Website hat eine Leseliste erstellt, um sie mit anderen zu teilen (wahrscheinlich mit dir). Sie wird nicht moderiert, und ihr Inhalt gibt nicht den Standpunkt des Herausgebers der Website wieder.",
 	"readinglists-import-button-label": "Liste ansehen",
 	"readinglists-import-button-hint": "Schaltfläche antippen:",
+	"readinglists-share-url-notify": "Informationen zu dieser Leseliste wurden in deine Zwischenablage kopiert.",
 	"readinglists-import-app-launch-hint": "Bitte stelle sicher, dass die neueste Version der App installiert ist."
 }
