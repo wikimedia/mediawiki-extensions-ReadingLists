@@ -28,7 +28,7 @@
 	"readinglists-browser-extension-info-link-text": "اطلاعات بیشتر",
 	"readinglists-browser-extension-product-title": "فهرست‌های خواندن ویکی‌پدیا",
 	"readinglists-browser-page-not-supported": "$1 از این صفحه پشتیبانی نمی‌کند",
-	"readinglists-import-button-label": "درون‌ریزی",
-	"readinglists-import-button-hint": "پس از نصب نرم‌افزار، برای درون‌ریزی فهرست روی این دکمه ضربه بزنید:",
+	"readinglists-import-button-label": "نمایش فهرست",
+	"readinglists-import-button-hint": "روی این دکمه ضربه بزنید:",
 	"readinglists-import-app-launch-hint": "لطفاً از نصب شدن نرم‌افزار مطمئن شوید."
 }

@@ -51,5 +51,6 @@
 	"readinglists-import-disclaimer": "משתמש באתר הזה יצר רשימת קריאה כדי לשתף עם אחרים (כנראה איתך). היא אינה מנוהלת, והתוכן שלה אינו מייצג את עורכי האתר.",
 	"readinglists-import-button-label": "הצגת הרשימה",
 	"readinglists-import-button-hint": "נא ללחוץ על הכפתור:",
+	"readinglists-share-url-notify": "מידע על רשימת הקריאה הזאת הועתק ללוח שלך.",
 	"readinglists-import-app-launch-hint": "נא לוודא שהגרסה האחרונה של היישום מותקנת."
 }
