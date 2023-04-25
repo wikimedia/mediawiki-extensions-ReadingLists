@@ -3,8 +3,8 @@
 namespace MediaWiki\Extension\ReadingLists;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\WikiMap\WikiMap;
 use UnexpectedValueException;
-use WikiMap;
 use Wikimedia\Rdbms\IDatabase;
 
 /**

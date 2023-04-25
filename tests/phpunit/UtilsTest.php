@@ -5,8 +5,8 @@ namespace MediaWiki\Extension\ReadingLists\Tests;
 use Closure;
 use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\WikiMap\WikiMap;
 use MediaWikiIntegrationTestCase;
-use WikiMap;
 use Wikimedia\Rdbms\IDatabase;
 
 class UtilsTest extends MediaWikiIntegrationTestCase {

@@ -99,7 +99,9 @@
 	},
 	"ResourceModules": {
 		"special.readinglist.styles": {
-			"styles": [ "resources/special.readinglist.styles.less" ]
+			"styles": [
+				"resources/special.readinglist.styles.less"
+			]
 		},
 		"special.readinglist.scripts": {
 			"dependencies": [
