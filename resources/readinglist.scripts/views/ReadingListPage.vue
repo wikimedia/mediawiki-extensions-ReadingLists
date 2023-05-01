@@ -269,12 +269,17 @@ module.exports = {
 		 * @return {Promise}
 		 */
 		shareList: ( title, text, url ) => {
-			const shareData = { title, text, url };
+			const msgArgs = text ?
+				[ 'readinglists-share-url-text', title, text ] :
+				[ 'readinglists-share-url-text-incomplete', title ];
+			const shareData = { title, url,
+				text: mw.msg.apply( null, msgArgs.concat( '' ) ).trim() };
+
 			if ( navigator.share && navigator.canShare( shareData ) ) {
 				return navigator.share( shareData );
 			} else {
 				return navigator.clipboard.writeText(
-					mw.msg( 'readinglists-share-url-text', title, text, url )
+					mw.msg.apply( null, msgArgs.concat( url ) )
 				).then( () => {
 					mw.notify( mw.msg( 'readinglists-share-url-notify' ) );
 				} );
