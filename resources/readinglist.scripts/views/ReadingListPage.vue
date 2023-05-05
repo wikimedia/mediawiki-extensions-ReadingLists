@@ -3,10 +3,18 @@
 		<div class="readinglist-collection">
 			<div class="readinglist-collection-summary">
 				<div v-if="showMeta">
-					<h1 v-if="viewTitle">{{ viewTitle }}</h1>
-					<p class="readinglist-collection-description">&nbsp;{{ viewDescription }} </p>
-					<cdx-button v-if="!showDisclaimer && collection &&
-						isShareEnabled" @click="clickShareButton">{{ shareLabel }}</cdx-button>
+					<h1 v-if="viewTitle">
+						{{ viewTitle }}
+					</h1>
+					<p class="readinglist-collection-description">
+						&nbsp;{{ viewDescription }}
+					</p>
+					<cdx-button
+						v-if="!showDisclaimer && collection &&
+							isShareEnabled"
+						@click="clickShareButton">
+						{{ shareLabel }}
+					</cdx-button>
 				</div>
 				<div v-if="showDisclaimer">
 					{{ disclaimer }}
@@ -15,20 +23,34 @@
 							<li>
 								<span v-html="importMessage"></span>
 								<div v-if="isAndroid && androidDownloadLink">
-									<a target="_blank" rel="noreferrer" :href="androidDownloadLink">
+									<a
+										target="_blank"
+										rel="noreferrer"
+										:href="androidDownloadLink">
 										<span class="app_store_images_sprite svg-badge_google_play_store"></span>
 									</a>
 								</div>
 								<div v-else-if="isIOS && iosDownloadLink">
-									<a target="_blank" rel="noreferrer" :href="iosDownloadLink">
+									<a
+										target="_blank"
+										rel="noreferrer"
+										:href="iosDownloadLink">
 										<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
 									</a>
 								</div>
 								<div v-else>
-									<a target="_blank" rel="noreferrer" :href="androidDownloadLink" v-if="androidDownloadLink">
+									<a
+										v-if="androidDownloadLink"
+										target="_blank"
+										rel="noreferrer"
+										:href="androidDownloadLink">
 										<span class="app_store_images_sprite svg-badge_google_play_store"></span>
 									</a>
-									<a target="_blank" rel="noreferrer" :href="iosDownloadLink" v-if="iosDownloadLink">
+									<a
+										v-if="iosDownloadLink"
+										target="_blank"
+										rel="noreferrer"
+										:href="iosDownloadLink">
 										<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
 									</a>
 								</div>
@@ -36,7 +58,12 @@
 							<li>
 								{{ importButtonHint }}
 								<div>
-									<cdx-button action="progressive" weight="primary" @click="clickDeepLink">{{ importButtonLabel }}</cdx-button>
+									<cdx-button
+										action="progressive"
+										weight="primary"
+										@click="clickDeepLink">
+										{{ importButtonLabel }}
+									</cdx-button>
 								</div>
 							</li>
 						</ol>
@@ -47,11 +74,13 @@
 				</div>
 			</div>
 			<div v-if="errorCode">
-				<cdx-message type="error">{{ errorMessage }}</cdx-message>
+				<cdx-message type="error">
+					{{ errorMessage }}
+				</cdx-message>
 			</div>
 			<div v-if="loaded && !errorCode">
 				<div :class="readingListClass">
-					<div class="readinglist-list__container" v-if="cards.length">
+					<div v-if="cards.length" class="readinglist-list__container">
 						<cdx-card
 							v-for="( card ) in cards"
 							:key="card.id"
