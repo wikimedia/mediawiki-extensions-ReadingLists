@@ -45,5 +45,10 @@
 	"readinglists-default-description": "Standardliste for dine lagrede artikler",
 	"action-action-readinglist-private": "Les andre brukeres leselister",
 	"readinglists-empty-message": "Du har ingen lister, hvorfor ikke lage en?",
-	"readinglists-list-empty-message": "Denne listen har ingen sider på seg. Last ned og bruk appen for å legge ting til denne leselisten."
+	"readinglists-list-empty-message": "Denne listen har ingen sider på seg. Last ned og bruk appen for å legge ting til denne leselisten.",
+	"readinglists-no-title": "Liste uten tittel",
+	"readinglists-export": "Del liste",
+	"readinglists-import-app-misconfigured": "Dette nettstedet støtter ikke importering av lister.",
+	"readinglists-import-disclaimer": "En bruker på dette nettstedet har opprettet en leseliste for å dele den med andre (sannsynligvis deg). Den er ikke moderert, og innholdet gjenspeiler ikke nettstedets bidragsytere.",
+	"readinglists-import-button-label": "Vis liste"
 }
