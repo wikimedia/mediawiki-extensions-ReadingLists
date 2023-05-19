@@ -4,9 +4,9 @@ namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
 use ApiMessage;
 use ApiUsageException;
-use FauxRequest;
 use MediaWiki\Extension\ReadingLists\Api\ApiTrait;
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
+use MediaWiki\Request\FauxRequest;
 use PHPUnit\Framework\TestCase;
 use RequestContext;
 use StatusValue;
