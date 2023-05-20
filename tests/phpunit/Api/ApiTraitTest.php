@@ -53,7 +53,7 @@ class ApiTraitTest extends TestCase {
 		}
 	}
 
-	public function provideGetBatchOps() {
+	public static function provideGetBatchOps() {
 		$thousandObjects = '[' . implode( ',', array_fill( 0, 1000, '{"foo":"bar"}' ) ) . ']';
 		return [
 			// batch input as JSON string, cleaned batch, error message or null
@@ -81,7 +81,7 @@ class ApiTraitTest extends TestCase {
 				'requireAtLeastOneBatchParameter' ], $params );
 	}
 
-	public function provideRequireAtLeastOneBatchParameter() {
+	public static function provideRequireAtLeastOneBatchParameter() {
 		$missing = 'apierror-readinglists-batch-missingparam-at-least-one-of';
 		return [
 			// operation, list of alternate-required fields, expected error or null

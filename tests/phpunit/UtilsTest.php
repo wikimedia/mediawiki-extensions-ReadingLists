@@ -34,7 +34,7 @@ class UtilsTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( $expectedResult, Utils::isCentralWiki( MediaWikiServices::getInstance() ) );
 	}
 
-	public function provideIsCentralWiki() {
+	public static function provideIsCentralWiki() {
 		$currentWikiId = static function () {
 			return WikiMap::getCurrentWikiId();
 		};

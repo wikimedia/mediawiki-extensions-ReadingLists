@@ -49,7 +49,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	/**
 	 * @return array
 	 */
-	public function provideAssertUser() {
+	public static function provideAssertUser() {
 		return [
 			[ 'setupForUser' ],
 			[ 'teardownForUser' ],
@@ -87,7 +87,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	/**
 	 * @return array
 	 */
-	public function provideUninitializedErrors() {
+	public static function provideUninitializedErrors() {
 		return [
 			[ 'teardownForUser' ],
 			[ 'addList', 'foo' ],
@@ -292,7 +292,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$compare( $expected, $res );
 	}
 
-	public function provideGetAllLists() {
+	public static function provideGetAllLists() {
 		$lists = [
 			'default' => [
 				'rl_name' => 'default',
@@ -693,7 +693,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$compare( $expected, $res );
 	}
 
-	public function provideGetListEntries() {
+	public static function provideGetListEntries() {
 		$defaultId = 1;
 		$testId = 2;
 		$expected = [
@@ -960,7 +960,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertArrayEquals( $expected, $data );
 	}
 
-	public function provideGetListsByDateUpdated() {
+	public static function provideGetListsByDateUpdated() {
 		return [
 			'basic' => [
 				[ '20100101000000' ],
@@ -1044,7 +1044,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertArrayEquals( $expected, $data );
 	}
 
-	public function provideGetListEntriesByDateUpdated() {
+	public static function provideGetListEntriesByDateUpdated() {
 		return [
 			'basic' => [
 				[ '20100101000000' ],
@@ -1309,7 +1309,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertArrayEquals( $expected, $data );
 	}
 
-	public function provideGetListsByPage() {
+	public static function provideGetListsByPage() {
 		return [
 			'basic' => [
 				[ '-', 'x' ],

@@ -34,7 +34,7 @@ class ReverseInterwikiLookupTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @return array [ expected iw prefix, hostname, interwiki table ]
 	 */
-	public function provideLookup() {
+	public static function provideLookup() {
 		$iwTable = [
 			[ 'iw_prefix' => 'de', 'iw_url' => 'https://de.wikipedia.org/wiki/$1',
 				'iw_wikiid' => 'dewiki', 'iw_local' => true ],

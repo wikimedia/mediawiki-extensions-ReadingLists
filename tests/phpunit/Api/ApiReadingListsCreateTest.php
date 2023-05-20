@@ -44,7 +44,7 @@ class ApiReadingListsCreateTest extends ApiTestCase {
 		$this->assertEquals( $expected, $result[0]['create']['result'] );
 	}
 
-	public function createProvider() {
+	public static function createProvider() {
 		return [
 			[ [ 'name' => 'dogs', 'description' => 'Woof!' ], 'Success'
 			]
@@ -63,7 +63,7 @@ class ApiReadingListsCreateTest extends ApiTestCase {
 		$this->assertEquals( $expected, $result[0]['create']['result'] );
 	}
 
-	public function createBatchProvider() {
+	public static function createBatchProvider() {
 		return [
 			[ [ [ 'name' => 'dogs', 'description' => 'Woof!' ],
 					[ 'name' => 'cats', 'description' => 'Meow!' ],

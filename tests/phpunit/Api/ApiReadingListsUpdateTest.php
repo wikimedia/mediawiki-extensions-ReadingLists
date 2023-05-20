@@ -55,7 +55,7 @@ class ApiReadingListsUpdateTest extends ApiTestCase {
 		$this->assertEquals( $expected, $result[0]['update']['result'] );
 	}
 
-	public function updateProvider() {
+	public static function updateProvider() {
 		return [
 			[ [ 'name' => 'new dogs', 'description' => 'Woof! Woof!' ], 'Success'
 			]
@@ -98,7 +98,7 @@ class ApiReadingListsUpdateTest extends ApiTestCase {
 		$this->assertEquals( $expected, $result[0]['update']['result'] );
 	}
 
-	public function updateBatchProvider() {
+	public static function updateBatchProvider() {
 		return [
 			[ [ [ 'name' => 'more dogs', 'description' => 'Woof! Woof!' ],
 					[ 'name' => 'more cats', 'description' => 'Meow! Meow!' ],

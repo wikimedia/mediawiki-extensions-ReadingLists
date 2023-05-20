@@ -77,7 +77,7 @@ class ApiQueryTraitTest extends TestCase {
 		$this->assertEquals( $expected, $encodedParam );
 	}
 
-	public function encodeContinuationParameterProvider() {
+	public static function encodeContinuationParameterProvider() {
 		$rlItem = [ 'id' => 1, 'name' => 'foo', 'updated' => '2018-12-01T00:00:00Z' ];
 
 		$rleItem = [ 'id' => 2, 'title' => 'Foo', 'updated' => '2018-12-01T00:00:00Z' ];
@@ -102,7 +102,7 @@ class ApiQueryTraitTest extends TestCase {
 		}
 	}
 
-	public function decodeContinuationParameterProvider() {
+	public static function decodeContinuationParameterProvider() {
 		return [
 			[ '1' , 'page', ReadingListRepository::SORT_BY_NAME, 1 ],
 			[ 'foo|1' , null, ReadingListRepository::SORT_BY_NAME, [ 'foo', 1 ] ],

@@ -57,7 +57,7 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 		$this->assertEquals( $expected, $result[0]['createentry']['result'] );
 	}
 
-	public function createEntryProvider() {
+	public static function createEntryProvider() {
 		return [
 			[ [ 'https://en.wikipedia.org' ],
 				[ 'project' => 'https://en.wikipedia.org', 'title' => 'Dog' ],
@@ -91,7 +91,7 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 		$this->assertEquals( $expected, $result[0]['createentry']['result'] );
 	}
 
-	public function createEntryBatchProvider() {
+	public static function createEntryBatchProvider() {
 		return [
 			[ [ 'https://en.wikipedia.org' ],
 				[ [ 'project' => 'https://en.wikipedia.org', 'title' => 'Dog' ],
@@ -131,7 +131,7 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
 	}
 
-	public function createEntryUnrecognizedProjectProvider() {
+	public static function createEntryUnrecognizedProjectProvider() {
 		return [
 			[ [ 'https://pt.wikipedia.org' ],
 				[ 'project' => 'https://en.wikipedia.org', 'title' => 'Dog' ],
