@@ -3,7 +3,9 @@
 		"authors": [
 			"Scblr",
 			"ديفيد",
-			"محمد أحمد عبد الفتاح"
+			"محمد أحمد عبد الفتاح",
+			"Alshamiri1",
+			"Dbrant"
 		]
 	},
 	"readinglists-desc": "يسمح للمستخدمين بإدارة قوائم خاصة بالمقالات، مثل الإشارات المرجعية أو قوائم \"القراءة لاحقا\".",
@@ -34,9 +36,23 @@
 	"readinglists-browser-extension-product-title": "قوائم قراءة ويكيبيديا",
 	"readinglists-browser-page-not-supported": "لا يدعم $1 هذه الصفحة",
 	"readinglists-special-title": "قوائم القراءة",
+	"readinglists-description": "كل قوائم القراءة الخاصة بك في مكان واحد.",
+	"readinglists-loading": "الرجاء الانتظار...",
+	"reading-list-purpose": "الرجاء تسجيل الدخول لرؤية قوائم القراءة الخاصة بك.",
+	"readinglists-error": "متصفحك غير قادر على استخدام ميزة قوائم القراءة. الرجاء تمكين JavaScript أو المحاولة في متصفح آخر.",
+	"readinglists-import-error": "غير قادر على عرض القائمة من البيانات المقدمة.",
+	"readinglists-import-size-error": "القائمة أكبر من أن يتم عرضها.",
 	"special-tab-readinglists-short": "قوائمك",
 	"readinglists-default-title": "الصفحات المحفوظة",
-	"readinglists-import-disclaimer": " أنشأ مستخدم على هذا الموقع قائمة قراءة لمشاركتها مع الآخرين (ربما أنت). إنها ليست خاضعة للإشراف ولا يعكس محتواها محرري الموقع.",
+	"readinglists-default-description": "القائمة الافتراضية لمقالاتك المحفوظة",
+	"action-action-readinglist-private": "قراءة قوائم القراءة للمستخدمين الآخرين",
+	"readinglists-empty-message": "ليس لديك قوائم ، لماذا لا تنشئ واحدة؟",
+	"readinglists-list-empty-message": "هذه القائمة لا تحتوي على صفحات. قم بتنزيل التطبيق واستخدامه لإضافة عناصر إلى قائمة القراءة هذه.",
+	"readinglists-no-title": "قائمة بلا عنوان",
+	"readinglists-export": "قائمة المشاركة",
+	"readinglists-import-app-misconfigured": "هذا الموقع حاليا لا يدعم استيراد القوائم.",
+	"readinglists-import-disclaimer": "قام مستخدم على هذا الموقع بإنشاء قائمة قراءة لمشاركتها مع الآخرين (ربما أنت). إنه غير خاضع للإشراف ، ومحتوياته لا تعكس محرري الموقع.",
 	"readinglists-import-button-label": "استيراد",
-	"readinglists-import-button-hint": "بعد تثبيت التطبيق، انقر فوق هذا الزر لاستيراد القائمة:"
+	"readinglists-import-button-hint": "بعد تثبيت التطبيق، انقر فوق هذا الزر لاستيراد القائمة:",
+	"readinglists-import-app-launch-hint": "يرجى التأكد من تثبيت أحدث إصدار من التطبيق."
 }
