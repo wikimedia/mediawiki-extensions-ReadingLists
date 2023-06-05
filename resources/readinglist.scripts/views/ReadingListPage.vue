@@ -513,7 +513,7 @@ module.exports = {
 }
 
 .app_store_images_sprite {
-	background-image: linear-gradient( transparent, transparent ), url( images/sprite.svg );
+	background-image: url( images/sprite.svg );
 	background-repeat: no-repeat;
 	display: inline-block;
 	vertical-align: middle;
