@@ -51,5 +51,7 @@
 	"readinglists-import-app-misconfigured": "Dette nettstedet støtter ikke importering av lister.",
 	"readinglists-import-disclaimer": "En bruker på dette nettstedet har opprettet en leseliste for å dele den med andre (sannsynligvis deg). Den er ikke moderert, og innholdet gjenspeiler ikke nettstedets bidragsytere.",
 	"readinglists-import-button-label": "Vis liste",
+	"readinglists-import-button-hint": "Trykk på knappen:",
+	"readinglists-share-url-notify": "Informasjon om denne leselista har blitt kopiert til utklippstavla di.",
 	"readinglists-import-app-launch-hint": "Sørg for at den nyeste versjonen av appen er installert."
 }
