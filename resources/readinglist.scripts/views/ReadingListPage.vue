@@ -146,6 +146,12 @@ function getCard( { id, url, name, description, title, thumbnail, project, pagei
 // @vue/component
 module.exports = {
 	name: 'ReadingListPage',
+	compatConfig: {
+		MODE: 3
+	},
+	compilerOptions: {
+		whitespace: 'condense'
+	},
 	components: {
 		CdxButton,
 		CdxCard,

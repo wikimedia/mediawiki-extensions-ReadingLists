@@ -8,6 +8,12 @@
 // @vue/component
 module.exports = {
 	name: 'IntermediateState',
+	compatConfig: {
+		MODE: 3
+	},
+	compilerOptions: {
+		whitespace: 'condense'
+	},
 	props: {
 		message: {
 			type: String,
