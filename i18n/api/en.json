@@ -69,7 +69,7 @@
 	"apihelp-readinglists+createentry-extended-description": "List entries must be unique. Pages are not limited to the wiki where the API is accessed. The user must have fewer than $1 (non-deleted) {{PLURAL:$1|entry|entries}} in the list.",
 	"apihelp-readinglists+createentry-param-list": "List ID.",
 	"apihelp-readinglists+createentry-param-project": "Project name of the wiki hosting the page. (Typically this is the domain name of the wiki.) Required unless doing batch creation.",
-	"apihelp-readinglists+createentry-param-title": "Page title (including the localised namespace name). Required unless doing batch creation. Human-readable format (spaces not underscores) is recommended. The API treats titles as raw strings; normalization (such as title casing) is left to the clients.",
+	"apihelp-readinglists+createentry-param-title": "Page title (including the localized namespace name). Required unless doing batch creation. Human-readable format (spaces not underscores) is recommended. The API treats titles as raw strings; normalization (such as title casing) is left to the clients.",
 	"apihelp-readinglists+createentry-param-batch": "Batch data for creating multiple list entries (in the same list) in a single request, in the form of a JSON array with one or more objects with <var>project</var> and <var>title</var> fields.",
 	"apihelp-readinglists+createentry-example-1": "Add the page <kbd>Dog</kbd> from project <kbd>en.wikipedia.org</kbd> to the list with ID <kbd>33</kbd>.",
 	"apihelp-readinglists+createentry-example-2": "Add multiple pages to a list.",
