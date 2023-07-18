@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Reedy"
+		]
+	},
+	"apihelp-readinglists+createentry-param-title": "Page title (including the localised namespace name). Required unless doing batch creation. Human-readable format (spaces not underscores) is recommended. The API treats titles as raw strings; normalisation (such as title casing) is left to the clients."
+}
