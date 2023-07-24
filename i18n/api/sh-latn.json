@@ -1,7 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
-			"Vlad5250"
+			"Winston Sung"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var> i <var>$1title</var> moraju se koristiti zajedno.",
