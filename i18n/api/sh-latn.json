@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"Winston Sung"
+		]
+	},
+	"apierror-readinglists-project-title-param": "<var>$1project</var> i <var>$1title</var> moraju se koristiti zajedno.",
+	"apierror-readinglists-too-old": "Vremensko-datumske oznake proslijeđene <var>$1changedsince</var> ne mogu biti starije od <kbd>$2</kbd>.",
+	"apierror-readinglists-invalidsort-notbyname": "Opcija sortiranja <kbd>name</kbd> ne može se koristiti zajedno s <var>$1changedsince</var>.",
+	"apierror-readinglists-batch-invalid-json": "Nevažeći JSON za <var>batch</var> parametar: $1",
+	"apierror-readinglists-batch-invalid-structure": "Nevažeći unos za parametar <var>batch</var>: mora sadržavati niz objekata koji imaju skalarne vrijednosti.",
+	"apierror-readinglists-batch-toomanyvalues": "Nevažeći unos za parametar <var>batch</var>: previše unosa, a maksimalno dopušteno je $1",
+	"apierror-readinglists-batch-missingparam-at-least-one-of": "U svakom objektu unutar <var>batch</var> unosa, potrebno je {{PLURAL:$2|polje|barem jedno od polja}} $1.",
+	"apihelp-query+readinglists-summary": "Navedi ili filtriraj korisničke popise za čitanje i prikaži metapodatke o njima.",
+	"apihelp-query+readinglists-paramvalue-sort-name": "Ime spiska. (Razvrstavanje je prema binarnoj vrijednosti; npr. bilo koji veliki ASCII znak sortirat će se prije bilo kojeg malog slova.)"
+}
