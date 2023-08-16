@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Nokeoo"
+		]
+	},
+	"apierror-readinglists-project-title-param": "<var>$1project</var> ir <var>$1title</var> turi būti naudojami kartu.",
+	"apierror-readinglists-too-old": "Laiko žymos, perduotos <var>$1changedsince</var>, negali būti senesnės nei <kbd>$2</kbd>.",
+	"apierror-readinglists-invalidsort-notbyname": "<kbd>name</kbd> rūšiavimo parinktis negali būti naudojama kartu su <var>$1changedsince</var>.",
+	"apierror-readinglists-batch-invalid-json": "Negalimas JSON <var>batch</var> parametrui: $1",
+	"apierror-readinglists-batch-toomanyvalues": "Negalima įvestis <var>batch</var> parametrui: per daug įrašų, maksimalus leidžiamas $1"
+}
