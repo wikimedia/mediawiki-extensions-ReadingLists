@@ -4,7 +4,7 @@ namespace MediaWiki\Extension\ReadingLists\Api;
 
 use ApiBase;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
-use Title;
+use MediaWiki\Title\Title;
 use Wikimedia\ParamValidator\ParamValidator;
 
 /**

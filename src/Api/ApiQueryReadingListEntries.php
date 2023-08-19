@@ -10,7 +10,7 @@ use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup;
 use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\MediaWikiServices;
-use Title;
+use MediaWiki\Title\Title;
 use Wikimedia\ParamValidator\ParamValidator;
 
 /**
