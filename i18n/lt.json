@@ -1,0 +1,34 @@
+{
+	"@metadata": {
+		"authors": [
+			"Nokeoo"
+		]
+	},
+	"readinglists-desc": "Leidžia naudotojams tvarkyti privačius straipsnių sąrašus, pvz., žymes ar skaitymo vėliau sąrašus.",
+	"readinglists-db-error-not-set-up": "Šiam naudotojui sąrašo sąrašai dar nėra nustatyti.",
+	"readinglists-db-error-already-set-up": "Šiam naudotojui sąrašo sąrašai jau nustatyti.",
+	"readinglists-db-error-cannot-delete-default-list": "Numatytasis sąrašas negali būti ištrintas.",
+	"readinglists-db-error-cannot-update-default-list": "Numatytasis sąrašas negali būti atnaujintas.",
+	"readinglists-db-error-no-such-list": "Sąrašas $1 neegzistuoja.",
+	"readinglists-db-error-no-such-list-entry": "Sąrašo įrašas $1 neegzistuoja.",
+	"readinglists-db-error-not-own-list": "Sąrašas $1 priklauso kitam naudotojui.",
+	"readinglists-db-error-not-own-list-entry": "Sąrašo įrašas $1 priklauso kitam naudotojui.",
+	"readinglists-db-error-list-deleted": "Sąrašas $1 ištrintas.",
+	"readinglists-db-error-list-entry-deleted": "Sąrašo įrašas $1 ištrintas.",
+	"readinglists-db-error-duplicate-list": "Sąrašas tokiu pavadinimu jau egzistuoja.",
+	"readinglists-db-error-duplicate-page": "Sąraše jau yra šis puslapis.",
+	"readinglists-db-error-empty-list-ids": "Sąrašo id parametras negali būti tuščias.",
+	"readinglists-db-error-user-required": "Šio metodo negalima naudoti nenurodžius naudotojo.",
+	"readinglists-db-error-list-limit": "Naudotojai negali turėti daugiau nei $1 {{PLURAL:$1|sąrašo|sąrašų}}.",
+	"readinglists-db-error-entry-limit": "Sąraše $1 negali būti daugiau nei $2 {{PLURAL:$2|įrašo|įrašų}}.",
+	"readinglists-db-error-too-long": "$1 lauko reikšmė negali būti ilgesnė nei $2 baitai.",
+	"readinglists-db-error-no-such-project": "„$1“ nėra pripažintas projektas.",
+	"readinglists-browser-add-entry-success": "$1 išsaugotas jūsų skaitinių sąraše",
+	"readinglists-browser-login-prompt": "Prisijunkite, kad išsaugotumėte straipsnius",
+	"readinglists-browser-error-intro": "Įvyko klaida: $1",
+	"readinglists-browser-enable-sync-prompt": "Įgalinkite sinchronizavimą savo Vikipedijos programėlėje, kad pradėtumėte saugoti straipsnius",
+	"readinglists-browser-extension-info-link-text": "Sužinokite daugiau",
+	"readinglists-browser-list-entry-limit-exceeded": "Straipsnio išsaugoti nepavyko. Pasiekėte $1 straipsnių viename sąraše limitą",
+	"readinglists-browser-extension-product-title": "Vikipedijos skaitymo sąrašai",
+	"readinglists-browser-page-not-supported": "$1 nepalaiko šio puslapio"
+}
