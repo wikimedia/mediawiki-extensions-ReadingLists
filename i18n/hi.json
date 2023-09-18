@@ -1,8 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
-			"Smtchahal"
+			"Smtchahal",
+			"Abijeet Patro",
+			"Dbrant",
+			"Scblr",
+			"Srishakatux"
 		]
 	},
+	"readinglists-desc": "उपयोगकर्ताओं को लेखों की निजी सूचियों जैसे बुकमार्क या \" बाद की सूचियों को पढ़ने \" का प्रबंधन करने की अनुमति देता है।",
 	"readinglists-db-error-duplicate-list": "इस नाम की एक सूची पहले से मौजूद है।"
 }
