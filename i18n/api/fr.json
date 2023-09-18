@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amire80",
 			"Gomoko",
 			"Pamputt",
 			"Thibaut120094",
@@ -64,7 +65,7 @@
 	"apihelp-readinglists+update-example-1": "Changer le nom de la liste de lecture ayant l’ID <kbd>42</kbd>.",
 	"apihelp-readinglists+update-example-2": "Mettre à jour des listes multiples.",
 	"apihelp-readinglists+delete-summary": "Supprimer une liste qui appartient à l’utilisateur actuel.",
-	"apihelp-readinglists+delete-extended-description": "Les listes supprimées restent accessibles pour un certain temps  (via le paramètre <var>$1changedsince</var>) par les modules [[Special:ApiHelp/query+readinglists|<kbd>readinglists</kbd> (listes de lecture)]] et [[Special:ApiHelp/query+readinglistentries|<kbd>readinglistentries</kbd> (entrées des listes de lecture)]]. Il n’y a aucun moyen d’annuler leur suppression.",
+	"apihelp-readinglists+delete-extended-description": "Les listes supprimées restent accessibles pour un certain temps (via le paramètre <var>$1changedsince</var>) par les modules [[Special:ApiHelp/query+readinglists|<kbd>readinglists</kbd> (listes de lecture)]] et [[Special:ApiHelp/query+readinglistentries|<kbd>readinglistentries</kbd> (entrées des listes de lecture)]]. Il n’y a aucun moyen d’annuler leur suppression.",
 	"apihelp-readinglists+delete-param-list": "Identifiant de liste. Nécessaire sauf en cas de suppression par lot.",
 	"apihelp-readinglists+delete-param-batch": "Données de lot pour supprimer des listes multiples en une seule passe, sous forme de tableau JSON avec un ou plusieurs objets avec un champ <var>list</var>.",
 	"apihelp-readinglists+delete-example-1": "Supprimer la liste de lecture ayant l’ID <kbd>11</kbd>.",
