@@ -3,9 +3,10 @@
 		"authors": [
 			"Balyozxane",
 			"Guherto",
-			"Kur"
+			"Kur",
+			"Amire80"
 		]
 	},
-	"apihelp-query+readinglists-extended-description": "Çar modên xebatê yên vê modulê hene. Derheqê parametreya  <var>$1list</var>ê û lîsteya nişankirî agahî dixebitîne. Parametreya <var>$1changedsince</var> û hemû lîsteyên ku ji piştî tarîxa nîşankirî hatine guhartin a ku bikarhênera derbasdar in, dixebitîne. (Ev ji bo hevdemîkirina alavê ye  û ji modên din cuda, lîsteyên jêbirî dihewîne.Tenê li wan guhartinan tê girtin ku dê lîsteya metadata bikin, di hêmanên lîsteyê de guhartin nayê kirin.) Bi parametreyên <var>$1project</var> û <var>$1title</var> , hemû lîsteyên ku wê rûpelê dihewîne, dixebitîne. Bê hebûna van lîsteyan, hemû lîsteyan dixebitîne.",
+	"apihelp-query+readinglists-extended-description": "Çar modên xebatê yên vê modulê hene. Derheqê parametreya <var>$1list</var>ê û lîsteya nişankirî agahî dixebitîne. Parametreya <var>$1changedsince</var> û hemû lîsteyên ku ji piştî tarîxa nîşankirî hatine guhartin a ku bikarhênera derbasdar in, dixebitîne. (Ev ji bo hevdemîkirina alavê ye û ji modên din cuda, lîsteyên jêbirî dihewîne.Tenê li wan guhartinan tê girtin ku dê lîsteya metadata bikin, di hêmanên lîsteyê de guhartin nayê kirin.) Bi parametreyên <var>$1project</var> û <var>$1title</var> , hemû lîsteyên ku wê rûpelê dihewîne, dixebitîne. Bê hebûna van lîsteyan, hemû lîsteyan dixebitîne.",
 	"apihelp-query+readinglists-param-list": "Nasnameya Lîsteyê"
 }
