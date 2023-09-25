@@ -3,14 +3,19 @@
 namespace MediaWiki\Extension\ReadingLists;
 
 use ApiQuerySiteinfo;
-use DatabaseUpdater;
-use MediaWiki\MediaWikiServices;
+use MediaWiki\Api\Hook\APIQuerySiteInfoGeneralInfoHook;
+use MediaWiki\Hook\UnitTestsAfterDatabaseSetupHook;
+use MediaWiki\Hook\UnitTestsBeforeDatabaseTeardownHook;
 use Wikimedia\Rdbms\IMaintainableDatabase;
 
 /**
  * Static entry points for hooks.
  */
-class HookHandler {
+class HookHandler implements
+	APIQuerySiteInfoGeneralInfoHook,
+	UnitTestsAfterDatabaseSetupHook,
+	UnitTestsBeforeDatabaseTeardownHook
+{
 
 	/** @var array Tables which need to be set up / torn down for tests */
 	public static $testTables = [
@@ -25,7 +30,7 @@ class HookHandler {
 	 * @param ApiQuerySiteinfo $module
 	 * @param array &$result
 	 */
-	public static function onAPIQuerySiteInfoGeneralInfo( ApiQuerySiteinfo $module, array &$result ) {
+	public function onAPIQuerySiteInfoGeneralInfo( $module, &$result ) {
 		global $wgReadingListsMaxListsPerUser, $wgReadingListsMaxEntriesPerList,
 			   $wgReadingListsDeletedRetentionDays;
 		$result['readinglists-config'] = [
@@ -33,33 +38,6 @@ class HookHandler {
 			'maxEntriesPerList' => $wgReadingListsMaxEntriesPerList,
 			'deletedRetentionDays' => $wgReadingListsDeletedRetentionDays,
 		];
-	}
-
-	/**
-	 * @param DatabaseUpdater $updater
-	 * @return bool
-	 */
-	public static function onLoadExtensionSchemaUpdates( DatabaseUpdater $updater ) {
-		if ( Utils::isCentralWiki( MediaWikiServices::getInstance() ) ) {
-			$type = $updater->getDB()->getType();
-			$baseDir = dirname( __DIR__ ) . '/sql/' . $type;
-			$patchDir = "$baseDir/patches";
-			$updater->addExtensionTable( 'reading_list', "$baseDir/tables-generated.sql" );
-			if ( $type === 'mysql' ) {
-				$updater->dropExtensionTable( 'reading_list_sortkey', "$patchDir/01-drop-sortkeys.sql" );
-				$updater->addExtensionTable( 'reading_list_project',
-					"$patchDir/02-add-reading_list_project.sql" );
-				$updater->addExtensionIndex( 'reading_list', 'rl_user_deleted_name_id',
-					"$patchDir/03-add-sort-indexes.sql" );
-				$updater->dropExtensionField( 'reading_list', 'rl_color',
-					"$patchDir/04-drop-metadata-columns.sql" );
-				$updater->modifyExtensionField( 'reading_list_entry', 'rle_title',
-					"$patchDir/05-increase-rle_title-length.sql" );
-				$updater->addExtensionField( 'reading_list', 'rl_size',
-					"$patchDir/06-add-rl_size.sql" );
-			}
-		}
-		return true;
 	}
 
 	/**
@@ -72,7 +50,7 @@ class HookHandler {
 	 * @param IMaintainableDatabase $db
 	 * @param string $prefix
 	 */
-	public static function onUnitTestsAfterDatabaseSetup( $db, $prefix ) {
+	public function onUnitTestsAfterDatabaseSetup( $db, $prefix ) {
 		global $wgReadingListsCluster, $wgReadingListsDatabase;
 		$wgReadingListsCluster = false;
 		$wgReadingListsDatabase = false;
@@ -90,7 +68,7 @@ class HookHandler {
 	/**
 	 * Cleans up tables created by onUnitTestsAfterDatabaseSetup() above
 	 */
-	public static function onUnitTestsBeforeDatabaseTeardown() {
+	public function onUnitTestsBeforeDatabaseTeardown() {
 		$db = wfGetDB( DB_PRIMARY );
 		foreach ( self::$testTables as $table ) {
 			$db->dropTable( $table );

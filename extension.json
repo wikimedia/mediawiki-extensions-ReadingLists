@@ -88,10 +88,18 @@
 		}
 	},
 	"Hooks": {
-		"APIQuerySiteInfoGeneralInfo": "MediaWiki\\Extension\\ReadingLists\\HookHandler::onAPIQuerySiteInfoGeneralInfo",
-		"LoadExtensionSchemaUpdates": "MediaWiki\\Extension\\ReadingLists\\HookHandler::onLoadExtensionSchemaUpdates",
-		"UnitTestsAfterDatabaseSetup": "MediaWiki\\Extension\\ReadingLists\\HookHandler::onUnitTestsAfterDatabaseSetup",
-		"UnitTestsBeforeDatabaseTeardown": "MediaWiki\\Extension\\ReadingLists\\HookHandler::onUnitTestsBeforeDatabaseTeardown"
+		"APIQuerySiteInfoGeneralInfo": "main",
+		"LoadExtensionSchemaUpdates": "schema",
+		"UnitTestsAfterDatabaseSetup": "main",
+		"UnitTestsBeforeDatabaseTeardown": "main"
+	},
+	"HookHandlers": {
+		"main": {
+			"class": "MediaWiki\\Extension\\ReadingLists\\HookHandler"
+		},
+		"schema": {
+			"class": "MediaWiki\\Extension\\ReadingLists\\SchemaHookHandler"
+		}
 	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "",
