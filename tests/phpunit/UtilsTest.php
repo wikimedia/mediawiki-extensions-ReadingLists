@@ -9,6 +9,9 @@ use MediaWiki\WikiMap\WikiMap;
 use MediaWikiIntegrationTestCase;
 use Wikimedia\Rdbms\IDatabase;
 
+/**
+ * @group Database
+ */
 class UtilsTest extends MediaWikiIntegrationTestCase {
 
 	/**
