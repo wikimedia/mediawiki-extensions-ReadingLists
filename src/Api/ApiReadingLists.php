@@ -34,7 +34,7 @@ class ApiReadingLists extends ApiBase {
 	 * @inheritDoc
 	 */
 	public function execute() {
-		if ( !$this->getUser()->isRegistered() ) {
+		if ( !$this->getUser()->isNamed() ) {
 			$this->dieWithError( [ 'apierror-mustbeloggedin',
 				$this->msg( 'action-editmyprivateinfo' ) ], 'notloggedin' );
 		}

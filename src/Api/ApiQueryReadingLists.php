@@ -28,7 +28,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 	 */
 	public function execute() {
 		try {
-			if ( !$this->getUser()->isRegistered() ) {
+			if ( !$this->getUser()->isNamed() ) {
 				$this->dieWithError( [ 'apierror-mustbeloggedin',
 					$this->msg( 'action-viewmyprivateinfo' ) ], 'notloggedin' );
 			}
