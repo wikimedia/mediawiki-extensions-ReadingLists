@@ -51,8 +51,8 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 		$this->setHeaders();
 		$this->outputHeader();
 
-		if ( $user->isAnon() && !$exportFeature ) {
-			$this->requireLogin( 'reading-list-purpose' );
+		if ( !$user->isNamed() && !$exportFeature ) {
+			$this->requireNamedUser( 'reading-list-purpose' );
 		} else {
 			if ( $listOwner || $exportFeature ) {
 				$owner = !$listOwner ? null : User::newFromName( $listOwner );
