@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"apierror-readinglists-project-title-param": "<var>$1project</var> en <var>$1title</var> moeten samen worden gebruikt.",
+	"apierror-readinglists-too-old": "Tijdstempels die zijn doorgegeven aan <var>$1changedsince</var> mogen niet ouder zijn dan <kbd>$2</kbd>.",
+	"apierror-readinglists-invalidsort-notbyname": "De sorteeroptie <kbd>name</kbd> kan niet samen met <var>$1changedsince</var> worden gebruikt.",
+	"apierror-readinglists-batch-invalid-json": "Ongeldige JSON voor parameter <var>batch</var>: $1",
+	"apierror-readinglists-batch-invalid-structure": "Ongeldige invoer voor parameter <var>batch</var>: moet een array met objecten bevatten die scalaire waarden hebben.",
+	"apierror-readinglists-batch-toomanyvalues": "Ongeldige invoer voor parameter <var>batch</var>: te veel vermeldingen, maximaal toegestaan is $1",
+	"apierror-readinglists-batch-missingparam-at-least-one-of": "In elk object binnen de <var>batch</var>-invoer is {{PLURAL:$2|het veld|minstens één van de velden}} $1 vereist.",
+	"apihelp-query+readinglists-summary": "Maakt een lijst van of filtert de leeslijsten van de gebruiker en toont metagegevens erover.",
+	"apihelp-query+readinglists-extended-description": "Deze module heeft vier werkwijzen. Met de parameter <var>$1list</var> wordt informatie over de opgegeven lijst geretourneerd. Met de parameter <var>$1changedsince</var> worden alle lijsten van de huidige gebruiker geretourneerd die sinds de opgegeven datum zijn gewijzigd. (Dit is bedoeld voor apparaatsynchronisatie en omvat, in tegenstelling tot de andere modi, ook verwijderde lijsten. Er wordt alleen rekening gehouden met wijzigingen in de metagegevens van de lijst, niet met wijzigingen in lijstitems.) Met de parameters <var>$1project</var> en <var>$1title</var> worden alle lijsten geretourneerd waarin die pagina voorkomt. Zonder een van deze parameters worden alle lijsten geretourneerd.",
+	"apihelp-query+readinglists-param-list": "Lijst-ID.",
+	"apihelp-query+readinglists-param-changedsince": "Toon lijsten die sinds dit tijdstempel zijn gewijzigd. Moet na <kbd>$1</kbd> komen. Cliënten moeten de tijdstempel gebruiken die is geretourneerd in het veld <samp>readinglists-synctimestamp</samp> van een eerdere aanroep als ze er zeker van willen zijn dat er geen wijzigingen worden gemist, en moeten bereid wijzigingen te ontvangen die al in een eerder antwoord zijn geretourneerd en deze identiek (''idempotent'') af te handelen.",
+	"apihelp-query+readinglists-param-project": "Project van de pagina waarop moet worden gefilterd. Moet samen met <var>$1title</var> worden gebruikt. Er worden alleen lijsten geretourneerd waarin dit project en deze titel voorkomen.",
+	"apihelp-query+readinglists-param-title": "Titel van de pagina waarop moet worden gefilterd. Moet samen met <var>$1project</var> worden gebruikt. Er worden alleen lijsten geretourneerd waarin dit project en deze titel voorkomen.",
+	"apihelp-query+readinglists-param-sort": "Eigenschap waarop moet worden gesorteerd. Genegeerd wanneer <var>$1project</var> en <var>$1title</var> zijn ingesteld (resultaten worden teruggegeven in de volgorde van de database). De standaardwaarde is <kbd>updated</kbd> als <var>$1changedsince</var> is ingesteld, en anders <kbd>name</kbd>.",
+	"apihelp-query+readinglists-paramvalue-sort-name": "Lijstnaam. (Sorteren gebeurt op binaire waarde; elk ASCII-teken in hoofdletters wordt bijvoorbeeld gesorteerd vóór kleine letters.)",
+	"apihelp-query+readinglists-paramvalue-sort-updated": "Tijdstempel laatste update. (Updates omvatten wijzigingen in de lijstmetagegevens, maar geen wijzigingen in lijstitems.)",
+	"apihelp-query+readinglists-param-dir": "Sorteerrichting: <kbd>ascending</kbd> (oplopend, van A naar Z, van oud naar nieuw) of <kbd>descending</kbd> (aflopend). Genegeerd wanneer <var>$1project</var> en <var>$1title</var> zijn ingesteld.",
+	"apihelp-query+readinglists-param-limit": "Aantal te retourneren resultaatitems.",
+	"apihelp-query+readinglists-example-1": "Haal de leeslijsten van de huidige gebruiker op.",
+	"apihelp-query+readinglists-example-2": "Haal de leeslijsten op van de huidige gebruiker die zijn gewijzigd sinds <kbd>2013-01-01T00:00:00Z</kbd>.",
+	"apihelp-query+readinglists-example-3": "Haal de leeslijsten op van de huidige gebruiker waarin de pagina <kbd>Dog</kbd> van het project <kbd>en.wikipedia.org</kbd> voorkomt.",
+	"apihelp-query+readinglistentries-summary": "Maak een lijst van de pagina’s van een bepaalde lijst.",
+	"apihelp-query+readinglistentries-extended-description": "Deze module heeft twee werkwijzen. Met de parameter <var>$1lists</var> worden de pagina’s in de gegeven lijst(en) geretourneerd. Met de parameter <var>$1changedsince</var> worden alle sinds de opgegeven datum gewijzigde lijstitems uit elke lijst van de huidige gebruiker geretourneerd. (Dit is bedoeld voor apparaatsynchronisatie en omvat, in tegenstelling tot de andere modi, ook verwijderde vermeldingen, maar geen vermeldingen uit verwijderde lijsten.)",
+	"apihelp-query+readinglistentries-param-lists": "De lijst-ID’s waarvoor pagina's moeten worden geretourneerd.",
+	"apihelp-query+readinglistentries-param-changedsince": "Toon lijstitems die sinds dit tijdstempel zijn gewijzigd. Moet na <kbd>$1</kbd> komen.",
+	"apihelp-query+readinglistentries-param-sort": "Eigenschap waarop moet worden gesorteerd. <kbd>name</kbd> kan niet samen met <var>$1changedsince</var> worden gebruikt. De standaardwaarde is <kbd>updated</kbd> wanneer <var>$1changedsince</var> is ingesteld, of anders <kbd>name</kbd>.",
+	"apihelp-query+readinglistentries-paramvalue-sort-name": "De titel van het artikel. (De projectnaam wordt genegeerd. Er wordt gesorteerd op binaire waarde; elk ASCII-teken in hoofdletters wordt bijvoorbeeld gesorteerd vóór kleine letters.)",
+	"apihelp-query+readinglistentries-paramvalue-sort-updated": "Tijdstempel laatste update.",
+	"apihelp-query+readinglistentries-param-dir": "Sorteerrichting: <kbd>ascending</kbd> (oplopend, van A naar Z, van oud naar nieuw) of <kbd>descending</kbd> (aflopend).",
+	"apihelp-query+readinglistentries-param-limit": "Aantal te retourneren resultaatitems."
+}
