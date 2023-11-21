@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Hwboehm",
+			"McDutchie",
 			"Metalhead64"
 		]
 	},
@@ -50,7 +51,7 @@
 	"apihelp-readinglists+update-summary": "Aktualisiert eine Liste, die dem aktuellen Benutzer gehört.",
 	"apihelp-readinglists+update-param-list": "Kennung der Liste. Nicht erforderlich bei Verwendung der Stapelaktualisierung.",
 	"apihelp-readinglists+update-param-name": "Neuer Name der Liste. Entweder ist dieser oder eine Beschreibung erforderlich, jedoch nicht bei einer Stapelaktualisierung.",
-	"apihelp-readinglists+update-param-description": "Beschreibung der neuen Liste.",
+	"apihelp-readinglists+update-param-description": "Neue Beschreibung der Liste.",
 	"apihelp-readinglists+update-example-1": "Ändert den Namen der Leseliste mit der Kennung <kbd>42</kbd>.",
 	"apihelp-readinglists+update-example-2": "Aktualisiert mehrere Listen.",
 	"apihelp-readinglists+delete-summary": "Löscht eine Liste, die dem aktuellen Benutzer gehört.",

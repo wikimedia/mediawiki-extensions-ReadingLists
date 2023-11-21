@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Liuxinyu970226",
+			"McDutchie",
 			"Raymond",
 			"Robby",
 			"Tacsipacsi",
@@ -47,7 +48,7 @@
 	"special-tab-readinglists-short": "Tab that shows on special page to take you back to your lists",
 	"readinglists-default-title": "Title for the default list.",
 	"readinglists-default-description": "Description for the default list.",
-	"action-action-readinglist-private": "Security error when you try and access someone's user list",
+	"action-action-readinglist-private": "Security error when you try and access someone's user list\n\n{{Doc-action}}",
 	"readinglists-empty-message": "Message that shows when you have zero lists.",
 	"readinglists-list-empty-message": "Message that shows on a list with no pages in it.",
 	"readinglists-no-title": "Name of a list without a name",

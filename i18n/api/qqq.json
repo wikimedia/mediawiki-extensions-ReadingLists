@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Liuxinyu970226",
+			"McDutchie",
 			"Raymond",
 			"Tacsipacsi",
 			"Tgr",
@@ -59,7 +60,7 @@
 	"apihelp-readinglists+update-summary": "{{doc-apihelp-summary|readinglists+update}}",
 	"apihelp-readinglists+update-param-list": "{{doc-apihelp-param|readinglists+update|list}}",
 	"apihelp-readinglists+update-param-name": "{{doc-apihelp-param|readinglists+update|name}}",
-	"apihelp-readinglists+update-param-description": "{{doc-apihelp-param|readinglists+update|description}}",
+	"apihelp-readinglists+update-param-description": "This is part of a form to update an existing list, so this means \"new description for the list\" and '''not''' \"description for the new list\".\n{{doc-apihelp-param|readinglists+update|description}}",
 	"apihelp-readinglists+update-param-batch": "{{doc-apihelp-param|readinglists+update|batch}}",
 	"apihelp-readinglists+update-example-1": "{{doc-apihelp-example|readinglists+update}}",
 	"apihelp-readinglists+update-example-2": "{{doc-apihelp-example|readinglists+update}}",
