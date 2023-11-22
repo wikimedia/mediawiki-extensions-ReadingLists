@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ciell",
 			"McDutchie"
 		]
 	},
@@ -46,7 +47,7 @@
 	"apihelp-readinglists+teardown-extended-description": "Verwijdert alle leeslijstgegevens voor de gebruiker. De opdracht <kbd>[[Special:ApiHelp/readinglists+setup|setup]]</kbd> moet worden gebruikt als de gebruiker opnieuw leeslijsten wil gaan gebruiken.",
 	"apihelp-readinglists+teardown-example-1": "Leeslijsten voor de huidige gebruiker uitschakelen.",
 	"apihelp-readinglists+create-summary": "Een nieuwe lijst aanmaken voor de huidige gebruiker.",
-	"apihelp-readinglists+create-extended-description": "De gebruiker moet minder dan $1 (niet-verwijderde) lijst{{PLURAL:$1||en}} hebben.",
+	"apihelp-readinglists+create-extended-description": "De gebruiker moet minder dan $1 (niet-verwijderde) {{PLURAL:$1|lijst|lijsten}} hebben.",
 	"apihelp-readinglists+create-param-name": "Lijstnaam. Vereist tenzij batch-aanmaak wordt gebruikt.",
 	"apihelp-readinglists+create-param-description": "Lijstbeschrijving.",
 	"apihelp-readinglists+create-param-batch": "Batchgegevens voor het aanmaken van meerdere lijsten in één verzoek, in de vorm van een JSON-array met een of meer objecten met velden <var>name</var> en (eventueel) <var>description</var>.",

@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ciell",
 			"Mainframe98",
 			"McDutchie",
 			"Romaine"
@@ -21,12 +22,12 @@
 	"readinglists-db-error-duplicate-page": "Deze pagina staat al op de lijst.",
 	"readinglists-db-error-empty-list-ids": "De parameter “ids” van de lijst mag niet leeg zijn.",
 	"readinglists-db-error-user-required": "Deze methode kan niet worden aangeroepen zonder de gebruiker op te geven.",
-	"readinglists-db-error-list-limit": "Gebruikers kunnen niet meer dan $1 lijst{{PLURAL:$1||en}} hebben.",
+	"readinglists-db-error-list-limit": "Gebruikers kunnen niet meer dan $1 {{PLURAL:$1|lijst|lijsten}} hebben.",
 	"readinglists-db-error-entry-limit": "Op de lijst $1 kunnen niet meer dan $2 vermelding{{PLURAL:$2||en}} staan.",
 	"readinglists-db-error-too-long": "De waarde voor het veld $1 mag niet langer zijn dan $2 bytes.",
 	"readinglists-db-error-no-such-project": "‘$1’ is geen erkend project.",
 	"readinglists-browser-add-entry-success": "$1 is opgeslagen op uw leeslijst",
-	"readinglists-browser-login-prompt": "Meld u aan om artikelen op te slaan",
+	"readinglists-browser-login-prompt": "Log in om artikelen op te slaan",
 	"readinglists-browser-error-intro": "Er is een fout opgetreden: $1",
 	"readinglists-browser-enable-sync-prompt": "Schakel synchronisatie in uw Wikipedia-app in om artikelen op te gaan slaan",
 	"readinglists-browser-extension-info-link-text": "Meer lezen",
@@ -36,7 +37,7 @@
 	"readinglists-special-title": "Leeslijsten",
 	"readinglists-description": "Al uw leeslijsten op één plek.",
 	"readinglists-loading": "Een ogenblik geduld…",
-	"reading-list-purpose": "Meld u aan om uw privé-leeslijsten te bekijken.",
+	"reading-list-purpose": "Log in om uw privé-leeslijsten te bekijken.",
 	"readinglists-error": "Uw browser kan de leeslijsten-functie niet gebruiken. Schakel JavaScript in of probeer het in een andere browser.",
 	"readinglists-import-error": "Het is niet mogelijk op basis van de verstrekte gegevens de lijst weer te geven.",
 	"readinglists-import-size-error": "De lijst is te groot om weer te geven.",
