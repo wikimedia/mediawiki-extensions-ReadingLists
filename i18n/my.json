@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Dr Lotus Black"
+			"Dr Lotus Black",
+			"Ninjastrikers"
 		]
 	},
 	"readinglists-db-error-not-set-up": "ဤအသုံးပြူသူအတွက် စာဖတ်စာရင်းများကို မပြင်ဆင်ထားရသေးပါ။",
@@ -27,5 +28,5 @@
 	"readinglists-browser-list-entry-limit-exceeded": "ဆောင်းပါးကို မသိမ်းဆည်းနိုင်ပါ။ စာရင်းတစ်ခုလျင် $1 ဆောင်းပါးနှုန်း ကန့်သတ်ချက်ကို ရောက်ပါပြီ။",
 	"readinglists-browser-extension-product-title": "ဝီကီပီဒီးယား စာဖတ်စာရင်းများ",
 	"readinglists-browser-page-not-supported": "ဤစာမျက်နှာအား $1 က မထောက်ပံ့ထားပါ",
-	"readinglists-import-button-label": "တင်သွင်းရန်"
+	"readinglists-import-button-label": "စာရင်းအား ကြည့်ရန်"
 }
