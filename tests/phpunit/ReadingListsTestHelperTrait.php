@@ -74,7 +74,11 @@ trait ReadingListsTestHelperTrait {
 			$entryId = $this->db->insertId();
 			$entryIds[] = $entryId;
 		}
-		$entryCount = $this->db->selectRowCount( 'reading_list_entry', '*', [ 'rle_rl_id' => $listId ], __METHOD__ );
+		$entryCount = $this->db->newSelectQueryBuilder()
+			->select( '*' )
+			->from( 'reading_list_entry' )
+			->where( [ 'rle_rl_id' => $listId ] )
+			->caller( __METHOD__ )->fetchRowCount();
 		$this->db->update( 'reading_list', [ 'rl_size' => $entryCount ], [ 'rl_id' => $listId ] );
 		return $entryIds;
 	}
@@ -95,12 +99,11 @@ trait ReadingListsTestHelperTrait {
 			);
 			$projectId = $this->db->affectedRows()
 				? $this->db->insertId()
-				: $this->db->selectField(
-					'reading_list_project',
-					'rlp_id',
-					[ 'rlp_project' => $project ],
-					__METHOD__
-				);
+				: $this->db->newSelectQueryBuilder()
+					->select( 'rlp_id' )
+					->from( 'reading_list_project' )
+					->where( [ 'rlp_project' => $project ] )
+					->caller( __METHOD__ )->fetchField();
 			$ids[] = $projectId;
 		}
 		return $ids;

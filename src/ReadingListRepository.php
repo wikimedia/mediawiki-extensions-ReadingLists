@@ -241,13 +241,12 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
 		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
 		/** @var ReadingListRow $row */
-		$row = $db->selectRow(
-			'reading_list',
-			array_merge( $this->getListFields(), [ 'rl_user_id' ] ),
-			[ 'rl_id' => $id ],
-			__METHOD__,
-			$options
-		);
+		$row = $db->newSelectQueryBuilder()
+			->select( array_merge( $this->getListFields(), [ 'rl_user_id' ] ) )
+			->from( 'reading_list' )
+			->where( [ 'rl_id' => $id ] )
+			->options( $options )
+			->caller( __METHOD__ )->fetchRow();
 		if ( !$row ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list', [ $id ] );
 		} elseif ( $row->rl_user_id != $this->userId ) {
@@ -285,16 +284,14 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		// existing page instead. Also enforce that deleted lists cannot have the same name,
 		// in anticipation of eventually using a unique index for list names.
 		/** @var ReadingListRow $row */
-		$row = $this->dbw->selectRow(
-			'reading_list',
-			self::getListFields(),
-			[
-				'rl_user_id' => $this->userId,
-				'rl_name' => $name,
-			],
-			__METHOD__,
-			[ 'FOR UPDATE' ]
-		);
+		$row = $this->dbw->newSelectQueryBuilder()
+			->select( self::getListFields() )
+			// lock the row to avoid race conditions with purgeOldDeleted() in the update case
+			->forUpdate()
+			->from( 'reading_list' )
+			->where( [ 'rl_user_id' => $this->userId, 'rl_name' => $name, ] )
+			->caller( __METHOD__ )->fetchRow();
+
 		if ( $row === false ) {
 			$this->dbw->insert(
 				'reading_list',
@@ -409,16 +406,15 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
 		if ( $name !== null && $name !== $row->rl_name ) {
 			/** @var ReadingListRow $row2 */
-			$row2 = $this->dbw->selectRow(
-				'reading_list',
-				self::getListFields(),
-				[
-					'rl_user_id' => $this->userId,
-					'rl_name' => $name,
-				],
-				__METHOD__,
-				[ 'FOR UPDATE' ]
-			);
+
+			$row2 = $this->dbw->newSelectQueryBuilder()
+				->select( self::getListFields() )
+					// lock the row to avoid race conditions with purgeOldDeleted() in the update case
+				->forUpdate()
+				->from( 'reading_list' )
+				->where( [ 'rl_user_id' => $this->userId, 'rl_name' => $name, ] )
+				->caller( __METHOD__ )->fetchRow();
+
 			if ( $row2 !== false && (int)$row2->rl_id !== $id ) {
 				if ( $row2->rl_deleted ) {
 					$this->logger->error( 'Encountered deleted list with non-unique name on update', [
@@ -543,21 +539,20 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		// due to the combination of soft deletion + unique constraint on
 		// rle_rl_id + rle_rlp_id + rle_title, recreation needs special handling
 		/** @var ReadingListEntryRow $row */
-		$row = $this->dbw->selectRow(
-			[ 'reading_list_entry', 'reading_list_project' ],
-			self::getListEntryFields(),
-			[
-				'rle_rl_id' => $listId,
-				'rle_rlp_id' => $projectId,
-				'rle_title' => $title,
-			],
-			__METHOD__,
+		$row = $this->dbw->newSelectQueryBuilder()
+			->select( self::getListEntryFields() )
 			// lock the row to avoid race conditions with purgeOldDeleted() in the update case
-			[ 'FOR UPDATE' ],
-			[
-				'reading_list_project' => [ 'LEFT JOIN', 'rle_rlp_id = rlp_id' ],
-			]
-		);
+			->forUpdate()
+			->from( 'reading_list_entry' )
+			->leftJoin( 'reading_list_project', null, 'rle_rlp_id = rlp_id' )
+			->where(
+				[
+					'rle_rl_id' => $listId,
+					'rle_rlp_id' => $projectId,
+					'rle_title' => $title,
+				]
+			)
+			->caller( __METHOD__ )->fetchRow();
 		if ( $row === false ) {
 			$this->dbw->insert(
 				'reading_list_entry',
@@ -614,16 +609,13 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			$row->merged = true;
 			return $row;
 		} else {
-			$row = $this->dbw->selectRow(
-				[ 'reading_list_entry', 'reading_list_project' ],
-				self::getListEntryFields(),
-				[ 'rle_id' => $entryId ],
-				__METHOD__,
-				[],
-				[
-					'reading_list_project' => [ 'LEFT JOIN', 'rle_rlp_id = rlp_id' ],
-				]
-			);
+			$row = $this->dbw->newSelectQueryBuilder()
+				->select( self::getListEntryFields() )
+				->from( 'reading_list_entry' )
+				->leftJoin( 'reading_list_project', null, 'rle_rlp_id = rlp_id' )
+				->where( [ 'rle_id' => $entryId ] )
+				->caller( __METHOD__ )->fetchRow();
+
 			if ( $row === false ) {
 				$this->logger->error( 'Failed to retrieve stored entry', [
 					'rle_id' => $entryId,
@@ -708,16 +700,14 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$this->assertUser();
 
 		/** @var ReadingListRow|ReadingListEntryRow $row */
-		$row = $this->dbw->selectRow(
-			[ 'reading_list', 'reading_list_entry' ],
-			[ 'rl_id', 'rl_user_id', 'rl_deleted', 'rle_id', 'rle_deleted' ],
-			[
-				'rle_id' => $id,
-				'rl_id = rle_rl_id',
-			],
-			__METHOD__,
-			[ 'FOR UPDATE' ]
-		);
+		$row = $this->dbw->newSelectQueryBuilder()
+			->select( [ 'rl_id', 'rl_user_id', 'rl_deleted', 'rle_id', 'rle_deleted' ] )
+			// lock the row to avoid race conditions with purgeOldDeleted() in the update case
+			->forUpdate()
+			->from( 'reading_list' )
+			->leftJoin( 'reading_list_entry', null,  'rl_id = rle_rl_id' )
+			->where( [ 'rle_id' => $id ] )
+			->caller( __METHOD__ )->fetchRow();
 		if ( !$row ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list-entry', [ $id ] );
 		} elseif ( $row->rl_user_id != $this->userId ) {
@@ -848,16 +838,12 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
 		// Purge all soft-deleted, expired entries
 		while ( true ) {
-			$ids = $this->dbw->selectFieldValues(
-				'reading_list_entry',
-				'rle_id',
-				[
-					'rle_deleted' => 1,
-					'rle_date_updated < ' . $before,
-				],
-				__METHOD__,
-				[ 'LIMIT' => 1000 ]
-			);
+			$ids = $this->dbw->newSelectQueryBuilder()
+				->select( 'rle_id' )
+				->from( 'reading_list_entry' )
+				->where( [ 'rle_deleted' => 1, 'rle_date_updated < ' . $before, ] )
+				->limit( 1000 )
+				->caller( __METHOD__ )->fetchFieldValues();
 			if ( !$ids ) {
 				break;
 			}
@@ -872,17 +858,13 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
 		// Purge all entries on soft-deleted, expired lists
 		while ( true ) {
-			$ids = $this->dbw->selectFieldValues(
-				[ 'reading_list_entry', 'reading_list' ],
-				'rle_id',
-				[
-					'rl_deleted' => 1,
-					'rl_date_updated < ' . $before,
-				],
-				__METHOD__,
-				[ 'LIMIT' => 1000 ],
-				[ 'reading_list' => [ 'JOIN', 'rle_rl_id = rl_id' ] ]
-			);
+			$ids = $this->dbw->newSelectQueryBuilder()
+				->select( 'rle_id' )
+				->from( 'reading_list_entry' )
+				->leftJoin( 'reading_list', null, 'rle_rl_id = rl_id' )
+				->where( [ 'rl_deleted' => 1, 'rl_date_updated < ' . $before, ] )
+				->limit( 1000 )
+				->caller( __METHOD__ )->fetchFieldValues();
 			if ( !$ids ) {
 				break;
 			}
@@ -897,16 +879,12 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
 		// Purge all soft-deleted, expired lists
 		while ( true ) {
-			$ids = $this->dbw->selectFieldValues(
-				'reading_list',
-				'rl_id',
-				[
-					'rl_deleted' => 1,
-					'rl_date_updated < ' . $before,
-				],
-				__METHOD__,
-				[ 'LIMIT' => 1000 ]
-			);
+			$ids = $this->dbw->newSelectQueryBuilder()
+				->select( 'rl_id' )
+				->from( 'reading_list' )
+				->where( [ 'rl_deleted' => 1, 'rl_date_updated < ' . $before, ] )
+				->limit( 1000 )
+				->caller( __METHOD__ )->fetchFieldValues();
 			if ( !$ids ) {
 				break;
 			}
@@ -984,28 +962,23 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	public function fixListSize( $id ) {
 		$this->dbw->startAtomic( __METHOD__ );
-		$oldSize = $this->dbw->selectField(
-			'reading_list',
-			'rl_size',
-			[ 'rl_id' => $id ],
-			__METHOD__,
-			// This will prevent list entry inserts / deletes as they all try to lock the list.
-			[ 'FOR UPDATE' => true ]
-		);
+		$oldSize = $this->dbw->newSelectQueryBuilder()
+			->select( 'rl_size' )
+			// lock the row to avoid race conditions with purgeOldDeleted() in the update case
+			->forUpdate()
+			->from( 'reading_list' )
+			->where( [ 'rl_id' => $id ] )
+			->caller( __METHOD__ )->fetchField();
 		if ( $oldSize === false ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list', [ $id ] );
 		}
 
-		$count = $this->dbw->selectField(
-			'reading_list_entry',
-			'count(*)',
-			[
-				'rle_rl_id' => $id,
-				'rle_deleted' => 0,
-			],
-			__METHOD__,
-			[ 'GROUP BY' => 'rle_rl_id' ]
-		);
+		$count = $this->dbw->newSelectQueryBuilder()
+			->select( 'count(*)' )
+			->from( 'reading_list_entry' )
+			->where( [ 'rle_rl_id' => $id, 'rle_deleted' => 0, ] )
+			->groupBy( 'rle_rl_id' )
+			->caller( __METHOD__ )->fetchField();
 		$this->dbw->update(
 			'reading_list',
 			[ 'rl_size' => $count ],
@@ -1157,16 +1130,12 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$this->assertUser();
 		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
 		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
-		return $db->selectRowCount(
-			'reading_list',
-			'1',
-			[
-				'rl_user_id' => $this->userId,
-				'rl_deleted' => 0,
-			],
-			__METHOD__,
-			$options
-		);
+		return $db->newSelectQueryBuilder()
+			->select( '1' )
+			->from( 'reading_list' )
+			->where( [ 'rl_user_id' => $this->userId, 'rl_deleted' => 0, ] )
+			->options( $options )
+			->caller( __METHOD__ )->fetchRowCount();
 	}
 
 	/**
@@ -1175,12 +1144,11 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 * @return int|null
 	 */
 	private function getProjectId( $project ) {
-		$id = $this->dbr->selectField(
-			'reading_list_project',
-			'rlp_id',
-			[ 'rlp_project' => $project ],
-			__METHOD__
-		);
+		$id = $this->dbr->newSelectQueryBuilder()
+			->select( 'rlp_id' )
+			->from( 'reading_list_project' )
+			->where( [ 'rlp_project' => $project ] )
+			->caller( __METHOD__ )->fetchField();
 		return $id === false ? null : (int)$id;
 	}
 
@@ -1195,13 +1163,12 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$this->assertUser();
 		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
 		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
-		return (int)$db->selectField(
-			'reading_list',
-			'rl_size',
-			[ 'rl_id' => $id ],
-			__METHOD__,
-			$options
-		);
+		return (int)$db->newSelectQueryBuilder()
+			->select( 'rl_size' )
+			->from( 'reading_list' )
+			->where( [ 'rl_id' => $id ] )
+			->options( $options )
+			->caller( __METHOD__ )->fetchField();
 	}
 
 }
