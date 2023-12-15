@@ -63,7 +63,7 @@ class ApiQueryTraitTest extends TestCase {
 	 * @dataProvider encodeContinuationParameterProvider
 	 */
 	public function testEncodeContinuationParameter( $prefix, $item, $mode, $sort, $expected ) {
-		$this->rlApi->prefix = $prefix;
+		TestingAccessWrapper::newFromClass( ApiQueryReadingLists::class )->prefix = $prefix;
 		if ( $prefix === 'rl' ) {
 			$encodedParam = $this->assertApiUsage( null,
 				[ TestingAccessWrapper::newFromObject( $this->rlApi ), 'encodeContinuationParameter' ],
