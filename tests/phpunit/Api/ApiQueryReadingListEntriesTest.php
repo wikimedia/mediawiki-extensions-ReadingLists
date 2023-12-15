@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 use ApiTestCase;
 use MediaWiki\Extension\ReadingLists\HookHandler;
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
+use MediaWiki\User\User;
 
 /**
  * @covers \MediaWiki\Extension\ReadingLists\Api\ApiQueryReadingListEntries
@@ -25,6 +26,9 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 
 	/** @var string Create date that isn't older than one month to test rlchangedsince */
 	private $lastUpdate;
+
+	/** @var User */
+	private $user;
 
 	public function __construct( $name = null, array $data = [], $dataName = '' ) {
 		parent::__construct( $name, $data, $dataName );

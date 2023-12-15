@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 use ApiTestCase;
 use MediaWiki\Extension\ReadingLists\HookHandler;
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
+use MediaWiki\User\User;
 
 /**
  * @covers \MediaWiki\Extension\ReadingLists\Api\ApiReadingListsSetup
@@ -23,6 +24,9 @@ class ApiReadingListsSetupAndTeardownTest extends ApiTestCase {
 		'action' => 'readinglists',
 		'format' => 'json',
 	];
+
+	/** @var User */
+	private $user;
 
 	protected function setUp(): void {
 		parent::setUp();
