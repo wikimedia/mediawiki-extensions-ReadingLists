@@ -4,7 +4,6 @@ namespace MediaWiki\Extension\ReadingLists\Tests\Unit\Rest;
 
 use MediaWiki\Extension\ReadingLists\Rest\ReadingListsTokenAwareHandlerTrait;
 use MediaWiki\Rest\Handler;
-use MediaWiki\Rest\TokenAwareHandlerTrait;
 use MediaWiki\Session\Session;
 use MediaWiki\Session\SessionProvider;
 use MediaWiki\Session\Token;
@@ -109,9 +108,8 @@ class ReadingListsTokenAwareHandlerTraitTest extends MediaWikiUnitTestCase {
 
 		// PHPUnit can't mock a class and a trait at the same time
 		return new class( $session, $params, $body ) extends Handler {
-			use TokenAwareHandlerTrait, ReadingListsTokenAwareHandlerTrait {
+			use ReadingListsTokenAwareHandlerTrait {
 				ReadingListsTokenAwareHandlerTrait::getToken as public;
-				ReadingListsTokenAwareHandlerTrait::getToken insteadof TokenAwareHandlerTrait;
 			}
 
 			private Session $session;

@@ -7,19 +7,20 @@ use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Rest\Handler;
 use MediaWiki\Rest\Response;
-use MediaWiki\Rest\Validator\BodyValidator;
-use MediaWiki\Rest\Validator\JsonBodyValidator;
-use MediaWiki\Rest\Validator\UnsupportedContentTypeBodyValidator;
-use MediaWiki\Rest\Validator\Validator;
+use MediaWiki\Rest\SimpleHandler;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use Psr\Log\LoggerInterface;
 use stdClass;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\NumericDef;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
- * Tears down reading lists for the logged-in user
+ * Handle DELETE requests to /readinglists/v0/lists/{id}
+ *
+ * Deletes reading lists
  */
-class TeardownHandler extends Handler {
+class ListsDeleteHandler extends SimpleHandler {
 	use ReadingListsHandlerTrait;
 	use ReadingListsTokenAwareHandlerTrait;
 
@@ -59,44 +60,33 @@ class TeardownHandler extends Handler {
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-	public function validate( Validator $restValidator ) {
-		parent::validate( $restValidator );
-		$this->validateToken();
-	}
-
-	/**
+	 * @param int $id the list to update
 	 * @return Response
 	 */
-	public function execute() {
+	public function run( int $id ) {
 		$this->checkAuthority( $this->getAuthority() );
 
 		try {
-			$this->getRepository()->teardownForUser();
+			$this->getRepository()->deleteList( $id );
 		} catch ( ReadingListRepositoryException $e ) {
 			$this->die( $e->getMessageObject() );
 		}
 
-		// For historical compatibility, response must be an empty object.
-		return $this->getResponseFactory()->createJson( new stdClass() );
+		// Return value is expected to be an empty json object
+		return $this->getResponseFactory()->createJson( new stdClass );
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-	public function getBodyValidator( $contentType ): BodyValidator {
-		if ( $contentType !== 'application/json' ) {
-			return new UnsupportedContentTypeBodyValidator( $contentType );
-		}
-
-		return new JsonBodyValidator( $this->getTokenParamDefinition() );
-	}
-
-	/**
-	 * @return array|array[]
+	 * @return array[]
 	 */
 	public function getParamSettings() {
-		return [] + $this->getTokenParamSettings();
+		return [
+			'id' => [
+				ParamValidator::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_REQUIRED => true,
+				NumericDef::PARAM_MIN => 1,
+				Handler::PARAM_SOURCE => 'path',
+			],
+		];
 	}
 }

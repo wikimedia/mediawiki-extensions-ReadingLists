@@ -9,6 +9,7 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
+use MediaWiki\MediaWikiServices;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -110,6 +111,8 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @throws ReadingListRepositoryException
 	 */
 	public function setupForUser() {
+		$this->initializeProjectIfNeeded();
+
 		$this->assertUser();
 		if ( $this->isSetupForUser( IDBAccessObject::READ_LOCKING ) ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-already-set-up' );
@@ -324,8 +327,8 @@ class ReadingListRepository implements LoggerAwareInterface {
 					'rl_description' => $description,
 					'rl_date_updated' => $this->dbw->timestamp(),
 				] )
-				 ->where( [ 'rl_id' => $row->rl_id ] )
-				 ->caller( __METHOD__ )->execute();
+				->where( [ 'rl_id' => $row->rl_id ] )
+				->caller( __METHOD__ )->execute();
 			$id = $row->rl_id;
 			$merged = true;
 		}
@@ -399,7 +402,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 
 			$row2 = $this->dbw->newSelectQueryBuilder()
 				->select( self::getListFields() )
-					// lock the row to avoid race conditions with purgeOldDeleted() in the update case
+				// lock the row to avoid race conditions with purgeOldDeleted() in the update case
 				->forUpdate()
 				->from( 'reading_list' )
 				->where( [ 'rl_user_id' => $this->userId, 'rl_name' => $name, ] )
@@ -709,11 +712,11 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->caller( __METHOD__ )->execute();
 
 		if ( !$this->dbw->affectedRows() ) {
-		$this->logger->error( 'deleteListEntry failed for unknown reason', [
-			'rle_id' => $row->rle_id,
-			'user_central_id' => $this->userId,
-		] );
-		throw new LogicException( 'deleteListEntry failed for unknown reason' );
+			$this->logger->error( 'deleteListEntry failed for unknown reason', [
+				'rle_id' => $row->rle_id,
+				'user_central_id' => $this->userId,
+			] );
+			throw new LogicException( 'deleteListEntry failed for unknown reason' );
 		}
 		$this->dbw->newUpdateQueryBuilder()
 			->update( 'reading_list' )
@@ -747,7 +750,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @return IResultWrapper<ReadingListRow>
 	 */
 	public function getListsByDateUpdated( $date, $sortBy = self::SORT_BY_UPDATED,
-		$sortDir = self::SORT_DIR_ASC, $limit = 1000, array $from = null
+										   $sortDir = self::SORT_DIR_ASC, $limit = 1000, array $from = null
 	) {
 		$this->assertUser();
 		[ $conditions, $options ] = $this->processSort( 'rl', $sortBy, $sortDir, $limit, $from );
@@ -757,7 +760,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->where( [
 				'rl_user_id' => $this->userId,
 				'rl_date_updated > ' . $this->dbr->addQuotes( $this->dbr->timestamp( $date ) )
-				] )
+			] )
 			->andWhere( $conditions )
 			->options( $options )
 			->caller( __METHOD__ )->fetchResultSet();
@@ -1145,4 +1148,32 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->caller( __METHOD__ )->fetchField();
 	}
 
+	/**
+	 * Confirm that at least one project exists. Create one if necessary.
+	 * Projects are global to a wiki/wiki farm. Wiki farms using the SiteMatrix
+	 * extension should initialize their projects via maintenance script.
+	 */
+	public function initializeProjectIfNeeded() {
+		// FIXME: discuss with others how we feel about this approach.
+		$count = $this->dbr->newSelectQueryBuilder()
+			->select( 'COUNT(*)' )
+			->from( 'reading_list_project' )
+			->caller( __METHOD__ )->fetchField();
+		if ( !$count ) {
+			$url = MediaWikiServices::getInstance()->getUrlUtils()->getCanonicalServer();
+			if ( $url ) {
+				$parts = MediaWikiServices::getInstance()->getUrlUtils()->parse( $url );
+				$parts['port'] = null;
+				$project = MediaWikiServices::getInstance()->getUrlUtils()->assemble( $parts );
+				$this->dbw->newInsertQueryBuilder()
+					->insertInto( 'reading_list_project' )
+					->row( [
+						'rlp_project' => $project,
+					] )
+					->caller( __METHOD__ )->execute();
+			} else {
+				throw new LogicException( 'Unable to load canonical url for project initialization' );
+			}
+		}
+	}
 }
