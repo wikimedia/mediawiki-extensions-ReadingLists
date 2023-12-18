@@ -174,5 +174,27 @@
 			"i18n/api"
 		]
 	},
+	"RestRoutes": [
+		{
+			"path": "/readinglists/v0/setup",
+			"method": "POST",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\SetupHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
+		},
+		{
+			"path": "/readinglists/v0/teardown",
+			"method": "POST",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\TeardownHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
+		}
+	],
 	"manifest_version": 2
 }
