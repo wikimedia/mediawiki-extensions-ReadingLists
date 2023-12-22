@@ -3,7 +3,6 @@
 namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
 use ApiTestCase;
-use MediaWiki\Extension\ReadingLists\HookHandler;
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use MediaWiki\User\User;
 
@@ -30,7 +29,6 @@ class ApiReadingListsDeleteEntryTest extends ApiTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->tablesUsed = array_merge( $this->tablesUsed, HookHandler::$testTables );
 		$this->user = parent::getTestSysop()->getUser();
 		$this->readingListsSetup();
 	}

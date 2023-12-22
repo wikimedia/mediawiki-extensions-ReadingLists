@@ -40,9 +40,9 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 		// Would be nicer to the put this in the constructor but there extensions are not loaded yet.
 		$this->siteMatrix = new SiteMatrix();
 
-		$services = MediaWikiServices::getInstance();
-		$loadBalancerFactory = $services->getDBLoadBalancerFactory();
-		$dbw = Utils::getDB( DB_PRIMARY, $services );
+		$dbw = MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->getPrimaryDatabase(
+			Utils::VIRTUAL_DOMAIN
+		);
 		$inserted = 0;
 
 		$this->output( "populating...\n" );
@@ -55,7 +55,7 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 			if ( $dbw->affectedRows() ) {
 				$inserted++;
 				if ( $inserted % $this->mBatchSize ) {
-					$loadBalancerFactory->waitForReplication();
+					$this->waitForReplication();
 				}
 			}
 		}
@@ -76,7 +76,7 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 			}
 		}
 		foreach ( $this->siteMatrix->getSpecials() as $special ) {
-			list( $lang, $site ) = $special;
+			[ $lang, $site ] = $special;
 			yield [ $lang, $site ];
 		}
 	}
@@ -86,7 +86,7 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 	 * @return Generator [ domain, dbname ]
 	 */
 	private function generateAllowedDomains() {
-		foreach ( $this->generateSites() as list( $lang, $site ) ) {
+		foreach ( $this->generateSites() as [ $lang, $site ] ) {
 			$dbName = $this->siteMatrix->getDBName( $lang, $site );
 			$domain = $this->siteMatrix->getCanonicalUrl( $lang, $site );
 

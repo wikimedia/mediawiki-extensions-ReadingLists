@@ -60,7 +60,7 @@ trait ReadingListsTestHelperTrait {
 				$entry['rle_user_id'] = $userId;
 			}
 			if ( isset( $entry['rlp_project'] ) ) {
-				list( $projectId ) = $this->addProjects( [ $entry['rlp_project'] ] );
+				[ $projectId ] = $this->addProjects( [ $entry['rlp_project'] ] );
 				unset( $entry['rlp_project'] );
 				$entry['rle_rlp_id'] = $projectId;
 			}

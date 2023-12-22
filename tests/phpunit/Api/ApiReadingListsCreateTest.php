@@ -3,7 +3,6 @@
 namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
 use ApiTestCase;
-use MediaWiki\Extension\ReadingLists\HookHandler;
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use MediaWiki\User\User;
 
@@ -30,7 +29,6 @@ class ApiReadingListsCreateTest extends ApiTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->tablesUsed = array_merge( $this->tablesUsed, HookHandler::$testTables );
 		$this->user = parent::getTestSysop()->getUser();
 		$this->readingListsSetup();
 	}
@@ -57,8 +55,8 @@ class ApiReadingListsCreateTest extends ApiTestCase {
 	 */
 	public function testCreateBatch( $apiParams, $expected ) {
 		$this->apiParams['batch'] = json_encode( [
-			(object)[ "name" => $apiParams[0]['name'],"description" => $apiParams[0]['description'] ],
-			(object)[ "name" => $apiParams[1]['name'],"description" => $apiParams[1]['description'] ],
+			(object)[ "name" => $apiParams[0]['name'], "description" => $apiParams[0]['description'] ],
+			(object)[ "name" => $apiParams[1]['name'], "description" => $apiParams[1]['description'] ],
 		] );
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
 		$this->assertEquals( $expected, $result[0]['create']['result'] );
