@@ -2,11 +2,11 @@
 
 namespace MediaWiki\Extension\ReadingLists;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\SpecialPage\UnlistedSpecialPage;
+use MediaWiki\User\User;
 use PermissionsError;
-use SpecialPage;
-use UnlistedSpecialPage;
-use User;
 
 class SpecialReadingLists extends UnlistedSpecialPage {
 	/**

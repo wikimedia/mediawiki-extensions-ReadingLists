@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 use ApiTestCase;
 use MediaWiki\Extension\ReadingLists\HookHandler;
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
+use MediaWiki\User\User;
 
 /**
  * @covers \MediaWiki\Extension\ReadingLists\Api\ApiReadingListsDeleteEntry
@@ -24,7 +25,7 @@ class ApiReadingListsDeleteEntryTest extends ApiTestCase {
 		'command' => 'deleteentry',
 	];
 
-	/** @var \User */
+	/** @var User */
 	private $user;
 
 	protected function setUp(): void {

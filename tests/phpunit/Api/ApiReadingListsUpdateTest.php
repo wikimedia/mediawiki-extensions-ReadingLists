@@ -6,6 +6,7 @@ use ApiTestCase;
 use ApiUsageException;
 use MediaWiki\Extension\ReadingLists\HookHandler;
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
+use MediaWiki\User\User;
 
 /**
  * @covers \MediaWiki\Extension\ReadingLists\Api\ApiReadingListsUpdate
@@ -25,7 +26,7 @@ class ApiReadingListsUpdateTest extends ApiTestCase {
 		'command' => 'update',
 	];
 
-	/** @var \User */
+	/** @var User */
 	private $user;
 
 	protected function setUp(): void {
