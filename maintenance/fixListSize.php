@@ -52,20 +52,14 @@ class FixListSize extends Maintenance {
 		} else {
 			$i = $maxId = 0;
 			while ( true ) {
-				$ids = $this->dbw->selectFieldValues(
-					'reading_list',
-					'rl_id',
-					[
-						"rl_id > $maxId",
-						// No point in wasting resources on fixing deleted lists.
-						'rl_deleted' => 0,
-					],
-					__METHOD__,
-					[
-						'ORDER BY' => 'rl_id ASC',
-						'LIMIT' => 1000,
-					]
-				);
+				$ids = $this->dbw->newSelectQueryBuilder()
+					->select( 'rl_id' )
+					->from( 'reading_list' )
+					// No point in wasting resources on fixing deleted lists.
+					->where( [ "rl_id > $maxId", 'rl_deleted' => 0, ] )
+					->limit( 1000 )
+					->orderBy( 'rl_id', 'ASC' )
+					->caller( __METHOD__ )->fetchFieldValues();
 				if ( !$ids ) {
 					break;
 				}

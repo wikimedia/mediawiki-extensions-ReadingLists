@@ -60,7 +60,10 @@ class PopulateWithTestData extends Maintenance {
 			return;
 		}
 
-		$projects = $this->dbw->selectFieldValues( 'reading_list_project', 'rlp_id', [], __METHOD__ );
+		$projects = $this->dbw->newSelectQueryBuilder()
+			->select( 'rlp_id' )
+			->from( 'reading_list_project' )
+			->caller( __METHOD__ )->fetchFieldValues();
 		if ( !$projects ) {
 			$this->fatalError( 'No projects! Please set up some' );
 		}
@@ -124,12 +127,11 @@ class PopulateWithTestData extends Maintenance {
 	private function cleanupTestData() {
 		$services = MediaWikiServices::getInstance();
 		$dbw = Utils::getDB( DB_PRIMARY, $services );
-		$ids = $dbw->selectFieldValues(
-			'reading_list',
-			'rl_id',
-			[ 'rl_description' => __FILE__ ],
-			__METHOD__
-		);
+		$ids = $dbw->newSelectQueryBuilder()
+			->select( 'rl_id' )
+			->from( 'reading_list' )
+			->where( [ 'rl_description' => __FILE__ ] )
+			->caller( __METHOD__ )->fetchFieldValues();
 		if ( !$ids ) {
 			$this->output( "Noting to clean up\n" );
 			return;

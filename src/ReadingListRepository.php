@@ -200,20 +200,20 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
 		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
 		$options = array_merge( $options, [ 'LIMIT' => 1 ] );
-		$res = $db->select(
-			'reading_list',
-			'1',
-			[
-				'rl_user_id' => $this->userId,
-				// It would probably be fine to just check if the user has lists at all,
-				// but this way is extra safe against races as setup is the only operation that
-				// creates a default list.
-				'rl_is_default' => 1,
-			],
-			__METHOD__,
-			$options
-		);
-
+		$res = $db->newSelectQueryBuilder()
+			->select( '1' )
+			->from( 'reading_list' )
+			->where(
+				[
+					'rl_user_id' => $this->userId,
+					// It would probably be fine to just check if the user has lists at all,
+					// but this way is extra safe against races as setup is the only operation that
+					// creates a default list.
+					'rl_is_default' => 1,
+				]
+			)
+			->options( $options )
+			->caller( __METHOD__ )->fetchResultSet();
 		// Until a better 'rl_is_default', log warnings so the bugs are caught.
 		$n = $res->numRows();
 		if ( $n > 1 ) {
@@ -365,17 +365,13 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$this->assertUser();
 		list( $conditions, $options ) = $this->processSort( 'rl', $sortBy, $sortDir, $limit, $from );
 
-		$res = $this->dbr->select(
-			'reading_list',
-			$this->getListFields(),
-			array_merge( [
-				'rl_user_id' => $this->userId,
-				'rl_deleted' => 0,
-			], $conditions ),
-			__METHOD__,
-			$options
-		);
-
+		$res = $this->dbr->newSelectQueryBuilder()
+			->select( $this->getListFields() )
+			->from( 'reading_list' )
+			->where( [ 'rl_user_id' => $this->userId, 'rl_deleted' => 0 ] )
+			->andWhere( $conditions )
+			->options( $options )
+			->caller( __METHOD__ )->fetchResultSet();
 		if (
 			$res->numRows() === 0
 			&& !$this->isSetupForUser()
@@ -650,12 +646,11 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		list( $conditions, $options ) = $this->processSort( 'rle', $sortBy, $sortDir, $limit, $from );
 
 		// sanity check for nice error messages
-		$res = $this->dbr->select(
-			'reading_list',
-			[ 'rl_id', 'rl_user_id', 'rl_deleted' ],
-			[ 'rl_id' => $ids ],
-			__METHOD__
-		);
+		$res = $this->dbr->newSelectQueryBuilder()
+			->select( [ 'rl_id', 'rl_user_id', 'rl_deleted' ] )
+			->from( 'reading_list' )
+			->where( [ 'rl_id' => $ids ] )
+			->caller( __METHOD__ )->fetchResultSet();
 		$filtered = [];
 		foreach ( $res as $row ) {
 			/** @var ReadingListRow $row */
@@ -674,18 +669,14 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				'readinglists-db-error-no-such-list', [ reset( $missing ) ] );
 		}
 
-		$res = $this->dbr->select(
-			[ 'reading_list_entry', 'reading_list_project' ],
-			$this->getListEntryFields(),
-			array_merge( [
-				'rle_rlp_id = rlp_id',
-				'rle_rl_id' => $ids,
-				'rle_user_id' => $this->userId,
-				'rle_deleted' => 0,
-			], $conditions ),
-			__METHOD__,
-			$options
-		);
+		$res = $this->dbr->newSelectQueryBuilder()
+			->select( $this->getListEntryFields() )
+			->from( 'reading_list_entry' )
+			->join( 'reading_list_project', null, 'rle_rlp_id = rlp_id' )
+			->where( [ 'rle_rl_id' => $ids, 'rle_user_id' => $this->userId, 'rle_deleted' => 0 ] )
+			->andWhere( $conditions )
+			->options( $options )
+			->caller( __METHOD__ )->fetchResultSet();
 
 		return $res;
 	}
@@ -772,17 +763,16 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	) {
 		$this->assertUser();
 		list( $conditions, $options ) = $this->processSort( 'rl', $sortBy, $sortDir, $limit, $from );
-		$res = $this->dbr->select(
-			'reading_list',
-			$this->getListFields(),
-			array_merge( [
+		$res = $this->dbr->newSelectQueryBuilder()
+			->select( $this->getListFields() )
+			->from( 'reading_list' )
+			->where( [
 				'rl_user_id' => $this->userId,
-				'rl_date_updated > ' . $this->dbr->addQuotes( $this->dbr->timestamp( $date ) ),
-			], $conditions ),
-			__METHOD__,
-			$options
-		);
-
+				'rl_date_updated > ' . $this->dbr->addQuotes( $this->dbr->timestamp( $date ) )
+				] )
+			->andWhere( $conditions )
+			->options( $options )
+			->caller( __METHOD__ )->fetchResultSet();
 		if (
 			$res->numRows() === 0
 			&& !$this->isSetupForUser()
@@ -811,19 +801,19 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		// Always sort by last updated; there is no supporting index for sorting by name.
 		list( $conditions, $options ) = $this->processSort( 'rle', self::SORT_BY_UPDATED,
 			$sortDir, $limit, $from );
-		$res = $this->dbr->select(
-			[ 'reading_list', 'reading_list_entry', 'reading_list_project' ],
-			$this->getListEntryFields(),
-			array_merge( [
-				'rl_id = rle_rl_id',
-				'rle_rlp_id = rlp_id',
+		$res = $this->dbr->newSelectQueryBuilder()
+			->select( $this->getListEntryFields() )
+			->from( 'reading_list' )
+			->join( 'reading_list_entry', null, 'rl_id = rle_rl_id' )
+			->join( 'reading_list_project', null, 'rle_rlp_id = rlp_id' )
+			->where( [
 				'rle_user_id' => $this->userId,
 				'rl_deleted' => 0,
-				'rle_date_updated > ' . $this->dbr->addQuotes( $this->dbr->timestamp( $date ) ),
-			], $conditions ),
-			__METHOD__,
-			$options
-		);
+				'rle_date_updated > ' . $this->dbr->addQuotes( $this->dbr->timestamp( $date ) )
+			] )
+			->andWhere( $conditions )
+			->options( $options )
+			->caller( __METHOD__ )->fetchResultSet();
 		return $res;
 	}
 
@@ -918,33 +908,32 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		}
 
 		$conditions = [
-			'rl_id = rle_rl_id',
 			'rle_user_id' => $this->userId,
 			'rle_rlp_id' => $projectId,
 			'rle_title' => $title,
 			'rl_deleted' => 0,
 			'rle_deleted' => 0,
 		];
-		if ( $from !== null ) {
-			$conditions[] = 'rle_rl_id >= ' . (int)$from;
-		}
-		$res = $this->dbr->select(
-			[ 'reading_list', 'reading_list_entry' ],
-			$this->getListFields(),
-			$conditions,
-			__METHOD__,
-			[
-				// Grouping by rle_rl_id can be done efficiently with the same index used for
-				// the conditions. All other fields are functionally dependent on it; MySQL 5.7.5+
-				// can detect that ( https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html );
-				// MariaDB needs the other fields for ONLY_FULL_GROUP_BY compliance, but they don't
-				// seem to negatively affect the query plan.
-				'GROUP BY' => array_merge( [ 'rle_rl_id' ], $this->getListFields() ),
-				'ORDER BY' => 'rle_rl_id ASC',
-				'LIMIT' => (int)$limit,
-			]
-		);
 
+		$queryBuilder = $this->dbr->newSelectQueryBuilder()
+			->select( $this->getListFields() )
+			->from( 'reading_list' )
+			->join( 'reading_list_entry', null, 'rl_id = rle_rl_id' )
+			->where( $conditions )
+			// Grouping by rle_rl_id can be done efficiently with the same index used for
+			// the conditions. All other fields are functionally dependent on it; MySQL 5.7.5+
+			// can detect that ( https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html );
+			// MariaDB needs the other fields for ONLY_FULL_GROUP_BY compliance, but they don't
+			// seem to negatively affect the query plan.
+			->groupBy( array_merge( [ 'rle_rl_id' ], $this->getListFields() ) )
+			->orderBy( 'rle_rl_id', 'ASC' )
+			->limit( (int)$limit )
+			->caller( __METHOD__ );
+
+		if ( $from !== null ) {
+			$queryBuilder->andWhere( 'rle_rl_id >= ' . (int)$from );
+		}
+		$res = $queryBuilder->fetchResultSet();
 		if (
 			$res->numRows() === 0
 			&& !$this->isSetupForUser()
