@@ -145,7 +145,6 @@
 				"readinglists-import-button-hint",
 				"readinglists-import-app-launch-hint"
 			],
-			"es6": true,
 			"packageFiles": [
 				"resources/readinglist.scripts/index.js",
 				"resources/readinglist.scripts/special.js",
