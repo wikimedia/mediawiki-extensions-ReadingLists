@@ -79,7 +79,11 @@ trait ReadingListsTestHelperTrait {
 			->from( 'reading_list_entry' )
 			->where( [ 'rle_rl_id' => $listId ] )
 			->caller( __METHOD__ )->fetchRowCount();
-		$this->db->update( 'reading_list', [ 'rl_size' => $entryCount ], [ 'rl_id' => $listId ] );
+		$this->db->newUpdateQueryBuilder()
+			->update( 'reading_list' )
+			->set( [ 'rl_size' => $entryCount ] )
+			->where( [ 'rl_id' => $listId ] )
+			->execute();
 		return $entryIds;
 	}
 

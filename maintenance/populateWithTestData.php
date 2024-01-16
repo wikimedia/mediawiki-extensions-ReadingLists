@@ -79,15 +79,11 @@ class PopulateWithTestData extends Maintenance {
 				$repository->setupForUser();
 				$i++;
 				// HACK mark default list so it will be deleted together with the rest
-				$this->dbw->update(
-					'reading_list',
-					[ 'rl_description' => __FILE__ ],
-					[
-						'rl_user_id' => $centralId,
-						'rl_is_default' => 1,
-					],
-					__METHOD__
-				);
+				$this->dbw->newUpdateQueryBuilder()
+					->update( 'reading_list' )
+					->set( [ 'rl_description' => __FILE__ ] )
+					->where( [ 'rl_user_id' => $centralId, 'rl_is_default' => 1 ] )
+					->caller( __METHOD__ )->execute();
 			} catch ( ReadingListRepositoryException $e ) {
 				// Instead of trying to find a user ID that's not used yet, we'll be lazy
 				// and just ignore "already set up" errors.
@@ -107,17 +103,15 @@ class PopulateWithTestData extends Maintenance {
 						'rle_title' => "Test_$k",
 					];
 				}
-				$this->dbw->insert(
-					'reading_list_entry',
-					$rows,
-					__METHOD__
-				);
-				$this->dbw->update(
-					'reading_list',
-					[ 'rl_size' => $entries ],
-					[ 'rl_id' => $list->rl_id ],
-					__METHOD__
-				);
+				$this->dbw->newInsertQueryBuilder()
+					->insertInto( 'reading_list_entry' )
+					->rows( $rows )
+					->caller( __METHOD__ )->execute();
+				$this->dbw->newUpdateQueryBuilder()
+					->update( 'reading_list' )
+					->set( [ 'rl_size' => $entries ] )
+					->where( [ 'rl_id' => $list->rl_id ] )
+					->caller( __METHOD__ )->execute();
 			}
 			$this->output( '.' );
 		}
@@ -136,17 +130,15 @@ class PopulateWithTestData extends Maintenance {
 			$this->output( "Noting to clean up\n" );
 			return;
 		}
-		$dbw->delete(
-			'reading_list_entry',
-			[ 'rle_rl_id' => $ids ],
-			__METHOD__
-		);
+		$dbw->newDeleteQueryBuilder()
+			->deleteFrom( 'reading_list_entry' )
+			->where( [ 'rle_rl_id' => $ids ] )
+			->caller( __METHOD__ )->execute();
 		$entries = $dbw->affectedRows();
-		$dbw->delete(
-			'reading_list',
-			[ 'rl_description' => __FILE__ ],
-			__METHOD__
-		);
+		$dbw->newDeleteQueryBuilder()
+			->deleteFrom( 'reading_list' )
+			->where( [ 'rl_description' => __FILE__ ] )
+			->caller( __METHOD__ )->execute();
 		$lists = $dbw->affectedRows();
 		$this->output( "Deleted $lists lists and $entries entries\n" );
 	}
