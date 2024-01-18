@@ -115,9 +115,9 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		if ( $this->isSetupForUser( self::READ_LOCKING ) ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-already-set-up' );
 		}
-		$this->dbw->insert(
-			'reading_list',
-			[
+		$this->dbw->newInsertQueryBuilder()
+			->insertInto( 'reading_list' )
+			->row( [
 				'rl_user_id' => $this->userId,
 				'rl_is_default' => 1,
 				'rl_name' => 'default',
@@ -126,9 +126,8 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				'rl_date_updated' => $this->dbw->timestamp(),
 				'rl_size' => 0,
 				'rl_deleted' => 0,
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )->execute();
 		$this->logger->info( 'Set up for user {user}', [ 'user' => $this->userId ] );
 		$list = $this->selectValidList( $this->dbw->insertId(), self::READ_LATEST );
 		return $list;
@@ -158,9 +157,9 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		// Soft-delete. Note that no reading list entries are updated;
 		// they are effectively orphaned by soft-deletion of their lists
 		// and will be batch-removed in purgeOldDeleted().
-		$this->dbw->update(
-			'reading_list',
-			[
+		$this->dbw->newUpdateQueryBuilder()
+			->update( 'reading_list' )
+			->set( [
 				// 'rl_name' is randomized in anticipation of
 				// eventually enforcing uniqueness with an
 				// index (in which case it can't be limited to
@@ -168,14 +167,14 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 				//
 				// 'rl_is_default' is cleared so deleted lists
 				// aren't detected as defaults.
+				// TODO: Use expression buider
 				"rl_name = CONCAT('deleted-', MD5(CONCAT( $salt , rl_name)))",
 				'rl_is_default' => 0,
 				'rl_deleted' => 1,
 				'rl_date_updated' => $this->dbw->timestamp(),
-			],
-			[ 'rl_user_id' => $this->userId ],
-			__METHOD__
-		);
+			] )
+			->where( [ 'rl_user_id' => $this->userId ] )
+			->caller( __METHOD__ )->execute();
 		if ( !$this->dbw->affectedRows() ) {
 			$this->logger->error( 'teardownForUser failed for unknown reason', [
 				'user_central_id' => $this->userId,
@@ -293,9 +292,9 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			->caller( __METHOD__ )->fetchRow();
 
 		if ( $row === false ) {
-			$this->dbw->insert(
-				'reading_list',
-				[
+			$this->dbw->newInsertQueryBuilder()
+				->insertInto( 'reading_list' )
+				->row( [
 					'rl_user_id' => $this->userId,
 					'rl_is_default' => 0,
 					'rl_name' => $name,
@@ -304,9 +303,8 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 					'rl_date_updated' => $this->dbw->timestamp(),
 					'rl_size' => 0,
 					'rl_deleted' => 0,
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )->execute();
 			$id = $this->dbw->insertId();
 			$merged = false;
 		} elseif ( $row->rl_deleted ) {
@@ -321,17 +319,14 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			$id = $row->rl_id;
 			$merged = true;
 		} else {
-			$this->dbw->update(
-				'reading_list',
-				[
+			$this->dbw->newUpdateQueryBuilder()
+				->update( 'reading_list' )
+				->set( [
 					'rl_description' => $description,
 					'rl_date_updated' => $this->dbw->timestamp(),
-				],
-				[
-					'rl_id' => $row->rl_id,
-				],
-				__METHOD__
-			);
+				] )
+				 ->where( [ 'rl_id' => $row->rl_id ] )
+				 ->caller( __METHOD__ )->execute();
 			$id = $row->rl_id;
 			$merged = true;
 		}
@@ -438,12 +433,12 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			return $row;
 		}
 
-		$this->dbw->update(
-			'reading_list',
-			$data,
-			[ 'rl_id' => $id ],
-			__METHOD__
-		);
+		$this->dbw->newUpdateQueryBuilder()
+			->update( 'reading_list' )
+			->set( $data )
+			->where( [ 'rl_id' => $id ] )
+			->caller( __METHOD__ )->execute();
+
 		if ( !$this->dbw->affectedRows() ) {
 			$this->logger->error( 'updateList failed for unknown reason', [
 				'rl_id' => $row->rl_id,
@@ -471,18 +466,17 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-cannot-delete-default-list' );
 		}
 
-		$this->dbw->update(
-			'reading_list',
-			[
+		$this->dbw->newUpdateQueryBuilder()
+			->update( 'reading_list' )
+			->set( [
 				// Randomize the name of deleted lists in anticipation of eventually enforcing
 				// uniqueness with an index (in which case it can't be limited to non-deleted lists).
 				'rl_name' => 'deleted-' . md5( uniqid( (string)rand(), true ) ),
 				'rl_deleted' => 1,
 				'rl_date_updated' => $this->dbw->timestamp(),
-			],
-			[ 'rl_id' => $id ],
-			__METHOD__
-		);
+			] )
+			->where( [ 'rl_id' => $id ] )
+			->caller( __METHOD__ )->execute();
 		if ( !$this->dbw->affectedRows() ) {
 			$this->logger->error( 'deleteList failed for unknown reason', [
 				'rl_id' => $row->rl_id,
@@ -550,9 +544,9 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			)
 			->caller( __METHOD__ )->fetchRow();
 		if ( $row === false ) {
-			$this->dbw->insert(
-				'reading_list_entry',
-				[
+			$this->dbw->newInsertQueryBuilder()
+				->insertInto( 'reading_list_entry' )
+				->row( [
 					'rle_rl_id' => $listId,
 					'rle_user_id' => $this->userId,
 					'rle_rlp_id' => $projectId,
@@ -560,24 +554,21 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 					'rle_date_created' => $this->dbw->timestamp(),
 					'rle_date_updated' => $this->dbw->timestamp(),
 					'rle_deleted' => 0,
-				],
-				__METHOD__
-			);
+				] )
+				->caller( __METHOD__ )->execute();
 			$entryId = $this->dbw->insertId();
 			$type = 'inserted';
 		} elseif ( $row->rle_deleted ) {
-			$this->dbw->update(
-				'reading_list_entry',
-				[
+			$this->dbw->newUpdateQueryBuilder()
+				->update( 'reading_list_entry' )
+				->set( [
 					'rle_date_created' => $this->dbw->timestamp(),
 					'rle_date_updated' => $this->dbw->timestamp(),
 					'rle_deleted' => 0,
-				],
-				[
-					'rle_id' => $row->rle_id,
-				],
-				__METHOD__
-			);
+				] )
+				->where( [ 'rle_id' => $row->rle_id ] )
+				->caller( __METHOD__ )->execute();
+
 			$entryId = (int)$row->rle_id;
 			$type = 'recreated';
 		} else {
@@ -586,12 +577,11 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			$type = 'merged';
 		}
 		if ( $type !== 'merged' ) {
-			$this->dbw->update(
-				'reading_list',
-				[ 'rl_size = rl_size + 1' ],
-				[ 'rl_id' => $listId ],
-				__METHOD__
-			);
+			$this->dbw->newUpdateQueryBuilder()
+				->update( 'reading_list' )
+				->set( [ 'rl_size = rl_size + 1' ] )
+				->where( [ 'rl_id' => $listId ] )
+				->caller( __METHOD__ )->execute();
 		}
 
 		$this->logger->info( 'Added entry {entry} for user {user}', [
@@ -710,31 +700,30 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-list-entry-deleted', [ $id ] );
 		}
 
-		$this->dbw->update(
-			'reading_list_entry',
-			[
+		$this->dbw->newUpdateQueryBuilder()
+			->update( 'reading_list_entry' )
+			->set( [
 				'rle_deleted' => 1,
 				'rle_date_updated' => $this->dbw->timestamp(),
-			],
-			[ 'rle_id' => $id ],
-			__METHOD__
-		);
+			] )
+			->where( [ 'rle_id' => $id ] )
+			->caller( __METHOD__ )->execute();
+
 		if ( !$this->dbw->affectedRows() ) {
-			$this->logger->error( 'deleteListEntry failed for unknown reason', [
-				'rle_id' => $row->rle_id,
-				'user_central_id' => $this->userId,
-			] );
-			throw new LogicException( 'deleteListEntry failed for unknown reason' );
+		$this->logger->error( 'deleteListEntry failed for unknown reason', [
+			'rle_id' => $row->rle_id,
+			'user_central_id' => $this->userId,
+		] );
+		throw new LogicException( 'deleteListEntry failed for unknown reason' );
 		}
-		$this->dbw->update(
-			'reading_list',
-			[ 'rl_size = rl_size - 1' ],
-			[
+		$this->dbw->newUpdateQueryBuilder()
+			->update( 'reading_list' )
+			->set( [ 'rl_size = rl_size - 1' ] )
+			->where( [
 				'rl_id' => $row->rl_id,
 				'rl_size > 0'
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )->execute();
 
 		$this->logger->info( 'Deleted entry {entry} for user {user}', [
 			'entry' => $id,
@@ -837,11 +826,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			if ( !$ids ) {
 				break;
 			}
-			$this->dbw->delete(
-				'reading_list_entry',
-				[ 'rle_id' => $ids ],
-				__METHOD__
-			);
+			$this->dbw->newDeleteQueryBuilder()
+				->deleteFrom( 'reading_list_entry' )
+				->where( [ 'rle_id' => $ids ] )
+				->caller( __METHOD__ )->execute();
 			$this->logger->debug( 'Purged {n} entries', [ 'n' => $this->dbw->affectedRows() ] );
 			$this->lbFactory->waitForReplication();
 		}
@@ -858,11 +846,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			if ( !$ids ) {
 				break;
 			}
-			$this->dbw->delete(
-				'reading_list_entry',
-				[ 'rle_id' => $ids ],
-				__METHOD__
-			);
+			$this->dbw->newDeleteQueryBuilder()
+				->deleteFrom( 'reading_list_entry' )
+				->where( [ 'rle_id' => $ids ] )
+				->caller( __METHOD__ )->execute();
 			$this->logger->debug( 'Purged {n} entries', [ 'n' => $this->dbw->affectedRows() ] );
 			$this->lbFactory->waitForReplication();
 		}
@@ -878,11 +865,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			if ( !$ids ) {
 				break;
 			}
-			$this->dbw->delete(
-				'reading_list',
-				[ 'rl_id' => $ids ],
-				__METHOD__
-			);
+			$this->dbw->newDeleteQueryBuilder()
+				->deleteFrom( 'reading_list' )
+				->where( [ 'rl_id' => $ids ] )
+				->caller( __METHOD__ )->execute();
 			$this->logger->debug( 'Purged {n} lists', [ 'n' => $this->dbw->affectedRows() ] );
 			$this->lbFactory->waitForReplication();
 		}
@@ -968,12 +954,12 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			->where( [ 'rle_rl_id' => $id, 'rle_deleted' => 0, ] )
 			->groupBy( 'rle_rl_id' )
 			->caller( __METHOD__ )->fetchField();
-		$this->dbw->update(
-			'reading_list',
-			[ 'rl_size' => $count ],
-			[ 'rl_id' => $id, 'rl_size != ' . (int)$count ],
-			__METHOD__
-		);
+		$this->dbw->newUpdateQueryBuilder()
+			->update( 'reading_list' )
+			->set( [ 'rl_size' => $count ] )
+			->where( [ 'rl_id' => $id, 'rl_size != ' . (int)$count ] )
+			->caller( __METHOD__ )->execute();
+
 		// Release the lock when using explicit transactions (called from a long-running script).
 		$this->dbw->endAtomic( __METHOD__ );
 		return (bool)$this->dbw->affectedRows();
