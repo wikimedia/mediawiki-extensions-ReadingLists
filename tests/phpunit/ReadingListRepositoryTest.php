@@ -4,7 +4,6 @@ namespace MediaWiki\Extension\ReadingLists\Tests;
 
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
-use MediaWiki\Extension\ReadingLists\HookHandler;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\MediaWikiServices;
@@ -27,7 +26,6 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->tablesUsed = array_merge( $this->tablesUsed, HookHandler::$testTables );
 		$this->lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 	}
 
