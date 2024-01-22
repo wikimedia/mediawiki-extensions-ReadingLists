@@ -10,7 +10,6 @@ use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
 use Wikimedia\Rdbms\IDatabase;
-use Wikimedia\Rdbms\LBFactory;
 
 require_once getenv( 'MW_INSTALL_PATH' ) !== false
 	? getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php'
@@ -20,10 +19,6 @@ require_once getenv( 'MW_INSTALL_PATH' ) !== false
  * Fill the database with test data, or remove it.
  */
 class FixListSize extends Maintenance {
-
-	/** @var LBFactory */
-	private $loadBalancerFactory;
-
 	/** @var IDatabase */
 	private $dbw;
 
@@ -36,9 +31,9 @@ class FixListSize extends Maintenance {
 
 	private function setupServices() {
 		// Can't do this in the constructor, initialization not done yet.
-		$services = MediaWikiServices::getInstance();
-		$this->loadBalancerFactory = $services->getDBLoadBalancerFactory();
-		$this->dbw = Utils::getDB( DB_PRIMARY, $services );
+		$this->dbw = MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->getPrimaryDatabase(
+			Utils::VIRTUAL_DOMAIN
+		);
 	}
 
 	/**
@@ -70,7 +65,7 @@ class FixListSize extends Maintenance {
 					}
 					$maxId = (int)$id;
 				}
-				$this->loadBalancerFactory->waitForReplication();
+				$this->waitForReplication();
 			}
 			$this->output( "Fixed $i lists.\n" );
 		}
@@ -105,15 +100,12 @@ class FixListSize extends Maintenance {
 	 */
 	private function getReadingListRepository() {
 		$services = MediaWikiServices::getInstance();
-		$loadBalancerFactory = $services->getDBLoadBalancerFactory();
-		$dbw = Utils::getDB( DB_PRIMARY, $services );
-		$dbr = Utils::getDB( DB_REPLICA, $services );
 		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
 		// There isn't really any way for this user to be non-local, but let's be future-proof.
 		$centralId = $services->getCentralIdLookupFactory()
 			->getLookup()
 			->centralIdFromLocalUser( $user );
-		$repository = new ReadingListRepository( $centralId, $dbw, $dbr, $loadBalancerFactory );
+		$repository = new ReadingListRepository( $centralId, $services->getDBLoadBalancerFactory() );
 		$repository->setLogger( LoggerFactory::getInstance( 'readinglists' ) );
 		return $repository;
 	}

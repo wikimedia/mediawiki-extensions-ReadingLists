@@ -14,6 +14,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IReadableDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\LBFactory;
 
@@ -62,7 +63,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	/** @var IDatabase */
 	private $dbw;
 
-	/** @var IDatabase */
+	/** @var IReadableDatabase */
 	private $dbr;
 
 	/** @var int|null */
@@ -73,14 +74,12 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
 	/**
 	 * @param int $userId Central ID of the user.
-	 * @param IDatabase $dbw Database connection for writing.
-	 * @param IDatabase $dbr Database connection for reading.
 	 * @param LBFactory $lbFactory
 	 */
-	public function __construct( $userId, IDatabase $dbw, IDatabase $dbr, LBFactory $lbFactory ) {
+	public function __construct( $userId, LBFactory $lbFactory ) {
 		$this->userId = (int)$userId ?: null;
-		$this->dbw = $dbw;
-		$this->dbr = $dbr;
+		$this->dbw = $lbFactory->getPrimaryDatabase( Utils::VIRTUAL_DOMAIN );
+		$this->dbr = $lbFactory->getReplicaDatabase( Utils::VIRTUAL_DOMAIN );
 		$this->lbFactory = $lbFactory;
 		$this->logger = new NullLogger();
 	}
@@ -196,7 +195,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	public function isSetupForUser( $flags = 0 ) {
 		$this->assertUser();
-		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
+		[ $index, $options ] = DBAccessObjectUtils::getDBOptions( $flags );
 		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
 		$options = array_merge( $options, [ 'LIMIT' => 1 ] );
 		$res = $db->newSelectQueryBuilder()
@@ -237,7 +236,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	public function selectValidList( $id, $flags = 0 ) {
 		$this->assertUser();
-		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
+		[ $index, $options ] = DBAccessObjectUtils::getDBOptions( $flags );
 		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
 		/** @var ReadingListRow $row */
 		$row = $db->newSelectQueryBuilder()
@@ -358,7 +357,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	public function getAllLists( $sortBy, $sortDir, $limit = 1000, array $from = null ) {
 		$this->assertUser();
-		list( $conditions, $options ) = $this->processSort( 'rl', $sortBy, $sortDir, $limit, $from );
+		[ $conditions, $options ] = $this->processSort( 'rl', $sortBy, $sortDir, $limit, $from );
 
 		$res = $this->dbr->newSelectQueryBuilder()
 			->select( $this->getListFields() )
@@ -633,7 +632,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		if ( !$ids ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-empty-list-ids' );
 		}
-		list( $conditions, $options ) = $this->processSort( 'rle', $sortBy, $sortDir, $limit, $from );
+		[ $conditions, $options ] = $this->processSort( 'rle', $sortBy, $sortDir, $limit, $from );
 
 		// sanity check for nice error messages
 		$res = $this->dbr->newSelectQueryBuilder()
@@ -751,7 +750,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$sortDir = self::SORT_DIR_ASC, $limit = 1000, array $from = null
 	) {
 		$this->assertUser();
-		list( $conditions, $options ) = $this->processSort( 'rl', $sortBy, $sortDir, $limit, $from );
+		[ $conditions, $options ] = $this->processSort( 'rl', $sortBy, $sortDir, $limit, $from );
 		$res = $this->dbr->newSelectQueryBuilder()
 			->select( $this->getListFields() )
 			->from( 'reading_list' )
@@ -788,7 +787,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	) {
 		$this->assertUser();
 		// Always sort by last updated; there is no supporting index for sorting by name.
-		list( $conditions, $options ) = $this->processSort( 'rle', self::SORT_BY_UPDATED,
+		[ $conditions, $options ] = $this->processSort( 'rle', self::SORT_BY_UPDATED,
 			$sortDir, $limit, $from );
 		$res = $this->dbr->newSelectQueryBuilder()
 			->select( $this->getListEntryFields() )
@@ -1103,7 +1102,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	private function getListCount( $flags = 0 ) {
 		$this->assertUser();
-		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
+		[ $index, $options ] = DBAccessObjectUtils::getDBOptions( $flags );
 		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
 		return $db->newSelectQueryBuilder()
 			->select( '1' )
@@ -1136,7 +1135,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	private function getEntryCount( $id, $flags = 0 ) {
 		$this->assertUser();
-		list( $index, $options ) = DBAccessObjectUtils::getDBOptions( $flags );
+		[ $index, $options ] = DBAccessObjectUtils::getDBOptions( $flags );
 		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
 		return (int)$db->newSelectQueryBuilder()
 			->select( 'rl_size' )

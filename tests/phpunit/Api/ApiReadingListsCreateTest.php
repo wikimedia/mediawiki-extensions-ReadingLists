@@ -55,8 +55,8 @@ class ApiReadingListsCreateTest extends ApiTestCase {
 	 */
 	public function testCreateBatch( $apiParams, $expected ) {
 		$this->apiParams['batch'] = json_encode( [
-			(object)[ "name" => $apiParams[0]['name'],"description" => $apiParams[0]['description'] ],
-			(object)[ "name" => $apiParams[1]['name'],"description" => $apiParams[1]['description'] ],
+			(object)[ "name" => $apiParams[0]['name'], "description" => $apiParams[0]['description'] ],
+			(object)[ "name" => $apiParams[1]['name'], "description" => $apiParams[1]['description'] ],
 		] );
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
 		$this->assertEquals( $expected, $result[0]['create']['result'] );

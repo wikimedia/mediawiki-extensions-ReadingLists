@@ -25,9 +25,6 @@ class PopulateWithTestData extends Maintenance {
 	/** @var IDatabase */
 	private $dbw;
 
-	/** @var IDatabase */
-	private $dbr;
-
 	public function __construct() {
 		parent::__construct();
 		$this->addDescription( 'Fill the database with test data, or remove it.' );
@@ -45,8 +42,7 @@ class PopulateWithTestData extends Maintenance {
 		// Can't do this in the constructor, initialization not done yet.
 		$services = MediaWikiServices::getInstance();
 		$this->loadBalancerFactory = $services->getDBLoadBalancerFactory();
-		$this->dbw = Utils::getDB( DB_PRIMARY, $services );
-		$this->dbr = Utils::getDB( DB_REPLICA, $services );
+		$this->dbw = $this->loadBalancerFactory->getPrimaryDatabase( Utils::VIRTUAL_DOMAIN );
 	}
 
 	/**
@@ -73,8 +69,7 @@ class PopulateWithTestData extends Maintenance {
 		for ( $i = 0; $i < $users; $i++ ) {
 			// The test data is for performance testing so we don't care whether the user exists.
 			$centralId = 1000 + $i;
-			$repository = new ReadingListRepository( $centralId, $this->dbw, $this->dbr,
-				$this->loadBalancerFactory );
+			$repository = new ReadingListRepository( $centralId, $this->loadBalancerFactory );
 			try {
 				$repository->setupForUser();
 				$i++;
@@ -120,8 +115,7 @@ class PopulateWithTestData extends Maintenance {
 
 	private function cleanupTestData() {
 		$services = MediaWikiServices::getInstance();
-		$dbw = Utils::getDB( DB_PRIMARY, $services );
-		$ids = $dbw->newSelectQueryBuilder()
+		$ids = $this->dbw->newSelectQueryBuilder()
 			->select( 'rl_id' )
 			->from( 'reading_list' )
 			->where( [ 'rl_description' => __FILE__ ] )
@@ -130,16 +124,16 @@ class PopulateWithTestData extends Maintenance {
 			$this->output( "Noting to clean up\n" );
 			return;
 		}
-		$dbw->newDeleteQueryBuilder()
+		$this->dbw->newDeleteQueryBuilder()
 			->deleteFrom( 'reading_list_entry' )
 			->where( [ 'rle_rl_id' => $ids ] )
 			->caller( __METHOD__ )->execute();
-		$entries = $dbw->affectedRows();
-		$dbw->newDeleteQueryBuilder()
+		$entries = $this->dbw->affectedRows();
+		$this->dbw->newDeleteQueryBuilder()
 			->deleteFrom( 'reading_list' )
 			->where( [ 'rl_description' => __FILE__ ] )
 			->caller( __METHOD__ )->execute();
-		$lists = $dbw->affectedRows();
+		$lists = $this->dbw->affectedRows();
 		$this->output( "Deleted $lists lists and $entries entries\n" );
 	}
 

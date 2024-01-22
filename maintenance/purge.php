@@ -53,16 +53,14 @@ class Purge extends Maintenance {
 	 * @return ReadingListRepository
 	 */
 	private function getReadingListRepository() {
+		// TODO: Move this to a service, a lot of copy paste
 		$services = MediaWikiServices::getInstance();
-		$loadBalancerFactory = $services->getDBLoadBalancerFactory();
-		$dbw = Utils::getDB( DB_PRIMARY, $services );
-		$dbr = Utils::getDB( DB_REPLICA, $services );
 		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
 		// There isn't really any way for this user to be non-local, but let's be future-proof.
 		$centralId = $services->getCentralIdLookupFactory()
 			->getLookup()
 			->centralIdFromLocalUser( $user );
-		$repository = new ReadingListRepository( $centralId, $dbw, $dbr, $loadBalancerFactory );
+		$repository = new ReadingListRepository( $centralId, $services->getDBLoadBalancerFactory() );
 		$repository->setLogger( LoggerFactory::getInstance( 'readinglists' ) );
 		return $repository;
 	}

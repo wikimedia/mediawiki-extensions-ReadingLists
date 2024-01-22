@@ -9,14 +9,12 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
-use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use MediaWiki\User\UserIdentity;
 use Message;
 use Psr\Log\LoggerInterface;
-use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
@@ -35,12 +33,6 @@ trait ApiTrait {
 
 	/** @var LBFactory */
 	private $loadBalancerFactory;
-
-	/** @var IDatabase */
-	private $dbw;
-
-	/** @var IDatabase */
-	private $dbr;
 
 	/** @var ApiBase */
 	private $parent;
@@ -66,9 +58,7 @@ trait ApiTrait {
 
 		$services = MediaWikiServices::getInstance();
 		$loadBalancerFactory = $services->getDBLoadBalancerFactory();
-		$dbw = Utils::getDB( DB_PRIMARY, $services );
-		$dbr = Utils::getDB( DB_REPLICA, $services );
-		$module->injectDatabaseDependencies( $loadBalancerFactory, $dbw, $dbr );
+		$module->injectDatabaseDependencies( $loadBalancerFactory );
 
 		$module->logger = LoggerFactory::getInstance( 'readinglists' );
 
@@ -86,15 +76,9 @@ trait ApiTrait {
 	/**
 	 * Set database-related dependencies. Required when initializing a module that uses this trait.
 	 * @param LBFactory $loadBalancerFactory
-	 * @param IDatabase $dbw Master connection
-	 * @param IDatabase $dbr Replica connection
 	 */
-	protected function injectDatabaseDependencies(
-		LBFactory $loadBalancerFactory, IDatabase $dbw, IDatabase $dbr
-	) {
+	protected function injectDatabaseDependencies( LBFactory $loadBalancerFactory ) {
 		$this->loadBalancerFactory = $loadBalancerFactory;
-		$this->dbw = $dbw;
-		$this->dbr = $dbr;
 	}
 
 	/**
@@ -109,8 +93,7 @@ trait ApiTrait {
 			->getCentralIdLookupFactory()
 			->getLookup()
 			->centralIdFromLocalUser( $user, CentralIdLookup::AUDIENCE_RAW );
-		$repository = new ReadingListRepository( $centralId, $this->dbw, $this->dbr,
-			$this->loadBalancerFactory );
+		$repository = new ReadingListRepository( $centralId, $this->loadBalancerFactory );
 		$repository->setLimits( $config->get( 'ReadingListsMaxListsPerUser' ),
 			$config->get( 'ReadingListsMaxEntriesPerList' ) );
 		$repository->setLogger( $this->logger );
