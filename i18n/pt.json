@@ -53,5 +53,6 @@
 	"readinglists-import-disclaimer": "Um utilizador deste ''site'' criou uma lista de leitura para partilhar com outras pessoas (provavelmente consigo). A lista não foi revista e o conteúdo da mesma não reflete a opinião dos editores do ''site''.",
 	"readinglists-import-button-label": "Ver lista",
 	"readinglists-import-button-hint": "Toque no botão:",
+	"readinglists-share-url-notify": "As informações relacionadas com esta lista de leitura foram copiadas para a sua área de transferência.",
 	"readinglists-import-app-launch-hint": "Certifique-se de que está instalada a versão mais recente da aplicação móvel, por favor."
 }
