@@ -2,10 +2,13 @@
 	"name": "ReadingLists",
 	"private": true,
 	"scripts": {
+		"api-testing": "mocha --timeout 0 --recursive tests/api-testing",
+		"lint": "eslint --no-ignore --config tests/api-testing/.eslintrc.json  tests/api-testing",
 		"test:unit": "jest --silent",
 		"test": "grunt test && npm run test:unit"
 	},
 	"devDependencies": {
+		"api-testing": "1.6.0",
 		"eslint-config-wikimedia": "0.25.0",
 		"grunt": "1.6.1",
 		"grunt-banana-checker": "0.11.0",
