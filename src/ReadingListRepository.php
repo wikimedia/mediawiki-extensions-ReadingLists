@@ -32,7 +32,7 @@ use Wikimedia\Rdbms\LBFactory;
  * write commands can fail with lock timeouts as well. Since lists are private and conflict can
  * only happen between devices of the same user, this should be exceedingly rare.
  */
-class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
+class ReadingListRepository implements LoggerAwareInterface {
 
 	/** Sort lists / entries alphabetically by name / title. */
 	public const SORT_BY_NAME = 'name';
@@ -111,7 +111,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	public function setupForUser() {
 		$this->assertUser();
-		if ( $this->isSetupForUser( self::READ_LOCKING ) ) {
+		if ( $this->isSetupForUser( IDBAccessObject::READ_LOCKING ) ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-already-set-up' );
 		}
 		$this->dbw->newInsertQueryBuilder()
@@ -128,7 +128,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 			] )
 			->caller( __METHOD__ )->execute();
 		$this->logger->info( 'Set up for user {user}', [ 'user' => $this->userId ] );
-		$list = $this->selectValidList( $this->dbw->insertId(), self::READ_LATEST );
+		$list = $this->selectValidList( $this->dbw->insertId(), IDBAccessObject::READ_LATEST );
 		return $list;
 	}
 
@@ -267,10 +267,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$this->assertUser();
 		$this->assertFieldLength( 'rl_name', $name );
 		$this->assertFieldLength( 'rl_description', $description );
-		if ( !$this->isSetupForUser( self::READ_LOCKING ) ) {
+		if ( !$this->isSetupForUser( IDBAccessObject::READ_LOCKING ) ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
-		if ( $this->listLimit && $this->getListCount( self::READ_LATEST ) >= $this->listLimit ) {
+		if ( $this->listLimit && $this->getListCount( IDBAccessObject::READ_LATEST ) >= $this->listLimit ) {
 			// We could check whether the list exists already, in which case we could just
 			// update the existing list and return success, but that's too much of an edge case
 			// to be worth bothering with.
@@ -338,7 +338,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		// We could just construct the result ourselves but let's be paranoid and re-query it
 		// in case some conversion or corruption happens in MySQL.
 		/** @var ReadingListRowWithMergeFlag $list */
-		$list = $this->selectValidList( $id, self::READ_LATEST );
+		$list = $this->selectValidList( $id, IDBAccessObject::READ_LATEST );
 		'@phan-var ReadingListRowWithMergeFlag $list';
 		$list->merged = $merged;
 		return $list;
@@ -389,7 +389,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$this->assertUser();
 		$this->assertFieldLength( 'rl_name', $name );
 		$this->assertFieldLength( 'rl_description', $description );
-		$row = $this->selectValidList( $id, self::READ_LOCKING );
+		$row = $this->selectValidList( $id, IDBAccessObject::READ_LOCKING );
 		if ( $row->rl_is_default ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-cannot-update-default-list' );
 		}
@@ -449,7 +449,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 
 		// We could just construct the result ourselves but let's be paranoid and re-query it
 		// in case some conversion or corruption happens in MySQL.
-		return $this->selectValidList( $id, self::READ_LATEST );
+		return $this->selectValidList( $id, IDBAccessObject::READ_LATEST );
 	}
 
 	/**
@@ -460,7 +460,7 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 	 */
 	public function deleteList( $id ) {
 		$this->assertUser();
-		$row = $this->selectValidList( $id, self::READ_LOCKING );
+		$row = $this->selectValidList( $id, IDBAccessObject::READ_LOCKING );
 		if ( $row->rl_is_default ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-cannot-delete-default-list' );
 		}
@@ -507,10 +507,10 @@ class ReadingListRepository implements IDBAccessObject, LoggerAwareInterface {
 		$this->assertUser();
 		$this->assertFieldLength( 'rlp_project', $project );
 		$this->assertFieldLength( 'rle_title', $title );
-		$this->selectValidList( $listId, self::READ_EXCLUSIVE );
+		$this->selectValidList( $listId, IDBAccessObject::READ_EXCLUSIVE );
 		if (
 			$this->entryLimit
-			&& $this->getEntryCount( $listId, self::READ_LATEST ) >= $this->entryLimit
+			&& $this->getEntryCount( $listId, IDBAccessObject::READ_LATEST ) >= $this->entryLimit
 		) {
 			// We could check whether the entry exists already, in which case we could just
 			// return success without modifying the entry, but that's too much of an edge case
