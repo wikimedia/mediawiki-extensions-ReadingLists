@@ -5,7 +5,7 @@ namespace MediaWiki\Extension\ReadingLists;
 use MediaWiki\MediaWikiServices;
 
 return [
-	'ReverseInterwikiLookup' => static function ( MediaWikiServices $services ) {
+	'ReverseInterwikiLookup' => static function ( MediaWikiServices $services ): ReverseInterwikiLookupInterface {
 		$interwikiLookup = $services->getInterwikiLookup();
 		$ownServer = $services->getMainConfig()->get( 'CanonicalServer' );
 		$ownServerParts = wfParseUrl( $ownServer );
