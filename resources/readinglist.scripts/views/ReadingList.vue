@@ -1,5 +1,5 @@
 <template>
-	<div :class="readingListClass">
+	<div class="readinglist-list">
 		<div v-if="cards.length" class="readinglist-list__container">
 			<cdx-card
 				v-for="( card ) in cards"
@@ -7,7 +7,7 @@
 				:url="card.url"
 				:force-thumbnail="true"
 				:thumbnail="card.thumbnail"
-				@click="clickCard"
+				@click="( event ) => clickCard( event, card )"
 			>
 				<template #title>
 					{{ card.title }}
@@ -42,16 +42,10 @@ module.exports = {
 			required: true
 		}
 	},
-	computed: {
-		readingListClass() {
-			return {
-				'readinglist-list': true
-			};
-		}
-	},
+	emits: [ 'click-card' ],
 	methods: {
-		clickCard( ev ) {
-			this.$emit( 'click-card', ev.currentTarget.getAttribute( 'href' ), ev );
+		clickCard( ev, card ) {
+			this.$emit( 'click-card', ev, card );
 		}
 	}
 };
