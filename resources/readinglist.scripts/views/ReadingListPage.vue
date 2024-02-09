@@ -1,25 +1,15 @@
 <template>
 	<div class="readinglist-page">
 		<div class="readinglist-collection">
-			<div class="readinglist-collection-summary">
-				<div v-if="showMeta">
-					<h1 v-if="viewTitle">
-						{{ viewTitle }}
-					</h1>
-					<p class="readinglist-collection-description">
-						&nbsp;{{ viewDescription }}
-					</p>
-					<cdx-button
-						v-if="!showDisclaimer && collection &&
-							isShareEnabled"
-						@click="clickShareButton">
-						{{ shareLabel }}
-					</cdx-button>
-				</div>
-				<reading-list-download
-					v-if="showDisclaimer"
-					:disclaimer="disclaimer"></reading-list-download>
-			</div>
+			<reading-list-summary
+				:show-disclaimer="showDisclaimer"
+				:show-meta="showMeta"
+				:show-share-button="!showDisclaimer && collection && isShareEnabled"
+				:disclaimer="disclaimer"
+				:name="viewTitle"
+				:description="viewDescription"
+				:share-url="shareUrl"
+			></reading-list-summary>
 			<div v-if="errorCode">
 				<cdx-message type="error">
 					{{ errorMessage }}
@@ -57,7 +47,8 @@
 </template>
 
 <script>
-const { CdxCard, CdxMessage, CdxButton } = require( '@wikimedia/codex' );
+/* global Card */
+const { CdxCard, CdxMessage } = require( '@wikimedia/codex' );
 const READING_LIST_SPECIAL_PAGE_NAME = 'Special:ReadingLists';
 const READING_LISTS_NAME_PLURAL = mw.msg( 'special-tab-readinglists-short' );
 const READING_LIST_TITLE = mw.msg( 'readinglists-special-title' );
@@ -92,8 +83,7 @@ module.exports = {
 		whitespace: 'condense'
 	},
 	components: {
-		ReadingListDownload: require( './ReadingListDownload.vue' ),
-		CdxButton,
+		ReadingListSummary: require( './ReadingListSummary.vue' ),
 		CdxCard,
 		CdxMessage,
 		IntermediateState: require( './IntermediateState.vue' )
@@ -120,7 +110,7 @@ module.exports = {
 		},
 		initialTitles: {
 			type: Object,
-			required: false
+			default: () => null
 		},
 		initialName: {
 			type: String,
@@ -130,6 +120,7 @@ module.exports = {
 			type: String,
 			default: ''
 		},
+		// eslint-disable-next-line vue/require-default-prop
 		initialCollection: {
 			type: Number,
 			required: false
@@ -150,6 +141,31 @@ module.exports = {
 		};
 	},
 	computed: {
+		shareUrl() {
+			const list = {};
+			// ID is preferred if available, as it results in a shorter URL
+			const shareField = this.cards.filter(
+				( card ) => !!card.pageid
+			).length === this.cards.length ? 'pageid' : 'title';
+			this.cards.forEach( ( card ) => {
+				if ( !list[ card.project ] ) {
+					list[ card.project ] = [];
+				}
+				list[ card.project ].push( card[ shareField ] );
+			} );
+			// https://wikitech.wikimedia.org/wiki/Provenance
+			// product reading list web 1
+			const wprov = 'prlw1';
+			const base64 = this.api.toBase64( this.name, this.description, list );
+			if ( !base64 || !Object.keys( list ).length ) {
+				return '';
+			}
+			const url = new URL(
+				`${location.pathname}?limport=${base64}&wprov=${wprov}`,
+				`${location.protocol}//${location.host}`
+			);
+			return url.toString();
+		},
 		showMeta() {
 			return this.showDisclaimer ? !this.anonymizedPreviews : true;
 		},
@@ -159,9 +175,6 @@ module.exports = {
 				'readinglist-list': true
 			};
 		},
-		shareUrl: function () {
-			return HOME_URL;
-		},
 		getHomeUrl: function () {
 			return HOME_URL;
 		},
@@ -169,14 +182,8 @@ module.exports = {
 			return this.description ||
 				( this.collection ? '' : mw.msg( 'readinglists-description' ) );
 		},
-		readingListUrl: function () {
-			return getReadingListUrl( mw.user.getName() );
-		},
 		viewTitle: function () {
 			return this.name || mw.msg( 'special-tab-readinglists-short' );
-		},
-		shareLabel() {
-			return mw.msg( 'readinglists-export' );
 		},
 		emptyMessage: function () {
 			return this.collection ?
@@ -198,49 +205,6 @@ module.exports = {
 	},
 	methods: {
 		isShareEnabled: () => navigator.share || navigator.clipboard,
-		/**
-		 * @param {string} title
-		 * @param {string} text
-		 * @param {string} url
-		 * @return {Promise}
-		 */
-		shareList: ( title, text, url ) => {
-			const msgArgs = text ?
-				[ 'readinglists-share-url-text', title, text ] :
-				[ 'readinglists-share-url-text-incomplete', title ];
-			const shareData = { title, url,
-				text: mw.msg.apply( null, msgArgs.concat( '' ) ).trim() };
-
-			if ( navigator.share && navigator.canShare( shareData ) ) {
-				return navigator.share( shareData );
-			} else {
-				return navigator.clipboard.writeText(
-					mw.msg.apply( null, msgArgs.concat( url ) )
-				).then( () => {
-					mw.notify( mw.msg( 'readinglists-share-url-notify' ) );
-				} );
-			}
-		},
-		clickShareButton: function () {
-			const list = {};
-			// ID is preferred if available, as it results in a shorter URL
-			const shareField = this.cards.filter( ( card ) => !!card.pageid ).length === this.cards.length ?
-				'pageid' : 'title';
-			this.cards.forEach( ( card ) => {
-				if ( !list[ card.project ] ) {
-					list[ card.project ] = [];
-				}
-				list[ card.project ].push( card[ shareField ] );
-			} );
-			// https://wikitech.wikimedia.org/wiki/Provenance
-			// product reading list web 1
-			const wprov = 'prlw1';
-			const url = new URL(
-				`${location.pathname}?limport=${this.api.toBase64( this.name, this.description, list )}&wprov=${wprov}`,
-				`${location.protocol}//${location.host}`
-			);
-			this.shareList( this.name, this.description, url.toString() );
-		},
 		clickCard: function ( ev ) {
 			// If we are navigating to a list, navigate internally
 			if ( !this.collection ) {
@@ -381,20 +345,6 @@ module.exports = {
 .readinglist-collection {
 	// stylelint-disable-next-line declaration-property-unit-disallowed-list
 	font-size: 16px;
-
-	&-summary {
-		margin: 7px 0 10px 0;
-
-		h1 {
-			border-bottom: 0;
-			margin-top: 0;
-			font-weight: bold;
-		}
-	}
-
-	&-description {
-		margin-bottom: 24px;
-	}
 
 	p {
 		margin-top: 16px;

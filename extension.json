@@ -153,6 +153,7 @@
 				},
 				"resources/readinglist.scripts/views/IntermediateState.vue",
 				"resources/readinglist.scripts/views/helpers.js",
+				"resources/readinglist.scripts/views/ReadingListSummary.vue",
 				"resources/readinglist.scripts/views/ReadingListDownload.vue",
 				"resources/readinglist.scripts/views/ReadingListPage.vue"
 			]
