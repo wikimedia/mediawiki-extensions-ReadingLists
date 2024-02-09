@@ -14,6 +14,6 @@
 		"vue/no-boolean-default": "warn",
 		"no-undef": "warn",
 		"no-restricted-syntax": "warn",
-		"es-x/no-array-prototype-includes": "warn"
+		"es-x/no-array-prototype-includes": "off"
 	}
 }

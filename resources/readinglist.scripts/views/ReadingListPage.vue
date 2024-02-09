@@ -16,62 +16,9 @@
 						{{ shareLabel }}
 					</cdx-button>
 				</div>
-				<div v-if="showDisclaimer">
-					{{ disclaimer }}
-					<div v-if="hasApp">
-						<ol>
-							<li>
-								<span v-html="importMessage"></span>
-								<div v-if="isAndroid && androidDownloadLink">
-									<a
-										target="_blank"
-										rel="noreferrer"
-										:href="androidDownloadLink">
-										<span class="app_store_images_sprite svg-badge_google_play_store"></span>
-									</a>
-								</div>
-								<div v-else-if="isIOS && iosDownloadLink">
-									<a
-										target="_blank"
-										rel="noreferrer"
-										:href="iosDownloadLink">
-										<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
-									</a>
-								</div>
-								<div v-else>
-									<a
-										v-if="androidDownloadLink"
-										target="_blank"
-										rel="noreferrer"
-										:href="androidDownloadLink">
-										<span class="app_store_images_sprite svg-badge_google_play_store"></span>
-									</a>
-									<a
-										v-if="iosDownloadLink"
-										target="_blank"
-										rel="noreferrer"
-										:href="iosDownloadLink">
-										<span class="app_store_images_sprite svg-badge_ios_app_store"></span>
-									</a>
-								</div>
-							</li>
-							<li>
-								{{ importButtonHint }}
-								<div>
-									<cdx-button
-										action="progressive"
-										weight="primary"
-										@click="clickDeepLink">
-										{{ importButtonLabel }}
-									</cdx-button>
-								</div>
-							</li>
-						</ol>
-					</div>
-					<div v-else>
-						{{ noAppMessage }}
-					</div>
-				</div>
+				<reading-list-download
+					v-if="showDisclaimer"
+					:disclaimer="disclaimer"></reading-list-download>
 			</div>
 			<div v-if="errorCode">
 				<cdx-message type="error">
@@ -111,18 +58,10 @@
 
 <script>
 const { CdxCard, CdxMessage, CdxButton } = require( '@wikimedia/codex' );
-const { ReadingListiOSAppDownloadLink,
-	ReadingListAndroidAppDownloadLink } = require( '../config.json' );
 const READING_LIST_SPECIAL_PAGE_NAME = 'Special:ReadingLists';
 const READING_LISTS_NAME_PLURAL = mw.msg( 'special-tab-readinglists-short' );
 const READING_LIST_TITLE = mw.msg( 'readinglists-special-title' );
 const HOME_URL = ( new mw.Title( 'ReadingLists', -1 ) ).getUrl();
-
-const getEnabledMessage = ( key, params ) => {
-	// eslint-disable-next-line mediawiki/msg-doc
-	const text = mw.msg( key, params );
-	return text === '-' ? '' : text;
-};
 
 /**
  * @param {number} id
@@ -153,23 +92,16 @@ module.exports = {
 		whitespace: 'condense'
 	},
 	components: {
+		ReadingListDownload: require( './ReadingListDownload.vue' ),
 		CdxButton,
 		CdxCard,
 		CdxMessage,
 		IntermediateState: require( './IntermediateState.vue' )
 	},
 	props: {
-		iosDownloadLink: {
-			type: String,
-			default: ReadingListiOSAppDownloadLink
-		},
 		anonymizedPreviews: {
 			type: Boolean,
 			default: false
-		},
-		androidDownloadLink: {
-			type: String,
-			default: ReadingListAndroidAppDownloadLink
 		},
 		isImport: {
 			type: Boolean
@@ -201,14 +133,6 @@ module.exports = {
 		initialCollection: {
 			type: Number,
 			required: false
-		},
-		isAndroid: {
-			type: Boolean,
-			default: window.navigator.userAgent.includes( 'Android' )
-		},
-		isIOS: {
-			type: Boolean,
-			default: window.navigator.userAgent.includes( 'iPhone' ) || window.navigator.userAgent.includes( 'iPad' )
 		}
 	},
 	data: function () {
@@ -235,11 +159,6 @@ module.exports = {
 				'readinglist-list': true
 			};
 		},
-		hasApp: function () {
-			return (
-				this.iosDownloadLink || this.androidDownloadLink
-			);
-		},
 		shareUrl: function () {
 			return HOME_URL;
 		},
@@ -256,26 +175,8 @@ module.exports = {
 		viewTitle: function () {
 			return this.name || mw.msg( 'special-tab-readinglists-short' );
 		},
-		noAppMessage() {
-			return getEnabledMessage( 'readinglists-import-app-misconfigured' );
-		},
-		importMessage() {
-			if ( this.isIOS && this.iosDownloadLink ) {
-				return getEnabledMessage( 'readinglists-import-app-with-link', this.iosDownloadLink );
-			} else if ( this.isAndroid && this.androidDownloadLink ) {
-				return getEnabledMessage( 'readinglists-import-app-with-link', this.androidDownloadLink );
-			} else {
-				return getEnabledMessage( 'readinglists-import-app' );
-			}
-		},
 		shareLabel() {
 			return mw.msg( 'readinglists-export' );
-		},
-		importButtonLabel() {
-			return mw.msg( 'readinglists-import-button-label' );
-		},
-		importButtonHint() {
-			return mw.msg( 'readinglists-import-button-hint' );
 		},
 		emptyMessage: function () {
 			return this.collection ?
@@ -339,14 +240,6 @@ module.exports = {
 				`${location.protocol}//${location.host}`
 			);
 			this.shareList( this.name, this.description, url.toString() );
-		},
-		clickDeepLink: function () {
-			try {
-				window.location.protocol = 'wikipedia';
-				setTimeout( () => mw.notify( mw.msg( 'readinglists-import-app-launch-hint' ) ), 1000 );
-			} catch ( e ) {
-				// User does not have the app installed.
-			}
 		},
 		clickCard: function ( ev ) {
 			// If we are navigating to a list, navigate internally
@@ -516,24 +409,5 @@ module.exports = {
 
 .readinglist-list--hidden {
 	display: none;
-}
-
-.app_store_images_sprite {
-	background-image: url( images/sprite.svg );
-	background-repeat: no-repeat;
-	display: inline-block;
-	vertical-align: middle;
-}
-
-.svg-badge_google_play_store {
-	background-position: 0 -541px;
-	width: 124px;
-	height: 38px;
-}
-
-.svg-badge_ios_app_store {
-	background-position: 0 -579px;
-	width: 110px;
-	height: 38px;
 }
 </style>
