@@ -16,28 +16,9 @@
 				</cdx-message>
 			</div>
 			<div v-if="loaded && !errorCode">
-				<div :class="readingListClass">
-					<div v-if="cards.length" class="readinglist-list__container">
-						<cdx-card
-							v-for="( card ) in cards"
-							:key="card.id"
-							:url="card.url"
-							:force-thumbnail="true"
-							:thumbnail="card.thumbnail"
-							@click="clickCard"
-						>
-							<template #title>
-								{{ card.title }}
-							</template>
-							<template #description>
-								{{ card.description }}
-							</template>
-						</cdx-card>
-					</div>
-					<div v-else>
-						{{ emptyMessage }}
-					</div>
-				</div>
+				<reading-list
+					v-if="!( anonymizedPreviews && showDisclaimer )"
+					:cards="cards" :empty-message="emptyMessage" @click-card="clickCard"></reading-list>
 			</div>
 			<div v-if="!loaded">
 				<intermediate-state></intermediate-state>
@@ -48,7 +29,7 @@
 
 <script>
 /* global Card */
-const { CdxCard, CdxMessage } = require( '@wikimedia/codex' );
+const { CdxMessage } = require( '@wikimedia/codex' );
 const READING_LIST_SPECIAL_PAGE_NAME = 'Special:ReadingLists';
 const READING_LISTS_NAME_PLURAL = mw.msg( 'special-tab-readinglists-short' );
 const READING_LIST_TITLE = mw.msg( 'readinglists-special-title' );
@@ -83,8 +64,8 @@ module.exports = {
 		whitespace: 'condense'
 	},
 	components: {
+		ReadingList: require( './ReadingList.vue' ),
 		ReadingListSummary: require( './ReadingListSummary.vue' ),
-		CdxCard,
 		CdxMessage,
 		IntermediateState: require( './IntermediateState.vue' )
 	},
@@ -205,10 +186,10 @@ module.exports = {
 	},
 	methods: {
 		isShareEnabled: () => navigator.share || navigator.clipboard,
-		clickCard: function ( ev ) {
+		clickCard: function ( href, ev ) {
 			// If we are navigating to a list, navigate internally
 			if ( !this.collection ) {
-				this.navigate( ev.currentTarget.getAttribute( 'href' ), null );
+				this.navigate( href, null );
 				ev.preventDefault();
 			}
 		},
