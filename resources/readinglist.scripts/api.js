@@ -482,6 +482,7 @@ function fromBase64( data ) {
 }
 
 module.exports = {
+	WATCHLIST_ID,
 	test: {
 		readingListToCard,
 		getProjectHost,

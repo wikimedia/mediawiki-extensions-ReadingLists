@@ -5,6 +5,7 @@
 				{{ name }}
 			</h3>
 			<p class="readinglist-collection-description">{{ description }}</p>
+			<p v-if="isWatchlist" v-html="watchlistMsg"></p>
 			<cdx-button
 				v-if="showShareButton && shareUrl"
 				@click="clickShareButton">
@@ -29,6 +30,10 @@ module.exports = {
 		ReadingListDownload
 	},
 	props: {
+		isWatchlist: {
+			type: Boolean,
+			default: false
+		},
 		showMeta: {
 			type: Boolean,
 			default: false
@@ -59,6 +64,9 @@ module.exports = {
 		}
 	},
 	computed: {
+		watchlistMsg() {
+			return mw.message( 'readinglists-watchlist-monitor', mw.util.getUrl( 'Special:Watchlist' ) ).parse();
+		},
 		shareLabel() {
 			return mw.msg( 'readinglists-export' );
 		}

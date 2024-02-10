@@ -49,6 +49,7 @@
 	"readinglists-export": "Share list",
 	"readinglists-watchlist": "Watchlist",
 	"readinglists-watchlist-description": "Pages that you follow for new edits.",
+	"readinglists-watchlist-monitor": "You can monitor edits to pages on this list using the [$1 watchlist] tool.",
 	"readinglists-import-app": "-",
 	"readinglists-import-app-with-link": "-",
 	"readinglists-import-app-misconfigured": "This website currently does not support importing lists.",

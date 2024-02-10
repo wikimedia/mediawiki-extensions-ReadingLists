@@ -57,6 +57,7 @@
 	"readinglists-export": "Share button label",
 	"readinglists-watchlist": "An item in the list of reading lists.",
 	"readinglists-watchlist-description": "Description of watchlist",
+	"readinglists-watchlist-monitor": "Wikitext that contains a link to the watchlist tool.",
 	"readinglists-import-app": "{{notranslate}}\n\nPrompt user to download app to import reading list.\n\nSee also {{msg-mw|Readinglists-import-app-with-link}}\n\nConfigured on site basis. See '''[[mw:Extension:WikimediaMessages]]''' for Wikimedia localizations (and some early user documentation at '''[[c:User:Multichill/Template i18n at Translatewiki]]''').",
 	"readinglists-import-app-with-link": "{{notranslate}}\n\nPrompt user to download app to import reading list. The $1 parameter will be replaced with the URL for downloading.\n\nSee also {{msg-mw|Readinglists-import-app}}\n\nConfigured on site basis. See '''[[mw:Extension:WikimediaMessages]]''' for Wikimedia localizations (and some early user documentation at '''[[c:User:Multichill/Template i18n at Translatewiki]]''').",
 	"readinglists-import-app-misconfigured": "Shows when something is setup incorrectly and the import URL is followed.",

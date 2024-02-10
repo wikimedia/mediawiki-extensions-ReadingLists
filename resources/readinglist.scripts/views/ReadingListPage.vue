@@ -40,6 +40,7 @@
 			class="readinglist-collection"
 			@click="setTabUrl">
 			<reading-list-summary
+				:is-watchlist="api.WATCHLIST_ID === collection"
 				:show-disclaimer="showDisclaimer"
 				:show-meta="showMeta"
 				:show-share-button="!showDisclaimer && isShareEnabled && cardsList.length"
