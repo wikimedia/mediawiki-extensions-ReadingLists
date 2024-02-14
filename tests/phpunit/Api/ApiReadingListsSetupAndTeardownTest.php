@@ -33,6 +33,8 @@ class ApiReadingListsSetupAndTeardownTest extends ApiTestCase {
 	}
 
 	public function testSetup() {
+		$this->addProjects( [ 'test' ] );
+
 		$this->apiParams['command'] = 'setup';
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
 		$this->assertEquals( 'Success', $result[0]['setup']['result'] );

@@ -6,6 +6,7 @@
 	},
 	"readinglists-desc": "Allows users to manage private lists of articles, such as bookmarks or \"Read Later\" lists.",
 	"readinglists-db-error-not-set-up": "Reading lists have not been set up for this user.",
+	"readinglists-db-error-no-projects": "No projects have been registered for use with ReadingLists. Use the populateProjectsFromSiteMatrix script to register projects.",
 	"readinglists-db-error-already-set-up": "Reading lists have already been set up for this user.",
 	"readinglists-db-error-cannot-delete-default-list": "The default list cannot be deleted.",
 	"readinglists-db-error-cannot-update-default-list": "The default list cannot be updated.",

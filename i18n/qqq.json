@@ -14,6 +14,7 @@
 	},
 	"readinglists-desc": "{{desc|name=ReadingLists|url=https://www.mediawiki.org/wiki/Extension:ReadingLists}}",
 	"readinglists-db-error-not-set-up": "Error message used when trying to perform an operation for a user without calling setup first.",
+	"readinglists-db-error-no-projects": "Error message used when no projects have been registered for use with the ReadingLists extension.",
 	"readinglists-db-error-already-set-up": "Error message used when trying to call setup for a user when it has already been performed.",
 	"readinglists-db-error-cannot-delete-default-list": "Error message used when trying to delete the default list.",
 	"readinglists-db-error-cannot-update-default-list": "Error message used when trying to update the default list.",

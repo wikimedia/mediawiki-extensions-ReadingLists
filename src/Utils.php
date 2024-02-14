@@ -2,7 +2,9 @@
 
 namespace MediaWiki\Extension\ReadingLists;
 
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\User;
 use UnexpectedValueException;
 
 /**
@@ -28,6 +30,25 @@ class Utils {
 				. $days );
 		}
 		return $timestamp;
+	}
+
+	/**
+	 * Create a repository for maintenance use.
+	 * The repo will be associated with a system user.
+	 *
+	 * @return ReadingListRepository
+	 */
+	public static function makeMaintenanceRepository() {
+		// TODO: Move this to a service
+		$services = MediaWikiServices::getInstance();
+		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
+		// There isn't really any way for this user to be non-local, but let's be future-proof.
+		$centralId = $services->getCentralIdLookupFactory()
+			->getLookup()
+			->centralIdFromLocalUser( $user );
+		$repository = new ReadingListRepository( $centralId, $services->getDBLoadBalancerFactory() );
+		$repository->setLogger( LoggerFactory::getInstance( 'readinglists' ) );
+		return $repository;
 	}
 
 }
