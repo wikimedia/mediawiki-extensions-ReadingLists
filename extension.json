@@ -263,6 +263,47 @@
 				"MainConfig",
 				"CentralIdLookup"
 			]
+		},
+		{
+			"path": "/readinglists/v0/lists/{id}/entries",
+			"method": "GET",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup",
+				"ReverseInterwikiLookup"
+			]
+		},
+		{
+			"path": "/readinglists/v0/lists/{id}/entries",
+			"method": "POST",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
+		},
+		{
+			"path": "/readinglists/v0/lists/{id}/entries/batch",
+			"method": "POST",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
+		},
+		{
+			"path": "/readinglists/v0/lists/{id}/entries/{entry_id}",
+			"method": "DELETE",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesDeleteHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
 		}
 	],
 	"DatabaseVirtualDomains": [

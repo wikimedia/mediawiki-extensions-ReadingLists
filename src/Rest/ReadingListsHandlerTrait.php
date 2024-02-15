@@ -3,12 +3,16 @@
 namespace MediaWiki\Extension\ReadingLists\Rest;
 
 use MediaWiki\Config\Config;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
+use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Permissions\Authority;
 use MediaWiki\Rest\LocalizedHttpException;
 use MediaWiki\Rest\Validator\Validator;
+use MediaWiki\Title\Title;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use MediaWiki\User\UserIdentity;
 use Psr\Log\LoggerInterface;
@@ -96,6 +100,30 @@ trait ReadingListsHandlerTrait {
 	}
 
 	/**
+	 * Convert a list entry record from ReadingListRepository into an array suitable for adding to
+	 * the API result.
+	 * @param ReadingListEntryRow|ReadingListEntryRowWithMergeFlag $row
+	 * @return array
+	 */
+	private function getListEntryFromRow( $row ) {
+		$item = [
+			'id' => (int)$row->rle_id,
+			'listId' => (int)$row->rle_rl_id,
+			'project' => $row->rlp_project,
+			'title' => $row->rle_title,
+			'created' => wfTimestamp( TS_ISO_8601, $row->rle_date_created ),
+			'updated' => wfTimestamp( TS_ISO_8601, $row->rle_date_updated ),
+		];
+		if ( isset( $row->merged ) ) {
+			$item['duplicate'] = (bool)$row->merged;
+		}
+		if ( $row->rle_deleted ) {
+			$item['deleted'] = true;
+		}
+		return $item;
+	}
+
+	/**
 	 * Extract continuation data from item position and serialize it into a string.
 	 * @param array $item Result item to continue from.
 	 * @param string $sort One of the SORT_BY_* constants.
@@ -155,8 +183,8 @@ trait ReadingListsHandlerTrait {
 	 */
 	protected function getBatchOps( $batch ) {
 		// TODO: consider alternatives to referencing the global services instance.
-		// RequestInterface doesn't provide normalizeUnicode(), so we can't use the
-		// $this->getRequest() method on Handler.
+		//  RequestInterface doesn't provide normalizeUnicode(), so we can't use the
+		//  $this->getRequest() method on Handler.
 		$request = RequestContext::getMain()->getRequest();
 
 		// Must be a real array, and not empty.
@@ -231,6 +259,7 @@ trait ReadingListsHandlerTrait {
 				Validator::PARAM_SOURCE => 'query',
 				ParamValidator::PARAM_DEFAULT => 'ascending',
 				ParamValidator::PARAM_TYPE => [ 'ascending', 'descending' ],
+				ParamValidator::PARAM_REQUIRED => false,
 			],
 			'limit' => [
 				Validator::PARAM_SOURCE => 'query',
@@ -254,5 +283,38 @@ trait ReadingListsHandlerTrait {
 		if ( !$authority->isAllowed( 'viewmyprivateinfo' ) ) {
 			$this->die( 'rest-permission-error', [ 'viewmyprivateinfo' ] );
 		}
+	}
+
+	/**
+	 * @param int $id the list to update
+	 * @param string $project
+	 * @param string $title
+	 * @param ?ReadingListRepository $repository
+	 * @return array
+	 */
+	public function createListEntry(
+		int $id, string $project, string $title, ?ReadingListRepository $repository
+	) {
+		// Lists can contain titles from other wikis, and we have no idea of the exact title
+		// validation rules used there; but in practice it's unlikely the rules would differ,
+		// and allowing things like <> or # in the title could result in vulnerabilities in
+		// clients that assume they are getting something sane. So let's validate anyway.
+		// We do not normalize, that would contain too much local logic (e.g. title case), and
+		// clients are expected to submit already normalized titles (that they got from the API)
+		// anyway.
+		if ( !Title::newFromText( $title ) ) {
+			$this->die( 'apierror-invalidtitle', [ wfEscapeWikiText( $title ) ] );
+		}
+
+		try {
+			$entry = $repository->addListEntry( $id, $project, $title );
+		} catch ( ReadingListRepositoryException $e ) {
+			$this->die( $e->getMessageObject() );
+		}
+
+		return [
+			'id' => (int)$entry->rle_id,
+			'entry' => $this->getListEntryFromRow( $entry ),
+		];
 	}
 }

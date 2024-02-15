@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\ReadingLists\Tests;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\Rest\SetupHandler;
 use MediaWiki\Extension\ReadingLists\Rest\TeardownHandler;
+use MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Permissions\Authority;
 use MediaWiki\Rest\Handler;
@@ -45,6 +46,17 @@ trait RestTestHelperTrait {
 		$centralIdLookup->method( 'centralIdFromLocalUser' )
 			->willReturn( $this->getAuthority( $privileged )->getUser()->getId() );
 		return $centralIdLookup;
+	}
+
+	/**
+	 * @param string|null $prefix
+	 * @return MockObject|ReverseInterwikiLookup
+	 */
+	private function getMockReverseInterwikiLookup( ?string $prefix ) {
+		$lookup = $this->createNoOpMock( ReverseInterwikiLookup::class, [ 'lookup' ] );
+		$lookup->method( 'lookup' )
+			->willReturn( $prefix );
+		return $lookup;
 	}
 
 	/**
