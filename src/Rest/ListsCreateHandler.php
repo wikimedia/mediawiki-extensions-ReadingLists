@@ -3,23 +3,26 @@
 namespace MediaWiki\Extension\ReadingLists\Rest;
 
 use MediaWiki\Config\Config;
+use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Rest\Handler;
+use MediaWiki\Rest\HttpException;
 use MediaWiki\Rest\Response;
-use MediaWiki\Rest\Validator\BodyValidator;
 use MediaWiki\Rest\Validator\JsonBodyValidator;
-use MediaWiki\Rest\Validator\UnsupportedContentTypeBodyValidator;
 use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use Psr\Log\LoggerInterface;
-use stdClass;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\StringDef;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
- * Tears down reading lists for the logged-in user
+ * Handle POST requests to /readinglists/v0/lists
+ *
+ * Creates reading lists
  */
-class TeardownHandler extends Handler {
+class ListsCreateHandler extends Handler {
 	use ReadingListsHandlerTrait;
 	use ReadingListsTokenAwareHandlerTrait;
 
@@ -54,7 +57,11 @@ class TeardownHandler extends Handler {
 	 */
 	public function postInitSetup() {
 		$this->repository = $this->createRepository(
-			$this->getAuthority()->getUser(), $this->dbProvider, $this->config, $this->centralIdLookup, $this->logger
+			$this->getAuthority()->getUser(),
+			$this->dbProvider,
+			$this->config,
+			$this->centralIdLookup,
+			$this->logger
 		);
 	}
 
@@ -67,36 +74,55 @@ class TeardownHandler extends Handler {
 	}
 
 	/**
-	 * @return Response
+	 * @return array|Response
 	 */
 	public function execute() {
+		$result = [];
+		$repository = $this->getRepository();
 		$this->checkAuthority( $this->getAuthority() );
 
+		$validatedBody = $this->getValidatedBody();
+		$name = $validatedBody['name'];
+		$description = $validatedBody['description'];
+
 		try {
-			$this->getRepository()->teardownForUser();
+			$list = $repository->addList( $name, $description );
 		} catch ( ReadingListRepositoryException $e ) {
 			$this->die( $e->getMessageObject() );
 		}
+		$listData = $this->getListFromRow( $list );
+		$result['id'] = (int)$list->rl_id;
+		$result['list'] = $listData;
 
-		// For historical compatibility, response must be an empty object.
-		return $this->getResponseFactory()->createJson( new stdClass() );
+		return $this->getResponseFactory()->createJson( $result );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getBodyValidator( $contentType ): BodyValidator {
+	public function getBodyValidator( $contentType ) {
 		if ( $contentType !== 'application/json' ) {
-			return new UnsupportedContentTypeBodyValidator( $contentType );
+			throw new HttpException( "Unsupported Content-Type",
+				415,
+				[ 'content_type' => $contentType ]
+			);
 		}
 
-		return new JsonBodyValidator( $this->getTokenParamDefinition() );
-	}
-
-	/**
-	 * @return array|array[]
-	 */
-	public function getParamSettings() {
-		return [] + $this->getTokenParamSettings();
+		return new JsonBodyValidator( [
+				'name' => [
+					self::PARAM_SOURCE => 'body',
+					ParamValidator::PARAM_TYPE => 'string',
+					ParamValidator::PARAM_REQUIRED => true,
+					StringDef::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_name'],
+				],
+				'description' => [
+					self::PARAM_SOURCE => 'body',
+					ParamValidator::PARAM_TYPE => 'string',
+					ParamValidator::PARAM_REQUIRED => false,
+					ParamValidator::PARAM_DEFAULT => '',
+					StringDef::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_description'],
+				]
+			] + $this->getTokenParamDefinition()
+		);
 	}
 }

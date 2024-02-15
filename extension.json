@@ -183,6 +183,86 @@
 				"MainConfig",
 				"CentralIdLookup"
 			]
+		},
+		{
+			"path": "/readinglists/v0/lists",
+			"method": "GET",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
+		},
+		{
+			"path": "/readinglists/v0/lists/{id}",
+			"method": "GET",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsIdHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
+		},
+		{
+			"path": "/readinglists/v0/lists",
+			"method": "POST",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsCreateHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
+		},
+		{
+			"path": "/readinglists/v0/lists/batch",
+			"method": "POST",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsCreateBatchHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
+		},
+		{
+			"path": "/readinglists/v0/lists/{id}",
+			"method": "PUT",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsUpdateHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
+		},
+		{
+			"path": "/readinglists/v0/lists/{id}",
+			"method": "DELETE",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsDeleteHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
+		},
+		{
+			"path": "/readinglists/v0/lists/pages/{project}/{title}",
+			"method": "GET",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsPagesHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
+		},
+		{
+			"path": "/readinglists/v0/lists/changes/since/{date}",
+			"method": "GET",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsChangesSinceHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
 		}
 	],
 	"DatabaseVirtualDomains": [

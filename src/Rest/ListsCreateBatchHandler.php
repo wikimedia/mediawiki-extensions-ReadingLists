@@ -6,20 +6,21 @@ use MediaWiki\Config\Config;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Rest\Handler;
+use MediaWiki\Rest\HttpException;
 use MediaWiki\Rest\Response;
-use MediaWiki\Rest\Validator\BodyValidator;
 use MediaWiki\Rest\Validator\JsonBodyValidator;
-use MediaWiki\Rest\Validator\UnsupportedContentTypeBodyValidator;
 use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use Psr\Log\LoggerInterface;
-use stdClass;
+use Wikimedia\ParamValidator\ParamValidator;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
- * Tears down reading lists for the logged-in user
+ * Handle POST requests to /readinglists/v0/lists/batch
+ *
+ * Creates reading lists
  */
-class TeardownHandler extends Handler {
+class ListsCreateBatchHandler extends Handler {
 	use ReadingListsHandlerTrait;
 	use ReadingListsTokenAwareHandlerTrait;
 
@@ -54,7 +55,11 @@ class TeardownHandler extends Handler {
 	 */
 	public function postInitSetup() {
 		$this->repository = $this->createRepository(
-			$this->getAuthority()->getUser(), $this->dbProvider, $this->config, $this->centralIdLookup, $this->logger
+			$this->getAuthority()->getUser(),
+			$this->dbProvider,
+			$this->config,
+			$this->centralIdLookup,
+			$this->logger
 		);
 	}
 
@@ -67,36 +72,53 @@ class TeardownHandler extends Handler {
 	}
 
 	/**
-	 * @return Response
+	 * @return array|Response
 	 */
 	public function execute() {
+		$result = [];
+		$repository = $this->getRepository();
 		$this->checkAuthority( $this->getAuthority() );
 
-		try {
-			$this->getRepository()->teardownForUser();
-		} catch ( ReadingListRepositoryException $e ) {
-			$this->die( $e->getMessageObject() );
-		}
+		$validatedBody = $this->getValidatedBody() ?? [];
+		$batch = $validatedBody['batch'];
 
-		// For historical compatibility, response must be an empty object.
-		return $this->getResponseFactory()->createJson( new stdClass() );
+		$listData = $listIds = [];
+		foreach ( $this->getBatchOps( $batch ) as $op ) {
+			$description = $op['description'] ?? '';
+			$this->requireAtLeastOneBatchParameter( $op, 'name' );
+			try {
+				$list = $repository->addList( $op['name'], $description );
+			} catch ( ReadingListRepositoryException $e ) {
+				$this->die( $e->getMessageObject() );
+			}
+			$listIds[] = (object)[ 'id' => (int)$list->rl_id ];
+			$listData[] = $this->getListFromRow( $list );
+		}
+		$result['batch'] = $listIds;
+		$result['lists'] = $listData;
+
+		return $this->getResponseFactory()->createJson( $result );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getBodyValidator( $contentType ): BodyValidator {
+	public function getBodyValidator( $contentType ) {
 		if ( $contentType !== 'application/json' ) {
-			return new UnsupportedContentTypeBodyValidator( $contentType );
+			throw new HttpException( "Unsupported Content-Type",
+				415,
+				[ 'content_type' => $contentType ]
+			);
 		}
 
-		return new JsonBodyValidator( $this->getTokenParamDefinition() );
-	}
-
-	/**
-	 * @return array|array[]
-	 */
-	public function getParamSettings() {
-		return [] + $this->getTokenParamSettings();
+		return new JsonBodyValidator( [
+				// TODO: consider additional validation on "batch", once we have that capability.
+				'batch' => [
+					self::PARAM_SOURCE => 'body',
+					ParamValidator::PARAM_TYPE => 'string',
+					ParamValidator::PARAM_REQUIRED => true,
+				],
+			] + $this->getTokenParamDefinition()
+		);
 	}
 }
