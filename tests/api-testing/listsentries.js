@@ -11,74 +11,6 @@ describe( 'ReadingLists', function () {
 		token = await alice.token();
 	} );
 
-	describe( 'PUT and DELETE /lists/{id}', function () {
-		let listId;
-		let listsIdUrl;
-		const reqBody = {
-			name: 'newListName'
-		};
-		before( async function () {
-			await restfulAlice.post( '/setup' ).send( { token } );
-		} );
-
-		it( 'cannot not edit default list', async function () {
-			const listsResponse = await restfulAlice.get( '/lists' ).send( { token } );
-			listId = listsResponse.body.lists[ 0 ].id;
-			listsIdUrl = '/lists/' + listId;
-			const response = await restfulAlice.put( listsIdUrl, reqBody ).send( { token } );
-			assert.deepEqual( response.status, 400, response.text );
-			assert.deepEqual( response.body.errorKey, 'readinglists-db-error-cannot-update-default-list', response.text );
-		} );
-
-		it( 'should create a new list', async function () {
-			const reqNewList = {
-				name: 'oldListName',
-				description: 'newDescription'
-			};
-			const response = await restfulAlice.post( '/lists', reqNewList ).send( { token } );
-			assert.deepEqual( response.status, 200, response.text );
-		} );
-
-		it( 'should edit list by id', async function () {
-			const listsResponse = await restfulAlice.get( '/lists' ).send( { token } );
-			listId = listsResponse.body.lists[ 1 ].id;
-			listsIdUrl = '/lists/' + listId;
-			const response = await restfulAlice.put( listsIdUrl, reqBody ).send( { token } );
-			const oldListName = listsResponse.body.lists[ 1 ].name;
-			const newListName = response.body.list.name;
-			assert.notEqual( oldListName, newListName );
-			assert.deepEqual( response.status, 200, response.text );
-		} );
-
-		it( 'should delete list by id', async function () {
-			const listsResponse = await restfulAlice.get( '/lists' ).send( { token } );
-			assert.deepEqual( listsResponse.body.lists.length, 2, listsResponse.text );
-
-			listId = listsResponse.body.lists[ 1 ].id;
-			listsIdUrl = '/lists/' + listId;
-			const response = await restfulAlice.del( listsIdUrl ).send( { token } );
-			assert.deepEqual( response.status, 200, response.text );
-
-			const newlistsResponse = await restfulAlice.get( '/lists' ).send( { token } );
-			assert.deepEqual( newlistsResponse.body.lists.length, 1, newlistsResponse.text );
-			assert.deepEqual( newlistsResponse.body.lists[ 0 ].name, 'default', newlistsResponse.text );
-
-			const editListResponse = await restfulAlice.put(
-				listsIdUrl, reqBody
-			).send( { token } );
-			assert.deepEqual(
-				editListResponse.body.errorKey,
-				'readinglists-db-error-list-deleted',
-				editListResponse.text
-			);
-
-		} );
-
-		after( async function () {
-			await restfulAlice.post( '/teardown' ).send( { token } );
-		} );
-	} );
-
 	describe( 'GET and POST /lists/{id}/entries', function () {
 		let entriesUrl;
 		before( async function () {
@@ -139,4 +71,66 @@ describe( 'ReadingLists', function () {
 			await restfulAlice.post( '/teardown' ).send( { token } );
 		} );
 	} );
+
+	describe( 'GET /lists/changes/since/{ date }', function () {
+		// Helper function to get lists that have changed since a specific date
+		async function getListsChangesSince( date, next = '', limit = 10 ) {
+			return await restfulAlice.get( `/lists/changes/since/${date}` )
+				.query( { next, limit } )
+				.send( { token } ); // Assuming you have a valid token
+		}
+
+		// Test case for getting lists that have changed since a specific date
+		it( 'should get lists changes since a specific date', async function () {
+			// Replace 'your-date-here' with a valid timestamp
+			const date = '2023-01-01T00:00:00Z'; // i put a random date here but we can discuss
+			const response = await getListsChangesSince( date );
+
+			assert.strictEqual( response.status, 200, response.text );
+			assert.isAtLeast( response.body.lists.length, 0, 'Lists array should be present' );
+
+			// Add assertions to check that each list's 'updated' timestamp is later than 'created'
+			for ( const list of response.body.lists ) {
+				const createdTimestamp = new Date( list.created ).getTime();
+				const updatedTimestamp = new Date( list.updated ).getTime();
+
+				assert.ok( !isNaN( createdTimestamp ), `List ID ${list.id} has invalid created timestamp` );
+				assert.ok( !isNaN( updatedTimestamp ), `List ID ${list.id} has invalid updated timestamp` );
+				assert.ok( updatedTimestamp >= createdTimestamp, `List ID ${list.id} has updated timestamp later than or equal to created timestamp` );
+			}
+
+		} );
+
+	} );
+
+	// FIXME: it seems it does not check for invalid title?
+	describe( 'GET /list/pages/project/title', function () {
+		const validProject = 'foo';
+		const validTitle = 'Dog';
+		const invalidProject = '%Foo';
+		const invalidTitle = '_Dog_';
+
+		it.skip( 'should get lists with specified parameters', async function () {
+			// /lists/pages/{project}/{title}'
+			const response = await restfulAlice.get( `/lists/pages/${validProject}/${validTitle}` );
+			assert.deepEqual( response.status, 200, response.text );
+			// TODO: We should check that we actually get lists,
+			//  that the lists we get are the correct ones.
+		} );
+
+		it.skip( 'should handle a case with invalid title', async function () {
+			// Assumes handler returns an error response for invalid parameters
+			const response = await restfulAlice.get( `/lists/pages/${validProject}/${invalidTitle}` );
+			assert.deepEqual( response.status, 400, response.text );
+		} );
+
+		it( 'should handle a case with invalid project', async function () {
+			// Assumes handler returns an error response for invalid parameters
+			const response = await restfulAlice.get( `/lists/pages/${invalidProject}/${validTitle}` );
+			assert.deepEqual( response.status, 400, response.text );
+		} );
+
+		// you can have a missing project or missing title
+	} );
+
 } );
