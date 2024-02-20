@@ -77,7 +77,7 @@ class ListsUpdateHandler extends SimpleHandler {
 	public function run( int $id ) {
 		$this->checkAuthority( $this->getAuthority() );
 
-		$params = $this->getValidatedBody();
+		$params = $this->getValidatedBody() ?? [];
 		$this->requireAtLeastOneParameter( $params, 'name', 'description' );
 		try {
 			$list = $this->getRepository()->updateList( $id, $params['name'], $params['description'] );

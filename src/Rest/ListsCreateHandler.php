@@ -81,7 +81,7 @@ class ListsCreateHandler extends Handler {
 		$repository = $this->getRepository();
 		$this->checkAuthority( $this->getAuthority() );
 
-		$validatedBody = $this->getValidatedBody();
+		$validatedBody = $this->getValidatedBody() ?? [];
 		$name = $validatedBody['name'];
 		$description = $validatedBody['description'];
 
