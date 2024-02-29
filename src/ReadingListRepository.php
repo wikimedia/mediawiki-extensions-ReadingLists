@@ -2,7 +2,6 @@
 
 namespace MediaWiki\Extension\ReadingLists;
 
-use DBAccessObjectUtils;
 use IDBAccessObject;
 use LogicException;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
@@ -198,9 +197,11 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 */
 	public function isSetupForUser( $flags = 0 ) {
 		$this->assertUser();
-		[ $index, $options ] = DBAccessObjectUtils::getDBOptions( $flags );
-		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
-		$options = array_merge( $options, [ 'LIMIT' => 1 ] );
+		if ( ( $flags & IDBAccessObject::READ_LATEST ) == IDBAccessObject::READ_LATEST ) {
+			$db = $this->dbw;
+		} else {
+			$db = $this->dbr;
+		}
 		$res = $db->newSelectQueryBuilder()
 			->select( '1' )
 			->from( 'reading_list' )
@@ -213,7 +214,8 @@ class ReadingListRepository implements LoggerAwareInterface {
 					'rl_is_default' => 1,
 				]
 			)
-			->options( $options )
+			->recency( $flags )
+			->limit( 1 )
 			->caller( __METHOD__ )->fetchResultSet();
 		// Until a better 'rl_is_default', log warnings so the bugs are caught.
 		$n = $res->numRows();
@@ -239,14 +241,17 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 */
 	public function selectValidList( $id, $flags = 0 ) {
 		$this->assertUser();
-		[ $index, $options ] = DBAccessObjectUtils::getDBOptions( $flags );
-		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
+		if ( ( $flags & IDBAccessObject::READ_LATEST ) == IDBAccessObject::READ_LATEST ) {
+			$db = $this->dbw;
+		} else {
+			$db = $this->dbr;
+		}
 		/** @var ReadingListRow $row */
 		$row = $db->newSelectQueryBuilder()
 			->select( array_merge( $this->getListFields(), [ 'rl_user_id' ] ) )
 			->from( 'reading_list' )
 			->where( [ 'rl_id' => $id ] )
-			->options( $options )
+			->recency( $flags )
 			->caller( __METHOD__ )->fetchRow();
 		if ( !$row ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-list', [ $id ] );
@@ -1105,13 +1110,16 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 */
 	private function getListCount( $flags = 0 ) {
 		$this->assertUser();
-		[ $index, $options ] = DBAccessObjectUtils::getDBOptions( $flags );
-		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
+		if ( ( $flags & IDBAccessObject::READ_LATEST ) == IDBAccessObject::READ_LATEST ) {
+			$db = $this->dbw;
+		} else {
+			$db = $this->dbr;
+		}
 		return $db->newSelectQueryBuilder()
 			->select( '1' )
 			->from( 'reading_list' )
 			->where( [ 'rl_user_id' => $this->userId, 'rl_deleted' => 0, ] )
-			->options( $options )
+			->recency( $flags )
 			->caller( __METHOD__ )->fetchRowCount();
 	}
 
@@ -1138,13 +1146,16 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 */
 	private function getEntryCount( $id, $flags = 0 ) {
 		$this->assertUser();
-		[ $index, $options ] = DBAccessObjectUtils::getDBOptions( $flags );
-		$db = ( $index === DB_PRIMARY ) ? $this->dbw : $this->dbr;
+		if ( ( $flags & IDBAccessObject::READ_LATEST ) == IDBAccessObject::READ_LATEST ) {
+			$db = $this->dbw;
+		} else {
+			$db = $this->dbr;
+		}
 		return (int)$db->newSelectQueryBuilder()
 			->select( 'rl_size' )
 			->from( 'reading_list' )
 			->where( [ 'rl_id' => $id ] )
-			->options( $options )
+			->recency( $flags )
 			->caller( __METHOD__ )->fetchField();
 	}
 
