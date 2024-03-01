@@ -110,6 +110,8 @@
 				"mediawiki.user"
 			],
 			"messages": [
+				"readinglists-watchlist",
+				"readinglists-watchlist-description",
 				"readinglists-share-url-notify",
 				"readinglists-share-url-text",
 				"readinglists-share-url-text-incomplete",

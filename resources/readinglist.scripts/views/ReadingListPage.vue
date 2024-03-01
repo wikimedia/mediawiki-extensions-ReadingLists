@@ -413,8 +413,8 @@ module.exports = {
 					} );
 				}
 			} else if ( this.collection ) {
-				this.api.getCollectionMeta( this.username, this.collection ).then( ( meta ) => {
-					this.api.getPages( this.collection ).then( ( pages ) => {
+				this.api.getCollectionMeta( this.username, parseInt( this.collection, 10 ) ).then( ( meta ) => {
+					this.api.getPages( parseInt( this.collection, 10 ) ).then( ( pages ) => {
 						this.cards = pages.map( ( collection ) => getCard( collection ) );
 						this.loaded = true;
 						this.name = meta.name;

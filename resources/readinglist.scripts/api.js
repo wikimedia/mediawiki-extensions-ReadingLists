@@ -3,6 +3,9 @@ const DEFAULT_READING_LIST_DESCRIPTION = mw.msg( 'readinglists-default-descripti
 const { getReadingListUrl } = require( './utils.js' );
 const config = require( './config.json' );
 const api = new mw.Api();
+const WATCHLIST_ID = -10;
+const WATCHLIST_NAME = mw.msg( 'readinglists-watchlist' );
+const WATCHLIST_DESCRIPTION = mw.msg( 'readinglists-watchlist-description' );
 
 /**
  * @typedef ApiQueryResponseReadingListEntry
@@ -163,6 +166,20 @@ function setupCollections() {
 }
 
 /**
+ * Create a card representing the user's watchlist.
+ *
+ * @param {string} ownerName
+ * @return {Card}
+ */
+const watchlistCard = ( ownerName ) => {
+	return readingListToCard( {
+		id: WATCHLIST_ID,
+		name: WATCHLIST_NAME,
+		description: WATCHLIST_DESCRIPTION
+	}, ownerName );
+};
+
+/**
  *
  * @param {string} ownerName (username)
  * @param {number[]} marked a list of collection IDs which have a certain title
@@ -178,9 +195,13 @@ function getCollections( ownerName, marked ) {
 			meta: 'readinglists',
 			formatversion: 2
 		} ).then( function ( /** @type {ApiQueryResponseReadingLists} */ data ) {
+			const list = ( data.query.readinglists || [] );
 			resolve(
-				( data.query.readinglists || [] ).map( ( collection ) =>
-					readingListToCard( collection, ownerName, marked ) )
+				list.map( ( collection ) => readingListToCard(
+					collection, ownerName )
+				).concat(
+					watchlistCard( ownerName )
+				)
 			);
 		}, function ( /** @type {string} */ err ) {
 			// setup a reading list and try again.
@@ -202,6 +223,9 @@ function getCollections( ownerName, marked ) {
  * @return {jQuery.Promise<Card>}
  */
 function getCollectionMeta( ownerName, id ) {
+	if ( id === WATCHLIST_ID ) {
+		return Promise.resolve( watchlistCard( ownerName ) );
+	}
 	return api.get( { action: 'query', format: 'json', meta: 'readinglists', rllist: id, formatversion: 2 } )
 		.then( function ( /** @type {ApiQueryResponseReadingLists} */ data ) {
 			if ( data.error && data.error.code ) {
@@ -274,6 +298,8 @@ function getThumbnailsAndDescriptions( project, pageidsOrPageTitles ) {
 		format: 'json',
 		origin: '*',
 		formatversion: 2,
+		redirects: true,
+		pilimit: pageidsOrPageTitles.length,
 		prop: 'pageimages|description',
 		pageids,
 		titles,
@@ -281,7 +307,9 @@ function getThumbnailsAndDescriptions( project, pageidsOrPageTitles ) {
 		pithumbsize: 200
 	}, ajaxOptions ).then( function ( /** @type {ApiQueryResponseTitles} */ pageData ) {
 		return pageData && pageData.query ?
-			pageData.query.pages.filter( filterOutMissingPagesIfIDsPassed ).map( transformPage( project ) ) : [];
+			pageData.query.pages.filter(
+				filterOutMissingPagesIfIDsPassed ).map( transformPage( project )
+			) : [];
 	} ) : Promise.resolve( [] );
 }
 /**
@@ -332,27 +360,84 @@ function getPagesFromReadingListPages( pages ) {
 }
 
 /**
- * Gets pages on a given reading list
+ * Get the current project.
+ *
+ * @return {string}
+ */
+function getCurrentProjectName() {
+	// Use wgServer to avoid issues with ".m." domain
+	const server = mw.config.get( 'wgServer' );
+	return server.indexOf( '//' ) === 0 ?
+		window.location.protocol + server : server;
+}
+
+/**
+ * @param {Object} continueQuery
+ * @return {jQuery.Promise<ApiQueryResponseReadingListEntryItem[]>}
+ */
+function getWatchlistPages( continueQuery = {} ) {
+	return api.get( Object.assign( {
+		action: 'query',
+		format: 'json',
+		formatversion: 2,
+		wrnamespace: 0,
+		list: 'watchlistraw',
+		wrlimit: 'max'
+	}, continueQuery ) ).then( ( data ) => {
+		const pages = data.watchlistraw.map( ( page ) => Object.assign( {}, page, {
+			project: getCurrentProjectName()
+		} ) );
+		if ( data.continue ) {
+			return getWatchlistPages( data.continue )
+				.then( ( extraPages ) => pages.concat( extraPages ) );
+		}
+		return pages;
+	} );
+}
+
+/**
  *
  * @param {number} collectionId
- * @return {jQuery.Promise<any>}
+ * @param {Object} [continueQuery]
+ * @return {jQuery.Promise<ApiQueryResponseReadingListEntryItem[]>}
  */
-function getPages( collectionId ) {
-	return api.get( {
+function getReadingListPages( collectionId, continueQuery = {} ) {
+	return api.get( Object.assign( {
 		action: 'query',
 		format: 'json',
 		formatversion: 2,
 		list: 'readinglistentries',
 		rlelimit: 100,
 		rlelists: collectionId
-	} ).then( ( /** @type {ApiQueryResponseReadingListEntries} */data ) => {
-		const readinglistpages = data.query.readinglistentries;
+	}, continueQuery ) ).then( ( /** @type {ApiQueryResponseReadingListEntries} */data ) => {
+		const pages = data.query.readinglistentries;
+		if ( data.continue ) {
+			return getReadingListPages( collectionId, data.continue )
+				.then( ( extraPages ) => pages.concat( extraPages ) );
+		}
+		return pages;
+	} );
+}
+
+/**
+ * Gets pages on a given reading list
+ *
+ * @param {number} collectionId
+ * @return {jQuery.Promise<any>}
+ */
+function getPages( collectionId ) {
+	const query = collectionId === WATCHLIST_ID ?
+		getWatchlistPages() : getReadingListPages( collectionId );
+	return query.then( (
+		/** @type {ApiQueryResponseReadingListEntryItem[]} */ readinglistpages
+	) => {
 		return getPagesFromReadingListPages(
 			readinglistpages
 		).then( function ( /** @type {ApiQueryResponsePage} */ pages ) {
 			// make sure project is passed down.
-			return pages.map( ( page, /** @type {number} */ i ) =>
-				Object.assign( readinglistpages[ i ], page ) );
+			return pages.map( ( page, /** @type {number} */ i ) => Object.assign(
+				readinglistpages[ i ], page
+			) ).sort( ( a, b ) => a.title < b.title ? -1 : 1 );
 		}, () => {
 			return Promise.reject( 'readinglistentries-error' );
 		} );
@@ -366,7 +451,11 @@ function getPages( collectionId ) {
  * @return {string}
  */
 function toBase64( name, description, list ) {
-	return btoa( JSON.stringify( { name, description, list } ) );
+	try {
+		return btoa( JSON.stringify( { name, description, list } ) );
+	} catch ( e ) {
+		return '';
+	}
 }
 
 /**
