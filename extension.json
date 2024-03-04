@@ -170,7 +170,7 @@
 	},
 	"RestRoutes": [
 		{
-			"path": "/readinglists/v0/setup",
+			"path": "/readinglists/v0/lists/setup",
 			"method": "POST",
 			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\SetupHandler",
 			"services": [
@@ -180,7 +180,7 @@
 			]
 		},
 		{
-			"path": "/readinglists/v0/teardown",
+			"path": "/readinglists/v0/lists/teardown",
 			"method": "POST",
 			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\TeardownHandler",
 			"services": [
