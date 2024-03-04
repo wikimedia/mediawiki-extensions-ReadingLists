@@ -7,12 +7,13 @@ use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Rest\Handler;
-use MediaWiki\Rest\HttpException;
+use MediaWiki\Rest\LocalizedHttpException;
 use MediaWiki\Rest\Response;
 use MediaWiki\Rest\Validator\JsonBodyValidator;
 use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use Psr\Log\LoggerInterface;
+use Wikimedia\Message\MessageValue;
 use Wikimedia\ParamValidator\ParamValidator;
 use Wikimedia\ParamValidator\TypeDef\StringDef;
 use Wikimedia\Rdbms\LBFactory;
@@ -102,7 +103,7 @@ class ListsCreateHandler extends Handler {
 	 */
 	public function getBodyValidator( $contentType ) {
 		if ( $contentType !== 'application/json' ) {
-			throw new HttpException( "Unsupported Content-Type",
+			throw new LocalizedHttpException( new MessageValue( "rest-unsupported-content-type", [ $contentType ] ),
 				415,
 				[ 'content_type' => $contentType ]
 			);
