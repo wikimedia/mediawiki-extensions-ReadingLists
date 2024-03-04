@@ -14,31 +14,31 @@ describe( 'ReadingLists', function () {
 		bob_token = await bob.token();
 	} );
 
-	describe( 'POST /setup and /teardown', function () {
+	describe( 'POST /lists/setup and /lists/teardown', function () {
 		it( 'should fail teardown if user has not set up a reading list', async function () {
 			// Assuming the TeardownHandler checks for a valid setup before tearing down
-			const response = await restfulAlice.post( '/teardown' ).send( { token } );
+			const response = await restfulAlice.post( '/lists/teardown' ).send( { token } );
 			assert.isAtLeast( response.status, 400, response.text );
 		} );
 
 		it( 'setup should fail without valid token', async function () {
-			const response = await restfulAlice.post( '/setup' );
+			const response = await restfulAlice.post( '/lists/setup' );
 			assert.deepEqual( response.status, 403, response.text );
 		} );
 
 		it( 'should setup list for the user', async function () {
-			const response = await restfulAlice.post( '/setup' ).send( { token } );
+			const response = await restfulAlice.post( '/lists/setup' ).send( { token } );
 			assert.deepEqual( response.status, 200, response.text );
 
 		} );
 
 		it( 'teardown should fail without valid token', async function () {
-			const response = await restfulAlice.post( '/teardown' );
+			const response = await restfulAlice.post( '/lists/teardown' );
 			assert.deepEqual( response.status, 403, response.text );
 		} );
 
 		it( 'should teardown lists for the user', async function () {
-			const response = await restfulAlice.post( '/teardown' ).send( { token } );
+			const response = await restfulAlice.post( '/lists/teardown' ).send( { token } );
 			assert.deepEqual( response.status, 200, response.text );
 		} );
 	} );
@@ -46,10 +46,10 @@ describe( 'ReadingLists', function () {
 	describe( 'POST, GET & DEL /lists', function () {
 		let listId;
 		before( async function () {
-			const response = await restfulAlice.post( '/setup' ).send( { token } );
+			const response = await restfulAlice.post( '/lists/setup' ).send( { token } );
 			assert.deepEqual( response.status, 200, response.text );
 			// setting up for the user Bob
-			const response_bob = await restfulBob.post( '/setup' ).send( { token: bob_token } );
+			const response_bob = await restfulBob.post( '/lists/setup' ).send( { token: bob_token } );
 			assert.deepEqual( response_bob.status, 200, response_bob.text );
 		} );
 
@@ -216,7 +216,7 @@ describe( 'ReadingLists', function () {
 		} );
 
 		after( async function () {
-			await restfulAlice.post( '/teardown' ).send( { token } );
+			await restfulAlice.post( '/lists/teardown' ).send( { token } );
 		} );
 
 	} );
@@ -228,7 +228,7 @@ describe( 'ReadingLists', function () {
 			name: 'newListName'
 		};
 		before( async function () {
-			await restfulAlice.post( '/setup' ).send( { token } );
+			await restfulAlice.post( '/lists/setup' ).send( { token } );
 		} );
 
 		it( 'cannot not edit default list', async function () {
@@ -261,7 +261,7 @@ describe( 'ReadingLists', function () {
 		} );
 
 		after( async function () {
-			await restfulAlice.post( '/teardown' ).send( { token } );
+			await restfulAlice.post( '/lists/teardown' ).send( { token } );
 		} );
 	} );
 

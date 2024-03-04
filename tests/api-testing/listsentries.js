@@ -14,7 +14,7 @@ describe( 'ReadingLists', function () {
 	describe( 'GET and POST /lists/{id}/entries', function () {
 		let entriesUrl;
 		before( async function () {
-			await restfulAlice.post( '/setup' ).send( { token } );
+			await restfulAlice.post( '/lists/setup' ).send( { token } );
 			const reqNewList = {
 				name: 'newName',
 				description: 'newDescription'
@@ -68,7 +68,7 @@ describe( 'ReadingLists', function () {
 		} );
 
 		after( async function () {
-			await restfulAlice.post( '/teardown' ).send( { token } );
+			await restfulAlice.post( '/lists/teardown' ).send( { token } );
 		} );
 	} );
 
