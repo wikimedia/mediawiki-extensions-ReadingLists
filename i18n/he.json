@@ -47,6 +47,8 @@
 	"readinglists-list-empty-message": "ברשימה הזאת אין דפים. יש להוריד את היישום ולהשתמש בו כדי להוסיף פריטים לרשימת הקריאה הזאת.",
 	"readinglists-no-title": "רשימה ללא כותרת",
 	"readinglists-export": "שיתוף רשימה",
+	"readinglists-watchlist": "רשימת המעקב",
+	"readinglists-watchlist-description": "דף שערכת או עקבת אחריו.",
 	"readinglists-import-app-misconfigured": "האתר הזה אינו תומך כעת ביבוא רשימות.",
 	"readinglists-import-disclaimer": "משתמש באתר הזה יצר רשימת קריאה כדי לשתף עם אחרים (כנראה איתך). היא אינה מפוקחת, והתוכן שלה אינו מייצג את עורכי האתר.",
 	"readinglists-import-button-label": "הצגת הרשימה",

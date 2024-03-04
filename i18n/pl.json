@@ -17,6 +17,7 @@
 	"readinglists-browser-extension-info-link-text": "Dowiedz się więcej",
 	"readinglists-browser-list-entry-limit-exceeded": "Artykuł nie może zostać zapisany. Osiągnąłeś limit $1 artykułów na liście",
 	"readinglists-browser-page-not-supported": "$1 nie obsługuje tej strony",
+	"readinglists-watchlist": "Obserwowane",
 	"readinglists-import-button-label": "Zobacz listę",
 	"readinglists-import-button-hint": "Stuknij przycisk:"
 }
