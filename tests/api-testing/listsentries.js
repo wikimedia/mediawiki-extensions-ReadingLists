@@ -76,8 +76,7 @@ describe( 'ReadingLists', function () {
 		// Helper function to get lists that have changed since a specific date
 		async function getListsChangesSince( date, next = '', limit = 10 ) {
 			return await restfulAlice.get( `/lists/changes/since/${date}` )
-				.query( { next, limit } )
-				.send( { token } ); // Assuming you have a valid token
+				.query( { next, limit } );
 		}
 
 		// Test case for getting lists that have changed since a specific date

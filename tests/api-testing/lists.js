@@ -221,7 +221,7 @@ describe( 'ReadingLists', function () {
 
 	} );
 
-	describe( 'PUT  /lists/{id}', function () {
+	describe( 'PUT /lists/{id}', function () {
 		let listId;
 		let listsIdUrl;
 		const reqBody = {
@@ -232,7 +232,7 @@ describe( 'ReadingLists', function () {
 		} );
 
 		it( 'cannot not edit default list', async function () {
-			const listsResponse = await restfulAlice.get( '/lists' ).send( { token } );
+			const listsResponse = await restfulAlice.get( '/lists' );
 			listId = listsResponse.body.lists[ 0 ].id;
 			listsIdUrl = '/lists/' + listId;
 			const response = await restfulAlice.put( listsIdUrl, reqBody ).send( { token } );
@@ -250,7 +250,7 @@ describe( 'ReadingLists', function () {
 		} );
 
 		it( 'should edit list by id', async function () {
-			const listsResponse = await restfulAlice.get( '/lists' ).send( { token } );
+			const listsResponse = await restfulAlice.get( '/lists' );
 			listId = listsResponse.body.lists[ 1 ].id;
 			listsIdUrl = '/lists/' + listId;
 			const response = await restfulAlice.put( listsIdUrl, reqBody ).send( { token } );
