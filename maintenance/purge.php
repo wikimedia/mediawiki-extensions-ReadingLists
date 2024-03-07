@@ -3,11 +3,7 @@
 namespace MediaWiki\Extension\ReadingLists\Maintenance;
 
 use Maintenance;
-use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\Utils;
-use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\MediaWikiServices;
-use MediaWiki\User\User;
 
 require_once getenv( 'MW_INSTALL_PATH' ) !== false
 	? getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php'
@@ -44,25 +40,8 @@ class Purge extends Maintenance {
 			$before = Utils::getDeletedExpiry();
 		}
 		$this->output( "...purging deleted rows\n" );
-		$this->getReadingListRepository()->purgeOldDeleted( $before );
+		Utils::makeMaintenanceRepository()->purgeOldDeleted( $before );
 		$this->output( "done.\n" );
-	}
-
-	/**
-	 * Initializes the repository.
-	 * @return ReadingListRepository
-	 */
-	private function getReadingListRepository() {
-		// TODO: Move this to a service, a lot of copy paste
-		$services = MediaWikiServices::getInstance();
-		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
-		// There isn't really any way for this user to be non-local, but let's be future-proof.
-		$centralId = $services->getCentralIdLookupFactory()
-			->getLookup()
-			->centralIdFromLocalUser( $user );
-		$repository = new ReadingListRepository( $centralId, $services->getDBLoadBalancerFactory() );
-		$repository->setLogger( LoggerFactory::getInstance( 'readinglists' ) );
-		return $repository;
 	}
 
 }

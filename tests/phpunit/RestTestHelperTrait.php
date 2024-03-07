@@ -283,6 +283,8 @@ trait RestTestHelperTrait {
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup()
 		);
+
+		$this->addProjects( [ 'test' ] );
 		return $this->executeReadingListsHandler( $handler, $request );
 	}
 

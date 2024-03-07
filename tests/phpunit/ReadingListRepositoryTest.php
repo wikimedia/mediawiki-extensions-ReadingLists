@@ -27,6 +27,8 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	public function setUp(): void {
 		parent::setUp();
 		$this->lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+
+		$this->addProjects( [ 'dummy' ] );
 	}
 
 	/**
@@ -94,6 +96,43 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			[ 'getListsByDateUpdated', wfTimestampNow() ],
 			[ 'getListsByPage', 'foo', 'bar' ],
 		];
+	}
+
+	public function testSetupFailsWithoutProjects() {
+		$this->db->truncate( 'reading_list_project' );
+
+		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$this->assertFailsWith( 'readinglists-db-error-no-projects',
+			static function () use ( $repository ) {
+				$repository->setupForUser();
+			}
+		);
+	}
+
+	public function testInitializeProjects() {
+		$this->db->truncate( 'reading_list_project' );
+
+		$repository = new ReadingListRepository( 1, $this->lbFactory );
+
+		$this->assertFalse(
+			$repository->hasProjects(),
+			'hasProjects() should initially return false'
+		);
+		$this->assertTrue(
+			$repository->initializeProjectIfNeeded(),
+			'initializeProjectIfNeeded() should return true if there ' .
+			'were no projects in the database before'
+		);
+
+		$this->assertTrue(
+			$repository->hasProjects(),
+			'hasProjects() should return true after initializeProjectIfNeeded()'
+		);
+		$this->assertFalse(
+			$repository->initializeProjectIfNeeded(),
+			'initializeProjectIfNeeded() should return false if there ' .
+			'already were projects in the database'
+		);
 	}
 
 	public function testSetupAndTeardown() {

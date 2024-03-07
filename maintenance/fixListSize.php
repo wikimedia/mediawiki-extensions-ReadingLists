@@ -3,12 +3,9 @@
 namespace MediaWiki\Extension\ReadingLists\Maintenance;
 
 use Maintenance;
-use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extension\ReadingLists\Utils;
-use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\User\User;
 use Wikimedia\Rdbms\IDatabase;
 
 require_once getenv( 'MW_INSTALL_PATH' ) !== false
@@ -78,7 +75,7 @@ class FixListSize extends Maintenance {
 	 * @throws ReadingListRepositoryException
 	 */
 	private function fixRow( $listId ) {
-		$repo = $this->getReadingListRepository();
+		$repo = Utils::makeMaintenanceRepository();
 		try {
 			$this->output( "Fixing list $listId... " );
 			$changed = $repo->fixListSize( $listId );
@@ -92,22 +89,6 @@ class FixListSize extends Maintenance {
 		}
 		$this->output( $changed ? "done\n" : "no change needed\n" );
 		return $changed;
-	}
-
-	/**
-	 * Initializes the repository.
-	 * @return ReadingListRepository
-	 */
-	private function getReadingListRepository() {
-		$services = MediaWikiServices::getInstance();
-		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
-		// There isn't really any way for this user to be non-local, but let's be future-proof.
-		$centralId = $services->getCentralIdLookupFactory()
-			->getLookup()
-			->centralIdFromLocalUser( $user );
-		$repository = new ReadingListRepository( $centralId, $services->getDBLoadBalancerFactory() );
-		$repository->setLogger( LoggerFactory::getInstance( 'readinglists' ) );
-		return $repository;
 	}
 
 }

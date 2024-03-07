@@ -117,6 +117,7 @@ trait ReadingListsTestHelperTrait {
 		$apiParams['command'] = 'setup';
 		$apiParams['action']  = 'readinglists';
 		$apiParams['format']  = 'json';
+		$this->addProjects( [ 'test' ] );
 		$this->doApiRequestWithToken( $apiParams, null, $this->user );
 	}
 

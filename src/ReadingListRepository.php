@@ -110,7 +110,9 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @throws ReadingListRepositoryException
 	 */
 	public function setupForUser() {
-		$this->initializeProjectIfNeeded();
+		if ( !$this->hasProjects() ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-no-projects' );
+		}
 
 		$this->assertUser();
 		if ( $this->isSetupForUser( IDBAccessObject::READ_LOCKING ) ) {
@@ -1163,28 +1165,43 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * Confirm that at least one project exists. Create one if necessary.
 	 * Projects are global to a wiki/wiki farm. Wiki farms using the SiteMatrix
 	 * extension should initialize their projects via maintenance script.
+	 *
+	 * @return bool True if projects were initialized.
 	 */
-	public function initializeProjectIfNeeded() {
-		// FIXME: discuss with others how we feel about this approach.
-		$count = $this->dbr->newSelectQueryBuilder()
-			->select( 'COUNT(*)' )
-			->from( 'reading_list_project' )
-			->caller( __METHOD__ )->fetchField();
-		if ( !$count ) {
-			$url = MediaWikiServices::getInstance()->getUrlUtils()->getCanonicalServer();
-			if ( $url ) {
-				$parts = MediaWikiServices::getInstance()->getUrlUtils()->parse( $url );
-				$parts['port'] = null;
-				$project = MediaWikiServices::getInstance()->getUrlUtils()->assemble( $parts );
-				$this->dbw->newInsertQueryBuilder()
-					->insertInto( 'reading_list_project' )
-					->row( [
-						'rlp_project' => $project,
-					] )
-					->caller( __METHOD__ )->execute();
-			} else {
-				throw new LogicException( 'Unable to load canonical url for project initialization' );
-			}
+	public function initializeProjectIfNeeded(): bool {
+		if ( $this->hasProjects() ) {
+			return false;
 		}
+
+		$url = MediaWikiServices::getInstance()->getUrlUtils()->getCanonicalServer();
+		if ( $url ) {
+			$parts = MediaWikiServices::getInstance()->getUrlUtils()->parse( $url );
+			$parts['port'] = null;
+			$project = MediaWikiServices::getInstance()->getUrlUtils()->assemble( $parts );
+			$this->dbw->newInsertQueryBuilder()
+				->insertInto( 'reading_list_project' )
+				->row( [
+					'rlp_project' => $project,
+				] )
+				->caller( __METHOD__ )->execute();
+
+			return true;
+		} else {
+			throw new LogicException( 'Unable to load canonical url for project initialization' );
+		}
+	}
+
+	/**
+	 * Whether any projects have been registered for use with reading lists.
+	 * If no projects have been registered, it will not be possible to
+	 * add entries to lists.
+	 */
+	public function hasProjects(): bool {
+		$count = $this->dbr->newSelectQueryBuilder()
+			->select( 'COUNT(*)' )->from(
+				'reading_list_project'
+			)->caller( __METHOD__ )->fetchField();
+
+		return $count > 0;
 	}
 }
