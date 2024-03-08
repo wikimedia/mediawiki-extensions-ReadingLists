@@ -9,6 +9,7 @@
 	},
 	"readinglists-desc": "Ermöglicht Benutzern die Verwaltung privater Artikellisten wie bspw. Lesezeichen- oder „Später-lesen“-Listen",
 	"readinglists-db-error-not-set-up": "Leselisten wurden für diesen Benutzer nicht aufgesetzt.",
+	"readinglists-db-error-no-projects": "Es wurden keine Projekte für die Verwendung mit ReadingLists registriert. Verwende das populateProjectsFromSiteMatrix-Skript, um Projekte zu registrieren.",
 	"readinglists-db-error-already-set-up": "Leselisten wurden bereits für diesen Benutzer aufgesetzt.",
 	"readinglists-db-error-cannot-delete-default-list": "Die Standardliste kann nicht gelöscht werden.",
 	"readinglists-db-error-cannot-update-default-list": "Die Standardliste kann nicht aktualisiert werden.",
