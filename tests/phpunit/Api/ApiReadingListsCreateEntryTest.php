@@ -98,7 +98,7 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 				],
 				'Success',
 			],
-			[ [ 'https://en.wikipedia.org',  'https://pt.wikipedia.org' ],
+			[ [ 'https://en.wikipedia.org', 'https://pt.wikipedia.org' ],
 				[ [ 'project' => 'https://en.wikipedia.org', 'title' => 'Dog' ],
 					[ 'project' => 'https://pt.wikipedia.org', 'title' => 'Gato' ],
 				],

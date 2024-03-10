@@ -46,7 +46,7 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 		$inserted = 0;
 
 		$this->output( "populating...\n" );
-		foreach ( $this->generateAllowedDomains() as list( $project ) ) {
+		foreach ( $this->generateAllowedDomains() as [ $project ] ) {
 			$dbw->newInsertQueryBuilder()
 				->insertInto( 'reading_list_project' )
 				->ignore()

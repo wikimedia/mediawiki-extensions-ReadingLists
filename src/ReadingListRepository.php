@@ -695,7 +695,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			// lock the row to avoid race conditions with purgeOldDeleted() in the update case
 			->forUpdate()
 			->from( 'reading_list' )
-			->leftJoin( 'reading_list_entry', null,  'rl_id = rle_rl_id' )
+			->leftJoin( 'reading_list_entry', null, 'rl_id = rle_rl_id' )
 			->where( [ 'rle_id' => $id ] )
 			->caller( __METHOD__ )->fetchRow();
 		if ( !$row ) {

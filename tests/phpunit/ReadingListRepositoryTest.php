@@ -267,7 +267,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertTrue( $mergedList->merged );
 
 		$this->assertFailsWith( 'readinglists-db-error-too-long', static function () use ( $repository ) {
-			$repository->addList( 'boom',  str_pad( '', 1000, 'x' ) );
+			$repository->addList( 'boom', str_pad( '', 1000, 'x' ) );
 		} );
 	}
 
@@ -1323,8 +1323,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			->select( 'rl_name' )
 			->from( 'reading_list' )
 			->caller( __METHOD__ )->fetchFieldValues();
-		$this->assertArrayEquals( $lists, [ 'OO', 'OX', 'XO'
- ] );
+		$this->assertArrayEquals( $lists, [ 'OO', 'OX', 'XO' ] );
 
 		$entries = $this->db->newSelectQueryBuilder()
 			->select( 'rle_title' )

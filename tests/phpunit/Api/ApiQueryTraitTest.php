@@ -104,11 +104,11 @@ class ApiQueryTraitTest extends TestCase {
 
 	public static function decodeContinuationParameterProvider() {
 		return [
-			[ '1' , 'page', ReadingListRepository::SORT_BY_NAME, 1 ],
-			[ 'foo|1' , null, ReadingListRepository::SORT_BY_NAME, [ 'foo', 1 ] ],
-			[ '2018-12-01T00:00:00Z|1' , null, ReadingListRepository::SORT_BY_UPDATED,
+			[ '1', 'page', ReadingListRepository::SORT_BY_NAME, 1 ],
+			[ 'foo|1', null, ReadingListRepository::SORT_BY_NAME, [ 'foo', 1 ] ],
+			[ '2018-12-01T00:00:00Z|1', null, ReadingListRepository::SORT_BY_UPDATED,
 				[ '2018-12-01T00:00:00Z', 1 ] ],
-			[ 'Foo|2' , null, ReadingListRepository::SORT_BY_NAME, [ 'Foo', 2 ] ],
+			[ 'Foo|2', null, ReadingListRepository::SORT_BY_NAME, [ 'Foo', 2 ] ],
 		];
 	}
 
