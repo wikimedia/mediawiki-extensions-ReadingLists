@@ -62,7 +62,7 @@
 	"apihelp-readinglists+delete-summary": "Izbris seznama, ki pripada trenutnemu uporabniku.",
 	"apihelp-readinglists+delete-extended-description": "Izbrisani seznami ostanejo nekaj časa na voljo prek <kbd>modulov [[Special:ApiHelp/query+readinglists|readinglists]]</kbd> in <kbd>[[Special:ApiHelp/query+readinglistentries|readinglistentries]]</kbd> (prek parametra <var>$1 changesince</var>). Izbrisa ni mogoče razveljaviti.",
 	"apihelp-readinglists+delete-param-list": "ID seznama. Obvezno, razen če opravljate paketni izbris.",
-	"apihelp-readinglists+delete-param-batch": "Paketni podatki za izbris več seznamov z enim samim zahtevkom, v obliki JSON-matrike z enim ali več objekti s poljem <var>list</var>.",
+	"apihelp-readinglists+delete-param-batch": "Paketni podatki za izbris več seznamov z enim samim zahtevkom v obliki JSON-matrike z enim ali več objekti s poljem <var>list</var>.",
 	"apihelp-readinglists+delete-example-1": "Izbris bralnega seznama z ID-jem <kbd>11</kbd>.",
 	"apihelp-readinglists+delete-example-2": "Izbriši več računov.",
 	"apihelp-readinglists+createentry-summary": "Doda novo stran na seznam, ki pripada trenutnemu uporabniku.",
@@ -75,7 +75,7 @@
 	"apihelp-readinglists+createentry-example-2": "Dodajanje več strani na seznam.",
 	"apihelp-readinglists+deleteentry-summary": "Izbris strani iz seznama, ki pripada trenutnemu uporabniku.",
 	"apihelp-readinglists+deleteentry-param-entry": "ID vnosa. Obvezno, razen če opravljate paketni izbris.",
-	"apihelp-readinglists+deleteentry-param-batch": "Paketni podatki za izbris več seznamskih vnosov z enim samim zahtevkom, v obliki JSON-matrike z enim ali več objekti s poljem <var>entry</var>.",
+	"apihelp-readinglists+deleteentry-param-batch": "Paketni podatki za izbris več seznamskih vnosov z enim samim zahtevkom v obliki JSON-matrike z enim ali več objekti s poljem <var>entry</var>.",
 	"apihelp-readinglists+deleteentry-example-1": "Izbris seznamskega vnos z ID-jem <kbd>8</kbd>.",
 	"apihelp-readinglists+deleteentry-example-2": "Izbris več seznamskih vnosov."
 }
