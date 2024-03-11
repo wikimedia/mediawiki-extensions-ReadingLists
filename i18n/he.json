@@ -7,6 +7,7 @@
 	},
 	"readinglists-desc": "ניהול רשימות פרטיות של ערכים, כגון סימניות או רשימות \"לקרוא מאוחר יותר\".",
 	"readinglists-db-error-not-set-up": "רשימות קריאה עוד לא הוגדרו עבור המשתמש הזה.",
+	"readinglists-db-error-no-projects": "לא נרשמו מיזמים לשימוש עם רשימות קריאה. יש להשתמש בסקריפט populateProjectsFromSiteMatrix כדי לרשום מיזמים.",
 	"readinglists-db-error-already-set-up": "רשימות קריאה כבר הוגדרו עבור המשתמש הזה.",
 	"readinglists-db-error-cannot-delete-default-list": "לא ניתן למחוק את הרשימה ההתחלתית.",
 	"readinglists-db-error-cannot-update-default-list": "לא ניתן לעדכן את הרשימה ההתחלתית.",

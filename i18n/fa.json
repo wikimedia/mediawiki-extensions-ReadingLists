@@ -7,6 +7,7 @@
 	},
 	"readinglists-desc": "به کاربران اجازه داشتن فهرست خصوصی مقاله‌ها را می‌دهد، مانند بوک‌مارک یا فهرست برای بعدا خواندن.",
 	"readinglists-db-error-not-set-up": "فهرست مطالعه برای این کاربر ساخته نشده‌است.",
+	"readinglists-db-error-no-projects": "هیچ پروژه‌ای برای استفاده توسط فهرست مطالعه ثبت نشده است. برای ثبت پروژه‌ها از اسکریپت populateProjectsFromSiteMatrix استفاده کنید.",
 	"readinglists-db-error-already-set-up": "فهرست مطالعه برای این کاربر قبلا ساخته شده‌است.",
 	"readinglists-db-error-cannot-delete-default-list": "فهرست پیش‌فرض را نمی‌توان حذف کرد.",
 	"readinglists-db-error-cannot-update-default-list": "فهرست پیش‌فرض را نمی‌توان تغییر داد.",
@@ -28,6 +29,8 @@
 	"readinglists-browser-extension-info-link-text": "اطلاعات بیشتر",
 	"readinglists-browser-extension-product-title": "فهرست‌های خواندن ویکی‌پدیا",
 	"readinglists-browser-page-not-supported": "$1 از این صفحه پشتیبانی نمی‌کند",
+	"readinglists-watchlist": "فهرست پیگیری",
+	"readinglists-watchlist-description": "صفحه‌ای که ویرایش کرده‌اید یا دنبال می‌کنید.",
 	"readinglists-import-button-label": "نمایش فهرست",
 	"readinglists-import-button-hint": "روی این دکمه ضربه بزنید:",
 	"readinglists-import-app-launch-hint": "لطفاً از نصب شدن نرم‌افزار مطمئن شوید."

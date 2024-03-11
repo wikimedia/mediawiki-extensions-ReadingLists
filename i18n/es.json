@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Dbrant",
+			"Eulalio",
 			"Fitoschido",
 			"KATRINE1992",
 			"Macofe",
@@ -12,6 +13,7 @@
 	},
 	"readinglists-desc": "Permite a los usuarios gestionar listas privadas de artículos, como marcadores o listas de \"Leer después\".",
 	"readinglists-db-error-not-set-up": "No se han establecido listas de lectura para este usuario.",
+	"readinglists-db-error-no-projects": "No se han registrado proyectos para su uso en ReadingLists. Utilice el script populateProjectsFromSiteMatrix para registrar proyectos.",
 	"readinglists-db-error-already-set-up": "Ya se han establecido listas de lectura para este usuario.",
 	"readinglists-db-error-cannot-delete-default-list": "No se puede borrar la lista predeterminada.",
 	"readinglists-db-error-cannot-update-default-list": "No se puede actualizar la lista predeterminada.",
