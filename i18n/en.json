@@ -48,7 +48,7 @@
 	"readinglists-no-title": "Untitled list",
 	"readinglists-export": "Share list",
 	"readinglists-watchlist": "Watchlist",
-	"readinglists-watchlist-description": "Page that you edited or follow.",
+	"readinglists-watchlist-description": "Pages that you follow for new edits.",
 	"readinglists-import-app": "-",
 	"readinglists-import-app-with-link": "-",
 	"readinglists-import-app-misconfigured": "This website currently does not support importing lists.",
