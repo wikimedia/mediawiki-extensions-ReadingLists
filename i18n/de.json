@@ -51,7 +51,7 @@
 	"readinglists-no-title": "Liste ohne Titel",
 	"readinglists-export": "Liste teilen",
 	"readinglists-watchlist": "Beobachtungsliste",
-	"readinglists-watchlist-description": "Seite, die du bearbeitet hast oder der du folgst.",
+	"readinglists-watchlist-description": "Seiten, denen du für neue Bearbeitungen folgst.",
 	"readinglists-import-app-misconfigured": "Diese Website unterstützt derzeit das Importieren von Listen nicht.",
 	"readinglists-import-disclaimer": "Ein Benutzer dieser Website hat eine Leseliste erstellt, um sie mit anderen zu teilen (wahrscheinlich mit dir). Sie wird nicht moderiert, und ihr Inhalt gibt nicht den Standpunkt des Herausgebers der Website wieder.",
 	"readinglists-import-button-label": "Liste ansehen",
