@@ -26,5 +26,6 @@
 	"readinglists-default-title": "Pagine salvate",
 	"readinglists-default-description": "Elenco predefinito per le tue voci salvate.",
 	"readinglists-watchlist": "Osservati speciali",
+	"readinglists-watchlist-description": "Pagine che segui per nuove modifiche.",
 	"readinglists-import-button-label": "Visualizza elenco"
 }
