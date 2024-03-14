@@ -34,7 +34,7 @@ trait ReadingListsTokenAwareHandlerTrait {
 	 *
 	 * @return array[]
 	 */
-	public function getTokenParamSettings() {
+	public function getReadingListsTokenParamDefinition() {
 		return [
 			'csrf_token' => [
 				Handler::PARAM_SOURCE => 'query',

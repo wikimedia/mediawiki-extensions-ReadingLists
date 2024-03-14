@@ -37,7 +37,7 @@ describe( 'ReadingLists', function () {
 				entriesUrl, reqNewListEntry
 			).send( { token } );
 			assert.deepEqual( response.status, 400, response.text );
-			assert.deepEqual( response.body.errorKey, 'rest-missing-body-field', response.text );
+			assert.deepEqual( response.body.errorKey, 'missingparam', response.text );
 		} );
 
 		it( 'should not create a new list entry without valid project', async function () {
@@ -62,7 +62,7 @@ describe( 'ReadingLists', function () {
 			assert.deepEqual( response.status, 400, response.text );
 			assert.deepEqual(
 				response.body.errorKey,
-				'rest-missing-body-field',
+				'missingparam',
 				response.text
 			);
 		} );

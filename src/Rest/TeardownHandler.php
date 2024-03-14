@@ -7,9 +7,6 @@ use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Rest\Handler;
 use MediaWiki\Rest\Response;
-use MediaWiki\Rest\Validator\BodyValidator;
-use MediaWiki\Rest\Validator\JsonBodyValidator;
-use MediaWiki\Rest\Validator\UnsupportedContentTypeBodyValidator;
 use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use Psr\Log\LoggerInterface;
@@ -83,20 +80,9 @@ class TeardownHandler extends Handler {
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-	public function getBodyValidator( $contentType ): BodyValidator {
-		if ( $contentType !== 'application/json' ) {
-			return new UnsupportedContentTypeBodyValidator( $contentType );
-		}
-
-		return new JsonBodyValidator( $this->getTokenParamDefinition() );
-	}
-
-	/**
 	 * @return array|array[]
 	 */
 	public function getParamSettings() {
-		return [] + $this->getTokenParamSettings();
+		return [] + $this->getReadingListsTokenParamDefinition() + $this->getTokenParamDefinition();
 	}
 }

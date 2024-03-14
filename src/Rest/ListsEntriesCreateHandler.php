@@ -5,13 +5,10 @@ namespace MediaWiki\Extension\ReadingLists\Rest;
 use MediaWiki\Config\Config;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Rest\Handler;
-use MediaWiki\Rest\LocalizedHttpException;
 use MediaWiki\Rest\SimpleHandler;
-use MediaWiki\Rest\Validator\JsonBodyValidator;
 use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use Psr\Log\LoggerInterface;
-use Wikimedia\Message\MessageValue;
 use Wikimedia\ParamValidator\ParamValidator;
 use Wikimedia\ParamValidator\TypeDef\NumericDef;
 use Wikimedia\Rdbms\LBFactory;
@@ -93,32 +90,16 @@ class ListsEntriesCreateHandler extends SimpleHandler {
 				Handler::PARAM_SOURCE => 'path',
 				NumericDef::PARAM_MIN => 1,
 			],
-		];
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getBodyValidator( $contentType ) {
-		if ( $contentType !== 'application/json' ) {
-			throw new LocalizedHttpException( new MessageValue( "rest-unsupported-content-type", [ $contentType ] ),
-				415,
-				[ 'content_type' => $contentType ]
-			);
-		}
-
-		return new JsonBodyValidator( [
-				'project' => [
-					self::PARAM_SOURCE => 'body',
-					ParamValidator::PARAM_TYPE => 'string',
-					ParamValidator::PARAM_REQUIRED => true,
-				],
-				'title' => [
-					self::PARAM_SOURCE => 'body',
-					ParamValidator::PARAM_TYPE => 'string',
-					ParamValidator::PARAM_REQUIRED => true,
-				]
-			] + $this->getTokenParamDefinition()
-		);
+			'project' => [
+				self::PARAM_SOURCE => 'body',
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_REQUIRED => true,
+			],
+			'title' => [
+				self::PARAM_SOURCE => 'body',
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_REQUIRED => true,
+			]
+		] + $this->getTokenParamDefinition() + $this->getReadingListsTokenParamDefinition();
 	}
 }

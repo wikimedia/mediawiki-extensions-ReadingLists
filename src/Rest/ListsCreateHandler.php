@@ -7,13 +7,10 @@ use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Rest\Handler;
-use MediaWiki\Rest\LocalizedHttpException;
 use MediaWiki\Rest\Response;
-use MediaWiki\Rest\Validator\JsonBodyValidator;
 use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use Psr\Log\LoggerInterface;
-use Wikimedia\Message\MessageValue;
 use Wikimedia\ParamValidator\ParamValidator;
 use Wikimedia\ParamValidator\TypeDef\StringDef;
 use Wikimedia\Rdbms\LBFactory;
@@ -99,17 +96,10 @@ class ListsCreateHandler extends Handler {
 	}
 
 	/**
-	 * @inheritDoc
+	 * @return array[]
 	 */
-	public function getBodyValidator( $contentType ) {
-		if ( $contentType !== 'application/json' ) {
-			throw new LocalizedHttpException( new MessageValue( "rest-unsupported-content-type", [ $contentType ] ),
-				415,
-				[ 'content_type' => $contentType ]
-			);
-		}
-
-		return new JsonBodyValidator( [
+	public function getParamSettings() {
+		return [
 				'name' => [
 					self::PARAM_SOURCE => 'body',
 					ParamValidator::PARAM_TYPE => 'string',
@@ -123,7 +113,6 @@ class ListsCreateHandler extends Handler {
 					ParamValidator::PARAM_DEFAULT => '',
 					StringDef::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_description'],
 				]
-			] + $this->getTokenParamDefinition()
-		);
+			] + $this->getTokenParamDefinition() + $this->getReadingListsTokenParamDefinition();
 	}
 }
