@@ -1,11 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Hindustanilanguage"
+			"Hindustanilanguage",
+			"Muhammad Shuaib"
 		]
 	},
 	"apihelp-query+readinglists-example-1": "موجودہ صارف کی مطالعاتی فہرست حاصل ہو رہی ہے۔",
-	"apihelp-readinglists-summary": "فہرست لکھنے کے عملوں کو پڑھا جا رہا ہے۔",
+	"apihelp-readinglists-summary": "تحریری کارروائیوں کی فہرست کو پڑھتا ہے۔",
 	"apihelp-readinglists+setup-example-1": "موجودہ صارف کے لیے مطالعاتی فہرستوں کو قائم کیجیے۔",
 	"apihelp-readinglists+teardown-summary": "موجودہ صارف کے لیے فہرستوں کو عدم دستیاب کیجیے۔",
 	"apihelp-readinglists+create-summary": "موجودہ صارف کے لیے نئی فہرست بنایئے۔",
