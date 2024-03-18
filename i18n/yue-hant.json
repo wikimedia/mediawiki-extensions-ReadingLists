@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"H78c67c",
 			"Winston Sung"
 		]
 	},
 	"readinglists-browser-add-entry-success": "$1儲存咗去你嘅閲讀一覽",
-	"readinglists-browser-login-prompt": "簽到之後儲存文章"
+	"readinglists-browser-login-prompt": "簽到之後儲存文章",
+	"readinglists-watchlist": "監視清單"
 }
