@@ -99,7 +99,10 @@
 		"special.readinglist.styles": {
 			"styles": [
 				"resources/special.readinglist.styles.less"
-			]
+			],
+			"skinStyles": {
+				"minerva": [ "skinStyles/special.readinglist.styles/minerva.less" ]
+			}
 		},
 		"special.readinglist.scripts": {
 			"dependencies": [

@@ -1,14 +1,51 @@
 <template>
-	<div class="readinglist-page">
-		<div class="readinglist-collection">
+	<cdx-tabs
+		v-model:active="currentTab"
+		:framed="framed"
+		class="readinglist-page">
+		<cdx-tab
+			key="1"
+			name="tabHome"
+			:label="listsTitle"
+			class="readinglist-collection">
 			<reading-list-summary
 				:show-disclaimer="showDisclaimer"
 				:show-meta="showMeta"
-				:show-share-button="!showDisclaimer && collection && isShareEnabled"
+				:show-share-button="false"
 				:disclaimer="disclaimer"
-				:name="viewTitle"
-				:description="viewDescription"
+				:description="listsDescription"
 				:share-url="shareUrl"
+			></reading-list-summary>
+			<div v-if="errorCodeListsOfList">
+				<cdx-message type="error">
+					{{ errorMessageListsOfList }}
+				</cdx-message>
+			</div>
+			<div v-if="loadedListsOfLists && !errorCodeListsOfList">
+				<reading-list
+					v-if="!( anonymizedPreviews && showDisclaimer )"
+					:cards="listsOfLists"
+					:empty-message="emptyMessageListsOfLists"
+					@click-card.prevent="clickCard"></reading-list>
+			</div>
+			<div v-if="!loadedListsOfLists">
+				<intermediate-state></intermediate-state>
+			</div>
+		</cdx-tab>
+		<cdx-tab
+			v-if="name"
+			key="2"
+			name="tabList"
+			:label="name"
+			class="readinglist-collection"
+			@click="setTabUrl">
+			<reading-list-summary
+				:show-disclaimer="showDisclaimer"
+				:show-meta="showMeta"
+				:show-share-button="!showDisclaimer && isShareEnabled && cardsList.length"
+				:disclaimer="disclaimer"
+				:name="name"
+				:description="description"
 			></reading-list-summary>
 			<div v-if="errorCode">
 				<cdx-message type="error">
@@ -16,24 +53,19 @@
 				</cdx-message>
 			</div>
 			<div v-if="loaded && !errorCode">
-				<reading-list
-					v-if="!( anonymizedPreviews && showDisclaimer )"
-					:cards="cards" :empty-message="emptyMessage" @click-card="clickCard"></reading-list>
+				<reading-list :cards="cardsList" :empty-message="emptyMessage"></reading-list>
 			</div>
 			<div v-if="!loaded">
 				<intermediate-state></intermediate-state>
 			</div>
-		</div>
-	</div>
+		</cdx-tab>
+	</cdx-tabs>
 </template>
 
 <script>
 /* global Card */
-const { CdxMessage } = require( '@wikimedia/codex' );
+const { CdxTab, CdxTabs, CdxMessage } = require( '@wikimedia/codex' );
 const READING_LIST_SPECIAL_PAGE_NAME = 'Special:ReadingLists';
-const READING_LISTS_NAME_PLURAL = mw.msg( 'special-tab-readinglists-short' );
-const READING_LIST_TITLE = mw.msg( 'readinglists-special-title' );
-const HOME_URL = ( new mw.Title( 'ReadingLists', -1 ) ).getUrl();
 
 /**
  * @param {number} id
@@ -54,6 +86,11 @@ function getCard( { id, url, name, description, title, thumbnail, project, pagei
 	};
 }
 
+function getCollectionUrl( username, id, name ) {
+	return id ? mw.util.getUrl( `${READING_LIST_SPECIAL_PAGE_NAME}/${username}/${id}/${name}` ) :
+		mw.util.getUrl( `${READING_LIST_SPECIAL_PAGE_NAME}/${username}` );
+}
+
 // @vue/component
 module.exports = {
 	name: 'ReadingListPage',
@@ -64,6 +101,8 @@ module.exports = {
 		whitespace: 'condense'
 	},
 	components: {
+		CdxTab,
+		CdxTabs,
 		ReadingList: require( './ReadingList.vue' ),
 		ReadingListSummary: require( './ReadingListSummary.vue' ),
 		CdxMessage,
@@ -73,9 +112,6 @@ module.exports = {
 		anonymizedPreviews: {
 			type: Boolean,
 			default: false
-		},
-		isImport: {
-			type: Boolean
 		},
 		api: {
 			type: Object,
@@ -105,19 +141,38 @@ module.exports = {
 		initialCollection: {
 			type: Number,
 			required: false
+		},
+		listsTitle: {
+			type: String,
+			default: mw.msg( 'special-tab-readinglists-short' )
+		},
+		listsDescription: {
+			type: String,
+			default: mw.msg( 'readinglists-description' )
+		},
+		emptyMessage: {
+			type: String,
+			default: mw.msg( 'readinglists-list-empty-message' )
+		},
+		emptyMessageListsOfLists: {
+			type: String,
+			default: mw.msg( 'readinglists-empty-message' )
+
 		}
 	},
 	data: function () {
 		return {
+			loadedListsOfLists: false,
+			currentTab: this.initialCollection ? 'tabList' : 'tabHome',
 			showDisclaimer: this.disclaimer !== '',
-			ignore: [],
 			titlesToLoad: this.initialTitles,
 			loaded: false,
-			initialized: false,
-			cards: [],
+			listsOfLists: [],
+			cardsList: [],
 			name: this.initialName,
 			description: this.initialDescription,
 			collection: this.initialCollection,
+			errorCodeListsOfList: 0,
 			errorCode: 0
 		};
 	},
@@ -125,10 +180,10 @@ module.exports = {
 		shareUrl() {
 			const list = {};
 			// ID is preferred if available, as it results in a shorter URL
-			const shareField = this.cards.filter(
+			const shareField = this.cardsList.filter(
 				( card ) => !!card.pageid
-			).length === this.cards.length ? 'pageid' : 'title';
-			this.cards.forEach( ( card ) => {
+			).length === this.cardsList.length ? 'pageid' : 'title';
+			this.cardsList.forEach( ( card ) => {
 				if ( !list[ card.project ] ) {
 					list[ card.project ] = [];
 				}
@@ -150,98 +205,66 @@ module.exports = {
 		showMeta() {
 			return this.showDisclaimer ? !this.anonymizedPreviews : true;
 		},
-		readingListClass() {
-			return {
-				'readinglist-list--hidden': this.anonymizedPreviews && this.showDisclaimer,
-				'readinglist-list': true
-			};
-		},
-		getHomeUrl: function () {
-			return HOME_URL;
-		},
-		viewDescription: function () {
-			return this.description ||
-				( this.collection ? '' : mw.msg( 'readinglists-description' ) );
-		},
-		viewTitle: function () {
-			return this.name || mw.msg( 'special-tab-readinglists-short' );
-		},
-		emptyMessage: function () {
-			return this.collection ?
-				mw.msg( 'readinglists-list-empty-message' ) :
-				mw.msg( 'readinglists-empty-message' );
+		errorMessageListsOfList: function () {
+			return this.errorString( this.errorCodeListsOfList );
 		},
 		errorMessage: function () {
-			switch ( this.errorCode ) {
+			return this.errorString( this.errorCode );
+		}
+	},
+	methods: {
+		errorString: function ( code ) {
+			switch ( code ) {
 				case 'readinglists-import-error':
 				case 'readinglists-db-error-no-such-list':
 				case 'readinglists-db-error-list-deleted':
 				case 'readinglists-import-size-error':
 					// eslint-disable-next-line mediawiki/msg-doc
-					return mw.msg( this.errorCode, this.collection );
+					return mw.msg( code, this.collection );
 				default:
-					return 'An unknown error occurred (' + this.errorCode + ')';
+					return 'An unknown error occurred (' + code + ')';
 			}
-		}
-	},
-	methods: {
+		},
 		isShareEnabled: () => navigator.share || navigator.clipboard,
-		clickCard: function ( href, ev ) {
-			// If we are navigating to a list, navigate internally
-			if ( !this.collection ) {
-				this.navigate( href, null );
-				ev.preventDefault();
-			}
-		},
-		/**
-		 * Can be used externally to navigate to the home page.
-		 */
-		navigateHome: function () {
-			this.navigate( HOME_URL, READING_LIST_TITLE );
-		},
-		getUrlFromHref: function ( href ) {
-			const query = href.split( '?' )[ 1 ];
-			const titleInQuery = query ? query.replace( /title=(.*)(&|$)/, '$1' ) : false;
-			if ( titleInQuery ) {
-				return '/wiki/' + titleInQuery;
-			} else {
-				return href;
-			}
+		clickCard: function ( _ev, card ) {
+			this.currentTab = 'tabList';
+			this.collection = card.id;
+			this.name = card.title;
+			this.description = card.description;
+			this.loadCollectionPages();
 		},
 		getState: function () {
-			return {
+			return this.currentTab === 'tabHome' ? {} : {
 				name: this.name,
 				description: this.description,
 				collection: this.collection
 			};
+		},
+		loadCollectionPages() {
+			this.loaded = false;
+			return this.api.getPages( this.collection ).then( ( pages ) => {
+				this.cardsList = pages.map( ( collection ) => getCard( collection ) );
+				this.loaded = true;
+			} );
 		},
 		load: function () {
 			if ( this.loaded ) {
 				if ( this.errorCode || !this.username ) {
 					return;
 				}
-				const state = this.getState();
-				document.title = this.name ||
-					READING_LISTS_NAME_PLURAL;
-				window.history.replaceState(
-					state,
-					null,
-					this.collection ?
-						mw.util.getUrl( `${READING_LIST_SPECIAL_PAGE_NAME}/${this.username}/${this.collection}/${this.name}` ) :
-						mw.util.getUrl( `${READING_LIST_SPECIAL_PAGE_NAME}/${this.username}` )
-				);
 				return;
 			}
+
+			// Load titles.
 			if ( this.titlesToLoad ) {
 				if ( this.anonymizedPreviews ) {
-					this.collection = -1;
-					this.cards = [];
+					this.cardsList = [];
 					this.loaded = true;
 					this.titlesToLoad = undefined;
 				} else {
 					this.api.getPagesFromProjectMap( this.titlesToLoad ).then( ( pages ) => {
 						this.collection = -1;
-						this.cards = pages.map( ( page ) => getCard( page ) );
+						this.cardsList = pages.map( ( page ) => getCard( page ) );
 						this.loaded = true;
 						this.titlesToLoad = undefined;
 					}, ( err ) => {
@@ -251,10 +274,10 @@ module.exports = {
 					} );
 				}
 			} else if ( this.collection ) {
-				this.api.getCollectionMeta( this.username, parseInt( this.collection, 10 ) ).then( ( meta ) => {
-					this.api.getPages( parseInt( this.collection, 10 ) ).then( ( pages ) => {
-						this.cards = pages.map( ( collection ) => getCard( collection ) );
-						this.loaded = true;
+				this.api.getCollectionMeta(
+					this.username, parseInt( this.collection, 10 )
+				).then( ( meta ) => {
+					return this.loadCollectionPages().then( () => {
 						this.name = meta.name;
 						this.description = meta.description;
 					} );
@@ -263,55 +286,44 @@ module.exports = {
 					this.errorCode = code;
 					this.loaded = true;
 				}.bind( this ) );
-			} else if ( this.username ) {
+			}
+
+			// Load lists of list for this user.
+			if ( this.username ) {
 				this.api.getCollections( this.username, [] ).then( function ( collections ) {
-					this.cards = collections.map( ( collection ) => getCard( collection ) );
-					this.loaded = true;
+					this.listsOfLists = collections.map( ( collection ) => getCard( collection ) );
+					this.loadedListsOfLists = true;
 				}.bind( this ) );
 			} else {
-				this.errorCode = 'readinglists-import-error';
+				this.errorCodeListsOfList = 'readinglists-import-error';
 				this.loaded = true;
 			}
-		},
-		reset: function () {
-			this.errorCode = 0;
-			this.name = '';
-			this.description = '';
-			this.cards = [];
-			this.collection = false;
-			this.loaded = false;
-		},
-		navigate: function ( url, title ) {
-			this.showDisclaimer = false;
-			const articlePathPrefix = mw.config.get( 'wgArticlePath' ).replace( '$1', '' );
-			this.reset();
-			const params = url.split( articlePathPrefix )[ 1 ];
-			const paramArray = params.split( '/' ).slice( 1 );
-			// <username>/<id>/<name>
-			this.collection = paramArray[ 1 ];
-			this.name = paramArray[ 2 ] ?
-				decodeURIComponent( paramArray[ 2 ].replace( /_/g, ' ' ) ) : '';
-
-			history.pushState(
-				this.getState(),
-				title,
-				url
-			);
 		}
 	},
 	updated: function () {
 		this.load();
+		const url = this.currentTab === 'tabList' ?
+			getCollectionUrl( this.username, this.collection, this.name ) :
+			getCollectionUrl( this.username );
+		if ( url !== window.location.pathname ) {
+			history.pushState( this.getState(), this.name, url );
+		}
 	},
 	mounted: function () {
 		this.load();
-		window.addEventListener( 'popstate', function ( ev ) {
+		history.replaceState( {
+			collection: this.initialCollection
+		}, this.name, window.location.pathname );
+		window.addEventListener( 'popstate', ( ev ) => {
 			if ( ev.state ) {
-				this.reset();
-				Object.keys( ev.state ).forEach( function ( key ) {
-					this[ key ] = ev.state[ key ];
-				}.bind( this ) );
+				const collection = ev.state.collection;
+				this.currentTab = collection ? 'tabList' : 'tabHome';
+				if ( collection ) {
+					this.collection = collection;
+				}
+				this.loadCollectionPages();
 			}
-		}.bind( this ) );
+		} );
 	}
 };
 </script>
