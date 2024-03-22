@@ -13,7 +13,7 @@ $( function () {
 	const exportValue = mw.util.getParamValue( 'lexport', location.search );
 	const isImport = !!importValue;
 	if ( importValue || exportValue ) {
-		special.init( Vue, null, null, importValue || exportValue, isImport );
+		special.init( Vue, null, -1, importValue || exportValue, isImport );
 		return;
 	} else if ( params.length === 0 ) {
 		window.location.pathname = getReadingListUrl( mw.user.getName() );

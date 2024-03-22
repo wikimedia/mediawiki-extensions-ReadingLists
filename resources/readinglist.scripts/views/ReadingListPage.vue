@@ -25,7 +25,7 @@
 				<reading-list
 					v-if="!( anonymizedPreviews && showDisclaimer )"
 					:cards="listsOfLists"
-					:empty-message="emptyMessageListsOfLists"
+					:empty-message="isImport ? emptyMessageImportListsOfLists : emptyMessageListsOfLists"
 					@click-card.prevent="clickCard"></reading-list>
 			</div>
 			<div v-if="!loadedListsOfLists">
@@ -110,6 +110,10 @@ module.exports = {
 		IntermediateState: require( './IntermediateState.vue' )
 	},
 	props: {
+		isImport: {
+			type: Boolean,
+			default: false
+		},
 		anonymizedPreviews: {
 			type: Boolean,
 			default: false
@@ -154,6 +158,10 @@ module.exports = {
 		emptyMessage: {
 			type: String,
 			default: mw.msg( 'readinglists-list-empty-message' )
+		},
+		emptyMessageImportListsOfLists: {
+			type: String,
+			default: mw.msg( 'readinglists-import-empty-message' )
 		},
 		emptyMessageListsOfLists: {
 			type: String,
@@ -295,6 +303,9 @@ module.exports = {
 					this.listsOfLists = collections.map( ( collection ) => getCard( collection ) );
 					this.loadedListsOfLists = true;
 				}.bind( this ) );
+			} else if ( this.isImport ) {
+				// Special handling for imports - there are no lists of list so disable loading.
+				this.loadedListsOfLists = true;
 			} else {
 				this.errorCodeListsOfList = 'readinglists-import-error';
 				this.loaded = true;
@@ -312,9 +323,11 @@ module.exports = {
 	},
 	mounted: function () {
 		this.load();
-		history.replaceState( {
-			collection: this.initialCollection
-		}, this.name, window.location.pathname );
+		if ( !this.isImport ) {
+			history.replaceState( {
+				collection: this.initialCollection
+			}, this.name, window.location.pathname );
+		}
 		window.addEventListener( 'popstate', ( ev ) => {
 			if ( ev.state ) {
 				const collection = ev.state.collection;
@@ -353,5 +366,13 @@ module.exports = {
 
 .readinglist-list--hidden {
 	display: none;
+}
+
+/* If viewing of private reading lists is disabled, hide the tab. */
+.mw-special-readinglist-export-only,
+.mw-special-readinglist-watchlist-only {
+	.cdx-tabs__header {
+		display: none;
+	}
 }
 </style>
