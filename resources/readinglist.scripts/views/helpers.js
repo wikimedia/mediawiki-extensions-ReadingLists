@@ -1,6 +1,6 @@
 const getEnabledMessage = ( key, params ) => {
 	// eslint-disable-next-line mediawiki/msg-doc
-	const text = mw.msg( key, params );
+	const text = mw.message( key, params ).parse();
 	return text === '-' ? '' : text;
 };
 
