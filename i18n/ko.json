@@ -30,5 +30,7 @@
 	"readinglists-browser-list-entry-limit-exceeded": "문서를 저장할 수 없습니다. 목록 당 문서 $1개의 제한에 도달했습니다",
 	"readinglists-browser-extension-product-title": "위키백과 읽기 목록",
 	"readinglists-browser-page-not-supported": "$1은(는) 이 문서를 지원하지 않습니다",
+	"readinglists-special-title-imported": "읽기 목록: 다른 사용자로부터 가져오기",
+	"readinglists-import-empty-message": "목록의 목록을 가져올 수 없습니다.",
 	"readinglists-import-button-label": "가져오기"
 }

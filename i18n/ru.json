@@ -3,6 +3,7 @@
 		"authors": [
 			"Ajiniyaz",
 			"Diman Russkov",
+			"Dirruw'o",
 			"Edible Melon",
 			"Happy13241",
 			"Kareyac",
@@ -34,10 +35,12 @@
 	"readinglists-browser-list-entry-limit-exceeded": "Статья не может быть сохранена. Вы достигли лимита статей на список ($1).",
 	"readinglists-browser-extension-product-title": "Списки чтения Википедии",
 	"readinglists-browser-page-not-supported": "$1 не поддерживает эту страницу",
+	"readinglists-special-title-imported": "Чтение списков: Импорт от другого пользователя",
 	"readinglists-loading": "Пожалуйста, подождите…",
 	"readinglists-error": "Ваш браузер не может использовать функцию списков для чтения. Включите JavaScript или попробуйте в другом браузере.",
 	"readinglists-import-size-error": "Список слишком велик для отображения.",
 	"special-tab-readinglists-short": "Ваши списки",
+	"readinglists-import-empty-message": "Вы не можете импортировать списки списков",
 	"readinglists-share-url-notify": "Информация, относящаяся к этому списку для чтения, скопирована в буфер обмена.",
 	"readinglists-import-app-launch-hint": "Убедитесь, что установлена последняя версия приложения."
 }

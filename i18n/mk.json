@@ -50,6 +50,7 @@
 	"readinglists-export": "Сподели список",
 	"readinglists-watchlist": "Набљудувања",
 	"readinglists-watchlist-description": "Страници на кои следите нови уредувања.",
+	"readinglists-watchlist-monitor": "Можете да ги надгледувате уредувањата на овој список користејќи ја алатката [$1 Набљудувања].",
 	"readinglists-import-app-misconfigured": "Ова вики засега не поддржува увоз на списоци.",
 	"readinglists-import-disclaimer": "Овој список е создаден од корисник на ова вики со цел да го сподели со други (веројатно со вас). Не е модериран, и неговата содржина не ги одразува уредниците на викито.",
 	"readinglists-import-button-label": "Погл. списокот",

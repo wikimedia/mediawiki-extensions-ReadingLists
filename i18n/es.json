@@ -38,9 +38,12 @@
 	"readinglists-browser-extension-product-title": "Listas de lectura de Wikipedia",
 	"readinglists-browser-page-not-supported": "$1 no admite esta página",
 	"readinglists-special-title": "Listas de lectura",
+	"readinglists-special-title-imported": "Listas de lectura: Importar desde otro usuario",
 	"readinglists-loading": "Espera un momento…",
 	"special-tab-readinglists-short": "Tus listas",
+	"readinglists-import-empty-message": "No se pueden importar listas de listas.",
 	"readinglists-watchlist-description": "Páginas que sigues para nuevas ediciones.",
+	"readinglists-watchlist-monitor": "Puede monitorear las ediciones de las páginas de esta lista usando la herramienta [ $1 watchlist].",
 	"readinglists-import-disclaimer": "Un usuario de este sitio ha creado una lista de lectura para compartir con otros (probablemente contigo). La misma no está moderada y sus contenidos no reflejan la opinión de los editores del sitio.",
 	"readinglists-import-button-label": "Ver lista",
 	"readinglists-import-button-hint": "Pulse el botón:"
