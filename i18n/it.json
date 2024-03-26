@@ -20,11 +20,13 @@
 	"readinglists-browser-list-entry-limit-exceeded": "La voce non può essere salvata. Hai raggiunto il limite di $1 voci per elenco",
 	"readinglists-browser-page-not-supported": "$1 non supporta questa pagina",
 	"readinglists-special-title": "Elenchi di lettura",
+	"readinglists-special-title-imported": "Elenchi di lettura: importa da un altro utente",
 	"readinglists-description": "Tutti i tuoi elenchi di lettura in un unico posto.",
 	"readinglists-import-size-error": "L'elenco è troppo grande per essere visualizzato.",
 	"special-tab-readinglists-short": "I tuoi elenchi",
 	"readinglists-default-title": "Pagine salvate",
 	"readinglists-default-description": "Elenco predefinito per le tue voci salvate.",
+	"readinglists-import-empty-message": "Non è possibile importare elenchi di elenchi.",
 	"readinglists-watchlist": "Osservati speciali",
 	"readinglists-watchlist-description": "Pagine che segui per nuove modifiche.",
 	"readinglists-import-button-label": "Visualizza elenco"
