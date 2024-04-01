@@ -1,20 +1,22 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ladsgroup"
+			"Ladsgroup",
+			"Ebraminio",
+			"Jeeputer"
 		]
 	},
 	"readinglists-desc": "به کاربران اجازه داشتن فهرست خصوصی مقاله‌ها را می‌دهد، مانند بوک‌مارک یا فهرست برای بعدا خواندن.",
-	"readinglists-db-error-not-set-up": "فهرست مطالعه برای این کاربر ساخته نشده‌است.",
-	"readinglists-db-error-already-set-up": "فهرست مطالعه برای این کاربر قبلا ساخته شده‌است.",
+	"readinglists-db-error-not-set-up": "فهرست مطالعه برای این کاربر ساخته نشده است.",
+	"readinglists-db-error-already-set-up": "فهرست مطالعه برای این کاربر قبلا ساخته شده است.",
 	"readinglists-db-error-cannot-delete-default-list": "فهرست پیش‌فرض را نمی‌توان حذف کرد.",
 	"readinglists-db-error-cannot-update-default-list": "فهرست پیش‌فرض را نمی‌توان تغییر داد.",
 	"readinglists-db-error-no-such-list": "فهرست $1 وحود ندارد.",
 	"readinglists-db-error-no-such-list-entry": "عضو فهرست $1 وجود ندارد.",
 	"readinglists-db-error-not-own-list": "فهرست $1 به یک کاربر دیگر تعلق دارد.",
 	"readinglists-db-error-not-own-list-entry": "عضو فهرست $1 به کاربر دیگری تعلق دارد.",
-	"readinglists-db-error-list-deleted": "فهرست $1 حذف شده‌است.",
-	"readinglists-db-error-list-entry-deleted": "عضو فهرست $1 حذف شده‌است.",
+	"readinglists-db-error-list-deleted": "فهرست $1 حذف شده است.",
+	"readinglists-db-error-list-entry-deleted": "عضو فهرست $1 حذف شده است.",
 	"readinglists-db-error-duplicate-list": "یک فهرست با این نام قبلا وجود دارد.",
 	"readinglists-db-error-duplicate-page": "فهرست این صفحه را دارد.",
 	"readinglists-db-error-empty-list-ids": "پارامتر شناسه فهرست نمی‌تواند خالی باشد.",
@@ -23,7 +25,7 @@
 	"readinglists-db-error-entry-limit": "فهرست $1 نمی‌تواند بیش از $2 {{PLURAL:$2|عضو}} داشته باشد.",
 	"readinglists-db-error-no-such-project": "«$1» یک پروژه شناخته‌شده نیست.",
 	"readinglists-browser-login-prompt": "برای ذخیره مقاله وارد شوید",
-	"readinglists-browser-error-intro": "یک خطا رخ داده‌است: $1",
+	"readinglists-browser-error-intro": "یک خطا رخ داده است: $1",
 	"readinglists-browser-extension-info-link-text": "اطلاعات بیشتر",
 	"readinglists-browser-extension-product-title": "فهرست‌های خواندن ویکی‌پدیا",
 	"readinglists-browser-page-not-supported": "$1 از این صفحه پشتیبانی نمی‌کند"
