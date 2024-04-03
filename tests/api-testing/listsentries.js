@@ -1,10 +1,12 @@
 'use strict';
-const { REST, assert, action } = require( 'api-testing' );
+const { REST, assert, action, utils } = require( 'api-testing' );
 
-describe( 'ReadingLists', function () {
+describe( 'ReadingLists Entries', function () {
 	let alice;
 	let restfulAlice;
 	let token;
+	const localProject = '@local';
+
 	before( async function () {
 		alice = await action.alice();
 		restfulAlice = new REST( 'rest.php/readinglists/v0', alice );
@@ -12,7 +14,10 @@ describe( 'ReadingLists', function () {
 	} );
 
 	describe( 'GET and POST /lists/{id}/entries', function () {
+		const validTitle = utils.title( 'Dog' );
+		let listId;
 		let entriesUrl;
+
 		before( async function () {
 			await restfulAlice.post( '/lists/setup' ).send( { token } );
 			const reqNewList = {
@@ -20,24 +25,42 @@ describe( 'ReadingLists', function () {
 				description: 'newDescription'
 			};
 			const listsResponse = await restfulAlice.post( '/lists', reqNewList ).send( { token } );
-			const listId = listsResponse.body.id;
+			listId = listsResponse.body.id;
 			entriesUrl = '/lists/' + listId + '/entries';
+		} );
+
+		it( 'should create a new list entry', async function () {
+			const reqNewListEntry = {
+				project: localProject,
+				title: validTitle
+			};
+			const response = await restfulAlice.post( entriesUrl )
+				.send( { ...reqNewListEntry, token } );
+
+			assert.deepEqual( response.status, 200, response.text );
+			assert.property( response.body, 'id' );
+			assert.property( response.body, 'entry' );
+			assert.property( response.body.entry, 'id' );
+			assert.deepEqual( response.body.entry.id, response.body.entry.id );
+
+			assert.deepEqual( response.body.entry.listId, listId );
 		} );
 
 		it( 'should get list entries', async function () {
 			const response = await restfulAlice.get( entriesUrl );
 			assert.deepEqual( response.status, 200, response.text );
+
+			// TODO: check expected list entries
 		} );
 
 		it( 'should not create a new list entry without title parameter', async function () {
 			const reqNewListEntry = {
-				project: 'invalidProject'
+				project: localProject
 			};
-			const response = await restfulAlice.post(
-				entriesUrl, reqNewListEntry
-			).send( { token } );
+			const response = await restfulAlice.post( entriesUrl )
+				.send( { ...reqNewListEntry, token } );
 			assert.deepEqual( response.status, 400, response.text );
-			assert.deepEqual( response.body.errorKey, 'missingparam', response.text );
+			assert.deepEqual( response.body.failureCode, 'missingparam', response.text );
 		} );
 
 		it( 'should not create a new list entry without valid project', async function () {
@@ -45,9 +68,8 @@ describe( 'ReadingLists', function () {
 				project: 'invalidProject',
 				title: 'newTitle'
 			};
-			const response = await restfulAlice.post(
-				entriesUrl, reqNewListEntry
-			).send( { token } );
+			const response = await restfulAlice.post( entriesUrl )
+				.send( { ...reqNewListEntry, token } );
 			assert.deepEqual( response.status, 400, response.text );
 			assert.deepEqual( response.body.errorKey, 'readinglists-db-error-no-such-project', response.text );
 		} );
@@ -56,16 +78,17 @@ describe( 'ReadingLists', function () {
 			const reqNewListEntry = {
 				batch: 'invalidBatch'
 			};
-			const response = await restfulAlice.post(
-				entriesUrl, reqNewListEntry
-			).send( { token } );
+			const response = await restfulAlice.post( entriesUrl )
+				.send( { ...reqNewListEntry, token } );
 			assert.deepEqual( response.status, 400, response.text );
 			assert.deepEqual(
-				response.body.errorKey,
+				response.body.failureCode,
 				'missingparam',
 				response.text
 			);
 		} );
+
+		// TODO: check that we can actually create a batch of entries
 
 		after( async function () {
 			await restfulAlice.post( '/lists/teardown' ).send( { token } );
