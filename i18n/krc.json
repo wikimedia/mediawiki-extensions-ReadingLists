@@ -5,7 +5,7 @@
 		]
 	},
 	"readinglists-import-disclaimer": "Хайырланыучу бу сайтда окъургъа тизмени башхала бла ортагъа салыр ючюн (сизни бла да болургъа болур) къурагъанды. Ол модерацияны ётмейди, эмда аны ичиндегиси сайтны редакциясыны оюуму бла келишмезге боллукъду.",
-	"readinglists-import-button-label": "Импорт",
-	"readinglists-import-button-hint": "Программа къурулгъанындан сора, тизмени импорт этер ючюн бу тиекге басыгъыз:",
+	"readinglists-import-button-label": "Тизмеге къара",
+	"readinglists-import-button-hint": "Тиекни бас:",
 	"readinglists-import-app-launch-hint": "Программаны ахыр версиясы къурулгъанына ишексиз болугъуз."
 }
