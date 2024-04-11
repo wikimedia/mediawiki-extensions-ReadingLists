@@ -766,7 +766,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->from( 'reading_list' )
 			->where( [
 				'rl_user_id' => $this->userId,
-				'rl_date_updated > ' . $this->dbr->addQuotes( $this->dbr->timestamp( $date ) )
+				$this->dbr->expr( 'rl_date_updated', '>', $this->dbr->timestamp( $date ) )
 			] )
 			->andWhere( $conditions )
 			->options( $options )
@@ -807,7 +807,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->where( [
 				'rle_user_id' => $this->userId,
 				'rl_deleted' => 0,
-				'rle_date_updated > ' . $this->dbr->addQuotes( $this->dbr->timestamp( $date ) )
+				$this->dbr->expr( 'rle_date_updated', '>', $this->dbr->timestamp( $date ) )
 			] )
 			->andWhere( $conditions )
 			->options( $options )
@@ -822,14 +822,15 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function purgeOldDeleted( $before ) {
-		$before = $this->dbw->addQuotes( $this->dbw->timestamp( $before ) );
-
 		// Purge all soft-deleted, expired entries
 		while ( true ) {
 			$ids = $this->dbw->newSelectQueryBuilder()
 				->select( 'rle_id' )
 				->from( 'reading_list_entry' )
-				->where( [ 'rle_deleted' => 1, 'rle_date_updated < ' . $before, ] )
+				->where( [
+					'rle_deleted' => 1,
+					$this->dbw->expr( 'rle_date_updated', '<', $this->dbw->timestamp( $before ) )
+				] )
 				->limit( 1000 )
 				->caller( __METHOD__ )->fetchFieldValues();
 			if ( !$ids ) {
@@ -849,7 +850,10 @@ class ReadingListRepository implements LoggerAwareInterface {
 				->select( 'rle_id' )
 				->from( 'reading_list_entry' )
 				->leftJoin( 'reading_list', null, 'rle_rl_id = rl_id' )
-				->where( [ 'rl_deleted' => 1, 'rl_date_updated < ' . $before, ] )
+				->where( [
+					'rl_deleted' => 1,
+					$this->dbw->expr( 'rl_date_updated', '<', $this->dbw->timestamp( $before ) )
+				] )
 				->limit( 1000 )
 				->caller( __METHOD__ )->fetchFieldValues();
 			if ( !$ids ) {
@@ -868,7 +872,10 @@ class ReadingListRepository implements LoggerAwareInterface {
 			$ids = $this->dbw->newSelectQueryBuilder()
 				->select( 'rl_id' )
 				->from( 'reading_list' )
-				->where( [ 'rl_deleted' => 1, 'rl_date_updated < ' . $before, ] )
+				->where( [
+					'rl_deleted' => 1,
+					$this->dbw->expr( 'rl_date_updated', '<', $this->dbw->timestamp( $before ) )
+				] )
 				->limit( 1000 )
 				->caller( __METHOD__ )->fetchFieldValues();
 			if ( !$ids ) {
@@ -926,7 +933,9 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->caller( __METHOD__ );
 
 		if ( $from !== null ) {
-			$queryBuilder->andWhere( 'rle_rl_id >= ' . (int)$from );
+			$queryBuilder->andWhere(
+				$this->dbw->expr( 'rle_rl_id', '>=', (int)$from )
+			);
 		}
 		$res = $queryBuilder->fetchResultSet();
 		if (
@@ -966,7 +975,10 @@ class ReadingListRepository implements LoggerAwareInterface {
 		$this->dbw->newUpdateQueryBuilder()
 			->update( 'reading_list' )
 			->set( [ 'rl_size' => $count ] )
-			->where( [ 'rl_id' => $id, 'rl_size != ' . (int)$count ] )
+			->where( [
+				'rl_id' => $id,
+				$this->dbw->expr( 'rl_size', '!=', (int)$count )
+			] )
 			->caller( __METHOD__ )->execute();
 
 		// Release the lock when using explicit transactions (called from a long-running script).
@@ -1083,20 +1095,17 @@ class ReadingListRepository implements LoggerAwareInterface {
 		if ( $from !== null ) {
 			$op = ( $sortDir === self::SORT_DIR_ASC ) ? '>' : '<';
 			$safeFromMain = ( $sortBy === self::SORT_BY_NAME )
-				? $this->dbr->addQuotes( $from[0] )
-				: $this->dbr->addQuotes( $this->dbr->timestamp( $from[0] ) );
+				? $from[0]
+				: $this->dbr->timestamp( $from[0] );
 			$safeFromId = (int)$from[1];
 			// List names are unique and need no tiebreaker.
 			if ( $sortBy === self::SORT_BY_NAME && $tablePrefix === 'rl' ) {
-				$condition = "$mainField $op= $safeFromMain";
+				$condition = $this->dbw->expr( $mainField, "$op=", $safeFromMain );
 			} else {
-				$condition = $this->dbr->makeList( [
-					"$mainField $op $safeFromMain",
-					$this->dbr->makeList( [
-						"$mainField = $safeFromMain",
-						"$idField $op= $safeFromId",
-					], IDatabase::LIST_AND ),
-				], IDatabase::LIST_OR );
+				$condition = $this->dbr->buildComparison( "$op=", [
+					$mainField => $safeFromMain,
+					$idField => $safeFromId
+				] );
 			}
 			$conditions[] = $condition;
 		}
