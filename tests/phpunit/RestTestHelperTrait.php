@@ -163,7 +163,11 @@ trait RestTestHelperTrait {
 			if ( isset( $list['rl_date_updated'] ) ) {
 				$list['rl_date_updated'] = $this->db->timestamp( $list['rl_date_updated'] );
 			}
-			$this->db->insert( 'reading_list', $list, __METHOD__ );
+			$this->db->newInsertQueryBuilder()
+				->insertInto( 'reading_list' )
+				->row( $list )
+				->caller( __METHOD__ )
+				->execute();
 			$listId = $this->db->insertId();
 			if ( $entries !== null ) {
 				$this->addListEntries( $listId, $list['rl_user_id'], $entries );
@@ -202,7 +206,11 @@ trait RestTestHelperTrait {
 			if ( isset( $entry['rle_date_updated'] ) ) {
 				$entry['rle_date_updated'] = $this->db->timestamp( $entry['rle_date_updated'] );
 			}
-			$this->db->insert( 'reading_list_entry', $entry, __METHOD__ );
+			$this->db->newInsertQueryBuilder()
+				->insertInto( 'reading_list_entry' )
+				->row( $entry )
+				->caller( __METHOD__ )
+				->execute();
 			$entryId = $this->db->insertId();
 			$entryIds[] = $entryId;
 		}
@@ -227,12 +235,12 @@ trait RestTestHelperTrait {
 	private function addProjects( array $projects ) {
 		$ids = [];
 		foreach ( $projects as $project ) {
-			$this->db->insert(
-				'reading_list_project',
-				[ 'rlp_project' => $project ],
-				__METHOD__,
-				[ 'IGNORE' ]
-			);
+			$this->db->newInsertQueryBuilder()
+				->insertInto( 'reading_list_project' )
+				->ignore()
+				->row( [ 'rlp_project' => $project ] )
+				->caller( __METHOD__ )
+				->execute();
 			$projectId = $this->db->affectedRows()
 				? $this->db->insertId()
 				: $this->db->newSelectQueryBuilder()

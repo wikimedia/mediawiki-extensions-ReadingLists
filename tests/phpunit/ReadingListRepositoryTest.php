@@ -979,7 +979,12 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( 2, intval( $newListSize ) );
 
 		// Manually set size to 0, and test that rl_size does not go negative on list entry delete
-		$this->db->update( 'reading_list', [ 'rl_size' => 0 ], [ 'rl_id' => $outOfSyncId ] );
+		$this->db->newUpdateQueryBuilder()
+			->update( 'reading_list' )
+			->set( [ 'rl_size' => 0 ] )
+			->where( [ 'rl_id' => $outOfSyncId ] )
+			->caller( __METHOD__ )
+			->execute();
 		$repository->deleteListEntry( $parentOutOfSyncId );
 		$outOfSyncSize = $this->db->newSelectQueryBuilder()
 			->select( 'rl_size' )
