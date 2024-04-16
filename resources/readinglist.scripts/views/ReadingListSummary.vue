@@ -4,7 +4,9 @@
 			<h3 v-if="name">
 				{{ name }}
 			</h3>
-			<p class="readinglist-collection-description">{{ description }}</p>
+			<p class="readinglist-collection-description">
+				{{ description }}
+			</p>
 			<p v-if="isWatchlist" v-html="watchlistMsg"></p>
 			<cdx-button
 				v-if="showShareButton && shareUrl"

@@ -75,7 +75,7 @@ describe( 'ReadingLists', function () {
 	describe( 'GET /lists/changes/since/{ date }', function () {
 		// Helper function to get lists that have changed since a specific date
 		async function getListsChangesSince( date, next = '', limit = 10 ) {
-			return await restfulAlice.get( `/lists/changes/since/${date}` )
+			return await restfulAlice.get( `/lists/changes/since/${ date }` )
 				.query( { next, limit } );
 		}
 
@@ -93,9 +93,9 @@ describe( 'ReadingLists', function () {
 				const createdTimestamp = new Date( list.created ).getTime();
 				const updatedTimestamp = new Date( list.updated ).getTime();
 
-				assert.ok( !isNaN( createdTimestamp ), `List ID ${list.id} has invalid created timestamp` );
-				assert.ok( !isNaN( updatedTimestamp ), `List ID ${list.id} has invalid updated timestamp` );
-				assert.ok( updatedTimestamp >= createdTimestamp, `List ID ${list.id} has updated timestamp later than or equal to created timestamp` );
+				assert.ok( !isNaN( createdTimestamp ), `List ID ${ list.id } has invalid created timestamp` );
+				assert.ok( !isNaN( updatedTimestamp ), `List ID ${ list.id } has invalid updated timestamp` );
+				assert.ok( updatedTimestamp >= createdTimestamp, `List ID ${ list.id } has updated timestamp later than or equal to created timestamp` );
 			}
 
 		} );
@@ -111,7 +111,7 @@ describe( 'ReadingLists', function () {
 
 		it.skip( 'should get lists with specified parameters', async function () {
 			// /lists/pages/{project}/{title}'
-			const response = await restfulAlice.get( `/lists/pages/${validProject}/${validTitle}` );
+			const response = await restfulAlice.get( `/lists/pages/${ validProject }/${ validTitle }` );
 			assert.deepEqual( response.status, 200, response.text );
 			// TODO: We should check that we actually get lists,
 			//  that the lists we get are the correct ones.
@@ -119,13 +119,13 @@ describe( 'ReadingLists', function () {
 
 		it.skip( 'should handle a case with invalid title', async function () {
 			// Assumes handler returns an error response for invalid parameters
-			const response = await restfulAlice.get( `/lists/pages/${validProject}/${invalidTitle}` );
+			const response = await restfulAlice.get( `/lists/pages/${ validProject }/${ invalidTitle }` );
 			assert.deepEqual( response.status, 400, response.text );
 		} );
 
 		it( 'should handle a case with invalid project', async function () {
 			// Assumes handler returns an error response for invalid parameters
-			const response = await restfulAlice.get( `/lists/pages/${invalidProject}/${validTitle}` );
+			const response = await restfulAlice.get( `/lists/pages/${ invalidProject }/${ validTitle }` );
 			assert.deepEqual( response.status, 400, response.text );
 		} );
 

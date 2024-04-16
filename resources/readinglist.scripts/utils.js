@@ -7,12 +7,12 @@
 const getReadingListUrl = ( ownerName, id, title ) => {
 	let titlePath = 'ReadingLists';
 	if ( ownerName ) {
-		titlePath += `/${ownerName}`;
+		titlePath += `/${ ownerName }`;
 	}
 	if ( id ) {
-		titlePath += `/${id}`;
+		titlePath += `/${ id }`;
 	}
-	const titleWithName = title ? `${titlePath}/${encodeURIComponent( title )}` : titlePath;
+	const titleWithName = title ? `${ titlePath }/${ encodeURIComponent( title ) }` : titlePath;
 	try {
 		return (
 			new mw.Title( titleWithName, -1 )

@@ -88,8 +88,8 @@ function getCard( { id, url, name, description, title, thumbnail, project, pagei
 }
 
 function getCollectionUrl( username, id, name ) {
-	return id ? mw.util.getUrl( `${READING_LIST_SPECIAL_PAGE_NAME}/${username}/${id}/${name}` ) :
-		mw.util.getUrl( `${READING_LIST_SPECIAL_PAGE_NAME}/${username}` );
+	return id ? mw.util.getUrl( `${ READING_LIST_SPECIAL_PAGE_NAME }/${ username }/${ id }/${ name }` ) :
+		mw.util.getUrl( `${ READING_LIST_SPECIAL_PAGE_NAME }/${ username }` );
 }
 
 // @vue/component
@@ -206,8 +206,8 @@ module.exports = {
 				return '';
 			}
 			const url = new URL(
-				`${location.pathname}?limport=${base64}&wprov=${wprov}`,
-				`${location.protocol}//${location.host}`
+				`${ location.pathname }?limport=${ base64 }&wprov=${ wprov }`,
+				`${ location.protocol }//${ location.host }`
 			);
 			return url.toString();
 		},

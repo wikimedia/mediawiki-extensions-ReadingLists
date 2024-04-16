@@ -89,7 +89,7 @@ describe( 'ReadingLists', function () {
 
 		it( ' should get list by id', async function () {
 			// getting the list by ID
-			const response = await restfulAlice.get( `/lists/${listId}` );
+			const response = await restfulAlice.get( `/lists/${ listId }` );
 			assert.deepEqual( response.status, 200, response.text );
 
 			// Assert that the returned list matches the expected properties
@@ -105,7 +105,7 @@ describe( 'ReadingLists', function () {
 
 		it( 'should throw an error when accessing list with different user ', async function () {
 			// getting the list by ID
-			const response = await restfulBob.get( `/lists/${listId}` );
+			const response = await restfulBob.get( `/lists/${ listId }` );
 			// Assert that the response status is 403 Forbidden or 400 bad request
 			assert.oneOf( response.status, [ 400, 403 ], response.text );
 		} );
@@ -147,7 +147,7 @@ describe( 'ReadingLists', function () {
 		it( 'should return an error when trying to get a deleted list', async function () {
 
 			// Attempting to get a list using a deleted ID
-			const invalidIdResponse = await restfulAlice.get( `/lists/${listId}` );
+			const invalidIdResponse = await restfulAlice.get( `/lists/${ listId }` );
 
 			// Assert that the response status is 404
 			assert.oneOf( invalidIdResponse.status, [ 400, 404 ], invalidIdResponse.text );

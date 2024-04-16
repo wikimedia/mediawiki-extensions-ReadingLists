@@ -121,15 +121,15 @@ function getProjectHost( project ) {
 		if ( project.indexOf( 'localhost' ) > -1 ) {
 			return 'https://en.wikipedia.org';
 		} else if ( isLang ) {
-			return `https://${project}.wikipedia.org`;
+			return `https://${ project }.wikipedia.org`;
 		} else {
-			return hasProtocol ? project : `//${project}`;
+			return hasProtocol ? project : `//${ project }`;
 		}
 	}
 	if ( isLang ) {
-		return `https://${project}.${window.location.host.split( '.' ).slice( 1 ).join( '.' )}`;
+		return `https://${ project }.${ window.location.host.split( '.' ).slice( 1 ).join( '.' ) }`;
 	} else {
-		return hasProtocol ? project : `//${project}`;
+		return hasProtocol ? project : `//${ project }`;
 	}
 }
 
@@ -142,7 +142,7 @@ const transformPage = ( project ) => {
 		return Object.assign( page, {
 			project: getProjectHost( project ),
 			// T320293
-			url: `${getProjectHost( project )}${new mw.Title( page.title ).getUrl()}`,
+			url: `${ getProjectHost( project ) }${ new mw.Title( page.title ).getUrl() }`,
 			pageid: page.pageid,
 			thumbnail: page.thumbnail ? {
 				width: page.thumbnail.width,
@@ -180,7 +180,6 @@ const watchlistCard = ( ownerName ) => {
 };
 
 /**
- *
  * @param {string} ownerName (username)
  * @param {number[]} marked a list of collection IDs which have a certain title
  * @return {Promise<Card[]>}
@@ -229,7 +228,7 @@ function getCollectionMeta( ownerName, id ) {
 	return api.get( { action: 'query', format: 'json', meta: 'readinglists', rllist: id, formatversion: 2 } )
 		.then( function ( /** @type {ApiQueryResponseReadingLists} */ data ) {
 			if ( data.error && data.error.code ) {
-				throw new Error( `Error: ${data.error.code}` );
+				throw new Error( `Error: ${ data.error.code }` );
 			}
 			return readingListToCard(
 				data.query.readinglists[ 0 ],
@@ -269,13 +268,12 @@ function getPagesFromProjectMap( projectMap ) {
  */
 function getProjectApiUrl( project ) {
 	if ( config.ReadingListsDeveloperMode ) {
-		return `${getProjectHost( project )}/w/api.php`;
+		return `${ getProjectHost( project ) }/w/api.php`;
 	}
-	return `${getProjectHost( project )}${mw.config.get( 'wgScriptPath' )}/api.php`;
+	return `${ getProjectHost( project ) }${ mw.config.get( 'wgScriptPath' ) }/api.php`;
 }
 
 /**
- *
  * @param {string} project e.g. 'http://localhost:8888' or language code e.g. 'en'
  * @param {number[]|string[]} pageidsOrPageTitles
  * @return {jQuery.Promise<any>}
@@ -286,7 +284,7 @@ function getThumbnailsAndDescriptions( project, pageidsOrPageTitles ) {
 	const titles = isPageIds ? undefined : pageidsOrPageTitles;
 
 	const ajaxOptions = {
-		url: `${getProjectApiUrl( project )}`
+		url: `${ getProjectApiUrl( project ) }`
 	};
 
 	const filterOutMissingPagesIfIDsPassed = ( page ) => {
@@ -396,7 +394,6 @@ function getWatchlistPages( continueQuery = {} ) {
 }
 
 /**
- *
  * @param {number} collectionId
  * @param {Object} [continueQuery]
  * @return {jQuery.Promise<ApiQueryResponseReadingListEntryItem[]>}
@@ -466,7 +463,7 @@ function normalizeImportedData( importedList ) {
 	Object.keys( importedList.list ).forEach( ( key ) => {
 		// If encounter a language code (no protocol or subdomain) assume Wikipedia
 		if ( isLanguageCode( key ) ) {
-			importedList.list[ `https://${key}.wikipedia.org` ] = importedList.list[ key ];
+			importedList.list[ `https://${ key }.wikipedia.org` ] = importedList.list[ key ];
 			delete importedList.list[ key ];
 		}
 	} );
