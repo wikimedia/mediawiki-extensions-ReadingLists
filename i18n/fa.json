@@ -22,7 +22,7 @@
 	"readinglists-db-error-duplicate-page": "فهرست این صفحه را دارد.",
 	"readinglists-db-error-empty-list-ids": "پارامتر شناسه فهرست نمی‌تواند خالی باشد.",
 	"readinglists-db-error-user-required": "این متد بدون مشخص کردن کاربر قابل فراخوانی نیست.",
-	"readinglists-db-error-list-limit": "کاربران نمی‌توانند بیشتر از $1 {{PLURAL:$1|فهرست}} داشته‌باشند.",
+	"readinglists-db-error-list-limit": "کاربران نمی‌توانند بیشتر از $1 {{PLURAL:$1|فهرست}} داشته باشند.",
 	"readinglists-db-error-entry-limit": "فهرست $1 نمی‌تواند بیش از $2 {{PLURAL:$2|عضو}} داشته باشد.",
 	"readinglists-db-error-no-such-project": "«$1» یک پروژه شناخته‌شده نیست.",
 	"readinglists-browser-login-prompt": "برای ذخیره مقاله وارد شوید",
