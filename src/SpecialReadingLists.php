@@ -64,9 +64,7 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 				$isWatchlist = $listId === '-10';
 				$canDisplayPrivateLists = $privateEnabled && $owner &&
 					$owner->getId() === $user->getId();
-				$pageTitle = $isWatchlist ?
-					$this->msg( 'watchlist' ) :
-					$this->msg( 'readinglists-special-title' );
+				$pageTitle = $this->msg( 'readinglists-special-title' );
 				if ( !$privateEnabled ) {
 					$out->addHtmlClasses( 'mw-special-readinglist-watchlist-only' );
 				}
