@@ -3,7 +3,8 @@
 		"authors": [
 			"Hanyanbo98",
 			"Lantianjialiang",
-			"Liuxinyu970226"
+			"Liuxinyu970226",
+			"沈澄心"
 		]
 	},
 	"readinglists-desc": "允许用户管理私有条目列表，例如书签或“稍后阅读”列表。",
@@ -33,5 +34,22 @@
 	"readinglists-browser-list-entry-limit-exceeded": "条目不能保存。您已达到每列表$1个条目的限制",
 	"readinglists-browser-extension-product-title": "维基百科阅读列表",
 	"readinglists-browser-page-not-supported": "$1不支持此页面",
-	"readinglists-import-disclaimer": "此站点上的用户创建了一个阅读列表以与其他人（可能是您）共享。它没有经过审核，其内容不代表网站编辑的观点。"
+	"readinglists-special-title": "阅读列表",
+	"readinglists-description": "您所有的阅读列表都放在同一处。",
+	"readinglists-loading": "请稍候……",
+	"reading-list-purpose": "请登录以查看您的私人阅读列表。",
+	"readinglists-error": "您的浏览器无法使用阅读列表功能。请启用JavaScript或尝试使用其他浏览器。",
+	"readinglists-import-error": "无法显示来自给定数据的列表。",
+	"readinglists-import-size-error": "列表太大无法显示。",
+	"special-tab-readinglists-short": "您的列表",
+	"readinglists-default-title": "保存的页面",
+	"readinglists-default-description": "用于您已保存条目的默认列表",
+	"action-action-readinglist-private": "阅读其他用户的阅读列表",
+	"readinglists-empty-message": "您没有列表，何不创建一个？",
+	"readinglists-list-empty-message": "此列表尚无页面。请下载并使用应用程序来将项目添加到此阅读列表。",
+	"readinglists-no-title": "无标题列表",
+	"readinglists-export": "分享列表",
+	"readinglists-import-app-misconfigured": "本网站目前不支持导入列表。",
+	"readinglists-import-disclaimer": "此站点上的用户创建了一个阅读列表以与其他人（可能是您）共享。它没有经过审核，其内容不代表网站编辑的观点。",
+	"readinglists-import-app-launch-hint": "请确保安装了该应用程序的最新版本。"
 }
