@@ -99,7 +99,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	}
 
 	public function testSetupFailsWithoutProjects() {
-		$this->db->truncate( 'reading_list_project' );
+		$this->db->truncateTable( 'reading_list_project' );
 
 		$repository = new ReadingListRepository( 1, $this->lbFactory );
 		$this->assertFailsWith( 'readinglists-db-error-no-projects',
@@ -110,7 +110,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	}
 
 	public function testInitializeProjects() {
-		$this->db->truncate( 'reading_list_project' );
+		$this->db->truncateTable( 'reading_list_project' );
 
 		$repository = new ReadingListRepository( 1, $this->lbFactory );
 
