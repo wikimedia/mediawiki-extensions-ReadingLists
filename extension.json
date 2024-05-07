@@ -205,6 +205,16 @@
 			]
 		},
 		{
+			"path": "/readinglists/v0/lists/",
+			"method": "GET",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
+		},
+		{
 			"path": "/readinglists/v0/lists/{id}",
 			"method": "GET",
 			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsIdHandler",
@@ -216,6 +226,16 @@
 		},
 		{
 			"path": "/readinglists/v0/lists",
+			"method": "POST",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsCreateHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
+		},
+		{
+			"path": "/readinglists/v0/lists/",
 			"method": "POST",
 			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsCreateHandler",
 			"services": [
@@ -286,7 +306,28 @@
 			]
 		},
 		{
+			"path": "/readinglists/v0/lists/{id}/entries/",
+			"method": "GET",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup",
+				"ReverseInterwikiLookup"
+			]
+		},
+		{
 			"path": "/readinglists/v0/lists/{id}/entries",
+			"method": "POST",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateHandler",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MainConfig",
+				"CentralIdLookup"
+			]
+		},
+		{
+			"path": "/readinglists/v0/lists/{id}/entries/",
 			"method": "POST",
 			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateHandler",
 			"services": [

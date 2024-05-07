@@ -53,6 +53,11 @@ describe( 'ReadingLists Entries', function () {
 			// TODO: check expected list entries
 		} );
 
+		it( 'should get list entries when url includees trailing slash', async function () {
+			const response = await restfulAlice.get( entriesUrl + '/' );
+			assert.deepEqual( response.status, 200, response.text );
+		} );
+
 		it( 'should not create a new list entry without title parameter', async function () {
 			const reqNewListEntry = {
 				project: localProject
