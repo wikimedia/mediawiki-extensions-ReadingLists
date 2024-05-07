@@ -1140,6 +1140,13 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @return int|null
 	 */
 	private function getProjectId( $project ) {
+		if ( $project === '@local' ) {
+			// Support for "@local" is provided primarily for the benefit
+			// of Mocha tests, so they don't have to know the actual project
+			// URL.
+			$project = $this->getLocalProject();
+		}
+
 		$id = $this->dbr->newSelectQueryBuilder()
 			->select( 'rlp_id' )
 			->from( 'reading_list_project' )
@@ -1182,22 +1189,19 @@ class ReadingListRepository implements LoggerAwareInterface {
 			return false;
 		}
 
-		$url = MediaWikiServices::getInstance()->getUrlUtils()->getCanonicalServer();
-		if ( $url ) {
-			$parts = MediaWikiServices::getInstance()->getUrlUtils()->parse( $url );
-			$parts['port'] = null;
-			$project = MediaWikiServices::getInstance()->getUrlUtils()->assemble( $parts );
-			$this->dbw->newInsertQueryBuilder()
-				->insertInto( 'reading_list_project' )
-				->row( [
-					'rlp_project' => $project,
-				] )
-				->caller( __METHOD__ )->execute();
-
-			return true;
-		} else {
+		$project = $this->getLocalProject();
+		if ( !$project ) {
 			throw new LogicException( 'Unable to load canonical url for project initialization' );
 		}
+
+		$this->dbw->newInsertQueryBuilder()
+			->insertInto( 'reading_list_project' )
+			->row( [
+				'rlp_project' => $project,
+			] )
+			->caller( __METHOD__ )->execute();
+
+		return true;
 	}
 
 	/**
@@ -1212,5 +1216,21 @@ class ReadingListRepository implements LoggerAwareInterface {
 			)->caller( __METHOD__ )->fetchField();
 
 		return $count > 0;
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getLocalProject(): string {
+		$url = MediaWikiServices::getInstance()->getUrlUtils()->getCanonicalServer();
+		if ( $url === '' ) {
+			return '';
+		}
+
+		$parts = MediaWikiServices::getInstance()->getUrlUtils()->parse( $url );
+		$parts['port'] = null;
+		$project = MediaWikiServices::getInstance()->getUrlUtils()->assemble( $parts );
+
+		return $project;
 	}
 }
