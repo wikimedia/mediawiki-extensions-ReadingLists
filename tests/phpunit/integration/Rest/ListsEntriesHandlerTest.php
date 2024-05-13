@@ -138,6 +138,7 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 
 	public function testListsPagination() {
 		$services = $this->getServiceContainer();
+
 		$handler = new ListsEntriesHandler(
 			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
@@ -165,6 +166,14 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 			'Lassie'
 		);
 
+		// Use a separate handler instance. This avoids double-initialization errors, and also
+		// ensures there are no side effects between invocations.
+		$handler = new ListsEntriesHandler(
+			$services->getDBLoadBalancerFactory(),
+			$services->getMainConfig(),
+			$this->getMockCentralIdLookup(),
+			$this->getMockReverseInterwikiLookup( '' )
+		);
 		$request = new RequestData( [
 			'pathParams' => [ 'id' => $list->rl_id ],
 			'queryParams' => [ 'limit' => 1, 'next' => $data['next'] ]

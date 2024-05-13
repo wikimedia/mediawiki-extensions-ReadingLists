@@ -198,13 +198,12 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 
 	public function testListsChangesSincePagination() {
 		$services = $this->getServiceContainer();
+		$changedSince = wfTimestamp( TS_ISO_8601, strtotime( "-7 days" ) );
+
 		$handler = new ListsChangesSinceHandler(
 			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
-
-		$changedSince = wfTimestamp( TS_ISO_8601, strtotime( "-7 days" ) );
-
 		$request = new RequestData( [
 			'pathParams' => [ 'date' => $changedSince ],
 			'queryParams' => [ 'limit' => 1 ]
@@ -223,6 +222,12 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 			false
 		);
 
+		// Use a separate handler instance. This avoids double-initialization errors, and also
+		// ensures there are no side effects between invocations.
+		$handler = new ListsChangesSinceHandler(
+			$services->getDBLoadBalancerFactory(),
+			$services->getMainConfig(),
+			$this->getMockCentralIdLookup() );
 		$request = new RequestData( [
 			'pathParams' => [ 'date' => $changedSince ],
 			'queryParams' => [ 'limit' => 1, 'next' => $data['next'] ]

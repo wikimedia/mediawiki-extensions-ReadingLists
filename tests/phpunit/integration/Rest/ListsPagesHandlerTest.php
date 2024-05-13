@@ -147,11 +147,11 @@ class ListsPagesHandlerTest extends \MediaWikiIntegrationTestCase {
 
 	public function testListsPagesPagination() {
 		$services = $this->getServiceContainer();
+
 		$handler = new ListsPagesHandler(
 			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
-
 		$request = new RequestData( [
 			'pathParams' => [ 'project' => 'foo', 'title' => 'Dog' ],
 			'queryParams' => [ 'limit' => 1 ]
@@ -170,6 +170,12 @@ class ListsPagesHandlerTest extends \MediaWikiIntegrationTestCase {
 			false
 		);
 
+		// Use a separate handler instance. This avoids double-initialization errors, and also
+		// ensures there are no side effects between invocations.
+		$handler = new ListsPagesHandler(
+			$services->getDBLoadBalancerFactory(),
+			$services->getMainConfig(),
+			$this->getMockCentralIdLookup() );
 		$request = new RequestData( [
 			'pathParams' => [ 'project' => 'foo', 'title' => 'Dog' ],
 			'queryParams' => [ 'limit' => 1, 'next' => $data['next'] ]

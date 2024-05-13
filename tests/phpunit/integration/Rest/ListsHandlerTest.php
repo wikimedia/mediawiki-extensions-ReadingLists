@@ -130,6 +130,7 @@ class ListsHandlerTest extends \MediaWikiIntegrationTestCase {
 
 	public function testListsPagination() {
 		$services = $this->getServiceContainer();
+
 		$handler = new ListsHandler(
 			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
@@ -153,6 +154,12 @@ class ListsHandlerTest extends \MediaWikiIntegrationTestCase {
 			true
 		);
 
+		// Use a separate handler instance. This avoids double-initialization errors, and also
+		// ensures there are no side effects between invocations.
+		$handler = new ListsHandler(
+			$services->getDBLoadBalancerFactory(),
+			$services->getMainConfig(),
+			$this->getMockCentralIdLookup() );
 		$request = new RequestData( [ 'queryParams' => [ 'limit' => 1, 'next' => $data['next'] ] ] );
 		$data = $this->executeReadingListsHandlerAndGetBodyData( $handler, $request );
 		$this->assertArrayNotHasKey( 'continue-from', $data );
