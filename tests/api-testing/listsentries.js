@@ -50,7 +50,9 @@ describe( 'ReadingLists Entries', function () {
 			const response = await restfulAlice.get( entriesUrl );
 			assert.deepEqual( response.status, 200, response.text );
 
-			// TODO: check expected list entries
+			assert.property( response.body, 'entries' );
+			assert.property( response.body.entries[ 0 ], 'id' );
+			assert.deepEqual( response.body.entries[ 0 ].listId, listId );
 		} );
 
 		it( 'should get list entries when url includees trailing slash', async function () {
@@ -66,6 +68,26 @@ describe( 'ReadingLists Entries', function () {
 				.send( { ...reqNewListEntry, token } );
 			assert.deepEqual( response.status, 400, response.text );
 			assert.deepEqual( response.body.failureCode, 'missingparam', response.text );
+		} );
+
+		it( 'should remove entries from the list', async function () {
+			// Get entry ID
+			let response = await restfulAlice.get( entriesUrl );
+			const entryId = response.body.entries[ 0 ].id;
+			assert.deepEqual( response.status, 200, response.text );
+			assert.deepEqual( response.body.entries.length, 1, 'There should be one entry in the list' );
+
+			// Delete list entry by entry ID
+			const deleteUrl = entriesUrl + '/' + entryId;
+			const deleteResponse = await restfulAlice.del( deleteUrl );
+			assert.deepEqual( deleteResponse.status, 200, response.text );
+
+			// Get entries after deletion
+			response = await restfulAlice.get( entriesUrl );
+			assert.deepEqual( response.status, 200, response.text );
+
+			// Check list item has been removed
+			assert.deepEqual( response.body.entries.length, 0, 'There should be no lists remaining' );
 		} );
 
 		it( 'should not create a new list entry without valid project', async function () {
@@ -93,7 +115,35 @@ describe( 'ReadingLists Entries', function () {
 			);
 		} );
 
-		// TODO: check that we can actually create a batch of entries
+		async function createEntriesInBatch( batch ) {
+			const reqBody = { batch };
+			const batchUrl = entriesUrl + '/batch';
+			return await restfulAlice.post( batchUrl )
+				.set( 'Content-Type', 'application/json' )
+				.send( reqBody )
+				.send( { token } );
+		}
+
+		it( 'should create a batch of list entries with valid batch', async function () {
+			const validTitle1 = utils.title( 'Cat' );
+
+			const batch = [
+				{ project: localProject, title: validTitle },
+				{ project: localProject, title: validTitle1 }
+			];
+
+			let response = await createEntriesInBatch( batch );
+			assert.deepEqual( response.status, 200, response.text );
+
+			// Check that lists were created
+			response = await restfulAlice.get( entriesUrl );
+			assert.deepEqual( response.status, 200, response.text );
+			assert.deepEqual( response.body.entries.length, 2, response.text );
+
+			// Check lists have expected titles
+			assert.deepInclude( response.body.entries[ 0 ], { title: validTitle1 }, response.text );
+			assert.deepInclude( response.body.entries[ 1 ], { title: validTitle }, response.text );
+		} );
 
 		after( async function () {
 			await restfulAlice.post( '/lists/teardown' ).send( { token } );
@@ -130,22 +180,89 @@ describe( 'ReadingLists Entries', function () {
 
 	} );
 
-	// FIXME: it seems it does not check for invalid title?
 	describe( 'GET /list/pages/project/title', function () {
-		const validProject = 'foo';
-		const validTitle = 'Dog';
+		const validProject = '@local';
+		const validTitleA = 'Dog', validTitleB = 'Cat', validTitleC = 'Bird';
 		const invalidProject = '%Foo';
-		const invalidTitle = '_Dog_';
+		const invalidTitle = '%Dog';
+		let listIdA, listIdB;
+		let entriesUrlA, entriesUrlB;
 
-		it.skip( 'should get lists with specified parameters', async function () {
-			// /lists/pages/{project}/{title}'
-			const response = await restfulAlice.get( `/lists/pages/${ validProject }/${ validTitle }` );
-			assert.deepEqual( response.status, 200, response.text );
-			// TODO: We should check that we actually get lists,
-			//  that the lists we get are the correct ones.
+		before( async function () {
+			await restfulAlice.post( '/lists/setup' ).send( { token } );
+			const batch = [
+				{ name: 'name A', description: 'description A' },
+				{ name: 'name B', description: 'description B' }
+			];
+
+			const listsResponse = await restfulAlice.post( '/lists/batch' )
+				.set( 'Content-Type', 'application/json' )
+				.send( { batch } )
+				.send( { token } );
+			listIdA = listsResponse.body.batch[ 0 ].id;
+			listIdB = listsResponse.body.batch[ 1 ].id;
+
+			entriesUrlA = '/lists/' + listIdA + '/entries';
+			entriesUrlB = '/lists/' + listIdB + '/entries';
+
+			const reqNewListEntryA = {
+				project: '@local',
+				title: validTitleA
+			};
+			let res = await restfulAlice.post( entriesUrlA )
+				.send( { ...reqNewListEntryA, token } );
+			assert.deepEqual( res.status, 200, res.text );
+
+			const reqNewListEntryB = {
+				project: '@local',
+				title: validTitleB
+			};
+
+			res = await restfulAlice.post( entriesUrlB )
+				.send( { ...reqNewListEntryB, token } );
+			assert.deepEqual( res.status, 200, res.text );
+
+			const reqNewListEntryC = {
+				project: '@local',
+				title: validTitleC
+			};
+
+			res = await restfulAlice.post( entriesUrlA )
+				.send( { ...reqNewListEntryC, token } );
+			assert.deepEqual( res.status, 200, res.text );
+
+			res = await restfulAlice.post( entriesUrlB )
+				.send( { ...reqNewListEntryC, token } );
+			assert.deepEqual( res.status, 200, res.text );
 		} );
 
-		it.skip( 'should handle a case with invalid title', async function () {
+		it( 'should get lists with specified parameters', async function () {
+
+			let response = await restfulAlice.get( `/lists/pages/${ validProject }/${ validTitleA }` );
+			assert.deepEqual( response.status, 200, response.text );
+
+			// Check that entry is in list A
+			assert.deepEqual( response.body.lists[ 0 ].name, 'name A', response.text );
+
+			// Check that entry is not in any other list
+			assert.deepEqual( response.body.lists.length, 1, response.text );
+
+			response = await restfulAlice.get( `/lists/pages/${ validProject }/${ validTitleB }` );
+			assert.deepEqual( response.status, 200, response.text );
+
+			// Check that entry is in list B
+			assert.deepEqual( response.body.lists[ 0 ].name, 'name B', response.text );
+
+			// Check that entry is not in any other list
+			assert.deepEqual( response.body.lists.length, 1, response.text );
+
+			response = await restfulAlice.get( `/lists/pages/${ validProject }/${ validTitleC }` );
+
+			// Check that entry C is in both lists
+			assert.deepEqual( response.body.lists.length, 2, response.text );
+		} );
+
+		it( 'should handle a case with invalid title', async function () {
 			// Assumes handler returns an error response for invalid parameters
 			const response = await restfulAlice.get( `/lists/pages/${ validProject }/${ invalidTitle }` );
 			assert.deepEqual( response.status, 400, response.text );
@@ -153,11 +270,10 @@ describe( 'ReadingLists Entries', function () {
 
 		it( 'should handle a case with invalid project', async function () {
 			// Assumes handler returns an error response for invalid parameters
-			const response = await restfulAlice.get( `/lists/pages/${ invalidProject }/${ validTitle }` );
+			const response = await restfulAlice.get( `/lists/pages/${ invalidProject }/${ validTitleA }` );
 			assert.deepEqual( response.status, 400, response.text );
 		} );
 
-		// you can have a missing project or missing title
 	} );
 
 } );

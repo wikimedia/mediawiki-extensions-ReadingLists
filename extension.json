@@ -339,7 +339,7 @@
 		{
 			"path": "/readinglists/v0/lists/{id}/entries/batch",
 			"method": "POST",
-			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateHandler",
+			"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateBatchHandler",
 			"services": [
 				"DBLoadBalancerFactory",
 				"MainConfig",
