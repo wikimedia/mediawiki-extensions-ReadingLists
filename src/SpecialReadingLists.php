@@ -86,17 +86,6 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-	public function getAssociatedNavigationLinks(): array {
-		$config = $this->getConfig();
-		$privateEnabled = $config->get( 'ReadingListsWebAuthenticatedPreviews' );
-		return $privateEnabled ? [
-			self::getTitleFor( $this->getName() )->getPrefixedText(),
-		] : [];
-	}
-
-	/**
 	 * @return string
 	 */
 	protected function getGroupName() {
