@@ -44,7 +44,7 @@ describe( 'ReadingLists', function () {
 	} );
 
 	describe( 'POST, GET & DEL /lists', function () {
-		let listId;
+		let catListId, dogListId;
 		before( async function () {
 			const response = await restfulAlice.post( '/lists/setup' ).send( { token } );
 			assert.deepEqual( response.status, 200, response.text );
@@ -54,17 +54,17 @@ describe( 'ReadingLists', function () {
 		} );
 
 		// Helper function to create a list
-		async function createList( name, description ) {
+		async function createList( name, description, append ) {
 			const reqBody = {
 				name: name,
 				description: description
 			};
-			return await restfulAlice.post( '/lists', reqBody ).send( { token } );
+			return await restfulAlice.post( '/lists' + append, reqBody ).send( { token } );
 		}
 
 		// Test case for getting a list with valid parameters
 		it( 'should create a list', async function () {
-			const createResponse = await createList( 'cats', 'Meow!' );
+			const createResponse = await createList( 'cats', 'Meow!', '' );
 			assert.deepEqual( createResponse.status, 200, createResponse.text );
 
 			// verify that the created list was indeed "created'
@@ -73,7 +73,21 @@ describe( 'ReadingLists', function () {
 			assert.isArray( response.body.lists );
 			assert.lengthOf( response.body.lists, 1 );
 			assert.deepInclude( response.body.lists[ 0 ], { name: 'cats', description: 'Meow!', default: false } );
-			listId = response.body.lists[ 0 ].id;
+			catListId = response.body.lists[ 0 ].id;
+		} );
+
+		// Test case for getting a list with valid parameters
+		it( 'should create a list when url ends in a trailing slash', async function () {
+			const createResponse = await createList( 'dogs', 'Woof!', '/' );
+			assert.deepEqual( createResponse.status, 200, createResponse.text );
+
+			// verify that the created list was indeed "created'
+			const response = await restfulAlice.get( '/lists/' ).query( { limit: 1, dir: 'descending' } );
+			assert.deepEqual( response.status, 200, response.text );
+			assert.isArray( response.body.lists );
+			assert.lengthOf( response.body.lists, 1 );
+			assert.deepInclude( response.body.lists[ 0 ], { name: 'dogs', description: 'Woof!', default: false } );
+			dogListId = response.body.lists[ 0 ].id;
 		} );
 
 		it( 'should get lists for the user', async function () {
@@ -82,19 +96,19 @@ describe( 'ReadingLists', function () {
 			assert.property( response.body, 'lists' );
 			assert.property( response.body, 'continue-from' );
 			assert.isArray( response.body.lists );
-			assert.lengthOf( response.body.lists, 2 );
+			assert.lengthOf( response.body.lists, 3 );
 			assert.deepEqual( response.body.lists[ 0 ].name, 'cats' );
 			assert.deepEqual( response.body.lists[ 1 ].name, 'default' );
 		} );
 
 		it( ' should get list by id', async function () {
 			// getting the list by ID
-			const response = await restfulAlice.get( `/lists/${ listId }` );
+			const response = await restfulAlice.get( `/lists/${ catListId }` );
 			assert.deepEqual( response.status, 200, response.text );
 
 			// Assert that the returned list matches the expected properties
 			const expectedList = {
-				id: listId,
+				id: catListId,
 				name: 'cats',
 				description: 'Meow!',
 				default: false
@@ -105,7 +119,7 @@ describe( 'ReadingLists', function () {
 
 		it( 'should throw an error when accessing list with different user ', async function () {
 			// getting the list by ID
-			const response = await restfulBob.get( `/lists/${ listId }` );
+			const response = await restfulBob.get( `/lists/${ catListId }` );
 			// Assert that the response status is 403 Forbidden or 400 bad request
 			assert.oneOf( response.status, [ 400, 403 ], response.text );
 		} );
@@ -126,10 +140,14 @@ describe( 'ReadingLists', function () {
 		} );
 
 		it( 'should delete list by id', async function () {
-			// Delete the list by ID
-			const deleteUrl = '/lists/' + listId;
-			const deleteResponse = await restfulAlice.del( deleteUrl ).send( { token } );
-			assert.deepEqual( deleteResponse.status, 200, deleteResponse.text );
+			// Delete the cat and dog lists by ID
+			const deleteDogUrl = '/lists/' + dogListId;
+			const deleteDogResponse = await restfulAlice.del( deleteDogUrl ).send( { token } );
+			assert.deepEqual( deleteDogResponse.status, 200, deleteDogResponse.text );
+
+			const deleteCatUrl = '/lists/' + catListId;
+			const deleteCatResponse = await restfulAlice.del( deleteCatUrl ).send( { token } );
+			assert.deepEqual( deleteCatResponse.status, 200, deleteCatResponse.text );
 
 			// Fetch the lists after deletion
 			const getListsResponse = await restfulAlice.get( '/lists' );
@@ -138,16 +156,17 @@ describe( 'ReadingLists', function () {
 			// Check that there is only one list remaining
 			assert.deepEqual( getListsResponse.body.lists.length, 1, 'Number of lists should be 1' );
 
-			// Check that the remaining list has a different ID from listId
+			// Check that the remaining list has a different ID from catListId or dogListId
 			const remainingList = getListsResponse.body.lists[ 0 ];
-			assert.notDeepEqual( remainingList.id, listId, 'Remaining list ID should be different from listId' );
+			assert.notDeepEqual( remainingList.id, catListId, 'Remaining list ID should be different from catListId' );
+			assert.notDeepEqual( remainingList.id, dogListId, 'Remaining list ID should be different from dogListId' );
 		} );
 
 		// Test case for getting a list by an invalid ID (after deleting the list)
 		it( 'should return an error when trying to get a deleted list', async function () {
 
 			// Attempting to get a list using a deleted ID
-			const invalidIdResponse = await restfulAlice.get( `/lists/${ listId }` );
+			const invalidIdResponse = await restfulAlice.get( `/lists/${ catListId }` );
 
 			// Assert that the response status is 404
 			assert.oneOf( invalidIdResponse.status, [ 400, 404 ], invalidIdResponse.text );
