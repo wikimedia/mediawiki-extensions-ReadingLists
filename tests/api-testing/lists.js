@@ -5,6 +5,16 @@ describe( 'ReadingLists', function () {
 	let alice, restfulAlice, token;
 	let bob, bob_token, restfulBob;
 
+	// Ensure fields required by callers are present (for RESTBase compatibility)
+	function assertErrorFormat( response ) {
+		assert.isAtLeast( response.status, 400, response.text );
+		assert.property( response.body, 'type' );
+		assert.property( response.body, 'title' );
+		assert.property( response.body, 'method' );
+		assert.property( response.body, 'detail' );
+		assert.property( response.body, 'uri' );
+	}
+
 	before( async function () {
 		alice = await action.alice();
 		bob = await action.bob();
@@ -19,11 +29,13 @@ describe( 'ReadingLists', function () {
 			// Assuming the TeardownHandler checks for a valid setup before tearing down
 			const response = await restfulAlice.post( '/lists/teardown' ).send( { token } );
 			assert.isAtLeast( response.status, 400, response.text );
+			assertErrorFormat( response );
 		} );
 
 		it( 'setup should fail without valid token', async function () {
 			const response = await restfulAlice.post( '/lists/setup' );
 			assert.deepEqual( response.status, 403, response.text );
+			assertErrorFormat( response );
 		} );
 
 		it( 'should setup list for the user', async function () {
@@ -35,6 +47,7 @@ describe( 'ReadingLists', function () {
 		it( 'teardown should fail without valid token', async function () {
 			const response = await restfulAlice.post( '/lists/teardown' );
 			assert.deepEqual( response.status, 403, response.text );
+			assertErrorFormat( response );
 		} );
 
 		it( 'should teardown lists for the user', async function () {
@@ -122,6 +135,7 @@ describe( 'ReadingLists', function () {
 			const response = await restfulBob.get( `/lists/${ catListId }` );
 			// Assert that the response status is 403 Forbidden or 400 bad request
 			assert.oneOf( response.status, [ 400, 403 ], response.text );
+			assertErrorFormat( response );
 		} );
 
 		// Test case for getting a list by ID with an unknown ID (404)
@@ -130,6 +144,7 @@ describe( 'ReadingLists', function () {
 			const unknownIdResponse = await restfulAlice.get( '/lists/999999999' );
 			// Assert that the response status is 400 Bad Request or 404 Not Found
 			assert.oneOf( unknownIdResponse.status, [ 400, 404 ], unknownIdResponse.text );
+			assertErrorFormat( unknownIdResponse );
 		} );
 
 		it( 'should return an error for a non-numeric id', async function () {
@@ -137,6 +152,7 @@ describe( 'ReadingLists', function () {
 			const invalidIdResponse = await restfulAlice.get( '/lists/invalid_id' );
 			// Assert that the response status is 400 Bad Request
 			assert.strictEqual( invalidIdResponse.status, 400, invalidIdResponse.text );
+			assertErrorFormat( invalidIdResponse );
 		} );
 
 		it( 'should delete list by id', async function () {
@@ -170,6 +186,7 @@ describe( 'ReadingLists', function () {
 
 			// Assert that the response status is 404
 			assert.oneOf( invalidIdResponse.status, [ 400, 404 ], invalidIdResponse.text );
+			assertErrorFormat( invalidIdResponse );
 		} );
 
 		// Helper function to create lists in batch
@@ -213,6 +230,7 @@ describe( 'ReadingLists', function () {
 
 			const createResponse = await createListsInBatch( invalidBatch );
 			assert.deepEqual( createResponse.status, 400, createResponse.text ); // the endpoint returns a 403 here
+			assertErrorFormat( createResponse );
 		} );
 
 		// Test case for pagination
@@ -257,6 +275,7 @@ describe( 'ReadingLists', function () {
 			const response = await restfulAlice.put( listsIdUrl, reqBody ).send( { token } );
 			assert.deepEqual( response.status, 400, response.text );
 			assert.deepEqual( response.body.errorKey, 'readinglists-db-error-cannot-update-default-list', response.text );
+			assertErrorFormat( response );
 		} );
 
 		it( 'should create a new list', async function () {

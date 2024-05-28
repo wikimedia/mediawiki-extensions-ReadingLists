@@ -6,8 +6,10 @@ use MediaWiki\Config\Config;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Rest\Handler;
+use MediaWiki\Rest\LocalizedHttpException;
 use MediaWiki\Rest\Response;
 use MediaWiki\Rest\SimpleHandler;
+use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use Psr\Log\LoggerInterface;
 use stdClass;
@@ -22,7 +24,6 @@ use Wikimedia\Rdbms\LBFactory;
  */
 class ListsEntriesDeleteHandler extends SimpleHandler {
 	use ReadingListsHandlerTrait;
-	use ReadingListsTokenAwareHandlerTrait;
 
 	private LBFactory $dbProvider;
 
@@ -57,6 +58,19 @@ class ListsEntriesDeleteHandler extends SimpleHandler {
 		$this->repository = $this->createRepository(
 			$this->getAuthority()->getUser(), $this->dbProvider, $this->config, $this->centralIdLookup, $this->logger
 		);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function validate( Validator $restValidator ) {
+		try {
+			// We intentionally do not require a csrf token, to match RESTBase
+			parent::validate( $restValidator );
+		} catch ( LocalizedHttpException $e ) {
+			// Add fields expected by WMF mobile apps
+			$this->die( $e->getMessageValue(), [], $e->getCode(), $e->getErrorData() );
+		}
 	}
 
 	/**

@@ -10,6 +10,8 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Rest\Handler;
+use MediaWiki\Rest\LocalizedHttpException;
+use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use MediaWiki\Utils\MWTimestamp;
 use Psr\Log\LoggerInterface;
@@ -67,6 +69,18 @@ class ListsHandler extends Handler {
 		$this->repository = $this->createRepository(
 			$this->getAuthority()->getUser(), $this->dbProvider, $this->config, $this->centralIdLookup, $this->logger
 		);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function validate( Validator $restValidator ) {
+		try {
+			parent::validate( $restValidator );
+		} catch ( LocalizedHttpException $e ) {
+			// Add fields expected by WMF mobile apps
+			$this->die( $e->getMessageValue(), [], $e->getCode(), $e->getErrorData() );
+		}
 	}
 
 	/**
@@ -162,6 +176,9 @@ class ListsHandler extends Handler {
 				'rl_id' => $row->rl_id,
 				'user_central_id' => $row->rl_user_id,
 			] );
+
+			// Don't use die() because this is a code structure exception meant for developers,
+			// not a caller-facing exception associated with any particular request.
 			throw new LogicException( 'Deleted row returned in non-changes mode' );
 		}
 		return $this->getListFromRow( $row );

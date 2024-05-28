@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extension\ReadingLists\Rest;
 
+use HttpStatus;
 use MediaWiki\Message\Converter;
 use MediaWiki\Rest\LocalizedHttpException;
 use Message;
@@ -23,10 +24,12 @@ trait RestUtilTrait {
 	 * @param string|Message|MessageValue $msg
 	 * @param array $params
 	 * @param int $code
+	 * @param array $errorData
 	 * @return never
 	 * @throws LocalizedHttpException
+	 * @suppress PhanUndeclaredMethod
 	 */
-	protected function die( $msg, array $params = [], int $code = 400 ) {
+	protected function die( $msg, array $params = [], int $code = 400, array $errorData = [] ) {
 		if ( $msg instanceof Message ) {
 			$c = new Converter();
 			$mv = $c->convertMessage( $msg );
@@ -36,7 +39,19 @@ trait RestUtilTrait {
 			$mv = MessageValue::new( $msg, $params );
 		}
 
-		throw new LocalizedHttpException( $mv, 400 );
+		$fm = $this->getResponseFactory()->formatMessage( $mv );
+
+		// Match error fields emitted by the RESTBase endpoints, as expected by WMF mobile apps
+		// EntryPoint::getTextFormatters() ensures 'en' is always available.
+		$restbaseCompatibilityData = [
+			'type' => "ReadingListsError/" . str_replace( ' ', '_', HttpStatus::getMessage( $code ) ),
+			'title' => $mv->getKey(),
+			'method' => strtolower( $this->getRequest()->getMethod() ),
+			'detail' => $fm['messageTranslations']['en'] ?? $mv->getKey(),
+			'uri' => (string)$this->getRequest()->getUri()
+		];
+
+		throw new LocalizedHttpException( $mv, $code, $errorData + $restbaseCompatibilityData );
 	}
 
 	/**
@@ -77,7 +92,7 @@ trait RestUtilTrait {
 			$mv = MessageValue::new( 'apierror-invalidparammix' )
 				->textListParams( [ $lp ] )
 				->numParams( count( $intersection ) );
-			throw new LocalizedHttpException( $mv, 400 );
+			$this->die( $mv );
 		}
 	}
 
@@ -107,7 +122,7 @@ trait RestUtilTrait {
 			$mv = MessageValue::new( 'apierror-missingparam-at-least-one-of' )
 				->textListParams( [ $lp ] )
 				->numParams( count( $required ) );
-			throw new LocalizedHttpException( $mv, 400 );
+			$this->die( $mv );
 		}
 	}
 
@@ -116,7 +131,6 @@ trait RestUtilTrait {
 	 *
 	 * @param array $params User provided parameter set, as from $this->extractRequestParams()
 	 * @param string ...$required Names of parameters of which exactly one must be set
-	 * @throws LocalizedHttpException
 	 */
 	protected function requireOnlyOneParameter( $params, ...$required ) {
 		$intersection = array_intersect( array_keys( array_filter( $params,
@@ -136,7 +150,7 @@ trait RestUtilTrait {
 			$mv = MessageValue::new( 'apierror-invalidparammix' )
 				->textListParams( [ $lp ] )
 				->numParams( count( $intersection ) );
-			throw new LocalizedHttpException( $mv, 400 );
+			$this->die( $mv );
 		} elseif ( count( $intersection ) == 0 ) {
 			$lp = new ListParam(
 				ParamType::TEXT,
@@ -151,7 +165,7 @@ trait RestUtilTrait {
 			$mv = MessageValue::new( 'apierror-missingparam-one-of' )
 				->textListParams( [ $lp ] )
 				->numParams( count( $required ) );
-			throw new LocalizedHttpException( $mv, 400 );
+			$this->die( $mv );
 		}
 	}
 

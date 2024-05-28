@@ -8,7 +8,9 @@ use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Rest\Handler;
+use MediaWiki\Rest\LocalizedHttpException;
 use MediaWiki\Rest\SimpleHandler;
+use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\Title\TitleValue;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use Psr\Log\LoggerInterface;
@@ -62,6 +64,18 @@ class ListsEntriesHandler extends SimpleHandler {
 		$this->repository = $this->createRepository(
 			$this->getAuthority()->getUser(), $this->dbProvider, $this->config, $this->centralIdLookup, $this->logger
 		);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function validate( Validator $restValidator ) {
+		try {
+			parent::validate( $restValidator );
+		} catch ( LocalizedHttpException $e ) {
+			// Add fields expected by WMF mobile apps
+			$this->die( $e->getMessageValue(), [], $e->getCode(), $e->getErrorData() );
+		}
 	}
 
 	/**
