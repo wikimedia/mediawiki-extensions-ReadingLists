@@ -58,7 +58,6 @@
 	"readinglists-import-disclaimer": "Cette liste a été générée par un utilisateur de ce site pour la partager avec quelqu’un (probablement vous). Elle n’est pas modérée et son contenu peut ne pas refléter les éditeurs du site.",
 	"readinglists-import-button-label": "Afficher la liste",
 	"readinglists-import-button-hint": "Appuyez sur le bouton :",
-	"readinglists-share-url-text": "[$1] $2\n$3",
 	"readinglists-share-url-notify": "Les informations relatives à cette liste de lecture ont été copiées dans votre presse-papiers.",
 	"readinglists-import-app-launch-hint": "Veuillez vous assurer que la dernière version de l’application est bien installée."
 }
