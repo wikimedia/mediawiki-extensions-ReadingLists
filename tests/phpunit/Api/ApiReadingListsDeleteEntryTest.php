@@ -2,8 +2,8 @@
 
 namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
-use ApiTestCase;
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
+use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
 
 /**

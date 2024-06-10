@@ -4,7 +4,7 @@ namespace MediaWiki\Extension\ReadingLists;
 
 use Exception;
 use ILocalizedException;
-use Message;
+use MediaWiki\Message\Message;
 
 /**
  * Used by ReadingListRepository methods when performing the method would violate some kind of

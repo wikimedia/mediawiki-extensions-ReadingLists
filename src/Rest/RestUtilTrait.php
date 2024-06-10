@@ -3,8 +3,8 @@
 namespace MediaWiki\Extension\ReadingLists\Rest;
 
 use MediaWiki\Message\Converter;
+use MediaWiki\Message\Message;
 use MediaWiki\Rest\LocalizedHttpException;
-use Message;
 use Wikimedia\Message\ListParam;
 use Wikimedia\Message\MessageValue;
 use Wikimedia\Message\ParamType;

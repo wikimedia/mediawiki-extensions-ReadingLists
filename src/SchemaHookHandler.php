@@ -2,7 +2,7 @@
 
 namespace MediaWiki\Extension\ReadingLists;
 
-use DatabaseUpdater;
+use MediaWiki\Installer\DatabaseUpdater;
 use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 
 /**
