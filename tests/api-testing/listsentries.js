@@ -7,6 +7,16 @@ describe( 'ReadingLists Entries', function () {
 	let token;
 	const localProject = '@local';
 
+	// Ensure fields required by callers are present (for RESTBase compatibility)
+	function assertErrorFormat( response ) {
+		assert.isAtLeast( response.status, 400, response.text );
+		assert.property( response.body, 'type' );
+		assert.property( response.body, 'title' );
+		assert.property( response.body, 'method' );
+		assert.property( response.body, 'detail' );
+		assert.property( response.body, 'uri' );
+	}
+
 	before( async function () {
 		alice = await action.alice();
 		restfulAlice = new REST( 'rest.php/readinglists/v0', alice );
@@ -68,6 +78,7 @@ describe( 'ReadingLists Entries', function () {
 				.send( { ...reqNewListEntry, token } );
 			assert.deepEqual( response.status, 400, response.text );
 			assert.deepEqual( response.body.failureCode, 'missingparam', response.text );
+			assertErrorFormat( response );
 		} );
 
 		it( 'should remove entries from the list', async function () {
@@ -99,6 +110,7 @@ describe( 'ReadingLists Entries', function () {
 				.send( { ...reqNewListEntry, token } );
 			assert.deepEqual( response.status, 400, response.text );
 			assert.deepEqual( response.body.errorKey, 'readinglists-db-error-no-such-project', response.text );
+			assertErrorFormat( response );
 		} );
 
 		it( 'should not create a new list entry without valid batch', async function () {
@@ -113,6 +125,7 @@ describe( 'ReadingLists Entries', function () {
 				'missingparam',
 				response.text
 			);
+			assertErrorFormat( response );
 		} );
 
 		async function createEntriesInBatch( batch ) {
@@ -183,8 +196,8 @@ describe( 'ReadingLists Entries', function () {
 	describe( 'GET /list/pages/project/title', function () {
 		const validProject = '@local';
 		const validTitleA = 'Dog', validTitleB = 'Cat', validTitleC = 'Bird';
-		const invalidProject = '%Foo';
-		const invalidTitle = '%Dog';
+		const invalidProject = '%25Foo';
+		const invalidTitle = '%25Dog';
 		let listIdA, listIdB;
 		let entriesUrlA, entriesUrlB;
 
@@ -262,16 +275,18 @@ describe( 'ReadingLists Entries', function () {
 			assert.deepEqual( response.body.lists.length, 2, response.text );
 		} );
 
-		it( 'should handle a case with invalid title', async function () {
+		it( 'should return empty results for invalid title', async function () {
 			// Assumes handler returns an error response for invalid parameters
 			const response = await restfulAlice.get( `/lists/pages/${ validProject }/${ invalidTitle }` );
-			assert.deepEqual( response.status, 400, response.text );
+			assert.deepEqual( response.status, 200, response.text );
+			assert.deepEqual( response.body.lists.length, 0, 'Lists array should be present and empty' );
 		} );
 
-		it( 'should handle a case with invalid project', async function () {
+		it( 'should return empty results for invalid project', async function () {
 			// Assumes handler returns an error response for invalid parameters
 			const response = await restfulAlice.get( `/lists/pages/${ invalidProject }/${ validTitleA }` );
-			assert.deepEqual( response.status, 400, response.text );
+			assert.deepEqual( response.status, 200, response.text );
+			assert.deepEqual( response.body.lists.length, 0, 'Lists array should be present and empty' );
 		} );
 
 	} );

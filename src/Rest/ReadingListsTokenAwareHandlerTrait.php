@@ -56,6 +56,8 @@ trait ReadingListsTokenAwareHandlerTrait {
 	 */
 	protected function getToken(): ?string {
 		if ( !$this instanceof Handler ) {
+			// Don't use die() because this is a code structure exception meant for developers,
+			// not a caller-facing exception associated with any particular request.
 			throw new LogicException( 'This trait must be used on handler classes.' );
 		}
 

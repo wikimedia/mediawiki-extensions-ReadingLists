@@ -11,7 +11,6 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Permissions\Authority;
-use MediaWiki\Rest\LocalizedHttpException;
 use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\Title\Title;
 use MediaWiki\User\CentralId\CentralIdLookup;
@@ -239,7 +238,7 @@ trait ReadingListsHandlerTrait {
 			$mv = MessageValue::new( 'apierror-readinglists-batch-missingparam-at-least-one-of' )
 				->textListParams( $param )
 				->numParams( count( $param ) );
-			throw new LocalizedHttpException( $mv, 400 );
+			$this->die( $mv );
 		}
 	}
 

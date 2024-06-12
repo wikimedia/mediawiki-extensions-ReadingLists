@@ -7,6 +7,7 @@ use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Rest\Handler;
+use MediaWiki\Rest\LocalizedHttpException;
 use MediaWiki\Rest\SimpleHandler;
 use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\User\CentralId\CentralIdLookup;
@@ -64,8 +65,13 @@ class ListsUpdateHandler extends SimpleHandler {
 	 * @inheritDoc
 	 */
 	public function validate( Validator $restValidator ) {
-		parent::validate( $restValidator );
-		$this->validateToken();
+		try {
+			parent::validate( $restValidator );
+			$this->validateToken();
+		} catch ( LocalizedHttpException $e ) {
+			// Add fields expected by WMF mobile apps
+			$this->die( $e->getMessageValue(), [], $e->getCode(), $e->getErrorData() );
+		}
 	}
 
 	/**
