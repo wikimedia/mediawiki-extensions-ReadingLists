@@ -72,6 +72,15 @@ class ListsEntriesCreateBatchHandler extends SimpleHandler {
 	}
 
 	/**
+	 * Disable extraneous body fields detection.
+	 *
+	 * @param Validator $restValidator
+	 */
+	protected function detectExtraneousBodyFields( Validator $restValidator ) {
+		// No-op to disable extraneous body fields detection
+	}
+
+	/**
 	 * @param int $id the list to update
 	 * @return array
 	 */

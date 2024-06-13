@@ -131,7 +131,8 @@ class ListsEntriesCreateBatchHandlerTest extends \MediaWikiIntegrationTestCase {
 		return [
 			[
 				'dogs',
-				'{"batch":[{"project":"foo","title":"Rover"},{"project":"foo","title":"Scooby-Doo"}]}',
+				'{"extraField1":"unexpected",
+				"batch":[{"project":"foo","title":"Rover"},{"project":"foo","title":"Scooby-Doo"}]}',
 				[ 'foo', 'foo' ],
 				[ 'Rover', 'Scooby-Doo' ]
 			]

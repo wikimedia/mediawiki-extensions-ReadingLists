@@ -76,6 +76,15 @@ class ListsCreateBatchHandler extends Handler {
 	}
 
 	/**
+	 * Disable extraneous body fields detection.
+	 *
+	 * @param Validator $restValidator
+	 */
+	protected function detectExtraneousBodyFields( Validator $restValidator ) {
+		// No-op to disable extraneous body fields detection
+	}
+
+	/**
 	 * @return array|Response
 	 */
 	public function execute() {

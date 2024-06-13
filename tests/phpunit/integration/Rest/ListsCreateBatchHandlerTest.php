@@ -69,9 +69,10 @@ class ListsCreateBatchHandlerTest extends \MediaWikiIntegrationTestCase {
 	public static function createBatchSuccessProvider() {
 		return [
 			[
-				'{"batch":[{"name":"dogs","description":"Woof!"},{"name":"cats","description":"meow"}]}',
+				'{"extraField1":"unexpected",
+				"batch":[{"name":"dogs","description":"Woof!"},{"name":"cats","description":"meow"}]}',
 				[ 'dogs', 'cats' ],
-				[ 'Woof!', 'meow' ]
+				[ 'Woof!', 'meow' ],
 			]
 		];
 	}
