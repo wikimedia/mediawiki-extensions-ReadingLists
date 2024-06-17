@@ -107,14 +107,21 @@ class ListsCreateBatchHandler extends Handler {
 	/**
 	 * @return array[]
 	 */
-	public function getParamSettings() {
+	public function getParamSettings(): array {
+		return $this->getReadingListsTokenParamDefinition();
+	}
+
+	/**
+	 * @return array[]
+	 */
+	public function getBodyParamSettings(): array {
 		return [
-				// TODO: consider additional validation on "batch", once we have that capability.
-				'batch' => [
-					self::PARAM_SOURCE => 'body',
-					ParamValidator::PARAM_TYPE => 'array',
-					ParamValidator::PARAM_REQUIRED => true,
-				],
-			] + $this->getTokenParamDefinition() + $this->getReadingListsTokenParamDefinition();
+			// TODO: consider additional validation on "batch", once we have that capability.
+			'batch' => [
+				self::PARAM_SOURCE => 'body',
+				ParamValidator::PARAM_TYPE => 'array',
+				ParamValidator::PARAM_REQUIRED => true,
+			],
+		] + $this->getTokenParamDefinition();
 	}
 }

@@ -105,7 +105,15 @@ class ListsUpdateHandler extends SimpleHandler {
 				ParamValidator::PARAM_REQUIRED => true,
 				NumericDef::PARAM_MIN => 1,
 				Handler::PARAM_SOURCE => 'path',
-			],
+			]
+		] + $this->getReadingListsTokenParamDefinition();
+	}
+
+	/**
+	 * @return array[]
+	 */
+	public function	getBodyParamSettings(): array {
+		return [
 			'name' => [
 				self::PARAM_SOURCE => 'body',
 				ParamValidator::PARAM_TYPE => 'string',
@@ -118,6 +126,7 @@ class ListsUpdateHandler extends SimpleHandler {
 				ParamValidator::PARAM_REQUIRED => false,
 				StringDef::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_description'],
 			]
-		] + $this->getTokenParamDefinition() + $this->getReadingListsTokenParamDefinition();
+		] + $this->getTokenParamDefinition();
 	}
+
 }

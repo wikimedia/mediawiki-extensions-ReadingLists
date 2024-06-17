@@ -104,7 +104,14 @@ class ListsCreateHandler extends Handler {
 	/**
 	 * @return array[]
 	 */
-	public function getParamSettings() {
+	public function getParamSettings(): array {
+		return $this->getReadingListsTokenParamDefinition();
+	}
+
+	/**
+	 * @return array[]
+	 */
+	public function getBodyParamSettings(): array {
 		return [
 				'name' => [
 					self::PARAM_SOURCE => 'body',
@@ -119,6 +126,6 @@ class ListsCreateHandler extends Handler {
 					ParamValidator::PARAM_DEFAULT => '',
 					StringDef::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_description'],
 				]
-			] + $this->getTokenParamDefinition() + $this->getReadingListsTokenParamDefinition();
+			] + $this->getTokenParamDefinition();
 	}
 }

@@ -95,7 +95,15 @@ class ListsEntriesCreateHandler extends SimpleHandler {
 				ParamValidator::PARAM_REQUIRED => true,
 				Handler::PARAM_SOURCE => 'path',
 				NumericDef::PARAM_MIN => 1,
-			],
+			]
+		] + $this->getReadingListsTokenParamDefinition();
+	}
+
+	/**
+	 * @return array[]
+	 */
+	public function	getBodyParamSettings(): array {
+		return [
 			'project' => [
 				self::PARAM_SOURCE => 'body',
 				ParamValidator::PARAM_TYPE => 'string',
@@ -106,6 +114,7 @@ class ListsEntriesCreateHandler extends SimpleHandler {
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_REQUIRED => true,
 			]
-		] + $this->getTokenParamDefinition() + $this->getReadingListsTokenParamDefinition();
+		] + $this->getTokenParamDefinition();
 	}
+
 }
