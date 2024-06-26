@@ -128,4 +128,13 @@ class ListsCreateHandler extends Handler {
 				]
 			] + $this->getTokenParamDefinition();
 	}
+
+	/**
+	 * Override to disable extraneous body fields check.
+	 *
+	 * @param Validator $restValidator
+	 */
+	protected function detectExtraneousBodyFields( Validator $restValidator ) {
+		// No-op to disable extraneous body fields check
+	}
 }

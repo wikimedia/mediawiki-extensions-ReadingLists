@@ -82,7 +82,7 @@ class ListsEntriesCreateHandlerTest extends \MediaWikiIntegrationTestCase {
 	/**
 	 * @dataProvider createSuccessProvider
 	 */
-	public function testListsCreateSuccess( $listName, $project, $title ) {
+	public function testListsCreateSuccess( $listName, $project, $title, $extra ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsEntriesCreateHandler(
 			$services->getDBLoadBalancerFactory(),
@@ -97,7 +97,8 @@ class ListsEntriesCreateHandlerTest extends \MediaWikiIntegrationTestCase {
 			'pathParams' => [ 'id' => $this->listIds[$listName] ],
 			'bodyContents' => json_encode( [
 				'project' => $project,
-				'title' => $title
+				'title' => $title,
+				'extra' => $extra
 			] ),
 		] );
 		$data = $this->executeReadingListsHandlerAndGetBodyData( $handler, $request );
@@ -118,7 +119,7 @@ class ListsEntriesCreateHandlerTest extends \MediaWikiIntegrationTestCase {
 
 	public static function createSuccessProvider() {
 		return [
-			[ 'cats', 'foo', 'Garfield' ]
+			[ 'cats', 'foo', 'Garfield', 'extra_field' ]
 		];
 	}
 
