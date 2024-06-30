@@ -26,17 +26,17 @@ trait ReadingListsTestHelperTrait {
 				unset( $list['entries'] );
 			}
 			if ( isset( $list['rl_date_created'] ) ) {
-				$list['rl_date_created'] = $this->db->timestamp( $list['rl_date_created'] );
+				$list['rl_date_created'] = $this->getDb()->timestamp( $list['rl_date_created'] );
 			}
 			if ( isset( $list['rl_date_updated'] ) ) {
-				$list['rl_date_updated'] = $this->db->timestamp( $list['rl_date_updated'] );
+				$list['rl_date_updated'] = $this->getDb()->timestamp( $list['rl_date_updated'] );
 			}
-			$this->db->newInsertQueryBuilder()
+			$this->getDb()->newInsertQueryBuilder()
 				->insertInto( 'reading_list' )
 				->row( $list )
 				->caller( __METHOD__ )
 				->execute();
-			$listId = $this->db->insertId();
+			$listId = $this->getDb()->insertId();
 			if ( $entries !== null ) {
 				$this->addListEntries( $listId, $list['rl_user_id'], $entries );
 			}
@@ -69,25 +69,25 @@ trait ReadingListsTestHelperTrait {
 				$entry['rle_rlp_id'] = $projectId;
 			}
 			if ( isset( $entry['rle_date_created'] ) ) {
-				$entry['rle_date_created'] = $this->db->timestamp( $entry['rle_date_created'] );
+				$entry['rle_date_created'] = $this->getDb()->timestamp( $entry['rle_date_created'] );
 			}
 			if ( isset( $entry['rle_date_updated'] ) ) {
-				$entry['rle_date_updated'] = $this->db->timestamp( $entry['rle_date_updated'] );
+				$entry['rle_date_updated'] = $this->getDb()->timestamp( $entry['rle_date_updated'] );
 			}
-			$this->db->newInsertQueryBuilder()
+			$this->getDb()->newInsertQueryBuilder()
 				->insertInto( 'reading_list_entry' )
 				->row( $entry )
 				->caller( __METHOD__ )
 				->execute();
-			$entryId = $this->db->insertId();
+			$entryId = $this->getDb()->insertId();
 			$entryIds[] = $entryId;
 		}
-		$entryCount = $this->db->newSelectQueryBuilder()
+		$entryCount = $this->getDb()->newSelectQueryBuilder()
 			->select( '*' )
 			->from( 'reading_list_entry' )
 			->where( [ 'rle_rl_id' => $listId ] )
 			->caller( __METHOD__ )->fetchRowCount();
-		$this->db->newUpdateQueryBuilder()
+		$this->getDb()->newUpdateQueryBuilder()
 			->update( 'reading_list' )
 			->set( [ 'rl_size' => $entryCount ] )
 			->where( [ 'rl_id' => $listId ] )
@@ -103,15 +103,15 @@ trait ReadingListsTestHelperTrait {
 	private function addProjects( array $projects ) {
 		$ids = [];
 		foreach ( $projects as $project ) {
-			$this->db->newInsertQueryBuilder()
+			$this->getDb()->newInsertQueryBuilder()
 				->insertInto( 'reading_list_project' )
 				->ignore()
 				->row( [ 'rlp_project' => $project ] )
 				->caller( __METHOD__ )
 				->execute();
-			$projectId = $this->db->affectedRows()
-				? $this->db->insertId()
-				: $this->db->newSelectQueryBuilder()
+			$projectId = $this->getDb()->affectedRows()
+				? $this->getDb()->insertId()
+				: $this->getDb()->newSelectQueryBuilder()
 					->select( 'rlp_id' )
 					->from( 'reading_list_project' )
 					->where( [ 'rlp_project' => $project ] )

@@ -141,7 +141,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 		// no rows initially; isSetupForUser() is false
 		$this->assertFalse( $repository->isSetupForUser() );
-		$res = $this->db->newSelectQueryBuilder()
+		$res = $this->getDb()->newSelectQueryBuilder()
 			->select( '*' )
 			->from( 'reading_list' )
 			->where( [ 'rl_user_id' => 1 ] )
@@ -156,7 +156,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			}
 		);
 		$this->assertTrue( $repository->isSetupForUser() );
-		$res = $this->db->newSelectQueryBuilder()
+		$res = $this->getDb()->newSelectQueryBuilder()
 			->select( '*' )
 			->from( 'reading_list' )
 			->where( [ 'rl_user_id' => 1 ] )
@@ -197,7 +197,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			"teardownForUser failed to reset isSetupForUser value"
 		);
 
-		$res = $this->db->newSelectQueryBuilder()
+		$res = $this->getDb()->newSelectQueryBuilder()
 			->select( '*' )
 			->from( 'reading_list' )
 			->where( [ 'rl_user_id' => 1, 'rl_deleted' => 0 ] )
@@ -230,7 +230,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			'merged' => false,
 		], $data, false, true );
 		/** @var ReadingListRow $row */
-		$row = $this->db->newSelectQueryBuilder()
+		$row = $this->getDb()->newSelectQueryBuilder()
 			->select( '*' )
 			->from( 'reading_list' )
 			->where( [ 'rl_id' => $list->rl_id ] )
@@ -457,7 +457,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertTimestampEquals( '20100101000000', $list->rl_date_created );
 		$this->assertTimestampEquals( wfTimestampNow(), $list->rl_date_updated );
 		/** @var ReadingListRow $row */
-		$row = $this->db->newSelectQueryBuilder()
+		$row = $this->getDb()->newSelectQueryBuilder()
 			->select( '*' )
 			->from( 'reading_list' )
 			->where( [ 'rl_id' => $listId ] )
@@ -494,7 +494,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		);
 		$this->assertFailsWith( 'readinglists-db-error-cannot-update-default-list',
 			function () use ( $repository ) {
-				$defaultId = $this->db->newSelectQueryBuilder()
+				$defaultId = $this->getDb()->newSelectQueryBuilder()
 					->select( 'rl_id' )
 					->from( 'reading_list' )
 					->where( [ 'rl_user_id' => 1, 'rl_is_default' => 1 ] )
@@ -522,7 +522,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$repository->deleteList( $listId );
 		$this->assertSame(
 			0,
-			$this->db->newSelectQueryBuilder()
+			$this->getDb()->newSelectQueryBuilder()
 				->select( '1' )
 				->from( 'reading_list' )
 				->where( [ 'rl_user_id' => 1, 'rl_name' => 'foo', 'rl_deleted' => 0 ] )
@@ -530,7 +530,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		);
 		$this->assertTimestampEquals(
 			wfTimestampNow(),
-			$this->db->newSelectQueryBuilder()
+			$this->getDb()->newSelectQueryBuilder()
 				->select( 'rl_date_updated' )
 				->from( 'reading_list' )
 				->where( [ 'rl_id' => $listId ] )
@@ -554,7 +554,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		);
 		$this->assertFailsWith( 'readinglists-db-error-cannot-delete-default-list',
 			function () use ( $repository ) {
-				$defaultId = $this->db->newSelectQueryBuilder()
+				$defaultId = $this->getDb()->newSelectQueryBuilder()
 					->select( 'rl_id' )
 					->from( 'reading_list' )
 					->where( [ 'rl_user_id' => 1, 'rl_is_default' => 1 ] )
@@ -589,7 +589,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertFalse( $entry->merged );
 		/** @var ReadingListEntryRow $row */
 
-		$row = $this->db->newSelectQueryBuilder()
+		$row = $this->getDb()->newSelectQueryBuilder()
 			->select( '*' )
 			->from( 'reading_list_entry' )
 			->where( [ 'rle_id' => $entry->rle_id ] )
@@ -957,21 +957,21 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$repository->deleteListEntry( $fooId );
 		$this->assertSame(
 			2,
-			$this->db->newSelectQueryBuilder()
+			$this->getDb()->newSelectQueryBuilder()
 				->select( '1' )
 				->from( 'reading_list_entry' )
 				->where( [ 'rle_rl_id' => $listId, 'rle_deleted' => 0 ] )
 				->fetchRowCount()
 		);
 		/** @var ReadingListEntryRow $row */
-		$row = $this->db->newSelectQueryBuilder()
+		$row = $this->getDb()->newSelectQueryBuilder()
 			->select( '*' )
 			->from( 'reading_list_entry' )
 			->where( [ 'rle_rl_id' => $listId, 'rle_deleted' => 1 ] )
 			->caller( __METHOD__ )->fetchRow();
 		$this->assertEquals( $fooProjectId, $row->rle_rlp_id );
 		$this->assertTimestampEquals( wfTimestampNow(), $row->rle_date_updated );
-		$newListSize = $this->db->newSelectQueryBuilder()
+		$newListSize = $this->getDb()->newSelectQueryBuilder()
 			->select( 'rl_size' )
 			->from( 'reading_list' )
 			->where( [ 'rl_id' => $listId ] )
@@ -979,14 +979,14 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( 2, intval( $newListSize ) );
 
 		// Manually set size to 0, and test that rl_size does not go negative on list entry delete
-		$this->db->newUpdateQueryBuilder()
+		$this->getDb()->newUpdateQueryBuilder()
 			->update( 'reading_list' )
 			->set( [ 'rl_size' => 0 ] )
 			->where( [ 'rl_id' => $outOfSyncId ] )
 			->caller( __METHOD__ )
 			->execute();
 		$repository->deleteListEntry( $parentOutOfSyncId );
-		$outOfSyncSize = $this->db->newSelectQueryBuilder()
+		$outOfSyncSize = $this->getDb()->newSelectQueryBuilder()
 			->select( 'rl_size' )
 			->from( 'reading_list' )
 			->where( [ 'rl_id' => $outOfSyncId ] )
@@ -1324,13 +1324,13 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		// Run the function
 		$repository->purgeOldDeleted( $cutoff );
 
-		$lists = $this->db->newSelectQueryBuilder()
+		$lists = $this->getDb()->newSelectQueryBuilder()
 			->select( 'rl_name' )
 			->from( 'reading_list' )
 			->caller( __METHOD__ )->fetchFieldValues();
 		$this->assertArrayEquals( $lists, [ 'OO', 'OX', 'XO' ] );
 
-		$entries = $this->db->newSelectQueryBuilder()
+		$entries = $this->getDb()->newSelectQueryBuilder()
 			->select( 'rle_title' )
 			->from( 'reading_list_entry' )
 			->caller( __METHOD__ )->fetchFieldValues();
