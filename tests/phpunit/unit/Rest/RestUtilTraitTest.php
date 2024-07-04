@@ -3,13 +3,13 @@
 namespace MediaWiki\Extension\ReadingLists\Tests\Unit\Rest;
 
 use MediaWiki\Extension\ReadingLists\Rest\RestUtilTrait;
+use MediaWiki\Message\Message;
 use MediaWiki\Rest\Handler;
 use MediaWiki\Rest\LocalizedHttpException;
 use MediaWiki\Rest\RequestData;
 use MediaWiki\Rest\ResponseFactory;
 use MediaWiki\Tests\Rest\Handler\HandlerTestTrait;
 use MediaWikiUnitTestCase;
-use Message;
 use Throwable;
 use Wikimedia\Message\ITextFormatter;
 use Wikimedia\Message\MessageValue;
