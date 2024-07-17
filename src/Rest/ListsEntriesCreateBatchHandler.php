@@ -15,7 +15,7 @@ use Wikimedia\ParamValidator\TypeDef\NumericDef;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
- * Handle POST requests to /readinglists/v0/lists/{id}/entries/batch
+ * Handle POST requests to /{module}/lists/{id}/entries/batch
  *
  * Gets reading list entries
  */

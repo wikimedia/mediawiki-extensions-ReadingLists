@@ -18,7 +18,7 @@ use Wikimedia\ParamValidator\TypeDef\NumericDef;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
- * Handle DELETE requests to /readinglists/v0/lists/{id}
+ * Handle DELETE requests to /{module}/lists/{id}
  *
  * Deletes reading lists
  */

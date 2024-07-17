@@ -15,7 +15,7 @@ use Wikimedia\ParamValidator\ParamValidator;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
- * Handle POST requests to /readinglists/v0/lists/batch
+ * Handle POST requests to /{module}/lists/batch
  *
  * Creates reading lists
  */

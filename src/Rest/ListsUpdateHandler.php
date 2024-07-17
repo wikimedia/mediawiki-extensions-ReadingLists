@@ -18,7 +18,7 @@ use Wikimedia\ParamValidator\TypeDef\StringDef;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
- * Handle PUT requests to /readinglists/v0/lists/{id}
+ * Handle PUT requests to /{module}/lists/{id}
  *
  * Updates reading lists
  */

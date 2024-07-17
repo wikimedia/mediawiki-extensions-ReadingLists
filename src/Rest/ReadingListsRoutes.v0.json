@@ -1,0 +1,213 @@
+{
+	"$schema": "https://www.mediawiki.org/schema/mwapi-1.0",
+	"mwapi": "1.0.0",
+	"moduleId": "readinglists.v0",
+	"paths": {
+		"/lists/setup": {
+			"post": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\SetupHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			}
+		},
+		"/lists/teardown": {
+			"post": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\TeardownHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			}
+		},
+		"/lists": {
+			"get": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			},
+			"post": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsCreateHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			}
+		},
+		"/lists/": {
+			"get": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			},
+			"post": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsCreateHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			}
+		},
+		"/lists/{id}": {
+			"get": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsIdHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			},
+			"put": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsUpdateHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			},
+			"delete": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsDeleteHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			}
+		},
+		"/lists/batch": {
+			"post": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsCreateBatchHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			}
+		},
+		"/lists/pages/{project}/{title}": {
+			"get": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsPagesHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			}
+		},
+		"/lists/changes/since/{date}": {
+			"get": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsChangesSinceHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			}
+		},
+		"/lists/{id}/entries": {
+			"get": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup",
+						"ReverseInterwikiLookup"
+					]
+				}
+			},
+			"post": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			}
+		},
+		"/lists/{id}/entries/": {
+			"get": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup",
+						"ReverseInterwikiLookup"
+					]
+				}
+			},
+			"post": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			}
+		},
+		"/lists/{id}/entries/batch": {
+			"post": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateBatchHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			}
+		},
+		"/lists/{id}/entries/{entry_id}": {
+			"delete": {
+				"handler": {
+					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesDeleteHandler",
+					"services": [
+						"DBLoadBalancerFactory",
+						"MainConfig",
+						"CentralIdLookup"
+					]
+				}
+			}
+		}
+	}
+}

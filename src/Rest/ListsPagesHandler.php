@@ -13,7 +13,7 @@ use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
- * Handle GET requests to /readinglists/v0/lists/pages.
+ * Handle GET requests to /{module}/lists/pages.
  * This endpoint is for finding lists that contain a given page.
  */
 class ListsPagesHandler extends ListsHandler {

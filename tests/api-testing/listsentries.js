@@ -19,7 +19,7 @@ describe( 'ReadingLists Entries', function () {
 
 	before( async function () {
 		alice = await action.alice();
-		restfulAlice = new REST( 'rest.php/readinglists/v0', alice );
+		restfulAlice = new REST( 'rest.php/readinglists.v0', alice );
 		token = await alice.token();
 	} );
 

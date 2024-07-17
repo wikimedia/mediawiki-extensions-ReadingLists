@@ -18,7 +18,7 @@ use Wikimedia\ParamValidator\ParamValidator;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
- * Handle GET requests to /readinglists/v0/lists/{id}/entries
+ * Handle GET requests to /{module}/lists/{id}/entries
  *
  * Gets reading list entries
  */

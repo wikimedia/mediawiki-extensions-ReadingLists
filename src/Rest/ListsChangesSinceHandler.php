@@ -12,7 +12,7 @@ use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
- * Handle GET requests to /readinglists/v0/lists/changes/since.
+ * Handle GET requests to /{module}/lists/changes/since.
  * This endpoint is for getting lists that have recently changed.
  */
 class ListsChangesSinceHandler extends ListsHandler {

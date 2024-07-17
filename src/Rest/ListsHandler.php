@@ -20,7 +20,7 @@ use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
- * Handle GET requests to /readinglists/v0/lists
+ * Handle GET requests to /{module}/lists
  *
  * Gets reading lists
  *

@@ -13,7 +13,7 @@ use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
- * Handle GET requests to /readinglists/v0/lists/{id}.
+ * Handle GET requests to /{module}/lists/{id}.
  * This endpoint is for getting lists by id.
  */
 class ListsIdHandler extends ListsHandler {
