@@ -4,7 +4,8 @@
 			"Hanyanbo98",
 			"Lantianjialiang",
 			"Liuxinyu970226",
-			"沈澄心"
+			"沈澄心",
+			"Huajing"
 		]
 	},
 	"readinglists-desc": "允许用户管理私有条目列表，例如书签或“稍后阅读”列表。",
@@ -53,6 +54,7 @@
 	"readinglists-no-title": "无标题列表",
 	"readinglists-export": "分享列表",
 	"readinglists-watchlist": "监视列表",
+	"readinglists-watchlist-description": "您关注这些页面的新的编辑。",
 	"readinglists-watchlist-monitor": "您可以使用[$1 监视列表]工具监视此列表上的页面的编辑。",
 	"readinglists-import-app-misconfigured": "本网站目前不支持导入列表。",
 	"readinglists-import-disclaimer": "此站点上的用户创建了一个阅读列表以与其他人（可能是您）共享。它没有经过审核，其内容不代表网站编辑的观点。",
