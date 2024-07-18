@@ -92,6 +92,13 @@ class SetupHandler extends Handler {
 	 * @return array|array[]
 	 */
 	public function getParamSettings() {
-		return [] + $this->getReadingListsTokenParamDefinition() + $this->getTokenParamDefinition();
+		return $this->getReadingListsTokenParamDefinition();
+	}
+
+	/**
+	 * @return array[]
+	 */
+	public function getBodyParamSettings(): array {
+		return $this->getTokenParamDefinition();
 	}
 }
