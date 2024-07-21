@@ -48,7 +48,10 @@ class FixListSize extends Maintenance {
 					->select( 'rl_id' )
 					->from( 'reading_list' )
 					// No point in wasting resources on fixing deleted lists.
-					->where( [ "rl_id > $maxId", 'rl_deleted' => 0, ] )
+					->where( [
+						$this->dbw->expr( 'rl_id', '>', $maxId ),
+						'rl_deleted' => 0,
+					] )
 					->limit( 1000 )
 					->orderBy( 'rl_id', 'ASC' )
 					->caller( __METHOD__ )->fetchFieldValues();

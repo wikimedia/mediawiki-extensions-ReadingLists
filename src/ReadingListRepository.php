@@ -17,6 +17,7 @@ use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IReadableDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\LBFactory;
+use Wikimedia\Rdbms\RawSQLValue;
 
 /**
  * A DAO class for reading lists.
@@ -171,7 +172,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 				// 'rl_is_default' is cleared so deleted lists
 				// aren't detected as defaults.
 				// TODO: Use expression buider
-				"rl_name = CONCAT('deleted-', MD5(CONCAT( $salt , rl_name)))",
+				'rl_name' => new RawSQLValue( "CONCAT('deleted-', MD5(CONCAT( $salt , rl_name)))" ),
 				'rl_is_default' => 0,
 				'rl_deleted' => 1,
 				'rl_date_updated' => $this->dbw->timestamp(),
@@ -588,7 +589,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 		if ( $type !== 'merged' ) {
 			$this->dbw->newUpdateQueryBuilder()
 				->update( 'reading_list' )
-				->set( [ 'rl_size = rl_size + 1' ] )
+				->set( [ 'rl_size' => new RawSQLValue( 'rl_size + 1' ) ] )
 				->where( [ 'rl_id' => $listId ] )
 				->caller( __METHOD__ )->execute();
 		}
@@ -727,10 +728,10 @@ class ReadingListRepository implements LoggerAwareInterface {
 		}
 		$this->dbw->newUpdateQueryBuilder()
 			->update( 'reading_list' )
-			->set( [ 'rl_size = rl_size - 1' ] )
+			->set( [ 'rl_size' => new RawSQLValue( 'rl_size - 1' ) ] )
 			->where( [
 				'rl_id' => $row->rl_id,
-				'rl_size > 0'
+				$this->dbw->expr( 'rl_size', '>', 0 ),
 			] )
 			->caller( __METHOD__ )->execute();
 
