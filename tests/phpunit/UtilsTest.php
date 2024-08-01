@@ -13,7 +13,7 @@ class UtilsTest extends MediaWikiIntegrationTestCase {
 	 * @covers \MediaWiki\Extension\ReadingLists\Utils::getDeletedExpiry
 	 */
 	public function testGetDeletedExpiry() {
-		$this->setMwGlobals( 'wgReadingListsDeletedRetentionDays', 15 );
+		$this->overrideConfigValue( 'ReadingListsDeletedRetentionDays', 15 );
 		$actualTimestamp = Utils::getDeletedExpiry();
 		$expectedTimestamp = wfTimestamp( TS_MW, strtotime( "-15 days" ) );
 		$delta = abs( $expectedTimestamp - $actualTimestamp );
