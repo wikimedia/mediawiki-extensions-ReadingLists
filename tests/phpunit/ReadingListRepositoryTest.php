@@ -6,7 +6,6 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
-use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use PHPUnit\Framework\Constraint\Exception;
 use Wikimedia\Rdbms\IResultWrapper;
@@ -26,7 +25,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+		$this->lbFactory = $this->getServiceContainer()->getDBLoadBalancerFactory();
 
 		$this->addProjects( [ 'dummy' ] );
 	}

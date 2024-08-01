@@ -5,7 +5,6 @@ namespace MediaWiki\Extension\ReadingLists\Maintenance;
 use Maintenance;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extension\ReadingLists\Utils;
-use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\IDatabase;
 
 require_once getenv( 'MW_INSTALL_PATH' ) !== false
@@ -28,7 +27,7 @@ class FixListSize extends Maintenance {
 
 	private function setupServices() {
 		// Can't do this in the constructor, initialization not done yet.
-		$this->dbw = MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->getPrimaryDatabase(
+		$this->dbw = $this->getServiceContainer()->getDBLoadBalancerFactory()->getPrimaryDatabase(
 			Utils::VIRTUAL_DOMAIN
 		);
 	}

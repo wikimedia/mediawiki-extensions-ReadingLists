@@ -6,7 +6,6 @@ use Generator;
 use Maintenance;
 use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Extension\SiteMatrix\SiteMatrix;
-use MediaWiki\MediaWikiServices;
 
 require_once getenv( 'MW_INSTALL_PATH' ) !== false
 	? getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php'
@@ -40,7 +39,7 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 		// Would be nicer to the put this in the constructor but there extensions are not loaded yet.
 		$this->siteMatrix = new SiteMatrix();
 
-		$dbw = MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->getPrimaryDatabase(
+		$dbw = $this->getServiceContainer()->getDBLoadBalancerFactory()->getPrimaryDatabase(
 			Utils::VIRTUAL_DOMAIN
 		);
 		$inserted = 0;

@@ -6,7 +6,6 @@ use Maintenance;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extension\ReadingLists\Utils;
-use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\LBFactory;
 
@@ -40,7 +39,7 @@ class PopulateWithTestData extends Maintenance {
 
 	private function setupServices() {
 		// Can't do this in the constructor, initialization not done yet.
-		$services = MediaWikiServices::getInstance();
+		$services = $this->getServiceContainer();
 		$this->loadBalancerFactory = $services->getDBLoadBalancerFactory();
 		$this->dbw = $this->loadBalancerFactory->getPrimaryDatabase( Utils::VIRTUAL_DOMAIN );
 	}
@@ -114,7 +113,7 @@ class PopulateWithTestData extends Maintenance {
 	}
 
 	private function cleanupTestData() {
-		$services = MediaWikiServices::getInstance();
+		$services = $this->getServiceContainer();
 		$ids = $this->dbw->newSelectQueryBuilder()
 			->select( 'rl_id' )
 			->from( 'reading_list' )

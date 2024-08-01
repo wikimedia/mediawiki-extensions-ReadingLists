@@ -5,7 +5,6 @@ namespace MediaWiki\Extension\ReadingLists\Tests\Integration\Rest;
 use MediaWiki\Extension\ReadingLists\Rest\SetupHandler;
 use MediaWiki\Extension\ReadingLists\Rest\TeardownHandler;
 use MediaWiki\Extension\ReadingLists\Tests\RestTestHelperTrait;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Rest\LocalizedHttpException;
 use MediaWiki\Rest\RequestData;
 
@@ -20,7 +19,7 @@ class SetupAndTeardownHandlersTest extends \MediaWikiIntegrationTestCase {
 	public function testSetupAccess() {
 		$services = $this->getServiceContainer();
 		$handler = new SetupHandler(
-			MediaWikiServices::getInstance()->getDBLoadBalancerFactory(),
+			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup( false )
 		);
@@ -62,7 +61,7 @@ class SetupAndTeardownHandlersTest extends \MediaWikiIntegrationTestCase {
 	public function testTeardownAccess() {
 		$services = $this->getServiceContainer();
 		$handler = new TeardownHandler(
-			MediaWikiServices::getInstance()->getDBLoadBalancerFactory(),
+			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup( false )
 		);
