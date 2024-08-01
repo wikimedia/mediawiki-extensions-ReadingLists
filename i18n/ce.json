@@ -5,5 +5,7 @@
 		]
 	},
 	"readinglists-desc": "Лелорхошна аьтто бо приватан могӀамашна урхалладан, йукъайуьллургаш йа «йеша тӀаьхьо» санна йолу.",
-	"readinglists-browser-error-intro": "ГӀалат даьлла: $1"
+	"readinglists-browser-error-intro": "ГӀалат даьлла: $1",
+	"readinglists-loading": "Дехар до, собарде…",
+	"special-tab-readinglists-short": "Хьан могӀамаш"
 }
