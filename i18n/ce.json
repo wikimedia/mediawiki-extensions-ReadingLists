@@ -5,5 +5,24 @@
 		]
 	},
 	"readinglists-desc": "Лелорхошна аьтто бо приватан могӀамашна урхалладан, йукъайуьллургаш йа «йеша тӀаьхьо» санна йолу.",
-	"readinglists-browser-error-intro": "ГӀалат даьлла: $1"
+	"readinglists-db-error-no-such-list": "$1 могӀам бац.",
+	"readinglists-db-error-no-such-list-entry": "$1 могӀамехь дӀайаздарш дац.",
+	"readinglists-db-error-not-own-list": "$1 могӀам кхечу декъашхочун бу.",
+	"readinglists-db-error-not-own-list-entry": "$1 могӀам тӀера дӀайаздар кхечу декъашхочун ду.",
+	"readinglists-db-error-list-deleted": "$1 могӀам дӀабаьккхина.",
+	"readinglists-db-error-list-entry-deleted": "$1 могӀаман дӀайаздар дӀадаьккхина.",
+	"readinglists-db-error-duplicate-list": "Изза цӀе йолу могӀам хӀинцале а бу.",
+	"readinglists-db-error-duplicate-page": "МогӀамехь хӀинцале а йу хӀара агӀо.",
+	"readinglists-db-error-user-required": "ХӀара метод кхайкха йиш йац декъашхо хаьржина бен.",
+	"readinglists-db-error-list-limit": "Декъашхойн хуьлийла бац $1 {{PLURAL:$1|могӀамал}} сов.",
+	"readinglists-db-error-entry-limit": "$1 могӀамехь хила йиш йац $2 сов {{PLURAL:$2|дӀайаздар}}.",
+	"readinglists-db-error-too-long": "$1 меттиган маьӀна $2 байтал сов хила йиш йац.",
+	"readinglists-browser-add-entry-success": "\"$1\" Ӏалашйина хьан йешаран могӀамехь",
+	"readinglists-browser-login-prompt": "ЧугӀо, йаззамаш Ӏалашбан",
+	"readinglists-browser-error-intro": "ГӀалат даьлла: $1",
+	"readinglists-browser-enable-sync-prompt": "Википедин программехь синхронизаци латайе, йаззамаш Ӏалашбан",
+	"readinglists-browser-extension-info-link-text": "Ма-дарра",
+	"readinglists-browser-list-entry-limit-exceeded": "Йаззам Ӏалашбан йиш йац. Хьо могӀаман йаззаман лимите кхаьчна ($1).",
+	"readinglists-browser-extension-product-title": "Википеди йешаран могӀамаш",
+	"readinglists-browser-page-not-supported": "$1 ловш йац хӀара агӀо"
 }
