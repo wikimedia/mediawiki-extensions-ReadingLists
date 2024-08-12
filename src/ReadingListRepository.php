@@ -1074,7 +1074,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 				throw new LogicException( 'Invalid $from parameter' );
 			}
 		} elseif ( $from !== null ) {
-			throw new LogicException( 'Invalid $from parameter type: ' . gettype( $from ) );
+			throw new LogicException( 'Invalid $from parameter type: ' . get_debug_type( $from ) );
 		}
 
 		if ( $tablePrefix === 'rl' ) {
