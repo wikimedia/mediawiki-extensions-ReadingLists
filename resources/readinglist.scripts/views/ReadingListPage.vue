@@ -285,24 +285,22 @@ module.exports = {
 			} else if ( this.collection ) {
 				this.api.getCollectionMeta(
 					this.username, parseInt( this.collection, 10 )
-				).then( ( meta ) => {
-					return this.loadCollectionPages().then( () => {
-						this.name = meta.name;
-						this.description = meta.description;
-					} );
-				}, function ( code ) {
+				).then( ( meta ) => this.loadCollectionPages().then( () => {
+					this.name = meta.name;
+					this.description = meta.description;
+				} ), ( code ) => {
 					this.collection = undefined;
 					this.errorCode = code;
 					this.loaded = true;
-				}.bind( this ) );
+				} );
 			}
 
 			// Load lists of list for this user.
 			if ( this.username ) {
-				this.api.getCollections( this.username, [] ).then( function ( collections ) {
+				this.api.getCollections( this.username, [] ).then( ( collections ) => {
 					this.listsOfLists = collections.map( ( collection ) => getCard( collection ) );
 					this.loadedListsOfLists = true;
-				}.bind( this ) );
+				} );
 			} else if ( this.isImport ) {
 				// Special handling for imports - there are no lists of list so disable loading.
 				this.loadedListsOfLists = true;

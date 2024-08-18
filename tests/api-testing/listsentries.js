@@ -1,7 +1,7 @@
 'use strict';
 const { REST, assert, action, utils } = require( 'api-testing' );
 
-describe( 'ReadingLists Entries', function () {
+describe( 'ReadingLists Entries', () => {
 	let alice;
 	let restfulAlice;
 	let token;
@@ -17,18 +17,18 @@ describe( 'ReadingLists Entries', function () {
 		assert.property( response.body, 'uri' );
 	}
 
-	before( async function () {
+	before( async () => {
 		alice = await action.alice();
 		restfulAlice = new REST( 'rest.php/readinglists.v0', alice );
 		token = await alice.token();
 	} );
 
-	describe( 'GET and POST /lists/{id}/entries', function () {
+	describe( 'GET and POST /lists/{id}/entries', () => {
 		const validTitle = utils.title( 'Dog' );
 		let listId;
 		let entriesUrl;
 
-		before( async function () {
+		before( async () => {
 			await restfulAlice.post( '/lists/setup' ).send( { token } );
 			const reqNewList = {
 				name: 'newName',
@@ -39,7 +39,7 @@ describe( 'ReadingLists Entries', function () {
 			entriesUrl = '/lists/' + listId + '/entries';
 		} );
 
-		it( 'should create a new list entry', async function () {
+		it( 'should create a new list entry', async () => {
 			const reqNewListEntry = {
 				project: localProject,
 				title: validTitle
@@ -56,7 +56,7 @@ describe( 'ReadingLists Entries', function () {
 			assert.deepEqual( response.body.entry.listId, listId );
 		} );
 
-		it( 'should get list entries', async function () {
+		it( 'should get list entries', async () => {
 			const response = await restfulAlice.get( entriesUrl );
 			assert.deepEqual( response.status, 200, response.text );
 
@@ -65,12 +65,12 @@ describe( 'ReadingLists Entries', function () {
 			assert.deepEqual( response.body.entries[ 0 ].listId, listId );
 		} );
 
-		it( 'should get list entries when url includees trailing slash', async function () {
+		it( 'should get list entries when url includees trailing slash', async () => {
 			const response = await restfulAlice.get( entriesUrl + '/' );
 			assert.deepEqual( response.status, 200, response.text );
 		} );
 
-		it( 'should not create a new list entry without title parameter', async function () {
+		it( 'should not create a new list entry without title parameter', async () => {
 			const reqNewListEntry = {
 				project: localProject
 			};
@@ -81,7 +81,7 @@ describe( 'ReadingLists Entries', function () {
 			assertErrorFormat( response );
 		} );
 
-		it( 'should remove entries from the list', async function () {
+		it( 'should remove entries from the list', async () => {
 			// Get entry ID
 			let response = await restfulAlice.get( entriesUrl );
 			const entryId = response.body.entries[ 0 ].id;
@@ -101,7 +101,7 @@ describe( 'ReadingLists Entries', function () {
 			assert.deepEqual( response.body.entries.length, 0, 'There should be no lists remaining' );
 		} );
 
-		it( 'should not create a new list entry without valid project', async function () {
+		it( 'should not create a new list entry without valid project', async () => {
 			const reqNewListEntry = {
 				project: 'invalidProject',
 				title: 'newTitle'
@@ -113,7 +113,7 @@ describe( 'ReadingLists Entries', function () {
 			assertErrorFormat( response );
 		} );
 
-		it( 'should not create a new list entry without valid batch', async function () {
+		it( 'should not create a new list entry without valid batch', async () => {
 			const reqNewListEntry = {
 				batch: 'invalidBatch'
 			};
@@ -137,7 +137,7 @@ describe( 'ReadingLists Entries', function () {
 				.send( { token } );
 		}
 
-		it( 'should create a batch of list entries with valid batch', async function () {
+		it( 'should create a batch of list entries with valid batch', async () => {
 			const validTitle1 = utils.title( 'Cat' );
 
 			const batch = [
@@ -158,12 +158,12 @@ describe( 'ReadingLists Entries', function () {
 			assert.deepInclude( response.body.entries[ 1 ], { title: validTitle }, response.text );
 		} );
 
-		after( async function () {
+		after( async () => {
 			await restfulAlice.post( '/lists/teardown' ).send( { token } );
 		} );
 	} );
 
-	describe( 'GET /lists/changes/since/{ date }', function () {
+	describe( 'GET /lists/changes/since/{ date }', () => {
 		// Helper function to get lists that have changed since a specific date
 		async function getListsChangesSince( date, next = '', limit = 10 ) {
 			return await restfulAlice.get( `/lists/changes/since/${ date }` )
@@ -171,7 +171,7 @@ describe( 'ReadingLists Entries', function () {
 		}
 
 		// Test case for getting lists that have changed since a specific date
-		it( 'should get lists changes since a specific date', async function () {
+		it( 'should get lists changes since a specific date', async () => {
 			// Replace 'your-date-here' with a valid timestamp
 			const date = '2023-01-01T00:00:00Z'; // i put a random date here but we can discuss
 			const response = await getListsChangesSince( date );
@@ -193,7 +193,7 @@ describe( 'ReadingLists Entries', function () {
 
 	} );
 
-	describe( 'GET /list/pages/project/title', function () {
+	describe( 'GET /list/pages/project/title', () => {
 		const validProject = '@local';
 		const validTitleA = 'Dog', validTitleB = 'Cat', validTitleC = 'Bird';
 		const invalidProject = '%25Foo';
@@ -201,7 +201,7 @@ describe( 'ReadingLists Entries', function () {
 		let listIdA, listIdB;
 		let entriesUrlA, entriesUrlB;
 
-		before( async function () {
+		before( async () => {
 			await restfulAlice.post( '/lists/setup' ).send( { token } );
 			const batch = [
 				{ name: 'name A', description: 'description A' },
@@ -249,7 +249,7 @@ describe( 'ReadingLists Entries', function () {
 			assert.deepEqual( res.status, 200, res.text );
 		} );
 
-		it( 'should get lists with specified parameters', async function () {
+		it( 'should get lists with specified parameters', async () => {
 
 			let response = await restfulAlice.get( `/lists/pages/${ validProject }/${ validTitleA }` );
 			assert.deepEqual( response.status, 200, response.text );
@@ -275,14 +275,14 @@ describe( 'ReadingLists Entries', function () {
 			assert.deepEqual( response.body.lists.length, 2, response.text );
 		} );
 
-		it( 'should return empty results for invalid title', async function () {
+		it( 'should return empty results for invalid title', async () => {
 			// Assumes handler returns an error response for invalid parameters
 			const response = await restfulAlice.get( `/lists/pages/${ validProject }/${ invalidTitle }` );
 			assert.deepEqual( response.status, 200, response.text );
 			assert.deepEqual( response.body.lists.length, 0, 'Lists array should be present and empty' );
 		} );
 
-		it( 'should return empty results for invalid project', async function () {
+		it( 'should return empty results for invalid project', async () => {
 			// Assumes handler returns an error response for invalid parameters
 			const response = await restfulAlice.get( `/lists/pages/${ invalidProject }/${ validTitleA }` );
 			assert.deepEqual( response.status, 200, response.text );
