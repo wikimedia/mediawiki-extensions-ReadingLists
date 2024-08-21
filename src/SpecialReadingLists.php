@@ -28,7 +28,7 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 		$out->addModules( [ 'special.readinglist.scripts' ] );
 		$out->setPageTitleMsg( $pageTitle );
 		$html = Html::errorBox(
-			$this->msg( 'readinglists-error' )->text(),
+			$this->msg( 'readinglists-error' )->parse(),
 			'',
 			'reading-list__errorbox'
 		);
