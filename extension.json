@@ -9,7 +9,7 @@
 	"license-name": "GPL-2.0-or-later",
 	"type": "other",
 	"requires": {
-		"MediaWiki": ">= 1.42"
+		"MediaWiki": ">= 1.43"
 	},
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\ReadingLists\\": "src/"
@@ -101,7 +101,9 @@
 				"resources/special.readinglist.styles.less"
 			],
 			"skinStyles": {
-				"minerva": [ "skinStyles/special.readinglist.styles/minerva.less" ]
+				"minerva": [
+					"skinStyles/special.readinglist.styles/minerva.less"
+				]
 			}
 		},
 		"special.readinglist.scripts": {
