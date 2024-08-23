@@ -2,7 +2,7 @@ const { getReadingListUrl } = require( './utils.js' );
 const special = require( './special.js' );
 const Vue = require( 'vue' );
 
-$( function () {
+$( () => {
 	const title = mw.config.get( 'wgTitle' ),
 		params = title.split( '/' ).slice( 1 ),
 		ownerName = params[ 0 ],

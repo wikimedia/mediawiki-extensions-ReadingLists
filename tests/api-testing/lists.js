@@ -1,7 +1,7 @@
 'use strict';
 const { REST, assert, action } = require( 'api-testing' );
 
-describe( 'ReadingLists', function () {
+describe( 'ReadingLists', () => {
 	let alice, restfulAlice, token;
 	let bob, bob_token, restfulBob;
 
@@ -15,7 +15,7 @@ describe( 'ReadingLists', function () {
 		assert.property( response.body, 'uri' );
 	}
 
-	before( async function () {
+	before( async () => {
 		alice = await action.alice();
 		bob = await action.bob();
 		restfulAlice = new REST( 'rest.php/readinglists.v0', alice );
@@ -24,41 +24,41 @@ describe( 'ReadingLists', function () {
 		bob_token = await bob.token();
 	} );
 
-	describe( 'POST /lists/setup and /lists/teardown', function () {
-		it( 'should fail teardown if user has not set up a reading list', async function () {
+	describe( 'POST /lists/setup and /lists/teardown', () => {
+		it( 'should fail teardown if user has not set up a reading list', async () => {
 			// Assuming the TeardownHandler checks for a valid setup before tearing down
 			const response = await restfulAlice.post( '/lists/teardown' ).send( { token } );
 			assert.isAtLeast( response.status, 400, response.text );
 			assertErrorFormat( response );
 		} );
 
-		it( 'setup should fail without valid token', async function () {
+		it( 'setup should fail without valid token', async () => {
 			const response = await restfulAlice.post( '/lists/setup' );
 			assert.deepEqual( response.status, 403, response.text );
 			assertErrorFormat( response );
 		} );
 
-		it( 'should setup list for the user', async function () {
+		it( 'should setup list for the user', async () => {
 			const response = await restfulAlice.post( '/lists/setup' ).send( { token } );
 			assert.deepEqual( response.status, 200, response.text );
 
 		} );
 
-		it( 'teardown should fail without valid token', async function () {
+		it( 'teardown should fail without valid token', async () => {
 			const response = await restfulAlice.post( '/lists/teardown' );
 			assert.deepEqual( response.status, 403, response.text );
 			assertErrorFormat( response );
 		} );
 
-		it( 'should teardown lists for the user', async function () {
+		it( 'should teardown lists for the user', async () => {
 			const response = await restfulAlice.post( '/lists/teardown' ).send( { token } );
 			assert.deepEqual( response.status, 200, response.text );
 		} );
 	} );
 
-	describe( 'POST, GET & DEL /lists', function () {
+	describe( 'POST, GET & DEL /lists', () => {
 		let catListId, dogListId;
-		before( async function () {
+		before( async () => {
 			const response = await restfulAlice.post( '/lists/setup' ).send( { token } );
 			assert.deepEqual( response.status, 200, response.text );
 			// setting up for the user Bob
@@ -76,7 +76,7 @@ describe( 'ReadingLists', function () {
 		}
 
 		// Test case for getting a list with valid parameters
-		it( 'should create a list', async function () {
+		it( 'should create a list', async () => {
 			const createResponse = await createList( 'cats', 'Meow!', '' );
 			assert.deepEqual( createResponse.status, 200, createResponse.text );
 
@@ -90,7 +90,7 @@ describe( 'ReadingLists', function () {
 		} );
 
 		// Test case for getting a list with valid parameters
-		it( 'should create a list when url ends in a trailing slash', async function () {
+		it( 'should create a list when url ends in a trailing slash', async () => {
 			const createResponse = await createList( 'dogs', 'Woof!', '/' );
 			assert.deepEqual( createResponse.status, 200, createResponse.text );
 
@@ -103,7 +103,7 @@ describe( 'ReadingLists', function () {
 			dogListId = response.body.lists[ 0 ].id;
 		} );
 
-		it( 'should get lists for the user', async function () {
+		it( 'should get lists for the user', async () => {
 			const response = await restfulAlice.get( '/lists' );
 			assert.deepEqual( response.status, 200, response.text );
 			assert.property( response.body, 'lists' );
@@ -114,7 +114,7 @@ describe( 'ReadingLists', function () {
 			assert.deepEqual( response.body.lists[ 1 ].name, 'default' );
 		} );
 
-		it( ' should get list by id', async function () {
+		it( ' should get list by id', async () => {
 			// getting the list by ID
 			const response = await restfulAlice.get( `/lists/${ catListId }` );
 			assert.deepEqual( response.status, 200, response.text );
@@ -130,7 +130,7 @@ describe( 'ReadingLists', function () {
 
 		} );
 
-		it( 'should throw an error when accessing list with different user ', async function () {
+		it( 'should throw an error when accessing list with different user ', async () => {
 			// getting the list by ID
 			const response = await restfulBob.get( `/lists/${ catListId }` );
 			// Assert that the response status is 403 Forbidden or 400 bad request
@@ -139,7 +139,7 @@ describe( 'ReadingLists', function () {
 		} );
 
 		// Test case for getting a list by ID with an unknown ID (404)
-		it( 'should return 404 for unknown list id', async function () {
+		it( 'should return 404 for unknown list id', async () => {
 			// Assuming an unknown ID that doesn't refer to any existing list
 			const unknownIdResponse = await restfulAlice.get( '/lists/999999999' );
 			// Assert that the response status is 400 Bad Request or 404 Not Found
@@ -147,7 +147,7 @@ describe( 'ReadingLists', function () {
 			assertErrorFormat( unknownIdResponse );
 		} );
 
-		it( 'should return an error for a non-numeric id', async function () {
+		it( 'should return an error for a non-numeric id', async () => {
 			// Request with a non-numeric ID
 			const invalidIdResponse = await restfulAlice.get( '/lists/invalid_id' );
 			// Assert that the response status is 400 Bad Request
@@ -155,7 +155,7 @@ describe( 'ReadingLists', function () {
 			assertErrorFormat( invalidIdResponse );
 		} );
 
-		it( 'should delete list by id', async function () {
+		it( 'should delete list by id', async () => {
 			// Delete the cat and dog lists by ID
 			const deleteDogUrl = '/lists/' + dogListId;
 			const deleteDogResponse = await restfulAlice.del( deleteDogUrl ).send( { token } );
@@ -179,7 +179,7 @@ describe( 'ReadingLists', function () {
 		} );
 
 		// Test case for getting a list by an invalid ID (after deleting the list)
-		it( 'should return an error when trying to get a deleted list', async function () {
+		it( 'should return an error when trying to get a deleted list', async () => {
 
 			// Attempting to get a list using a deleted ID
 			const invalidIdResponse = await restfulAlice.get( `/lists/${ catListId }` );
@@ -199,7 +199,7 @@ describe( 'ReadingLists', function () {
 		}
 
 		// Test case for creating lists in batch
-		it( 'should create lists in batch', async function () {
+		it( 'should create lists in batch', async () => {
 			const batch = [
 				{ name: 'List1', description: 'Description1' },
 				{ name: 'List2', description: 'Description2' }
@@ -221,7 +221,7 @@ describe( 'ReadingLists', function () {
 		} );
 
 		// Test case for missing required parameters (400)
-		it( 'should return 400 Bad Request for missing required parameters', async function () {
+		it( 'should return 400 Bad Request for missing required parameters', async () => {
 			const invalidBatch = [
 				{ name: 'List1', invalid_description: 'Description1' }, // Missing  'description'
 				{ invalid_name: 'List1', description: 'Description2' }, // Missing 'name' '
@@ -234,7 +234,7 @@ describe( 'ReadingLists', function () {
 		} );
 
 		// Test case for pagination
-		it( 'pagination', async function () {
+		it( 'pagination', async () => {
 			// First request with limit 2
 			const response1 = await restfulAlice.get( '/lists' ).query( { limit: 2 } );
 			assert.strictEqual( response1.status, 200 );
@@ -252,23 +252,23 @@ describe( 'ReadingLists', function () {
 
 		} );
 
-		after( async function () {
+		after( async () => {
 			await restfulAlice.post( '/lists/teardown' ).send( { token } );
 		} );
 
 	} );
 
-	describe( 'PUT /lists/{id}', function () {
+	describe( 'PUT /lists/{id}', () => {
 		let listId;
 		let listsIdUrl;
 		const reqBody = {
 			name: 'newListName'
 		};
-		before( async function () {
+		before( async () => {
 			await restfulAlice.post( '/lists/setup' ).send( { token } );
 		} );
 
-		it( 'cannot not edit default list', async function () {
+		it( 'cannot not edit default list', async () => {
 			const listsResponse = await restfulAlice.get( '/lists' );
 			listId = listsResponse.body.lists[ 0 ].id;
 			listsIdUrl = '/lists/' + listId;
@@ -278,7 +278,7 @@ describe( 'ReadingLists', function () {
 			assertErrorFormat( response );
 		} );
 
-		it( 'should create a new list', async function () {
+		it( 'should create a new list', async () => {
 			const reqNewList = {
 				name: 'oldListName',
 				description: 'newDescription'
@@ -287,7 +287,7 @@ describe( 'ReadingLists', function () {
 			assert.deepEqual( response.status, 200, response.text );
 		} );
 
-		it( 'should edit list by id', async function () {
+		it( 'should edit list by id', async () => {
 			const listsResponse = await restfulAlice.get( '/lists' );
 			listId = listsResponse.body.lists[ 1 ].id;
 			listsIdUrl = '/lists/' + listId;
@@ -298,7 +298,7 @@ describe( 'ReadingLists', function () {
 			assert.deepEqual( response.status, 200, response.text );
 		} );
 
-		after( async function () {
+		after( async () => {
 			await restfulAlice.post( '/lists/teardown' ).send( { token } );
 		} );
 	} );

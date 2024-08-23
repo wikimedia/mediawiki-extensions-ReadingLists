@@ -137,21 +137,17 @@ function getProjectHost( project ) {
  * @param {string} project
  * @return {function( ApiQueryResponsePage ): Card}
  */
-const transformPage = ( project ) => {
-	return ( page ) => {
-		return Object.assign( page, {
-			project: getProjectHost( project ),
-			// T320293
-			url: `${ getProjectHost( project ) }${ new mw.Title( page.title ).getUrl() }`,
-			pageid: page.pageid,
-			thumbnail: page.thumbnail ? {
-				width: page.thumbnail.width,
-				height: page.thumbnail.height,
-				url: page.thumbnail.source
-			} : null
-		} );
-	};
-};
+const transformPage = ( project ) => ( page ) => Object.assign( page, {
+	project: getProjectHost( project ),
+	// T320293
+	url: `${ getProjectHost( project ) }${ new mw.Title( page.title ).getUrl() }`,
+	pageid: page.pageid,
+	thumbnail: page.thumbnail ? {
+		width: page.thumbnail.width,
+		height: page.thumbnail.height,
+		url: page.thumbnail.source
+	} : null
+} );
 
 /**
  * Sets up the reading list feature for new users who have never used it before.
@@ -171,13 +167,11 @@ function setupCollections() {
  * @param {string} ownerName
  * @return {Card}
  */
-const watchlistCard = ( ownerName ) => {
-	return readingListToCard( {
-		id: WATCHLIST_ID,
-		name: WATCHLIST_NAME,
-		description: WATCHLIST_DESCRIPTION
-	}, ownerName );
-};
+const watchlistCard = ( ownerName ) => readingListToCard( {
+	id: WATCHLIST_ID,
+	name: WATCHLIST_NAME,
+	description: WATCHLIST_DESCRIPTION
+}, ownerName );
 
 /**
  * @param {string} ownerName (username)
@@ -193,7 +187,7 @@ function getCollections( ownerName, marked ) {
 			rlsort: 'updated',
 			meta: 'readinglists',
 			formatversion: 2
-		} ).then( function ( /** @type {ApiQueryResponseReadingLists} */ data ) {
+		} ).then( ( /** @type {ApiQueryResponseReadingLists} */ data ) => {
 			const list = ( data.query.readinglists || [] );
 			resolve(
 				list.map( ( collection ) => readingListToCard(
@@ -202,7 +196,7 @@ function getCollections( ownerName, marked ) {
 					watchlistCard( ownerName )
 				)
 			);
-		}, function ( /** @type {string} */ err ) {
+		}, ( /** @type {string} */ err ) => {
 			// setup a reading list and try again.
 			if ( err === 'readinglists-db-error-not-set-up' ) {
 				setupCollections().then( () => getCollections( ownerName, marked ) )
@@ -226,7 +220,7 @@ function getCollectionMeta( ownerName, id ) {
 		return Promise.resolve( watchlistCard( ownerName ) );
 	}
 	return api.get( { action: 'query', format: 'json', meta: 'readinglists', rllist: id, formatversion: 2 } )
-		.then( function ( /** @type {ApiQueryResponseReadingLists} */ data ) {
+		.then( ( /** @type {ApiQueryResponseReadingLists} */ data ) => {
 			if ( data.error && data.error.code ) {
 				throw new Error( `Error: ${ data.error.code }` );
 			}
@@ -255,9 +249,7 @@ function getPagesFromProjectMap( projectMap ) {
 	for ( let i = 0; i < projects.length; i++ ) {
 		promises.push( getPagesFromPageIdentifiers( projects[ i ], projectMap[ projects[ i ] ] ) );
 	}
-	return Promise.all( promises ).then( ( args ) => {
-		return Array.prototype.concat.apply( [], args );
-	} );
+	return Promise.all( promises ).then( ( args ) => Array.prototype.concat.apply( [], args ) );
 }
 
 /**
@@ -287,9 +279,7 @@ function getThumbnailsAndDescriptions( project, pageidsOrPageTitles ) {
 		url: `${ getProjectApiUrl( project ) }`
 	};
 
-	const filterOutMissingPagesIfIDsPassed = ( page ) => {
-		return isPageIds ? !page.missing : true;
-	};
+	const filterOutMissingPagesIfIDsPassed = ( page ) => isPageIds ? !page.missing : true;
 
 	return pageidsOrPageTitles.length ? api.get( {
 		action: 'query',
@@ -303,12 +293,10 @@ function getThumbnailsAndDescriptions( project, pageidsOrPageTitles ) {
 		titles,
 		piprop: 'thumbnail',
 		pithumbsize: 200
-	}, ajaxOptions ).then( function ( /** @type {ApiQueryResponseTitles} */ pageData ) {
-		return pageData && pageData.query ?
-			pageData.query.pages.filter(
-				filterOutMissingPagesIfIDsPassed ).map( transformPage( project )
-			) : [];
-	} ) : Promise.resolve( [] );
+	}, ajaxOptions ).then( ( /** @type {ApiQueryResponseTitles} */ pageData ) => pageData && pageData.query ?
+		pageData.query.pages.filter(
+			filterOutMissingPagesIfIDsPassed ).map( transformPage( project )
+		) : [] ) : Promise.resolve( [] );
 }
 /**
  * Gets pages from a given project and list of pageids
@@ -324,9 +312,7 @@ function getPagesFromPageIdentifiers( project, pageids ) {
 		for ( let i = 0; i < pageids.length; i += LIMIT ) {
 			promises.push( getPagesFromPageIdentifiers( project, pageids.slice( i, i + LIMIT ) ) );
 		}
-		return Promise.all( promises ).then( ( args ) => {
-			return Array.prototype.concat.apply( [], args );
-		} );
+		return Promise.all( promises ).then( ( args ) => Array.prototype.concat.apply( [], args ) );
 	}
 	if ( pageids.length > 250 ) {
 		return Promise.reject( 'readinglists-import-size-error' );
@@ -427,18 +413,14 @@ function getPages( collectionId ) {
 		getWatchlistPages() : getReadingListPages( collectionId );
 	return query.then( (
 		/** @type {ApiQueryResponseReadingListEntryItem[]} */ readinglistpages
-	) => {
-		return getPagesFromReadingListPages(
-			readinglistpages
-		).then( function ( /** @type {ApiQueryResponsePage} */ pages ) {
-			// make sure project is passed down.
-			return pages.map( ( page, /** @type {number} */ i ) => Object.assign(
-				readinglistpages[ i ], page
-			) ).sort( ( a, b ) => a.title < b.title ? -1 : 1 );
-		}, () => {
-			return Promise.reject( 'readinglistentries-error' );
-		} );
-	} );
+	) => getPagesFromReadingListPages(
+		readinglistpages
+	).then( ( /** @type {ApiQueryResponsePage} */ pages ) =>
+		// make sure project is passed down.
+		pages.map( ( page, /** @type {number} */ i ) => Object.assign(
+			readinglistpages[ i ], page
+		) ).sort( ( a, b ) => a.title < b.title ? -1 : 1 )
+	, () => Promise.reject( 'readinglistentries-error' ) ) );
 }
 
 /**
