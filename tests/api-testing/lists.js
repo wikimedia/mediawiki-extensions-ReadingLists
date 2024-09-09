@@ -18,8 +18,8 @@ describe( 'ReadingLists', () => {
 	before( async () => {
 		alice = await action.alice();
 		bob = await action.bob();
-		restfulAlice = new REST( 'rest.php/readinglists.v0', alice );
-		restfulBob = new REST( 'rest.php/readinglists.v0', bob );
+		restfulAlice = new REST( 'rest.php/readinglists/v0', alice );
+		restfulBob = new REST( 'rest.php/readinglists/v0', bob );
 		token = await alice.token();
 		bob_token = await bob.token();
 	} );

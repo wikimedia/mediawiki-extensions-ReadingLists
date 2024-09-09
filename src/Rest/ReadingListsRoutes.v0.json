@@ -1,7 +1,7 @@
 {
 	"$schema": "https://www.mediawiki.org/schema/mwapi-1.0",
 	"mwapi": "1.0.0",
-	"moduleId": "readinglists.v0",
+	"moduleId": "readinglists/v0",
 	"paths": {
 		"/lists/setup": {
 			"post": {
