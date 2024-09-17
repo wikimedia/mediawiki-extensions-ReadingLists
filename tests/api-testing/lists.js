@@ -27,13 +27,13 @@ describe( 'ReadingLists', () => {
 	describe( 'POST /lists/setup and /lists/teardown', () => {
 		it( 'should fail teardown if user has not set up a reading list', async () => {
 			// Assuming the TeardownHandler checks for a valid setup before tearing down
-			const response = await restfulAlice.post( '/lists/teardown' ).send( { token } );
+			const response = await restfulAlice.post( '/lists/teardown' ).set( 'x-restbase-compat', 'true' ).send( { token } );
 			assert.isAtLeast( response.status, 400, response.text );
 			assertErrorFormat( response );
 		} );
 
 		it( 'setup should fail without valid token', async () => {
-			const response = await restfulAlice.post( '/lists/setup' );
+			const response = await restfulAlice.post( '/lists/setup' ).set( 'x-restbase-compat', 'true' );
 			assert.deepEqual( response.status, 403, response.text );
 			assertErrorFormat( response );
 		} );
@@ -45,7 +45,7 @@ describe( 'ReadingLists', () => {
 		} );
 
 		it( 'teardown should fail without valid token', async () => {
-			const response = await restfulAlice.post( '/lists/teardown' );
+			const response = await restfulAlice.post( '/lists/teardown' ).set( 'x-restbase-compat', 'true' );
 			assert.deepEqual( response.status, 403, response.text );
 			assertErrorFormat( response );
 		} );
@@ -132,7 +132,7 @@ describe( 'ReadingLists', () => {
 
 		it( 'should throw an error when accessing list with different user ', async () => {
 			// getting the list by ID
-			const response = await restfulBob.get( `/lists/${ catListId }` );
+			const response = await restfulBob.get( `/lists/${ catListId }` ).set( 'x-restbase-compat', 'true' );
 			// Assert that the response status is 403 Forbidden or 400 bad request
 			assert.oneOf( response.status, [ 400, 403 ], response.text );
 			assertErrorFormat( response );
@@ -141,7 +141,7 @@ describe( 'ReadingLists', () => {
 		// Test case for getting a list by ID with an unknown ID (404)
 		it( 'should return 404 for unknown list id', async () => {
 			// Assuming an unknown ID that doesn't refer to any existing list
-			const unknownIdResponse = await restfulAlice.get( '/lists/999999999' );
+			const unknownIdResponse = await restfulAlice.get( '/lists/999999999' ).set( 'x-restbase-compat', 'true' );
 			// Assert that the response status is 400 Bad Request or 404 Not Found
 			assert.oneOf( unknownIdResponse.status, [ 400, 404 ], unknownIdResponse.text );
 			assertErrorFormat( unknownIdResponse );
@@ -149,7 +149,7 @@ describe( 'ReadingLists', () => {
 
 		it( 'should return an error for a non-numeric id', async () => {
 			// Request with a non-numeric ID
-			const invalidIdResponse = await restfulAlice.get( '/lists/invalid_id' );
+			const invalidIdResponse = await restfulAlice.get( '/lists/invalid_id' ).set( 'x-restbase-compat', 'true' );
 			// Assert that the response status is 400 Bad Request
 			assert.strictEqual( invalidIdResponse.status, 400, invalidIdResponse.text );
 			assertErrorFormat( invalidIdResponse );
@@ -182,7 +182,7 @@ describe( 'ReadingLists', () => {
 		it( 'should return an error when trying to get a deleted list', async () => {
 
 			// Attempting to get a list using a deleted ID
-			const invalidIdResponse = await restfulAlice.get( `/lists/${ catListId }` );
+			const invalidIdResponse = await restfulAlice.get( `/lists/${ catListId }` ).set( 'x-restbase-compat', 'true' );
 
 			// Assert that the response status is 404
 			assert.oneOf( invalidIdResponse.status, [ 400, 404 ], invalidIdResponse.text );
@@ -193,6 +193,7 @@ describe( 'ReadingLists', () => {
 		async function createListsInBatch( batch ) {
 			const reqBody = { batch };
 			return await restfulAlice.post( '/lists/batch' )
+				.set( 'x-restbase-compat', 'true' )
 				.set( 'Content-Type', 'application/json' )
 				.send( reqBody )
 				.send( { token } );
@@ -272,7 +273,7 @@ describe( 'ReadingLists', () => {
 			const listsResponse = await restfulAlice.get( '/lists' );
 			listId = listsResponse.body.lists[ 0 ].id;
 			listsIdUrl = '/lists/' + listId;
-			const response = await restfulAlice.put( listsIdUrl, reqBody ).send( { token } );
+			const response = await restfulAlice.put( listsIdUrl, reqBody ).set( 'x-restbase-compat', 'true' ).send( { token } );
 			assert.deepEqual( response.status, 400, response.text );
 			assert.deepEqual( response.body.errorKey, 'readinglists-db-error-cannot-update-default-list', response.text );
 			assertErrorFormat( response );

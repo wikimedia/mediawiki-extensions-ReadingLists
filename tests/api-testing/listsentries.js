@@ -75,6 +75,7 @@ describe( 'ReadingLists Entries', () => {
 				project: localProject
 			};
 			const response = await restfulAlice.post( entriesUrl )
+				.set( 'x-restbase-compat', 'true' )
 				.send( { ...reqNewListEntry, token } );
 			assert.deepEqual( response.status, 400, response.text );
 			assert.deepEqual( response.body.failureCode, 'missingparam', response.text );
@@ -107,6 +108,7 @@ describe( 'ReadingLists Entries', () => {
 				title: 'newTitle'
 			};
 			const response = await restfulAlice.post( entriesUrl )
+				.set( 'x-restbase-compat', 'true' )
 				.send( { ...reqNewListEntry, token } );
 			assert.deepEqual( response.status, 400, response.text );
 			assert.deepEqual( response.body.errorKey, 'readinglists-db-error-no-such-project', response.text );
@@ -118,6 +120,7 @@ describe( 'ReadingLists Entries', () => {
 				batch: 'invalidBatch'
 			};
 			const response = await restfulAlice.post( entriesUrl )
+				.set( 'x-restbase-compat', 'true' )
 				.send( { ...reqNewListEntry, token } );
 			assert.deepEqual( response.status, 400, response.text );
 			assert.deepEqual(

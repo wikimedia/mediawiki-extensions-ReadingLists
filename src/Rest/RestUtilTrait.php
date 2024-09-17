@@ -2,7 +2,6 @@
 
 namespace MediaWiki\Extension\ReadingLists\Rest;
 
-use HttpStatus;
 use MediaWiki\Rest\LocalizedHttpException;
 use Wikimedia\Message\ListParam;
 use Wikimedia\Message\MessageSpecifier;
@@ -26,7 +25,6 @@ trait RestUtilTrait {
 	 * @param array $errorData
 	 * @return never
 	 * @throws LocalizedHttpException
-	 * @suppress PhanUndeclaredMethod
 	 */
 	protected function die( $msg, array $params = [], int $code = 400, array $errorData = [] ) {
 		if ( $msg instanceof MessageSpecifier ) {
@@ -35,19 +33,7 @@ trait RestUtilTrait {
 			$mv = MessageValue::new( $msg, $params );
 		}
 
-		$fm = $this->getResponseFactory()->formatMessage( $mv );
-
-		// Match error fields emitted by the RESTBase endpoints, as expected by WMF mobile apps
-		// EntryPoint::getTextFormatters() ensures 'en' is always available.
-		$restbaseCompatibilityData = [
-			'type' => "ReadingListsError/" . str_replace( ' ', '_', HttpStatus::getMessage( $code ) ),
-			'title' => $mv->getKey(),
-			'method' => strtolower( $this->getRequest()->getMethod() ),
-			'detail' => $fm['messageTranslations']['en'] ?? $mv->getKey(),
-			'uri' => (string)$this->getRequest()->getUri()
-		];
-
-		throw new LocalizedHttpException( $mv, $code, $errorData + $restbaseCompatibilityData );
+		throw new LocalizedHttpException( $mv, $code, $errorData );
 	}
 
 	/**

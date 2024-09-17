@@ -81,21 +81,8 @@ class RestUtilTraitTest extends MediaWikiUnitTestCase {
 				$fnParams['msg'], $fnParams['params'], $fnParams['code'], $fnParams['errorData']
 			);
 		} catch ( LocalizedHttpException $e ) {
-			// Ensure the fields needed by the mobile apps are present and correct.
 			$this->assertEquals( $expected['code'], $e->getCode() );
-
 			$this->assertIsArray( $e->getErrorData() );
-			$this->assertArrayHasKey( 'type', $e->getErrorData() );
-			$this->assertArrayHasKey( 'title', $e->getErrorData() );
-			$this->assertArrayHasKey( 'method', $e->getErrorData() );
-			$this->assertArrayHasKey( 'detail', $e->getErrorData() );
-			$this->assertArrayHasKey( 'uri', $e->getErrorData() );
-
-			$this->assertEquals( $expected['type'], $e->getErrorData()['type'] );
-			$this->assertEquals( $expected['title'], $e->getErrorData()['title'] );
-			$this->assertEquals( $expected['method'], $e->getErrorData()['method'] );
-			$this->assertEquals( $expected['detail'], $e->getErrorData()['detail'] );
-			$this->assertEquals( $expected['uri'], $e->getErrorData()['uri'] );
 		} catch ( Throwable $e ) {
 			// If we get here, this will fail. We're just using it to generate the message.
 			$this->assertInstanceOf( LocalizedHttpException::class, $e );
@@ -112,11 +99,6 @@ class RestUtilTraitTest extends MediaWikiUnitTestCase {
 					'errorData' => [ 'baz' => 'qux' ]
 				],
 				[
-					'type' => 'ReadingListsError/Bad_Request',
-					'title' => 'apierror-invalidparammix',
-					'method' => 'get',
-					'detail' => 'Formatted test error message',
-					'uri' => '',
 					'code' => 400,
 					'errorData' => [ 'baz' => 'qux' ]
 				]
@@ -131,11 +113,6 @@ class RestUtilTraitTest extends MediaWikiUnitTestCase {
 					'errorData' => []
 				],
 				[
-					'type' => 'ReadingListsError/Not_Found',
-					'title' => 'apierror-invalidparammix',
-					'method' => 'get',
-					'detail' => 'Formatted test error message',
-					'uri' => '',
 					'code' => 404,
 					'errorData' => []
 				]
@@ -149,11 +126,6 @@ class RestUtilTraitTest extends MediaWikiUnitTestCase {
 					'errorData' => []
 				],
 				[
-					'type' => 'ReadingListsError/Internal_Server_Error',
-					'title' => 'apierror-invalidparammix',
-					'method' => 'get',
-					'detail' => 'Formatted test error message',
-					'uri' => '',
 					'code' => 500,
 					'errorData' => []
 				]
