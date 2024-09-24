@@ -45,6 +45,7 @@
 	"readinglists-description": "Summary of page that shows all your reading lists",
 	"readinglists-loading": "Message while reading lists load",
 	"reading-list-purpose": "Prompt telling user why they should login.",
+	"reading-list-purpose-for-temp-user": "Prompt telling the user of a temporary account that they need to get a named account to have private reading lists.",
 	"readinglists-error": "Error shown to older browsers.",
 	"readinglists-import-error": "Error that shows when you try to import bad data.",
 	"readinglists-import-size-error": "Error that shows on large lists.",

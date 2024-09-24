@@ -37,6 +37,7 @@
 	"readinglists-description": "All your saved lists in one place.",
 	"readinglists-loading": "Please wait…",
 	"reading-list-purpose": "Please login to see your private reading lists.",
+	"reading-list-purpose-for-temp-user": "Please create an account to create private reading lists.",
 	"readinglists-error": "Your browser is unable to use the reading lists feature. Please enable JavaScript or try in another browser.",
 	"readinglists-import-error": "Unable to display the list from the data given.",
 	"readinglists-import-size-error": "The list is too large to display.",

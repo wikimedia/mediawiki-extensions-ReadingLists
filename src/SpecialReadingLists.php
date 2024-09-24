@@ -56,6 +56,7 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 		$this->outputHeader();
 
 		if ( !$user->isNamed() && !$exportFeature ) {
+			// Uses the following message keys: reading-list-purpose and reading-list-purpose-for-temp-user
 			$this->requireNamedUser( 'reading-list-purpose' );
 		} else {
 			if ( $listOwner || $exportFeature ) {
