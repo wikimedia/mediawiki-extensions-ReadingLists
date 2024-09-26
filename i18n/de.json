@@ -40,6 +40,7 @@
 	"readinglists-description": "Alle deine gespeicherten Listen an einem Ort.",
 	"readinglists-loading": "Bitte warten …",
 	"reading-list-purpose": "Bitte melde dich an, um deine privaten Leselisten zu sehen.",
+	"reading-list-purpose-for-temp-user": "Bitte erstelle ein Konto, um private Leselisten anzulegen.",
 	"readinglists-error": "Dein Browser kann die Leselistenfunktion nicht verwenden. Bitte aktiviere JavaScript oder versuche es in einem anderen Browser.",
 	"readinglists-import-error": "Die Liste kann anhand der angegebenen Daten nicht angezeigt werden.",
 	"readinglists-import-size-error": "Die Liste ist zu groß zum Anzeigen.",
