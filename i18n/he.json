@@ -38,6 +38,7 @@
 	"readinglists-description": "כל הרשימות השמורות שלך במקום אחד.",
 	"readinglists-loading": "נא להמתין...",
 	"reading-list-purpose": "נא להיכנס לחשבון כדי לראות את רשימות הקריאה הפרטיות שלך.",
+	"reading-list-purpose-for-temp-user": "נא ליצור חשבון כדי ליצור רשימות קריאה פרטיות.",
 	"readinglists-error": "הדפדפן שלך לא יכול להשתמש בתכונת רשימות הקריאה. נא להפעיל JavaScript או לנסות בדפדפן אחר.",
 	"readinglists-import-error": "לא ניתן להציג את הרשימה מהנתונים שניתנו.",
 	"readinglists-import-size-error": "הרשימה גדולה מדי להצגה.",

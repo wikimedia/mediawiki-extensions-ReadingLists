@@ -40,6 +40,7 @@
 	"readinglists-description": "您所有的已儲存清單都在同一處。",
 	"readinglists-loading": "請稍待…",
 	"reading-list-purpose": "請登入來查看您的私人閱讀清單。",
+	"reading-list-purpose-for-temp-user": "請建立一個帳號來建立私人閱讀清單。",
 	"readinglists-error": "您的瀏覽器無法使用閱讀清單功能。請啟用 JavaScript，或是嘗試使用其他瀏覽器。",
 	"readinglists-import-error": "無法顯示來自指定資料的清單。",
 	"readinglists-import-size-error": "清單太大無法顯示。",
