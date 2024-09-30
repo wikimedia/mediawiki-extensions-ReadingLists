@@ -35,6 +35,7 @@
 	"readinglists-description": "Vsi vaši bralni seznami na enem mestu.",
 	"readinglists-loading": "Prosimo, počakajte ...",
 	"reading-list-purpose": "Če si želite ogledati svoje zasebne bralne sezname, se prijavite.",
+	"reading-list-purpose-for-temp-user": "Za ustvarjanje zasebnih bralnih seznamov si ustvarite račun.",
 	"readinglists-error": "Vaš brskalnik ne more uporabljati funkcije bralnih seznamov. Omogočite JavaScript ali poskusite v drugem brskalniku.",
 	"readinglists-import-error": "Ni mogoče prikazati seznama iz navedenih podatkov.",
 	"readinglists-import-size-error": "Seznam je prevelik za prikaz.",

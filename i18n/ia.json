@@ -37,6 +37,7 @@
 	"readinglists-description": "Tote tu listas salveguardate in un sol loco.",
 	"readinglists-loading": "Un momento…",
 	"reading-list-purpose": "Per favor aperi session pro vider tu listas de lectura private.",
+	"reading-list-purpose-for-temp-user": "Per favor crea un conto pro crear listas de lectura private.",
 	"readinglists-error": "Tu navigator non pote usar le function de listas de lectura. Per favor activa JavaScript o tenta lo in un altere navigator.",
 	"readinglists-import-error": "Le lista non pote esser monstrate a partir del datos fornite.",
 	"readinglists-import-size-error": "Le lista es troppo grande pro esser monstrate.",
