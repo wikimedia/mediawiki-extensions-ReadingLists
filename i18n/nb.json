@@ -39,6 +39,7 @@
 	"readinglists-description": "Alle de lagrede listene dine på ett sted.",
 	"readinglists-loading": "Vennligst vent…",
 	"reading-list-purpose": "Vennligst logg inn for å se dine private leselister.",
+	"reading-list-purpose-for-temp-user": "Opprett en konto for å kunne lage private leselister.",
 	"readinglists-error": "Nettleseren din kan ikke ta i bruk leselistefunksjonen. Vennligst skru på JavaScript eller prøv en annen nettleser.",
 	"readinglists-import-error": "Kunne ikke vise listen utifra dataene som ble gitt.",
 	"readinglists-import-size-error": "Listen er for stor til å vises.",
