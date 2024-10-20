@@ -2,9 +2,9 @@
 
 namespace MediaWiki\Extension\ReadingLists\Api;
 
-use ApiPageSet;
-use ApiQueryGeneratorBase;
 use LogicException;
+use MediaWiki\Api\ApiPageSet;
+use MediaWiki\Api\ApiQueryGeneratorBase;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup;

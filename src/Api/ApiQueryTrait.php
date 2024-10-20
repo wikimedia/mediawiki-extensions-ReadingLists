@@ -2,7 +2,7 @@
 
 namespace MediaWiki\Extension\ReadingLists\Api;
 
-use ApiUsageException;
+use MediaWiki\Api\ApiUsageException;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use Wikimedia\ParamValidator\ParamValidator;
 

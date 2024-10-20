@@ -3,9 +3,9 @@
 namespace MediaWiki\Extension\ReadingLists\Maintenance;
 
 use Generator;
-use Maintenance;
 use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Extension\SiteMatrix\SiteMatrix;
+use MediaWiki\Maintenance\Maintenance;
 
 require_once getenv( 'MW_INSTALL_PATH' ) !== false
 	? getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php'

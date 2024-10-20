@@ -2,7 +2,7 @@
 
 namespace MediaWiki\Extension\ReadingLists;
 
-use ApiQuerySiteinfo;
+use MediaWiki\Api\ApiQuerySiteinfo;
 use MediaWiki\Api\Hook\APIQuerySiteInfoGeneralInfoHook;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace MediaWiki\Extension\ReadingLists\Api;
 
-use ApiBase;
+use MediaWiki\Api\ApiBase;
 
 /**
  * API module for all write operations.

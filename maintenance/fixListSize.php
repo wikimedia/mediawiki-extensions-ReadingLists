@@ -2,9 +2,9 @@
 
 namespace MediaWiki\Extension\ReadingLists\Maintenance;
 
-use Maintenance;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extension\ReadingLists\Utils;
+use MediaWiki\Maintenance\Maintenance;
 use Wikimedia\Rdbms\IDatabase;
 
 require_once getenv( 'MW_INSTALL_PATH' ) !== false

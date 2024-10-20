@@ -2,8 +2,8 @@
 
 namespace MediaWiki\Extension\ReadingLists\Api;
 
-use ApiBase;
-use ApiModuleManager;
+use MediaWiki\Api\ApiBase;
+use MediaWiki\Api\ApiModuleManager;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\MediaWikiServices;
 use Wikimedia\ParamValidator\ParamValidator;

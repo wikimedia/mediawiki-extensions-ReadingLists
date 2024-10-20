@@ -2,8 +2,8 @@
 
 namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
-use ApiMessage;
-use ApiUsageException;
+use MediaWiki\Api\ApiMessage;
+use MediaWiki\Api\ApiUsageException;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\ReadingLists\Api\ApiTrait;
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;

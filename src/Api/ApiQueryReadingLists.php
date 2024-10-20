@@ -2,10 +2,10 @@
 
 namespace MediaWiki\Extension\ReadingLists\Api;
 
-use ApiQueryBase;
 use DateTime;
 use DateTimeZone;
 use LogicException;
+use MediaWiki\Api\ApiQueryBase;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extension\ReadingLists\Utils;

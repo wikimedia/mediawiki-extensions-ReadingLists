@@ -2,7 +2,7 @@
 
 namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
-use ApiUsageException;
+use MediaWiki\Api\ApiUsageException;
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
