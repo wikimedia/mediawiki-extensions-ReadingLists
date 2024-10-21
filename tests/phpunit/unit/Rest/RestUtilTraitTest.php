@@ -12,6 +12,7 @@ use MediaWiki\Tests\Rest\Handler\HandlerTestTrait;
 use MediaWikiUnitTestCase;
 use Throwable;
 use Wikimedia\Message\ITextFormatter;
+use Wikimedia\Message\MessageSpecifier;
 use Wikimedia\Message\MessageValue;
 
 /**
@@ -28,7 +29,7 @@ class RestUtilTraitTest extends MediaWikiUnitTestCase {
 				return 'en';
 			}
 
-			public function format( MessageValue $message ) {
+			public function format( MessageSpecifier $message ): string {
 				return 'Formatted test error message';
 			}
 		};

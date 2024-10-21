@@ -3,10 +3,9 @@
 namespace MediaWiki\Extension\ReadingLists\Rest;
 
 use HttpStatus;
-use MediaWiki\Message\Converter;
-use MediaWiki\Message\Message;
 use MediaWiki\Rest\LocalizedHttpException;
 use Wikimedia\Message\ListParam;
+use Wikimedia\Message\MessageSpecifier;
 use Wikimedia\Message\MessageValue;
 use Wikimedia\Message\ParamType;
 
@@ -21,7 +20,7 @@ use Wikimedia\Message\ParamType;
  */
 trait RestUtilTrait {
 	/**
-	 * @param string|Message|MessageValue $msg
+	 * @param string|MessageSpecifier $msg
 	 * @param array $params
 	 * @param int $code
 	 * @param array $errorData
@@ -30,11 +29,8 @@ trait RestUtilTrait {
 	 * @suppress PhanUndeclaredMethod
 	 */
 	protected function die( $msg, array $params = [], int $code = 400, array $errorData = [] ) {
-		if ( $msg instanceof Message ) {
-			$c = new Converter();
-			$mv = $c->convertMessage( $msg );
-		} elseif ( $msg instanceof MessageValue ) {
-			$mv = $msg;
+		if ( $msg instanceof MessageSpecifier ) {
+			$mv = MessageValue::newFromSpecifier( $msg );
 		} else {
 			$mv = MessageValue::new( $msg, $params );
 		}
@@ -56,7 +52,7 @@ trait RestUtilTrait {
 
 	/**
 	 * @param bool $condition
-	 * @param string|Message|MessageValue $msg
+	 * @param string|MessageSpecifier $msg
 	 * @param array $params
 	 * @param int $code
 	 * @return void
