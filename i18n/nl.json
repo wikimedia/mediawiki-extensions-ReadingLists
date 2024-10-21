@@ -40,6 +40,7 @@
 	"readinglists-description": "Al uw opgeslagen lijsten op één plek.",
 	"readinglists-loading": "Een ogenblik geduld…",
 	"reading-list-purpose": "Meld u aan om uw privé-leeslijsten te bekijken.",
+	"reading-list-purpose-for-temp-user": "Maak een account aan om privéleeslijsten te maken.",
 	"readinglists-error": "Uw browser kan de leeslijsten-functie niet gebruiken. Schakel JavaScript in of probeer het in een andere browser.",
 	"readinglists-import-error": "Het is niet mogelijk op basis van de verstrekte gegevens de lijst weer te geven.",
 	"readinglists-import-size-error": "De lijst is te groot om weer te geven.",
