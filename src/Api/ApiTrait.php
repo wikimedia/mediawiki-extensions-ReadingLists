@@ -87,7 +87,7 @@ trait ApiTrait {
 	 * @return ReadingListRepository
 	 * @suppress PhanUndeclaredMethod
 	 */
-	protected function getReadingListRepository( UserIdentity $user = null ) {
+	protected function getReadingListRepository( ?UserIdentity $user = null ) {
 		$config = $this->getConfig();
 		$centralId = MediaWikiServices::getInstance()
 			->getCentralIdLookupFactory()

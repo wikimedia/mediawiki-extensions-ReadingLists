@@ -366,7 +366,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @return IResultWrapper<ReadingListRow>
 	 * @throws ReadingListRepositoryException
 	 */
-	public function getAllLists( $sortBy, $sortDir, $limit = 1000, array $from = null ) {
+	public function getAllLists( $sortBy, $sortDir, $limit = 1000, ?array $from = null ) {
 		$this->assertUser();
 		[ $conditions, $options ] = $this->processSort( 'rl', $sortBy, $sortDir, $limit, $from );
 
@@ -637,7 +637,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @throws ReadingListRepositoryException
 	 */
 	public function getListEntries(
-		array $ids, $sortBy, $sortDir, $limit = 1000, array $from = null
+		array $ids, $sortBy, $sortDir, $limit = 1000, ?array $from = null
 	) {
 		$this->assertUser();
 		if ( !$ids ) {
@@ -758,7 +758,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @return IResultWrapper<ReadingListRow>
 	 */
 	public function getListsByDateUpdated( $date, $sortBy = self::SORT_BY_UPDATED,
-										   $sortDir = self::SORT_DIR_ASC, $limit = 1000, array $from = null
+										   $sortDir = self::SORT_DIR_ASC, $limit = 1000, ?array $from = null
 	) {
 		$this->assertUser();
 		[ $conditions, $options ] = $this->processSort( 'rl', $sortBy, $sortDir, $limit, $from );
@@ -794,7 +794,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @return IResultWrapper<ReadingListEntryRow>
 	 */
 	public function getListEntriesByDateUpdated(
-		$date, $sortDir = self::SORT_DIR_ASC, $limit = 1000, array $from = null
+		$date, $sortDir = self::SORT_DIR_ASC, $limit = 1000, ?array $from = null
 	) {
 		$this->assertUser();
 		// Always sort by last updated; there is no supporting index for sorting by name.
