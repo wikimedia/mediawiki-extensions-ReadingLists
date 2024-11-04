@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Robby"
+			"Robby",
+			"Volvox"
 		]
 	},
 	"readinglists-db-error-cannot-delete-default-list": "D'Standardlëscht däerf net geläscht ginn.",

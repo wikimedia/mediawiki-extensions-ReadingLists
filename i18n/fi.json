@@ -1,7 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Pyscowicz"
+			"Pyscowicz",
+			"MITO",
+			"SMAUG"
 		]
 	},
 	"readinglists-browser-extension-info-link-text": "Lisätietoja",

@@ -2,7 +2,9 @@
 	"@metadata": {
 		"authors": [
 			"Hindustanilanguage",
-			"Zainab Meher"
+			"Zainab Meher",
+			"Dbrant",
+			"Scblr"
 		]
 	},
 	"readinglists-db-error-no-such-list": "فہرست  $1 موجود نہیں ہے۔",

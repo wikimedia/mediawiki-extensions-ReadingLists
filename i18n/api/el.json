@@ -1,8 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
-			"KATRINE1992",
-			"Amire80"
+			"KATRINE1992"
 		]
 	},
 	"apihelp-readinglists+create-extended-description": "Ο χρήστης πρέπει να έχει λιγότερο από $1 (μη διαγραμμένα) {{PLURAL:$1|list|lists}}.",
