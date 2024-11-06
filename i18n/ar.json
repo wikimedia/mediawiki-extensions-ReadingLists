@@ -3,6 +3,7 @@
 		"authors": [
 			"Alshamiri1",
 			"Dbrant",
+			"Meno25",
 			"Scblr",
 			"ديفيد",
 			"محمد أحمد عبد الفتاح"
@@ -35,8 +36,8 @@
 	"readinglists-browser-list-entry-limit-exceeded": "المقالة لا يمكن حفظها; لقد بلغت الحد الأقصى $1 مقالة لكل قائمة",
 	"readinglists-browser-extension-product-title": "قوائم قراءة ويكيبيديا",
 	"readinglists-browser-page-not-supported": "لا يدعم $1 هذه الصفحة",
-	"readinglists-special-title": "قوائم القراءة",
-	"readinglists-description": "كل قوائم القراءة الخاصة بك في مكان واحد.",
+	"readinglists-special-title": "محفوظة",
+	"readinglists-description": "جميع القوائم المحفوظة لديك في مكان واحد.",
 	"readinglists-loading": "الرجاء الانتظار...",
 	"reading-list-purpose": "الرجاء تسجيل الدخول لرؤية قوائم القراءة الخاصة بك.",
 	"readinglists-error": "متصفحك غير قادر على استخدام ميزة قوائم القراءة. الرجاء تمكين JavaScript أو المحاولة في متصفح آخر.",
