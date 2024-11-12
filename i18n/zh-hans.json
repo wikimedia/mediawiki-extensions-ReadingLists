@@ -41,6 +41,7 @@
 	"readinglists-description": "您所有已保存的列表都放在同一处。",
 	"readinglists-loading": "请稍候……",
 	"reading-list-purpose": "请登录以查看您的私人阅读列表。",
+	"reading-list-purpose-for-temp-user": "请创建一个账号来创建私人阅读列表。",
 	"readinglists-error": "您的浏览器无法使用阅读列表功能。请启用JavaScript或尝试使用其他浏览器。",
 	"readinglists-import-error": "无法显示来自给定数据的列表。",
 	"readinglists-import-size-error": "列表太大无法显示。",
