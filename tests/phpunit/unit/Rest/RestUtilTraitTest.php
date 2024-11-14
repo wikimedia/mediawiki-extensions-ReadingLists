@@ -25,7 +25,7 @@ class RestUtilTraitTest extends MediaWikiUnitTestCase {
 
 	private function getHandler(): Handler {
 		$formatter = new class() implements ITextFormatter {
-			public function getLangCode() {
+			public function getLangCode(): string {
 				return 'en';
 			}
 
