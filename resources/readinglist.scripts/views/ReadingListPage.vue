@@ -95,9 +95,6 @@ function getCollectionUrl( username, id, name ) {
 // @vue/component
 module.exports = {
 	name: 'ReadingListPage',
-	compatConfig: {
-		MODE: 3
-	},
 	compilerOptions: {
 		whitespace: 'condense'
 	},
