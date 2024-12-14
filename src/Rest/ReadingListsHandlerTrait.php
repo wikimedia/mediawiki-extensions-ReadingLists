@@ -89,6 +89,7 @@ trait ReadingListsHandlerTrait {
 			'created' => wfTimestamp( TS_ISO_8601, $row->rl_date_created ),
 			'updated' => wfTimestamp( TS_ISO_8601, $row->rl_date_updated ),
 		];
+		// @phan-suppress-next-line MediaWikiNoIssetIfDefined
 		if ( isset( $row->merged ) ) {
 			$item['duplicate'] = (bool)$row->merged;
 		}
@@ -113,6 +114,7 @@ trait ReadingListsHandlerTrait {
 			'created' => wfTimestamp( TS_ISO_8601, $row->rle_date_created ),
 			'updated' => wfTimestamp( TS_ISO_8601, $row->rle_date_updated ),
 		];
+		// @phan-suppress-next-line MediaWikiNoIssetIfDefined
 		if ( isset( $row->merged ) ) {
 			$item['duplicate'] = (bool)$row->merged;
 		}
