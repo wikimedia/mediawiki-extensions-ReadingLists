@@ -7,6 +7,8 @@ use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
 
 /**
+ * TODO: Create a test provider that pass the apiParams also test project recognize
+ *
  * @covers \MediaWiki\Extension\ReadingLists\Api\ApiReadingListsDeleteEntry
  * @covers \MediaWiki\Extension\ReadingLists\Api\ApiReadingLists
  * @group medium
@@ -59,9 +61,6 @@ class ApiReadingListsDeleteEntryTest extends ApiTestCase {
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
 		$this->assertEquals( "Success", $result[0]['deleteentry']['result'] );
 	}
-
-	// TODO: Create a test provider that pass the apiParams
-	// also test project recognize
 
 	public function testDeleteEntryBatch() {
 		$this->addProjects( [ 'https://en.wikipedia.org' ] );
