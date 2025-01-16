@@ -14,7 +14,7 @@
 	"readinglists-db-error-duplicate-page": "Déi Säit ass schonn an där Lëscht.",
 	"readinglists-db-error-list-limit": "Benotzer däerfen net méi wéi  {{PLURAL:$1|en Lëscht|$1 Lëschten}} hunn.",
 	"readinglists-db-error-entry-limit": "Lëscht $1 däerf net méi wéi {{PLURAL:$2|een Element|$2 Elementer}} hunn.",
-	"readinglists-db-error-too-long": "De Wäert fir d'Feld $1 däerf net méi grouss wéi $2 Byten.",
+	"readinglists-db-error-too-long": "De Wäert fir d'Feld $1 däerf net méi grouss wéi $2 Byte sinn.",
 	"readinglists-db-error-no-such-project": "'$1' ass keen unerkannte Projet.",
 	"readinglists-browser-add-entry-success": "$1 op Ärer Lieslëscht gespäichert",
 	"readinglists-browser-login-prompt": "Alogge fir Artikelen ze späicheren",
