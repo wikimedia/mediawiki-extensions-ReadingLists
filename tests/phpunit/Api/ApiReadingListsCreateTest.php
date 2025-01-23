@@ -7,6 +7,8 @@ use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
 
 /**
+ * TODO: Create a test provide that pass the apiParams
+ *
  * @covers \MediaWiki\Extension\ReadingLists\Api\ApiReadingListsCreate
  * @covers \MediaWiki\Extension\ReadingLists\Api\ApiReadingLists
  * @group medium
@@ -70,8 +72,6 @@ class ApiReadingListsCreateTest extends ApiTestCase {
 			]
 		];
 	}
-
-	// TODO: Create a test provide that pass the apiParams
 
 	protected function tearDown(): void {
 		parent::tearDown();
