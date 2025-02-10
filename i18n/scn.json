@@ -1,11 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ajeje Brazorf"
+			"Ajeje Brazorf",
+			"GianAntonucci"
 		]
 	},
-	"readinglists-db-error-no-such-list": "L'elencu $1 nun esisti.",
-	"readinglists-db-error-list-deleted": "L'elencu $1 fu cancillatu.",
-	"readinglists-db-error-duplicate-list": "N'elencu cu stu nomu già esisti.",
+	"readinglists-db-error-no-such-list": "La lista $1 nun cc'è.",
+	"readinglists-db-error-list-deleted": "Scancillasti la lista $1.",
+	"readinglists-db-error-duplicate-list": "Na lista cu stu nomu già cc'è.",
 	"readinglists-browser-extension-info-link-text": "Àutri nfurmazzioni"
 }
