@@ -4,11 +4,12 @@
 			"Cakkaparla",
 			"Nay Thu Rin",
 			"ReyLon Mrat",
-			"YaThaWinTha"
+			"YaThaWinTha",
+			"Tejoebāsa"
 		]
 	},
-	"readinglists-special-title": "ဖတ်ထားရေစာရင်း",
-	"readinglists-description": "မင်းစာဖတ်တေစာရင်းအားလုံးကိုတစ်နိန်ရာရာမှာထိန်းသိမ်းထားပါ",
+	"readinglists-special-title": "သိမ်းပါ",
+	"readinglists-description": "တစ်နီရာမှာ သင်သိမ်းထား‌ရေ စာရင်းအားလုံး။",
 	"readinglists-loading": "ကျေးဇူးပြုလို့စောင့်နိန်ပါ",
 	"reading-list-purpose": "သင့်​၏ ကိုယ်ပိုင် စာဖတ်စာရင်းကိုကြေ့ဖို့ အကောင့်ဝင်ပါ။",
 	"readinglists-error": "သင့်ရောက်ဆာက စုစီးစာဖတ်ခြင်းလုပ်ဆောင်မှုကို အသုံးမပြုနိင်ပါ။ ကျေးဇူးပြုပြီးကေ JavaScript ကိုဖွင့်ပီးပါ မဟု​တ်ကေ အခြားဘရောက်ဆာမှာစမ်းကြေ့ပါ။",
