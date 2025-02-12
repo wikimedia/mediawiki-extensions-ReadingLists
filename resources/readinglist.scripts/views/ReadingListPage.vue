@@ -1,10 +1,9 @@
 <template>
 	<cdx-tabs
 		v-model:active="currentTab"
-		:framed="framed"
 		class="readinglist-page">
 		<cdx-tab
-			key="1"
+			key="t1"
 			name="tabHome"
 			:label="listsTitle"
 			class="readinglist-collection">
@@ -34,16 +33,15 @@
 		</cdx-tab>
 		<cdx-tab
 			v-if="name"
-			key="2"
+			key="t2"
 			name="tabList"
 			:label="name"
-			class="readinglist-collection"
-			@click="setTabUrl">
+			class="readinglist-collection">
 			<reading-list-summary
 				:is-watchlist="api.WATCHLIST_ID === collection"
 				:show-disclaimer="showDisclaimer"
 				:show-meta="showMeta"
-				:show-share-button="!showDisclaimer && isShareEnabled && cardsList.length"
+				:show-share-button="!!( !showDisclaimer && isShareEnabled && cardsList.length )"
 				:disclaimer="disclaimer"
 				:name="name"
 				:description="description"
