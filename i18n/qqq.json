@@ -70,5 +70,9 @@
 	"readinglists-share-url-text": "Text that will be shared to clipboard. Parameters:\n* $1 list title\n* $2 list description\n* $3 URL of list (optional)",
 	"readinglists-share-url-text-incomplete": "Text that will be shared to clipboard. Description is missing. Parameters:\n* $1 list title\n* $2 URL of list (optional)",
 	"readinglists-share-url-notify": "Notifies user that something has been copied to clipboard.",
-	"readinglists-import-app-launch-hint": "Hint shown when attempting to import a list without the app installed."
+	"readinglists-import-app-launch-hint": "Hint shown when attempting to import a list without the app installed.",
+	"readinglists-beta-feature-name": "Name of beta feature. Shown on preferences beta section when the reading list feature is enabled on beta.",
+	"readinglists-beta-feature-description": "Description of beta feature. Shown on preferences beta section when the reading list feature is enabled on beta.",
+	"readinglists-menu-item": "Menu item added to both mobile and desktop site",
+	"readinglists-bookmark": "Bookmark action"
 }

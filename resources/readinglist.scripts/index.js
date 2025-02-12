@@ -2,7 +2,7 @@ const { getReadingListUrl } = require( './utils.js' );
 const special = require( './special.js' );
 const Vue = require( 'vue' );
 
-$( () => {
+const initSpecialPage = () => {
 	const title = mw.config.get( 'wgTitle' ),
 		params = title.split( '/' ).slice( 1 ),
 		ownerName = params[ 0 ],
@@ -20,4 +20,14 @@ $( () => {
 	} else {
 		special.init( Vue, ownerName, collectionID );
 	}
-} );
+};
+
+const initBookmark = () => {
+	// eslint-disable-next-line
+	alert( '@todo: Implement ' );
+};
+
+module.exports = {
+	initBookmark,
+	initSpecialPage
+};

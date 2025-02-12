@@ -62,5 +62,9 @@
 	"readinglists-share-url-text": "[$1] $2\n$3",
 	"readinglists-share-url-text-incomplete": "$1\n$2",
 	"readinglists-share-url-notify": "Information relating to this reading list has been copied to your clipboard.",
-	"readinglists-import-app-launch-hint": "Please make sure the latest version of the app is installed."
+	"readinglists-import-app-launch-hint": "Please make sure the latest version of the app is installed.",
+	"readinglists-beta-feature-name": "Reading lists",
+	"readinglists-beta-feature-description": "Collect private lists of articles to read later.",
+	"readinglists-menu-item": "Reading lists",
+	"readinglists-bookmark": "Bookmark"
 }

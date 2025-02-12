@@ -42,6 +42,10 @@
 		"ReadingLists": "MediaWiki\\Extension\\ReadingLists\\SpecialReadingLists"
 	},
 	"config": {
+		"ReadingListBetaFeature": {
+			"value": false,
+			"description": "Whether to expose reading lists as a beta feature."
+		},
 		"ReadingListAndroidAppDownloadLink": {
 			"value": "",
 			"description": "false or string representing an Android download link"
@@ -80,6 +84,8 @@
 		}
 	},
 	"Hooks": {
+		"SkinTemplateNavigation::Universal": "main",
+		"GetBetaFeaturePreferences": "main",
 		"APIQuerySiteInfoGeneralInfo": "main",
 		"LoadExtensionSchemaUpdates": "schema"
 	},
@@ -111,7 +117,7 @@
 				]
 			}
 		},
-		"special.readinglist.scripts": {
+		"readinglist.scripts": {
 			"dependencies": [
 				"mediawiki.api",
 				"vue",
@@ -168,6 +174,53 @@
 				"resources/readinglist.scripts/views/ReadingListDownload.vue",
 				"resources/readinglist.scripts/views/ReadingList.vue",
 				"resources/readinglist.scripts/views/ReadingListPage.vue"
+			]
+		},
+		"special.readinglist.scripts": {
+			"dependencies": [
+				"readinglist.scripts"
+			],
+			"messages": [
+				"readinglists-watchlist-monitor",
+				"readinglists-watchlist",
+				"readinglists-watchlist-description",
+				"readinglists-share-url-notify",
+				"readinglists-share-url-text",
+				"readinglists-share-url-text-incomplete",
+				"readinglists-import-app-misconfigured",
+				"readinglists-import-error",
+				"readinglists-db-error-no-such-list",
+				"readinglists-db-error-list-deleted",
+				"readinglists-import-size-error",
+				"readinglists-no-title",
+				"readinglists-import-app",
+				"readinglists-import-app-with-link",
+				"readinglists-export",
+				"readinglists-loading",
+				"readinglists-import-disclaimer",
+				"readinglists-special-title",
+				"readinglists-empty-message",
+				"readinglists-list-empty-message",
+				"readinglists-description",
+				"special-tab-readinglists-short",
+				"readinglists-default-title",
+				"readinglists-default-description",
+				"readinglists-import-button-label",
+				"readinglists-import-button-hint",
+				"readinglists-import-app-launch-hint"
+			],
+			"packageFiles": [
+				"resources/special.readinglist.scripts.js"
+			]
+		},
+		"readinglist.page.styles": {
+			"styles": [
+				"resources/readinglist.page.styles.less"
+			]
+		},
+		"readinglist.page.scripts": {
+			"packageFiles": [
+				"resources/readinglist.page.scripts.js"
 			]
 		}
 	},
