@@ -97,6 +97,11 @@
 	},
 	"ResourceModules": {
 		"special.readinglist.styles": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexStyleOnly": true,
+			"codexComponents": [
+				"CdxMessage"
+			],
 			"styles": [
 				"resources/special.readinglist.styles.less"
 			],
