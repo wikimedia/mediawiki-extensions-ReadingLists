@@ -61,5 +61,9 @@
 	"readinglists-import-button-label": "Liste ansehen",
 	"readinglists-import-button-hint": "Schaltfläche antippen:",
 	"readinglists-share-url-notify": "Informationen zu dieser Leseliste wurden in deine Zwischenablage kopiert.",
-	"readinglists-import-app-launch-hint": "Bitte stelle sicher, dass die neueste Version der App installiert ist."
+	"readinglists-import-app-launch-hint": "Bitte stelle sicher, dass die neueste Version der App installiert ist.",
+	"readinglists-beta-feature-name": "Leselisten",
+	"readinglists-beta-feature-description": "Sammel private Listen von Artikeln zum späteren Lesen.",
+	"readinglists-menu-item": "Leselisten",
+	"readinglists-bookmark": "Lesezeichen"
 }
