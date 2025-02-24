@@ -63,5 +63,9 @@
 	"readinglists-import-button-label": "عرض القائمة",
 	"readinglists-import-button-hint": "انقر فوق الزر:",
 	"readinglists-share-url-notify": "تم نسخ المعلومات المتعلقة بقائمة القراءة هذه إلى حافظتك.",
-	"readinglists-import-app-launch-hint": "يرجى التأكد من تثبيت أحدث إصدار من التطبيق."
+	"readinglists-import-app-launch-hint": "يرجى التأكد من تثبيت أحدث إصدار من التطبيق.",
+	"readinglists-beta-feature-name": "قوائم القراءة",
+	"readinglists-beta-feature-description": "جمع قوائم خاصة من المقالات لقراءتها لاحقًا.",
+	"readinglists-menu-item": "قوائم القراءة",
+	"readinglists-bookmark": "علامة مرجعية"
 }

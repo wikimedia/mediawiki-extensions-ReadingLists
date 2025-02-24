@@ -1,8 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"Mahaveer Indra",
 			"Pragathi. BH"
 		]
 	},
-	"reading-list-purpose-for-temp-user": "ಖಾಸಗಿ ಓದುನ ಪಟ್ಟಿಲೆನ್ ರಚನೆ ಮಲ್ಪೆರೆ ಒಂಜಿ ಖಾತೆನ್ ರಚನೆ ಮಲ್ಪುಲೆ."
+	"reading-list-purpose-for-temp-user": "ಖಾಸಗಿ ಓದುನ ಪಟ್ಟಿಲೆನ್ ರಚನೆ ಮಲ್ಪೆರೆ ಒಂಜಿ ಖಾತೆನ್ ರಚನೆ ಮಲ್ಪುಲೆ.",
+	"readinglists-beta-feature-name": "ಓದೊಡಾಯಿನ ಪಟ್ಟಿಲು",
+	"readinglists-menu-item": "ಓದೊಡಾಯಿನ ಪಟ್ಟಿಲು"
 }

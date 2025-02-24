@@ -58,5 +58,9 @@
 	"readinglists-import-button-label": "Vider lista",
 	"readinglists-import-button-hint": "Tocca button:",
 	"readinglists-share-url-notify": "Information relative a iste lista de lectura ha essite copiate a tu area de transferentia.",
-	"readinglists-import-app-launch-hint": "Assecura te que le ultime version del application ha essite installate."
+	"readinglists-import-app-launch-hint": "Assecura te que le ultime version del application ha essite installate.",
+	"readinglists-beta-feature-name": "Listas de lectura",
+	"readinglists-beta-feature-description": "Colliger listas private de articulos a leger plus tarde.",
+	"readinglists-menu-item": "Listas de lectura",
+	"readinglists-bookmark": "Marcapagina"
 }

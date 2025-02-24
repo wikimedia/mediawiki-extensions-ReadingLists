@@ -29,5 +29,8 @@
 	"readinglists-import-empty-message": "Dir kënnt keng Lëschte vu Lëschten importéieren.",
 	"readinglists-export": "Lëscht deelen",
 	"readinglists-watchlist": "Iwwerwaachungslëscht",
-	"readinglists-import-button-label": "Lëscht weisen"
+	"readinglists-import-button-label": "Lëscht weisen",
+	"readinglists-beta-feature-name": "Lieslëschten",
+	"readinglists-menu-item": "Lieslëschten",
+	"readinglists-bookmark": "Lieszeechen"
 }
