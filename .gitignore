@@ -1,8 +1,10 @@
 .ackrc
 .*.swp
+.DS_Store
 *~
 /.project
 /.coverage
+/.idea
 /composer.lock
 /coverage
 /vendor
