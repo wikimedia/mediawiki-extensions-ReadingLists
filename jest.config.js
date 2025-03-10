@@ -2,6 +2,12 @@
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
+	testEnvironmentOptions: {
+		customExportConditions: [ 'node', 'node-addons' ]
+	},
+	transform: {
+		'^.+\\.vue$': '<rootDir>/node_modules/@vue/vue3-jest'
+	},
 	// Automatically clear mock calls and instances between every test
 	clearMocks: true,
 
@@ -27,7 +33,7 @@ module.exports = {
 	// An object that configures minimum threshold enforcement for coverage results
 	coverageThreshold: {
 		global: {
-			branches: 10,
+			branches: 19,
 			functions: 10,
 			lines: 20,
 			statements: 20

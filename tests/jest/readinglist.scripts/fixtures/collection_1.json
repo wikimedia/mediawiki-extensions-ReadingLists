@@ -1,0 +1,39 @@
+{
+	"batchcomplete": true,
+	"query": {
+		"readinglistentries": [
+			{
+				"id": 9,
+				"listId": 1,
+				"project": "https://en.wikipedia.org",
+				"title": "Accessing_Wikipedia",
+				"created": "2025-03-19T22:47:50Z",
+				"updated": "2025-03-19T22:47:50Z"
+			},
+			{
+				"id": 6,
+				"listId": 1,
+				"project": "https://fr.wikipedia.org",
+				"title": "Madrid",
+				"created": "2025-03-14T19:06:02Z",
+				"updated": "2025-03-14T19:06:02Z"
+			},
+			{
+				"id": 1,
+				"listId": 1,
+				"project": "https://fr.wikipedia.org",
+				"title": "Paris",
+				"created": "2024-01-29T03:46:09Z",
+				"updated": "2024-01-29T03:46:09Z"
+			},
+			{
+				"id": 11,
+				"listId": 1,
+				"project": "https://en.wikipedia.org",
+				"title": "This is missing",
+				"created": "2025-03-19T22:48:07Z",
+				"updated": "2025-03-19T22:48:07Z"
+			}
+		]
+	}
+}

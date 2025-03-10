@@ -207,7 +207,8 @@
 				"readinglists-default-description",
 				"readinglists-import-button-label",
 				"readinglists-import-button-hint",
-				"readinglists-import-app-launch-hint"
+				"readinglists-import-app-launch-hint",
+				"readinglists-browser-remove-entry-success"
 			],
 			"packageFiles": [
 				"resources/special.readinglist.scripts.js"
@@ -221,6 +222,25 @@
 		"readinglist.page.scripts": {
 			"packageFiles": [
 				"resources/readinglist.page.scripts.js"
+			],
+			"messages": [
+				"readinglists-add-bookmark",
+				"readinglists-remove-bookmark",
+				"readinglists-browser-add-entry-success",
+				"readinglists-browser-remove-entry-success"
+			],
+			"dependencies": [
+				"readinglist.page.icons"
+			]
+		},
+		"readinglist.page.icons": {
+			"class": "MediaWiki\\ResourceLoader\\OOUIIconPackModule",
+			"selectorWithoutVariant": ".mw-ui-icon-{name}, .minerva-icon--{name}",
+			"useMaskImage": true,
+			"useDataURI": false,
+			"icons": [
+				"bookmark",
+				"bookmarkOutline"
 			]
 		}
 	},

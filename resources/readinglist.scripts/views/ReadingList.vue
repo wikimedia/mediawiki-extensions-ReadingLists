@@ -1,8 +1,8 @@
 <template>
 	<div class="readinglist-list">
-		<div v-if="cards.length" class="readinglist-list__container">
+		<div v-if="cardsLocal.length" class="readinglist-list__container">
 			<cdx-card
-				v-for="( card ) in cards"
+				v-for="( card ) in cardsLocal"
 				:key="card.id"
 				:url="card.url"
 				:force-thumbnail="true"
@@ -11,6 +11,13 @@
 			>
 				<template #title>
 					{{ card.title }}
+
+					<cdx-button
+						v-if="listId > 0 && card.project"
+						action="destructive"
+						@click="( event ) => deleteEntry( event, card )">
+						Delete
+					</cdx-button>
 				</template>
 				<template #description>
 					{{ card.description }}
@@ -24,18 +31,27 @@
 </template>
 
 <script>
-const { CdxCard } = require( '@wikimedia/codex' );
+const { defineComponent } = require( 'vue' );
+const { CdxCard, CdxButton } = require( '@wikimedia/codex' );
+let api;
 
 // @vue/component
-module.exports = {
+module.exports = exports = defineComponent( {
 	name: 'ReadingList',
 	components: {
-		CdxCard
+		CdxCard,
+		CdxButton
 	},
 	props: {
 		emptyMessage: {
 			type: String,
-			required: true
+			required: false,
+			default: undefined
+		},
+		listId: {
+			type: Number,
+			required: false,
+			default: undefined
 		},
 		cards: {
 			type: Array,
@@ -43,15 +59,65 @@ module.exports = {
 		}
 	},
 	emits: [ 'click-card' ],
+	data() {
+		return {
+			cardsLocal: this.cards
+		};
+	},
 	methods: {
-		clickCard( ev, card ) {
-			this.$emit( 'click-card', ev, card );
+		clickCard( event, card ) {
+			this.$emit( 'click-card', event, card );
+		},
+		deleteEntry( event, card ) {
+			event.preventDefault();
+
+			mw.loader.using( [ 'mediawiki.api', 'mediawiki.user', 'mediawiki.notification' ], async () => {
+				// eslint-disable-next-line security/detect-possible-timing-attacks
+				if ( api === undefined ) {
+					api = new mw.Api();
+				}
+
+				await api.postWithToken( 'csrf', {
+					action: 'readinglists',
+					command: 'deleteentry',
+					entry: card.id
+				} );
+
+				this.cardsLocal.splice( this.cardsLocal.indexOf( card ), 1 );
+
+				const msg = mw.message(
+					'readinglists-browser-remove-entry-success',
+					card.url,
+					card.title,
+					`${ mw.user.getName() }/${ this.listId }`
+				).parseDom();
+
+				// Hide the page link icon in the notification
+				const link = msg[ 0 ];
+
+				if ( link && link.classList ) {
+					link.classList.remove( 'external' );
+				}
+
+				mw.notification.notify( msg, { tag: 'removed' } );
+			} );
 		}
 	}
-};
+} );
 </script>
 
 <style lang="less">
+.cdx-card__text {
+	width: 100%;
+
+	.cdx-button {
+		position: absolute;
+		top: 0;
+		right: 0;
+		margin: 12px;
+	}
+}
+
 .readinglist-list__container {
 	.cdx-card {
 		margin-bottom: 1em;

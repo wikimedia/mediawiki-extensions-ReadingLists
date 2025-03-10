@@ -33,6 +33,7 @@
 	"readinglists-db-error-too-long": "Error message used when the user tries to set list/entry string fields to a longer value than what the database schema allows.\n\nParameters:\n* $1 - DB field name.\n* $2 - DB field maximum length (in bytes).",
 	"readinglists-db-error-no-such-project": "Error message used when the user tries to add a new list entry, but the project does not match any of the known ones.\n\nParameters:\n* $1 - the project.",
 	"readinglists-browser-add-entry-success": "Message displayed when the user adds a page to a reading list.\n\nParameters:\n* $1 - The page title.",
+	"readinglists-browser-remove-entry-success": "Message displayed when the user removed a page from a reading list.\n\nParameters:\n* $1 - The page title.",
 	"readinglists-browser-login-prompt": "Message prompting the user to log in to save pages to a reading list.",
 	"readinglists-browser-error-intro": "Message indicating that an error has occurred\n\nParameters:\n* $1 - The error message from the server.",
 	"readinglists-browser-enable-sync-prompt": "Message prompting the user to enable reading list syncing in the Wikipedia mobile app.",
@@ -74,5 +75,7 @@
 	"readinglists-beta-feature-name": "Name of beta feature. Shown on preferences beta section when the reading list feature is enabled on beta.",
 	"readinglists-beta-feature-description": "Description of beta feature. Shown on preferences beta section when the reading list feature is enabled on beta.",
 	"readinglists-menu-item": "Menu item added to both mobile and desktop site",
-	"readinglists-bookmark": "Bookmark action"
+	"readinglists-bookmark": "Bookmark action",
+	"readinglists-add-bookmark": "Button label for adding a page bookmark",
+	"readinglists-remove-bookmark": "Button label for removing a page bookmark"
 }

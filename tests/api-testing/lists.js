@@ -230,7 +230,8 @@ describe( 'ReadingLists', () => {
 			];
 
 			const createResponse = await createListsInBatch( invalidBatch );
-			assert.deepEqual( createResponse.status, 400, createResponse.text ); // the endpoint returns a 403 here
+			// the endpoint returns a 403 here
+			assert.deepEqual( createResponse.status, 400, createResponse.text );
 			assertErrorFormat( createResponse );
 		} );
 

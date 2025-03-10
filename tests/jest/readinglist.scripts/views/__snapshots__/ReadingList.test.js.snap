@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReadingList renders a list of pages 1`] = `
+<div
+  class="readinglist-list"
+>
+  <div
+    class="readinglist-list__container"
+  >
+    
+    <a
+      class="cdx-card cdx-card--is-link"
+      href="https://en.wikipedia.org/wiki/Super_Bowl"
+    >
+      <span
+        class="cdx-thumbnail cdx-card__thumbnail"
+      >
+        <span
+          class="cdx-thumbnail__placeholder"
+        >
+          <span
+            class="cdx-icon cdx-icon--medium cdx-thumbnail__placeholder__icon--vue"
+          >
+            <svg
+              aria-hidden="true"
+              height="20"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <!--v-if-->
+              <g>
+                <path
+                  d="M19 3H1v14h18zM3 14l3.5-4.5 2.5 3L12.5 8l4.5 6z"
+                />
+                <path
+                  d="M19 5H1V3h18zm0 12H1v-2h18z"
+                />
+              </g>
+            </svg>
+          </span>
+        </span>
+        <transition-stub
+          appear="false"
+          css="true"
+          name="cdx-thumbnail__image"
+          persisted="false"
+        >
+          <!--v-if-->
+        </transition-stub>
+      </span>
+      <span
+        class="cdx-card__text"
+      >
+        <span
+          class="cdx-card__text__title"
+        >
+          
+          Super Bowl 
+          <button
+            class="cdx-button cdx-button--action-destructive cdx-button--weight-normal cdx-button--size-medium cdx-button--framed"
+          >
+            
+             Delete 
+            
+          </button>
+          
+        </span>
+        <span
+          class="cdx-card__text__description"
+        >
+          
+          The Super Bowl is the annual league championship game of the National Football League (NFL) of the United States.
+          
+        </span>
+        <!--v-if-->
+      </span>
+    </a>
+    
+  </div>
+</div>
+`;
+
+exports[`ReadingList renders an empty list 1`] = `
+<div
+  class="readinglist-list"
+>
+  <div
+    class="readinglist-list-empty"
+  >
+    No items on list
+  </div>
+</div>
+`;
