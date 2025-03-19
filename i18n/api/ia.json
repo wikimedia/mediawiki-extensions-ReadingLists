@@ -69,7 +69,7 @@
 	"apihelp-readinglists+createentry-extended-description": "Le entratas de lista debe esser unic. Le paginas non es limitate al wiki ubi se accede al API. Le usator debe haber minus de $1 entrata{{PLURAL:$1||s}} (non delite) in le lista.",
 	"apihelp-readinglists+createentry-param-list": "ID del lista.",
 	"apihelp-readinglists+createentry-param-project": "Nomine de projecto del wiki que alberga le pagina. (Typicamente isto es le nomine de dominio del wiki.) Obligatori excepte pro le creation per lotes.",
-	"apihelp-readinglists+createentry-param-title": "Le titulo del pagina (incluse le nomine localisate del spatio de nomines). Obligatori excepte pro le creation per lotes. Un formato legibile per humanos (spatios, non tractos de sublineamento) es recommendate. Le API tracta titulos como catenas de texto crude; le normalisation (como le uso de majusculas) es lassate al clientes.",
+	"apihelp-readinglists+createentry-param-title": "Le titulo del pagina (incluse le nomine localisate del spatio de nomines). Obligatori excepte pro le creation per lotes. Un formato legibile per humanos (spatios, non tractos de sublineamento) es recommendate. Le API tracta titulos como catenas de texto brute; le normalisation (como le uso de majusculas) es lassate al clientes.",
 	"apihelp-readinglists+createentry-param-batch": "Datos de lot pro crear plure entratas de lista (in le mesme lista) in un sol requesta, in le forma de un matrice JSON con un o plus objectos con campos <var>project</var> e <var>title</var>.",
 	"apihelp-readinglists+createentry-example-1": "Adder le pagina <kbd>Dog</kbd> del projecto <kbd>en.wikipedia.org</kbd> al lista con ID <kbd>33</kbd>.",
 	"apihelp-readinglists+createentry-example-2": "Adder plure paginas a un lista.",
