@@ -3,7 +3,8 @@
 		"authors": [
 			"Athena in Wonderland",
 			"Banjo",
-			"Elisardojm"
+			"Elisardojm",
+			"Toliño"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var> e <var>$1title</var> deben ser usados xuntos.",
@@ -23,7 +24,7 @@
 	"apihelp-readinglists+teardown-example-1": "Desactivar as listas de lectura para o usuario actual.",
 	"apihelp-readinglists+create-summary": "Crear unha nova lista para o usuario actual.",
 	"apihelp-readinglists+create-extended-description": "O usuario debe ter menos de $1 {{PLURAL:$1|lista (non eliminada)|listas (non eliminadas)}}.",
-	"apihelp-readinglists+create-param-name": "Nome da lista.",
+	"apihelp-readinglists+create-param-name": "Nome da lista. Necesario a menos que estea utilizando unha creación por lotes.",
 	"apihelp-readinglists+create-param-description": "Descrición da lista.",
 	"apihelp-readinglists+create-example-1": "Crear unha lista de lectura nova.",
 	"apihelp-readinglists+create-example-2": "Crear varias listas novas.",
@@ -38,7 +39,7 @@
 	"apihelp-readinglists+delete-example-1": "Borrar a lista de lectura co identificador <kbd>11</kbd>.",
 	"apihelp-readinglists+delete-example-2": "Eliminar varias listas.",
 	"apihelp-readinglists+createentry-param-list": "Identificador da lista.",
-	"apihelp-readinglists+createentry-param-title": "Título da páxina.",
+	"apihelp-readinglists+createentry-param-title": "Título da páxina (incluído o nome localizado do espazo de nomes). Necesario a menos que estea realizando unha creación por lotes. Recoméndase un formato lexible por humanos (con espazos no canto de barras baixas). A API trata os títulos como cadeas de texto en bruto; a normalización (como o uso de maiúsculas) déixase aos clientes.",
 	"apihelp-readinglists+createentry-example-2": "Engadir varias páxinas a unha lista.",
 	"apihelp-readinglists+deleteentry-summary": "Eliminar unha páxina dunha lista pertencente ó usuario actual.",
 	"apihelp-readinglists+deleteentry-param-entry": "Identificador de entrada. Obrigatorio, a non ser que se estea a facer un borrado por lotes.",
