@@ -53,9 +53,10 @@
 			</div>
 			<div v-if="loaded && !errorCode">
 				<reading-list
+					:list-id="collection"
+					:list-name="name"
 					:cards="cardsList"
-					:empty-message="emptyMessage"
-					:list-id="collection"></reading-list>
+					:empty-message="emptyMessage"></reading-list>
 			</div>
 			<div v-if="!loaded">
 				<intermediate-state></intermediate-state>
@@ -239,6 +240,7 @@ module.exports = {
 					return 'An unknown error occurred (' + code + ')';
 			}
 		},
+		// eslint-disable-next-line compat/compat
 		isShareEnabled: () => navigator.share || navigator.clipboard,
 		clickCard: function ( _ev, card ) {
 			this.currentTab = 'tabList';

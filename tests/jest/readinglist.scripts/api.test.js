@@ -197,3 +197,100 @@ describe( 'getReadingListPages', () => {
 		} );
 	} );
 } );
+
+function randomId() {
+	return Math.floor( Math.random() * 1000 ) + 1;
+}
+
+describe( 'createEntry', () => {
+	test( 'entry is added to list', () => {
+		const random = [ randomId(), randomId(), randomId(), randomId() ];
+		const listEntries = [
+			{
+				id: random[ 1 ],
+				project: 'https://en.wikipedia.org',
+				title: 'One'
+			},
+			{
+				id: random[ 2 ],
+				project: 'https://fr.wikipedia.org',
+				title: 'Two'
+			}
+		];
+
+		api.test.setApi( {
+			postWithToken: jest.fn( ( csrf, { action, command, list, project, title } ) => {
+				if ( action === 'readinglists' && command === 'createentry' && list === random[ 0 ] ) {
+					listEntries.push( { id: random[ 3 ], project, title } );
+				}
+			} )
+		} );
+
+		api.createEntry( random[ 0 ], 'Three' );
+
+		expect( listEntries[ 0 ] ).toStrictEqual( {
+			id: random[ 1 ],
+			project: 'https://en.wikipedia.org',
+			title: 'One'
+		} );
+
+		expect( listEntries[ 1 ] ).toStrictEqual( {
+			id: random[ 2 ],
+			project: 'https://fr.wikipedia.org',
+			title: 'Two'
+		} );
+
+		expect( listEntries[ 2 ] ).toStrictEqual( {
+			id: random[ 3 ],
+			project: '@local',
+			title: 'Three'
+		} );
+	} );
+} );
+
+describe( 'deleteEntry', () => {
+	test( 'entry is removed from list', () => {
+		const random = [ randomId(), randomId(), randomId() ];
+		const listEntries = [
+			{
+				id: random[ 0 ],
+				project: 'https://en.wikipedia.org',
+				title: 'One'
+			},
+			{
+				id: random[ 1 ],
+				project: 'https://fr.wikipedia.org',
+				title: 'Two'
+			},
+			{
+				id: random[ 2 ],
+				project: '@local',
+				title: 'Three'
+			}
+		];
+
+		api.test.setApi( {
+			postWithToken: jest.fn( ( csrf, { action, command, entry } ) => {
+				if ( action === 'readinglists' && command === 'deleteentry' ) {
+					listEntries.splice( listEntries.findIndex( ( e ) => e.id === entry ), 1 );
+				}
+			} )
+		} );
+
+		api.deleteEntry( random[ 1 ] );
+
+		expect( listEntries.length ).toBe( 2 );
+
+		expect( listEntries[ 0 ] ).toStrictEqual( {
+			id: random[ 0 ],
+			project: 'https://en.wikipedia.org',
+			title: 'One'
+		} );
+
+		expect( listEntries[ 1 ] ).toStrictEqual( {
+			id: random[ 2 ],
+			project: '@local',
+			title: 'Three'
+		} );
+	} );
+} );

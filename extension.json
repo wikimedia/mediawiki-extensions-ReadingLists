@@ -117,8 +117,31 @@
 				]
 			}
 		},
+		"readinglist.api": {
+			"dependencies": [
+				"mediawiki.api",
+				"mediawiki.Title"
+			],
+			"messages": [
+				"readinglists-default-title",
+				"readinglists-default-description",
+				"readinglists-watchlist",
+				"readinglists-watchlist-description"
+			],
+			"packageFiles": [
+				"resources/readinglist.scripts/api.js",
+				"resources/readinglist.scripts/utils.js",
+				{
+					"name": "resources/readinglist.scripts/config.json",
+					"config": [
+						"ReadingListsDeveloperMode"
+					]
+				}
+			]
+		},
 		"readinglist.scripts": {
 			"dependencies": [
+				"readinglist.api",
 				"mediawiki.api",
 				"vue",
 				"@wikimedia/codex",
@@ -180,36 +203,6 @@
 			"dependencies": [
 				"readinglist.scripts"
 			],
-			"messages": [
-				"readinglists-watchlist-monitor",
-				"readinglists-watchlist",
-				"readinglists-watchlist-description",
-				"readinglists-share-url-notify",
-				"readinglists-share-url-text",
-				"readinglists-share-url-text-incomplete",
-				"readinglists-import-app-misconfigured",
-				"readinglists-import-error",
-				"readinglists-db-error-no-such-list",
-				"readinglists-db-error-list-deleted",
-				"readinglists-import-size-error",
-				"readinglists-no-title",
-				"readinglists-import-app",
-				"readinglists-import-app-with-link",
-				"readinglists-export",
-				"readinglists-loading",
-				"readinglists-import-disclaimer",
-				"readinglists-special-title",
-				"readinglists-empty-message",
-				"readinglists-list-empty-message",
-				"readinglists-description",
-				"special-tab-readinglists-short",
-				"readinglists-default-title",
-				"readinglists-default-description",
-				"readinglists-import-button-label",
-				"readinglists-import-button-hint",
-				"readinglists-import-app-launch-hint",
-				"readinglists-browser-remove-entry-success"
-			],
 			"packageFiles": [
 				"resources/special.readinglist.scripts.js"
 			]
@@ -227,10 +220,14 @@
 				"readinglists-add-bookmark",
 				"readinglists-remove-bookmark",
 				"readinglists-browser-add-entry-success",
-				"readinglists-browser-remove-entry-success"
+				"readinglists-browser-remove-entry-success",
+				"readinglists-default-title"
 			],
 			"dependencies": [
-				"readinglist.page.icons"
+				"readinglist.api",
+				"readinglist.page.icons",
+				"mediawiki.notification",
+				"mediawiki.util"
 			]
 		},
 		"readinglist.page.icons": {

@@ -1,17 +1,5 @@
-@import 'mediawiki.skin.variables.less';
-@import 'mediawiki.mixins.less';
-
-/* stylelint-disable-next-line selector-max-id */
-#pt-readinglist .vector-icon,
-.minerva-icon--bookmark {
-	.cdx-mixin-css-icon( @cdx-icon-bookmark );
-}
-
 /* This is revealed by JavaScript */
-.reading-list-bookmark {
-	display: none;
-
-	.client-js & {
-		display: block;
-	}
+.reading-list-bookmark > a:first-child,
+a.reading-list-bookmark {
+	visibility: hidden;
 }

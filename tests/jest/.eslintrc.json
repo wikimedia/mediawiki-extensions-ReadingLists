@@ -6,13 +6,6 @@
 	"globals": {
 		"OO": "readonly"
 	},
-	"rules": {
-		"es/no-array-from": "off",
-		"no-restricted-properties": "off",
-		"no-implicit-globals": "off",
-		"max-len": "off",
-		"compat/compat": "off"
-	},
 	"env": {
 		"jest": true
 	}

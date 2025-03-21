@@ -14,7 +14,6 @@ const initSpecialPage = () => {
 	const isImport = !!importValue;
 	if ( importValue || exportValue ) {
 		special.init( Vue, null, -1, importValue || exportValue, isImport );
-		return;
 	} else if ( params.length === 0 ) {
 		window.location.pathname = getReadingListUrl( mw.user.getName() );
 	} else {
@@ -22,12 +21,4 @@ const initSpecialPage = () => {
 	}
 };
 
-const initBookmark = () => {
-	// eslint-disable-next-line
-	alert( '@todo: Implement ' );
-};
-
-module.exports = {
-	initBookmark,
-	initSpecialPage
-};
+module.exports = { initSpecialPage };

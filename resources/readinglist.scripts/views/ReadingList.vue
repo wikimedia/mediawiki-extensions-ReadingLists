@@ -53,6 +53,11 @@ module.exports = exports = defineComponent( {
 			required: false,
 			default: undefined
 		},
+		listName: {
+			type: String,
+			required: false,
+			default: undefined
+		},
 		cards: {
 			type: Array,
 			required: true
@@ -89,7 +94,8 @@ module.exports = exports = defineComponent( {
 					'readinglists-browser-remove-entry-success',
 					card.url,
 					card.title,
-					`${ mw.user.getName() }/${ this.listId }`
+					window.location.origin + window.location.pathname,
+					this.listName
 				).parseDom();
 
 				// Hide the page link icon in the notification

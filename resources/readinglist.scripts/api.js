@@ -149,12 +149,99 @@ const transformPage = ( project ) => ( page ) => Object.assign( {}, page, {
 /**
  * Sets up the reading list feature for new users who have never used it before.
  *
- * @return {jQuery.Promise<any>}
+ * @return {mw.Api~AbortablePromise}
  */
 function setupCollections() {
 	return api.postWithToken( 'csrf', {
 		action: 'readinglists',
-		command: 'setup'
+		command: 'setup',
+		formatversion: 2
+	} );
+}
+
+// Cache the return value of getDefaultReadingList, since it's expensive
+let cachedDefaultId = null;
+
+/**
+ * Gets the default list ID by iterating through the metadata API in groups of 10
+ *
+ * @param {string} [title] If provided, returns null if the list doesn't contain this page title.
+ * @return {Promise<number|null>}
+ */
+async function getDefaultReadingList( title ) {
+	if ( cachedDefaultId !== null ) {
+		return cachedDefaultId;
+	}
+
+	try {
+		let rlcontinue;
+
+		// Don't loop more than 10 times as fail-safe
+		for ( let i = 0; i < 10; i++ ) {
+			const res = await api.get( {
+				action: 'query',
+				meta: 'readinglists',
+				rlproject: title === undefined ? undefined : '@local',
+				rltitle: title,
+				rlcontinue,
+				formatversion: 2
+			} );
+
+			for ( const list of res.query.readinglists ) {
+				if ( list.default === true ) {
+					cachedDefaultId = list.id;
+					return cachedDefaultId;
+				}
+			}
+
+			if ( !res.continue || !res.continue.rlcontinue ) {
+				break;
+			}
+
+			rlcontinue = res.continue.rlcontinue;
+		}
+
+		return null;
+	} catch ( error ) {
+		if ( error !== 'readinglists-db-error-not-set-up' ) {
+			throw error;
+		}
+
+		await setupCollections();
+		return getDefaultReadingList();
+	}
+}
+
+/**
+ * Create a new entry in a reading list.
+ *
+ * @param {number} list
+ * @param {string} title
+ * @return {mw.Api~AbortablePromise}
+ */
+function createEntry( list, title ) {
+	return api.postWithToken( 'csrf', {
+		action: 'readinglists',
+		command: 'createentry',
+		list,
+		project: '@local',
+		title,
+		formatversion: 2
+	} );
+}
+
+/**
+ * Deletes an existing entry from a reading list.
+ *
+ * @param {number} entry
+ * @return {mw.Api~AbortablePromise}
+ */
+function deleteEntry( entry ) {
+	return api.postWithToken( 'csrf', {
+		action: 'readinglists',
+		command: 'deleteentry',
+		entry,
+		formatversion: 2
 	} );
 }
 
@@ -179,7 +266,6 @@ function getCollections( ownerName, marked ) {
 	return new Promise( ( resolve, reject ) => {
 		api.get( {
 			action: 'query',
-			format: 'json',
 			rldir: 'descending',
 			rlsort: 'updated',
 			meta: 'readinglists',
@@ -216,17 +302,16 @@ function getCollectionMeta( ownerName, id ) {
 	if ( id === WATCHLIST_ID ) {
 		return Promise.resolve( watchlistCard( ownerName ) );
 	}
-	return api.get( { action: 'query', format: 'json', meta: 'readinglists', rllist: id, formatversion: 2 } )
-		.then( ( /** @type {ApiQueryResponseReadingLists} */ data ) => {
-			if ( data.error && data.error.code ) {
-				throw new Error( `Error: ${ data.error.code }` );
-			}
-			return readingListToCard(
-				data.query.readinglists[ 0 ],
-				ownerName,
-				[]
-			);
-		} );
+
+	return api.get( {
+		action: 'query',
+		meta: 'readinglists',
+		rllist: id,
+		formatversion: 2
+	} ).then( ( data ) => readingListToCard(
+		data.query.readinglists[ 0 ],
+		ownerName
+	) );
 }
 
 /**
@@ -260,6 +345,7 @@ function getProjectApiUrl( project ) {
 	if ( config.ReadingListsDeveloperMode ) {
 		return `${ getProjectHost( project ) }/w/api.php`;
 	}
+
 	return `${ getProjectHost( project ) }${ mw.config.get( 'wgScriptPath' ) }/api.php`;
 }
 
@@ -277,16 +363,15 @@ function getThumbnailsAndDescriptions( project, pageidsOrPageTitles ) {
 
 	return api.get( {
 		action: 'query',
-		format: 'json',
 		origin: '*',
-		formatversion: 2,
 		redirects: true,
 		pilimit: pageidsOrPageTitles.length,
 		prop: 'pageimages|description',
 		pageids: isPageIds ? pageidsOrPageTitles : undefined,
 		titles: isPageIds ? undefined : pageidsOrPageTitles,
 		piprop: 'thumbnail',
-		pithumbsize: 200
+		pithumbsize: 200,
+		formatversion: 2
 	}, {
 		url: `${ getProjectApiUrl( project ) }`
 	} ).then( ( data ) => pageidsOrPageTitles.map( ( title ) => {
@@ -382,11 +467,10 @@ function getCurrentProjectName() {
 function getWatchlistPages( continueQuery = {} ) {
 	return api.get( Object.assign( {
 		action: 'query',
-		format: 'json',
-		formatversion: 2,
 		wrnamespace: 0,
 		list: 'watchlistraw',
-		wrlimit: 'max'
+		wrlimit: 'max',
+		formatversion: 2
 	}, continueQuery ) ).then( ( data ) => {
 		const pages = data.watchlistraw.map( ( page ) => Object.assign( {}, page, {
 			project: getCurrentProjectName()
@@ -407,11 +491,10 @@ function getWatchlistPages( continueQuery = {} ) {
 function getReadingListPages( collectionId, continueQuery = {} ) {
 	return api.get( Object.assign( {
 		action: 'query',
-		format: 'json',
-		formatversion: 2,
 		list: 'readinglistentries',
 		rlelimit: 100,
-		rlelists: collectionId
+		rlelists: collectionId,
+		formatversion: 2
 	}, continueQuery ) ).then( ( /** @type {ApiQueryResponseReadingListEntries} */data ) => {
 		const pages = data.query.readinglistentries;
 		if ( data.continue ) {
@@ -495,6 +578,9 @@ module.exports = {
 	},
 	fromBase64,
 	toBase64,
+	getDefaultReadingList,
+	createEntry,
+	deleteEntry,
 	getPages,
 	getCollectionMeta,
 	getCollections,
