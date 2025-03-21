@@ -1,7 +1,8 @@
 {
 	"root": true,
 	"extends": [
-		"wikimedia/client-es6",
+		"wikimedia/client/common",
+		"wikimedia/language/es2017",
 		"wikimedia/jquery",
 		"wikimedia/mediawiki"
 	],
@@ -10,11 +11,17 @@
 		"commonjs": true
 	},
 	"rules": {
-		"compat/compat": "off",
-		"vue/no-boolean-default": "warn",
-		"no-undef": "warn",
-		"no-restricted-syntax": "warn",
-		"es-x/no-array-prototype-includes": "off",
-		"implicit-arrow-linebreak": "warn"
-	}
+		"compat/compat": "off"
+	},
+	"overrides": [
+		{
+			"files": [ "**/*.vue" ],
+			"extends": [
+				"wikimedia/vue3/common"
+			],
+			"rules": {
+				"vue/component-name-in-template-casing": "off"
+			}
+		}
+	]
 }

@@ -1,0 +1,31 @@
+{
+	"batchcomplete": true,
+	"query": {
+		"pages": [
+			{
+				"pageid": 22989,
+				"ns": 0,
+				"title": "Paris",
+				"thumbnail": {
+					"source": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/200px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
+					"width": 200,
+					"height": 125
+				},
+				"description": "Capital and largest city of France",
+				"descriptionsource": "local"
+			},
+			{
+				"pageid": 41188263,
+				"ns": 0,
+				"title": "Madrid",
+				"thumbnail": {
+					"source": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Madrid_-_Sky_Bar_360%C2%BA_%28Hotel_Riu_Plaza_Espa%C3%B1a%29%2C_vistas_19.jpg/200px-Madrid_-_Sky_Bar_360%C2%BA_%28Hotel_Riu_Plaza_Espa%C3%B1a%29%2C_vistas_19.jpg",
+					"width": 200,
+					"height": 105
+				},
+				"description": "Capital and largest city of Spain",
+				"descriptionsource": "local"
+			}
+		]
+	}
+}

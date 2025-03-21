@@ -7,6 +7,7 @@
 			<p class="readinglist-collection-description">
 				{{ description }}
 			</p>
+			<!-- eslint-disable-next-line vue/no-v-html -->
 			<p v-if="isWatchlist" v-html="watchlistMsg"></p>
 			<cdx-button
 				v-if="showShareButton && shareUrl"

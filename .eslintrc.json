@@ -1,10 +1,12 @@
 {
 	"root": true,
 	"extends": [
-		"wikimedia/client-es6",
+		"wikimedia/client/common",
+		"wikimedia/language/es2017",
 		"wikimedia/mediawiki"
 	],
 	"env": {
-		"browser": true
+		"browser": true,
+		"commonjs": true
 	}
 }

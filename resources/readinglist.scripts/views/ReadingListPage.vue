@@ -24,7 +24,7 @@
 				<reading-list
 					v-if="!( anonymizedPreviews && showDisclaimer )"
 					:cards="listsOfLists"
-					:empty-message="isImport ? emptyMessageImportListsOfLists : emptyMessageListsOfLists"
+					:empty-message="isImport ? emptyMessageImport : emptyMessageListsOfLists"
 					@click-card.prevent="clickCard"></reading-list>
 			</div>
 			<div v-if="!loadedListsOfLists">
@@ -52,7 +52,10 @@
 				</cdx-message>
 			</div>
 			<div v-if="loaded && !errorCode">
-				<reading-list :cards="cardsList" :empty-message="emptyMessage"></reading-list>
+				<reading-list
+					:cards="cardsList"
+					:empty-message="emptyMessage"
+					:list-id="collection"></reading-list>
 			</div>
 			<div v-if="!loaded">
 				<intermediate-state></intermediate-state>
@@ -68,6 +71,13 @@ const READING_LIST_SPECIAL_PAGE_NAME = 'Special:ReadingLists';
 
 /**
  * @param {number} id
+ * @param {string} url
+ * @param {string} name
+ * @param {string} description
+ * @param {string} title
+ * @param {string} thumbnail
+ * @param {string} project
+ * @param {number} pageid
  * @return {Card}
  */
 function getCard( { id, url, name, description, title, thumbnail, project, pageid } ) {
@@ -154,7 +164,7 @@ module.exports = {
 			type: String,
 			default: mw.msg( 'readinglists-list-empty-message' )
 		},
-		emptyMessageImportListsOfLists: {
+		emptyMessageImport: {
 			type: String,
 			default: mw.msg( 'readinglists-import-empty-message' )
 		},

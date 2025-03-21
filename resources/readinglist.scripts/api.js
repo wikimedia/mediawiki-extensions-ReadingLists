@@ -2,7 +2,7 @@ const DEFAULT_READING_LIST_NAME = mw.msg( 'readinglists-default-title' );
 const DEFAULT_READING_LIST_DESCRIPTION = mw.msg( 'readinglists-default-description' );
 const { getReadingListUrl } = require( './utils.js' );
 const config = require( './config.json' );
-const api = new mw.Api();
+let api = new mw.Api();
 const WATCHLIST_ID = -10;
 const WATCHLIST_NAME = mw.msg( 'readinglists-watchlist' );
 const WATCHLIST_DESCRIPTION = mw.msg( 'readinglists-watchlist-description' );
@@ -103,10 +103,7 @@ const readingListToCard = ( collection, ownerName ) => {
  * @param {string} project
  * @return {boolean}
  */
-const isLanguageCode = ( project ) => {
-	const hasProtocol = project.indexOf( '//' ) > -1;
-	return !hasProtocol && project.indexOf( '.' ) === -1 && project.indexOf( ':' ) === -1;
-};
+const isLanguageCode = ( project ) => !project.includes( '//' ) && !project.includes( '.' ) && !project.includes( ':' );
 
 /**
  * From a project identifier work out which API to use.
@@ -116,9 +113,9 @@ const isLanguageCode = ( project ) => {
  */
 function getProjectHost( project ) {
 	const isLang = isLanguageCode( project );
-	const hasProtocol = project.indexOf( '//' ) > -1;
+	const hasProtocol = project.includes( '//' );
 	if ( config.ReadingListsDeveloperMode ) {
-		if ( project.indexOf( 'localhost' ) > -1 ) {
+		if ( project.includes( 'localhost' ) ) {
 			return 'https://en.wikipedia.org';
 		} else if ( isLang ) {
 			return `https://${ project }.wikipedia.org`;
@@ -137,7 +134,7 @@ function getProjectHost( project ) {
  * @param {string} project
  * @return {function( ApiQueryResponsePage ): Card}
  */
-const transformPage = ( project ) => ( page ) => Object.assign( page, {
+const transformPage = ( project ) => ( page ) => Object.assign( {}, page, {
 	project: getProjectHost( project ),
 	// T320293
 	url: `${ getProjectHost( project ) }${ new mw.Title( page.title ).getUrl() }`,
@@ -271,17 +268,13 @@ function getProjectApiUrl( project ) {
  * @return {jQuery.Promise<any>}
  */
 function getThumbnailsAndDescriptions( project, pageidsOrPageTitles ) {
+	if ( pageidsOrPageTitles.length === 0 ) {
+		return Promise.resolve( [] );
+	}
+
 	const isPageIds = pageidsOrPageTitles[ 0 ] && typeof pageidsOrPageTitles[ 0 ] === 'number';
-	const pageids = isPageIds ? pageidsOrPageTitles : undefined;
-	const titles = isPageIds ? undefined : pageidsOrPageTitles;
 
-	const ajaxOptions = {
-		url: `${ getProjectApiUrl( project ) }`
-	};
-
-	const filterOutMissingPagesIfIDsPassed = ( page ) => isPageIds ? !page.missing : true;
-
-	return pageidsOrPageTitles.length ? api.get( {
+	return api.get( {
 		action: 'query',
 		format: 'json',
 		origin: '*',
@@ -289,14 +282,36 @@ function getThumbnailsAndDescriptions( project, pageidsOrPageTitles ) {
 		redirects: true,
 		pilimit: pageidsOrPageTitles.length,
 		prop: 'pageimages|description',
-		pageids,
-		titles,
+		pageids: isPageIds ? pageidsOrPageTitles : undefined,
+		titles: isPageIds ? undefined : pageidsOrPageTitles,
 		piprop: 'thumbnail',
 		pithumbsize: 200
-	}, ajaxOptions ).then( ( /** @type {ApiQueryResponseTitles} */ pageData ) => pageData && pageData.query ?
-		pageData.query.pages.filter(
-			filterOutMissingPagesIfIDsPassed ).map( transformPage( project )
-		) : [] ) : Promise.resolve( [] );
+	}, {
+		url: `${ getProjectApiUrl( project ) }`
+	} ).then( ( data ) => pageidsOrPageTitles.map( ( title ) => {
+		const from = title;
+
+		if ( 'normalized' in data.query ) {
+			const normal = data.query.normalized.find( ( n ) => n.from === title );
+
+			if ( normal !== undefined ) {
+				title = normal.to;
+			}
+		}
+
+		if ( 'redirects' in data.query ) {
+			const redirect = data.query.redirects.find( ( r ) => r.from === title );
+
+			if ( redirect !== undefined ) {
+				title = redirect.to;
+			}
+		}
+
+		return Object.assign( { from }, data.query.pages.find( ( p ) => p.title === title ) );
+	} )
+		.filter( ( page ) => isPageIds ? !page.missing : true )
+		.map( transformPage( project ) )
+	);
 }
 /**
  * Gets pages from a given project and list of pageids
@@ -340,7 +355,8 @@ function toProjectTitlesMap( pages ) {
  * @return {jQuery.Promise<any>}
  */
 function getPagesFromReadingListPages( pages ) {
-	return getPagesFromProjectMap( toProjectTitlesMap( pages ) );
+	return getPagesFromProjectMap( toProjectTitlesMap( pages ) ).then( ( result ) => pages
+		.map( ( page ) => result.find( ( p ) => p.from === page.title ) ) );
 }
 
 /**
@@ -411,16 +427,9 @@ function getReadingListPages( collectionId, continueQuery = {} ) {
 function getPages( collectionId ) {
 	const query = collectionId === WATCHLIST_ID ?
 		getWatchlistPages() : getReadingListPages( collectionId );
-	return query.then( (
-		/** @type {ApiQueryResponseReadingListEntryItem[]} */ readinglistpages
-	) => getPagesFromReadingListPages(
-		readinglistpages
-	).then( ( /** @type {ApiQueryResponsePage} */ pages ) =>
-		// make sure project is passed down.
-		pages.map( ( page, /** @type {number} */ i ) => Object.assign(
-			readinglistpages[ i ], page
-		) ).sort( ( a, b ) => a.title < b.title ? -1 : 1 )
-	, () => Promise.reject( 'readinglistentries-error' ) ) );
+	return query.then( ( pages ) => getPagesFromReadingListPages( pages ).then(
+		( pages2 ) => pages2.map( ( page, i ) => Object.assign( pages[ i ], page ) )
+		, () => Promise.reject( 'readinglistentries-error' ) ) );
 }
 
 /**
@@ -460,17 +469,29 @@ function fromBase64( data ) {
 	return normalizeImportedData( JSON.parse( atob( data ) ) );
 }
 
+/**
+ * Allows test to stub the active API.
+ * Should not be used outside test environment.
+ *
+ * @param {Object} newApi
+ */
+function setApi( newApi ) {
+	api = newApi;
+}
+
 module.exports = {
 	WATCHLIST_ID,
 	test: {
 		readingListToCard,
 		getProjectHost,
-		getProjectApiUrl
+		getProjectApiUrl,
+		setApi
 	},
 	fromBase64,
 	toBase64,
 	getPages,
 	getCollectionMeta,
 	getCollections,
-	getPagesFromProjectMap
+	getPagesFromProjectMap,
+	getThumbnailsAndDescriptions
 };
