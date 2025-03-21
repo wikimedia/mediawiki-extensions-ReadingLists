@@ -27,7 +27,8 @@
 	"readinglists-db-error-entry-limit": "Die Liste $1 kann nicht mehr als {{PLURAL:$2|einen Eintrag|$2 Einträge}} haben.",
 	"readinglists-db-error-too-long": "Der Wert für das Feld $1 kann nicht länger als $2 Bytes sein.",
 	"readinglists-db-error-no-such-project": "Das Projekt „$1“ wurde nicht erkannt.",
-	"readinglists-browser-add-entry-success": "$1 in deine Leseliste gespeichert",
+	"readinglists-browser-add-entry-success": "[$1 $2] wurde zu deiner [[Special:ReadingLists/$3|Leseliste]] hinzugefügt.",
+	"readinglists-browser-remove-entry-success": "[$1 $2] wurde von deiner [[Special:ReadingLists/$3|Leseliste]] enfernt.",
 	"readinglists-browser-login-prompt": "Melde dich an, um Artikel zu speichern.",
 	"readinglists-browser-error-intro": "Es ist ein Fehler aufgetreten: $1",
 	"readinglists-browser-enable-sync-prompt": "Aktiviere die Synchronisierung auf deiner Wikipedia-App, um mit dem Speichern von Artikeln zu beginnen.",
@@ -65,5 +66,7 @@
 	"readinglists-beta-feature-name": "Leselisten",
 	"readinglists-beta-feature-description": "Sammel private Listen von Artikeln zum späteren Lesen.",
 	"readinglists-menu-item": "Leselisten",
-	"readinglists-bookmark": "Lesezeichen"
+	"readinglists-bookmark": "Lesezeichen",
+	"readinglists-add-bookmark": "Lesezeichen hinzufügen",
+	"readinglists-remove-bookmark": "Lesezeichen entfernen"
 }
