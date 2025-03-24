@@ -7,11 +7,12 @@
 			"Toliño"
 		]
 	},
-	"apierror-readinglists-project-title-param": "<var>$1project</var> e <var>$1title</var> deben ser usados xuntos.",
+	"apierror-readinglists-project-title-param": "<var>$1project</var> e <var>$1title</var> deben utilizarse xuntos.",
 	"apierror-readinglists-too-old": "Os selos de tempo pasados a <var>$1changedsince</var> non poden ser anteriores a <kbd>$2</kbd>.",
 	"apierror-readinglists-invalidsort-notbyname": "A opción de ordenación <kbd>name</kbd> non pode usarse xunto con <var>$1changedsince</var>.",
 	"apierror-readinglists-batch-invalid-json": "JSON non válido para o parámetro <var>batch</var> (grupo): $1",
 	"apierror-readinglists-batch-invalid-structure": "Entrada non válida para o parámetro <var>batch</var>: debe conter unha matriz de obxectos con valores escalares.",
+	"apihelp-query+readinglists-param-list": "Identificador da lista.",
 	"apihelp-query+readinglists-param-limit": "Número de resultados a devolver.",
 	"apihelp-query+readinglists-example-1": "Obter as listas de lectura do usuario actual.",
 	"apihelp-query+readinglistentries-summary": "Listar as páxinas dunha lista dada.",
