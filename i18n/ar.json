@@ -29,7 +29,7 @@
 	"readinglists-db-error-entry-limit": "لا يمكن أن تحتوي القائمة $1 على أكثر من $2 {{PLURAL:$2|إدخال|إدخالات}}.",
 	"readinglists-db-error-too-long": "لا يمكن أن تكون قيمة الحقل $1 أطول من $2 بايت.",
 	"readinglists-db-error-no-such-project": "'$1' ليس مشروعا معترفا به.",
-	"readinglists-browser-add-entry-success": "تم حفظ $1 في قائمة القراءة الخاصة بك",
+	"readinglists-browser-add-entry-success": "تمت إضافة [$1 $2] إلى [[Special:ReadingLists/$3|قائمة القراءة]].",
 	"readinglists-browser-login-prompt": "سجل الدخول لحفظ المقالات",
 	"readinglists-browser-error-intro": "حدث خطأ: $1",
 	"readinglists-browser-enable-sync-prompt": "مكن مزامنة تطبيق ويكيبيديا الخاص بك لبدء حفظ المقالات",

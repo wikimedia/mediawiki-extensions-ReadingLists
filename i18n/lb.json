@@ -16,7 +16,7 @@
 	"readinglists-db-error-entry-limit": "Lëscht $1 däerf net méi wéi {{PLURAL:$2|een Element|$2 Elementer}} hunn.",
 	"readinglists-db-error-too-long": "De Wäert fir d'Feld $1 däerf net méi grouss wéi $2 Byte sinn.",
 	"readinglists-db-error-no-such-project": "'$1' ass keen unerkannte Projet.",
-	"readinglists-browser-add-entry-success": "$1 op Ärer Lieslëscht gespäichert",
+	"readinglists-browser-add-entry-success": "[$1 $2] gouf op Är [[Special:ReadingLists/$3|Lieslëscht]] gesat.",
 	"readinglists-browser-login-prompt": "Alogge fir Artikelen ze späicheren",
 	"readinglists-browser-error-intro": "Et ass e Feeler geschitt: $1",
 	"readinglists-browser-extension-info-link-text": "Fir méi ze wëssen",
@@ -32,5 +32,7 @@
 	"readinglists-import-button-label": "Lëscht weisen",
 	"readinglists-beta-feature-name": "Lieslëschten",
 	"readinglists-menu-item": "Lieslëschten",
-	"readinglists-bookmark": "Lieszeechen"
+	"readinglists-bookmark": "Lieszeechen",
+	"readinglists-add-bookmark": "Lieszeechen derbäisetzen",
+	"readinglists-remove-bookmark": "Lieszeechen ewechhuelen"
 }

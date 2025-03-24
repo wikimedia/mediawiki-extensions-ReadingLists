@@ -27,7 +27,8 @@
 	"readinglists-db-error-entry-limit": "Op de lijst $1 kunnen niet meer dan $2 vermelding{{PLURAL:$2||en}} staan.",
 	"readinglists-db-error-too-long": "De waarde voor het veld $1 mag niet langer zijn dan $2 bytes.",
 	"readinglists-db-error-no-such-project": "‘$1’ is geen erkend project.",
-	"readinglists-browser-add-entry-success": "$1 is opgeslagen op uw leeslijst",
+	"readinglists-browser-add-entry-success": "[$1 $2] is aan uw [[Special:ReadingLists/$3|leeslijst]] toegevoegd.",
+	"readinglists-browser-remove-entry-success": "[$1 $2] is uit uw [[Special:ReadingLists/$3|leeslijst]] verwijderd.",
 	"readinglists-browser-login-prompt": "Meld u aan om artikelen op te slaan",
 	"readinglists-browser-error-intro": "Er is een fout opgetreden: $1",
 	"readinglists-browser-enable-sync-prompt": "Schakel synchronisatie in uw Wikipedia-app in om artikelen op te gaan slaan",
@@ -65,5 +66,7 @@
 	"readinglists-beta-feature-name": "Leeslijsten",
 	"readinglists-beta-feature-description": "Verzamel privélijsten met artikelen om later te lezen.",
 	"readinglists-menu-item": "Leeslijsten",
-	"readinglists-bookmark": "Bladwijzer"
+	"readinglists-bookmark": "Bladwijzer",
+	"readinglists-add-bookmark": "Bladwijzer toevoegen",
+	"readinglists-remove-bookmark": "Bladwijzer verwijderen"
 }

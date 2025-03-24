@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"GuoPC",
 			"Hanyanbo98",
 			"Huajing",
 			"Lantianjialiang",
@@ -28,7 +29,8 @@
 	"readinglists-db-error-entry-limit": "列表$1不能有超过$2{{PLURAL:$2|项}}。",
 	"readinglists-db-error-too-long": "用于字段$1的值不能超过$2字节。",
 	"readinglists-db-error-no-such-project": "“$1”不是受认可的项目。",
-	"readinglists-browser-add-entry-success": "$1已保存到您的阅读列表",
+	"readinglists-browser-add-entry-success": "[$1 $2]已添加到您的[[Special:ReadingLists/$3|阅读列表]]。",
+	"readinglists-browser-remove-entry-success": "[$1 $2]已从您的[[Special:ReadingLists/$3|阅读列表]]移除。",
 	"readinglists-browser-login-prompt": "登录以保存条目",
 	"readinglists-browser-error-intro": "发生错误：$1",
 	"readinglists-browser-enable-sync-prompt": "在您的维基百科应用上启用同步以开始保存条目",
@@ -62,5 +64,11 @@
 	"readinglists-import-button-label": "查看列表",
 	"readinglists-import-button-hint": "点击按钮：",
 	"readinglists-share-url-notify": "与此阅读列表相关的信息已复制到您的剪贴板。",
-	"readinglists-import-app-launch-hint": "请确保安装了该应用程序的最新版本。"
+	"readinglists-import-app-launch-hint": "请确保安装了该应用程序的最新版本。",
+	"readinglists-beta-feature-name": "阅读列表",
+	"readinglists-beta-feature-description": "收集私有条目列表以供稍后阅读。",
+	"readinglists-menu-item": "阅读列表",
+	"readinglists-bookmark": "书签",
+	"readinglists-add-bookmark": "添加书签",
+	"readinglists-remove-bookmark": "移除书签"
 }

@@ -24,7 +24,8 @@
 	"readinglists-db-error-entry-limit": "Le lista $1 non pote haber plus de $2 entrata{{PLURAL:$2||s}}.",
 	"readinglists-db-error-too-long": "Le valor del campo $1 non pote haber plus de $2 bytes.",
 	"readinglists-db-error-no-such-project": "'$1' non es un objecto recognoscite.",
-	"readinglists-browser-add-entry-success": "$1 ha essite salveguardate in tu lista de lectura",
+	"readinglists-browser-add-entry-success": "[$1 $2] ha essite addite a tu [[Special:ReadingLists/$3|lista de lectura]].",
+	"readinglists-browser-remove-entry-success": "[$1 $2] ha essite removite de tu [[Special:ReadingLists/$3|lista de lectura]].",
 	"readinglists-browser-login-prompt": "Aperi session pro salveguardar articulos",
 	"readinglists-browser-error-intro": "Un error ha occurrite: $1",
 	"readinglists-browser-enable-sync-prompt": "Activa le synchronisation sur tu app Wikipedia pro comenciar a salveguardar articulos",
@@ -62,5 +63,7 @@
 	"readinglists-beta-feature-name": "Listas de lectura",
 	"readinglists-beta-feature-description": "Colliger listas private de articulos a leger plus tarde.",
 	"readinglists-menu-item": "Listas de lectura",
-	"readinglists-bookmark": "Marcapagina"
+	"readinglists-bookmark": "Marcapagina",
+	"readinglists-add-bookmark": "Adder marcapagina",
+	"readinglists-remove-bookmark": "Remover marcapagina"
 }
