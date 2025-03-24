@@ -240,13 +240,14 @@ function getCollectionMeta( ownerName, id ) {
  * @param {ProjectTitleMap|ProjectIDMap} projectMap
  * @return {jQuery.Promise<any>}
  */
-function getPagesFromProjectMap( projectMap ) {
-	const projects = Object.keys( projectMap );
+async function getPagesFromProjectMap( projectMap ) {
 	const promises = [];
-	for ( let i = 0; i < projects.length; i++ ) {
-		promises.push( getPagesFromPageIdentifiers( projects[ i ], projectMap[ projects[ i ] ] ) );
+
+	for ( const [ project, titles ] of Object.entries( projectMap ) ) {
+		promises.push( getPagesFromPageIdentifiers( project, titles ) );
 	}
-	return Promise.all( promises ).then( ( args ) => Array.prototype.concat.apply( [], args ) );
+
+	return Promise.all( promises ).then( ( pages ) => Array.prototype.concat.apply( [], pages ) );
 }
 
 /**
@@ -355,8 +356,11 @@ function toProjectTitlesMap( pages ) {
  * @return {jQuery.Promise<any>}
  */
 function getPagesFromReadingListPages( pages ) {
-	return getPagesFromProjectMap( toProjectTitlesMap( pages ) ).then( ( result ) => pages
-		.map( ( page ) => result.find( ( p ) => p.from === page.title ) ) );
+	return getPagesFromProjectMap( toProjectTitlesMap( pages ) ).then(
+		( results ) => pages.map( ( page ) => results.find(
+			( result ) => result.project === page.project && result.from === page.title
+		) )
+	);
 }
 
 /**

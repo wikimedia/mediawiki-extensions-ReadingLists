@@ -15,7 +15,7 @@ module.exports = {
 	collectCoverage: true,
 
 	// An array of glob patterns indicating a set of files fo
-	//  which coverage information should be collected
+	// which coverage information should be collected
 	collectCoverageFrom: [
 		'resources/**/*.(js|vue)'
 	],
@@ -33,10 +33,10 @@ module.exports = {
 	// An object that configures minimum threshold enforcement for coverage results
 	coverageThreshold: {
 		global: {
-			branches: 19,
-			functions: 10,
-			lines: 20,
-			statements: 20
+			branches: 45,
+			functions: 57,
+			lines: 50,
+			statements: 50
 		}
 	},
 

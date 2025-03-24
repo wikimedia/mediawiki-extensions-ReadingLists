@@ -1,0 +1,23 @@
+{
+	"batchcomplete": true,
+	"query": {
+		"redirects": [
+			{
+				"from": "Doggy",
+				"to": "Dog"
+			}
+		],
+		"pages": [
+			{
+				"pageid": 13744,
+				"ns": 0,
+				"title": "Dog",
+				"thumbnail": {
+					"source": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Chien_D%27Eau_Espagnol.jpg/200px-Chien_D%27Eau_Espagnol.jpg",
+					"width": 200,
+					"height": 172
+				}
+			}
+		]
+	}
+}

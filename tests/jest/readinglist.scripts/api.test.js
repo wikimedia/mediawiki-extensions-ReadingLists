@@ -1,7 +1,10 @@
 const api = require( '../../../resources/readinglist.scripts/api.js' );
 const ENGLISH_WIKIPEDIA_PAGES = require( './fixtures/en_wikipedia.json' );
+const ENGLISH_DOG_PAGES = require( './fixtures/en_wikipedia_dog.json' );
+const SPANISH_DOG_PAGES = require( './fixtures/es_wikipedia_dog.json' );
 const CITY_PAGES = require( './fixtures/cities.json' );
 const COLLECTION_ONE = require( './fixtures/collection_1.json' );
+const COLLECTION_DOGS = require( './fixtures/collection_dogs.json' );
 
 describe( 'Developer mode', () => {
 	test( 'getProjectHost returns en.wikipedia.org', () => {
@@ -134,6 +137,36 @@ describe( 'getThumbnailsAndDescriptions', () => {
 } );
 
 describe( 'getReadingListPages', () => {
+	test( 'Preserves thumbnails across projects where the title is the same', () => {
+		api.test.setApi( {
+			get: jest.fn( ( _options, host ) => {
+				if ( !host ) {
+					return Promise.resolve( COLLECTION_DOGS );
+				}
+				switch ( host.url ) {
+					case 'https://es.wikipedia.org/w/api.php':
+						return Promise.resolve( SPANISH_DOG_PAGES );
+					case 'https://en.wikipedia.org/w/api.php':
+						return Promise.resolve( ENGLISH_DOG_PAGES );
+					default:
+						throw new Error( `Unknown host ${ host.url }` );
+				}
+			} )
+		} );
+
+		const ENGLISH_THUMB_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Huskiesatrest.jpg/200px-Huskiesatrest.jpg';
+		const SPANISH_THUMB_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Chien_D%27Eau_Espagnol.jpg/200px-Chien_D%27Eau_Espagnol.jpg';
+		api.getPages( 5 ).then( ( result ) => {
+			expect( result.length ).toBe( 3 );
+			expect( result[ 0 ].project ).toBe( 'https://en.wikipedia.org' );
+			expect( result[ 0 ].thumbnail.url ).toBe( ENGLISH_THUMB_URL );
+			expect( result[ 1 ].project ).toBe( 'https://es.wikipedia.org' );
+			expect( result[ 1 ].thumbnail.url ).toBe( SPANISH_THUMB_URL );
+			expect( result[ 2 ].project ).toBe( 'https://es.wikipedia.org' );
+			expect( result[ 2 ].thumbnail.url ).toBe( SPANISH_THUMB_URL );
+		} );
+	} );
+
 	test( 'Preserves list item ID across projects and redirects', () => {
 		api.test.setApi( {
 			get: jest.fn( ( _options, host ) => {
@@ -151,7 +184,7 @@ describe( 'getReadingListPages', () => {
 			} )
 		} );
 
-		api.getPages( 1 ).then( ( result ) => {
+		api.getPages( 5 ).then( ( result ) => {
 			expect( result.length ).toBe( 4 );
 			expect( result[ 0 ].title ).toBe( 'Wikipedia' );
 			expect( result[ 0 ].id ).toBe( 9 );

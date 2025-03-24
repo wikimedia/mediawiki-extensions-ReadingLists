@@ -1,0 +1,31 @@
+{
+	"batchcomplete": true,
+	"query": {
+		"readinglistentries": [
+			{
+				"id": 2,
+				"listId": 1,
+				"project": "https://en.wikipedia.org",
+				"title": "Dog",
+				"created": "2025-03-20T15:16:10Z",
+				"updated": "2025-03-20T15:16:10Z"
+			},
+			{
+				"id": 3,
+				"listId": 1,
+				"project": "https://es.wikipedia.org",
+				"title": "Dog",
+				"created": "2025-03-20T15:17:59Z",
+				"updated": "2025-03-20T15:17:59Z"
+			},
+			{
+				"id": 4,
+				"listId": 1,
+				"project": "https://es.wikipedia.org",
+				"title": "Doggy",
+				"created": "2025-03-20T15:19:30Z",
+				"updated": "2025-03-20T15:19:30Z"
+			}
+		]
+	}
+}
