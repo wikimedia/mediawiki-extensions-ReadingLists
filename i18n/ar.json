@@ -30,6 +30,7 @@
 	"readinglists-db-error-too-long": "لا يمكن أن تكون قيمة الحقل $1 أطول من $2 بايت.",
 	"readinglists-db-error-no-such-project": "'$1' ليس مشروعا معترفا به.",
 	"readinglists-browser-add-entry-success": "تمت إضافة [$1 $2] إلى [[Special:ReadingLists/$3|قائمة القراءة]].",
+	"readinglists-browser-remove-entry-success": "لقد تم إزالة [$1 $2] من [[Special:ReadingLists/$3|قائمة القراءة]].",
 	"readinglists-browser-login-prompt": "سجل الدخول لحفظ المقالات",
 	"readinglists-browser-error-intro": "حدث خطأ: $1",
 	"readinglists-browser-enable-sync-prompt": "مكن مزامنة تطبيق ويكيبيديا الخاص بك لبدء حفظ المقالات",
@@ -67,5 +68,7 @@
 	"readinglists-beta-feature-name": "قوائم القراءة",
 	"readinglists-beta-feature-description": "جمع قوائم خاصة من المقالات لقراءتها لاحقًا.",
 	"readinglists-menu-item": "قوائم القراءة",
-	"readinglists-bookmark": "علامة مرجعية"
+	"readinglists-bookmark": "علامة مرجعية",
+	"readinglists-add-bookmark": "إضافة إشارة مرجعية",
+	"readinglists-remove-bookmark": "إزالة الإشارة المرجعية"
 }
