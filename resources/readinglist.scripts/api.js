@@ -433,7 +433,9 @@ function getPages( collectionId ) {
 		getWatchlistPages() : getReadingListPages( collectionId );
 	return query.then( ( pages ) => getPagesFromReadingListPages( pages ).then(
 		( pages2 ) => pages2.map( ( page, i ) => Object.assign( pages[ i ], page ) )
-		, () => Promise.reject( 'readinglistentries-error' ) ) );
+		, () => {
+			throw new Error( 'readinglistentries-error' );
+		} ) );
 }
 
 /**

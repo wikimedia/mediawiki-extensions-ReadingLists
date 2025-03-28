@@ -2,11 +2,23 @@
 	"root": true,
 	"extends": [
 		"wikimedia/client/common",
-		"wikimedia/language/es2017",
-		"wikimedia/mediawiki"
+		"wikimedia/language/es2018",
+		"wikimedia/mediawiki",
+		"wikimedia/jquery"
 	],
 	"env": {
 		"browser": true,
 		"commonjs": true
-	}
+	},
+	"overrides": [
+		{
+			"files": [ "**/*.vue" ],
+			"extends": [
+				"wikimedia/vue3/common"
+			],
+			"rules": {
+				"vue/component-name-in-template-casing": "off"
+			}
+		}
+	]
 }
