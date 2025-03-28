@@ -46,5 +46,6 @@
 	"readinglists-watchlist-monitor": "Puede monitorear las ediciones de las páginas de esta lista usando la herramienta [ $1 watchlist].",
 	"readinglists-import-disclaimer": "Un usuario de este sitio ha creado una lista de lectura para compartir con otros (probablemente contigo). La misma no está moderada y sus contenidos no reflejan la opinión de los editores del sitio.",
 	"readinglists-import-button-label": "Ver lista",
-	"readinglists-import-button-hint": "Pulse el botón:"
+	"readinglists-import-button-hint": "Pulse el botón:",
+	"readinglists-add-bookmark": "Añadir marcador"
 }
