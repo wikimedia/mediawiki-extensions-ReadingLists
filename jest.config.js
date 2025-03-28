@@ -26,17 +26,19 @@ module.exports = {
 	// An array of regexp pattern strings used to skip coverage collection
 	coveragePathIgnorePatterns: [
 		'/node_modules/',
-		// Not testing Vue components yet
-		'/resources/readinglist.scripts/views/'
+		// We do not typically test coverage on wire up code
+		// since it has side effects.
+		'resources/special.readinglist.scripts.js',
+		'resources/readinglist.page.scripts.js'
 	],
 
 	// An object that configures minimum threshold enforcement for coverage results
 	coverageThreshold: {
 		global: {
-			branches: 45,
-			functions: 57,
-			lines: 50,
-			statements: 50
+			branches: 19,
+			functions: 32,
+			lines: 28,
+			statements: 29
 		}
 	},
 
