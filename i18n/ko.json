@@ -37,5 +37,7 @@
 	"readinglists-import-button-label": "목록 보기",
 	"readinglists-beta-feature-name": "읽기 목록",
 	"readinglists-menu-item": "읽기 목록",
-	"readinglists-bookmark": "북마크"
+	"readinglists-bookmark": "북마크",
+	"readinglists-add-bookmark": "북마크 추가",
+	"readinglists-remove-bookmark": "북마크 제거"
 }
