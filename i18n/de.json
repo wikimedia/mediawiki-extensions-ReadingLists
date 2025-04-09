@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Brettchenweber",
 			"Hwboehm",
 			"Kghbln",
 			"Metalhead64",
@@ -28,7 +29,7 @@
 	"readinglists-db-error-too-long": "Der Wert für das Feld $1 kann nicht länger als $2 Bytes sein.",
 	"readinglists-db-error-no-such-project": "Das Projekt „$1“ wurde nicht erkannt.",
 	"readinglists-browser-add-entry-success": "[$1 $2] wurde zu [$3 $4] hinzugefügt.",
-	"readinglists-browser-remove-entry-success": "[$1 $2] wurde von [$3 $4] enfernt.",
+	"readinglists-browser-remove-entry-success": "[$1 $2] wurde von [$3 $4] entfernt.",
 	"readinglists-browser-login-prompt": "Melde dich an, um Artikel zu speichern.",
 	"readinglists-browser-error-intro": "Es ist ein Fehler aufgetreten: $1",
 	"readinglists-browser-enable-sync-prompt": "Aktiviere die Synchronisierung auf deiner Wikipedia-App, um mit dem Speichern von Artikeln zu beginnen.",
