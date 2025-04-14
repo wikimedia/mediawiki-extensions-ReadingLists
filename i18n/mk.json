@@ -25,7 +25,8 @@
 	"readinglists-db-error-entry-limit": "Списокот $1 не може да има повеќе од $2 {{PLURAL:$2|ставка|ставки}}.",
 	"readinglists-db-error-too-long": "Вредноста за полето $1 не може да е подолга од $2 бајти.",
 	"readinglists-db-error-no-such-project": "„$1“ не е признаен проект.",
-	"readinglists-browser-add-entry-success": "„$1“ е зачувана во вашите набљудувани",
+	"readinglists-browser-add-entry-success": "[$1 $2] е додадена во [$3 $4].",
+	"readinglists-browser-remove-entry-success": "[$1 $2] е отстранета од [$3 $4].",
 	"readinglists-browser-login-prompt": "Најавете се за да зачувувате статии",
 	"readinglists-browser-error-intro": "Се појави грешка: $1",
 	"readinglists-browser-enable-sync-prompt": "Овозможете усогласување на вашиот прилог за Википедија за да почнете со зачувување на статиите",
@@ -59,5 +60,11 @@
 	"readinglists-import-button-label": "Погл. списокот",
 	"readinglists-import-button-hint": "Допрете на копчето:",
 	"readinglists-share-url-notify": "Информациите поврзани со овој список за читање се ископирани од вашиот меѓусклад.",
-	"readinglists-import-app-launch-hint": "Водете сметка да биде воспоставена најновата верзија на прилогот."
+	"readinglists-import-app-launch-hint": "Водете сметка да биде воспоставена најновата верзија на прилогот.",
+	"readinglists-beta-feature-name": "Списоци за читање",
+	"readinglists-beta-feature-description": "Собирај приватни списоци на статии за читање подоцна.",
+	"readinglists-menu-item": "Списоци за читање",
+	"readinglists-bookmark": "Обележувач",
+	"readinglists-add-bookmark": "Додај обележувач",
+	"readinglists-remove-bookmark": "Отстрани обележувач"
 }
