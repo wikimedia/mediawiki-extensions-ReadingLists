@@ -2,12 +2,12 @@
 
 namespace MediaWiki\Extension\ReadingLists;
 
+use MediaWiki\Exception\PermissionsError;
 use MediaWiki\Html\Html;
 use MediaWiki\Message\Message;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\SpecialPage\UnlistedSpecialPage;
 use MediaWiki\User\User;
-use PermissionsError;
 
 class SpecialReadingLists extends UnlistedSpecialPage {
 	/**

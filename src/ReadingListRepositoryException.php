@@ -3,7 +3,7 @@
 namespace MediaWiki\Extension\ReadingLists;
 
 use Exception;
-use ILocalizedException;
+use MediaWiki\Exception\ILocalizedException;
 use MediaWiki\Message\Message;
 
 /**
