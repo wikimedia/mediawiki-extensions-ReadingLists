@@ -25,6 +25,7 @@
 	"readinglists-browser-list-entry-limit-exceeded": "Йаззам Ӏалашбан йиш йац. Хьо могӀаман йаззаман лимите кхаьчна ($1).",
 	"readinglists-browser-extension-product-title": "Википеди йешаран могӀамаш",
 	"readinglists-browser-page-not-supported": "$1 ловш йац хӀара агӀо",
+	"readinglists-special-title": "Ӏалашйан",
 	"readinglists-special-title-imported": "МогӀамаш бешар: Кхечу декъашхочуьнгара импорт йар",
 	"readinglists-loading": "Дехар до, собарде…",
 	"readinglists-error": "Хьан браузеран йиш йац йешаран могӀамаш лело. Дехар до, JavaScript дӀахӀоттайе йа кхечу браузерехь хьажа.",
