@@ -32,6 +32,9 @@
 	"readinglists-import-size-error": "МогӀам гайта йиш йоцуш тӀех боккха бу.",
 	"special-tab-readinglists-short": "Хьан могӀамаш",
 	"readinglists-import-empty-message": "Хьан йиш йац могӀамийн могӀамаш импортбан",
+	"readinglists-no-title": "ЦӀе йоцу могӀам",
+	"readinglists-export": "ДӀасакхосса могӀам",
+	"readinglists-watchlist": "Тергаме могӀам",
 	"readinglists-watchlist-monitor": "Хьан йиш йу хӀокху могӀаман тӀера агӀонаш тӀехь хийцамашка хьежа [тергаме могӀам $1 хан] гӀирс лелош.",
 	"readinglists-share-url-notify": "ХӀокху йешаран могӀамца йоьзна информаци буфере дӀайазйина.",
 	"readinglists-import-app-launch-hint": "Программин тӀаьххьара верси дӀахӀоттийна хиларх тешна хила."
