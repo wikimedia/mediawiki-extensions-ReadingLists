@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ykhwong"
+			"Ykhwong",
+			"아라"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var>와 <var>$1title</var>는 함께 사용해야 합니다.",
@@ -14,7 +15,7 @@
 	"apihelp-query+readinglists-param-project": "필터를 켤 문서의 프로젝트입니다. <var>$1title</var>와 함께 사용해야 합니다. 이 프로젝트와 제목을 포함하는 목록만 반환됩니다.",
 	"apihelp-query+readinglists-param-title": "필터를 켤 문서의 제목입니다. <var>$1project</var>와 함께 사용해야 합니다. 이 프로젝트와 제목을 포함하는 목록만 반환됩니다.",
 	"apihelp-query+readinglists-paramvalue-sort-name": "목록 이름입니다. (이진값으로 정렬됩니다. 이를테면 모든 ASCII 대문자는 소문자 보다 우선하여 정렬됩니다.)",
-	"apihelp-query+readinglists-param-dir": "정렬 방향: <kbd>ascending</kbd> (A부터 Z, 가장 오래된 것부터 가장 새로운 것) 또는 <kbd>descending</kbd>. <var>$1project</var>와 <var>$1title</var>이 설정되면 무시됩니다.",
+	"apihelp-query+readinglists-param-dir": "정렬 방향: <kbd>ascending</kbd> (A부터 Z, 최초부터 최신) 또는 <kbd>descending</kbd>. <var>$1project</var>와 <var>$1title</var>이 설정될 때 무시됩니다.",
 	"apihelp-query+readinglists-param-limit": "반환할 결과 항목의 수입니다.",
 	"apihelp-query+readinglists-example-1": "현재 사용자의 읽기 목록을 가져옵니다.",
 	"apihelp-query+readinglists-example-2": "<kbd>2013-01-01T00:00:00Z</kbd> 이후로 변경된 현재 사용자의 읽기 목록을 가져옵니다.",
@@ -23,7 +24,7 @@
 	"apihelp-query+readinglistentries-param-lists": "문서를 반환할 목록 ID입니다.",
 	"apihelp-query+readinglistentries-param-changedsince": "이 타임스탬프 이후로 변경된 목록 엔트리를 표시합니다. <kbd>$1</kbd> 이후여야 합니다.",
 	"apihelp-query+readinglistentries-paramvalue-sort-name": "문서의 제목입니다. (프로젝트 이름은 무시됩니다. 이진값으로 정렬됩니다. 이를테면 모든 ASCII 대문자는 소문자 보다 우선하여 정렬됩니다.)",
-	"apihelp-query+readinglistentries-param-dir": "정렬 방향: <kbd>ascending</kbd> (A부터 Z, 가장 오래된 것부터 가장 새로운 것) 또는 <kbd>descending</kbd>.",
+	"apihelp-query+readinglistentries-param-dir": "정렬 방향: <kbd>ascending</kbd> (A부터 Z, 최초부터 최신) 또는 <kbd>descending</kbd>.",
 	"apihelp-query+readinglistentries-param-limit": "반환할 결과 항목의 수입니다.",
 	"apihelp-query+readinglistentries-example-2": "<kbd>2013-01-01T00:00:00Z</kbd> 이후로 변경된 현재 사용자의 목록 엔트리를 가져옵니다.",
 	"apihelp-readinglists-summary": "읽기 목록 쓰기 명령입니다.",
