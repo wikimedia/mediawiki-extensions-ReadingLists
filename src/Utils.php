@@ -6,6 +6,7 @@ use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
 use UnexpectedValueException;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
  * Static utility methods.
@@ -22,7 +23,7 @@ class Utils {
 		$services = MediaWikiServices::getInstance();
 		$extensionConfig = $services->getConfigFactory()->makeConfig( 'ReadingLists' );
 		$days = $extensionConfig->get( 'ReadingListsDeletedRetentionDays' );
-		$unixTimestamp = strtotime( '-' . $days . ' days' );
+		$unixTimestamp = strtotime( '-' . $days . ' days', ConvertibleTimestamp::time() );
 		$timestamp = wfTimestamp( TS_MW, $unixTimestamp );
 		if ( !$timestamp || !$unixTimestamp ) {
 			// not really an argument but close enough

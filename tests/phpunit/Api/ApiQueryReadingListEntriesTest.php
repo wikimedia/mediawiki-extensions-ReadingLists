@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
  * @covers \MediaWiki\Extension\ReadingLists\Api\ApiQueryReadingListEntries
@@ -23,16 +24,8 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 		'list'    => 'readinglistentries',
 	];
 
-	/** @var string Create date that isn't older than one month to test rlchangedsince */
-	private $lastUpdate;
-
 	/** @var User */
 	private $user;
-
-	public function __construct( $name = null, array $data = [], $dataName = '' ) {
-		parent::__construct( $name, $data, $dataName );
-		$this->lastUpdate = wfTimestamp( TS_MW );
-	}
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -68,14 +61,14 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 						'rlp_project' => 'foo',
 						'rle_title' => 'Dog',
 						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => $this->lastUpdate,
+						'rle_date_updated' => '20181201000000',
 						'rle_deleted' => 0,
 					],
 					[
 						'rlp_project' => 'foo1',
 						'rle_title' => 'Cat',
 						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20180903000000',
+						'rle_date_updated' => '20181101000000',
 						'rle_deleted' => 0,
 					],
 					[
@@ -89,7 +82,7 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 						'rlp_project' => 'foo3',
 						'rle_title' => 'Dolphin',
 						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20180902000000',
+						'rle_date_updated' => '20181001000000',
 						'rle_deleted' => 0,
 					],
 				],
@@ -118,6 +111,8 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 	 * @dataProvider apiQueryProvider
 	 */
 	public function testApiQuery( $apiParams, $expected ) {
+		ConvertibleTimestamp::setFakeTime( '2018-09-13T20:59:36Z' );
+
 		$this->apiParams = array_merge( $this->apiParams, $apiParams );
 
 		$result = $this->doApiRequest( $this->apiParams, null, $this->user );
@@ -125,10 +120,7 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 		$this->assertEquals( $expected, $result[0] );
 	}
 
-	public function apiQueryProvider() {
-		$mwLastUpdate = wfTimestamp( TS_ISO_8601, $this->lastUpdate );
-		// Create date 7 days before the last update to test rlchangedsince
-		$rlChangedSince = wfTimestamp( TS_ISO_8601, strtotime( "-7 days" ) );
+	public static function apiQueryProvider() {
 		return [
 			[ [ 'rlesort' => 'updated', 'rledir' => 'descending', 'rlelists' => "1|2|3" ],
 				[
@@ -140,7 +132,7 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 								'project' => 'foo',
 								'title' => 'Dog',
 								'created' => '2010-01-01T00:00:00Z',
-								'updated' => $mwLastUpdate,
+								'updated' => '2018-12-01T00:00:00Z',
 								'listId' => 2
 							],
 							[
@@ -148,7 +140,7 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 								'project' => 'foo1',
 								'title' => 'Cat',
 								'created' => '2010-01-01T00:00:00Z',
-								'updated' => '2018-09-03T00:00:00Z',
+								'updated' => '2018-11-01T00:00:00Z',
 								'listId' => 2
 							],
 							[
@@ -156,7 +148,7 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 								'project' => 'foo3',
 								'title' => 'Dolphin',
 								'created' => '2010-01-01T00:00:00Z',
-								'updated' => '2018-09-02T00:00:00Z',
+								'updated' => '2018-10-01T00:00:00Z',
 								'listId' => 2
 							],
 							[
@@ -187,17 +179,33 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 					]
 				],
 			],
-			[ [ 'rlechangedsince' => $rlChangedSince ],
+			[ [ 'rlechangedsince' => '2018-09-15T12:31:19Z' ],
 				[
 					"batchcomplete" => true,
 					"query" => [
 						"readinglistentries" => [
 							[
+								'id' => 5,
+								'project' => 'foo3',
+								'title' => 'Dolphin',
+								'created' => '2010-01-01T00:00:00Z',
+								'updated' => '2018-10-01T00:00:00Z',
+								'listId' => 2
+							],
+							[
+								'id' => 3,
+								'project' => 'foo1',
+								'title' => 'Cat',
+								'created' => '2010-01-01T00:00:00Z',
+								'updated' => '2018-11-01T00:00:00Z',
+								'listId' => 2
+							],
+							[
 								'id' => 2,
 								'project' => 'foo',
 								'title' => 'Dog',
 								'created' => '2010-01-01T00:00:00Z',
-								'updated' => $mwLastUpdate,
+								'updated' => '2018-12-01T00:00:00Z',
 								'listId' => 2
 							],
 						],
@@ -213,7 +221,7 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 								'project' => 'foo1',
 								'title' => 'Cat',
 								'created' => '2010-01-01T00:00:00Z',
-								'updated' => '2018-09-03T00:00:00Z',
+								'updated' => '2018-11-01T00:00:00Z',
 								'listId' => 2
 							],
 						],
@@ -239,7 +247,7 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 								'project' => 'foo',
 								'title' => 'Dog',
 								'created' => '2010-01-01T00:00:00Z',
-								'updated' => $mwLastUpdate,
+								'updated' => '2018-12-01T00:00:00Z',
 								'listId' => 2
 							],
 						],
