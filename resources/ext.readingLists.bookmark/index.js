@@ -1,9 +1,19 @@
+const isMinerva = mw.config.get( 'skin' ) === 'minerva';
+const bookmark = document.querySelector( isMinerva ? '#ca-bookmark' : '#ca-bookmark > a' );
+
+if ( bookmark === null ) {
+	throw new Error( 'Bookmark not found' );
+}
+
 const api = require( 'ext.readingLists.api' );
 
-const link = document.querySelector( '.reading-list-bookmark > a:first-child, a.reading-list-bookmark' );
-const label = link !== null && link.classList.contains( 'mw-list-item' ) ? link.querySelector( '.toggle-list-item__label' ) : link;
-const labelAdd = mw.msg( 'readinglists-add-bookmark' );
-const labelRemove = mw.msg( 'readinglists-remove-bookmark' );
+const hasIcon = bookmark.children.length > 1;
+const icon = hasIcon ? bookmark.children[ 0 ] : null;
+const label = hasIcon ? bookmark.children[ 1 ] : bookmark.children[ 0 ];
+
+const iconPrefix = isMinerva ? 'minerva-icon--' : 'mw-ui-icon-';
+const iconSolid = iconPrefix + 'bookmark';
+const iconOutline = iconPrefix + 'bookmarkOutline';
 
 /**
  * Updates the bookmark button text and display an added/removed notification
@@ -12,13 +22,21 @@ const labelRemove = mw.msg( 'readinglists-remove-bookmark' );
  * @param {number} listId
  */
 function setBookmarkStatus( isSaved, listId ) {
-	label.textContent = isSaved ? labelRemove : labelAdd;
+	if ( icon !== null ) {
+		// eslint-disable-next-line mediawiki/class-doc
+		icon.classList.remove( isSaved ? iconOutline : iconSolid );
+		// eslint-disable-next-line mediawiki/class-doc
+		icon.classList.add( isSaved ? iconSolid : iconOutline );
+	}
 
+	// eslint-disable-next-line mediawiki/msg-doc
+	label.textContent = mw.msg( `readinglists-${ ( isSaved ? 'add' : 'remove' ) }-bookmark` );
+	// eslint-disable-next-line mediawiki/msg-doc
 	const msg = mw.message(
-		isSaved ? 'readinglists-browser-add-entry-success' : 'readinglists-browser-remove-entry-success',
+		`readinglists-browser-${ ( isSaved ? 'add' : 'remove' ) }-entry-success`,
 		window.location.origin + window.location.pathname,
 		mw.config.get( 'wgTitle' ),
-		mw.util.getUrl( 'Special:ReadingLists/' + mw.config.get( 'wgUserName' ) + '/' + listId ),
+		mw.util.getUrl( `Special:ReadingLists/${ listId }` ),
 		mw.msg( 'readinglists-default-title' )
 	).parseDom();
 
@@ -37,23 +55,12 @@ function setBookmarkStatus( isSaved, listId ) {
 /**
  * Handles frontend logic for the api.createEntry() function
  *
- * @param {number|null} [listId]
+ * @param {number} listId
  * @return {Promise<void>}
  */
-async function addPageToReadingList( listId = null ) {
-	// If no list specified, fallback to user default
-	if ( listId === null ) {
-		listId = await api.getDefaultReadingList();
-	}
-
+async function addPageToReadingList( listId ) {
 	const { createentry: { entry } } = await api.createEntry( listId, mw.config.get( 'wgPageName' ) );
-
-	// If there's a duplicate key it means the entry already exists, let's remove it instead
-	// This is workaround until we can find an ID based on the project and page title
-	if ( entry.duplicate === true ) {
-		await removePageFromReadingList( entry.id, listId );
-		return;
-	}
+	bookmark.dataset.mwEntryId = entry.id;
 
 	setBookmarkStatus( true, listId );
 }
@@ -62,38 +69,38 @@ async function addPageToReadingList( listId = null ) {
  * Handles frontend logic for the api.deleteEntry() function
  *
  * @param {number} entryId
- * @param {number|null} [listId]
+ * @param {number} listId
  * @return {Promise<void>}
  */
-async function removePageFromReadingList( entryId, listId = null ) {
-	await api.deleteEntry( entryId );
-
-	// If no list specified, fallback to user default
-	if ( listId === null ) {
-		listId = await api.getDefaultReadingList();
+async function removePageFromReadingList( entryId, listId ) {
+	try {
+		await api.deleteEntry( entryId );
+	} catch ( err ) {
+		if ( err !== 'readinglists-db-error-list-entry-deleted' ) {
+			throw err;
+		}
 	}
 
+	delete bookmark.dataset.mwEntryId;
 	setBookmarkStatus( false, listId );
 }
 
-async function initLabel() {
-	if ( !mw.config.get( 'wgIsArticle' ) ) {
-		return;
+bookmark.addEventListener( 'click', async ( event ) => {
+	event.preventDefault();
+
+	let listId = bookmark.dataset.mwListId;
+
+	if ( !listId ) {
+		const { setup: { list: { id } } } = await api.setup();
+		bookmark.dataset.mwListId = id;
+		listId = id;
 	}
 
-	// FIXME: Workaround since we don't know whether the current page is on the default list.
-	// This will trigger n + 9 / 10 requests where n is the number of reading lists a user has.
-	// This is not suitable for a production environment in current form.
-	// https://phabricator.wikimedia.org/T388834
-	const isSaved = await api.getDefaultReadingList( mw.config.get( 'wgPageName' ) ) !== null;
+	const entryId = bookmark.dataset.mwEntryId;
 
-	label.textContent = isSaved ? labelRemove : labelAdd;
-	link.style.visibility = 'visible';
-
-	link.addEventListener( 'click', async ( event ) => {
-		event.preventDefault();
-		await addPageToReadingList();
-	} );
-}
-
-initLabel();
+	if ( !entryId ) {
+		await addPageToReadingList( listId );
+	} else {
+		await removePageFromReadingList( entryId, listId );
+	}
+} );

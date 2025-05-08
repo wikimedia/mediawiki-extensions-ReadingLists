@@ -129,6 +129,7 @@
 				"readinglists-watchlist-description"
 			],
 			"packageFiles": [
+				"resources/ext.readingLists.api/index.js",
 				"resources/ext.readingLists.api/legacy.js",
 				"resources/ext.readingLists.api/utils.js",
 				{

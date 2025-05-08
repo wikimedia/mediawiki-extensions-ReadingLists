@@ -22,39 +22,60 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 	 * Adds "Notifications" items to the notifications content navigation.
 	 * SkinTemplate automatically merges these into the personal tools for older skins.
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation::Universal
-	 * @param SkinTemplate $skinTemplate
+	 * @param SkinTemplate $sktemplate
 	 * @param array &$links Array of URLs to append to.
+	 * @throws ReadingListRepositoryException
 	 */
-	public function onSkinTemplateNavigation__Universal( $skinTemplate, &$links ): void {
-		$config = MediaWikiServices::getInstance()->getMainConfig();
+	public function onSkinTemplateNavigation__Universal( $sktemplate, &$links ): void {
+		$services = MediaWikiServices::getInstance();
+
 		if (
-			$config->get( 'ReadingListBetaFeature' ) &&
-			ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' ) &&
-			// @phan-suppress-next-line PhanUndeclaredClassMethod BetaFeatures is not necessarily installed.
-			BetaFeatures::isFeatureEnabled( $skinTemplate->getUser(), Constants::PREF_KEY_BETA_FEATURES )
+			!$services->getMainConfig()->get( 'ReadingListBetaFeature' ) ||
+			!ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' ) ||
+			// @phan-suppress-next-line PhanUndeclaredClassMethod
+			!BetaFeatures::isFeatureEnabled( $sktemplate->getUser(), Constants::PREF_KEY_BETA_FEATURES )
 		) {
-			$out = $skinTemplate->getOutput();
-			$out->addModuleStyles( 'ext.readingLists.bookmark.styles' );
-			$out->addModules( 'ext.readingLists.bookmark' );
-			$rlUrl = SpecialPage::getTitleFor(
-				'ReadingLists'
-			)->getLinkURL();
-			$userMenu = $links['user-menu'] ?? [];
-			$links['actions']['readinglists-bookmark'] = [
-				'class' => 'reading-list-bookmark',
-				'href' => $rlUrl,
-				'icon' => 'bookmark',
-			];
-			$links['user-menu'] = wfArrayInsertAfter( $userMenu, [
-				// The following messages are generated upstream
-				// * tooltip-pt-betafeatures
-				'readinglist' => [
-					'text' => wfMessage( 'readinglists-menu-item' )->text(),
-					'href' => $rlUrl,
-					'icon' => 'bookmark',
-				],
-			], 'watchlist' );
+			return;
 		}
+
+		$links['user-menu'] = wfArrayInsertAfter( $links['user-menu'], [
+			'readinglists' => [
+				'text' => $sktemplate->msg( 'readinglists' )->text(),
+				'href' => SpecialPage::getTitleFor( 'ReadingLists' )->getLinkURL(),
+				'icon' => 'bookmark'
+			],
+		], 'watchlist' );
+
+		$output = $sktemplate->getOutput();
+		$output->addModules( 'ext.readingLists.bookmark.icons' );
+
+		if ( !$output->isArticle() ) {
+			return;
+		}
+
+		$repository = new ReadingListRepository(
+			$output->getUser()->getId(),
+			$services->getDBLoadBalancerFactory()
+		);
+
+		$listId = $repository->getDefaultListIdForUser();
+		$entryId = $listId === false ? false : $repository->getListsByPage(
+			'@local',
+			$output->getTitle()->getPrefixedDBkey(),
+			1
+		)->fetchObject();
+
+		$links['views']['bookmark'] = [
+			'text' => $sktemplate->msg(
+				'readinglists-' . ( $entryId === false ? 'add' : 'remove' ) . '-bookmark'
+			)->text(),
+			'icon' => $entryId === false ? 'bookmarkOutline' : 'bookmark',
+			'href' => '#',
+			'data-mw-list-id' => $listId === false ? null : $listId,
+			'data-mw-entry-id' => $entryId === false ? null : $entryId->rle_id
+		];
+
+		$output->addModules( 'ext.readingLists.bookmark' );
 	}
 
 	/**

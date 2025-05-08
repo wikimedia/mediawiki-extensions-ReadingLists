@@ -65,7 +65,7 @@
 <script>
 const { CdxButton } = require( '@wikimedia/codex' );
 const { ReadingListiOSAppDownloadLink,
-	ReadingListAndroidAppDownloadLink } = require( 'ext.readingLists.api' ).config;
+	ReadingListAndroidAppDownloadLink } = require( 'ext.readingLists.api' ).legacy.config;
 const { getEnabledMessage } = require( './helpers.js' );
 
 // @vue/component

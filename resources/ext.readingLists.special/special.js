@@ -1,4 +1,4 @@
-const api = require( 'ext.readingLists.api' );
+const api = require( 'ext.readingLists.api' ).legacy;
 const ReadingListPage = require( './views/ReadingListPage.vue' );
 const config = api.config;
 

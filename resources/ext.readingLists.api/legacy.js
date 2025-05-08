@@ -1,3 +1,10 @@
+/**
+ * FIXME: The functions in this file precede the API rewrite in
+ * I3ea570868466814188f4b584583a6108baed8382.
+ * Over time these should be reviewed and either:
+ *  - moved to index.js
+ *  - removed.
+ */
 const DEFAULT_READING_LIST_NAME = mw.msg( 'readinglists-default-title' );
 const DEFAULT_READING_LIST_DESCRIPTION = mw.msg( 'readinglists-default-description' );
 const { getReadingListUrl } = require( './utils.js' );
