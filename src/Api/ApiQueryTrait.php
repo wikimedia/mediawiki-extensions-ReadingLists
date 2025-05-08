@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\ReadingLists\Api;
 use MediaWiki\Api\ApiUsageException;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\NumericDef;
 
 /**
  * Shared sorting / paging for the query APIs.
@@ -140,10 +141,9 @@ trait ApiQueryTrait {
 			'limit' => [
 				ParamValidator::PARAM_DEFAULT => 10,
 				ParamValidator::PARAM_TYPE => 'limit',
-				self::PARAM_MIN => 1,
+				NumericDef::PARAM_MIN => 1,
 				// Temporarily limit paging sizes per T164990#3264314 / T168984#3659998
-				self::PARAM_MAX => self::$prefix === 'rl' ? 10 : 100,
-				self::PARAM_MAX2 => self::$prefix === 'rl' ? 10 : 100,
+				NumericDef::PARAM_MAX => self::$prefix === 'rl' ? 12 : 100,
 			],
 			'continue' => [
 				ParamValidator::PARAM_TYPE => 'string',

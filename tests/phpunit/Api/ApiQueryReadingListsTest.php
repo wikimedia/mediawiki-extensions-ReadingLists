@@ -60,7 +60,7 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 			[
 				'rl_is_default' => 0,
 				'rl_name' => 'cats',
-				'rl_description' => "Meow!",
+				'rl_description' => 'Meow!',
 				'rl_date_created' => '20180913205936',
 				'rl_date_updated' => '20180913205936',
 				'rl_deleted' => 0,
@@ -85,16 +85,17 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 		return [
 			[ [ 'rllist' => 2 ],
 				[
-					"batchcomplete" => true,
-					"query" => [
-						"readinglists" => [
+					'batchcomplete' => true,
+					'query' => [
+						'readinglists' => [
 							[
-								"id" => 2,
-								"name" => "dogs",
-								"default" => false,
-								"description" => "Woof!",
-								"created" => "2017-09-13T20:59:36Z",
-								"updated" => "2017-09-13T20:59:36Z"
+								'id' => 2,
+								'name' => 'dogs',
+								'default' => false,
+								'description' => 'Woof!',
+								'created' => '2017-09-13T20:59:36Z',
+								'updated' => '2017-09-13T20:59:36Z',
+								'size' => 1
 							],
 						],
 					]
@@ -102,32 +103,35 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 			],
 			[ [ 'rlsort' => 'name', 'rldir' => 'descending' ],
 				[
-					"batchcomplete" => true,
-					"query" => [
-						"readinglists" => [
+					'batchcomplete' => true,
+					'query' => [
+						'readinglists' => [
 							[
-								"id" => 2,
-								"name" => "dogs",
-								"default" => false,
-								"description" => "Woof!",
-								"created" => "2017-09-13T20:59:36Z",
-								"updated" => "2017-09-13T20:59:36Z"
+								'id' => 1,
+								'name' => 'default',
+								'default' => true,
+								'description' => 'default list',
+								'created' => '2017-09-13T20:59:36Z',
+								'updated' => '2017-09-13T20:59:36Z',
+								'size' => 0
 							],
 							[
-								"id" => 1,
-								"name" => "default",
-								"default" => true,
-								"description" => "default list",
-								"created" => "2017-09-13T20:59:36Z",
-								"updated" => "2017-09-13T20:59:36Z"
+								'id' => 2,
+								'name' => 'dogs',
+								'default' => false,
+								'description' => 'Woof!',
+								'created' => '2017-09-13T20:59:36Z',
+								'updated' => '2017-09-13T20:59:36Z',
+								'size' => 1
 							],
 							[
-								"id" => 3,
-								"name" => "cats",
-								"default" => false,
-								"description" => "Meow!",
-								"created" => "2018-09-13T20:59:36Z",
-								"updated" => "2018-09-13T20:59:36Z"
+								'id' => 3,
+								'name' => 'cats',
+								'default' => false,
+								'description' => 'Meow!',
+								'created' => '2018-09-13T20:59:36Z',
+								'updated' => '2018-09-13T20:59:36Z',
+								'size' => 0
 							],
 						],
 					]
@@ -135,16 +139,17 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 			],
 			[ [ 'rltitle' => 'Dog', 'rlproject' => 'foo' ],
 				[
-					"batchcomplete" => true,
-					"query" => [
-						"readinglists" => [
+					'batchcomplete' => true,
+					'query' => [
+						'readinglists' => [
 							[
-								"id" => 2,
-								"name" => "dogs",
-								"default" => false,
-								"description" => "Woof!",
-								"created" => "2017-09-13T20:59:36Z",
-								"updated" => "2017-09-13T20:59:36Z"
+								'id' => 2,
+								'name' => 'dogs',
+								'default' => false,
+								'description' => 'Woof!',
+								'created' => '2017-09-13T20:59:36Z',
+								'updated' => '2017-09-13T20:59:36Z',
+								'size' => 1
 							],
 						],
 					]
@@ -152,60 +157,65 @@ class ApiQueryReadingListsTest extends ApiTestCase {
 			],
 			[ [ 'rlchangedsince' => '2018-09-10T00:00:00Z' ],
 				[
-					"batchcomplete" => true,
-					"query" => [
-						"readinglists" => [
+					'batchcomplete' => true,
+					'query' => [
+						'readinglists' => [
 							[
-								"id" => 3,
-								"name" => "cats",
-								"default" => false,
-								"description" => "Meow!",
-								"created" => "2018-09-13T20:59:36Z",
-								"updated" => "2018-09-13T20:59:36Z"
+								'id' => 3,
+								'name' => 'cats',
+								'default' => false,
+								'description' => 'Meow!',
+								'created' => '2018-09-13T20:59:36Z',
+								'updated' => '2018-09-13T20:59:36Z',
+								'size' => 0
 							],
 						],
 					]
 				],
 			],
+			// Assert the default list is first, regardless of sort params (ex: 'default', 'cats', 'dogs')
 			[ [ 'rlsort' => 'name', 'rldir' => 'ascending', 'rllimit' => 1 ],
 				[
-					"batchcomplete" => true,
-					"query" => [
-						"readinglists" => [
+					'batchcomplete' => true,
+					'query' => [
+						'readinglists' => [
 							[
-								"id" => 3,
-								"name" => "cats",
-								"default" => false,
-								"description" => "Meow!",
-								"created" => "2018-09-13T20:59:36Z",
-								"updated" => "2018-09-13T20:59:36Z"
+								'id' => 1,
+								'name' => 'default',
+								'default' => true,
+								'description' => 'default list',
+								'created' => '2017-09-13T20:59:36Z',
+								'updated' => '2017-09-13T20:59:36Z',
+								'size' => 0
 							],
 						],
 					],
-					"continue" => [
-						"rlcontinue" => "default|1",
-						"continue" => "-||"
+					'continue' => [
+						'rlcontinue' => 'cats|3',
+						'continue' => '-||'
 					],
 				],
 			],
-			[ [ 'rlsort' => 'name', 'rldir' => 'ascending', 'rllimit' => 1, "rlcontinue" => "default|1" ],
+			// Asset the default list is NOT first, if continue is passed (ex: 'cats', 'dogs')
+			[ [ 'rlsort' => 'name', 'rldir' => 'ascending', 'rllimit' => 1, 'rlcontinue' => 'cats|3' ],
 				[
-					"batchcomplete" => true,
-					"query" => [
-						"readinglists" => [
+					'batchcomplete' => true,
+					'query' => [
+						'readinglists' => [
 							[
-								"id" => 1,
-								"name" => "default",
-								"default" => true,
-								"description" => "default list",
-								"created" => "2017-09-13T20:59:36Z",
-								"updated" => "2017-09-13T20:59:36Z"
+								'id' => 3,
+								'name' => 'cats',
+								'default' => false,
+								'description' => 'Meow!',
+								'created' => '2018-09-13T20:59:36Z',
+								'updated' => '2018-09-13T20:59:36Z',
+								'size' => 0
 							],
 						],
 					],
-					"continue" => [
-						"rlcontinue" => "dogs|2",
-						"continue" => "-||"
+					'continue' => [
+						'rlcontinue' => 'dogs|2',
+						'continue' => '-||'
 					],
 				],
 			],

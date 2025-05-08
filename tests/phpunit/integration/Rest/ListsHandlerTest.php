@@ -101,7 +101,7 @@ class ListsHandlerTest extends \MediaWikiIntegrationTestCase {
 				[ [ 'name' => 'dogs', 'description' => 'Woof!' ] ],
 				[ 'limit' => 1, 'sort' => 'name', 'dir' => 'descending' ],
 				[
-					[ 'name' => 'dogs', 'description' => 'Woof!', 'isDefault' => false ]
+					[ 'name' => 'default', 'description' => '', 'isDefault' => true ]
 				],
 			],
 			[
@@ -122,7 +122,7 @@ class ListsHandlerTest extends \MediaWikiIntegrationTestCase {
 				[ [ 'name' => 'dogs', 'description' => 'Woof!' ] ],
 				[ 'limit' => 1, 'sort' => 'updated', 'dir' => 'descending' ],
 				[
-					[ 'name' => 'dogs', 'description' => 'Woof!', 'isDefault' => false ]
+					[ 'name' => 'default', 'description' => '', 'isDefault' => true ]
 				],
 			],
 		];

@@ -49,12 +49,14 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	/**
 	 * Main API logic.
 	 * @param ApiPageSet|null $resultPageSet
+	 * @throws ReadingListRepositoryException
 	 */
 	private function run( ?ApiPageSet $resultPageSet = null ) {
 		if ( !$this->getUser()->isNamed() ) {
 			$this->dieWithError( [ 'apierror-mustbeloggedin',
 				$this->msg( 'action-viewmyprivateinfo' ) ], 'notloggedin' );
 		}
+
 		$this->checkUserRightsAny( 'viewmyprivateinfo' );
 
 		$lists = $this->getParameter( 'lists' );
@@ -65,21 +67,26 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 		$continue = $this->getParameter( 'continue' );
 
 		$mode = $changedSince !== null ? self::$MODE_CHANGES : self::$MODE_ALL;
+
 		if ( $sort === null ) {
 			$sort = ( $mode === self::$MODE_CHANGES ) ? 'updated' : 'name';
 		}
+
 		if ( $mode === self::$MODE_CHANGES && $sort === 'name' ) {
-			// We don't have the right DB index for this. Wouldn't make much sense anyways.
+			// We don't have the right DB index for this. Wouldn't make much sense anyway.
 			$errorMessage = $this->msg( 'apierror-readinglists-invalidsort-notbyname', static::$prefix );
 			$this->dieWithError( $errorMessage, 'invalidparammix' );
 		}
+
 		$sort = self::$sortParamMap[$sort];
 		$dir = self::$sortParamMap[$dir];
 		$continue = $this->decodeContinuationParameter( $continue, $mode, $sort );
 
 		$this->requireOnlyOneParameter( $this->extractRequestParams(), 'lists', 'changedsince' );
+
 		if ( $mode === self::$MODE_CHANGES ) {
 			$expiry = Utils::getDeletedExpiry();
+
 			if ( $changedSince < $expiry ) {
 				$errorMessage = $this->msg( 'apierror-readinglists-too-old', static::$prefix,
 					wfTimestamp( TS_ISO_8601, $expiry ) );
@@ -92,35 +99,42 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 		$result->addIndexedTagName( $path, 'entry' );
 
 		$repository = $this->getReadingListRepository( $this->getUser() );
+
 		if ( $mode === self::$MODE_CHANGES ) {
 			$res = $repository->getListEntriesByDateUpdated( $changedSince, $dir, $limit + 1, $continue );
 		} else {
 			$res = $repository->getListEntries( $lists, $sort, $dir, $limit + 1, $continue );
 		}
+
 		'@phan-var stdClass[] $res';
 		$titles = [];
 		$fits = true;
+
 		foreach ( $res as $i => $row ) {
 			// @phan-suppress-next-line PhanTypeMismatchArgument
 			$item = $this->getResultItem( $row, $mode );
+
 			if ( $i >= $limit ) {
 				// we reached the extra row.
 				$this->setContinueEnumParameter( 'continue',
 					$this->encodeContinuationParameter( $item, $mode, $sort ) );
 				break;
 			}
+
 			if ( $resultPageSet ) {
 				// @phan-suppress-next-line PhanTypeMismatchArgument
 				$titles[] = $this->getResultTitle( $row );
 			} else {
 				$fits = $result->addValue( $path, null, $item );
 			}
+
 			if ( !$fits ) {
 				$this->setContinueEnumParameter( 'continue',
 					$this->encodeContinuationParameter( $item, $mode, $sort ) );
 				break;
 			}
 		}
+
 		if ( $resultPageSet ) {
 			$resultPageSet->populateFromTitles( $titles );
 		}
@@ -134,6 +148,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 			'lists' => [
 				ParamValidator::PARAM_TYPE => 'integer',
 				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_ISMULTI_LIMIT1 => 100,
 			],
 			'changedsince' => [
 				ParamValidator::PARAM_TYPE => 'timestamp',

@@ -80,13 +80,13 @@ describe( 'ReadingLists', () => {
 			const createResponse = await createList( 'cats', 'Meow!', '' );
 			assert.deepEqual( createResponse.status, 200, createResponse.text );
 
-			// verify that the created list was indeed "created'
-			const response = await restfulAlice.get( '/lists' ).query( { limit: 1 } );
+			// verify that the created list was indeed 'created'
+			const response = await restfulAlice.get( '/lists' ).query( { limit: 2 } );
 			assert.deepEqual( response.status, 200, response.text );
 			assert.isArray( response.body.lists );
-			assert.lengthOf( response.body.lists, 1 );
-			assert.deepInclude( response.body.lists[ 0 ], { name: 'cats', description: 'Meow!', default: false } );
-			catListId = response.body.lists[ 0 ].id;
+			assert.lengthOf( response.body.lists, 2 );
+			assert.deepInclude( response.body.lists[ 1 ], { name: 'cats', description: 'Meow!', default: false } );
+			catListId = response.body.lists[ 1 ].id;
 		} );
 
 		// Test case for getting a list with valid parameters
@@ -94,13 +94,13 @@ describe( 'ReadingLists', () => {
 			const createResponse = await createList( 'dogs', 'Woof!', '/' );
 			assert.deepEqual( createResponse.status, 200, createResponse.text );
 
-			// verify that the created list was indeed "created'
-			const response = await restfulAlice.get( '/lists/' ).query( { limit: 1, dir: 'descending' } );
+			// verify that the created list was indeed 'created'
+			const response = await restfulAlice.get( '/lists/' ).query( { limit: 2, dir: 'descending' } );
 			assert.deepEqual( response.status, 200, response.text );
 			assert.isArray( response.body.lists );
-			assert.lengthOf( response.body.lists, 1 );
-			assert.deepInclude( response.body.lists[ 0 ], { name: 'dogs', description: 'Woof!', default: false } );
-			dogListId = response.body.lists[ 0 ].id;
+			assert.lengthOf( response.body.lists, 2 );
+			assert.deepInclude( response.body.lists[ 1 ], { name: 'dogs', description: 'Woof!', default: false } );
+			dogListId = response.body.lists[ 1 ].id;
 		} );
 
 		it( 'should get lists for the user', async () => {
@@ -110,8 +110,9 @@ describe( 'ReadingLists', () => {
 			assert.property( response.body, 'continue-from' );
 			assert.isArray( response.body.lists );
 			assert.lengthOf( response.body.lists, 3 );
-			assert.deepEqual( response.body.lists[ 0 ].name, 'cats' );
-			assert.deepEqual( response.body.lists[ 1 ].name, 'default' );
+			assert.deepEqual( response.body.lists[ 0 ].name, 'default' );
+			assert.deepEqual( response.body.lists[ 1 ].name, 'cats' );
+			assert.deepEqual( response.body.lists[ 2 ].name, 'dogs' );
 		} );
 
 		it( ' should get list by id', async () => {
@@ -126,8 +127,8 @@ describe( 'ReadingLists', () => {
 				description: 'Meow!',
 				default: false
 			};
-			assert.deepInclude( response.body, expectedList, 'Returned list should match expected properties' );
 
+			assert.deepInclude( response.body, expectedList, 'Returned list should match expected properties' );
 		} );
 
 		it( 'should throw an error when accessing list with different user ', async () => {
@@ -216,9 +217,8 @@ describe( 'ReadingLists', () => {
 			assert.strictEqual( response.body.lists.length, 3, 'Number of lists should be equal to the batch size + default' );
 
 			// Check that the created lists match the expected properties
-			assert.deepInclude( response.body.lists[ 0 ], { name: 'List1', description: 'Description1', default: false } );
-			assert.deepInclude( response.body.lists[ 1 ], { name: 'List2', description: 'Description2', default: false } );
-
+			assert.deepInclude( response.body.lists[ 1 ], { name: 'List1', description: 'Description1', default: false } );
+			assert.deepInclude( response.body.lists[ 2 ], { name: 'List2', description: 'Description2', default: false } );
 		} );
 
 		// Test case for missing required parameters (400)

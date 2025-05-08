@@ -107,18 +107,28 @@ class ReadingListRepository implements LoggerAwareInterface {
 	/**
 	 * Set up the service for the given user.
 	 * This is a pre-requisite for doing anything else. It will create a default list.
+	 * @param bool $silent When true, returns the default list instead of throwing if already set up.
 	 * @return ReadingListRow The default list for the user.
 	 * @throws ReadingListRepositoryException
 	 */
-	public function setupForUser() {
+	public function setupForUser( $silent = false ) {
 		if ( !$this->hasProjects() ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-no-projects' );
 		}
 
 		$this->assertUser();
-		if ( $this->isSetupForUser( IDBAccessObject::READ_LOCKING ) ) {
+		$defaultListId = $this->getDefaultListIdForUser( IDBAccessObject::READ_LOCKING );
+
+		// Bypass the setup process if the default list already exists
+		if ( $defaultListId !== false ) {
+			// Older code may expect the exception behavior, so only return if $silent = true
+			if ( $silent ) {
+				return $this->selectValidList( $defaultListId );
+			}
+
 			throw new ReadingListRepositoryException( 'readinglists-db-error-already-set-up' );
 		}
+
 		$this->dbw->newInsertQueryBuilder()
 			->insertInto( 'reading_list' )
 			->row( [
@@ -145,18 +155,9 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 */
 	public function teardownForUser() {
 		$this->assertUser();
-		if ( !$this->isSetupForUser() ) {
+		if ( !$this->getDefaultListIdForUser() ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
-
-		// We use a one-time salt to randomize the deleted list's new
-		// name. We can't allow the new name to be fully deterministic,
-		// since we could create another list by the same name w/in 30
-		// days. We also can't generate a random name by calling RAND()
-		// within the query, since that breaks under statement-level
-		// replication. Hence, we hash the current rl_name with a
-		// one-time salt.
-		$salt = $this->dbw->addQuotes( md5( uniqid( (string)rand(), true ) ) );
 
 		// Soft-delete. Note that no reading list entries are updated;
 		// they are effectively orphaned by soft-deletion of their lists
@@ -168,12 +169,11 @@ class ReadingListRepository implements LoggerAwareInterface {
 				// eventually enforcing uniqueness with an
 				// index (in which case it can't be limited to
 				// non-deleted lists).
-				//
-				// 'rl_is_default' is cleared so deleted lists
-				// aren't detected as defaults.
-				// TODO: Use expression buider
-				'rl_name' => new RawSQLValue( "CONCAT('deleted-', MD5(CONCAT( $salt , rl_name)))" ),
-				'rl_is_default' => 0,
+				'rl_name' => new RawSQLValue( $this->dbw->buildConcat( [
+					$this->dbw->addQuotes( 'deleted-' ),
+					'rl_name',
+					$this->dbw->addQuotes( '-' . bin2hex( random_bytes( 16 ) ) )
+				] ) ),
 				'rl_deleted' => 1,
 				'rl_date_updated' => $this->dbw->timestamp(),
 			] )
@@ -190,23 +190,26 @@ class ReadingListRepository implements LoggerAwareInterface {
 	}
 
 	/**
-	 * Check whether reading lists have been set up for the given user (ie. setupForUser() was
-	 * called with $userId and teardownForUser() was not called with the same id afterwards).
+	 * Check whether reading lists have been set up for the given user (i.e. setupForUser() was
+	 * called with $userId and teardownForUser() was not called with the same id afterward).
+	 *
 	 * Optionally also lock the DB row for the default list of the user (will be used as a
 	 * semaphore).
+	 *
+	 * This will return the default list ID if the user has already set up, otherwise false.
 	 * @param int $flags IDBAccessObject flags
 	 * @throws ReadingListRepositoryException
-	 * @return bool
+	 * @return false|int
 	 */
-	public function isSetupForUser( $flags = 0 ) {
+	public function getDefaultListIdForUser( $flags = 0 ) {
 		$this->assertUser();
 		if ( ( $flags & IDBAccessObject::READ_LATEST ) == IDBAccessObject::READ_LATEST ) {
 			$db = $this->dbw;
 		} else {
 			$db = $this->dbr;
 		}
-		$res = $db->newSelectQueryBuilder()
-			->select( '1' )
+		return $db->newSelectQueryBuilder()
+			->select( 'rl_id' )
 			->from( 'reading_list' )
 			->where(
 				[
@@ -215,20 +218,12 @@ class ReadingListRepository implements LoggerAwareInterface {
 					// but this way is extra safe against races as setup is the only operation that
 					// creates a default list.
 					'rl_is_default' => 1,
+					'rl_deleted' => 0
 				]
 			)
 			->recency( $flags )
 			->limit( 1 )
-			->caller( __METHOD__ )->fetchResultSet();
-		// Until a better 'rl_is_default', log warnings so the bugs are caught.
-		$n = $res->numRows();
-		if ( $n > 1 ) {
-			$this->logger->warning( 'isSetupForUser for user {user} found {n} default lists', [
-				'n' => $n,
-				'user' => $this->userId,
-			] );
-		}
-		return (bool)$n;
+			->caller( __METHOD__ )->fetchField();
 	}
 
 	// list CRUD
@@ -278,7 +273,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 		$this->assertUser();
 		$this->assertFieldLength( 'rl_name', $name );
 		$this->assertFieldLength( 'rl_description', $description );
-		if ( !$this->isSetupForUser( IDBAccessObject::READ_LOCKING ) ) {
+		if ( !$this->getDefaultListIdForUser( IDBAccessObject::READ_LOCKING ) ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
 		if ( $this->listLimit && $this->getListCount( IDBAccessObject::READ_LATEST ) >= $this->listLimit ) {
@@ -292,7 +287,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 		// rl_user_id + rlname is unique for non-deleted lists. On conflict, update the
 		// existing page instead. Also enforce that deleted lists cannot have the same name,
 		// in anticipation of eventually using a unique index for list names.
-		/** @var ReadingListRow $row */
+		/** @var false|ReadingListRow $row */
 		$row = $this->dbw->newSelectQueryBuilder()
 			->select( self::getListFields() )
 			// lock the row to avoid race conditions with purgeOldDeleted() in the update case
@@ -370,6 +365,13 @@ class ReadingListRepository implements LoggerAwareInterface {
 		$this->assertUser();
 		[ $conditions, $options ] = $this->processSort( 'rl', $sortBy, $sortDir, $limit, $from );
 
+		// Avoid default list showing on pages > 1, so exclude it and skip order by
+		if ( $from ) {
+			array_unshift( $conditions, 'rl_is_default = 0' );
+		} else {
+			array_unshift( $options[ 'ORDER BY' ], 'rl_is_default desc' );
+		}
+
 		$res = $this->dbr->newSelectQueryBuilder()
 			->select( $this->getListFields() )
 			->from( 'reading_list' )
@@ -379,7 +381,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->caller( __METHOD__ )->fetchResultSet();
 		if (
 			$res->numRows() === 0
-			&& !$this->isSetupForUser()
+			&& !$this->getDefaultListIdForUser()
 		) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
@@ -393,8 +395,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @param string|null $name
 	 * @param string|null $description
 	 * @return ReadingListRow The updated list.
-	 * @throws ReadingListRepositoryException
-	 * @throws LogicException
+	 * @throws ReadingListRepositoryException|LogicException
 	 */
 	public function updateList( $id, $name = null, $description = null ) {
 		$this->assertUser();
@@ -406,8 +407,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 		}
 
 		if ( $name !== null && $name !== $row->rl_name ) {
-			/** @var ReadingListRow $row2 */
-
+			/** @var false|ReadingListRow $row2 */
 			$row2 = $this->dbw->newSelectQueryBuilder()
 				->select( self::getListFields() )
 				// lock the row to avoid race conditions with purgeOldDeleted() in the update case
@@ -481,9 +481,13 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->set( [
 				// Randomize the name of deleted lists in anticipation of eventually enforcing
 				// uniqueness with an index (in which case it can't be limited to non-deleted lists).
-				'rl_name' => 'deleted-' . md5( uniqid( (string)rand(), true ) ),
+				'rl_name' => new RawSQLValue( $this->dbw->buildConcat( [
+					$this->dbw->addQuotes( 'deleted-' ),
+					'rl_name',
+					$this->dbw->addQuotes( '-' . bin2hex( random_bytes( 16 ) ) )
+				] ) ),
 				'rl_deleted' => 1,
-				'rl_date_updated' => $this->dbw->timestamp(),
+				'rl_date_updated' => $this->dbw->timestamp()
 			] )
 			->where( [ 'rl_id' => $id ] )
 			->caller( __METHOD__ )->execute();
@@ -538,7 +542,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 
 		// due to the combination of soft deletion + unique constraint on
 		// rle_rl_id + rle_rlp_id + rle_title, recreation needs special handling
-		/** @var ReadingListEntryRow $row */
+		/** @var false|ReadingListEntryRowWithMergeFlag $row */
 		$row = $this->dbw->newSelectQueryBuilder()
 			->select( self::getListEntryFields() )
 			// lock the row to avoid race conditions with purgeOldDeleted() in the update case
@@ -600,7 +604,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			'type' => $type,
 		] );
 
-		/** @var ReadingListEntryRowWithMergeFlag $row */
+		/** @var false|ReadingListEntryRowWithMergeFlag $row */
 		if ( $type === 'merged' ) {
 			$row->merged = true;
 			return $row;
@@ -757,11 +761,23 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @throws ReadingListRepositoryException
 	 * @return IResultWrapper<ReadingListRow>
 	 */
-	public function getListsByDateUpdated( $date, $sortBy = self::SORT_BY_UPDATED,
-										   $sortDir = self::SORT_DIR_ASC, $limit = 1000, ?array $from = null
+	public function getListsByDateUpdated(
+		$date,
+		$sortBy = self::SORT_BY_UPDATED,
+		$sortDir = self::SORT_DIR_ASC,
+		$limit = 1000,
+		?array $from = null
 	) {
 		$this->assertUser();
 		[ $conditions, $options ] = $this->processSort( 'rl', $sortBy, $sortDir, $limit, $from );
+
+		// Avoid default list showing on pages > 1, so exclude it and skip order by
+		if ( $from ) {
+			array_unshift( $conditions, 'rl_is_default = 0' );
+		} else {
+			array_unshift( $options[ 'ORDER BY' ], 'rl_is_default desc' );
+		}
+
 		$res = $this->dbr->newSelectQueryBuilder()
 			->select( $this->getListFields() )
 			->from( 'reading_list' )
@@ -774,7 +790,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->caller( __METHOD__ )->fetchResultSet();
 		if (
 			$res->numRows() === 0
-			&& !$this->isSetupForUser()
+			&& !$this->getDefaultListIdForUser()
 		) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
@@ -914,22 +930,15 @@ class ReadingListRepository implements LoggerAwareInterface {
 			'rle_user_id' => $this->userId,
 			'rle_rlp_id' => $projectId,
 			'rle_title' => $title,
-			'rl_deleted' => 0,
 			'rle_deleted' => 0,
+			'rl_deleted' => 0
 		];
 
 		$queryBuilder = $this->dbr->newSelectQueryBuilder()
-			->select( $this->getListFields() )
-			->from( 'reading_list' )
-			->join( 'reading_list_entry', null, 'rl_id = rle_rl_id' )
+			->select( array_merge( $this->getListFields(), [ 'rle_id' ] ) )
+			->from( 'reading_list_entry' )
+			->join( 'reading_list', null, 'rl_id = rle_rl_id' )
 			->where( $conditions )
-			// Grouping by rle_rl_id can be done efficiently with the same index used for
-			// the conditions. All other fields are functionally dependent on it; MySQL 5.7.5+
-			// can detect that ( https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html );
-			// MariaDB needs the other fields for ONLY_FULL_GROUP_BY compliance, but they don't
-			// seem to negatively affect the query plan.
-			->groupBy( array_merge( [ 'rle_rl_id' ], $this->getListFields() ) )
-			->orderBy( 'rle_rl_id', 'ASC' )
 			->limit( (int)$limit )
 			->caller( __METHOD__ );
 
@@ -938,11 +947,16 @@ class ReadingListRepository implements LoggerAwareInterface {
 				$this->dbw->expr( 'rle_rl_id', '>=', (int)$from )
 			);
 		}
-		$res = $queryBuilder->fetchResultSet();
-		if (
-			$res->numRows() === 0
-			&& !$this->isSetupForUser()
-		) {
+
+		// Avoid default list showing on pages > 1, so exclude it and skip order by
+		if ( $from ) {
+			$queryBuilder->where( 'rl_is_default = 0' );
+		} else {
+			$queryBuilder->orderBy( 'rl_is_default', 'DESC' );
+		}
+
+		$res = $queryBuilder->orderBy( 'rle_rl_id', 'ASC' )->fetchResultSet();
+		if ( $res->numRows() === 0 && !$this->getDefaultListIdForUser() ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
 		return $res;
@@ -1002,7 +1016,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			'rl_description',
 			'rl_date_created',
 			'rl_date_updated',
-			// skip rl_size, it's only used internally by getEntryCount and entry insert/delete
+			'rl_size',
 			'rl_deleted',
 		];
 	}
@@ -1119,6 +1133,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * Returns the number of (non-deleted) lists of the current user.
 	 * @param int $flags IDBAccessObject flags
 	 * @return int
+	 * @throws ReadingListRepositoryException
 	 */
 	private function getListCount( $flags = 0 ) {
 		$this->assertUser();
@@ -1162,6 +1177,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @param int $id List id
 	 * @param int $flags IDBAccessObject flags
 	 * @return int
+	 * @throws ReadingListRepositoryException
 	 */
 	private function getEntryCount( $id, $flags = 0 ) {
 		$this->assertUser();

@@ -51,7 +51,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		return [
 			[ 'setupForUser' ],
 			[ 'teardownForUser' ],
-			[ 'isSetupForUser' ],
+			[ 'getDefaultListIdForUser' ],
 			[ 'addList', 'foo' ],
 			[ 'getAllLists', ReadingListRepository::SORT_BY_NAME,
 				ReadingListRepository::SORT_DIR_ASC ],
@@ -136,7 +136,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$repository = new ReadingListRepository( 1, $this->lbFactory );
 
 		// no rows initially; isSetupForUser() is false
-		$this->assertFalse( $repository->isSetupForUser() );
+		$this->assertFalse( $repository->getDefaultListIdForUser() );
 		$res = $this->getDb()->newSelectQueryBuilder()
 			->select( '*' )
 			->from( 'reading_list' )
@@ -151,7 +151,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				$repository->setupForUser();
 			}
 		);
-		$this->assertTrue( $repository->isSetupForUser() );
+		$this->assertNotFalse( $repository->getDefaultListIdForUser() );
 		$res = $this->getDb()->newSelectQueryBuilder()
 			->select( '*' )
 			->from( 'reading_list' )
@@ -175,6 +175,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			'rl_description' => '',
 			'rl_is_default' => '1',
 			'rl_deleted' => '0',
+			'rl_size' => '0'
 		], $data, false, true );
 
 		// Add a non-default list to the table to ensure it gets
@@ -189,7 +190,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 		$repository->teardownForUser();
 
-		$this->assertFalse( $repository->isSetupForUser(),
+		$this->assertFalse( $repository->getDefaultListIdForUser(),
 			"teardownForUser failed to reset isSetupForUser value"
 		);
 
@@ -224,6 +225,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			'rl_description' => '',
 			'rl_is_default' => '0',
 			'rl_deleted' => '0',
+			'rl_size' => '0',
 			'merged' => false,
 		], $data, false, true );
 		/** @var ReadingListRow $row */
@@ -251,6 +253,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			'rl_description' => 'here is some bar',
 			'rl_is_default' => '0',
 			'rl_deleted' => '0',
+			'rl_size' => '0',
 			'merged' => false,
 		], $data, false, true );
 
@@ -353,6 +356,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				'rl_date_created' => wfTimestampNow(),
 				'rl_date_updated' => wfTimestampNow(),
 				'rl_deleted' => '0',
+				'rl_size' => '0'
 			],
 			'foo' => [
 				'rl_name' => 'foo1',
@@ -361,6 +365,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				'rl_date_created' => '20100101000000',
 				'rl_date_updated' => '20120101000000',
 				'rl_deleted' => '0',
+				'rl_size' => '0'
 			],
 			'foo_2' => [
 				'rl_name' => 'foo2',
@@ -369,6 +374,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				'rl_date_created' => '20170101000000',
 				'rl_date_updated' => '20170101000000',
 				'rl_deleted' => '0',
+				'rl_size' => '0'
 			],
 			'bar' => [
 				'rl_name' => 'bar',
@@ -377,6 +383,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				'rl_date_created' => '20010101000000',
 				'rl_date_updated' => '20120101000000',
 				'rl_deleted' => '0',
+				'rl_size' => '0'
 			],
 		];
 		// 1 list from addDataForAnotherUser, 1 from setupForUser, plus 1-based index in addLists()
@@ -384,31 +391,32 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$foo2Id = 4;
 		$barId = 5;
 
+		// Assert the default list is first, unless continue is passsed
 		return [
 			'name, basic' => [
 				[ ReadingListRepository::SORT_BY_NAME, ReadingListRepository::SORT_DIR_ASC ],
-				[ $lists['bar'], $lists['default'], $lists['foo'], $lists['foo_2'] ],
+				[ $lists['default'], $lists['bar'], $lists['foo'], $lists['foo_2'] ],
 			],
 			'name, reverse' => [
 				[ ReadingListRepository::SORT_BY_NAME, ReadingListRepository::SORT_DIR_DESC ],
-				[ $lists['foo_2'], $lists['foo'], $lists['default'], $lists['bar'] ],
+				[ $lists['default'], $lists['foo_2'], $lists['foo'], $lists['bar'] ],
 			],
 			'name, limit' => [
 				[ ReadingListRepository::SORT_BY_NAME, ReadingListRepository::SORT_DIR_ASC, 1 ],
-				[ $lists['bar'] ],
+				[ $lists['default'] ],
 			],
 			'name, limit + offset' => [
 				[ ReadingListRepository::SORT_BY_NAME, ReadingListRepository::SORT_DIR_ASC,
-					1, [ 'default', 1 ] ],
-				[ $lists['default'] ],
+					1, [ 'foo', 2 ] ],
+				[ $lists['foo'] ],
 			],
 			'updated, basic' => [
 				[ ReadingListRepository::SORT_BY_UPDATED, ReadingListRepository::SORT_DIR_ASC ],
-				[ $lists['foo'], $lists['bar'], $lists['foo_2'], $lists['default'] ],
+				[ $lists['default'], $lists['foo'], $lists['bar'], $lists['foo_2'] ],
 			],
 			'updated, limit' => [
 				[ ReadingListRepository::SORT_BY_UPDATED, ReadingListRepository::SORT_DIR_ASC, 1 ],
-				[ $lists['foo'] ],
+				[ $lists['default'] ],
 			],
 			'updated, limit + offset' => [
 				[ ReadingListRepository::SORT_BY_UPDATED, ReadingListRepository::SORT_DIR_ASC,

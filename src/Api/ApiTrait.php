@@ -190,6 +190,7 @@ trait ApiTrait {
 			'description' => $row->rl_description,
 			'created' => wfTimestamp( TS_ISO_8601, $row->rl_date_created ),
 			'updated' => wfTimestamp( TS_ISO_8601, $row->rl_date_updated ),
+			'size' => (int)$row->rl_size
 		];
 		// @phan-suppress-next-line MediaWikiNoIssetIfDefined
 		if ( isset( $row->merged ) ) {

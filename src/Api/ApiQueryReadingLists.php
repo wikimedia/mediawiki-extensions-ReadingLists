@@ -11,6 +11,7 @@ use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Utils\MWTimestamp;
 use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\NumericDef;
 
 /**
  * API meta module for getting list metadata.
@@ -87,7 +88,13 @@ class ApiQueryReadingLists extends ApiQueryBase {
 			if ( $mode === self::$MODE_PAGE ) {
 				$res = $repository->getListsByPage( $project, $title, $limit + 1, $continue );
 			} elseif ( $mode === self::$MODE_CHANGES ) {
-				$res = $repository->getListsByDateUpdated( $changedSince, $sort, $dir, $limit + 1, $continue );
+				$res = $repository->getListsByDateUpdated(
+					$changedSince,
+					$sort,
+					$dir,
+					$limit + 1,
+					$continue
+				);
 			} elseif ( $mode === self::$MODE_ID ) {
 				$res = [ $repository->selectValidList( $listId ) ];
 			} else {
@@ -138,8 +145,8 @@ class ApiQueryReadingLists extends ApiQueryBase {
 			'list' => [
 				ParamValidator::PARAM_TYPE => 'integer',
 				ParamValidator::PARAM_REQUIRED => false,
-				self::PARAM_MIN => 1,
 				ParamValidator::PARAM_DEFAULT => null,
+				NumericDef::PARAM_MIN => 1,
 			],
 			'project' => [
 				ParamValidator::PARAM_TYPE => 'string',
