@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"BaRaN6161 TURK"
+			"BaRaN6161 TURK",
+			"Cobija"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var> ve <var>$1title</var> birlikte kullanılmalıdır.",
@@ -19,7 +20,7 @@
 	"apihelp-query+readinglists-param-title": "Filtrelenecek sayfanın başlığı. <var>$1project</var> ile birlikte kullanılmalıdır. Yalnızca bu proje ve başlığı içeren listeler döndürür.",
 	"apihelp-query+readinglists-param-sort": "Sıralama özelliği. <var>$1project</var> ve <var>$1title</var> ayarlandığında yok sayılır (sonuçlar DB sırasıyla döndürülür). <var>$1changedsince</var> ayarlandığında varsayılan olarak <kbd>updated</kbd>, aksi takdirde <kbd>name</kbd> olarak ayarlanır.",
 	"apihelp-query+readinglists-paramvalue-sort-name": "Liste adı. (Sıralama ikili değere göre yapılır; örneğin, herhangi bir büyük harf ASCII karakteri küçük harflerden önce sıralanır.)",
-	"apihelp-query+readinglists-paramvalue-sort-updated": "Son güncelleme zaman damgası. (Güncellemeler liste meta veri değişikliklerini içerir, ancak liste öğelerindeki değişiklikleri içermez.)",
+	"apihelp-query+readinglists-paramvalue-sort-updated": "Son güncelleme zaman damgası. (Güncellemeler liste üstveri değişikliklerini içerir, ancak liste öğelerindeki değişiklikleri içermez.)",
 	"apihelp-query+readinglists-param-dir": "Yönü sırala: <kbd>ascending</kbd> (A'dan Z'ye, en eskiden yeniye) veya <kbd>descending</kbd>. <var>$1project</var> ve <var>$1title</var> ayarlandığında yok sayılır.",
 	"apihelp-query+readinglists-param-limit": "Döndürülecek sonuç öğelerinin sayısı.",
 	"apihelp-query+readinglists-example-1": "Geçerli kullanıcının okuma listelerini alın.",
