@@ -70,7 +70,7 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			$prefs[Constants::PREF_KEY_BETA_FEATURES] = [
 				'label-message' => 'readinglists-beta-feature-name',
 				'desc-message' => 'readinglists-beta-feature-description',
-				'screenshot' => "$path/ReadingLists/resources/beta.png",
+				'screenshot' => "$path/ReadingLists/resources/assets/beta.png",
 				'info-link'
 					=> 'https://www.mediawiki.org/wiki/Extension:ReadingLists/Beta_Feature',
 				'discussion-link'
