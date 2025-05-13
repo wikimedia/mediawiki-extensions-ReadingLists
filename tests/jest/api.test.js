@@ -1,4 +1,4 @@
-const api = require( '../../../resources/readinglist.scripts/api.js' );
+const api = require( 'ext.readingLists.api' );
 const ENGLISH_WIKIPEDIA_PAGES = require( './fixtures/en_wikipedia.json' );
 const ENGLISH_DOG_PAGES = require( './fixtures/en_wikipedia_dog.json' );
 const SPANISH_DOG_PAGES = require( './fixtures/es_wikipedia_dog.json' );

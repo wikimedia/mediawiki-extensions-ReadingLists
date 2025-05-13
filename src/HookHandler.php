@@ -34,8 +34,8 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			BetaFeatures::isFeatureEnabled( $skinTemplate->getUser(), Constants::PREF_KEY_BETA_FEATURES )
 		) {
 			$out = $skinTemplate->getOutput();
-			$out->addModuleStyles( 'readinglist.page.styles' );
-			$out->addModules( 'readinglist.page.scripts' );
+			$out->addModuleStyles( 'ext.readingLists.bookmark.styles' );
+			$out->addModules( 'ext.readingLists.bookmark' );
 			$rlUrl = SpecialPage::getTitleFor(
 				'ReadingLists'
 			)->getLinkURL();

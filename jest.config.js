@@ -5,9 +5,11 @@ module.exports = {
 	testEnvironmentOptions: {
 		customExportConditions: [ 'node', 'node-addons' ]
 	},
+
 	transform: {
 		'^.+\\.vue$': '<rootDir>/node_modules/@vue/vue3-jest'
 	},
+
 	// Automatically clear mock calls and instances between every test
 	clearMocks: true,
 
@@ -28,8 +30,8 @@ module.exports = {
 		'/node_modules/',
 		// We do not typically test coverage on wire up code
 		// since it has side effects.
-		'resources/special.readinglist.scripts.js',
-		'resources/readinglist.page.scripts.js'
+		'/resources/ext.readingLists.bookmark/index.js',
+		'/resources/ext.readingLists.special/index.js'
 	],
 
 	// An object that configures minimum threshold enforcement for coverage results
@@ -64,5 +66,9 @@ module.exports = {
 		'./jest.setup.js'
 	],
 
-	testEnvironment: 'jsdom'
+	testEnvironment: 'jsdom',
+
+	moduleNameMapper: {
+		"^ext\.readingLists\.(.*)$": "<rootDir>/resources/ext.readingLists.$1/index.js"
+	},
 };

@@ -1,4 +1,4 @@
-const api = require( 'readinglist.api' );
+const api = require( 'ext.readingLists.api' );
 
 const link = document.querySelector( '.reading-list-bookmark > a:first-child, a.reading-list-bookmark' );
 const label = link !== null && link.classList.contains( 'mw-list-item' ) ? link.querySelector( '.toggle-list-item__label' ) : link;

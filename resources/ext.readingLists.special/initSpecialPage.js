@@ -1,4 +1,4 @@
-const { getReadingListUrl } = require( './utils.js' );
+const { getReadingListUrl } = require( 'ext.readingLists.api' );
 const special = require( './special.js' );
 const Vue = require( 'vue' );
 

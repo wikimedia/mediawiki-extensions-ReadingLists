@@ -569,6 +569,8 @@ function setApi( newApi ) {
 }
 
 module.exports = {
+	getReadingListUrl,
+	config,
 	WATCHLIST_ID,
 	test: {
 		readingListToCard,

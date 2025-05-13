@@ -24,8 +24,8 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 	 */
 	private function executeReadingList( Message $pageTitle ) {
 		$out = $this->getOutput();
-		$out->addModuleStyles( [ 'special.readinglist.styles' ] );
-		$out->addModules( [ 'special.readinglist.scripts' ] );
+		$out->addModuleStyles( [ 'ext.readingLists.special.styles' ] );
+		$out->addModules( [ 'ext.readingLists.special' ] );
 		$out->setPageTitleMsg( $pageTitle );
 		$html = Html::errorBox(
 			$this->msg( 'readinglists-error' )->parse(),

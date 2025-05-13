@@ -1,6 +1,6 @@
-const api = require( './api.js' );
+const api = require( 'ext.readingLists.api' );
 const ReadingListPage = require( './views/ReadingListPage.vue' );
-const config = require( './config.json' );
+const config = api.config;
 
 /**
  * Renders the special page.

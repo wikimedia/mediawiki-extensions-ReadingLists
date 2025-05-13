@@ -102,22 +102,22 @@
 		"remoteExtPath": "ReadingLists"
 	},
 	"ResourceModules": {
-		"special.readinglist.styles": {
+		"ext.readingLists.special.styles": {
 			"class": "MediaWiki\\ResourceLoader\\CodexModule",
 			"codexStyleOnly": true,
 			"codexComponents": [
 				"CdxMessage"
 			],
 			"styles": [
-				"resources/special.readinglist.styles.less"
+				"resources/ext.readingLists.special/styles.less"
 			],
 			"skinStyles": {
 				"minerva": [
-					"skinStyles/special.readinglist.styles/minerva.less"
+					"resources/ext.readingLists.special/minerva.less"
 				]
 			}
 		},
-		"readinglist.api": {
+		"ext.readingLists.api": {
 			"dependencies": [
 				"mediawiki.api",
 				"mediawiki.Title"
@@ -129,19 +129,22 @@
 				"readinglists-watchlist-description"
 			],
 			"packageFiles": [
-				"resources/readinglist.scripts/api.js",
-				"resources/readinglist.scripts/utils.js",
+				"resources/ext.readingLists.api/index.js",
+				"resources/ext.readingLists.api/utils.js",
 				{
-					"name": "resources/readinglist.scripts/config.json",
+					"name": "resources/ext.readingLists.api/config.json",
 					"config": [
+						"ReadingListAndroidAppDownloadLink",
+						"ReadingListiOSAppDownloadLink",
+						"ReadingListsAnonymizedPreviews",
 						"ReadingListsDeveloperMode"
 					]
 				}
 			]
 		},
-		"readinglist.scripts": {
+		"ext.readingLists.special": {
 			"dependencies": [
-				"readinglist.api",
+				"ext.readingLists.api",
 				"mediawiki.api",
 				"vue",
 				"@wikimedia/codex",
@@ -149,6 +152,7 @@
 				"mediawiki.user"
 			],
 			"messages": [
+				"readinglists-browser-remove-entry-success",
 				"readinglists-watchlist-monitor",
 				"readinglists-watchlist",
 				"readinglists-watchlist-description",
@@ -178,43 +182,25 @@
 				"readinglists-import-app-launch-hint"
 			],
 			"packageFiles": [
-				"resources/readinglist.scripts/index.js",
-				"resources/readinglist.scripts/special.js",
-				"resources/readinglist.scripts/utils.js",
-				"resources/readinglist.scripts/api.js",
-				{
-					"name": "resources/readinglist.scripts/config.json",
-					"config": [
-						"ReadingListAndroidAppDownloadLink",
-						"ReadingListiOSAppDownloadLink",
-						"ReadingListsAnonymizedPreviews",
-						"ReadingListsDeveloperMode"
-					]
-				},
-				"resources/readinglist.scripts/views/IntermediateState.vue",
-				"resources/readinglist.scripts/views/helpers.js",
-				"resources/readinglist.scripts/views/ReadingListSummary.vue",
-				"resources/readinglist.scripts/views/ReadingListDownload.vue",
-				"resources/readinglist.scripts/views/ReadingList.vue",
-				"resources/readinglist.scripts/views/ReadingListPage.vue"
+				"resources/ext.readingLists.special/index.js",
+				"resources/ext.readingLists.special/special.js",
+				"resources/ext.readingLists.special/initSpecialPage.js",
+				"resources/ext.readingLists.special/views/IntermediateState.vue",
+				"resources/ext.readingLists.special/views/helpers.js",
+				"resources/ext.readingLists.special/views/ReadingListSummary.vue",
+				"resources/ext.readingLists.special/views/ReadingListDownload.vue",
+				"resources/ext.readingLists.special/views/ReadingList.vue",
+				"resources/ext.readingLists.special/views/ReadingListPage.vue"
 			]
 		},
-		"special.readinglist.scripts": {
-			"dependencies": [
-				"readinglist.scripts"
-			],
-			"packageFiles": [
-				"resources/special.readinglist.scripts.js"
-			]
-		},
-		"readinglist.page.styles": {
+		"ext.readingLists.bookmark.styles": {
 			"styles": [
-				"resources/readinglist.page.styles.less"
+				"resources/ext.readingLists.bookmark/styles.less"
 			]
 		},
-		"readinglist.page.scripts": {
+		"ext.readingLists.bookmark": {
 			"packageFiles": [
-				"resources/readinglist.page.scripts.js"
+				"resources/ext.readingLists.bookmark/index.js"
 			],
 			"messages": [
 				"readinglists-add-bookmark",
@@ -224,13 +210,13 @@
 				"readinglists-default-title"
 			],
 			"dependencies": [
-				"readinglist.api",
-				"readinglist.page.icons",
+				"ext.readingLists.api",
+				"ext.readingLists.bookmark.icons",
 				"mediawiki.notification",
 				"mediawiki.util"
 			]
 		},
-		"readinglist.page.icons": {
+		"ext.readingLists.bookmark.icons": {
 			"class": "MediaWiki\\ResourceLoader\\OOUIIconPackModule",
 			"selectorWithoutVariant": ".mw-ui-icon-{name}, .minerva-icon--{name}",
 			"useMaskImage": true,

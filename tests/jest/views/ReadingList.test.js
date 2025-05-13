@@ -1,5 +1,5 @@
 const { mount } = require( '@vue/test-utils' );
-const ReadingList = require( '../../../../resources/readinglist.scripts/views/ReadingList.vue' );
+const ReadingList = require( '../../../resources/ext.readingLists.special/views/ReadingList.vue' );
 const { CdxCard } = require( '@wikimedia/codex' );
 
 describe( 'ReadingList', () => {
