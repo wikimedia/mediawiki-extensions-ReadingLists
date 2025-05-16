@@ -82,17 +82,23 @@ module.exports = exports = defineComponent( {
 					api = new mw.Api();
 				}
 
-				await api.postWithToken( 'csrf', {
-					action: 'readinglists',
-					command: 'deleteentry',
-					entry: card.id
-				} );
+				try {
+					await api.postWithToken( 'csrf', {
+						action: 'readinglists',
+						command: 'deleteentry',
+						entry: card.id
+					} );
+				} catch ( err ) {
+					if ( err !== 'readinglists-db-error-list-entry-deleted' ) {
+						throw err;
+					}
+				}
 
 				this.cardsLocal.splice( this.cardsLocal.indexOf( card ), 1 );
 
 				const msg = mw.message(
 					'readinglists-browser-remove-entry-success',
-					card.url,
+					card.url || mw.util.getUrl( card.title ),
 					card.title,
 					window.location.origin + window.location.pathname,
 					this.listName

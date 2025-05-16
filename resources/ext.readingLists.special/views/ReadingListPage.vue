@@ -240,7 +240,6 @@ module.exports = {
 					return 'An unknown error occurred (' + code + ')';
 			}
 		},
-		// eslint-disable-next-line compat/compat
 		isShareEnabled: () => navigator.share || navigator.clipboard,
 		clickCard: function ( _ev, card ) {
 			this.currentTab = 'tabList';
