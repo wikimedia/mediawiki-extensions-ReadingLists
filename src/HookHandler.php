@@ -40,7 +40,7 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 
 		$links['user-menu'] = wfArrayInsertAfter( $links['user-menu'], [
 			'readinglists' => [
-				'text' => $sktemplate->msg( 'readinglists' )->text(),
+				'text' => $sktemplate->msg( 'readinglists-menu-item' )->text(),
 				'href' => SpecialPage::getTitleFor( 'ReadingLists' )->getLinkURL(),
 				'icon' => 'bookmark'
 			],
