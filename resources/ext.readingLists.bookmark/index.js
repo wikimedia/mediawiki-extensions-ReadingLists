@@ -49,7 +49,7 @@ function setBookmarkStatus( isSaved, listId ) {
 		}
 	}
 
-	mw.notification.notify( msg, { tag: 'saved' } );
+	mw.notification.notify( msg, { tag: 'saved', type: isSaved ? 'success' : 'info' } );
 }
 
 /**
@@ -59,9 +59,9 @@ function setBookmarkStatus( isSaved, listId ) {
  * @return {Promise<void>}
  */
 async function addPageToReadingList( listId ) {
-	const { createentry: { entry } } = await api.createEntry( listId, mw.config.get( 'wgPageName' ) );
-	bookmark.dataset.mwEntryId = entry.id;
+	const { createentry: { entry: { id } } } = await api.createEntry( listId, mw.config.get( 'wgPageName' ) );
 
+	bookmark.dataset.mwEntryId = id;
 	setBookmarkStatus( true, listId );
 }
 
@@ -91,16 +91,33 @@ bookmark.addEventListener( 'click', async ( event ) => {
 	let listId = bookmark.dataset.mwListId;
 
 	if ( !listId ) {
-		const { setup: { list: { id } } } = await api.setup();
-		bookmark.dataset.mwListId = id;
-		listId = id;
+		try {
+			const { setup: { list: { id } } } = await api.setup();
+			listId = bookmark.dataset.mwListId = id;
+		} catch ( err ) {
+			mw.notification.notify(
+				mw.msg( 'readinglists-browser-error-intro', err ),
+				{ tag: 'saved', type: 'error' }
+			);
+
+			throw err;
+		}
 	}
 
 	const entryId = bookmark.dataset.mwEntryId;
 
-	if ( !entryId ) {
-		await addPageToReadingList( listId );
-	} else {
-		await removePageFromReadingList( entryId, listId );
+	try {
+		if ( !entryId ) {
+			await addPageToReadingList( listId );
+		} else {
+			await removePageFromReadingList( entryId, listId );
+		}
+	} catch ( err ) {
+		mw.notification.notify(
+			mw.msg( 'readinglists-browser-error-intro', err ),
+			{ tag: 'saved', type: 'error' }
+		);
+
+		throw err;
 	}
 } );
