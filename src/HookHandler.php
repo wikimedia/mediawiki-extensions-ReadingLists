@@ -58,8 +58,8 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			$services->getDBLoadBalancerFactory()
 		);
 
-		$listId = $repository->getDefaultListIdForUser();
-		$entryId = $listId === false ? false : $repository->getListsByPage(
+		$list = $repository->setupForUser( true );
+		$entry = $repository->getListsByPage(
 			'@local',
 			$output->getTitle()->getPrefixedDBkey(),
 			1
@@ -67,12 +67,12 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 
 		$links['views']['bookmark'] = [
 			'text' => $sktemplate->msg(
-				'readinglists-' . ( $entryId === false ? 'add' : 'remove' ) . '-bookmark'
+				'readinglists-' . ( $entry === false ? 'add' : 'remove' ) . '-bookmark'
 			)->text(),
-			'icon' => $entryId === false ? 'bookmarkOutline' : 'bookmark',
+			'icon' => $entry === false ? 'bookmarkOutline' : 'bookmark',
 			'href' => '#',
-			'data-mw-list-id' => $listId === false ? null : $listId,
-			'data-mw-entry-id' => $entryId === false ? null : $entryId->rle_id
+			'data-mw-list-id' => $list->rl_id,
+			'data-mw-entry-id' => $entry === false ? null : $entry->rle_id
 		];
 
 		$output->addModules( 'ext.readingLists.bookmark' );
