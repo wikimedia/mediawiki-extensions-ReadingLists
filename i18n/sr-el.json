@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"readinglists-import-empty-message": "Ne možete uvoziti spisak spiskova.",
+	"readinglists-watchlist": "Spisak nadgledanja",
+	"readinglists-watchlist-description": "Stranice koje ste uređivali ili pratite",
+	"readinglists-import-button-label": "Prikaži listu"
+}
