@@ -76,6 +76,9 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		];
 
 		$output->addModules( 'ext.readingLists.bookmark' );
+
+		unset( $links['actions']['watch'] );
+		unset( $links['actions']['unwatch'] );
 	}
 
 	/**
