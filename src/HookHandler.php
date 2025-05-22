@@ -28,12 +28,13 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 	 */
 	public function onSkinTemplateNavigation__Universal( $sktemplate, &$links ): void {
 		$services = MediaWikiServices::getInstance();
+		$user = $sktemplate->getUser();
 
 		if (
 			!$services->getMainConfig()->get( 'ReadingListBetaFeature' ) ||
 			!ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' ) ||
 			// @phan-suppress-next-line PhanUndeclaredClassMethod
-			!BetaFeatures::isFeatureEnabled( $sktemplate->getUser(), Constants::PREF_KEY_BETA_FEATURES )
+			!BetaFeatures::isFeatureEnabled( $user, Constants::PREF_KEY_BETA_FEATURES )
 		) {
 			return;
 		}
@@ -54,7 +55,9 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		}
 
 		$repository = new ReadingListRepository(
-			$output->getUser()->getId(),
+			$services->getCentralIdLookupFactory()
+				->getLookup()
+				->centralIdFromLocalUser( $user ),
 			$services->getDBLoadBalancerFactory()
 		);
 
