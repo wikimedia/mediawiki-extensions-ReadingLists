@@ -3,14 +3,37 @@
 		"authors": [
 			"MITO",
 			"Pyscowicz",
-			"SMAUG"
+			"SMAUG",
+			"Samoasambia"
 		]
 	},
+	"readinglists-db-error-list-limit": "Käyttäjällä voi olla enintään $1 {{PLURAL:$1|lista|listaa}}.",
+	"readinglists-browser-login-prompt": "Kirjaudu sisään tallentaaksesi artikkeleita",
+	"readinglists-browser-error-intro": "Tapahtui virhe: $1",
 	"readinglists-browser-extension-info-link-text": "Lisätietoja",
+	"readinglists-browser-list-entry-limit-exceeded": "Artikkelia ei voida tallentaa. Olet saavuttanut $1 artikkelin rajan lukulistaa kohden.",
 	"readinglists-browser-extension-product-title": "Wikipedia-lukulistat",
 	"readinglists-browser-page-not-supported": "$1 ei tue tätä sivua",
+	"readinglists-special-title": "Tallennetut",
+	"readinglists-special-title-imported": "Lukulistat: tuo muilta käyttäjiltä",
+	"readinglists-description": "Kaikki tallennetut listasi yhdessä paikassa.",
+	"readinglists-loading": "Odota…",
+	"reading-list-purpose": "Kirjaudu sisään nähdäksesi yksityiset lukulistasi.",
+	"readinglists-import-size-error": "Lista on liian pitkä näytettäväksi.",
+	"special-tab-readinglists-short": "Listasi",
+	"readinglists-default-title": "Tallennetut sivut",
+	"readinglists-default-description": "Oletuslista tallennetuille artikkeleillesi.",
+	"action-action-readinglist-private": "lukea muiden käyttäjien lukulistoja",
+	"readinglists-empty-message": "Sinulla ei ole listoja. Haluaisitko luoda sellaisen?",
+	"readinglists-no-title": "Nimetön lista",
+	"readinglists-export": "Jaa lista",
 	"readinglists-watchlist": "Tarkkailulista",
 	"readinglists-import-button-label": "Näytä lista",
 	"readinglists-import-button-hint": "Napsauta painiketta:",
-	"readinglists-import-app-launch-hint": "Varmista, että käytössäsi on sovelluksen viimeisin versio."
+	"readinglists-import-app-launch-hint": "Varmista, että käytössäsi on sovelluksen viimeisin versio.",
+	"readinglists-beta-feature-name": "Lukulistat",
+	"readinglists-menu-item": "Lukulistat",
+	"readinglists-bookmark": "Kirjanmerkki",
+	"readinglists-add-bookmark": "Lisää kirjanmerkki",
+	"readinglists-remove-bookmark": "Poista kirjanmerkki"
 }
