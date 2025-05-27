@@ -123,7 +123,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 		if ( $defaultListId !== false ) {
 			// Older code may expect the exception behavior, so only return if $silent = true
 			if ( $silent ) {
-				return $this->selectValidList( $defaultListId );
+				return $this->selectValidList( $defaultListId, IDBAccessObject::READ_LATEST );
 			}
 
 			throw new ReadingListRepositoryException( 'readinglists-db-error-already-set-up' );
@@ -381,7 +381,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->caller( __METHOD__ )->fetchResultSet();
 		if (
 			$res->numRows() === 0
-			&& !$this->getDefaultListIdForUser()
+			&& !$this->getDefaultListIdForUser( IDBAccessObject::READ_LATEST )
 		) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
@@ -790,7 +790,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->caller( __METHOD__ )->fetchResultSet();
 		if (
 			$res->numRows() === 0
-			&& !$this->getDefaultListIdForUser()
+			&& !$this->getDefaultListIdForUser( IDBAccessObject::READ_LATEST )
 		) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
@@ -944,7 +944,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 
 		if ( $from !== null ) {
 			$queryBuilder->andWhere(
-				$this->dbw->expr( 'rle_rl_id', '>=', (int)$from )
+				$this->dbr->expr( 'rle_rl_id', '>=', (int)$from )
 			);
 		}
 
@@ -956,7 +956,10 @@ class ReadingListRepository implements LoggerAwareInterface {
 		}
 
 		$res = $queryBuilder->orderBy( 'rle_rl_id', 'ASC' )->fetchResultSet();
-		if ( $res->numRows() === 0 && !$this->getDefaultListIdForUser() ) {
+		if (
+			$res->numRows() === 0 &&
+			!$this->getDefaultListIdForUser( IDBAccessObject::READ_LATEST )
+		) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
 		return $res;
