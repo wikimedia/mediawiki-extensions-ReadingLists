@@ -68,14 +68,17 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			1
 		)->fetchObject();
 
+		$output->addJsConfigVars( [
+			'rlListId' => (int)$list->rl_id,
+			'rlEntryId' => $entry === false ? null : (int)$entry->rle_id
+		] );
+
 		$links['views']['bookmark'] = [
 			'text' => $sktemplate->msg(
 				'readinglists-' . ( $entry === false ? 'add' : 'remove' ) . '-bookmark'
 			)->text(),
 			'icon' => $entry === false ? 'bookmarkOutline' : 'bookmark',
-			'href' => '#',
-			'data-mw-list-id' => $list->rl_id,
-			'data-mw-entry-id' => $entry === false ? null : $entry->rle_id
+			'href' => '#'
 		];
 
 		$output->addModules( 'ext.readingLists.bookmark' );

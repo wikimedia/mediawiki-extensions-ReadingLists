@@ -203,10 +203,10 @@ async function getPagesFromManifest( project, entries ) {
  *
  * @param {number} listId
  * @param {string} title
- * @return {mw.Api~AbortablePromise}
+ * @return {Promise<number>}
  */
-function createEntry( listId, title ) {
-	return api.postWithToken( 'csrf', {
+async function createEntry( listId, title ) {
+	const response = await api.postWithEditToken( {
 		action: 'readinglists',
 		command: 'createentry',
 		list: listId,
@@ -214,21 +214,31 @@ function createEntry( listId, title ) {
 		title,
 		formatversion: 2
 	} );
+
+	return response.createentry.entry.id;
 }
 
 /**
  * Delete an existing entry from a reading list.
  *
  * @param {number} entryId
- * @return {mw.Api~AbortablePromise}
+ * @return {Promise<null>}
  */
-function deleteEntry( entryId ) {
-	return api.postWithToken( 'csrf', {
-		action: 'readinglists',
-		command: 'deleteentry',
-		entry: entryId,
-		formatversion: 2
-	} );
+async function deleteEntry( entryId ) {
+	try {
+		await api.postWithToken( 'csrf', {
+			action: 'readinglists',
+			command: 'deleteentry',
+			entry: entryId,
+			formatversion: 2
+		} );
+	} catch ( err ) {
+		if ( err !== 'readinglists-db-error-list-entry-deleted' ) {
+			throw err;
+		}
+	}
+
+	return null;
 }
 
 /**
