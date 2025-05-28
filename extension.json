@@ -214,7 +214,6 @@
 			"dependencies": [
 				"ext.readingLists.api",
 				"ext.readingLists.bookmark.icons",
-				"mediawiki.notification",
 				"mediawiki.util"
 			]
 		},
