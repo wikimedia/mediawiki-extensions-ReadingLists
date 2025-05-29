@@ -1,34 +1,42 @@
+const isMinerva = mw.config.get( 'skin' ) === 'minerva';
+const bookmark = document.querySelector( isMinerva ? '#ca-bookmark' : '#ca-bookmark > a' );
+
+if ( bookmark === null ) {
+	throw new Error( 'Bookmark not found' );
+}
+
 const api = require( 'ext.readingLists.api' );
 
-const listId = mw.config.get( 'rlListId' );
-let entryId = mw.config.get( 'rlEntryId' );
+const hasIcon = bookmark.children.length > 1;
+const icon = hasIcon ? bookmark.children[ 0 ] : null;
+const label = hasIcon ? bookmark.children[ 1 ] : bookmark.children[ 0 ];
 
-const pageName = mw.config.get( 'wgPageName' );
-const pageTitle = mw.config.get( 'wgTitle' );
-
-const isMinerva = mw.config.get( 'skin' ) === 'minerva';
 const iconPrefix = isMinerva ? 'minerva-icon--' : 'mw-ui-icon-';
 const iconSolid = iconPrefix + 'bookmark';
 const iconOutline = iconPrefix + 'bookmarkOutline';
 
-const labels = [];
-const icons = [];
-
 /**
- * Display a successful notification and update buttons content.
+ * Updates the bookmark button text and display an added/removed notification
+ *
+ * @param {boolean} isSaved
+ * @param {number} listId
  */
-function updateState() {
-	mw.config.set( 'rlEntryId', entryId );
-	const isSaved = entryId !== null;
+function setBookmarkStatus( isSaved, listId ) {
+	if ( icon !== null ) {
+		// eslint-disable-next-line mediawiki/class-doc
+		icon.classList.remove( isSaved ? iconOutline : iconSolid );
+		// eslint-disable-next-line mediawiki/class-doc
+		icon.classList.add( isSaved ? iconSolid : iconOutline );
+	}
 
-	// The following messages are used here:
-	// * readinglists-browser-add-entry-success
-	// * readinglists-browser-remove-entry-success
+	// eslint-disable-next-line mediawiki/msg-doc
+	label.textContent = mw.msg( `readinglists-${ ( isSaved ? 'add' : 'remove' ) }-bookmark` );
+	// eslint-disable-next-line mediawiki/msg-doc
 	const msg = mw.message(
-		'readinglists-browser-' + ( isSaved ? 'add' : 'remove' ) + '-entry-success',
+		`readinglists-browser-${ ( isSaved ? 'add' : 'remove' ) }-entry-success`,
 		window.location.origin + window.location.pathname,
-		pageTitle,
-		mw.util.getUrl( 'Special:ReadingLists/' + listId ),
+		mw.config.get( 'wgTitle' ),
+		mw.util.getUrl( `Special:ReadingLists/${ listId }` ),
 		mw.msg( 'readinglists-default-title' )
 	).parseDom();
 
@@ -41,67 +49,75 @@ function updateState() {
 		}
 	}
 
-	mw.notify( msg, { tag: 'saved', type: isSaved ? 'success' : 'info' } );
-
-	for ( const label of labels ) {
-		// The following messages are used here:
-		// * readinglists-add-bookmark
-		// * readinglists-remove-bookmark
-		label.textContent = mw.msg( 'readinglists-' + ( isSaved ? 'remove' : 'add' ) + '-bookmark' );
-	}
-
-	for ( const icon of icons ) {
-		// The following CSS classes are used here:
-		// * mw-ui-icon-bookmark
-		// * mw-ui-icon-bookmarkOutline
-		// * minerva-icon--bookmark
-		// * minerva-icon--bookmarkOutline
-		icon.classList.remove( isSaved ? iconOutline : iconSolid );
-
-		// The following CSS classes are used here:
-		// * mw-ui-icon-bookmark
-		// * mw-ui-icon-bookmarkOutline
-		// * minerva-icon--bookmark
-		// * minerva-icon--bookmarkOutline
-		icon.classList.add( isSaved ? iconSolid : iconOutline );
-	}
+	mw.notification.notify( msg, { tag: 'saved', type: isSaved ? 'success' : 'info' } );
 }
 
 /**
- * Create or delete list entry based on the existing state.
+ * Handles frontend logic for the api.createEntry() function
+ *
+ * @param {number} listId
+ * @return {Promise<void>}
  */
-async function toggleBookmark() {
+async function addPageToReadingList( listId ) {
+	const { createentry: { entry: { id } } } = await api.createEntry( listId, mw.config.get( 'wgPageName' ) );
+
+	bookmark.dataset.mwEntryId = id;
+	setBookmarkStatus( true, listId );
+}
+
+/**
+ * Handles frontend logic for the api.deleteEntry() function
+ *
+ * @param {number} entryId
+ * @param {number} listId
+ * @return {Promise<void>}
+ */
+async function removePageFromReadingList( entryId, listId ) {
 	try {
-		entryId = entryId === null ?
-			await api.createEntry( listId, pageName ) :
-			await api.deleteEntry( entryId );
+		await api.deleteEntry( entryId );
 	} catch ( err ) {
-		mw.notify(
+		if ( err !== 'readinglists-db-error-list-entry-deleted' ) {
+			throw err;
+		}
+	}
+
+	delete bookmark.dataset.mwEntryId;
+	setBookmarkStatus( false, listId );
+}
+
+bookmark.addEventListener( 'click', async ( event ) => {
+	event.preventDefault();
+
+	let listId = bookmark.dataset.mwListId;
+
+	if ( !listId ) {
+		try {
+			const { setup: { list: { id } } } = await api.setup();
+			listId = bookmark.dataset.mwListId = id;
+		} catch ( err ) {
+			mw.notification.notify(
+				mw.msg( 'readinglists-browser-error-intro', err ),
+				{ tag: 'saved', type: 'error' }
+			);
+
+			throw err;
+		}
+	}
+
+	const entryId = bookmark.dataset.mwEntryId;
+
+	try {
+		if ( !entryId ) {
+			await addPageToReadingList( listId );
+		} else {
+			await removePageFromReadingList( entryId, listId );
+		}
+	} catch ( err ) {
+		mw.notification.notify(
 			mw.msg( 'readinglists-browser-error-intro', err ),
 			{ tag: 'saved', type: 'error' }
 		);
 
 		throw err;
 	}
-
-	updateState();
-}
-
-const buttons = document.querySelectorAll(
-	'#ca-bookmark > a, #ca-more-bookmark > a, a#ca-bookmark'
-);
-
-for ( /** @type {Element} */ const button of buttons ) {
-	const count = button.children.length;
-
-	if ( count === 0 ) {
-		labels.push( button );
-	} else if ( count === 1 ) {
-		labels.push( button.children[ 0 ] );
-	} else {
-		labels.push( button.children[ 1 ] );
-		icons.push( button.children[ 0 ] );
-	}
-
-	button.addEventListener( 'click', toggleBookmark );
-}
+} );
