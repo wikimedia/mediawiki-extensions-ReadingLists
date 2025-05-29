@@ -12,6 +12,7 @@ use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\User;
+use MediaWiki\User\UserIdentity;
 
 /**
  * Static entry points for hooks.
@@ -46,6 +47,8 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 				'icon' => 'bookmark'
 			],
 		], 'watchlist' );
+
+		self::hideWatchlistIcon( $sktemplate, $services, $user, $links );
 
 		$output = $sktemplate->getOutput();
 		$output->addModules( 'ext.readingLists.bookmark.icons' );
@@ -82,6 +85,23 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 
 		unset( $links['actions']['watch'] );
 		unset( $links['actions']['unwatch'] );
+	}
+
+	/**
+	 * Hide the watchlist link on mobile if the user has no edits and their watchlist is empty.
+	 * @see https://phabricator.wikimedia.org/T394562
+	 * @param SkinTemplate $sktemplate
+	 * @param MediaWikiServices $services
+	 * @param UserIdentity $user
+	 * @param array &$links
+	 */
+	public static function hideWatchlistIcon( $sktemplate, $services, $user, &$links ) {
+		if (
+			$sktemplate->getSkinName() === 'minerva' &&
+			$services->getUserEditTracker()->getUserEditCount( $user ) === 0
+		) {
+			unset( $links['user-menu']['watchlist'] );
+		}
 	}
 
 	/**
