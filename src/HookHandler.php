@@ -83,8 +83,7 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 
 		$output->addModules( 'ext.readingLists.bookmark' );
 
-		unset( $links['actions']['watch'] );
-		unset( $links['actions']['unwatch'] );
+		self::hideWatchIcon( $sktemplate, $links );
 	}
 
 	/**
@@ -101,6 +100,21 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			$services->getUserEditTracker()->getUserEditCount( $user ) === 0
 		) {
 			unset( $links['user-menu']['watchlist'] );
+		}
+	}
+
+	/**
+	 * Hide the watch star if the current skin is Vector 2022 or Minerva.
+	 * @see https://phabricator.wikimedia.org/T394562
+	 * @param SkinTemplate $sktemplate
+	 * @param array &$links
+	 */
+	public static function hideWatchIcon( $sktemplate, &$links ) {
+		$skinName = $sktemplate->getSkinName();
+
+		if ( $skinName === 'vector-2022' || $skinName === 'minerva' ) {
+			unset( $links['actions']['watch'] );
+			unset( $links['actions']['unwatch'] );
 		}
 	}
 

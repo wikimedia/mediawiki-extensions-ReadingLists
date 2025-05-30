@@ -33,4 +33,27 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 		// Any other keys should be unaffected
 		$this->assertArrayHasKey( 'recentchanges', $links['user-menu'] );
 	}
+
+	public function testHideWatchIcon() {
+		$skins = [ 'vector-2022', 'minerva', 'monobook', 'timeless', 'vector' ];
+
+		foreach ( $skins as $skin ) {
+			$sktemplate = $this->createMock( SkinTemplate::class );
+			$sktemplate->method( 'getSkinName' )->willReturn( $skin );
+
+			$links = [ 'actions' => [ 'watch' => [], 'unwatch' => [], 'protect' => [] ] ];
+
+			HookHandler::hideWatchIcon( $sktemplate, $links );
+
+			if ( $skin === 'vector-2022' || $skin === 'minerva' ) {
+				$this->assertArrayNotHasKey( 'watch', $links['actions'] );
+				$this->assertArrayNotHasKey( 'unwatch', $links['actions'] );
+			} else {
+				$this->assertArrayHasKey( 'watch', $links['actions'] );
+				$this->assertArrayHasKey( 'unwatch', $links['actions'] );
+			}
+
+			$this->assertArrayHasKey( 'protect', $links['actions'] );
+		}
+	}
 }
