@@ -3,10 +3,26 @@
 		"authors": [
 			"Pyscowicz",
 			"MITO",
-			"SMAUG"
+			"SMAUG",
+			"Samoasambia"
 		]
 	},
+	"readinglists-db-error-cannot-delete-default-list": "Oletuslistaa ei voi poistaa.",
+	"readinglists-db-error-cannot-update-default-list": "Oletuslistaa ei voi päivittää.",
+	"readinglists-db-error-no-such-list": "Listaa $1 ei ole olemassa.",
+	"readinglists-db-error-no-such-list-entry": "Listan kohdetta $1 ei ole olemassa.",
+	"readinglists-db-error-not-own-list": "Lista $1 kuuluu toiselle käyttäjälle.",
+	"readinglists-db-error-not-own-list-entry": "Listan kohde $1 kuuluu toiselle käyttäjälle.",
+	"readinglists-db-error-list-deleted": "Lista $1 on poistettu.",
+	"readinglists-db-error-list-entry-deleted": "Listan kohde $1 on poistettu.",
+	"readinglists-db-error-duplicate-list": "Tämän niminen lista on jo olemassa.",
+	"readinglists-db-error-duplicate-page": "Tämä sivu on jo listalla.",
+	"readinglists-db-error-list-limit": "Käyttäjällä voi olla enintään $1 {{PLURAL:$1|lista|listaa}}.",
+	"readinglists-db-error-entry-limit": "Listassa $1 voi olla enintään $2 {{PLURAL:$2|kohde|kohdetta}}.",
+	"readinglists-browser-login-prompt": "Kirjaudu sisään tallentaaksesi artikkeleita",
+	"readinglists-browser-error-intro": "Tapahtui virhe: $1",
 	"readinglists-browser-extension-info-link-text": "Lisätietoja",
+	"readinglists-browser-list-entry-limit-exceeded": "Artikkelia ei voida tallentaa. Olet saavuttanut $1 artikkelin rajan lukulistaa kohden.",
 	"readinglists-browser-extension-product-title": "Wikipedia-lukulistat",
 	"readinglists-browser-page-not-supported": "$1 ei tue tätä sivua"
 }
