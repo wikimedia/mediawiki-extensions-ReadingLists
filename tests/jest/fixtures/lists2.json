@@ -1,0 +1,115 @@
+{
+	"batchcomplete": true,
+	"query": {
+		"readinglists": [
+			{
+				"id": 13,
+				"name": "L",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 14,
+				"name": "M",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 15,
+				"name": "N",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 16,
+				"name": "O",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 17,
+				"name": "P",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 18,
+				"name": "Q",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 19,
+				"name": "R",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 20,
+				"name": "S",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 21,
+				"name": "T",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 22,
+				"name": "U",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 23,
+				"name": "V",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 24,
+				"name": "W",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			}
+		]
+	}
+}

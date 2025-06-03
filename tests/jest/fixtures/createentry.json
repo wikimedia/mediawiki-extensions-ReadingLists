@@ -1,0 +1,15 @@
+{
+	"createentry": {
+		"id": "54321",
+		"entry": {
+			"id": 54321,
+			"listId": 12345,
+			"project": "https://en.wikipedia.org",
+			"title": " New_York",
+			"created": "2025-06-06T21:05:02Z",
+			"updated": "2025-06-06T21:05:02Z",
+			"duplicate": false
+		},
+		"result": "Success"
+	}
+}

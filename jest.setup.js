@@ -1,12 +1,6 @@
-const Api = function () {};
-function Title( path ) {
-	this.path = path;
-};
-Title.prototype.getUrl = function () {
-	return `/wiki/${this.path}`;
-};
+const i18n = require( './i18n/en.json' );
 
-global.mw = {
-	msg: () => '{msg}',
-	Api, Title
+mw = {
+	Api: function () {},
+	msg: ( key ) => i18n[ key ],
 };

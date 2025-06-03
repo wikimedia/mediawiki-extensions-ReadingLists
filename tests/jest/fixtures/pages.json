@@ -1,0 +1,189 @@
+{
+	"batchcomplete": true,
+	"query": {
+		"normalized": [
+			{
+				"fromencoded": false,
+				"from": "New_York_Yankees",
+				"to": "New York Yankees"
+			},
+			{
+				"fromencoded": false,
+				"from": "Main_Page",
+				"to": "Main Page"
+			},
+			{
+				"fromencoded": false,
+				"from": "New_York",
+				"to": "New York"
+			},
+			{
+				"fromencoded": false,
+				"from": "New_York_(magazine)",
+				"to": "New York (magazine)"
+			},
+			{
+				"fromencoded": false,
+				"from": "New_York_(state)",
+				"to": "New York (state)"
+			},
+			{
+				"fromencoded": false,
+				"from": "New_York_City",
+				"to": "New York City"
+			},
+			{
+				"fromencoded": false,
+				"from": "New_York_New_York",
+				"to": "New York New York"
+			}
+		],
+		"redirects": [
+			{
+				"from": "New York New York",
+				"to": "New York City"
+			}
+		],
+		"pages": [
+			{
+				"ns": 0,
+				"title": "Citation needed example",
+				"missing": false,
+				"contentmodel": "wikitext",
+				"pagelanguage": "en",
+				"pagelanguagehtmlcode": "en",
+				"pagelanguagedir": "ltr",
+				"fullurl": "https://en.wikipedia.org/wiki/Citation_needed_example",
+				"editurl": "https://en.wikipedia.org/w/index.php?title=Citation_needed_example&action=edit",
+				"canonicalurl": "https://en.wikipedia.org/wiki/Citation_needed_example"
+			},
+			{
+				"pageid": 645042,
+				"ns": 0,
+				"title": "New York City",
+				"contentmodel": "wikitext",
+				"pagelanguage": "en",
+				"pagelanguagehtmlcode": "en",
+				"pagelanguagedir": "ltr",
+				"touched": "2025-06-08T21:46:53Z",
+				"lastrevid": 1294506533,
+				"length": 379143,
+				"fullurl": "https://en.wikipedia.org/wiki/New_York_City",
+				"editurl": "https://en.wikipedia.org/w/index.php?title=New_York_City&action=edit",
+				"canonicalurl": "https://en.wikipedia.org/wiki/New_York_City",
+				"description": "Most populous city in the United States",
+				"descriptionsource": "local",
+				"thumbnail": {
+					"source": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_%28cropped%29.jpg/250px-View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_%28cropped%29.jpg",
+					"width": 200,
+					"height": 112
+				}
+			},
+			{
+				"pageid": 673381,
+				"ns": 0,
+				"title": "New York",
+				"contentmodel": "wikitext",
+				"pagelanguage": "en",
+				"pagelanguagehtmlcode": "en",
+				"pagelanguagedir": "ltr",
+				"touched": "2025-05-24T11:37:16Z",
+				"lastrevid": 1289190847,
+				"length": 6274,
+				"fullurl": "https://en.wikipedia.org/wiki/New_York",
+				"editurl": "https://en.wikipedia.org/w/index.php?title=New_York&action=edit",
+				"canonicalurl": "https://en.wikipedia.org/wiki/New_York",
+				"description": "Topics referred to by the same term",
+				"descriptionsource": "local"
+			},
+			{
+				"pageid": 714699,
+				"ns": 0,
+				"title": "New York (magazine)",
+				"contentmodel": "wikitext",
+				"pagelanguage": "en",
+				"pagelanguagehtmlcode": "en",
+				"pagelanguagedir": "ltr",
+				"touched": "2025-06-08T14:12:28Z",
+				"lastrevid": 1294570704,
+				"length": 55661,
+				"fullurl": "https://en.wikipedia.org/wiki/New_York_(magazine)",
+				"editurl": "https://en.wikipedia.org/w/index.php?title=New_York_(magazine)&action=edit",
+				"canonicalurl": "https://en.wikipedia.org/wiki/New_York_(magazine)",
+				"description": "American lifestyle and politics magazine",
+				"descriptionsource": "local",
+				"thumbnail": {
+					"source": "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Nymag_cover.jpeg/250px-Nymag_cover.jpeg",
+					"width": 200,
+					"height": 262
+				}
+			},
+			{
+				"pageid": 4848143,
+				"ns": 0,
+				"title": "New York Yankees",
+				"contentmodel": "wikitext",
+				"pagelanguage": "en",
+				"pagelanguagehtmlcode": "en",
+				"pagelanguagedir": "ltr",
+				"touched": "2025-06-08T20:29:43Z",
+				"lastrevid": 1294342288,
+				"length": 368673,
+				"fullurl": "https://en.wikipedia.org/wiki/New_York_Yankees",
+				"editurl": "https://en.wikipedia.org/w/index.php?title=New_York_Yankees&action=edit",
+				"canonicalurl": "https://en.wikipedia.org/wiki/New_York_Yankees",
+				"description": "Major League Baseball franchise in New York City",
+				"descriptionsource": "local",
+				"thumbnail": {
+					"source": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/New_York_Yankees_Primary_Logo.svg/250px-New_York_Yankees_Primary_Logo.svg.png",
+					"width": 200,
+					"height": 221
+				}
+			},
+			{
+				"pageid": 8210131,
+				"ns": 0,
+				"title": "New York (state)",
+				"contentmodel": "wikitext",
+				"pagelanguage": "en",
+				"pagelanguagehtmlcode": "en",
+				"pagelanguagedir": "ltr",
+				"touched": "2025-06-09T08:10:32Z",
+				"lastrevid": 1294697275,
+				"length": 223532,
+				"fullurl": "https://en.wikipedia.org/wiki/New_York_(state)",
+				"editurl": "https://en.wikipedia.org/w/index.php?title=New_York_(state)&action=edit",
+				"canonicalurl": "https://en.wikipedia.org/wiki/New_York_(state)",
+				"description": "U.S. state",
+				"descriptionsource": "local",
+				"thumbnail": {
+					"source": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_New_York.svg/250px-Flag_of_New_York.svg.png",
+					"width": 200,
+					"height": 100
+				}
+			},
+			{
+				"pageid": 15580374,
+				"ns": 0,
+				"title": "Main Page",
+				"contentmodel": "wikitext",
+				"pagelanguage": "en",
+				"pagelanguagehtmlcode": "en",
+				"pagelanguagedir": "ltr",
+				"touched": "2025-06-09T14:50:51Z",
+				"lastrevid": 1294660424,
+				"length": 3077,
+				"fullurl": "https://en.wikipedia.org/wiki/Main_Page",
+				"editurl": "https://en.wikipedia.org/w/index.php?title=Main_Page&action=edit",
+				"canonicalurl": "https://en.wikipedia.org/wiki/Main_Page",
+				"description": "Main page of the English Wikipedia",
+				"descriptionsource": "local",
+				"thumbnail": {
+					"source": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Kate_Moss_-_Decort%C3%A9_advertisement_%28cropped2%29.jpg/250px-Kate_Moss_-_Decort%C3%A9_advertisement_%28cropped2%29.jpg",
+					"width": 200,
+					"height": 267
+				}
+			}
+		]
+	}
+}

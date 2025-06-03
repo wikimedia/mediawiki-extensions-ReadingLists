@@ -1,0 +1,16 @@
+{
+	"batchcomplete": true,
+	"query": {
+		"readinglists": [
+			{
+				"id": 12345,
+				"name": "default",
+				"default": true,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			}
+		]
+	}
+}

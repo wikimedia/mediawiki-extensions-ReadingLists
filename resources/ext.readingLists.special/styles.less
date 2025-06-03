@@ -1,5 +1,202 @@
+@import 'mediawiki.skin.variables.less';
+
 .client-js {
-	.reading-list__errorbox {
+	.reading-list__errorbox,
+	.mw-body-header,
+	.heading-holder {
 		display: none;
+	}
+
+	.skin-minerva .content {
+		margin-top: 1.5em;
+	}
+
+	.readinglists-container {
+		h1 {
+			font-family: @font-family-sans;
+			font-size: @font-size-x-large;
+			font-weight: @font-weight-bold;
+			margin: 0;
+			padding: 0;
+			border-bottom: 0;
+		}
+
+		h2 {
+			font-family: @font-family-sans;
+			font-size: @font-size-medium;
+			margin: 0;
+			padding: 0;
+			border-bottom: 0;
+		}
+
+		h3 {
+			color: @color-placeholder;
+			font-size: @font-size-x-small;
+			font-weight: @font-weight-normal;
+			margin: 0;
+			padding: 0;
+		}
+
+		p {
+			font-size: @font-size-small;
+			margin-top: 0;
+			margin-bottom: 1.5em;
+			padding-bottom: 0;
+		}
+
+		.readinglists-toolbar {
+			display: flex;
+			gap: 0.5em;
+			margin-top: 0.5em;
+		}
+
+		.readinglists-remove {
+			margin-left: auto;
+		}
+
+		.readinglists-selectable {
+			display: flex;
+			align-items: center;
+
+			.cdx-checkbox {
+				margin-right: 0.5em;
+			}
+		}
+
+		.cdx-menu__listbox,
+		.cdx-menu__group {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		.cdx-menu__group__item {
+			margin-bottom: 0.1em;
+		}
+
+		.cdx-progress-bar {
+			width: 50%;
+			margin-top: 2em;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.readinglists-grid,
+		.readinglists-compact {
+			display: grid;
+			grid-auto-rows: 1fr;
+			gap: 1em;
+			margin-top: 2em;
+
+			@media only screen and ( min-width: @min-width-breakpoint-tablet ) {
+				grid-template-columns: repeat( 3, 1fr );
+			}
+
+			+ .cdx-button {
+				display: block;
+				margin-top: 2em;
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			.cdx-card {
+				overflow: hidden;
+				align-items: stretch;
+			}
+
+			.cdx-card__text {
+				height: 100%;
+				overflow: hidden;
+			}
+
+			.cdx-card__text__title,
+			.cdx-card__text__description {
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+
+			.cdx-card__text__title {
+				font-size: @font-size-medium;
+				-webkit-line-clamp: 1;
+			}
+
+			.cdx-card__text__description {
+				font-size: @font-size-small;
+				margin-top: 0;
+				-webkit-line-clamp: 2;
+			}
+
+			.cdx-card__text__supporting-text {
+				font-size: @font-size-x-small;
+				margin-top: auto;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			.cdx-card--is-link {
+				cursor: pointer;
+			}
+		}
+
+		.readinglists-grid {
+			.cdx-card {
+				flex-direction: column;
+			}
+
+			.cdx-card__thumbnail {
+				margin-right: 0;
+				margin-bottom: 0.75em;
+			}
+
+			.cdx-thumbnail__placeholder,
+			.cdx-thumbnail__image {
+				width: 100%;
+				height: 100%;
+				aspect-ratio: 16 / 9;
+			}
+
+			.cdx-icon--medium {
+				width: 50px;
+				height: 50px;
+			}
+		}
+
+		.readinglists-empty {
+			@media only screen and ( max-width: @max-width-breakpoint-tablet ) {
+				text-align: center;
+
+				.readinglists-empty-cta {
+					margin-left: 1.5em;
+					margin-right: 1.5em;
+					margin-bottom: 2em;
+				}
+			}
+
+			.readinglists-empty-title {
+				font-weight: bold;
+				margin-top: 3em;
+			}
+		}
+	}
+
+	.readinglists-play-store,
+	.readinglists-app-store {
+		display: inline-block;
+		background-image: url( ../assets/sprite.svg );
+		background-repeat: no-repeat;
+	}
+
+	.readinglists-play-store {
+		background-position: 0 -591px;
+		width: 124px;
+		height: 38px;
+	}
+
+	.readinglists-app-store {
+		background-position: 0 -629px;
+		width: 110px;
+		height: 38px;
 	}
 }

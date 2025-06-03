@@ -1,0 +1,43 @@
+{
+	"batchcomplete": true,
+	"continue": {
+		"rlecontinue": "2025-06-05T17:10:43Z|5",
+		"continue": "-||"
+	},
+	"query": {
+		"readinglistentries": [
+			{
+				"id": 1,
+				"listId": 1,
+				"project": "https://en.wikipedia.org",
+				"title": "Citation needed example",
+				"created": "2025-06-05T17:09:51Z",
+				"updated": "2025-06-05T17:09:51Z"
+			},
+			{
+				"id": 2,
+				"listId": 1,
+				"project": "https://en.wikipedia.org",
+				"title": "New_York_Yankees",
+				"created": "2025-06-05T17:10:11Z",
+				"updated": "2025-06-05T17:10:11Z"
+			},
+			{
+				"id": 3,
+				"listId": 1,
+				"project": "https://en.wikipedia.org",
+				"title": "Main_Page",
+				"created": "2025-06-05T17:10:28Z",
+				"updated": "2025-06-05T17:10:28Z"
+			},
+			{
+				"id": 4,
+				"listId": 1,
+				"project": "https://en.wikipedia.org",
+				"title": "New_York",
+				"created": "2025-06-05T17:10:36Z",
+				"updated": "2025-06-05T17:10:36Z"
+			}
+		]
+	}
+}

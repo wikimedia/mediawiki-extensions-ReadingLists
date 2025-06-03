@@ -1,0 +1,16 @@
+{
+	"batchcomplete": true,
+	"query": {
+		"readinglists": [
+			{
+				"id": 12345,
+				"name": "Example list",
+				"default": false,
+				"description": "For testing purposes",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			}
+		]
+	}
+}

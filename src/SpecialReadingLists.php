@@ -2,12 +2,9 @@
 
 namespace MediaWiki\Extension\ReadingLists;
 
-use MediaWiki\Exception\PermissionsError;
+use MediaWiki\Exception\UserNotLoggedIn;
 use MediaWiki\Html\Html;
-use MediaWiki\Message\Message;
-use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\SpecialPage\UnlistedSpecialPage;
-use MediaWiki\User\User;
 
 class SpecialReadingLists extends UnlistedSpecialPage {
 	/**
@@ -18,72 +15,30 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 	}
 
 	/**
-	 * Render readinglist(s) app shell
+	 * Render SpecialPage:ReadingLists
 	 *
-	 * @param Message $pageTitle
+	 * @param string $subPage Parameter submitted as subpage
+	 * @throws UserNotLoggedIn
 	 */
-	private function executeReadingList( Message $pageTitle ) {
-		$out = $this->getOutput();
-		$out->addModuleStyles( [ 'ext.readingLists.special.styles' ] );
-		$out->addModules( [ 'ext.readingLists.special' ] );
-		$out->setPageTitleMsg( $pageTitle );
-		$html = Html::errorBox(
-			$this->msg( 'readinglists-error' )->parse(),
-			'',
-			'reading-list__errorbox'
-		);
-		$html .= Html::element( 'div', [ 'id' => 'reading-list-container' ],
-			$this->msg( 'readinglists-loading' )->text()
-		);
-		$out->addHTML( $html );
-	}
-
-	/**
-	 * Render Special Page ReadingLists
-	 * @param string $par Parameter submitted as subpage
-	 */
-	public function execute( $par = '' ) {
-		$out = $this->getOutput();
-		$config = $out->getConfig();
-		// If the feature isn't ready, redirect to Special:SpecialPages
-		$params = $par ? explode( '/', $par ) : [];
-		$listOwner = $params[0] ?? null;
-		$listId = $params[1] ?? null;
-		$req = $this->getRequest();
-		$exportFeature = $req->getText( 'limport' ) !== '' || $req->getText( 'lexport' ) !== '';
-		$user = $this->getUser();
+	public function execute( $subPage ) {
 		$this->setHeaders();
 		$this->outputHeader();
 
-		if ( !$user->isNamed() && !$exportFeature ) {
-			// Uses the following message keys: reading-list-purpose and reading-list-purpose-for-temp-user
-			$this->requireNamedUser( 'reading-list-purpose' );
-		} else {
-			if ( $listOwner || $exportFeature ) {
-				$owner = !$listOwner ? null : User::newFromName( $listOwner );
-				$privateEnabled = $config->get( 'ReadingListsWebAuthenticatedPreviews' );
-				$isWatchlist = $listId === '-10';
-				$canDisplayPrivateLists = $privateEnabled && $owner &&
-					$owner->getId() === $user->getId();
-				$pageTitle = $this->msg( 'readinglists-special-title' );
-				if ( !$privateEnabled ) {
-					$out->addHtmlClasses( 'mw-special-readinglist-watchlist-only' );
-				}
-				if ( $exportFeature ) {
-					$pageTitle = $this->msg( 'readinglists-special-title-imported' );
-					$out->addHtmlClasses( 'mw-special-readinglist-export-only' );
-				}
-				if ( $exportFeature || $isWatchlist || $privateEnabled ) {
-					$this->executeReadingList( $pageTitle );
-				} else {
-					throw new PermissionsError( 'action-readinglist-private' );
-				}
-			} else {
-				$out = $this->getOutput();
-				$out->redirect( SpecialPage::getTitleFor( 'ReadingLists',
-					$user->getName() )->getLocalURL() );
-			}
+		if ( !$this->getUser()->isNamed() ) {
+			$this->requireNamedUser();
+			return;
 		}
+
+		$output = $this->getOutput();
+		$output->setPageTitleMsg( $this->msg( 'readinglists-title' ) );
+		$output->addHTML( Html::errorBox(
+			$this->msg( 'readinglists-error' )->parse(),
+			'',
+			'reading-list__errorbox'
+		) );
+		$output->addHTML( '<div class="readinglists-container"></div>' );
+		$output->addModuleStyles( [ 'ext.readingLists.special.styles' ] );
+		$output->addModules( [ 'ext.readingLists.special' ] );
 	}
 
 	/**

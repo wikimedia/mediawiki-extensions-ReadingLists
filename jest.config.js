@@ -37,10 +37,10 @@ module.exports = {
 	// An object that configures minimum threshold enforcement for coverage results
 	coverageThreshold: {
 		global: {
-			branches: 16,
-			functions: 31,
-			lines: 24,
-			statements: 25
+			statements: 50,
+			branches: 50,
+			functions: 30,
+			lines: 50
 		}
 	},
 
@@ -69,6 +69,9 @@ module.exports = {
 	testEnvironment: 'jsdom',
 
 	moduleNameMapper: {
-		"^ext\.readingLists\.(.*)$": "<rootDir>/resources/ext.readingLists.$1/index.js"
+		'^ext\\.readingLists\\.(.+)$': '<rootDir>/resources/ext.readingLists.$1/index.js',
+		'config\\.json$': '<rootDir>/resources/config.json',
+		'codex\\.js$': '@wikimedia/codex',
+		'icons\\.json$': '@wikimedia/codex-icons'
 	},
 };

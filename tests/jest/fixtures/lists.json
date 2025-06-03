@@ -1,0 +1,119 @@
+{
+	"batchcomplete": true,
+	"continue": {
+		"rlcontinue": "L|13",
+		"continue": "-||"
+	},
+	"query": {
+		"readinglists": [
+			{
+				"id": 1,
+				"name": "default",
+				"default": true,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 2,
+				"name": "A",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 3,
+				"name": "B",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 4,
+				"name": "C",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 5,
+				"name": "D",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 6,
+				"name": "E",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 7,
+				"name": "F",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 8,
+				"name": "G",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 9,
+				"name": "H",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 10,
+				"name": "I",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 11,
+				"name": "J",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			},
+			{
+				"id": 12,
+				"name": "K",
+				"default": false,
+				"description": "",
+				"created": "2025-05-28T17:52:14Z",
+				"updated": "2025-05-28T17:52:14Z",
+				"size": 0
+			}
+		]
+	}
+}

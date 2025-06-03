@@ -109,19 +109,9 @@
 	},
 	"ResourceModules": {
 		"ext.readingLists.special.styles": {
-			"class": "MediaWiki\\ResourceLoader\\CodexModule",
-			"codexStyleOnly": true,
-			"codexComponents": [
-				"CdxMessage"
-			],
 			"styles": [
 				"resources/ext.readingLists.special/styles.less"
-			],
-			"skinStyles": {
-				"minerva": [
-					"resources/ext.readingLists.special/minerva.less"
-				]
-			}
+			]
 		},
 		"ext.readingLists.api": {
 			"dependencies": [
@@ -130,74 +120,99 @@
 			],
 			"messages": [
 				"readinglists-default-title",
-				"readinglists-default-description",
-				"readinglists-watchlist",
-				"readinglists-watchlist-description"
+				"readinglists-default-description"
 			],
 			"packageFiles": [
-				"resources/ext.readingLists.api/index.js",
-				"resources/ext.readingLists.api/legacy.js",
-				"resources/ext.readingLists.api/utils.js",
-				{
-					"name": "resources/ext.readingLists.api/config.json",
-					"config": [
-						"ReadingListAndroidAppDownloadLink",
-						"ReadingListiOSAppDownloadLink",
-						"ReadingListsAnonymizedPreviews",
-						"ReadingListsDeveloperMode"
-					]
-				}
+				"resources/ext.readingLists.api/index.js"
 			]
 		},
 		"ext.readingLists.special": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexComponents": [
+				"CdxButton",
+				"CdxCard",
+				"CdxCheckbox",
+				"CdxDialog",
+				"CdxIcon",
+				"CdxMenuButton",
+				"CdxMessage",
+				"CdxProgressBar",
+				"CdxToggleButton"
+			],
 			"dependencies": [
 				"ext.readingLists.api",
-				"mediawiki.api",
-				"vue",
-				"@wikimedia/codex",
-				"mediawiki.Title",
-				"mediawiki.user"
+				"mediawiki.notification",
+				"vue"
 			],
 			"messages": [
-				"readinglists-browser-remove-entry-success",
-				"readinglists-watchlist-monitor",
-				"readinglists-watchlist",
-				"readinglists-watchlist-description",
-				"readinglists-share-url-notify",
-				"readinglists-share-url-text",
-				"readinglists-share-url-text-incomplete",
-				"readinglists-import-app-misconfigured",
-				"readinglists-import-error",
+				"cancel",
+				"readinglists-browser-error-intro",
 				"readinglists-db-error-no-such-list",
-				"readinglists-db-error-list-deleted",
-				"readinglists-import-size-error",
-				"readinglists-no-title",
+				"readinglists-display-direction",
+				"readinglists-display-direction-ascending",
+				"readinglists-display-direction-descending",
+				"readinglists-display-menu",
+				"readinglists-display-sort",
+				"readinglists-display-sort-name",
+				"readinglists-display-sort-updated",
+				"readinglists-display-view",
+				"readinglists-display-view-compact",
+				"readinglists-display-view-grid",
+				"readinglists-edit-button",
+				"readinglists-empty-cta",
+				"readinglists-empty-random",
+				"readinglists-empty-title",
 				"readinglists-import-app",
-				"readinglists-import-app-with-link",
-				"readinglists-export",
-				"readinglists-loading",
-				"readinglists-import-disclaimer",
-				"readinglists-special-title",
-				"readinglists-empty-message",
-				"readinglists-list-empty-message",
-				"readinglists-description",
-				"special-tab-readinglists-short",
-				"readinglists-default-title",
-				"readinglists-default-description",
 				"readinglists-import-button-label",
-				"readinglists-import-button-hint",
-				"readinglists-import-app-launch-hint"
+				"readinglists-import-disclaimer",
+				"readinglists-loading",
+				"readinglists-no-title",
+				"readinglists-remove",
+				"readinglists-remove-confirmation",
+				"readinglists-remove-success",
+				"readinglists-remove-title",
+				"readinglists-select-article",
+				"readinglists-selected-articles",
+				"readinglists-show-more",
+				"readinglists-special-title-imported",
+				"readinglists-title",
+				"readinglists-total-articles",
+				"readinglists-total-lists"
 			],
 			"packageFiles": [
 				"resources/ext.readingLists.special/index.js",
-				"resources/ext.readingLists.special/special.js",
-				"resources/ext.readingLists.special/initSpecialPage.js",
-				"resources/ext.readingLists.special/views/IntermediateState.vue",
-				"resources/ext.readingLists.special/views/helpers.js",
-				"resources/ext.readingLists.special/views/ReadingListSummary.vue",
-				"resources/ext.readingLists.special/views/ReadingListDownload.vue",
-				"resources/ext.readingLists.special/views/ReadingList.vue",
-				"resources/ext.readingLists.special/views/ReadingListPage.vue"
+				"resources/ext.readingLists.special/components/DisplayButton.vue",
+				"resources/ext.readingLists.special/components/EditButton.vue",
+				"resources/ext.readingLists.special/components/EmptyList.vue",
+				"resources/ext.readingLists.special/components/EntryItem.vue",
+				"resources/ext.readingLists.special/components/ImportDialog.vue",
+				"resources/ext.readingLists.special/components/ListItem.vue",
+				"resources/ext.readingLists.special/components/RemoveButton.vue",
+				"resources/ext.readingLists.special/pages/Entries.vue",
+				"resources/ext.readingLists.special/pages/Lists.vue",
+				{
+					"name": "config.json",
+					"config": [
+						"ReadingListAndroidAppDownloadLink",
+						"ReadingListiOSAppDownloadLink"
+					]
+				},
+				{
+					"name": "icons.json",
+					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
+					"callbackParam": [
+						"cdxIconAlert",
+						"cdxIconArrowDown",
+						"cdxIconArrowUp",
+						"cdxIconDie",
+						"cdxIconEdit",
+						"cdxIconHistory",
+						"cdxIconSortVertical",
+						"cdxIconViewCompact",
+						"cdxIconViewDetails",
+						"cdxIconLargerText"
+					]
+				}
 			]
 		},
 		"ext.readingLists.bookmark.styles": {

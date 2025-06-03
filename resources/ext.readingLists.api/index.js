@@ -1,12 +1,13 @@
 let api = new mw.Api();
+const origin = window.location.protocol + '//' + window.location.hostname;
 
 /**
  * Enroll the current user in the reading list feature.
  *
- * @return {mw.Api~AbortablePromise}
+ * @return {Promise<any>}
  */
 function setup() {
-	return api.postWithToken( 'csrf', {
+	return api.postWithEditToken( {
 		action: 'readinglists',
 		command: 'setup',
 		formatversion: 2
@@ -30,19 +31,23 @@ async function getLists( sort = 'name', direction = 'asc', limit = 12, next = nu
 			rlsort: sort,
 			rldir: direction,
 			rllimit: limit,
-			rlcontinue: next === null ? undefined : next,
+			rlcontinue: next || undefined,
 			formatversion: 2
 		} );
 
-		for ( const list of lists ) {
-			if ( list.default ) {
-				list.name = mw.msg( 'readinglists-default-title' );
-				list.description = mw.msg( 'readinglists-default-description' );
-				break;
-			}
-		}
+		return {
+			lists: lists.map( ( list ) => {
+				if ( list.default ) {
+					return Object.assign( {}, list, {
+						name: mw.msg( 'readinglists-default-title' ),
+						description: mw.msg( 'readinglists-default-description' )
+					} );
+				}
 
-		return { lists, next: rlcontinue === undefined ? null : rlcontinue.rlcontinue };
+				return list;
+			} ),
+			next: rlcontinue && rlcontinue.rlcontinue || null
+		};
 	} catch ( err ) {
 		if ( err === 'readinglists-db-error-not-set-up' ) {
 			await setup();
@@ -71,8 +76,10 @@ async function getList( listId ) {
 		const list = response.query.readinglists[ 0 ];
 
 		if ( list.default ) {
-			list.name = mw.msg( 'readinglists-default-title' );
-			list.description = mw.msg( 'readinglists-default-description' );
+			return Object.assign( {}, list, {
+				name: mw.msg( 'readinglists-default-title' ),
+				description: mw.msg( 'readinglists-default-description' )
+			} );
 		}
 
 		return list;
@@ -105,7 +112,7 @@ async function getEntries( listId, sort = 'name', direction = 'asc', limit = 12,
 			rlesort: sort,
 			rledir: direction,
 			rlelimit: limit,
-			rlecontinue: next === null ? undefined : next,
+			rlecontinue: next || undefined,
 			formatversion: 2
 		} );
 
@@ -118,7 +125,6 @@ async function getEntries( listId, sort = 'name', direction = 'asc', limit = 12,
 
 			manifest[ entry.project ].push( {
 				id: entry.id,
-				project: entry.project,
 				title: entry.title
 			} );
 		}
@@ -133,7 +139,7 @@ async function getEntries( listId, sort = 'name', direction = 'asc', limit = 12,
 
 		return {
 			entries: entries.map( ( entry ) => pages.find( ( page ) => page.id === entry.id ) ),
-			next: rlecontinue === undefined ? null : rlecontinue.rlecontinue
+			next: rlecontinue && rlecontinue.rlecontinue || null
 		};
 	} catch ( err ) {
 		if ( err === 'readinglists-db-error-not-set-up' ) {
@@ -145,13 +151,35 @@ async function getEntries( listId, sort = 'name', direction = 'asc', limit = 12,
 	}
 }
 
+const languageCodePattern = /^[A-Za-z-]+$/;
+
+/**
+ * Get the page info associated with the project and entries.
+ *
+ * @param {string} project
+ * @param {Object[]} entries
+ * @return {Promise<any>}
+ */
 async function getPagesFromManifest( project, entries ) {
+	if ( languageCodePattern.test( project ) ) {
+		project = `https://${ project }.wikipedia.org`;
+	}
+
+	const options = {};
+
+	if ( project !== origin ) {
+		options.url = project + '/w/api.php';
+	}
+
+	const isPageIds = Object.prototype.hasOwnProperty.call( entries[ 0 ], 'pageid' );
+
 	try {
 		const { query: { normalized, redirects, pages } } = await api.get( {
 			action: 'query',
 			origin: '*',
 			prop: 'info|description|pageimages',
-			titles: entries.map( ( entry ) => entry.title ).join( '|' ),
+			titles: !isPageIds ? entries.map( ( entry ) => entry.title ).join( '|' ) : undefined,
+			pageids: isPageIds ? entries.map( ( entry ) => entry.pageid ).join( '|' ) : undefined,
 			redirects: true,
 			inprop: 'url',
 			piprop: 'thumbnail',
@@ -159,42 +187,70 @@ async function getPagesFromManifest( project, entries ) {
 			pithumbsize: 200,
 			pilimit: entries.length,
 			formatversion: 2
-		}, {
-			url: `${ project }/w/api.php`
-		} );
+		}, options );
 
-		return entries.map( ( entry ) => {
-			let title = entry.title;
+		return entries.map( ( entry, i ) => {
+			let meta;
 
-			if ( normalized !== undefined ) {
-				const match = normalized.find( ( normal ) => normal.from === title );
+			if ( isPageIds ) {
+				meta = pages.find( ( page ) => page.pageid === entry.pageid );
+			} else {
+				let title = entry.title;
 
-				if ( match !== undefined ) {
-					title = match.to;
+				if ( normalized !== undefined ) {
+					const match = normalized.find( ( normal ) => normal.from === title );
+
+					if ( match !== undefined ) {
+						title = match.to;
+					}
 				}
+
+				if ( redirects !== undefined ) {
+					const match = redirects.find( ( redirect ) => redirect.from === title );
+
+					if ( match !== undefined ) {
+						title = match.to;
+					}
+				}
+
+				meta = pages.find( ( page ) => page.title === title );
 			}
 
-			if ( redirects !== undefined ) {
-				const match = redirects.find( ( redirect ) => redirect.from === title );
-
-				if ( match !== undefined ) {
-					title = match.to;
-				}
+			if ( meta === undefined ) {
+				return {
+					id: entry.id || -1 - i,
+					project,
+					title: entry.title || `#${ entry.pageid }`,
+					description: null,
+					thumbnail: null,
+					url: null,
+					missing: true
+				};
 			}
-
-			const meta = pages.find( ( page ) => page.title === title );
 
 			return {
-				id: entry.id,
-				project: entry.project,
+				id: entry.id || -1 - i,
+				project,
 				title: meta.title,
-				description: meta.description,
-				thumbnail: meta.thumbnail.source,
-				url: meta.canonicalurl
+				description: meta.description || null,
+				thumbnail: meta.thumbnail && meta.thumbnail.source || null,
+				url: meta.canonicalurl || null,
+				missing: meta.missing === true
 			};
 		} );
 	} catch ( err ) {
-		return entries;
+		// eslint-disable-next-line no-console
+		console.error( err );
+
+		return entries.map( ( entry, i ) => ( {
+			id: entry.id || -1 - i,
+			project,
+			title: entry.title || `#${ entry.pageid }`,
+			description: null,
+			thumbnail: null,
+			url: null,
+			missing: true
+		} ) );
 	}
 }
 
@@ -203,10 +259,10 @@ async function getPagesFromManifest( project, entries ) {
  *
  * @param {number} listId
  * @param {string} title
- * @return {mw.Api~AbortablePromise}
+ * @return {Promise<any>}
  */
 function createEntry( listId, title ) {
-	return api.postWithToken( 'csrf', {
+	return api.postWithEditToken( {
 		action: 'readinglists',
 		command: 'createentry',
 		list: listId,
@@ -220,15 +276,76 @@ function createEntry( listId, title ) {
  * Delete an existing entry from a reading list.
  *
  * @param {number} entryId
- * @return {mw.Api~AbortablePromise}
+ * @return {Promise<any>}
  */
 function deleteEntry( entryId ) {
-	return api.postWithToken( 'csrf', {
+	return api.postWithEditToken( {
 		action: 'readinglists',
 		command: 'deleteentry',
 		entry: entryId,
 		formatversion: 2
 	} );
+}
+
+/**
+ * Delete multiple existing entries from a reading list.
+ *
+ * @param {number[]} entryIds
+ * @return {Promise<any>}
+ */
+function deleteEntries( entryIds ) {
+	return api.postWithEditToken( {
+		action: 'readinglists',
+		command: 'deleteentry',
+		batch: JSON.stringify( entryIds.map( ( id ) => ( { entry: id } ) ) ),
+		formatversion: 2
+	} );
+}
+
+/**
+ * @param {string} data
+ * @return {Object}
+ */
+async function fromBase64( data ) {
+	let output;
+
+	try {
+		output = JSON.parse( atob( data ) );
+	} catch ( err ) {
+		return { error: err };
+	}
+
+	if ( !output.name ) {
+		output.name = mw.msg( 'readinglists-no-title' );
+	}
+
+	const promises = [];
+
+	for ( const [ project, entries ] of Object.entries( output.list ) ) {
+		promises.push( getPagesFromManifest(
+			project,
+			entries.map( ( entry ) => ( { pageid: entry } ) )
+		) );
+	}
+
+	output.list = Array.prototype.concat.apply( [], await Promise.all( promises ) );
+	output.size = output.list.length;
+
+	for ( let i = 0; i < output.size; i++ ) {
+		output.list[ i ].id = -1 - i;
+	}
+
+	return output;
+}
+
+/**
+ * @param {string} name
+ * @param {string} description
+ * @param {string[]} list
+ * @return {string}
+ */
+function toBase64( name, description, list ) {
+	return btoa( JSON.stringify( { name, description, list } ) );
 }
 
 /**
@@ -241,13 +358,16 @@ function stubApi( stub ) {
 	api = stub;
 }
 
-module.exports = {
+module.exports = exports = {
 	setup,
 	getLists,
 	getList,
 	getEntries,
+	getPagesFromManifest,
 	createEntry,
 	deleteEntry,
-	stubApi,
-	legacy: require( './legacy.js' )
+	deleteEntries,
+	fromBase64,
+	toBase64,
+	stubApi
 };
