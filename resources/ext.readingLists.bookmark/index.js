@@ -7,9 +7,18 @@ if ( bookmark === null ) {
 
 const api = require( 'ext.readingLists.api' );
 
-const hasIcon = bookmark.children.length > 1;
-const icon = hasIcon ? bookmark.children[ 0 ] : null;
-const label = hasIcon ? bookmark.children[ 1 ] : bookmark.children[ 0 ];
+const num = bookmark.children.length;
+let label = null;
+let icon = null;
+
+if ( num === 0 ) {
+	label = bookmark;
+} else if ( num === 1 ) {
+	label = bookmark.children[ 0 ];
+} else {
+	label = bookmark.children[ 1 ];
+	icon = bookmark.children[ 0 ];
+}
 
 const iconPrefix = isMinerva ? 'minerva-icon--' : 'mw-ui-icon-';
 const iconSolid = iconPrefix + 'bookmark';
@@ -23,20 +32,34 @@ const iconOutline = iconPrefix + 'bookmarkOutline';
  */
 function setBookmarkStatus( isSaved, listId ) {
 	if ( icon !== null ) {
-		// eslint-disable-next-line mediawiki/class-doc
+		// The following CSS classes are used here:
+		// * mw-ui-icon-bookmark
+		// * mw-ui-icon-bookmarkOutline
+		// * minerva-icon--bookmark
+		// * minerva-icon--bookmarkOutline
 		icon.classList.remove( isSaved ? iconOutline : iconSolid );
-		// eslint-disable-next-line mediawiki/class-doc
+
+		// The following CSS classes are used here:
+		// * mw-ui-icon-bookmark
+		// * mw-ui-icon-bookmarkOutline
+		// * minerva-icon--bookmark
+		// * minerva-icon--bookmarkOutline
 		icon.classList.add( isSaved ? iconSolid : iconOutline );
 	}
 
-	// eslint-disable-next-line mediawiki/msg-doc
-	label.textContent = mw.msg( `readinglists-${ ( isSaved ? 'add' : 'remove' ) }-bookmark` );
-	// eslint-disable-next-line mediawiki/msg-doc
+	// The following messages are used here:
+	// * readinglists-add-bookmark
+	// * readinglists-remove-bookmark
+	label.textContent = mw.msg( `readinglists-${ ( !isSaved ? 'add' : 'remove' ) }-bookmark` );
+
+	// The following messages are used here:
+	// * readinglists-browser-add-entry-success
+	// * readinglists-browser-remove-entry-success
 	const msg = mw.message(
 		`readinglists-browser-${ ( isSaved ? 'add' : 'remove' ) }-entry-success`,
-		window.location.origin + window.location.pathname,
+		mw.config.get( 'wgPageName' ),
 		mw.config.get( 'wgTitle' ),
-		mw.util.getUrl( `Special:ReadingLists/${ listId }` ),
+		`Special:ReadingLists/${ mw.user.getName() }/${ listId }`,
 		mw.msg( 'readinglists-default-title' )
 	).parseDom();
 

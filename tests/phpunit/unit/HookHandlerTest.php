@@ -12,6 +12,22 @@ use MediaWiki\User\UserIdentity;
  * @covers \MediaWiki\Extension\ReadingLists\HookHandler
  */
 class HookHandlerTest extends \MediaWikiUnitTestCase {
+	public function testIsSkinSupported() {
+		$skins = [
+			'vector-2022' => true,
+			'minerva' => true,
+			'cologneblue' => false,
+			'modern' => false,
+			'monobook' => false,
+			'timeless' => false,
+			'vector' => false
+		];
+
+		foreach ( $skins as $skinName => $expectedValue ) {
+			$this->assertSame( $expectedValue, HookHandler::isSkinSupported( $skinName ) );
+		}
+	}
+
 	public function testHideWatchlistIcon() {
 		$sktemplate = $this->createMock( SkinTemplate::class );
 		$sktemplate->method( 'getSkinName' )->willReturn( 'minerva' );

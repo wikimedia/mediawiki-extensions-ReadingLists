@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\ReadingLists;
 
 use MediaWiki\Api\ApiQuerySiteinfo;
 use MediaWiki\Api\Hook\APIQuerySiteInfoGeneralInfoHook;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\BetaFeatures\BetaFeatures;
 use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
 use MediaWiki\MainConfigNames;
@@ -28,6 +29,10 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 	 * @throws ReadingListRepositoryException
 	 */
 	public function onSkinTemplateNavigation__Universal( $sktemplate, &$links ): void {
+		if ( !self::isSkinSupported( $sktemplate->getSkinName() ) ) {
+			return;
+		}
+
 		$services = MediaWikiServices::getInstance();
 		$user = $sktemplate->getUser();
 
@@ -87,6 +92,16 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 	}
 
 	/**
+	 * Show the reading list and bookmark if the skin is Vector 2022 or Minerva.
+	 * @see https://phabricator.wikimedia.org/T395332
+	 * @param string $skinName
+	 * @return bool
+	 */
+	public static function isSkinSupported( $skinName ) {
+		return $skinName === 'vector-2022' || $skinName === 'minerva';
+	}
+
+	/**
 	 * Hide the watchlist link on mobile if the user has no edits and their watchlist is empty.
 	 * @see https://phabricator.wikimedia.org/T394562
 	 * @param SkinTemplate $sktemplate
@@ -125,6 +140,9 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 	 * @param array[] &$prefs
 	 */
 	public static function onGetBetaFeaturePreferences( $user, array &$prefs ) {
+		if ( !self::isSkinSupported( RequestContext::getMain()->getSkinName() ) ) {
+			return;
+		}
 		$config = MediaWikiServices::getInstance()->getMainConfig();
 		if ( $config->get( 'ReadingListBetaFeature' ) ) {
 			$path = $config->get( MainConfigNames::ExtensionAssetsPath );
