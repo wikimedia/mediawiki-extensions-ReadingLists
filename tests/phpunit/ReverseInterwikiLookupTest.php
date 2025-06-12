@@ -20,13 +20,14 @@ class ReverseInterwikiLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testLookup( $expectedPrefix, $domain, $iwTable ) {
 		$iwLookup = $this->getMockForAbstractClass( InterwikiLookup::class );
 		$iwLookup->method( 'getAllPrefixes' )->willReturn( $iwTable );
+		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
 		$languageNameUtils = MediaWikiServices::getInstance()->getLanguageNameUtils();
 
-		$lookup = new ReverseInterwikiLookup( $iwLookup, $languageNameUtils, 'en.wikipedia.org' );
+		$lookup = new ReverseInterwikiLookup( $iwLookup, $languageNameUtils, $urlUtils, 'en.wikipedia.org' );
 		$actualPrefix = $lookup->lookup( $domain );
 		$this->assertSame( $expectedPrefix, $actualPrefix );
 
-		$lookup = new ReverseInterwikiLookup( $iwLookup, $languageNameUtils, 'https://en.wikipedia.org/' );
+		$lookup = new ReverseInterwikiLookup( $iwLookup, $languageNameUtils, $urlUtils, 'https://en.wikipedia.org/' );
 		$actualPrefix = $lookup->lookup( $domain );
 		$this->assertSame( $expectedPrefix, $actualPrefix );
 	}
