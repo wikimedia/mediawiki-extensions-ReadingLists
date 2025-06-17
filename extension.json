@@ -85,7 +85,7 @@
 	},
 	"Hooks": {
 		"SkinTemplateNavigation::Universal": "main",
-		"GetBetaFeaturePreferences": "main",
+		"GetBetaFeaturePreferences": "betafeatures",
 		"APIQuerySiteInfoGeneralInfo": "main",
 		"LoadExtensionSchemaUpdates": "schema"
 	},
@@ -97,6 +97,12 @@
 				"MainConfig",
 				"DBLoadBalancerFactory",
 				"UserEditTracker"
+			]
+		},
+		"betafeatures": {
+			"class": "MediaWiki\\Extension\\ReadingLists\\BetaFeatureHookHandler",
+			"services": [
+				"MainConfig"
 			]
 		},
 		"schema": {

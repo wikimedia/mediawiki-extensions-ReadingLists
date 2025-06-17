@@ -5,16 +5,12 @@ namespace MediaWiki\Extension\ReadingLists;
 use MediaWiki\Api\ApiQuerySiteinfo;
 use MediaWiki\Api\Hook\APIQuerySiteInfoGeneralInfoHook;
 use MediaWiki\Config\Config;
-use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\BetaFeatures\BetaFeatures;
 use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
-use MediaWiki\MainConfigNames;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\CentralId\CentralIdLookupFactory;
-use MediaWiki\User\User;
 use MediaWiki\User\UserEditTracker;
 use MediaWiki\User\UserIdentity;
 use Wikimedia\Rdbms\LBFactory;
@@ -147,31 +143,6 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		if ( $skinName === 'vector-2022' || $skinName === 'minerva' ) {
 			unset( $links['actions']['watch'] );
 			unset( $links['actions']['unwatch'] );
-		}
-	}
-
-	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/GetBetaFeaturePreferences
-	 *
-	 * @param User $user
-	 * @param array[] &$prefs
-	 */
-	public static function onGetBetaFeaturePreferences( $user, array &$prefs ) {
-		if ( !self::isSkinSupported( RequestContext::getMain()->getSkinName() ) ) {
-			return;
-		}
-		$config = MediaWikiServices::getInstance()->getMainConfig();
-		if ( $config->get( 'ReadingListBetaFeature' ) ) {
-			$path = $config->get( MainConfigNames::ExtensionAssetsPath );
-			$prefs[Constants::PREF_KEY_BETA_FEATURES] = [
-				'label-message' => 'readinglists-beta-feature-name',
-				'desc-message' => 'readinglists-beta-feature-description',
-				'screenshot' => "$path/ReadingLists/resources/assets/beta.png",
-				'info-link'
-					=> 'https://www.mediawiki.org/wiki/Extension:ReadingLists/Beta_Feature',
-				'discussion-link'
-					=> 'https://www.mediawiki.org/wiki/Extension_talk:ReadingLists/Beta_Feature',
-			];
 		}
 	}
 
