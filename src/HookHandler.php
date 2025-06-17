@@ -59,7 +59,6 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		if (
 			!$this->config->get( 'ReadingListBetaFeature' ) ||
 			!ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' ) ||
-			// @phan-suppress-next-line PhanUndeclaredClassMethod
 			!BetaFeatures::isFeatureEnabled( $user, Constants::PREF_KEY_BETA_FEATURES )
 		) {
 			return;
