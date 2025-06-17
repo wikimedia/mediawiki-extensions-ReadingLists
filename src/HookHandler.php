@@ -183,12 +183,10 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 	 * @param array &$result
 	 */
 	public function onAPIQuerySiteInfoGeneralInfo( $module, &$result ) {
-		global $wgReadingListsMaxListsPerUser, $wgReadingListsMaxEntriesPerList,
-			   $wgReadingListsDeletedRetentionDays;
 		$result['readinglists-config'] = [
-			'maxListsPerUser' => $wgReadingListsMaxListsPerUser,
-			'maxEntriesPerList' => $wgReadingListsMaxEntriesPerList,
-			'deletedRetentionDays' => $wgReadingListsDeletedRetentionDays,
+			'maxListsPerUser' => $this->config->get( 'ReadingListsMaxListsPerUser' ),
+			'maxEntriesPerList' => $this->config->get( 'ReadingListsMaxEntriesPerList' ),
+			'deletedRetentionDays' => $this->config->get( 'ReadingListsDeletedRetentionDays' ),
 		];
 	}
 }
