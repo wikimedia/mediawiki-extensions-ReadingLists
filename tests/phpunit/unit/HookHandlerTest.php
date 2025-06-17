@@ -2,11 +2,13 @@
 
 namespace MediaWiki\Extension\ReadingLists\Tests;
 
+use MediaWiki\Config\Config;
 use MediaWiki\Extension\ReadingLists\HookHandler;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Skin\SkinTemplate;
+use MediaWiki\User\CentralId\CentralIdLookupFactory;
 use MediaWiki\User\UserEditTracker;
 use MediaWiki\User\UserIdentity;
+use Wikimedia\Rdbms\LBFactory;
 
 /**
  * @covers \MediaWiki\Extension\ReadingLists\HookHandler
@@ -35,13 +37,16 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 		$userEditTracker = $this->createMock( UserEditTracker::class );
 		$userEditTracker->method( 'getUserEditCount' )->willReturn( 0 );
 
-		$services = $this->createMock( MediaWikiServices::class );
-		$services->method( 'getUserEditTracker' )->willReturn( $userEditTracker );
-
 		$user = $this->createMock( UserIdentity::class );
 		$links = [ 'user-menu' => [ 'watchlist' => [], 'recentchanges' => [] ] ];
 
-		HookHandler::hideWatchlistIcon( $sktemplate, $services, $user, $links );
+		$hookHandler = new HookHandler(
+			$this->createMock( CentralIdLookupFactory::class ),
+			$this->createMock( Config::class ),
+			$this->createMock( LBFactory::class ),
+			$userEditTracker
+		);
+		$hookHandler->hideWatchlistIcon( $sktemplate, $user, $links );
 
 		// The watchlist key should be removed
 		$this->assertArrayNotHasKey( 'watchlist', $links['user-menu'] );

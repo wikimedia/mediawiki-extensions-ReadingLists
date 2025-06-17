@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\ReadingLists;
 
 use MediaWiki\Api\ApiQuerySiteinfo;
 use MediaWiki\Api\Hook\APIQuerySiteInfoGeneralInfoHook;
+use MediaWiki\Config\Config;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\BetaFeatures\BetaFeatures;
 use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
@@ -12,13 +13,33 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\User\CentralId\CentralIdLookupFactory;
 use MediaWiki\User\User;
+use MediaWiki\User\UserEditTracker;
 use MediaWiki\User\UserIdentity;
+use Wikimedia\Rdbms\LBFactory;
 
 /**
  * Static entry points for hooks.
  */
 class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNavigation__UniversalHook {
+	private CentralIdLookupFactory $centralIdLookupFactory;
+	private Config $config;
+	private LBFactory $dbProvider;
+	private UserEditTracker $userEditTracker;
+
+	public function __construct(
+		CentralIdLookupFactory $centralIdLookupFactory,
+		Config $config,
+		LBFactory $dbProvider,
+		UserEditTracker $userEditTracker
+	) {
+		$this->centralIdLookupFactory = $centralIdLookupFactory;
+		$this->config = $config;
+		$this->dbProvider = $dbProvider;
+		$this->userEditTracker = $userEditTracker;
+	}
+
 	/**
 	 * Handler for SkinTemplateNavigation::Universal hook.
 	 * Adds "Notifications" items to the notifications content navigation.
@@ -33,11 +54,10 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			return;
 		}
 
-		$services = MediaWikiServices::getInstance();
 		$user = $sktemplate->getUser();
 
 		if (
-			!$services->getMainConfig()->get( 'ReadingListBetaFeature' ) ||
+			!$this->config->get( 'ReadingListBetaFeature' ) ||
 			!ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' ) ||
 			// @phan-suppress-next-line PhanUndeclaredClassMethod
 			!BetaFeatures::isFeatureEnabled( $user, Constants::PREF_KEY_BETA_FEATURES )
@@ -53,7 +73,7 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			],
 		], 'watchlist' );
 
-		self::hideWatchlistIcon( $sktemplate, $services, $user, $links );
+		$this->hideWatchlistIcon( $sktemplate, $user, $links );
 
 		$output = $sktemplate->getOutput();
 		$output->addModules( 'ext.readingLists.bookmark.icons' );
@@ -63,10 +83,9 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		}
 
 		$repository = new ReadingListRepository(
-			$services->getCentralIdLookupFactory()
-				->getLookup()
+			$this->centralIdLookupFactory->getLookup()
 				->centralIdFromLocalUser( $user ),
-			$services->getDBLoadBalancerFactory()
+			$this->dbProvider
 		);
 
 		$list = $repository->setupForUser( true );
@@ -105,14 +124,13 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 	 * Hide the watchlist link on mobile if the user has no edits and their watchlist is empty.
 	 * @see https://phabricator.wikimedia.org/T394562
 	 * @param SkinTemplate $sktemplate
-	 * @param MediaWikiServices $services
 	 * @param UserIdentity $user
 	 * @param array &$links
 	 */
-	public static function hideWatchlistIcon( $sktemplate, $services, $user, &$links ) {
+	public function hideWatchlistIcon( $sktemplate, $user, &$links ) {
 		if (
 			$sktemplate->getSkinName() === 'minerva' &&
-			$services->getUserEditTracker()->getUserEditCount( $user ) === 0
+			$this->userEditTracker->getUserEditCount( $user ) === 0
 		) {
 			unset( $links['user-menu']['watchlist'] );
 		}

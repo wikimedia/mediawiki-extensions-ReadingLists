@@ -91,7 +91,13 @@
 	},
 	"HookHandlers": {
 		"main": {
-			"class": "MediaWiki\\Extension\\ReadingLists\\HookHandler"
+			"class": "MediaWiki\\Extension\\ReadingLists\\HookHandler",
+			"services": [
+				"CentralIdLookupFactory",
+				"MainConfig",
+				"DBLoadBalancerFactory",
+				"UserEditTracker"
+			]
 		},
 		"schema": {
 			"class": "MediaWiki\\Extension\\ReadingLists\\SchemaHookHandler"
