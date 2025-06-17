@@ -8,7 +8,8 @@ return [
 	'ReverseInterwikiLookup' => static function ( MediaWikiServices $services ): ReverseInterwikiLookupInterface {
 		$interwikiLookup = $services->getInterwikiLookup();
 		$ownServer = $services->getMainConfig()->get( 'CanonicalServer' );
-		$ownServerParts = wfParseUrl( $ownServer );
+		$urlUtils = $services->getUrlUtils();
+		$ownServerParts = $urlUtils->parse( $ownServer );
 		$ownDomain = '';
 		if ( !empty( $ownServerParts['host'] ) ) {
 			$ownDomain = $ownServerParts['host'];
@@ -16,6 +17,7 @@ return [
 		return new ReverseInterwikiLookup(
 			$interwikiLookup,
 			$services->getLanguageNameUtils(),
+			$urlUtils,
 			$ownDomain
 		);
 	},

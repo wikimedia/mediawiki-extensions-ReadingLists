@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\ReadingLists;
 
 use MediaWiki\Interwiki\InterwikiLookup;
 use MediaWiki\Languages\LanguageNameUtils;
+use MediaWiki\Utils\UrlUtils;
 
 /**
  * Service for turning domain names into interwiki prefixes.
@@ -17,6 +18,8 @@ class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 	/** @var LanguageNameUtils */
 	private $languageNameUtils;
 
+	private UrlUtils $urlUtils;
+
 	/** @var string */
 	private $ownDomain;
 
@@ -26,15 +29,18 @@ class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 	/**
 	 * @param InterwikiLookup $interwikiLookup
 	 * @param LanguageNameUtils $languageNameUtils
+	 * @param UrlUtils $urlUtils
 	 * @param string $ownDomain
 	 */
 	public function __construct(
 		InterwikiLookup $interwikiLookup,
 		LanguageNameUtils $languageNameUtils,
+		UrlUtils $urlUtils,
 		$ownDomain
 	) {
 		$this->interwikiLookup = $interwikiLookup;
 		$this->languageNameUtils = $languageNameUtils;
+		$this->urlUtils = $urlUtils;
 		$this->ownDomain = $this->getDomain( $ownDomain );
 	}
 
@@ -78,7 +84,7 @@ class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 			$this->prefixTable = [];
 			$iwData = $this->interwikiLookup->getAllPrefixes( true );
 			foreach ( $iwData as $iwRow ) {
-				$url = wfParseUrl( $iwRow['iw_url'] );
+				$url = $this->urlUtils->parse( $iwRow['iw_url'] );
 				if ( !$url || !$url['host'] ) {
 					continue;
 				}
@@ -94,7 +100,7 @@ class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 	 * @return string
 	 */
 	protected function getDomain( $domainOrUrl ) {
-		$parts = wfParseUrl( $domainOrUrl );
+		$parts = $this->urlUtils->parse( $domainOrUrl );
 		if ( empty( $parts['host'] ) ) {
 			// assume it's just a bare domain name
 			return $domainOrUrl;
