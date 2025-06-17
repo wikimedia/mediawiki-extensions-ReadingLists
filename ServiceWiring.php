@@ -4,9 +4,9 @@ namespace MediaWiki\Extension\ReadingLists;
 
 use MediaWiki\MediaWikiServices;
 
+/** @phpcs-require-sorted-array */
 return [
 	'ReverseInterwikiLookup' => static function ( MediaWikiServices $services ): ReverseInterwikiLookupInterface {
-		$interwikiLookup = $services->getInterwikiLookup();
 		$ownServer = $services->getMainConfig()->get( 'CanonicalServer' );
 		$ownServerParts = wfParseUrl( $ownServer );
 		$ownDomain = '';
@@ -14,7 +14,7 @@ return [
 			$ownDomain = $ownServerParts['host'];
 		}
 		return new ReverseInterwikiLookup(
-			$interwikiLookup,
+			$services->getInterwikiLookup(),
 			$services->getLanguageNameUtils(),
 			$ownDomain
 		);
