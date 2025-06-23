@@ -6,6 +6,7 @@
 			"MathXplore",
 			"Omotecho",
 			"Otokoume",
+			"Shirayuki",
 			"Yusuke1109"
 		]
 	},
@@ -44,7 +45,7 @@
 	"reading-list-purpose": "個人的なあとで読むリストを見るにはログインしてください。",
 	"reading-list-purpose-for-temp-user": "個人的なあとで読むリストを作成するには、アカウントを作成してください。",
 	"readinglists-error": "このブラウザはあとで読むリスト機能を使えません。JavaScriptを有効化するか別のブラウザを試してください。",
-	"readinglists-import-error": "与えられたデータからリストを表示することができません。",
+	"readinglists-import-error": "与えられたデータから一覧を表示できません。",
 	"readinglists-import-size-error": "リストが大きすぎて表示できません。",
 	"special-tab-readinglists-short": "自分のリスト",
 	"readinglists-default-title": "保存済みページ",
