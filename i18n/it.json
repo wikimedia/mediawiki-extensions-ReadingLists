@@ -5,7 +5,7 @@
 			"Greis"
 		]
 	},
-	"readinglists-desc": "Permette agli utenti di gestire elenchi privati di articoli, come segnalibri o elenchi di \"Leggere Dopo\".",
+	"readinglists-desc": "Consente agli utenti di gestire elenchi privati di voci, come segnalibri o elenchi di \"Pagine salvate\".",
 	"readinglists-db-error-cannot-update-default-list": "L'elenco predefinito non può essere aggiornato.",
 	"readinglists-db-error-list-deleted": "L'elenco $1 è stato cancellato.",
 	"readinglists-db-error-duplicate-list": "Un elenco con questo nome esiste già.",
@@ -23,13 +23,28 @@
 	"readinglists-special-title": "Salvato",
 	"readinglists-special-title-imported": "Elenchi di lettura: importa da un altro utente",
 	"readinglists-description": "Tutti i tuoi elenchi salvati in un unico posto.",
+	"readinglists-loading": "Attendi per favore...",
 	"reading-list-purpose-for-temp-user": "Crea un'utenza per creare elenchi di lettura privati.",
 	"readinglists-import-size-error": "L'elenco è troppo grande per essere visualizzato.",
 	"special-tab-readinglists-short": "I tuoi elenchi",
+	"readinglists-title": "Elenchi di lettura",
+	"readinglists-selected-articles": "{{formatnum:$1}} di {{formatnum:$2}} {{plural:$2|voce|voci}} {{plural:$1|selezionata|selezionate}}",
+	"readinglists-remove": "Rimuovi",
+	"readinglists-remove-title": "Rimuovi conferma",
+	"readinglists-show-more": "Mostra altro",
 	"readinglists-default-title": "Pagine salvate",
 	"readinglists-default-description": "Elenco predefinito per le tue voci salvate.",
+	"readinglists-empty-title": "Il tuo elenco è vuoto.",
+	"readinglists-empty-random": "Voce a caso",
+	"readinglists-display-sort": "Ordina per",
+	"readinglists-display-sort-name": "Nome",
+	"readinglists-display-direction-ascending": "Crescente",
+	"readinglists-display-view": "Visualizza come",
+	"readinglists-display-view-grid": "Griglia",
+	"readinglists-display-view-compact": "Compatto",
+	"readinglists-edit-button": "Modifica voci",
 	"readinglists-import-empty-message": "Non è possibile importare elenchi di elenchi.",
 	"readinglists-watchlist": "Osservati speciali",
 	"readinglists-watchlist-description": "Pagine che segui per nuove modifiche.",
-	"readinglists-import-button-label": "Visualizza elenco"
+	"readinglists-import-button-label": "Apri nell'app"
 }

@@ -7,8 +7,21 @@
 	"readinglists-browser-add-entry-success": "[[$1|$2]] је додата у [[$3|$4]].",
 	"readinglists-browser-remove-entry-success": "[[$1|$2]] је уклоњена из [[$3|$4]].",
 	"readinglists-special-title": "Сачувано",
+	"readinglists-loading": "Молимо сачекајте...",
+	"readinglists-select-article": "Изабери чланак",
+	"readinglists-remove": "Уклони",
+	"readinglists-show-more": "Прикажи више",
+	"readinglists-empty-title": "Ваш списак је празан.",
+	"readinglists-empty-random": "Случајни чланак",
+	"readinglists-display-sort": "Поређај по",
+	"readinglists-display-sort-name": "Назив",
+	"readinglists-display-direction-ascending": "Растући",
+	"readinglists-display-direction-descending": "Опадајући",
+	"readinglists-display-view": "Прикажи као",
+	"readinglists-display-view-grid": "Мрежа",
+	"readinglists-edit-button": "Уреди чланке",
 	"readinglists-import-empty-message": "Не можете увозити списак спискова.",
 	"readinglists-watchlist": "Списак надгледања",
 	"readinglists-watchlist-description": "Странице које сте уређивали или пратите",
-	"readinglists-import-button-label": "Прикажи листу"
+	"readinglists-import-button-label": "Отвори у апликацији"
 }
