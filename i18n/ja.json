@@ -6,7 +6,8 @@
 			"Omotecho",
 			"Otokoume",
 			"Yusuke1109",
-			"Kokage si"
+			"Kokage si",
+			"Shirayuki"
 		]
 	},
 	"readinglists-desc": "ブックマークや「後で読む」リストなどの記事のプライベートリストを管理",
@@ -39,7 +40,7 @@
 	"readinglists-loading": "お待ちください…",
 	"reading-list-purpose": "個人的なあとで読むリストを見るにはログインしてください。",
 	"readinglists-error": "このブラウザはあとで読むリスト機能を使えません。JavaScriptを有効化するか別のブラウザを試してください。",
-	"readinglists-import-error": "与えられたデータからリストを表示することができません。",
+	"readinglists-import-error": "与えられたデータから一覧を表示できません。",
 	"readinglists-import-size-error": "リストが大きすぎて表示できません。",
 	"special-tab-readinglists-short": "自分のリスト",
 	"readinglists-default-title": "保存済みページ",

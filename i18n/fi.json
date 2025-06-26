@@ -37,6 +37,8 @@
 	"readinglists-no-title": "Nimetön lista",
 	"readinglists-export": "Jaa lista",
 	"readinglists-watchlist": "Tarkkailulista",
+	"readinglists-watchlist-description": "Sivut, joiden uusia muokkauksia tarkkailet.",
+	"readinglists-watchlist-monitor": "Voit tarkkailla tähän listaan kuuluvien sivujen muokkauksia käyttämällä [$1 tarkkailulista]-työkalua.",
 	"readinglists-import-button-label": "Näytä lista",
 	"readinglists-import-button-hint": "Napsauta painiketta:",
 	"readinglists-share-url-notify": "Tämän lukulistan tiedot on kopioitu leikepöydällesi.",
