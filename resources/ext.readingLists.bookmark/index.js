@@ -72,7 +72,7 @@ function setBookmarkStatus( isSaved, listId ) {
 		}
 	}
 
-	mw.notification.notify( msg, { tag: 'saved', type: isSaved ? 'success' : 'info' } );
+	mw.notify( msg, { tag: 'saved', type: isSaved ? 'success' : 'info' } );
 }
 
 /**
@@ -118,7 +118,7 @@ bookmark.addEventListener( 'click', async ( event ) => {
 			const { setup: { list: { id } } } = await api.setup();
 			listId = bookmark.dataset.mwListId = id;
 		} catch ( err ) {
-			mw.notification.notify(
+			mw.notify(
 				mw.msg( 'readinglists-browser-error-intro', err ),
 				{ tag: 'saved', type: 'error' }
 			);
@@ -136,7 +136,7 @@ bookmark.addEventListener( 'click', async ( event ) => {
 			await removePageFromReadingList( entryId, listId );
 		}
 	} catch ( err ) {
-		mw.notification.notify(
+		mw.notify(
 			mw.msg( 'readinglists-browser-error-intro', err ),
 			{ tag: 'saved', type: 'error' }
 		);

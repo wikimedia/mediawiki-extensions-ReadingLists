@@ -7,6 +7,8 @@ exports[`Entries renders properly 1`] = `
   
   <!--v-if-->
   <!--v-if-->
+  <!--v-if-->
+  <!--v-if-->
   <div
     class="readinglists-toolbar"
     style="display: none;"
@@ -23,7 +25,6 @@ exports[`Entries renders properly 1`] = `
         class="cdx-toggle-button cdx-toggle-button--quiet cdx-toggle-button--toggled-off cdx-toggle-button--icon-only"
         disabled=""
         id="v-0"
-        is-imported="false"
         type="button"
       >
         

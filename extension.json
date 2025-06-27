@@ -115,8 +115,7 @@
 		},
 		"ext.readingLists.api": {
 			"dependencies": [
-				"mediawiki.api",
-				"mediawiki.Title"
+				"mediawiki.api"
 			],
 			"messages": [
 				"readinglists-default-title",
@@ -141,7 +140,6 @@
 			],
 			"dependencies": [
 				"ext.readingLists.api",
-				"mediawiki.notification",
 				"vue"
 			],
 			"messages": [
@@ -234,9 +232,7 @@
 			],
 			"dependencies": [
 				"ext.readingLists.api",
-				"ext.readingLists.bookmark.icons",
-				"mediawiki.notification",
-				"mediawiki.util"
+				"ext.readingLists.bookmark.icons"
 			]
 		},
 		"ext.readingLists.bookmark.icons": {

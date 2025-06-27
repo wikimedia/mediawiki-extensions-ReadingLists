@@ -49,12 +49,9 @@ module.exports = exports = {
 		confirmationMsg: {
 			type: String,
 			default: mw.msg( 'readinglists-remove-confirmation', 0, '' )
-		},
-		removeCallback: {
-			type: Function,
-			default: () => {}
 		}
 	},
+	emits: [ 'removing', 'removed' ],
 	setup() {
 		return {
 			showConfirm: ref( false ),
@@ -65,30 +62,31 @@ module.exports = exports = {
 	},
 	methods: {
 		async onRemove() {
+			this.$emit( 'removing' );
 			this.showConfirm = false;
 
 			try {
 				await api.deleteEntries( this.selected );
+
+				mw.notify(
+					mw.message(
+						'readinglists-remove-success',
+						this.selected.length,
+						`Special:ReadingLists/${ mw.user.getName() }/${ this.listId }`,
+						this.listTitle
+					).parseDom(),
+					{ tag: 'removed' }
+				);
 			} catch ( err ) {
-				mw.notification.notify(
+				mw.notify(
 					mw.msg( 'readinglists-browser-error-intro', err ),
 					{ tag: 'removed', type: 'error' }
 				);
 
 				throw err;
+			} finally {
+				this.$emit( 'removed' );
 			}
-
-			mw.notification.notify(
-				mw.message(
-					'readinglists-remove-success',
-					this.selected.length,
-					`Special:ReadingLists/${ mw.user.getName() }/${ this.listId }`,
-					this.listTitle
-				).parseDom(),
-				{ tag: 'removed' }
-			);
-
-			await this.removeCallback( null, true );
 		}
 	}
 };

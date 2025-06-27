@@ -6,27 +6,24 @@
 	<template v-else>
 		<import-dialog v-if="imported !== null"></import-dialog>
 
-		<template v-if="!loadingInfo">
-			<h1 v-if="title">
-				{{ title }}
-			</h1>
+		<h1 v-if="title">
+			{{ title }}
+		</h1>
 
-			<h2 v-if="description">
-				{{ description }}
-			</h2>
+		<h2 v-if="description">
+			{{ description }}
+		</h2>
 
-			<h3>
-				{{ loadingInfo ? msgLoading : editing ? msgSelectedArticles : msgTotalArticles }}
-			</h3>
-		</template>
+		<h3 v-if="ready || !loadingInfo">
+			{{ loadingInfo ? msgLoading : editing ? msgSelectedArticles : msgTotalArticles }}
+		</h3>
 
 		<div
-			v-if="!ready || loadingEntries || entries.length !== 0"
-			v-show="ready"
+			v-show="ready && ( loadingEntries || entries.length !== 0 )"
 			class="readinglists-toolbar">
 			<display-button
-				:disabled="loadingEntries"
-				:is-imported="imported !== null"
+				:disabled="loadingInfo || loadingEntries"
+				:imported="imported !== null"
 				@ready="onReady"
 				@changed="getEntries">
 			</display-button>
@@ -34,18 +31,19 @@
 			<edit-button
 				v-if="ready"
 				:editing="editing"
-				:disabled="loadingEntries || imported !== null"
-				@changed="onEdit">
+				:disabled="loadingInfo || loadingEntries || imported !== null"
+				@changed="clearSelected">
 			</edit-button>
 
 			<remove-button
 				v-if="editing"
-				:disabled="loadingEntries || selected.length === 0"
+				:disabled="loadingInfo || loadingEntries || selected.length === 0"
 				:selected="selected"
 				:list-id="listId"
 				:list-title="title"
 				:confirmation-msg="msgRemoveConfirmation"
-				:remove-callback="getEntries">
+				@removing="onRemoving"
+				@removed="onRemoved">
 			</remove-button>
 		</div>
 
@@ -151,7 +149,27 @@ module.exports = exports = {
 				this.error = err.toString();
 			}
 		},
-		async getEntries( options = null, init = false ) {
+		async getList() {
+			this.loadingInfo = true;
+
+			try {
+				const list = this.imported || await api.getList( this.listId );
+
+				if ( list.error !== undefined ) {
+					throw list.error;
+				}
+
+				this.title = list.name;
+				this.description = list.description;
+				this.total = list.size;
+				this.updateMessages();
+			} catch ( err ) {
+				this.handleError( err );
+			} finally {
+				this.loadingInfo = false;
+			}
+		},
+		async getEntries( options = null, clear = false ) {
 			if ( options === null ) {
 				this.loadingEntries = true;
 			} else {
@@ -160,15 +178,22 @@ module.exports = exports = {
 				const view = options[ 2 ].replace( 'v:', '' );
 
 				if ( sort !== this.options[ 0 ] || direction !== this.options[ 1 ] ) {
-					init = true;
+					clear = true;
 				}
 
 				this.options = [ sort, direction, view ];
 			}
 
-			if ( init ) {
+			if ( clear ) {
+				this.clearEntries();
 				this.loadingEntries = true;
-				this.selected = [];
+
+				await this.getList();
+				this.clearSelected( this.editing && this.total !== 0 );
+
+				if ( this.total === 0 ) {
+					this.loadingEntries = false;
+				}
 			}
 
 			if ( !this.loadingEntries ) {
@@ -204,20 +229,11 @@ module.exports = exports = {
 					}
 				}
 
-				if ( init ) {
-					this.entries = entries;
-				} else {
-					this.entries.push( ...entries );
-				}
-
+				this.entries.push( ...entries );
 				this.next = next;
 
 				if ( next === null ) {
 					this.infinite = false;
-				}
-
-				if ( init ) {
-					this.ready = true;
 				}
 			} catch ( err ) {
 				this.handleError( err );
@@ -225,13 +241,46 @@ module.exports = exports = {
 				this.loadingEntries = false;
 			}
 		},
-		async onReady( options ) {
-			await this.getEntries( options, true );
+		updateMessages() {
+			this.msgTotalArticles = mw.msg( 'readinglists-total-articles', this.total );
+
+			const count = this.selected.length;
+			this.msgSelectedArticles = mw.msg( 'readinglists-selected-articles', count, this.total );
+			this.msgRemoveConfirmation = mw.msg( 'readinglists-remove-confirmation', count, this.title );
 		},
-		onEdit( value ) {
-			this.editing = value;
+		clearEntries() {
+			this.loadingEntries = true;
+			this.entries = [];
+			this.next = null;
+			this.infinite = false;
+		},
+		clearSelected( editing = false ) {
+			this.editing = editing;
 			this.selected = [];
-			this.msgSelectedArticles = mw.msg( 'readinglists-selected-articles', 0, this.total );
+			this.updateMessages();
+		},
+		async onReady( options ) {
+			await this.getEntries( options );
+			this.ready = true;
+
+			document.addEventListener( 'scroll', () => {
+				if (
+					!this.error &&
+					!this.loadingInfo &&
+					!this.loadingEntries &&
+					this.infinite &&
+					this.next !== null &&
+					this.$refs.container.getBoundingClientRect().bottom < window.innerHeight
+				) {
+					this.getEntries();
+				}
+			} );
+		},
+		onRemoving() {
+			this.loadingInfo = true;
+		},
+		async onRemoved() {
+			await this.getEntries( null, true );
 		},
 		onSelected( id, value ) {
 			const idx = this.selected.indexOf( id );
@@ -242,51 +291,12 @@ module.exports = exports = {
 				this.selected.splice( idx, 1 );
 			}
 
-			this.msgSelectedArticles = mw.msg(
-				'readinglists-selected-articles',
-				this.selected.length,
-				this.total
-			);
-
-			this.msgRemoveConfirmation = mw.msg(
-				'readinglists-remove-confirmation',
-				this.selected.length,
-				this.title
-			);
+			this.updateMessages();
 		},
 		async onShowMore() {
 			this.infinite = true;
 			await this.getEntries();
 		}
-	},
-	async mounted() {
-		try {
-			const list = this.imported || await api.getList( this.listId );
-
-			if ( list.error !== undefined ) {
-				throw list.error;
-			}
-
-			this.title = list.name;
-			this.description = list.description;
-			this.total = list.size;
-			this.msgTotalArticles = mw.msg( 'readinglists-total-articles', list.size );
-		} catch ( err ) {
-			this.handleError( err );
-		} finally {
-			this.loadingInfo = false;
-		}
-
-		document.addEventListener( 'scroll', () => {
-			if (
-				!this.loadingEntries &&
-				this.infinite &&
-				this.next !== null &&
-				this.$refs.container.getBoundingClientRect().bottom < window.innerHeight
-			) {
-				this.getEntries();
-			}
-		} );
 	}
 };
 </script>

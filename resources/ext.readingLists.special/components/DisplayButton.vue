@@ -33,6 +33,10 @@ module.exports = exports = {
 		disabled: {
 			type: Boolean,
 			default: false
+		},
+		imported: {
+			type: Boolean,
+			default: false
 		}
 	},
 	emits: [ 'ready', 'changed' ],
@@ -55,7 +59,8 @@ module.exports = exports = {
 						{
 							value: 's:updated',
 							label: mw.msg( 'readinglists-display-sort-updated' ),
-							icon: cdxIconHistory
+							icon: cdxIconHistory,
+							disabled: props.imported
 						}
 					]
 				},
