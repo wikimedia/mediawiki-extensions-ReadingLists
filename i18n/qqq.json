@@ -13,7 +13,7 @@
 			"Verdy p"
 		]
 	},
-	"readinglists-desc": "{{desc|name=ReadingLists|url=https://www.mediawiki.org/wiki/Extension:ReadingLists}}",
+	"readinglists-desc": "{{desc|name=ReadingLists|url=https://www.mediawiki.org/wiki/Extension:ReadingLists}}\n\n\"Saved pages\" is {{msg-mw|Readinglists-default-title}}",
 	"readinglists-db-error-not-set-up": "Error message used when trying to perform an operation for a user without calling setup first.",
 	"readinglists-db-error-no-projects": "Error message used when no projects have been registered for use with the ReadingLists extension.",
 	"readinglists-db-error-already-set-up": "Error message used when trying to call setup for a user when it has already been performed.",
@@ -58,7 +58,7 @@
 	"readinglists-selected-articles": "Displays the number of articles selected out of the total count.\n\nParameters:\n* $1 - Selected articles count\n* $2 - Total articles count",
 	"readinglists-select-article": "Checkbox label for selecting an article in edit mode.",
 	"readinglists-remove": "Remove button label for Special:ReadingLists.",
-	"readinglists-remove-title": "Dialog title that is shown after clicking the Remove button.",
+	"readinglists-remove-title": "Dialog title that is shown after clicking the Remove button. Means \"confirmation of removal\".",
 	"readinglists-remove-confirmation": "Dialog message that is shown after clicking the Remove button.\n\nParameters:\n* $1 - Removed articles count\n* $2 - List name",
 	"readinglists-remove-success": "Message displayed when the user removed one or more articles from a reading list.\n\nParameters:\n* $1 - Removed articles count\n* $2 - List URL\n* $3 - List name",
 	"readinglists-show-more": "Show more button label for Special:ReadingLists.",
