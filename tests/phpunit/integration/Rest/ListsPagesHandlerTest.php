@@ -76,7 +76,7 @@ class ListsPagesHandlerTest extends \MediaWikiIntegrationTestCase {
 			],
 		];
 
-		$this->listIds = $this->addLists( $this->getAuthority()->getUser()->getId(), $newLists );
+		$this->listIds = $this->addLists( $this->getAuthority()->getUser()->getId(), $newLists )['lists'];
 	}
 
 	/**

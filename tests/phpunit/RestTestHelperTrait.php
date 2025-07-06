@@ -142,12 +142,16 @@ trait RestTestHelperTrait {
 	 * Creates reading_list rows from the given data, with some magic fields:
 	 * - missing user ids will be added automatically
 	 * - 'entries' (array of rows for reading_list_entry) will be converted into their own rows
-	 * @param int $userId Th central ID of the list owner
+	 * @param int $userId The central ID of the list owner
 	 * @param array[] $lists Array of rows for reading_list, with some magic fields
-	 * @return array The list IDs
+	 * @return array The list and entry IDs
 	 */
 	private function addLists( $userId, array $lists ) {
-		$listIds = [];
+		$ids = [
+			'lists' => [],
+			'entries' => [],
+		];
+
 		foreach ( $lists as $list ) {
 			if ( !isset( $list['rl_user_id'] ) ) {
 				$list['rl_user_id'] = $userId;
@@ -170,11 +174,11 @@ trait RestTestHelperTrait {
 				->execute();
 			$listId = $this->getDb()->insertId();
 			if ( $entries !== null ) {
-				$this->addListEntries( $listId, $list['rl_user_id'], $entries );
+				$ids['entries'] += $this->addListEntries( $listId, $list['rl_user_id'], $entries );
 			}
-			$listIds[$list['rl_name']] = $listId;
+			$ids['lists'][$list['rl_name']] = $listId;
 		}
-		return $listIds;
+		return $ids;
 	}
 
 	/**
@@ -182,11 +186,11 @@ trait RestTestHelperTrait {
 	 * - missing list ids will be filled automatically
 	 * - 'rlp_project' will be handled appropriately
 	 * @param int $listId The list to add entries to
-	 * @param int $userId Th central ID of the list owner
+	 * @param int $userId The central ID of the list owner
 	 * @param array[] $entries Array of rows for reading_list_entry, with some magic fields
-	 * @return array The list entry IDs
+	 * @return array The list entry IDs, indexed by entry title. Unreliable with duplicate titles.
 	 */
-	private function addListEntries( $listId, $userId, array $entries ) {
+	private function addListEntries( int $listId, int $userId, array $entries ): array {
 		$entryIds = [];
 		foreach ( $entries as $entry ) {
 			if ( !isset( $entry['rle_rl_id'] ) ) {
@@ -212,7 +216,7 @@ trait RestTestHelperTrait {
 				->caller( __METHOD__ )
 				->execute();
 			$entryId = $this->getDb()->insertId();
-			$entryIds[] = $entryId;
+			$entryIds[$entry['rle_title']] = $entryId;
 		}
 		$entryCount = $this->getDb()->newSelectQueryBuilder()
 			->select( '*' )
@@ -281,6 +285,27 @@ trait RestTestHelperTrait {
 		$this->assertIsReadingListTimestamp( $list['created'] );
 		$this->assertArrayHasKey( 'updated', $list );
 		$this->assertIsReadingListTimestamp( $list['updated'] );
+	}
+
+	/**
+	 * @param array $entry
+	 * @param int $entryId
+	 * @param string $project
+	 * @param string $title
+	 * @return void
+	 */
+	private function checkReadingListEntry( array $entry, int $entryId, string $project, string $title ): void {
+		$this->assertArrayHasKey( 'id', $entry );
+		$this->assertSame( $entryId, $entry['id'] );
+		$this->assertIsInt( $entry['id'] );
+		$this->assertArrayHasKey( 'project', $entry );
+		$this->assertSame( $entry['project'], $project );
+		$this->assertArrayHasKey( 'title', $entry );
+		$this->assertSame( $entry['title'], $title );
+		$this->assertArrayHasKey( 'created', $entry );
+		$this->assertIsReadingListTimestamp( $entry['created'] );
+		$this->assertArrayHasKey( 'updated', $entry );
+		$this->assertIsReadingListTimestamp( $entry['updated'] );
 	}
 
 	private function readingListsSetup(): object {

@@ -28,7 +28,10 @@ use Wikimedia\Rdbms\LBFactory;
  * This is because the child classes would need to override run() with different signatures.
  */
 class ListsHandler extends Handler {
-	use ReadingListsHandlerTrait;
+	// Some handlers (ex. ListsChangesSinceHandler) may need to extend the default "next" behavior
+	use ReadingListsHandlerTrait {
+		decodeNext as protected traitDecodeNext;
+	}
 	use ReadingListsTokenAwareHandlerTrait;
 
 	private LBFactory $dbProvider;
@@ -97,8 +100,6 @@ class ListsHandler extends Handler {
 	 * @return array
 	 */
 	protected function getLists( array $params ): array {
-		$result = [];
-
 		$this->checkAuthority( $this->getAuthority() );
 
 		$params['sort'] = self::$sortParamMap[$params['sort']];
@@ -108,22 +109,8 @@ class ListsHandler extends Handler {
 		// timestamp from before querying the DB
 		$timestamp = new DateTime( 'now', new DateTimeZone( 'GMT' ) );
 
-		// perform database query and get results
-		$res = $this->doGetLists( $params );
-
-		$lists = [];
-		foreach ( $res as $i => $row ) {
-			'@phan-var ReadingListRow $row';
-			$item = $this->getResultItem( $row );
-			if ( $i >= $params['limit'] ) {
-				// We reached the extra row. Create and return a "next" value that the client
-				// can send with a subsequent request for pagination.
-				$result['next'] = $this->makeNext( $item, $params['sort'], $item['name'] );
-				break;
-			}
-			$lists[$i] = $item;
-		}
-		$result['lists'] = $lists;
+		// get processed list data and add to response
+		$result = $this->getListsData( $params );
 
 		// Add a timestamp that, when used in the date parameter in the \lists
 		// and \entries endpoints, guarantees that no change will be skipped (at the
@@ -142,6 +129,35 @@ class ListsHandler extends Handler {
 			$result['continue-from'] = $syncTimestamp;
 		}
 
+		return $result;
+	}
+
+	/**
+	 * Common function for getting processed data for Reading Lists responses.
+	 *
+	 * @param array $params all parameters (path and query)
+	 * @return array
+	 */
+	protected function getListsData( array $params ): array {
+		$result = [];
+
+		// perform database query and get results
+		$res = $this->doGetLists( $params );
+
+		$lists = [];
+		foreach ( $res as $i => $row ) {
+			'@phan-var ReadingListRow $row';
+			$item = $this->getResultItem( $row );
+			if ( $i >= $params['limit'] ) {
+				// We reached the extra row. Create and return a "next" value that the client
+				// can send with a subsequent request for pagination.
+				$result['next'] = $this->makeNext( $item, $params['sort'], $item['name'] );
+				break;
+			}
+			$lists[$i] = $item;
+		}
+
+		$result['lists'] = $lists;
 		return $result;
 	}
 
@@ -167,7 +183,7 @@ class ListsHandler extends Handler {
 
 	/**
 	 * Transform a row into an API result item
-	 * @param ReadingListRow $row List row, with additions from addExtraData().
+	 * @param ReadingListRow $row List row
 	 * @return array
 	 */
 	private function getResultItem( $row ): array {

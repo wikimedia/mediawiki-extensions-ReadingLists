@@ -105,7 +105,7 @@ trait ReadingListsHandlerTrait {
 	 * @param ReadingListEntryRow|ReadingListEntryRowWithMergeFlag $row
 	 * @return array
 	 */
-	private function getListEntryFromRow( $row ) {
+	protected function getListEntryFromRow( $row ) {
 		$item = [
 			'id' => (int)$row->rle_id,
 			'listId' => (int)$row->rle_rl_id,

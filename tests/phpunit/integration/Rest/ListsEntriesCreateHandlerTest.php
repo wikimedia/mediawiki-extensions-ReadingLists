@@ -76,7 +76,7 @@ class ListsEntriesCreateHandlerTest extends \MediaWikiIntegrationTestCase {
 			],
 		];
 
-		$this->listIds = $this->addLists( $this->getAuthority()->getUser()->getId(), $newLists );
+		$this->listIds = $this->addLists( $this->getAuthority()->getUser()->getId(), $newLists )['lists'];
 	}
 
 	/**
@@ -105,16 +105,7 @@ class ListsEntriesCreateHandlerTest extends \MediaWikiIntegrationTestCase {
 
 		$this->assertArrayHasKey( 'id', $data );
 		$this->assertArrayHasKey( 'entry', $data );
-		$this->assertArrayHasKey( 'id', $data['entry'] );
-		$this->assertSame( $data['id'], $data['entry']['id'] );
-		$this->assertArrayHasKey( 'project', $data['entry'] );
-		$this->assertSame( $data['entry']['project'], $project );
-		$this->assertArrayHasKey( 'title', $data['entry'] );
-		$this->assertSame( $data['entry']['title'], $title );
-		$this->assertArrayHasKey( 'created', $data['entry'] );
-		$this->assertIsReadingListTimestamp( $data['entry']['created'] );
-		$this->assertArrayHasKey( 'updated', $data['entry'] );
-		$this->assertIsReadingListTimestamp( $data['entry']['updated'] );
+		$this->checkReadingListEntry( $data['entry'], $data['id'], $project, $title );
 	}
 
 	public static function createSuccessProvider() {

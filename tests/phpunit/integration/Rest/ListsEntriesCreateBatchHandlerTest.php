@@ -76,7 +76,7 @@ class ListsEntriesCreateBatchHandlerTest extends \MediaWikiIntegrationTestCase {
 			],
 		];
 
-		$this->listIds = $this->addLists( $this->getAuthority()->getUser()->getId(), $newLists );
+		$this->listIds = $this->addLists( $this->getAuthority()->getUser()->getId(), $newLists )['lists'];
 	}
 
 	/**
@@ -114,16 +114,9 @@ class ListsEntriesCreateBatchHandlerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertIsArray( $data['entries'] );
 		$this->assertCount( 2, $data['entries'] );
 		for ( $i = 0; $i < 2; $i++ ) {
-			$this->assertArrayHasKey( 'id', $data['entries'][$i] );
-			$this->assertSame( $data['batch'][$i]['id'], $data['entries'][$i]['id'] );
-			$this->assertArrayHasKey( 'project', $data['entries'][$i] );
-			$this->assertSame( $expectedProjects[$i], $data['entries'][$i]['project'] );
-			$this->assertArrayHasKey( 'title', $data['entries'][$i] );
-			$this->assertSame( $expectedTitles[$i], $data['entries'][$i]['title'] );
-			$this->assertArrayHasKey( 'created', $data['entries'][$i] );
-			$this->assertIsReadingListTimestamp( $data['entries'][$i]['created'] );
-			$this->assertArrayHasKey( 'updated', $data['entries'][$i] );
-			$this->assertIsReadingListTimestamp( $data['entries'][$i]['updated'] );
+			$this->checkReadingListEntry(
+				$data['entries'][$i], $data['batch'][$i]['id'], $expectedProjects[$i], $expectedTitles[$i]
+			);
 		}
 	}
 

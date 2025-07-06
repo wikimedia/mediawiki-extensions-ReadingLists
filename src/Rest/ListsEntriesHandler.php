@@ -83,8 +83,6 @@ class ListsEntriesHandler extends SimpleHandler {
 	 * @return array
 	 */
 	public function run( int $id ) {
-		$resultPageSet = null;
-
 		// The parameters are somewhat different between the RESTBase contract for this endpoint
 		// and the Action API endpoint that it forwards to. We mostly follow the RESTBase naming
 		// herein, and note where we differ from that.
@@ -134,8 +132,6 @@ class ListsEntriesHandler extends SimpleHandler {
 		}
 
 		'@phan-var stdClass[] $res';
-		$titles = [];
-		$fits = true;
 		foreach ( $res as $i => $row ) {
 			// @phan-suppress-next-line PhanTypeMismatchArgument
 			$item = $this->getListEntryFromRow( $row );
@@ -143,19 +139,7 @@ class ListsEntriesHandler extends SimpleHandler {
 				$result['next'] = $this->makeNext( $item, $sort, $item['title'] );
 				break;
 			}
-			if ( $resultPageSet ) {
-				// @phan-suppress-next-line PhanTypeMismatchArgument
-				$titles[] = $this->getResultTitle( $row );
-			} else {
-				$result['entries'][] = $item;
-			}
-			if ( !$fits ) {
-				$result['next'] = $this->makeNext( $item, $sort, $item['title'] );
-				break;
-			}
-		}
-		if ( $resultPageSet ) {
-			$resultPageSet->populateFromTitles( $titles );
+			$result['entries'][] = $item;
 		}
 
 		return $result;

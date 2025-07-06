@@ -257,31 +257,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 		$this->executeReadingListsHandler( $handler, $request, false );
 	}
 
-	/**
-	 * @param array $entry
-	 * @param int $entryId
-	 * @param string $project
-	 * @param string $title
-	 * @return void
-	 */
-	private function checkReadingListEntry(
-		array $entry, int $entryId, string $project, string $title
-	) {
-		$this->assertIsArray( $entry );
-		$this->assertArrayHasKey( 'id', $entry );
-		$this->assertIsInt( $entry['id'] );
-		$this->assertSame( $entryId, $entry['id'] );
-
-		$this->assertArrayHasKey( 'project', $entry );
-		$this->assertSame( $project, $entry['project'] );
-		$this->assertArrayHasKey( 'title', $entry );
-		$this->assertSame( $title, $entry['title'] );
-		$this->assertArrayHasKey( 'created', $entry );
-		$this->assertIsReadingListTimestamp( $entry['created'] );
-		$this->assertArrayHasKey( 'updated', $entry );
-		$this->assertIsReadingListTimestamp( $entry['updated'] );
-	}
-
 	protected function tearDown(): void {
 		parent::tearDown();
 		$this->readingListsTeardown();

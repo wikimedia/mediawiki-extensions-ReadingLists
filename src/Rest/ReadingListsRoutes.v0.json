@@ -4,7 +4,7 @@
 	"moduleId": "readinglists/v0",
 	"info": {
 		"title": "ReadingLists REST API",
-		"version": "0.1.0"
+		"version": "0.1.1"
 	},
 	"paths": {
 		"/lists/setup": {

@@ -14,7 +14,7 @@ use MediaWiki\Rest\RequestData;
 class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 	use RestTestHelperTrait;
 
-	private array $listIds;
+	private array $ids;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -42,9 +42,16 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 				'entries' => [
 					[
 						'rlp_project' => 'foo',
-						'rle_title' => 'Dog',
+						'rle_title' => 'Poodle',
 						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20150101000000',
+						'rle_date_updated' => $lastUpdateYesterday,
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'foo',
+						'rle_title' => 'Hound',
+						'rle_date_created' => '20110101000000',
+						'rle_date_updated' => $lastUpdateToday,
 						'rle_deleted' => 0,
 					],
 				],
@@ -76,7 +83,7 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 			],
 		];
 
-		$this->listIds = $this->addLists( $this->getAuthority()->getUser()->getId(), $newLists );
+		$this->ids = $this->addLists( $this->getAuthority()->getUser()->getId(), $newLists );
 	}
 
 	/**
@@ -98,7 +105,11 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 
 		$this->assertArrayHasKey( 'lists', $data );
 		$this->assertIsArray( $data['lists'] );
-		$this->assertSameSize( $expected, $data['lists'] );
+		$this->assertSameSize( $expected['lists'], $data['lists'] );
+
+		$this->assertArrayHasKey( 'entries', $data );
+		$this->assertIsArray( $data['entries'] );
+		$this->assertSameSize( $expected['entries'], $data['entries'] );
 
 		// Pagination parameter "next" should only appear if pagination is possible
 		if ( $paginating ) {
@@ -111,14 +122,25 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 		// These tests all match that criteria, so continue-from should always be present.
 		$this->assertArrayHasKey( 'continue-from', $data );
 
-		for ( $i = 0; $i < count( $expected ); $i++ ) {
+		for ( $i = 0; $i < count( $expected['lists'] ); $i++ ) {
 			$this->assertIsArray( $data['lists'][$i] );
 			$this->checkReadingList(
 				$data['lists'][$i],
-				$this->listIds[$expected[$i]['name']],
-				$expected[$i]['name'],
-				$expected[$i]['description'],
-				$expected[$i]['isDefault']
+				$this->ids['lists'][$expected['lists'][$i]['name']],
+				$expected['lists'][$i]['name'],
+				$expected['lists'][$i]['description'],
+				$expected['lists'][$i]['isDefault']
+			);
+		}
+
+		for ( $i = 0; $i < count( $expected['entries'] ); $i++ ) {
+			$expectedEntry = $expected['entries'][$i];
+			$this->assertIsArray( $data['entries'][$i] );
+			$this->checkReadingListEntry(
+				$data['entries'][$i],
+				$this->ids['entries'][$expectedEntry['title']],
+				'foo',
+				$expectedEntry['title'],
 			);
 		}
 	}
@@ -132,8 +154,14 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 				[ 'date' => $changedSince ],
 				[],
 				[
-					[ 'name' => 'cats', 'description' => 'Meow!', 'isDefault' => false ],
-					[ 'name' => 'dogs', 'description' => 'Woof!', 'isDefault' => false ],
+					'lists' => [
+						[ 'name' => 'cats', 'description' => 'Meow!', 'isDefault' => false ],
+						[ 'name' => 'dogs', 'description' => 'Woof!', 'isDefault' => false ],
+					],
+					'entries' => [
+						[ 'title' => 'Poodle' ],
+						[ 'title' => 'Hound' ],
+					]
 				],
 				false
 			],
@@ -141,7 +169,12 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 				[ 'date' => $changedSince ],
 				[ 'limit' => 1 ],
 				[
-					[ 'name' => 'cats', 'description' => 'Meow!', 'isDefault' => false ],
+					'lists' => [
+						[ 'name' => 'cats', 'description' => 'Meow!', 'isDefault' => false ],
+					],
+					'entries' => [
+						[ 'title' => 'Poodle' ],
+					]
 				],
 				true
 			],
@@ -149,7 +182,12 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 				[ 'date' => $changedSince ],
 				[ 'limit' => 1, 'sort' => 'updated' ],
 				[
-					[ 'name' => 'cats', 'description' => 'Meow!', 'isDefault' => false ],
+					'lists' => [
+						[ 'name' => 'cats', 'description' => 'Meow!', 'isDefault' => false ],
+					],
+					'entries' => [
+						[ 'title' => 'Poodle' ],
+					]
 				],
 				true
 			],
@@ -157,7 +195,12 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 				[ 'date' => $changedSince ],
 				[ 'limit' => 1, 'sort' => 'updated', 'dir' => 'ascending' ],
 				[
-					[ 'name' => 'cats', 'description' => 'Meow!', 'isDefault' => false ],
+					'lists' => [
+						[ 'name' => 'cats', 'description' => 'Meow!', 'isDefault' => false ],
+					],
+					'entries' => [
+						[ 'title' => 'Poodle' ],
+					]
 				],
 				true
 			],
@@ -165,31 +208,12 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 				[ 'date' => $changedSince ],
 				[ 'limit' => 1, 'sort' => 'updated', 'dir' => 'descending' ],
 				[
-					[ 'name' => 'dogs', 'description' => 'Woof!', 'isDefault' => false ],
-				],
-				true
-			],
-			[
-				[ 'date' => $changedSince ],
-				[ 'limit' => 1, 'sort' => 'name' ],
-				[
-					[ 'name' => 'cats', 'description' => 'Meow!', 'isDefault' => false ],
-				],
-				true
-			],
-			[
-				[ 'date' => $changedSince ],
-				[ 'limit' => 1, 'sort' => 'name', 'dir' => 'ascending' ],
-				[
-					[ 'name' => 'cats', 'description' => 'Meow!', 'isDefault' => false ],
-				],
-				true
-			],
-			[
-				[ 'date' => $changedSince ],
-				[ 'limit' => 1, 'sort' => 'name', 'dir' => 'descending' ],
-				[
-					[ 'name' => 'dogs', 'description' => 'Woof!', 'isDefault' => false ],
+					'lists' => [
+						[ 'name' => 'dogs', 'description' => 'Woof!', 'isDefault' => false ],
+					],
+					'entries' => [
+						[ 'title' => 'Hound' ],
+					]
 				],
 				true
 			],
@@ -216,10 +240,16 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertIsArray( $data['lists'] );
 		$this->checkReadingList(
 			$data['lists'][0],
-			$this->listIds['cats'],
+			$this->ids['lists']['cats'],
 			'cats',
 			'Meow!',
 			false
+		);
+		$this->checkReadingListEntry(
+			$data['entries'][0],
+			$this->ids['entries']['Poodle'],
+			'foo',
+			'Poodle'
 		);
 
 		// Use a separate handler instance. This avoids double-initialization errors, and also
@@ -240,10 +270,16 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertIsArray( $data['lists'] );
 		$this->checkReadingList(
 			$data['lists'][0],
-			$this->listIds['dogs'],
+			$this->ids['lists']['dogs'],
 			'dogs',
 			'Woof!',
 			false
+		);
+		$this->checkReadingListEntry(
+			$data['entries'][0],
+			$this->ids['entries']['Hound'],
+			'foo',
+			'Hound'
 		);
 	}
 
@@ -278,6 +314,10 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 			'invalid sort param' => [
 				[ 'date' => $changedSince ],
 				[ 'sort' => 'foo' ]
+			],
+			'invalid sort param (sort by name not allowed for this endpoint)' => [
+				[ 'date' => $changedSince ],
+				[ 'sort' => 'name' ]
 			],
 			'invalid dir param' => [
 				[ 'date' => $changedSince ],
