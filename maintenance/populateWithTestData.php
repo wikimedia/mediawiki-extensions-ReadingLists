@@ -80,7 +80,7 @@ class PopulateWithTestData extends Maintenance {
 					->set( [ 'rl_description' => __FILE__ ] )
 					->where( [ 'rl_user_id' => $centralId, 'rl_is_default' => 1 ] )
 					->caller( __METHOD__ )->execute();
-			} catch ( ReadingListRepositoryException $e ) {
+			} catch ( ReadingListRepositoryException ) {
 				// Instead of trying to find a user ID that's not used yet, we'll be lazy
 				// and just ignore "already set up" errors.
 			}
