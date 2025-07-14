@@ -7,9 +7,11 @@ use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Maintenance\Maintenance;
 use Wikimedia\Rdbms\IDatabase;
 
+// @codeCoverageIgnoreStart
 require_once getenv( 'MW_INSTALL_PATH' ) !== false
 	? getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php'
 	: __DIR__ . '/../../../maintenance/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Fill the database with test data, or remove it.
@@ -95,5 +97,7 @@ class FixListSize extends Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = FixListSize::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

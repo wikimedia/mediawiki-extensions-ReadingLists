@@ -5,9 +5,11 @@ namespace MediaWiki\Extension\ReadingLists\Maintenance;
 use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Maintenance\Maintenance;
 
+// @codeCoverageIgnoreStart
 require_once getenv( 'MW_INSTALL_PATH' ) !== false
 	? getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php'
 	: __DIR__ . '/../../../maintenance/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Maintenance script for purging unneeded DB rows (deleted lists/entries or orphaned sortkeys).
@@ -46,5 +48,7 @@ class Purge extends Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = Purge::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

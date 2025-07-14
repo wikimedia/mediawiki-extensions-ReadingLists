@@ -7,9 +7,11 @@ use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Extension\SiteMatrix\SiteMatrix;
 use MediaWiki\Maintenance\Maintenance;
 
+// @codeCoverageIgnoreStart
 require_once getenv( 'MW_INSTALL_PATH' ) !== false
 	? getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php'
 	: __DIR__ . '/../../../maintenance/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Maintenance script for populating the reading_list_project table.
@@ -99,5 +101,7 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = PopulateProjectsFromSiteMatrix::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd
