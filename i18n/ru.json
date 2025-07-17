@@ -28,7 +28,7 @@
 	"readinglists-db-error-list-limit": "Пользователи не могут иметь более $1 {{PLURAL:$1|списка|списков}}.",
 	"readinglists-db-error-entry-limit": "Список $1 не может содержать более $2 {{PLURAL:$2|записи|записей}}.",
 	"readinglists-db-error-too-long": "Значение для поля $1 не может быть длиннее $2 байт.",
-	"readinglists-browser-add-entry-success": "«$1» сохранена в ваш список чтения",
+	"readinglists-browser-add-entry-success": "Страница [[$1|$2]] добавлена в [[$3|$4]].",
 	"readinglists-browser-login-prompt": "Войдите, чтобы сохранять статьи",
 	"readinglists-browser-error-intro": "Произошла ошибка:$1",
 	"readinglists-browser-enable-sync-prompt": "Включите синхронизацию в приложении Википедии, чтобы начать сохранять статьи",
