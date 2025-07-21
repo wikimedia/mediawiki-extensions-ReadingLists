@@ -6,5 +6,7 @@
 	},
 	"apierror-readinglists-batch-invalid-json": "<var>batch</var> параметрна JSON нийса йац: $1",
 	"apihelp-query+readinglists-param-list": "МогӀаман ID.",
+	"apihelp-readinglists+update-param-description": "МогӀамах лаьцна керла хаам.",
+	"apihelp-readinglists+delete-example-2": "Массийта могӀам дӀабаккха.",
 	"apihelp-readinglists+createentry-param-list": "МогӀаман ID."
 }
