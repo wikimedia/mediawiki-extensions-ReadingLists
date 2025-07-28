@@ -2,9 +2,34 @@
 	"@metadata": {
 		"authors": [
 			"Winston Sung",
-			"H78c67c"
+			"H78c67c",
+			"JeffreyKim"
 		]
 	},
+	"readinglists-db-error-not-set-up": "尚未為呢個使用者設定閱讀清單。",
+	"readinglists-db-error-already-set-up": "已經為呢個用戶設定咗閱讀清單。",
+	"readinglists-db-error-cannot-delete-default-list": "刪除唔到預設清單。",
+	"readinglists-db-error-cannot-update-default-list": "預設清單更新唔到。",
+	"readinglists-db-error-no-such-list": "清單$1唔存在。",
+	"readinglists-db-error-no-such-list-entry": "清單條目 $1 唔存在。",
+	"readinglists-db-error-not-own-list": "清單 $1 屬於另一個用戶。",
+	"readinglists-db-error-not-own-list-entry": "清單條目 $1 屬於另一個用戶。",
+	"readinglists-db-error-list-deleted": "清單 $1 已經刪除咗。",
+	"readinglists-db-error-list-entry-deleted": "清單條目 $1 已經刪除咗。",
+	"readinglists-db-error-duplicate-list": "呢個名嘅清單已經存在。",
+	"readinglists-db-error-duplicate-page": "呢個清單已經包含呢個頁面。",
+	"readinglists-db-error-empty-list-ids": "清單 ids 參數唔可以係空嘅。",
+	"readinglists-db-error-user-required": "如果唔指定用戶，就唔可以調用呢個方法。",
+	"readinglists-db-error-list-limit": "用戶唔可以有超過 $1{{PLURAL:$1|list|lists}}。",
+	"readinglists-db-error-entry-limit": "列出 $1 唔可以有超過 $2{{PLURAL:$2|entry|條目}}。",
+	"readinglists-db-error-too-long": "欄位 $1 嘅值唔可以長過 $2 字節。",
+	"readinglists-db-error-no-such-project": "'$1'唔係一個公認嘅項目。",
 	"readinglists-browser-add-entry-success": "$1儲存咗去你嘅閲讀一覽",
-	"readinglists-browser-login-prompt": "簽到之後儲存文章"
+	"readinglists-browser-login-prompt": "簽到嚟儲存文章",
+	"readinglists-browser-error-intro": "發生咗個錯誤： $1",
+	"readinglists-browser-enable-sync-prompt": "喺維基百科應用程式上面啟用同步功能，就可以開始儲存文章",
+	"readinglists-browser-extension-info-link-text": "知多啲",
+	"readinglists-browser-list-entry-limit-exceeded": "文章儲存唔到。你已經達到每個清單嘅 $1 文章上限",
+	"readinglists-browser-extension-product-title": "維基百科閱讀清單",
+	"readinglists-browser-page-not-supported": "$1 唔支援呢個頁面"
 }
