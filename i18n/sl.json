@@ -42,6 +42,7 @@
 	"special-tab-readinglists-short": "Vaši seznami",
 	"readinglists-default-title": "Shranjene strani",
 	"readinglists-default-description": "Privzeti seznam za vaše shranjene članke",
+	"readinglists-display-sort-name": "Ime",
 	"action-action-readinglist-private": "branje bralnih seznamov drugih uporabnikov",
 	"readinglists-empty-message": "Nimate seznamov; zakaj ne bi enega ustvarili?",
 	"readinglists-list-empty-message": "Na tem seznamu ni nobene strani. Če želite na ta bralni seznam dodati predmete, prenesite in uporabite našo aplikacijo.",
