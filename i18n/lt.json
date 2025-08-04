@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Nokeoo"
+			"Nokeoo",
+			"Tomasdd"
 		]
 	},
 	"readinglists-desc": "Leidžia naudotojams tvarkyti privačius straipsnių sąrašus, pvz., žymes ar skaitymo vėliau sąrašus.",
@@ -33,7 +34,7 @@
 	"readinglists-browser-page-not-supported": "$1 nepalaiko šio puslapio",
 	"readinglists-special-title": "Skaitymo sąrašai",
 	"readinglists-description": "Visi jūsų skaitymo sąrašai vienoje vietoje.",
-	"readinglists-loading": "Prašome palaukti…",
+	"readinglists-loading": "Prašome palaukti...",
 	"reading-list-purpose": "Prisijunkite, kad pamatytumėte savo privačius skaitymo sąrašus.",
 	"readinglists-error": "Jūsų naršyklė negali naudoti skaitymo sąrašų funkcijos. Įgalinkite „JavaScript“ arba bandykite kitoje naršyklėje.",
 	"readinglists-import-error": "Nepavyko parodyti sąrašo iš pateiktų duomenų.",
@@ -48,7 +49,7 @@
 	"readinglists-export": "Dalintis sąrašu",
 	"readinglists-import-app-misconfigured": "Ši interneto svetainė šiuo metu nepalaiko sąrašų importavimo.",
 	"readinglists-import-disclaimer": "Šios svetainės naudotojas sukūrė skaitymo sąrašą, kad galėtų pasidalinti su kitais (tikriausiai su jumis). Jis nėra moderuojamas ir jo turinys neatspindi svetainės redaktorių.",
-	"readinglists-import-button-label": "Žiūrėti sąrašą",
+	"readinglists-import-button-label": "Atidaryti programoje",
 	"readinglists-import-button-hint": "Paspauskite mygtuką:",
 	"readinglists-share-url-notify": "Informacija, susijusi su šiuo skaitymo sąrašu, buvo nukopijuota į jūsų iškarpinę.",
 	"readinglists-import-app-launch-hint": "Įsitikinkite, kad įdiegta naujausia programėlės versija."
