@@ -5,7 +5,8 @@
 		"api-testing": "mocha --timeout 0 --recursive tests/api-testing",
 		"lint": "eslint --no-ignore --config tests/api-testing/.eslintrc.json tests/api-testing",
 		"test:unit": "jest --verbose",
-		"test": "grunt test && npm run test:unit"
+		"test": "grunt test && npm run test:unit",
+		"coverage": "npm run test:unit"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "7.25.4",
