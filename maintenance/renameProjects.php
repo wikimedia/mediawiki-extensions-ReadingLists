@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extension\ReadingLists\Maintenance;
 
+use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Maintenance\Maintenance;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Utils\UrlUtils;
@@ -29,7 +30,6 @@ require_once getenv( 'MW_INSTALL_PATH' ) !== false
 class RenameProjects extends Maintenance {
 
 	private const STATUS_ERROR = 'error';
-	private const STATUS_SKIPPED = 'skipped';
 	private const STATUS_UPDATED = 'updated';
 
 	private const MODE_FULL_URL = 'full-url';
@@ -70,6 +70,10 @@ class RenameProjects extends Maintenance {
 		$dryRun = $this->hasOption( 'dry-run' );
 		$batchSize = (int)$this->getOption( 'batch-size', 100 );
 
+		if ( $batchSize <= 0 ) {
+			$this->fatalError( 'Batch size must be a positive integer.' );
+		}
+
 		// Determine mode based on whether from and to are valid URLs
 		$fromParts = $this->urlUtils->parse( $from );
 		$toParts = $this->urlUtils->parse( $to );
@@ -102,7 +106,8 @@ class RenameProjects extends Maintenance {
 		$updated = 0;
 		$errors = 0;
 
-		$dbw = $this->getDB( DB_PRIMARY );
+		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+		$dbw = $lbFactory->getPrimaryDatabase( Utils::VIRTUAL_DOMAIN );
 		$projectCount = $dbw->selectRowCount(
 			'reading_list_project',
 			'*',
@@ -129,17 +134,15 @@ class RenameProjects extends Maintenance {
 				$errors += $batchStats['errors'];
 				$offset += $batchSize;
 
+				$this->commitTransactionRound( __METHOD__ );
+
 				if ( $batchStats['processed'] === 0 ) {
 					break;
-				}
-
-				if ( !$dryRun && $batchStats['updated'] > 0 ) {
-					$this->commitTransactionRound( __METHOD__ );
 				}
 			}
 
 		} catch ( Throwable $e ) {
-			$this->fatalError( "Error during update: " . $e->getMessage() );
+			$this->fatalError( 'Error during update: ' . $e->getMessage() );
 		}
 
 		return [
@@ -213,7 +216,7 @@ class RenameProjects extends Maintenance {
 			$this->error( "Invalid URL generated: $newUrl" );
 			return self::STATUS_ERROR;
 		}
-		$updateMessagePrefix = $dryRun ? "Project to update:" : "Updating project:";
+		$updateMessagePrefix = $dryRun ? 'Project to update:' : 'Updating project:';
 
 		$this->output( "$updateMessagePrefix {$row->rlp_id}: $oldUrl -> $newUrl\n" );
 
