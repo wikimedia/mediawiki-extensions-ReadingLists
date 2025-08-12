@@ -8,9 +8,9 @@
 			"Yueman"
 		]
 	},
-	"readinglists-desc": "畀使用者管理文章嘅私人清單，例如書籤或者「儲存頁面」清單。",
-	"readinglists-db-error-not-set-up": "尚未為呢個使用者設定閱讀清單。",
-	"readinglists-db-error-no-projects": "冇任何項目已經註冊咗嚟同 ReadingLists 一齊使用。使用 populateProjectsFromSiteMatrix 指令碼嚟註冊項目。",
+	"readinglists-desc": "畀用戶管理文章嘅私人清單，例如書籤或者「儲存頁面」清單。",
+	"readinglists-db-error-not-set-up": "仲未為呢個用戶設定閱讀清單。",
+	"readinglists-db-error-no-projects": "冇任何項目已經註冊咗嚟同 ReadingLists 一齊用。用 populateProjectsFromSiteMatrix 指令碼嚟註冊項目。",
 	"readinglists-db-error-already-set-up": "已經為呢個用戶設定咗閱讀清單。",
 	"readinglists-db-error-cannot-delete-default-list": "刪除唔到預設清單。",
 	"readinglists-db-error-cannot-update-default-list": "預設清單更新唔到。",
