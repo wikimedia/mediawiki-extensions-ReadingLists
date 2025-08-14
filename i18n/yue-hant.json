@@ -25,11 +25,11 @@
 	"readinglists-db-error-empty-list-ids": "清單 ids 參數唔可以係空嘅。",
 	"readinglists-db-error-user-required": "如果唔指定用戶，就唔可以調用呢個方法。",
 	"readinglists-db-error-list-limit": "用戶唔可以有超過$1{{PLURAL:$1|個清單}}。",
-	"readinglists-db-error-entry-limit": "列出 $1 唔可以有超過 $2{{PLURAL:$2|entry|個項目}}。",
+	"readinglists-db-error-entry-limit": "列出 $1 唔可以有超過 $2{{PLURAL:$2|個項目}}。",
 	"readinglists-db-error-too-long": "欄位 $1 嘅值唔可以長過 $2 字節。",
 	"readinglists-db-error-no-such-project": "「$1」唔係一個獲認可嘅項目。",
 	"readinglists-browser-add-entry-success": "[[$1|$2]]已經加咗去[[$3|$4]]。",
-	"readinglists-browser-remove-entry-success": "[[$1|$2]]已經移除咗[[$3|$4]].",
+	"readinglists-browser-remove-entry-success": "[[$1|$2]]已經由[[$3|$4]]度剷走咗。",
 	"readinglists-browser-login-prompt": "簽到嚟儲存文章",
 	"readinglists-browser-error-intro": "發生咗個錯誤： $1",
 	"readinglists-browser-enable-sync-prompt": "喺維基百科應用程式上面啟用同步功能，就可以開始儲存文章",
@@ -52,9 +52,9 @@
 	"readinglists-total-articles": "{{formatnum:$1}}{{plural:$1|篇文章}}",
 	"readinglists-selected-articles": "揀咗 {{formatnum:$2}}{{plural:$2|篇文}} 入面嘅 {{formatnum:$1}}篇",
 	"readinglists-select-article": "揀文章",
-	"readinglists-remove": "移除",
-	"readinglists-remove-title": "移除確認",
-	"readinglists-remove-confirmation": "你肯定你想喺 $2 入面移除{{formatnum:$1}}{{plural:$1|篇文章}}？",
+	"readinglists-remove": "剷走",
+	"readinglists-remove-title": "確認剷走",
+	"readinglists-remove-confirmation": "你肯定你想喺 $2 入面剷走{{formatnum:$1}}{{plural:$1|篇文章}}？",
 	"readinglists-remove-success": "{{formatnum:$1}}篇{{plural:$1|文章}}已經由[[$2|$3]]剷走咗。",
 	"readinglists-show-more": "睇多啲",
 	"readinglists-default-title": "儲存咗嘅頁面",
@@ -93,5 +93,5 @@
 	"readinglists-menu-item": "閱讀清單",
 	"readinglists-bookmark": "書籤",
 	"readinglists-add-bookmark": "加入書籤",
-	"readinglists-remove-bookmark": "移除書籤"
+	"readinglists-remove-bookmark": "剷走書籤"
 }
