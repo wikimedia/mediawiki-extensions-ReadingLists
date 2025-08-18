@@ -24,19 +24,35 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 		$this->setHeaders();
 		$this->outputHeader();
 
+		$req = $this->getRequest();
+		$exportFeature = $req->getText( 'limport' ) !== '' || $req->getText( 'lexport' ) !== '';
+
 		if ( !$this->getUser()->isNamed() ) {
 			$this->requireNamedUser();
 			return;
 		}
 
 		$output = $this->getOutput();
+		$config = $this->getConfig();
+
+		$anonymizedPreviews = $config->get( 'ReadingListsAnonymizedPreviews' );
+
+		if ( $exportFeature && $anonymizedPreviews ) {
+			$output->addHtmlClasses( 'readinglists-anonymized-previews' );
+		}
+
 		$output->setPageTitleMsg( $this->msg( 'readinglists-title' ) );
 		$output->addHTML( Html::errorBox(
 			$this->msg( 'readinglists-error' )->parse(),
 			'',
 			'reading-list__errorbox'
 		) );
-		$output->addHTML( '<div class="readinglists-container"></div>' );
+
+		$container = Html::element( 'div', [
+			'class' => 'readinglists-container'
+		] );
+
+		$output->addHTML( $container );
 		$output->addModuleStyles( [ 'ext.readingLists.special.styles' ] );
 		$output->addModules( [ 'ext.readingLists.special' ] );
 	}

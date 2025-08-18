@@ -198,7 +198,8 @@
 					"name": "config.json",
 					"config": [
 						"ReadingListAndroidAppDownloadLink",
-						"ReadingListiOSAppDownloadLink"
+						"ReadingListiOSAppDownloadLink",
+						"ReadingListsAnonymizedPreviews"
 					]
 				},
 				{
