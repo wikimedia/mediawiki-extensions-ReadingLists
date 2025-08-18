@@ -3,10 +3,11 @@
 		v-model:open="showImport"
 		:title="msgImportTitle"
 		:primary-action="{ actionType: 'progressive', label: msgImportButton }"
-		:default-action="{ label: msgCancel }"
-		:use-close-button="true"
+		:default-action="anonymizedPreviews ? null : { label: msgCancel }"
+		:use-close-button="!anonymizedPreviews"
 		@primary="onAppImport"
-		@default="showImport = false">
+		@default="showImport = false"
+		@update:open="onDialogClose">
 		<p>{{ msgImportDisclaimer }}</p>
 
 		<p>{{ msgImportApp }}</p>
@@ -28,7 +29,7 @@
 <script>
 const { ref } = require( 'vue' );
 const { CdxDialog } = require( '../../../codex.js' );
-const { ReadingListAndroidAppDownloadLink, ReadingListiOSAppDownloadLink } = require( '../../../config.json' );
+const { ReadingListAndroidAppDownloadLink, ReadingListiOSAppDownloadLink, ReadingListsAnonymizedPreviews } = require( '../../../config.json' );
 
 // @vue/component
 module.exports = exports = {
@@ -36,6 +37,7 @@ module.exports = exports = {
 	setup() {
 		return {
 			showImport: ref( true ),
+			anonymizedPreviews: ReadingListsAnonymizedPreviews,
 			androidDownloadLink: ReadingListAndroidAppDownloadLink,
 			iosDownloadLink: ReadingListiOSAppDownloadLink,
 			msgImportTitle: mw.msg( 'readinglists-special-title-imported' ),
@@ -53,6 +55,11 @@ module.exports = exports = {
 			deepLink.search = window.location.search;
 
 			window.open( deepLink.href, '_self' );
+		},
+		onDialogClose( isOpen ) {
+			if ( !isOpen && this.anonymizedPreviews ) {
+				this.showImport = true;
+			}
 		}
 	}
 };
