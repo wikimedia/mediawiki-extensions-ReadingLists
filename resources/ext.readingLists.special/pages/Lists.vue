@@ -56,6 +56,7 @@ module.exports = exports = {
 		ListItem,
 		DisplayButton
 	},
+
 	setup() {
 		return {
 			loadingLists: ref( true ),
