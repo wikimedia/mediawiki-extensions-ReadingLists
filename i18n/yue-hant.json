@@ -23,8 +23,8 @@
 	"readinglists-db-error-duplicate-page": "呢個清單已經包含呢個頁面。",
 	"readinglists-db-error-empty-list-ids": "清單 ids 參數唔可以係空嘅。",
 	"readinglists-db-error-user-required": "如果唔指定用戶，就唔可以調用呢個方法。",
-	"readinglists-db-error-list-limit": "用戶唔可以有超過 $1{{PLURAL:$1|list|lists}}。",
-	"readinglists-db-error-entry-limit": "列出 $1 唔可以有超過 $2{{PLURAL:$2|entry|個項目}}。",
+	"readinglists-db-error-list-limit": "用戶唔可以有超過$1{{PLURAL:$1|個清單}}。",
+	"readinglists-db-error-entry-limit": "列出 $1 唔可以有超過 $2{{PLURAL:$2|個項目}}。",
 	"readinglists-db-error-too-long": "欄位 $1 嘅值唔可以長過 $2 字節。",
 	"readinglists-db-error-no-such-project": "「$1」唔係一個獲認可嘅項目。",
 	"readinglists-browser-add-entry-success": "$1儲存咗去你嘅閲讀一覽",
@@ -41,7 +41,7 @@
 	"reading-list-purpose": "請簽到去睇你嘅私人閱讀清單。",
 	"reading-list-purpose-for-temp-user": "請開個戶口嚟建立私人閱讀清單。",
 	"readinglists-error": "你嘅瀏覽器用唔到閱讀清單功能。請啟用 JavaScript 或者試吓用其他瀏覽器。",
-	"readinglists-import-error": "顯示唔到所提供嘅資料入面嘅清單。",
+	"readinglists-import-error": "顯示唔到畀出嚟嘅資料入面嘅清單。",
 	"readinglists-import-size-error": "呢個清單太大，顯示唔到。",
 	"special-tab-readinglists-short": "你嘅清單",
 	"readinglists-default-title": "儲存咗嘅頁面",
@@ -65,5 +65,5 @@
 	"readinglists-menu-item": "閱讀清單",
 	"readinglists-bookmark": "書籤",
 	"readinglists-add-bookmark": "加入書籤",
-	"readinglists-remove-bookmark": "移除書籤"
+	"readinglists-remove-bookmark": "剷走書籤"
 }
