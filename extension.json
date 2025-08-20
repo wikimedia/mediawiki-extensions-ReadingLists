@@ -250,7 +250,8 @@
 			"useDataURI": false,
 			"icons": [
 				"bookmark",
-				"bookmarkOutline"
+				"bookmarkOutline",
+				"bookmarkList"
 			]
 		}
 	},

@@ -70,11 +70,9 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			'readinglists' => [
 				'text' => $sktemplate->msg( 'readinglists-menu-item' )->text(),
 				'href' => self::getDefaultReadingListUrl( $user, $repository ),
-				'icon' => 'bookmark'
+				'icon' => 'bookmarkList',
 			],
-		], 'watchlist' );
-
-		$this->hideWatchlistIcon( $sktemplate, $user, $links );
+		], 'mytalk' );
 
 		$output = $sktemplate->getOutput();
 		$output->addModules( 'ext.readingLists.bookmark.icons' );
@@ -102,8 +100,6 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		];
 
 		$output->addModules( 'ext.readingLists.bookmark' );
-
-		self::hideWatchIcon( $sktemplate, $links );
 	}
 
 	/**
@@ -131,37 +127,6 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 	 */
 	public static function isSkinSupported( $skinName ) {
 		return $skinName === 'vector-2022' || $skinName === 'minerva';
-	}
-
-	/**
-	 * Hide the watchlist link on mobile if the user has no edits and their watchlist is empty.
-	 * @see https://phabricator.wikimedia.org/T394562
-	 * @param SkinTemplate $sktemplate
-	 * @param UserIdentity $user
-	 * @param array &$links
-	 */
-	public function hideWatchlistIcon( $sktemplate, $user, &$links ) {
-		if (
-			$sktemplate->getSkinName() === 'minerva' &&
-			$this->userEditTracker->getUserEditCount( $user ) === 0
-		) {
-			unset( $links['user-menu']['watchlist'] );
-		}
-	}
-
-	/**
-	 * Hide the watch star if the current skin is Vector 2022 or Minerva.
-	 * @see https://phabricator.wikimedia.org/T394562
-	 * @param SkinTemplate $sktemplate
-	 * @param array &$links
-	 */
-	public static function hideWatchIcon( $sktemplate, &$links ) {
-		$skinName = $sktemplate->getSkinName();
-
-		if ( $skinName === 'vector-2022' || $skinName === 'minerva' ) {
-			unset( $links['actions']['watch'] );
-			unset( $links['actions']['unwatch'] );
-		}
 	}
 
 	/**
