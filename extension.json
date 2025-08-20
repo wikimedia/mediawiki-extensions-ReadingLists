@@ -227,7 +227,8 @@
 		},
 		"ext.readingLists.bookmark": {
 			"packageFiles": [
-				"resources/ext.readingLists.bookmark/index.js"
+				"resources/ext.readingLists.bookmark/index.js",
+				"resources/ext.readingLists.bookmark/bookmark.js"
 			],
 			"messages": [
 				"readinglists-add-bookmark",
