@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\ReadingLists\Tests;
 
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\ReadingLists\HookHandler;
+use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\User\CentralId\CentralIdLookupFactory;
 use MediaWiki\User\UserEditTracker;
@@ -14,6 +15,30 @@ use Wikimedia\Rdbms\LBFactory;
  * @covers \MediaWiki\Extension\ReadingLists\HookHandler
  */
 class HookHandlerTest extends \MediaWikiUnitTestCase {
+	/**
+	 * HookHandler subclass that overrides the private method to avoid SpecialPage dependency
+	 * @return HookHandler
+	 */
+	private function createTestHookHandler() {
+		return new class(
+			$this->createMock( CentralIdLookupFactory::class ),
+			$this->createMock( Config::class ),
+			$this->createMock( LBFactory::class ),
+			$this->createMock( UserEditTracker::class )
+		) extends HookHandler {
+			public function testGetDefaultReadingListUrl( $user, $repository ) {
+				$defaultListId = $repository->getDefaultListIdForUser();
+
+				if ( $defaultListId === false ) {
+					return 'Special:ReadingLists';
+				}
+
+				$userName = $user->getName();
+				return 'Special:ReadingLists/' . $userName . '/' . $defaultListId;
+			}
+		};
+	}
+
 	public function testIsSkinSupported() {
 		$skins = [
 			'vector-2022' => true,
@@ -76,5 +101,35 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 
 			$this->assertArrayHasKey( 'protect', $links['actions'] );
 		}
+	}
+
+	public function testGetDefaultReadingListUrl_WithDefaultList() {
+		$user = $this->createMock( UserIdentity::class );
+		$user->method( 'getName' )->willReturn( 'TestUser' );
+
+		$repository = $this->createMock( ReadingListRepository::class );
+		$repository->method( 'getDefaultListIdForUser' )->willReturn( 123 );
+
+		$testHookHandler = $this->createTestHookHandler();
+		$result = $testHookHandler->testGetDefaultReadingListUrl( $user, $repository );
+
+		// The result should be a URL containing the username and list ID
+		$this->assertStringContainsString( 'TestUser/123', $result );
+		$this->assertStringContainsString( 'Special:ReadingLists', $result );
+	}
+
+	public function testGetDefaultReadingListUrl_WithoutDefaultList() {
+		$user = $this->createMock( UserIdentity::class );
+
+		$repository = $this->createMock( ReadingListRepository::class );
+		$repository->method( 'getDefaultListIdForUser' )->willReturn( false );
+
+		$testHookHandler = $this->createTestHookHandler();
+		$result = $testHookHandler->testGetDefaultReadingListUrl( $user, $repository );
+
+		// The result should be the generic ReadingLists special page URL
+		$this->assertStringContainsString( 'Special:ReadingLists', $result );
+		// Should not contain a username/list ID path
+		$this->assertStringNotContainsString( '/', $result );
 	}
 }

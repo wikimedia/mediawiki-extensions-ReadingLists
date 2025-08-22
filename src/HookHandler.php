@@ -60,10 +60,16 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			return;
 		}
 
+		$repository = new ReadingListRepository(
+			$this->centralIdLookupFactory->getLookup()
+				->centralIdFromLocalUser( $user ),
+			$this->dbProvider
+		);
+
 		$links['user-menu'] = wfArrayInsertAfter( $links['user-menu'], [
 			'readinglists' => [
 				'text' => $sktemplate->msg( 'readinglists-menu-item' )->text(),
-				'href' => SpecialPage::getTitleFor( 'ReadingLists' )->getLinkURL(),
+				'href' => $this->getDefaultReadingListUrl( $user, $repository ),
 				'icon' => 'bookmark'
 			],
 		], 'watchlist' );
@@ -76,12 +82,6 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		if ( !$output->isArticle() ) {
 			return;
 		}
-
-		$repository = new ReadingListRepository(
-			$this->centralIdLookupFactory->getLookup()
-				->centralIdFromLocalUser( $user ),
-			$this->dbProvider
-		);
 
 		$list = $repository->setupForUser( true );
 		$entry = $repository->getListsByPage(
@@ -103,6 +103,23 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		$output->addModules( 'ext.readingLists.bookmark' );
 
 		self::hideWatchIcon( $sktemplate, $links );
+	}
+
+	/**
+	 * Get the URL for the user's default reading list or fallback to generic page
+	 * @param UserIdentity $user
+	 * @param ReadingListRepository $repository
+	 * @return string
+	 */
+	private function getDefaultReadingListUrl( UserIdentity $user, ReadingListRepository $repository ): string {
+		$defaultListId = $repository->getDefaultListIdForUser();
+
+		if ( $defaultListId === false ) {
+			return SpecialPage::getTitleFor( 'ReadingLists' )->getLinkURL();
+		}
+
+		$userName = $user->getName();
+		return SpecialPage::getTitleFor( 'ReadingLists', $userName . '/' . $defaultListId )->getLinkURL();
 	}
 
 	/**
