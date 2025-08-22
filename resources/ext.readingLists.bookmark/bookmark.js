@@ -49,6 +49,21 @@ module.exports = function initBookmark( bookmark, isMinerva ) {
 	}
 
 	/**
+	 * Updates the mw-list-page-count data attribute with the reading list page count
+	 *
+	 * @param {boolean} isSaved
+	 * @return {number}
+	 */
+	function updateListCount( isSaved ) {
+		const previousListPageCount = parseInt( bookmark.dataset.mwListPageCount, 10 );
+		const listPageCount = previousListPageCount + ( isSaved ? 1 : -1 );
+
+		bookmark.dataset.mwListPageCount = listPageCount.toString();
+
+		return listPageCount;
+	}
+
+	/**
 	 * Updates the bookmark button text and display an added/removed notification
 	 *
 	 * @param {boolean} isSaved
@@ -56,6 +71,8 @@ module.exports = function initBookmark( bookmark, isMinerva ) {
 	 * @param {number} entryId
 	 */
 	function updateBookmarkStatus( isSaved, listId, entryId ) {
+		const listPageCount = updateListCount( isSaved );
+
 		// The following messages are used here:
 		// * readinglists-browser-add-entry-success
 		// * readinglists-browser-remove-entry-success
@@ -85,8 +102,9 @@ module.exports = function initBookmark( bookmark, isMinerva ) {
 		 * @memberof Hooks
 		 * @param {boolean} isSaved
 		 * @param {number} entryId
+		 * @param {number} newListSize
 		 */
-		mw.hook( 'readingLists.bookmark.edit' ).fire( isSaved, entryId );
+		mw.hook( 'readingLists.bookmark.edit' ).fire( isSaved, entryId, listPageCount );
 	}
 
 	/**

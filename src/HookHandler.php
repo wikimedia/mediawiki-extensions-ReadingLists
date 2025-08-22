@@ -87,6 +87,7 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			'href' => '#',
 			'data-mw-list-id' => $list->rl_id,
 			'data-mw-entry-id' => $entry === false ? null : $entry->rle_id,
+			'data-mw-list-page-count' => $list->rl_size,
 			'link-class' => 'reading-lists-bookmark'
 		];
 
