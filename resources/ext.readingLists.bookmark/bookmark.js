@@ -163,8 +163,6 @@ module.exports = function initBookmark( bookmark, isMinerva ) {
 	}
 
 	function init() {
-		// TODO: fix race condition when stickyHeader.js is still updating bookmark data attributes
-		// resulting in an incorrect isSaved value
 		const isSaved = !!bookmark.dataset.mwEntryId;
 		setBookmarkStatus( isSaved, bookmark.dataset.mwEntryId );
 		bindClickListener();
