@@ -69,7 +69,7 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		$links['user-menu'] = wfArrayInsertAfter( $links['user-menu'], [
 			'readinglists' => [
 				'text' => $sktemplate->msg( 'readinglists-menu-item' )->text(),
-				'href' => $this->getDefaultReadingListUrl( $user, $repository ),
+				'href' => self::getDefaultReadingListUrl( $user, $repository ),
 				'icon' => 'bookmark'
 			],
 		], 'watchlist' );
@@ -112,7 +112,7 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 	 * @param ReadingListRepository $repository
 	 * @return string
 	 */
-	private function getDefaultReadingListUrl( UserIdentity $user, ReadingListRepository $repository ): string {
+	private static function getDefaultReadingListUrl( UserIdentity $user, ReadingListRepository $repository ): string {
 		$defaultListId = $repository->getDefaultListIdForUser();
 
 		if ( $defaultListId === false ) {
