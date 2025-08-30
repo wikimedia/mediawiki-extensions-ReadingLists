@@ -169,8 +169,11 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 					const { setup: { list: { id } } } = await api.setup();
 					currentListId = bookmark.dataset.mwListId = id;
 				} catch ( err ) {
+					// The following messages are used here:
+					// * readinglists-browser-error-intro
+					// * readinglists-db-error-list-entry-deleted
 					mw.notify(
-						mw.msg( 'readinglists-browser-error-intro', err ),
+						mw.msg( 'readinglists-browser-error-intro', mw.msg( err ) ),
 						{ tag: 'saved', type: 'error' }
 					);
 
@@ -187,8 +190,11 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 					await removePageFromReadingList( entryId, currentListId );
 				}
 			} catch ( err ) {
+				// The following messages are used here:
+				// * readinglists-browser-error-intro
+				// * readinglists-db-error-list-entry-deleted
 				mw.notify(
-					mw.msg( 'readinglists-browser-error-intro', err ),
+					mw.msg( 'readinglists-browser-error-intro', mw.msg( err ) ),
 					{ tag: 'saved', type: 'error' }
 				);
 

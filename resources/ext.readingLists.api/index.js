@@ -239,8 +239,9 @@ async function getPagesFromManifest( project, entries ) {
 			};
 		} );
 	} catch ( err ) {
-		// eslint-disable-next-line no-console
-		console.error( err );
+		if ( mw && mw.log && mw.log.error ) {
+			mw.log.error( err );
+		}
 
 		return entries.map( ( entry, i ) => ( {
 			id: entry.id || -1 - i,

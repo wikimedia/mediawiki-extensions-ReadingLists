@@ -242,7 +242,8 @@
 				"readinglists-browser-add-entry-success",
 				"readinglists-browser-remove-entry-success",
 				"readinglists-default-title",
-				"readinglists-browser-error-intro"
+				"readinglists-browser-error-intro",
+				"notloggedin"
 			],
 			"dependencies": [
 				"ext.readingLists.api",
