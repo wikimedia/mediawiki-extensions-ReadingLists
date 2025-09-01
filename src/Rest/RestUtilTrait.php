@@ -4,9 +4,9 @@ namespace MediaWiki\Extension\ReadingLists\Rest;
 
 use MediaWiki\Rest\LocalizedHttpException;
 use Wikimedia\Message\ListParam;
+use Wikimedia\Message\ListType;
 use Wikimedia\Message\MessageSpecifier;
 use Wikimedia\Message\MessageValue;
-use Wikimedia\Message\ParamType;
 
 /**
  * Trait for collecting utility code that is a candidate for moving to the REST infrastructure
@@ -62,7 +62,7 @@ trait RestUtilTrait {
 
 		if ( count( $intersection ) > 1 ) {
 			$lp = new ListParam(
-				ParamType::TEXT,
+				ListType::AND,
 				array_map(
 					static function ( $paramName ) {
 						return '<var>' . $paramName . '</var>';
@@ -72,7 +72,7 @@ trait RestUtilTrait {
 			);
 
 			$mv = MessageValue::new( 'apierror-invalidparammix' )
-				->textListParams( [ $lp ] )
+				->params( $lp )
 				->numParams( count( $intersection ) );
 			$this->die( $mv );
 		}
@@ -92,7 +92,7 @@ trait RestUtilTrait {
 
 		if ( count( $intersection ) == 0 ) {
 			$lp = new ListParam(
-				ParamType::TEXT,
+				ListType::AND,
 				array_map(
 					static function ( $paramName ) {
 						return '<var>' . $paramName . '</var>';
@@ -102,7 +102,7 @@ trait RestUtilTrait {
 			);
 
 			$mv = MessageValue::new( 'apierror-missingparam-at-least-one-of' )
-				->textListParams( [ $lp ] )
+				->params( $lp )
 				->numParams( count( $required ) );
 			$this->die( $mv );
 		}
@@ -120,7 +120,7 @@ trait RestUtilTrait {
 
 		if ( count( $intersection ) > 1 ) {
 			$lp = new ListParam(
-				ParamType::TEXT,
+				ListType::AND,
 				array_map(
 					static function ( $paramName ) {
 						return '<var>' . $paramName . '</var>';
@@ -130,12 +130,12 @@ trait RestUtilTrait {
 			);
 
 			$mv = MessageValue::new( 'apierror-invalidparammix' )
-				->textListParams( [ $lp ] )
+				->params( $lp )
 				->numParams( count( $intersection ) );
 			$this->die( $mv );
 		} elseif ( count( $intersection ) == 0 ) {
 			$lp = new ListParam(
-				ParamType::TEXT,
+				ListType::AND,
 				array_map(
 					static function ( $paramName ) {
 						return '<var>' . $paramName . '</var>';
@@ -145,7 +145,7 @@ trait RestUtilTrait {
 			);
 
 			$mv = MessageValue::new( 'apierror-missingparam-one-of' )
-				->textListParams( [ $lp ] )
+				->params( $lp )
 				->numParams( count( $required ) );
 			$this->die( $mv );
 		}
