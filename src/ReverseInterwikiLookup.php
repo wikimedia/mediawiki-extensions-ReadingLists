@@ -12,14 +12,6 @@ use MediaWiki\Utils\UrlUtils;
  */
 class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 
-	/** @var InterwikiLookup */
-	private $interwikiLookup;
-
-	/** @var LanguageNameUtils */
-	private $languageNameUtils;
-
-	private UrlUtils $urlUtils;
-
 	/** @var string */
 	private $ownDomain;
 
@@ -33,14 +25,11 @@ class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 	 * @param string $ownDomain
 	 */
 	public function __construct(
-		InterwikiLookup $interwikiLookup,
-		LanguageNameUtils $languageNameUtils,
-		UrlUtils $urlUtils,
+		private readonly InterwikiLookup $interwikiLookup,
+		private readonly LanguageNameUtils $languageNameUtils,
+		private readonly UrlUtils $urlUtils,
 		$ownDomain
 	) {
-		$this->interwikiLookup = $interwikiLookup;
-		$this->languageNameUtils = $languageNameUtils;
-		$this->urlUtils = $urlUtils;
 		$this->ownDomain = $this->getDomain( $ownDomain );
 	}
 

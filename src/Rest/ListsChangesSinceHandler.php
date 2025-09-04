@@ -20,15 +20,10 @@ class ListsChangesSinceHandler extends ListsHandler {
 	// Temporarily limit paging sizes per T164990#3264314 / T168984#3659998
 	private const MAX_LIMIT = 10;
 
-	/**
-	 * @param LBFactory $dbProvider
-	 * @param Config $config
-	 * @param CentralIdLookup $centralIdLookup
-	 */
 	public function __construct(
 		LBFactory $dbProvider,
 		Config $config,
-		CentralIdLookup $centralIdLookup
+		CentralIdLookup $centralIdLookup,
 	) {
 		parent::__construct( $dbProvider, $config, $centralIdLookup );
 		$this->allowDeletedRowsInResponse = true;

@@ -70,18 +70,17 @@ class ReadingListRepository implements LoggerAwareInterface {
 	/** @var int|null */
 	private $userId;
 
-	/** @var LBFactory */
-	private $lbFactory;
-
 	/**
 	 * @param int $userId Central ID of the user.
 	 * @param LBFactory $lbFactory
 	 */
-	public function __construct( $userId, LBFactory $lbFactory ) {
+	public function __construct(
+		$userId,
+		private readonly LBFactory $lbFactory
+	) {
 		$this->userId = (int)$userId ?: null;
 		$this->dbw = $lbFactory->getPrimaryDatabase( Utils::VIRTUAL_DOMAIN );
 		$this->dbr = $lbFactory->getReplicaDatabase( Utils::VIRTUAL_DOMAIN );
-		$this->lbFactory = $lbFactory;
 		$this->logger = new NullLogger();
 	}
 

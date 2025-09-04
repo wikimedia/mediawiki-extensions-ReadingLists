@@ -16,7 +16,7 @@ use MediaWiki\User\User;
  */
 class BetaFeatureHookHandler implements GetBetaFeaturePreferencesHook {
 	public function __construct(
-		private Config $config
+		private readonly Config $config,
 	) {
 	}
 

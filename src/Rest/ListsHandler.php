@@ -34,32 +34,18 @@ class ListsHandler extends Handler {
 	}
 	use ReadingListsTokenAwareHandlerTrait;
 
-	private LBFactory $dbProvider;
-
-	private Config $config;
-
-	private CentralIdLookup $centralIdLookup;
-
-	private LoggerInterface $logger;
+	private readonly LoggerInterface $logger;
 
 	protected bool $allowDeletedRowsInResponse = false;
 
 	// Temporarily limit paging sizes per T164990#3264314 / T168984#3659998
 	private const MAX_LIMIT = 10;
 
-	/**
-	 * @param LBFactory $dbProvider
-	 * @param Config $config
-	 * @param CentralIdLookup $centralIdLookup
-	 */
 	public function __construct(
-		LBFactory $dbProvider,
-		Config $config,
-		CentralIdLookup $centralIdLookup
+		private readonly LBFactory $dbProvider,
+		private readonly Config $config,
+		private readonly CentralIdLookup $centralIdLookup,
 	) {
-		$this->dbProvider = $dbProvider;
-		$this->config = $config;
-		$this->centralIdLookup = $centralIdLookup;
 		$this->logger = LoggerFactory::getInstance( 'readinglists' );
 	}
 

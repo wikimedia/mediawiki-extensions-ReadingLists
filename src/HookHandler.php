@@ -19,21 +19,12 @@ use Wikimedia\Rdbms\LBFactory;
  * Static entry points for hooks.
  */
 class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNavigation__UniversalHook {
-	private CentralIdLookupFactory $centralIdLookupFactory;
-	private Config $config;
-	private LBFactory $dbProvider;
-	private UserEditTracker $userEditTracker;
-
 	public function __construct(
-		CentralIdLookupFactory $centralIdLookupFactory,
-		Config $config,
-		LBFactory $dbProvider,
-		UserEditTracker $userEditTracker
+		private readonly CentralIdLookupFactory $centralIdLookupFactory,
+		private readonly Config $config,
+		private readonly LBFactory $dbProvider,
+		private readonly UserEditTracker $userEditTracker,
 	) {
-		$this->centralIdLookupFactory = $centralIdLookupFactory;
-		$this->config = $config;
-		$this->dbProvider = $dbProvider;
-		$this->userEditTracker = $userEditTracker;
 	}
 
 	/**

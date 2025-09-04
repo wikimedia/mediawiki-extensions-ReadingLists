@@ -25,27 +25,13 @@ use Wikimedia\Rdbms\LBFactory;
 class ListsDeleteHandler extends SimpleHandler {
 	use ReadingListsHandlerTrait;
 
-	private LBFactory $dbProvider;
+	private readonly LoggerInterface $logger;
 
-	private Config $config;
-
-	private CentralIdLookup $centralIdLookup;
-
-	private LoggerInterface $logger;
-
-	/**
-	 * @param LBFactory $dbProvider
-	 * @param Config $config
-	 * @param CentralIdLookup $centralIdLookup
-	 */
 	public function __construct(
-		LBFactory $dbProvider,
-		Config $config,
-		CentralIdLookup $centralIdLookup
+		private readonly LBFactory $dbProvider,
+		private readonly Config $config,
+		private readonly CentralIdLookup $centralIdLookup,
 	) {
-		$this->dbProvider = $dbProvider;
-		$this->config = $config;
-		$this->centralIdLookup = $centralIdLookup;
 		$this->logger = LoggerFactory::getInstance( 'readinglists' );
 	}
 

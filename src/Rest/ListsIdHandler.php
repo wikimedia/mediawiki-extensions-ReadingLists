@@ -17,15 +17,10 @@ use Wikimedia\Rdbms\LBFactory;
  * This endpoint is for getting lists by id.
  */
 class ListsIdHandler extends ListsHandler {
-	/**
-	 * @param LBFactory $dbProvider
-	 * @param Config $config
-	 * @param CentralIdLookup $centralIdLookup
-	 */
 	public function __construct(
 		LBFactory $dbProvider,
 		Config $config,
-		CentralIdLookup $centralIdLookup
+		CentralIdLookup $centralIdLookup,
 	) {
 		parent::__construct( $dbProvider, $config, $centralIdLookup );
 	}

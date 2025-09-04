@@ -25,33 +25,16 @@ use Wikimedia\Rdbms\LBFactory;
 class ListsEntriesHandler extends SimpleHandler {
 	use ReadingListsHandlerTrait;
 
-	private LBFactory $dbProvider;
-
-	private Config $config;
-
-	private CentralIdLookup $centralIdLookup;
-
-	private ReverseInterwikiLookup $reverseInterwikiLookup;
-
-	private LoggerInterface $logger;
+	private readonly LoggerInterface $logger;
 
 	private const MAX_LIMIT = 100;
 
-	/**
-	 * @param LBFactory $dbProvider
-	 * @param Config $config
-	 * @param CentralIdLookup $centralIdLookup
-	 */
 	public function __construct(
-		LBFactory $dbProvider,
-		Config $config,
-		CentralIdLookup $centralIdLookup,
-		ReverseInterwikiLookup $reverseInterwikiLookup
+		private readonly LBFactory $dbProvider,
+		private readonly Config $config,
+		private readonly CentralIdLookup $centralIdLookup,
+		private readonly ReverseInterwikiLookup $reverseInterwikiLookup,
 	) {
-		$this->dbProvider = $dbProvider;
-		$this->config = $config;
-		$this->centralIdLookup = $centralIdLookup;
-		$this->reverseInterwikiLookup = $reverseInterwikiLookup;
 		$this->logger = LoggerFactory::getInstance( 'readinglists' );
 	}
 
