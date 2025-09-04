@@ -7,10 +7,11 @@
 			"Lantianjialiang",
 			"Liuxinyu970226",
 			"Peterxy12",
-			"沈澄心"
+			"沈澄心",
+			"范"
 		]
 	},
-	"readinglists-desc": "允许用户管理文章的私人列表，例如书签或“已保存的页面”列表。",
+	"readinglists-desc": "允许用户管理私有条目列表，例如书签或“稍后阅读”列表。",
 	"readinglists-db-error-not-set-up": "阅读列表尚未对该用户配置。",
 	"readinglists-db-error-no-projects": "尚未注册任何可用于ReadingLists的项目。请使用populateProjectsFromSiteMatrix脚本来注册项目。",
 	"readinglists-db-error-already-set-up": "阅读列表已对该用户配置。",
