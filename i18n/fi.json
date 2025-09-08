@@ -56,6 +56,9 @@
 	"readinglists-display-direction": "Suunta",
 	"readinglists-display-direction-ascending": "Nouseva",
 	"readinglists-display-direction-descending": "Laskeva",
+	"readinglists-display-view": "Näytä luettelo",
+	"readinglists-display-view-grid": "Ruudukko",
+	"readinglists-display-view-compact": "Kompakti",
 	"readinglists-edit-button": "Muokkaa artikkeleita",
 	"action-action-readinglist-private": "lukea muiden käyttäjien lukulistoja",
 	"readinglists-empty-message": "Sinulla ei ole listoja. Haluaisitko luoda sellaisen?",
@@ -70,7 +73,7 @@
 	"readinglists-import-app-launch-hint": "Varmista, että käytössäsi on sovelluksen viimeisin versio.",
 	"readinglists-beta-feature-name": "Lukulistat",
 	"readinglists-beta-feature-description": "Kerää yksityisiä listoja artikkeleista myöhempää lukemista varten.",
-	"readinglists-menu-item": "Lukulistat",
+	"readinglists-menu-item": "Tallennetut",
 	"readinglists-bookmark": "Kirjanmerkki",
 	"readinglists-add-bookmark": "Lisää kirjanmerkki",
 	"readinglists-remove-bookmark": "Poista kirjanmerkki"

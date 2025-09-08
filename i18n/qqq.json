@@ -99,7 +99,7 @@
 	"readinglists-import-app-launch-hint": "Hint shown when attempting to import a list without the app installed.",
 	"readinglists-beta-feature-name": "Name of beta feature. Shown on preferences beta section when the reading list feature is enabled on beta.",
 	"readinglists-beta-feature-description": "Description of beta feature. Shown on preferences beta section when the reading list feature is enabled on beta.",
-	"readinglists-menu-item": "Menu item added to both mobile and desktop site",
+	"readinglists-menu-item": "Menu item added to both mobile and desktop site. Describes saved pages. May appear next to \"Watchlist\" in the user menu.",
 	"readinglists-bookmark": "Bookmark action",
 	"readinglists-add-bookmark": "Button label for adding a page bookmark",
 	"readinglists-remove-bookmark": "Button label for removing a page bookmark"

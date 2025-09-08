@@ -4,6 +4,7 @@
 			"Ajeje Brazorf",
 			"Asteralee",
 			"DePlusJean",
+			"Escargot bleu",
 			"Gomoko",
 			"JLTRY",
 			"Mahabarata",
@@ -98,7 +99,7 @@
 	"readinglists-import-app-launch-hint": "Veuillez vous assurer que la dernière version de l’application est bien installée.",
 	"readinglists-beta-feature-name": "Listes de lecture",
 	"readinglists-beta-feature-description": "Collectez des listes privées d'articles à lire plus tard.",
-	"readinglists-menu-item": "Listes de lecture",
+	"readinglists-menu-item": "Enregistré",
 	"readinglists-bookmark": "Marque-page",
 	"readinglists-add-bookmark": "Ajouter un marque-page",
 	"readinglists-remove-bookmark": "Supprimer le marque-page"

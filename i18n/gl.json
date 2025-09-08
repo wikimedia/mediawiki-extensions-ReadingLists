@@ -7,7 +7,7 @@
 			"Toliño"
 		]
 	},
-	"readinglists-desc": "Permite ós usuarios xestionar listas privadas de artigos, como marcadores ou listas de tipo \"Páxinas gardadas\".",
+	"readinglists-desc": "Permite ós usuarios xestionar listas privadas de artigos, como marcadores ou listas de tipo «Páxinas gardadas».",
 	"readinglists-db-error-not-set-up": "Non se configuraron as listas de lectura para este usuario.",
 	"readinglists-db-error-no-projects": "Non se rexistrou ningún proxecto para usar coas listas de lectura. Utiliza o script populateProjectsFromSiteMatrix para rexistrar proxectos.",
 	"readinglists-db-error-already-set-up": "As listas de lectura xa están configuradas para este usuario.",
@@ -26,7 +26,7 @@
 	"readinglists-db-error-list-limit": "Os usuarios non poden ter máis de $1 {{PLURAL:$1|lista|listas}}.",
 	"readinglists-db-error-entry-limit": "A lista $1 non pode ter máis de $2 {{PLURAL:$2|entrada|entradas}}.",
 	"readinglists-db-error-too-long": "O valor para o campo $1 non pode ser maior de $2 bytes.",
-	"readinglists-db-error-no-such-project": "\"$1\" non é un proxecto recoñecido.",
+	"readinglists-db-error-no-such-project": "«$1» non é un proxecto recoñecido.",
 	"readinglists-browser-add-entry-success": "[[$1|$2]] engadiuse a [[$3|$4]].",
 	"readinglists-browser-remove-entry-success": "[[$1|$2]] eliminouse de [[$3|$4]].",
 	"readinglists-browser-login-prompt": "Accede para gardar os artigos",
@@ -53,8 +53,8 @@
 	"readinglists-select-article": "Seleccionar o artigo",
 	"readinglists-remove": "Eliminar",
 	"readinglists-remove-title": "Confirmación da eliminación",
-	"readinglists-remove-confirmation": "Queres eliminar {{formatnum:$1}} {{plural:$1|artigo|artigos}} de \"$2\"?",
-	"readinglists-remove-success": "{{plural:$1|Eliminouse|Elimináronse}} {{formatnum:$1}} {{plural:$1|artigo|artigos}} de \"[[$2|$3]]\".",
+	"readinglists-remove-confirmation": "Queres eliminar {{formatnum:$1}} {{plural:$1|artigo|artigos}} de «$2»?",
+	"readinglists-remove-success": "{{plural:$1|Eliminouse|Elimináronse}} {{formatnum:$1}} {{plural:$1|artigo|artigos}} de «[[$2|$3]]».",
 	"readinglists-show-more": "Mostrar máis",
 	"readinglists-default-title": "Páxinas gardadas",
 	"readinglists-default-description": "Lista por defecto para os seus artigos gardados.",
@@ -89,7 +89,7 @@
 	"readinglists-import-app-launch-hint": "Asegúrate de que estea instalada a última versión da aplicación.",
 	"readinglists-beta-feature-name": "Listas de lectura",
 	"readinglists-beta-feature-description": "Recolle listas privadas de artigos para ler máis tarde.",
-	"readinglists-menu-item": "Listas de lectura",
+	"readinglists-menu-item": "Gardado",
 	"readinglists-bookmark": "Marcador",
 	"readinglists-add-bookmark": "Engadir o marcador",
 	"readinglists-remove-bookmark": "Eliminar o marcador"
