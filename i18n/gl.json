@@ -26,7 +26,7 @@
 	"readinglists-db-error-list-limit": "Os usuarios non poden ter máis de $1 {{PLURAL:$1|lista|listas}}.",
 	"readinglists-db-error-entry-limit": "A lista $1 non pode ter máis de $2 {{PLURAL:$2|entrada|entradas}}.",
 	"readinglists-db-error-too-long": "O valor para o campo $1 non pode ser maior de $2 bytes.",
-	"readinglists-db-error-no-such-project": "\"$1\" non é un proxecto recoñecido.",
+	"readinglists-db-error-no-such-project": "«$1» non é un proxecto recoñecido.",
 	"readinglists-browser-login-prompt": "Accede para gardar os artigos",
 	"readinglists-browser-error-intro": "Houbo un erro: $1",
 	"readinglists-browser-enable-sync-prompt": "Activa a sincronización na túa aplicación da Wikipedia para comezar a gardar artigos",
