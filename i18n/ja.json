@@ -40,6 +40,7 @@
 	"readinglists-browser-extension-product-title": "ウィキペディアのあとで読むリスト",
 	"readinglists-browser-page-not-supported": "$1 はこのページをサポートしていません",
 	"readinglists-special-title": "保存済み",
+	"readinglists-special-title-imported": "あとで読むリスト: 他の利用者からインポート",
 	"readinglists-description": "すべての保存済みリストをまとめます。",
 	"readinglists-loading": "お待ちください…",
 	"reading-list-purpose": "個人的なあとで読むリストを見るにはログインしてください。",
