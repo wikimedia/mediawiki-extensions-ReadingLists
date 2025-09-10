@@ -86,7 +86,7 @@ class ListsDeleteHandlerTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	protected function tearDown(): void {
-		parent::tearDown();
 		$this->readingListsTeardown();
+		parent::tearDown();
 	}
 }

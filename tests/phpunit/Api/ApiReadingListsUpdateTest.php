@@ -130,7 +130,7 @@ class ApiReadingListsUpdateTest extends ApiTestCase {
 	}
 
 	protected function tearDown(): void {
-		parent::tearDown();
 		$this->readingListsTeardown();
+		parent::tearDown();
 	}
 }
