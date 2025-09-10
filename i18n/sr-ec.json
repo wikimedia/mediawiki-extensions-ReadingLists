@@ -25,5 +25,6 @@
 	"readinglists-import-empty-message": "Не можете увозити списак спискова.",
 	"readinglists-watchlist": "Списак надгледања",
 	"readinglists-watchlist-description": "Странице које сте уређивали или пратите",
-	"readinglists-import-button-label": "Отвори у апликацији"
+	"readinglists-import-button-label": "Отвори у апликацији",
+	"readinglists-menu-item": "Сачувано"
 }
