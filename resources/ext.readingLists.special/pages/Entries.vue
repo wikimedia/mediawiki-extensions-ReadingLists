@@ -242,11 +242,22 @@ module.exports = exports = {
 			}
 		},
 		updateMessages() {
-			this.msgTotalArticles = mw.msg( 'readinglists-total-articles', this.total );
+			this.msgTotalArticles = mw.msg(
+				'readinglists-total-articles',
+				mw.language.convertNumber( this.total )
+			);
 
 			const count = this.selected.length;
-			this.msgSelectedArticles = mw.msg( 'readinglists-selected-articles', count, this.total );
-			this.msgRemoveConfirmation = mw.msg( 'readinglists-remove-confirmation', count, this.title );
+			this.msgSelectedArticles = mw.msg(
+				'readinglists-selected-articles',
+				mw.language.convertNumber( count ),
+				mw.language.convertNumber( this.total )
+			);
+			this.msgRemoveConfirmation = mw.msg(
+				'readinglists-remove-confirmation',
+				mw.language.convertNumber( count ),
+				this.title
+			);
 		},
 		clearEntries() {
 			this.loadingEntries = true;

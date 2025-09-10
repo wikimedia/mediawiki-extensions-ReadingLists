@@ -71,7 +71,7 @@ module.exports = exports = {
 				mw.notify(
 					mw.message(
 						'readinglists-remove-success',
-						this.selected.length,
+						mw.language.convertNumber( this.selected.length ),
 						`Special:ReadingLists/${ mw.user.getName() }/${ this.listId }`,
 						this.listTitle
 					).parseDom(),

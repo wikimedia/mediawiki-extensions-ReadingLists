@@ -51,7 +51,7 @@ module.exports = exports = {
 			titleValue: title.length !== 0 ? title : null,
 			descriptionValue: description.length !== 0 ? description : null,
 			thumbnailValue: thumbnail.length !== 0 ? { url: thumbnail } : null,
-			totalValue: mw.msg( 'readinglists-total-articles', this.size )
+			totalValue: mw.msg( 'readinglists-total-articles', mw.language.convertNumber( this.size ) )
 		};
 	}
 };
