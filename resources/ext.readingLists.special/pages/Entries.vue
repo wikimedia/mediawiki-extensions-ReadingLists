@@ -6,19 +6,20 @@
 	<template v-else>
 		<import-dialog v-if="imported !== null"></import-dialog>
 
-		<h1 v-if="title">
-			{{ title }}
+		<h1 class="readinglists-title">
+			{{ title || defaultTitle }}
 		</h1>
 
-		<h2 v-if="description">
+		<h2 v-if="description && !isDefaultList" class="readinglists-description">
 			{{ description }}
 		</h2>
 
-		<h3 v-if="ready || !loadingInfo">
-			{{ loadingInfo ? msgLoading : editing ? msgSelectedArticles : msgTotalArticles }}
-		</h3>
+		<div v-if="!enableToolbar">
+			({{ sortingText }})
+		</div>
 
 		<div
+			v-if="enableToolbar"
 			v-show="ready && ( loadingEntries || entries.length !== 0 )"
 			class="readinglists-toolbar">
 			<display-button
@@ -88,6 +89,7 @@ const EmptyList = require( '../components/EmptyList.vue' );
 const EntryItem = require( '../components/EntryItem.vue' );
 const ImportDialog = require( '../components/ImportDialog.vue' );
 const RemoveButton = require( '../components/RemoveButton.vue' );
+const { ReadingListsEnableSpecialPageToolbar } = require( '../../../config.json' );
 
 // @vue/component
 module.exports = exports = {
@@ -116,22 +118,26 @@ module.exports = exports = {
 		return {
 			loadingInfo: ref( true ),
 			loadingEntries: ref( true ),
+			defaultTitle: mw.msg( 'readinglists-default-title' ),
 			title: ref( '' ),
+			isDefaultList: ref( true ),
 			description: ref( '' ),
 			total: ref( 0 ),
 			error: ref( '' ),
 			ready: ref( false ),
-			options: ref( [] ),
+			options: ref( [ 'updated', 'descending', 'grid' ] ),
 			entries: ref( [] ),
 			next: ref( null ),
 			infinite: ref( false ),
 			editing: ref( false ),
 			selected: ref( [] ),
+			sortingText: mw.msg( 'readinglists-sorted-by-recent' ),
 			msgLoading: mw.msg( 'readinglists-loading' ),
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
 			msgRemoveConfirmation: ref( mw.msg( 'readinglists-remove-confirmation', 0, '' ) ),
 			msgTotalArticles: ref( mw.msg( 'readinglists-total-articles', 0 ) ),
-			msgSelectedArticles: ref( mw.msg( 'readinglists-selected-articles', 0, 0 ) )
+			msgSelectedArticles: ref( mw.msg( 'readinglists-selected-articles', 0, 0 ) ),
+			enableToolbar: ReadingListsEnableSpecialPageToolbar
 		};
 	},
 	methods: {
@@ -162,6 +168,7 @@ module.exports = exports = {
 				this.title = list.name;
 				this.description = list.description;
 				this.total = list.size;
+				this.isDefaultList = !!list.default;
 				this.updateMessages();
 			} catch ( err ) {
 				this.handleError( err );
@@ -259,21 +266,7 @@ module.exports = exports = {
 				this.title
 			);
 		},
-		clearEntries() {
-			this.loadingEntries = true;
-			this.entries = [];
-			this.next = null;
-			this.infinite = false;
-		},
-		clearSelected( editing = false ) {
-			this.editing = editing;
-			this.selected = [];
-			this.updateMessages();
-		},
-		async onReady( options ) {
-			await this.getEntries( options );
-			this.ready = true;
-
+		registerScrollHandler() {
 			document.addEventListener( 'scroll', () => {
 				if (
 					!this.error &&
@@ -286,6 +279,25 @@ module.exports = exports = {
 					this.getEntries();
 				}
 			} );
+		},
+		async initializePage( options = null ) {
+			await this.getEntries( options );
+			this.ready = true;
+			this.registerScrollHandler();
+		},
+		clearEntries() {
+			this.loadingEntries = true;
+			this.entries = [];
+			this.next = null;
+			this.infinite = false;
+		},
+		clearSelected( editing = false ) {
+			this.editing = editing;
+			this.selected = [];
+			this.updateMessages();
+		},
+		async onReady( options ) {
+			await this.initializePage( options );
 		},
 		onRemoving() {
 			this.loadingInfo = true;
@@ -307,6 +319,13 @@ module.exports = exports = {
 		async onShowMore() {
 			this.infinite = true;
 			await this.getEntries();
+		}
+	},
+	async mounted() {
+		if ( !this.enableToolbar ) {
+			await this.getList();
+			this.loadingEntries = true;
+			await this.initializePage();
 		}
 	}
 };

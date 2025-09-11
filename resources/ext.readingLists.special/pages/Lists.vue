@@ -6,7 +6,7 @@
 	<template v-else>
 		<h1>{{ msgTitle }}</h1>
 
-		<div class="readinglists-toolbar">
+		<div v-if="enableToolbar" class="readinglists-toolbar">
 			<display-button
 				v-show="ready"
 				:disabled="loadingLists"
@@ -46,6 +46,7 @@ const api = require( 'ext.readingLists.api' );
 const { CdxButton, CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
 const DisplayButton = require( '../components/DisplayButton.vue' );
 const ListItem = require( '../components/ListItem.vue' );
+const { ReadingListsEnableSpecialPageToolbar } = require( '../../../config.json' );
 
 // @vue/component
 module.exports = exports = {
@@ -68,7 +69,8 @@ module.exports = exports = {
 			infinite: ref( false ),
 			msgTitle: mw.msg( 'readinglists-title' ),
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
-			msgLoading: mw.msg( 'readinglists-loading' )
+			msgLoading: mw.msg( 'readinglists-loading' ),
+			enableToolbar: ReadingListsEnableSpecialPageToolbar
 		};
 	},
 	methods: {
@@ -135,7 +137,12 @@ module.exports = exports = {
 			this.infinite = true;
 		}
 	},
-	mounted() {
+	async mounted() {
+		if ( !this.enableToolbar ) {
+			this.options = [ 'updated', 'descending', 'grid' ];
+			await this.getLists( null, true );
+		}
+
 		document.addEventListener( 'scroll', () => {
 			if (
 				!this.loadingLists &&

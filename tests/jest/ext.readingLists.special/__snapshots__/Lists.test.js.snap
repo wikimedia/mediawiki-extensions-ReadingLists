@@ -1,6 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Entries renders properly 1`] = `
+exports[`Lists renders with toolbar disabled 1`] = `
+<div
+  data-v-app=""
+>
+  
+  <h1>
+    Reading lists
+  </h1>
+  <!--v-if-->
+  <div
+    class="readinglists-grid"
+    style="display: none;"
+  >
+    
+    
+  </div>
+  <!--v-if-->
+  <div
+    aria-disabled="false"
+    aria-label="Please wait..."
+    class="cdx-progress-bar cdx-progress-bar--block cdx-progress-bar--enabled"
+    role="progressbar"
+  >
+    <div
+      class="cdx-progress-bar__bar"
+    />
+  </div>
+  
+</div>
+`;
+
+exports[`Lists renders with toolbar enabled 1`] = `
 <div
   data-v-app=""
 >
@@ -54,7 +85,7 @@ exports[`Entries renders properly 1`] = `
       >
         <div
           class="cdx-menu"
-          style="display: none;"
+          style="display: none; visibility: hidden; position: absolute; top: 0px; left: 0px; transform: translate(0px, 0px);"
         >
           <ul
             aria-labelledby="v-0"
@@ -501,7 +532,7 @@ exports[`Entries renders properly 1`] = `
     </div>
   </div>
   <div
-    class="readinglists-undefined"
+    class="readinglists-grid"
     style="display: none;"
   >
     

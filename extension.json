@@ -81,6 +81,10 @@
 		"ReadingListsDeletedRetentionDays": {
 			"value": 30,
 			"description": "Purge deleted lists and list entries after this many days."
+		},
+		"ReadingListsEnableSpecialPageToolbar": {
+			"value": false,
+			"description": "Enable sorting and editing toolbar on reading lists special page. @unstable"
 		}
 	},
 	"Hooks": {
@@ -178,6 +182,7 @@
 				"readinglists-select-article",
 				"readinglists-selected-articles",
 				"readinglists-show-more",
+				"readinglists-sorted-by-recent",
 				"readinglists-special-title-imported",
 				"readinglists-title",
 				"readinglists-total-articles",
@@ -199,7 +204,8 @@
 					"config": [
 						"ReadingListAndroidAppDownloadLink",
 						"ReadingListiOSAppDownloadLink",
-						"ReadingListsAnonymizedPreviews"
+						"ReadingListsAnonymizedPreviews",
+						"ReadingListsEnableSpecialPageToolbar"
 					]
 				},
 				{
