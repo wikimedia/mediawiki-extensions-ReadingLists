@@ -5,7 +5,7 @@ const api = require( 'ext.readingLists.api' );
  */
 const currentReadingListSize = {};
 
-module.exports = function initBookmark( bookmark, isMinerva ) {
+module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 	// Assumes last <span> element is the label.
 	// Even if there is no label defined, the <span> must exist.
 	const label = bookmark.lastElementChild;
@@ -117,8 +117,9 @@ module.exports = function initBookmark( bookmark, isMinerva ) {
 		 * @param {boolean} isSaved
 		 * @param {number} entryId
 		 * @param {number} newListSize
+		 * @param {string} eventSource
 		 */
-		mw.hook( 'readingLists.bookmark.edit' ).fire( isSaved, entryId, listPageCount );
+		mw.hook( 'readingLists.bookmark.edit' ).fire( isSaved, entryId, listPageCount, eventSource );
 	}
 
 	/**
