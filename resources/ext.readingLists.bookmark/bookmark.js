@@ -1,7 +1,13 @@
 const api = require( 'ext.readingLists.api' );
 
+/**
+ * @type {Object<string, number>}
+ */
+const currentReadingListSize = {};
+
 module.exports = function initBookmark( bookmark, isMinerva ) {
-	// Assumes last <span> element is the label. Even if there is no label defined, the <span> must exist.
+	// Assumes last <span> element is the label.
+	// Even if there is no label defined, the <span> must exist.
 	const label = bookmark.lastElementChild;
 	const icon = bookmark.querySelector( isMinerva ? '.minerva-icon' : '.vector-icon' );
 
@@ -10,6 +16,13 @@ module.exports = function initBookmark( bookmark, isMinerva ) {
 	if ( !isMinerva ) {
 		iconSolid = [ 'mw-ui-icon-bookmark', 'mw-ui-icon-wikimedia-bookmark' ];
 		iconOutline = [ 'mw-ui-icon-bookmarkOutline', 'mw-ui-icon-wikimedia-bookmarkOutline' ];
+	}
+
+	const listCount = bookmark.dataset.mwListPageCount;
+	const bookmarkListId = bookmark.dataset.mwListId;
+	// Track initial size of list.
+	if ( listCount && bookmarkListId ) {
+		currentReadingListSize[ bookmarkListId ] = parseInt( bookmark.dataset.mwListPageCount, 10 );
 	}
 
 	/**
@@ -51,27 +64,28 @@ module.exports = function initBookmark( bookmark, isMinerva ) {
 	/**
 	 * Updates the mw-list-page-count data attribute with the reading list page count
 	 *
+	 * @param {string} listId
 	 * @param {boolean} isSaved
-	 * @return {number}
+	 * @return {number} -1 if the reading list size is not known
 	 */
-	function updateListCount( isSaved ) {
-		const previousListPageCount = parseInt( bookmark.dataset.mwListPageCount, 10 );
-		const listPageCount = previousListPageCount + ( isSaved ? 1 : -1 );
-
-		bookmark.dataset.mwListPageCount = listPageCount.toString();
-
-		return listPageCount;
+	function updateListCount( listId, isSaved ) {
+		if ( !currentReadingListSize[ listId ] ) {
+			return -1;
+		} else {
+			currentReadingListSize[ listId ] += ( isSaved ? 1 : -1 );
+			return currentReadingListSize[ listId ];
+		}
 	}
 
 	/**
 	 * Updates the bookmark button text and display an added/removed notification
 	 *
 	 * @param {boolean} isSaved
-	 * @param {number} listId
+	 * @param {string} listId
 	 * @param {number} entryId
 	 */
 	function updateBookmarkStatus( isSaved, listId, entryId ) {
-		const listPageCount = updateListCount( isSaved );
+		const listPageCount = updateListCount( listId, isSaved );
 
 		// The following messages are used here:
 		// * readinglists-browser-add-entry-success
@@ -98,8 +112,8 @@ module.exports = function initBookmark( bookmark, isMinerva ) {
 		/**
 		 * Fires when the page saved status has changed.
 		 *
-		 * @event ~'readingLists.bookmark.edit'
-		 * @memberof Hooks
+		 * @event readingLists.bookmark.edit
+		 * @memberof mw.Hooks
 		 * @param {boolean} isSaved
 		 * @param {number} entryId
 		 * @param {number} newListSize
@@ -110,7 +124,7 @@ module.exports = function initBookmark( bookmark, isMinerva ) {
 	/**
 	 * Handles frontend logic for the api.createEntry() function
 	 *
-	 * @param {number} listId
+	 * @param {string} listId
 	 * @return {Promise<void>}
 	 */
 	async function addPageToReadingList( listId ) {
@@ -123,7 +137,7 @@ module.exports = function initBookmark( bookmark, isMinerva ) {
 	 * Handles frontend logic for the api.deleteEntry() function
 	 *
 	 * @param {number} entryId
-	 * @param {number} listId
+	 * @param {string} listId
 	 * @return {Promise<void>}
 	 */
 	async function removePageFromReadingList( entryId, listId ) {
@@ -145,12 +159,14 @@ module.exports = function initBookmark( bookmark, isMinerva ) {
 		bookmark.addEventListener( 'click', async ( event ) => {
 			event.preventDefault();
 
-			let listId = bookmark.dataset.mwListId;
+			// Use the current listId from the bookmark dataset,
+			// or get it from setup if not available
+			let currentListId = bookmark.dataset.mwListId;
 
-			if ( !listId ) {
+			if ( !currentListId ) {
 				try {
 					const { setup: { list: { id } } } = await api.setup();
-					listId = bookmark.dataset.mwListId = id;
+					currentListId = bookmark.dataset.mwListId = id;
 				} catch ( err ) {
 					mw.notify(
 						mw.msg( 'readinglists-browser-error-intro', err ),
@@ -165,9 +181,9 @@ module.exports = function initBookmark( bookmark, isMinerva ) {
 
 			try {
 				if ( !entryId ) {
-					await addPageToReadingList( listId );
+					await addPageToReadingList( currentListId );
 				} else {
-					await removePageFromReadingList( entryId, listId );
+					await removePageFromReadingList( entryId, currentListId );
 				}
 			} catch ( err ) {
 				mw.notify(
