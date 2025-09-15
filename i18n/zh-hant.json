@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Kly",
+			"LowensteinYang",
 			"Mutolisp",
 			"Winston Sung",
 			"捍粵者"
@@ -56,7 +57,7 @@
 	"readinglists-remove-confirmation": "您確定要從$2中刪除 $1 {{PLURAL:$1|篇條目}}嗎？",
 	"readinglists-remove-success": "$1 {{PLURAL:$1|篇條目}}已從[[$2|$3]]裡移除。",
 	"readinglists-show-more": "顯示更多",
-	"readinglists-default-title": "儲存的頁面",
+	"readinglists-default-title": "已儲存",
 	"readinglists-default-description": "您的已儲存條目之預設清單。",
 	"readinglists-empty-title": "您的清單為空。",
 	"readinglists-empty-cta": "閱讀一篇條目並儲存，以開始建立您的清單。",
@@ -65,6 +66,7 @@
 	"readinglists-display-sort": "排序依",
 	"readinglists-display-sort-name": "名稱",
 	"readinglists-display-sort-updated": "已更新",
+	"readinglists-sorted-by-recent": "按最新排序",
 	"readinglists-display-direction": "方向",
 	"readinglists-display-direction-ascending": "升序",
 	"readinglists-display-direction-descending": "降序",
