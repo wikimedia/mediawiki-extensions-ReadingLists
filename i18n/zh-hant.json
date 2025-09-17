@@ -4,7 +4,8 @@
 			"Kly",
 			"Mutolisp",
 			"Winston Sung",
-			"捍粵者"
+			"捍粵者",
+			"LowensteinYang"
 		]
 	},
 	"readinglists-desc": "允許使用者來管理個人用條目清單，例如像是書籤或「稍後閱讀」清單。",
@@ -61,5 +62,10 @@
 	"readinglists-import-button-label": "檢視清單",
 	"readinglists-import-button-hint": "輕觸按鈕：",
 	"readinglists-share-url-notify": "與此閱讀清單相關的資訊已復製到您的剪貼簿。",
-	"readinglists-import-app-launch-hint": "請確認安裝了最新版本應用程式。"
+	"readinglists-import-app-launch-hint": "請確認安裝了最新版本應用程式。",
+	"readinglists-beta-feature-name": "閱讀清單",
+	"readinglists-beta-feature-description": "收集私有條目清單以供稍後閱讀。",
+	"readinglists-bookmark": "書籤",
+	"readinglists-add-bookmark": "新增書籤",
+	"readinglists-remove-bookmark": "移除書籤"
 }
