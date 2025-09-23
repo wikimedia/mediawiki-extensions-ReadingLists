@@ -6,11 +6,11 @@
 	<template v-else>
 		<import-dialog v-if="imported !== null"></import-dialog>
 
-		<h1 class="readinglists-title">
+		<h1 class="reading-lists-title">
 			{{ title || defaultTitle }}
 		</h1>
 
-		<h2 v-if="description && !isDefaultList" class="readinglists-description">
+		<h2 v-if="description && !isDefaultList" class="reading-lists-description">
 			{{ description }}
 		</h2>
 
@@ -21,7 +21,7 @@
 		<div
 			v-if="enableToolbar"
 			v-show="ready && ( loadingEntries || entries.length !== 0 )"
-			class="readinglists-toolbar">
+			class="reading-lists-toolbar">
 			<display-button
 				:disabled="loadingInfo || loadingEntries"
 				:imported="imported !== null"
@@ -52,7 +52,7 @@
 			<div
 				v-if="entries.length !== 0"
 				ref="container"
-				:class="'readinglists-' + options[ 2 ]">
+				:class="'reading-lists-' + options[ 2 ]">
 				<entry-item
 					v-for="entry in entries"
 					:key="entry.id"

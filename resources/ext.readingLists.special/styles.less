@@ -1,7 +1,7 @@
 @import 'mediawiki.skin.variables.less';
 
 .client-js {
-	.reading-list__errorbox,
+	.reading-lists__errorbox,
 	.mw-body-header,
 	.heading-holder {
 		display: none;
@@ -11,31 +11,31 @@
 		margin-top: @spacing-150;
 	}
 
-	.readinglists-container {
-		.readinglists-heading {
+	.reading-lists-container {
+		.reading-lists-heading {
 			display: flex;
 			align-items: flex-end;
 			gap: @spacing-50;
 		}
 
-		.readinglists-sort-text {
+		.reading-lists-sort-text {
 			font-size: @font-size-small;
 			font-weight: @font-weight-normal;
 			color: @color-placeholder;
 			margin-left: @spacing-50;
 		}
 
-		.readinglists-toolbar {
+		.reading-lists-toolbar {
 			display: flex;
 			gap: @spacing-50;
 			margin-top: @spacing-50;
 		}
 
-		.readinglists-remove {
+		.reading-lists-remove {
 			margin-left: auto;
 		}
 
-		.readinglists-selectable {
+		.reading-lists-selectable {
 			display: flex;
 			align-items: center;
 
@@ -63,8 +63,8 @@
 		}
 	}
 
-	.readinglists-grid,
-	.readinglists-compact {
+	.reading-lists-grid,
+	.reading-lists-compact {
 		display: grid;
 		grid-auto-rows: 1fr;
 		gap: @spacing-100;
@@ -122,7 +122,7 @@
 		}
 	}
 
-	.readinglists-grid {
+	.reading-lists-grid {
 		.cdx-card {
 			flex-direction: row;
 		}
@@ -141,44 +141,44 @@
 		}
 	}
 
-	.readinglists-empty {
+	.reading-lists-empty {
 		@media only screen and ( max-width: @max-width-breakpoint-tablet ) {
 			text-align: center;
 
-			.readinglists-empty-cta {
+			.reading-lists-empty-cta {
 				margin-left: @spacing-150;
 				margin-right: @spacing-150;
 				margin-bottom: @spacing-200;
 			}
 		}
 
-		.readinglists-empty-title {
+		.reading-lists-empty-title {
 			font-weight: @font-weight-bold;
 			margin-top: @spacing-300;
 		}
 	}
 
-	.readinglists-play-store,
-	.readinglists-app-store {
+	.reading-lists-play-store,
+	.reading-lists-app-store {
 		display: inline-block;
 		background-image: url( ../assets/sprite.svg );
 		background-repeat: no-repeat;
 	}
 
-	.readinglists-play-store {
+	.reading-lists-play-store {
 		background-position: 0 -591px;
 		width: 124px;
 		height: 38px;
 	}
 
-	.readinglists-app-store {
+	.reading-lists-app-store {
 		background-position: 0 -629px;
 		width: 110px;
 		height: 38px;
 	}
 }
 
-.readinglists-anonymized-previews .readinglists-container > * {
+.reading-lists-anonymized-previews .reading-lists-container > * {
 	/* stylelint-disable-next-line declaration-no-important */
 	display: none !important;
 }

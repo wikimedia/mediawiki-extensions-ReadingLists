@@ -31,7 +31,7 @@ async function mountApp() {
 		} );
 	}
 
-	app.mount( '.readinglists-container' );
+	app.mount( '.reading-lists-container' );
 }
 
 mountApp();

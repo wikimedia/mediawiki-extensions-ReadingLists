@@ -1,10 +1,10 @@
 <template>
-	<div class="readinglists-empty">
-		<h2 class="readinglists-empty-title">
+	<div class="reading-lists-empty">
+		<h2 class="reading-lists-empty-title">
 			{{ msgEmptyTitle }}
 		</h2>
 
-		<p class="readinglists-empty-cta">
+		<p class="reading-lists-empty-cta">
 			{{ msgEmptyCta }}
 		</p>
 

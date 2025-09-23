@@ -7,7 +7,7 @@ exports[`Entries renders with toolbar disabled 1`] = `
   
   <!--v-if-->
   <h1
-    class="readinglists-title"
+    class="reading-lists-title"
   >
     Saved
   </h1>
@@ -38,14 +38,14 @@ exports[`Entries renders with toolbar enabled 1`] = `
   
   <!--v-if-->
   <h1
-    class="readinglists-title"
+    class="reading-lists-title"
   >
     Saved
   </h1>
   <!--v-if-->
   <!--v-if-->
   <div
-    class="readinglists-toolbar"
+    class="reading-lists-toolbar"
   >
     <div
       class="cdx-menu-button"

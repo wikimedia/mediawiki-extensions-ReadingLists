@@ -6,7 +6,7 @@
 	<template v-else>
 		<h1>{{ msgTitle }}</h1>
 
-		<div v-if="enableToolbar" class="readinglists-toolbar">
+		<div v-if="enableToolbar" class="reading-lists-toolbar">
 			<display-button
 				v-show="ready"
 				:disabled="loadingLists"
@@ -18,7 +18,7 @@
 		<div
 			v-show="lists.length !== 0"
 			ref="container"
-			:class="'readinglists-' + options[ 2 ]">
+			:class="'reading-lists-' + options[ 2 ]">
 			<list-item
 				v-for="list in lists"
 				:key="list.id"

@@ -1,5 +1,5 @@
 <template>
-	<div class="readinglists-remove">
+	<div class="reading-lists-remove">
 		<cdx-button
 			:disabled="disabled"
 			action="destructive"

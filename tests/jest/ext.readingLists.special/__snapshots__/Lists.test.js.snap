@@ -10,7 +10,7 @@ exports[`Lists renders with toolbar disabled 1`] = `
   </h1>
   <!--v-if-->
   <div
-    class="readinglists-grid"
+    class="reading-lists-grid"
     style="display: none;"
   >
     
@@ -40,7 +40,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
     Reading lists
   </h1>
   <div
-    class="readinglists-toolbar"
+    class="reading-lists-toolbar"
   >
     <div
       class="cdx-menu-button"
@@ -532,7 +532,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
     </div>
   </div>
   <div
-    class="readinglists-grid"
+    class="reading-lists-grid"
     style="display: none;"
   >
     

@@ -6,7 +6,7 @@
 		:class="{ 'cdx-card--is-link': entry.url || editing }"
 		@click="onClick">
 		<template #title>
-			<div class="readinglists-selectable">
+			<div class="reading-lists-selectable">
 				<cdx-checkbox
 					v-if="editing"
 					:model-value="selected"

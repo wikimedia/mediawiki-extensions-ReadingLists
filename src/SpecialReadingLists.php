@@ -38,7 +38,7 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 		$anonymizedPreviews = $config->get( 'ReadingListsAnonymizedPreviews' );
 
 		if ( $exportFeature && $anonymizedPreviews ) {
-			$output->addHtmlClasses( 'readinglists-anonymized-previews' );
+			$output->addHtmlClasses( 'reading-lists-anonymized-previews' );
 		}
 
 		// Special:ReadingLists/ExampleUser/1 is a subpage, with a specific reading list
@@ -54,11 +54,11 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 		$output->addHTML( Html::errorBox(
 			$this->msg( 'readinglists-error' )->parse(),
 			'',
-			'reading-list__errorbox'
+			'reading-lists__errorbox'
 		) );
 
 		$container = Html::element( 'div', [
-			'class' => 'readinglists-container'
+			'class' => 'reading-lists-container'
 		] );
 
 		$output->addHTML( $container );

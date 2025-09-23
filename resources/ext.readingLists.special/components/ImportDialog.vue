@@ -14,13 +14,13 @@
 
 		<a
 			v-if="androidDownloadLink"
-			class="readinglists-play-store"
+			class="reading-lists-play-store"
 			:href="androidDownloadLink"
 			target="_blank"></a>
 
 		<a
 			v-if="iosDownloadLink"
-			class="readinglists-app-store"
+			class="reading-lists-app-store"
 			:href="iosDownloadLink"
 			target="_blank"></a>
 	</cdx-dialog>
