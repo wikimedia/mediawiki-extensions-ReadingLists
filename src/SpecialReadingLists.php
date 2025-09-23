@@ -41,7 +41,16 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 			$output->addHtmlClasses( 'readinglists-anonymized-previews' );
 		}
 
-		$output->setPageTitleMsg( $this->msg( 'readinglists-title' ) );
+		// Special:ReadingLists/ExampleUser/1 is a subpage, with a specific reading list
+		// Special:ReadingLists/ExampleUser (or Special:ReadingLists)
+		// is the overview page "Reading lists" for the user.
+		$parts = $subPage ? explode( '/', $subPage ) : [];
+		if ( count( $parts ) >= 2 ) {
+			$output->setPageTitleMsg( $this->msg( 'readinglists-special-subpage-title' ) );
+		} else {
+			$output->setPageTitleMsg( $this->msg( 'readinglists-title' ) );
+		}
+
 		$output->addHTML( Html::errorBox(
 			$this->msg( 'readinglists-error' )->parse(),
 			'',
