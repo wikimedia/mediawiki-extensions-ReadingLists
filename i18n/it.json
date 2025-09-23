@@ -36,7 +36,7 @@
 	"readinglists-remove-confirmation": "Sei sicuro di voler rimuovere $1 {{PLURAL:$1|voce|voci}} da $2?",
 	"readinglists-remove-success": "$1 {{PLURAL:$1|voce è stata rimossa|voci sono state rimosse}} da [[$2|$3]].",
 	"readinglists-show-more": "Mostra altro",
-	"readinglists-default-title": "Pagine salvate",
+	"readinglists-default-title": "Salvato",
 	"readinglists-default-description": "Elenco predefinito per le tue voci salvate.",
 	"readinglists-empty-title": "Il tuo elenco è vuoto.",
 	"readinglists-empty-random": "Voce a caso",
