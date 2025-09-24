@@ -31,7 +31,7 @@
 	"readinglists-browser-list-entry-limit-exceeded": "Članka ni bilo mogoče shraniti. Dosegli ste omejitev $1 člankov na seznam.",
 	"readinglists-browser-extension-product-title": "Bralni seznami Wikipedije",
 	"readinglists-browser-page-not-supported": "$1 ne podpira te strani",
-	"readinglists-special-title": "Bralni seznami",
+	"readinglists-special-subpage-title": "Bralni seznami",
 	"readinglists-description": "Vsi vaši bralni seznami na enem mestu.",
 	"readinglists-loading": "Prosimo, počakajte ...",
 	"reading-list-purpose": "Če si želite ogledati svoje zasebne bralne sezname, se prijavite.",

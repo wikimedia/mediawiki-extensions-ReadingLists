@@ -32,7 +32,7 @@
 	"readinglists-browser-list-entry-limit-exceeded": "Straipsnio išsaugoti nepavyko. Pasiekėte $1 straipsnių viename sąraše limitą",
 	"readinglists-browser-extension-product-title": "Vikipedijos skaitymo sąrašai",
 	"readinglists-browser-page-not-supported": "$1 nepalaiko šio puslapio",
-	"readinglists-special-title": "Skaitymo sąrašai",
+	"readinglists-special-subpage-title": "Skaitymo sąrašai",
 	"readinglists-description": "Visi jūsų skaitymo sąrašai vienoje vietoje.",
 	"readinglists-loading": "Prašome palaukti...",
 	"reading-list-purpose": "Prisijunkite, kad pamatytumėte savo privačius skaitymo sąrašus.",

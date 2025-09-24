@@ -30,7 +30,7 @@
 	"readinglists-browser-list-entry-limit-exceeded": "A szócikk mentése sikertelen. Elérted a listánkénti szócikkek számának korlátját ($1).",
 	"readinglists-browser-extension-product-title": "Wikipédia-olvasólisták",
 	"readinglists-browser-page-not-supported": "A(z) $1 nem támogatja ezt a lapot",
-	"readinglists-special-title": "Olvasólisták",
+	"readinglists-special-subpage-title": "Olvasólisták",
 	"readinglists-description": "Az összes olvasólistád egy helyen.",
 	"readinglists-loading": "Kérjük, várj…",
 	"reading-list-purpose": "Jelentkezz be a privát olvasólistáid megtekintéséhez.",

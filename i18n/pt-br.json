@@ -32,7 +32,7 @@
 	"readinglists-browser-list-entry-limit-exceeded": "O artigo não pode ser salvado. Atingiu o limite de $1 artigos por lista",
 	"readinglists-browser-extension-product-title": "Listas de leitura da Wikipédia",
 	"readinglists-browser-page-not-supported": "$1 não tem suporte para esta página",
-	"readinglists-special-title": "Listas de leitura",
+	"readinglists-special-subpage-title": "Listas de leitura",
 	"readinglists-description": "Todas as suas listas de leitura em um só lugar.",
 	"readinglists-loading": "Por favor, aguarde...",
 	"reading-list-purpose": "Entre para ver as suas listas de leitura privadas, por favor.",

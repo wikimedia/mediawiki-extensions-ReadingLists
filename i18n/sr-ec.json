@@ -6,7 +6,7 @@
 	},
 	"readinglists-browser-add-entry-success": "[[$1|$2]] је додата у [[$3|$4]].",
 	"readinglists-browser-remove-entry-success": "[[$1|$2]] је уклоњена из [[$3|$4]].",
-	"readinglists-special-title": "Сачувано",
+	"readinglists-special-subpage-title": "Сачувано",
 	"readinglists-loading": "Молимо сачекајте...",
 	"readinglists-select-article": "Изабери чланак",
 	"readinglists-remove": "Уклони",

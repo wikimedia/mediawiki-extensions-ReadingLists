@@ -21,7 +21,7 @@
 	"readinglists-browser-list-entry-limit-exceeded": "নিবন্ধ সংরক্ষণ করা যাবে না। আপনি তালিকা প্রতি $1টি নিবন্ধের সীমাতে পৌঁছেছেন",
 	"readinglists-browser-extension-product-title": "উইকিপিডিয়ার পড়ার তালিকা",
 	"readinglists-browser-page-not-supported": "$1 এই পৃষ্ঠাটি সমর্থন করে না",
-	"readinglists-special-title": "সংরক্ষিত",
+	"readinglists-special-subpage-title": "সংরক্ষিত",
 	"readinglists-loading": "অনুগ্রহ করে অপেক্ষা করুন...",
 	"reading-list-purpose-for-temp-user": "ব্যক্তিগত পঠন তালিকা তৈরি করতে দয়া করে একটি অ্যাকাউন্ট তৈরি করুন।",
 	"special-tab-readinglists-short": "আপনার তালিকা",

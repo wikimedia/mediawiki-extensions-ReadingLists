@@ -2,7 +2,7 @@
 	"@metadata": {
 		"authors": []
 	},
-	"readinglists-special-title": "Sačuvano",
+	"readinglists-special-subpage-title": "Sačuvano",
 	"readinglists-import-empty-message": "Ne možete uvoziti spisak spiskova.",
 	"readinglists-watchlist": "Spisak nadgledanja",
 	"readinglists-watchlist-description": "Stranice koje ste uređivali ili pratite",
