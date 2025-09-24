@@ -6,7 +6,7 @@ exports[`Lists renders with toolbar disabled 1`] = `
 >
   
   <h2>
-    Reading lists
+    Saved pages
   </h2>
   <!--v-if-->
   <div
@@ -37,7 +37,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
 >
   
   <h2>
-    Reading lists
+    Saved pages
   </h2>
   <div
     class="reading-lists-toolbar"
