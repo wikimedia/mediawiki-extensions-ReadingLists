@@ -6,11 +6,7 @@ exports[`Entries renders with toolbar disabled 1`] = `
 >
   
   <!--v-if-->
-  <h1
-    class="reading-lists-title"
-  >
-    Saved
-  </h1>
+  <!--v-if-->
   <!--v-if-->
   <div>
      (sorted by most recent) 
@@ -37,11 +33,7 @@ exports[`Entries renders with toolbar enabled 1`] = `
 >
   
   <!--v-if-->
-  <h1
-    class="reading-lists-title"
-  >
-    Saved
-  </h1>
+  <!--v-if-->
   <!--v-if-->
   <!--v-if-->
   <div

@@ -5,9 +5,9 @@ exports[`Lists renders with toolbar disabled 1`] = `
   data-v-app=""
 >
   
-  <h1>
+  <h2>
     Reading lists
-  </h1>
+  </h2>
   <!--v-if-->
   <div
     class="reading-lists-grid"
@@ -36,9 +36,9 @@ exports[`Lists renders with toolbar enabled 1`] = `
   data-v-app=""
 >
   
-  <h1>
+  <h2>
     Reading lists
-  </h1>
+  </h2>
   <div
     class="reading-lists-toolbar"
   >

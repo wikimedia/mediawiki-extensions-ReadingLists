@@ -4,7 +4,7 @@
 	</cdx-message>
 
 	<template v-else>
-		<h1>{{ msgTitle }}</h1>
+		<h2>{{ msgTitle }}</h2>
 
 		<div v-if="enableToolbar" class="reading-lists-toolbar">
 			<display-button

@@ -6,13 +6,13 @@
 	<template v-else>
 		<import-dialog v-if="imported !== null"></import-dialog>
 
-		<h1 class="reading-lists-title">
-			{{ title || defaultTitle }}
-		</h1>
-
-		<h2 v-if="description && !isDefaultList" class="reading-lists-description">
-			{{ description }}
+		<h2 v-if="!isDefaultList" class="reading-lists-title">
+			{{ title }}
 		</h2>
+
+		<p v-if="description && !isDefaultList" class="reading-lists-description">
+			{{ description }}
+		</p>
 
 		<div v-if="!enableToolbar">
 			({{ sortingText }})
@@ -118,7 +118,6 @@ module.exports = exports = {
 		return {
 			loadingInfo: ref( true ),
 			loadingEntries: ref( true ),
-			defaultTitle: mw.msg( 'readinglists-default-title' ),
 			title: ref( '' ),
 			isDefaultList: ref( true ),
 			description: ref( '' ),
