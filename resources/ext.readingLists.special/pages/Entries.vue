@@ -14,9 +14,9 @@
 			{{ description }}
 		</p>
 
-		<div v-if="!enableToolbar">
-			({{ sortingText }})
-		</div>
+		<p v-if="!enableToolbar" class="reading-lists-sorting">
+			{{ sortingText }}
+		</p>
 
 		<div
 			v-if="enableToolbar"

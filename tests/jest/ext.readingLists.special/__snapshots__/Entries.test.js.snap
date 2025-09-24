@@ -8,9 +8,11 @@ exports[`Entries renders with toolbar disabled 1`] = `
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->
-  <div>
-     (sorted by most recent) 
-  </div>
+  <p
+    class="reading-lists-sorting"
+  >
+    Sorted by most recent.
+  </p>
   <!--v-if-->
   <!--v-if-->
   <div
