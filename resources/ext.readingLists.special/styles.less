@@ -57,8 +57,7 @@
 		}
 	}
 
-	.reading-lists-grid,
-	.reading-lists-compact {
+	.reading-lists-grid {
 		display: grid;
 		grid-auto-rows: 1fr;
 		// Auto-fit to fill the row with as many columns as possible.
@@ -75,6 +74,7 @@
 		}
 
 		.cdx-card {
+			flex-direction: row;
 			align-items: stretch;
 			// Set 0 padding to flush thumbnails and instead use padding on text container.
 			padding: 0;
@@ -85,6 +85,20 @@
 			min-width: @size-800;
 			min-height: @size-800;
 			margin-right: 0;
+		}
+
+		// Apply necessary specificity to set thumbnail size.
+		.cdx-card__thumbnail.cdx-thumbnail .cdx-thumbnail__placeholder,
+		.cdx-card__thumbnail.cdx-thumbnail .cdx-thumbnail__image {
+			width: @size-full;
+			height: @size-full;
+			aspect-ratio: 1;
+			border-width: 0 @border-width-base 0 0;
+		}
+
+		.cdx-icon--medium {
+			min-width: 50px;
+			min-height: 50px;
 		}
 
 		.cdx-card__text {
@@ -125,26 +139,6 @@
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
-		}
-	}
-
-	.reading-lists-grid {
-		.cdx-card {
-			flex-direction: row;
-		}
-
-		// Apply necessary specificity to set thumbnail size.
-		.cdx-card__thumbnail.cdx-thumbnail .cdx-thumbnail__placeholder,
-		.cdx-card__thumbnail.cdx-thumbnail .cdx-thumbnail__image {
-			width: @size-full;
-			height: @size-full;
-			aspect-ratio: 1;
-			border-width: 0 @border-width-base 0 0;
-		}
-
-		.cdx-icon--medium {
-			min-width: 50px;
-			min-height: 50px;
 		}
 	}
 

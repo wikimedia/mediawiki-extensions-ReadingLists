@@ -17,9 +17,7 @@ const {
 	cdxIconArrowUp,
 	cdxIconHistory,
 	cdxIconLargerText,
-	cdxIconSortVertical,
-	cdxIconViewCompact,
-	cdxIconViewDetails
+	cdxIconSortVertical
 } = require( '../../../icons.json' );
 
 // @vue/component
@@ -28,7 +26,7 @@ module.exports = exports = {
 	props: {
 		default: {
 			type: Array,
-			default: () => [ 's:name', 'd:ascending', 'v:grid' ]
+			default: () => [ 's:name', 'd:ascending' ]
 		},
 		disabled: {
 			type: Boolean,
@@ -78,21 +76,6 @@ module.exports = exports = {
 							icon: cdxIconArrowDown
 						}
 					]
-				},
-				{
-					label: mw.msg( 'readinglists-display-view' ),
-					items: [
-						{
-							value: 'v:grid',
-							label: mw.msg( 'readinglists-display-view-grid' ),
-							icon: cdxIconViewCompact
-						},
-						{
-							value: 'v:compact',
-							label: mw.msg( 'readinglists-display-view-compact' ),
-							icon: cdxIconViewDetails
-						}
-					]
 				}
 			],
 			msgDisplayMenu: mw.msg( 'readinglists-display-menu' ),
@@ -102,9 +85,10 @@ module.exports = exports = {
 	methods: {
 		onSelect( values ) {
 			const prev = this.prev;
-			const next = [ 's:', 'd:', 'v:' ];
+			// Derive prefix placeholders from `prev` so length isn't hardcoded.
+			const next = prev.map( ( v ) => v.slice( 0, 2 ) );
 
-			for ( let i = 0; i < 3; i++ ) {
+			for ( let i = 0; i < 2; i++ ) {
 				const prefix = next[ i ];
 				let value = null;
 
