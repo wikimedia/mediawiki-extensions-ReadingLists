@@ -21,10 +21,6 @@
 		<template v-if="entry.description" #description>
 			{{ entry.description }}
 		</template>
-
-		<template v-if="entry.project" #supporting-text>
-			{{ project }}
-		</template>
 	</cdx-card>
 </template>
 
@@ -40,7 +36,6 @@ module.exports = exports = {
 			type: Object,
 			default: () => ( {
 				id: 1,
-				project: 'en.wikipedia.org',
 				title: 'Example',
 				description: 'Lorem ipsum dolor sit amet'
 			} )
@@ -57,7 +52,6 @@ module.exports = exports = {
 	emits: [ 'selected' ],
 	data() {
 		return {
-			project: new URL( this.entry.project ).hostname,
 			msgSelectArticle: mw.msg( 'readinglists-select-article' ),
 			cdxIconAlert
 		};
