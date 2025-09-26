@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Jorn Ari",
-			"Saederup92"
+			"Saederup92",
+			"Steenth"
 		]
 	},
 	"readinglists-db-error-cannot-delete-default-list": "Standardlisten kan ikke slettes.",
@@ -12,5 +13,6 @@
 	"readinglists-db-error-duplicate-list": "En liste ved dette navn findes allerede.",
 	"readinglists-browser-login-prompt": "Log ind for at gemme artikler",
 	"readinglists-browser-error-intro": "Der opstod en fejl: $1",
-	"readinglists-browser-extension-info-link-text": "Lær mere"
+	"readinglists-browser-extension-info-link-text": "Lær mere",
+	"readinglists-sorted-by-recent": "Sorteret efter nyeste."
 }
