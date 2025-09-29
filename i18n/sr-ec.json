@@ -8,6 +8,7 @@
 	"readinglists-browser-remove-entry-success": "[[$1|$2]] је уклоњена из [[$3|$4]].",
 	"readinglists-special-subpage-title": "Сачувано",
 	"readinglists-loading": "Молимо сачекајте...",
+	"readinglists-title": "Сачуване странице",
 	"readinglists-select-article": "Изабери чланак",
 	"readinglists-remove": "Уклони",
 	"readinglists-show-more": "Прикажи више",

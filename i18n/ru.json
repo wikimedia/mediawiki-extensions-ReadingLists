@@ -37,16 +37,19 @@
 	"readinglists-browser-extension-product-title": "Списки чтения Википедии",
 	"readinglists-browser-page-not-supported": "$1 не поддерживает эту страницу",
 	"readinglists-special-title-imported": "Чтение списков: Импорт от другого пользователя",
+	"readinglists-special-subpage-title": "Сохраненные страницы",
 	"readinglists-loading": "Пожалуйста, подождите…",
 	"readinglists-error": "Ваш браузер не может использовать функцию списков для чтения. Включите JavaScript или попробуйте в другом браузере.",
 	"readinglists-import-size-error": "Список слишком велик для отображения.",
 	"special-tab-readinglists-short": "Ваши списки",
 	"readinglists-total-articles": "{{formatnum:$1}} {{plural:$1|статья|статьи|статей}}",
+	"readinglists-default-title": "Сохраненные страницы",
 	"readinglists-empty-random": "Случайная статья",
 	"readinglists-display-sort": "Сортировать по",
 	"readinglists-display-direction-ascending": "По возрастанию",
 	"readinglists-import-empty-message": "Вы не можете импортировать списки списков",
 	"readinglists-watchlist-monitor": "Вы можете отслеживать изменения страниц в этом списке с помощью инструмента [список наблюдения за $1 ].",
 	"readinglists-share-url-notify": "Информация, относящаяся к этому списку для чтения, скопирована в буфер обмена.",
-	"readinglists-import-app-launch-hint": "Убедитесь, что установлена последняя версия приложения."
+	"readinglists-import-app-launch-hint": "Убедитесь, что установлена последняя версия приложения.",
+	"readinglists-menu-item": "Сохраненные страницы"
 }
