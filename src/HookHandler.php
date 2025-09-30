@@ -7,6 +7,7 @@ use MediaWiki\Api\Hook\APIQuerySiteInfoGeneralInfoHook;
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\BetaFeatures\BetaFeatures;
 use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\SpecialPage\SpecialPage;
@@ -51,11 +52,11 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			return;
 		}
 
-		$repository = new ReadingListRepository(
-			$this->centralIdLookupFactory->getLookup()
-				->centralIdFromLocalUser( $user ),
-			$this->dbProvider
-		);
+		/**
+		 * @var ReadingListRepositoryFactory $factory
+		 */
+		$factory = MediaWikiServices::getInstance()->getService( 'ReadingLists.ReadingListRepositoryFactory' );
+		$repository = $factory->getInstanceForUser( $user );
 
 		$links['user-menu'] = wfArrayInsertAfter( $links['user-menu'], [
 			'readinglists' => [

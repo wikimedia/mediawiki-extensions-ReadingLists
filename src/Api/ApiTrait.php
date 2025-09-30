@@ -9,6 +9,7 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
+use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Message\Message;
@@ -89,11 +90,17 @@ trait ApiTrait {
 	 */
 	protected function getReadingListRepository( ?UserIdentity $user = null ) {
 		$config = $this->getConfig();
-		$centralId = MediaWikiServices::getInstance()
+		$services = MediaWikiServices::getInstance();
+		$centralId = $services
 			->getCentralIdLookupFactory()
 			->getLookup()
 			->centralIdFromLocalUser( $user, CentralIdLookup::AUDIENCE_RAW );
-		$repository = new ReadingListRepository( $centralId, $this->loadBalancerFactory );
+
+		/**
+		 * @var ReadingListRepositoryFactory $factory
+		 */
+		$factory = $services->getService( 'ReadingLists.ReadingListRepositoryFactory' );
+		$repository = $factory->create( $centralId );
 		$repository->setLimits( $config->get( 'ReadingListsMaxListsPerUser' ),
 			$config->get( 'ReadingListsMaxEntriesPerList' ) );
 		$repository->setLogger( $this->logger );

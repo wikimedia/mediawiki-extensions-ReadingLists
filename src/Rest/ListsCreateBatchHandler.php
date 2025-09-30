@@ -41,7 +41,6 @@ class ListsCreateBatchHandler extends Handler {
 	public function postInitSetup() {
 		$this->repository = $this->createRepository(
 			$this->getAuthority()->getUser(),
-			$this->dbProvider,
 			$this->config,
 			$this->centralIdLookup,
 			$this->logger

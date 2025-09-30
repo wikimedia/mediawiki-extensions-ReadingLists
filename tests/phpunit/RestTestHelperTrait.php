@@ -68,7 +68,6 @@ trait RestTestHelperTrait {
 		$wrapper = TestingAccessWrapper::newFromObject( $handler );
 		return $wrapper->createRepository(
 			$this->getAuthority( $privileged )->getUser(),
-			$wrapper->dbProvider,
 			$wrapper->config,
 			$wrapper->centralIdLookup,
 			$wrapper->logger

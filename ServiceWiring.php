@@ -6,6 +6,14 @@ use MediaWiki\MediaWikiServices;
 
 /** @phpcs-require-sorted-array */
 return [
+	'ReadingLists.ReadingListRepositoryFactory' => static function (
+		MediaWikiServices $services
+	): ReadingListRepositoryFactory {
+		return new ReadingListRepositoryFactory(
+			$services->getDBLoadBalancerFactory(),
+			$services->getCentralIdLookupFactory()
+		);
+	},
 	'ReverseInterwikiLookup' => static function ( MediaWikiServices $services ): ReverseInterwikiLookupInterface {
 		$ownServer = $services->getMainConfig()->get( 'CanonicalServer' );
 		$urlUtils = $services->getUrlUtils();

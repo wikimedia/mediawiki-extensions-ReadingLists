@@ -33,7 +33,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	 */
 	public function testAssertUser( $method ) {
 		$this->addProjects( [ 'dummy' ] );
-		$repository = new ReadingListRepository( null, $this->lbFactory );
+		$repository = $this->getReadingListRepository();
 		$call = func_get_args();
 		$this->assertFailsWith( 'readinglists-db-error-user-required',
 			static function () use ( $repository, $call ) {
@@ -72,7 +72,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	public function testUninitializedErrors( $method ) {
 		$this->addProjects( [ 'dummy' ] );
 		$this->addDataForAnotherUser();
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$call = func_get_args();
 		$this->assertFailsWith( 'readinglists-db-error-not-set-up',
 			static function () use ( $repository, $call ) {
@@ -98,7 +98,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	}
 
 	public function testSetupFailsWithoutProjects() {
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$this->assertFailsWith( 'readinglists-db-error-no-projects',
 			static function () use ( $repository ) {
 				$repository->setupForUser();
@@ -107,7 +107,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	}
 
 	public function testInitializeProjects() {
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 
 		$this->assertFalse(
 			$repository->hasProjects(),
@@ -133,7 +133,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	public function testSetupAndTeardown() {
 		$this->addProjects( [ 'dummy' ] );
 		$this->addDataForAnotherUser();
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 
 		// no rows initially; isSetupForUser() is false
 		$this->assertFalse( $repository->getDefaultListIdForUser() );
@@ -209,9 +209,17 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		);
 	}
 
+	/**
+	 * @param int|null $centralId
+	 * @return ReadingListRepository
+	 */
+	private function getReadingListRepository( ?int $centralId = null ): ReadingListRepository {
+		return new ReadingListRepository( $centralId, $this->lbFactory );
+	}
+
 	public function testAddList() {
 		$this->addProjects( [ 'dummy' ] );
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 
 		$list = $repository->addList( 'foo' );
@@ -273,7 +281,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	public function testAddList_count() {
 		$this->addProjects( [ 'dummy' ] );
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$repository->setLimits( 2, null );
 		$repository->setupForUser();
 
@@ -298,7 +306,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	public function testGetAllLists( array $args, array $expected ) {
 		$this->addProjects( [ 'dummy' ] );
 		$this->addDataForAnotherUser();
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 		$this->addLists( 1, [
 			[
@@ -433,7 +441,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	public function testUpdateList() {
 		$this->addProjects( [ 'dummy' ] );
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 		[ $listId, $listId2, $deletedListId ] = $this->addLists( 1, [
 			[
@@ -486,7 +494,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		);
 		$this->assertFailsWith( 'readinglists-db-error-not-own-list',
 			function () use ( $listId ) {
-				$repository = new ReadingListRepository( 123, $this->lbFactory );
+				$repository = $this->getReadingListRepository( 123 );
 				$repository->updateList( $listId, 'foo' );
 			}
 		);
@@ -515,7 +523,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	public function testDeleteList() {
 		$this->addProjects( [ 'dummy' ] );
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 		[ $listId, $deletedListId ] = $this->addLists( 1, [
 			[
@@ -552,7 +560,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		);
 		$this->assertFailsWith( 'readinglists-db-error-not-own-list',
 			function () use ( $listId ) {
-				$repository = new ReadingListRepository( 123, $this->lbFactory );
+				$repository = $this->getReadingListRepository( 123 );
 				$repository->deleteList( $listId );
 			}
 		);
@@ -576,7 +584,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	public function testAddListEntry() {
 		$this->addProjects( [ 'dummy' ] );
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 		[ $projectId ] = $this->addProjects( [ 'https://en.wikipedia.org',
 			'https://de.wikipedia.org' ] );
@@ -636,7 +644,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		);
 		$this->assertFailsWith( 'readinglists-db-error-not-own-list',
 			function () use ( $listId ) {
-				$repository = new ReadingListRepository( 123, $this->lbFactory );
+				$repository = $this->getReadingListRepository( 123 );
 				$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'B' );
 			}
 		);
@@ -654,7 +662,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	public function testAddListEntry_count() {
 		$this->addProjects( [ 'dummy' ] );
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$repository->setLimits( null, 1 );
 		$repository->setupForUser();
 
@@ -713,7 +721,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	 */
 	public function testGetListEntries( array $args, array $expected ) {
 		$this->addProjects( [ 'dummy' ] );
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 		$defaultId = 1;
 		$this->addListEntries( $defaultId, 1, [
@@ -861,7 +869,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	public function testGetListEntries_error() {
 		$this->addProjects( [ 'dummy' ] );
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 		$defaultId = 1;
 		[ $deletedListId ] = $this->addLists( 1, [
@@ -887,7 +895,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		);
 		$this->assertFailsWith( 'readinglists-db-error-not-own-list',
 			function () use ( $defaultId ) {
-				$repository = new ReadingListRepository( 123, $this->lbFactory );
+				$repository = $this->getReadingListRepository( 123 );
 				$repository->getListEntries( [ $defaultId ], ReadingListRepository::SORT_BY_NAME,
 					ReadingListRepository::SORT_DIR_ASC );
 			}
@@ -902,7 +910,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	public function testDeleteListEntry() {
 		$this->addProjects( [ 'dummy' ] );
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 		[ $fooProjectId ] = $this->addProjects( [ 'foo' ] );
 		[ $listId, $deletedListId, $outOfSyncId ] = $this->addLists( 1, [
@@ -1014,7 +1022,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		);
 		$this->assertFailsWith( 'readinglists-db-error-not-own-list-entry',
 			function () use ( $foo2Id ) {
-				$repository = new ReadingListRepository( 123, $this->lbFactory );
+				$repository = $this->getReadingListRepository( 123 );
 				$repository->deleteListEntry( $foo2Id );
 			}
 		);
@@ -1035,7 +1043,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	 */
 	public function testGetListsByDateUpdated( array $args, array $expected ) {
 		$this->addProjects( [ 'dummy' ] );
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$this->addLists( 1, [
 			[
 				'rl_name' => 'foo-1',
@@ -1104,7 +1112,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	 */
 	public function testGetListEntriesByDateUpdated( array $args, array $expected ) {
 		$this->addProjects( [ 'dummy' ] );
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$this->addLists( 1, [
 			[
 				'rl_name' => 'one',
@@ -1187,7 +1195,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	public function testPurgeOldDeleted() {
 		$this->addProjects( [ 'dummy' ] );
-		$repository = new ReadingListRepository( null, $this->lbFactory );
+		$repository = $this->getReadingListRepository();
 
 		// User ID to associate the lists and entries with.
 		$userID = 1;
@@ -1362,7 +1370,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	 */
 	public function testGetListsByPage( array $args, array $expected ) {
 		$this->addProjects( [ 'dummy' ] );
-		$repository = new ReadingListRepository( 1, $this->lbFactory );
+		$repository = $this->getReadingListRepository( 1 );
 		$this->addLists( 1, [
 			[
 				// no match

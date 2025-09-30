@@ -10,6 +10,8 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
+use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Permissions\Authority;
 use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\Title\Title;
@@ -19,7 +21,6 @@ use Psr\Log\LoggerInterface;
 use Wikimedia\Message\MessageValue;
 use Wikimedia\ParamValidator\ParamValidator;
 use Wikimedia\ParamValidator\TypeDef\NumericDef;
-use Wikimedia\Rdbms\LBFactory;
 
 /**
  * Trait to make the ReadingListRepository data access object available to
@@ -45,18 +46,26 @@ trait ReadingListsHandlerTrait {
 
 	/**
 	 * @param UserIdentity $user
-	 * @param LBFactory $dbProvider
 	 * @param Config $config
 	 * @param CentralIdLookup $centralIdLookup
 	 * @param LoggerInterface $logger
 	 * @return ReadingListRepository
 	 */
 	private function createRepository(
-		UserIdentity $user, LBFactory $dbProvider, Config $config,
-		CentralIdLookup $centralIdLookup, LoggerInterface $logger
+		UserIdentity $user,
+		Config $config,
+		CentralIdLookup $centralIdLookup,
+		LoggerInterface $logger
 	) {
+		$services = MediaWikiServices::getInstance();
 		$centralId = $centralIdLookup->centralIdFromLocalUser( $user, CentralIdLookup::AUDIENCE_RAW );
-		$repository = new ReadingListRepository( $centralId, $dbProvider );
+
+		/**
+		 * @var ReadingListRepositoryFactory $factory
+		 */
+		$factory = $services->getService( 'ReadingLists.ReadingListRepositoryFactory' );
+
+		$repository = $factory->create( $centralId );
 		$repository->setLimits(
 			$config->get( 'ReadingListsMaxListsPerUser' ),
 			$config->get( 'ReadingListsMaxEntriesPerList' )

@@ -68,14 +68,14 @@ class ReadingListRepository implements LoggerAwareInterface {
 	private $dbr;
 
 	/** @var int|null */
-	private $userId;
+	private ?int $userId;
 
 	/**
-	 * @param int $userId Central ID of the user.
+	 * @param ?int $userId Central ID of the user.
 	 * @param LBFactory $lbFactory
 	 */
 	public function __construct(
-		$userId,
+		?int $userId,
 		private readonly LBFactory $lbFactory
 	) {
 		$this->userId = (int)$userId ?: null;

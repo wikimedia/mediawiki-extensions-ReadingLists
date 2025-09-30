@@ -2,10 +2,11 @@
 
 namespace MediaWiki\Extension\ReadingLists\Maintenance;
 
-use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
+use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
 use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\LBFactory;
 
@@ -66,11 +67,16 @@ class PopulateWithTestData extends Maintenance {
 		}
 		$totalLists = $totalEntries = 0;
 		stats_rand_setall( mt_rand(), mt_rand() );
+		$services = MediaWikiServices::getInstance();
+		/**
+		 * @var ReadingListRepositoryFactory $factory
+		 */
+		$factory = $services->getService( 'ReadingLists.ReadingListRepositoryFactory' );
 		$users = $this->getOption( 'users' );
 		for ( $i = 0; $i < $users; $i++ ) {
 			// The test data is for performance testing so we don't care whether the user exists.
 			$centralId = 1000 + $i;
-			$repository = new ReadingListRepository( $centralId, $this->loadBalancerFactory );
+			$repository = $factory->create( $centralId );
 			try {
 				$repository->setupForUser();
 				$i++;
