@@ -66,7 +66,6 @@
 	"readinglists-default-description": "Description for the default list.",
 	"readinglists-empty-title": "Title that shows on a list with no articles in it.",
 	"readinglists-empty-cta": "Call to action that shows on a list with no articles in it.",
-	"readinglists-empty-random": "Random button text that shows on a list with no articles in it.",
 	"readinglists-display-menu": "Display button label for screen readers.",
 	"readinglists-display-sort": "Header for \"Sort by\" in the display menu.",
 	"readinglists-display-sort-name": "Option for \"sort: name\" in the display menu.",
