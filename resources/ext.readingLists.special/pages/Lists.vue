@@ -4,8 +4,6 @@
 	</cdx-message>
 
 	<template v-else>
-		<h2>{{ msgTitle }}</h2>
-
 		<div v-if="enableToolbar" class="reading-lists-toolbar">
 			<display-button
 				v-show="ready"
@@ -67,7 +65,6 @@ module.exports = exports = {
 			lists: ref( [] ),
 			next: ref( null ),
 			infinite: ref( false ),
-			msgTitle: mw.msg( 'readinglists-title' ),
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
 			msgLoading: mw.msg( 'readinglists-loading' ),
 			enableToolbar: ReadingListsEnableSpecialPageToolbar
