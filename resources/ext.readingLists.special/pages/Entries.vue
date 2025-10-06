@@ -52,7 +52,7 @@
 			<div
 				v-if="entries.length !== 0"
 				ref="container"
-				class="reading-lists-grid">
+				:class="'reading-lists-' + options[ 2 ]">
 				<entry-item
 					v-for="entry in entries"
 					:key="entry.id"
@@ -181,12 +181,13 @@ module.exports = exports = {
 			} else {
 				const sort = options[ 0 ].replace( 's:', '' );
 				const direction = options[ 1 ].replace( 'd:', '' );
+				const view = options[ 2 ].replace( 'v:', '' );
 
 				if ( sort !== this.options[ 0 ] || direction !== this.options[ 1 ] ) {
 					clear = true;
 				}
 
-				this.options = [ sort, direction ];
+				this.options = [ sort, direction, view ];
 			}
 
 			if ( clear ) {

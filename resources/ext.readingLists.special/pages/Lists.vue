@@ -16,7 +16,7 @@
 		<div
 			v-show="lists.length !== 0"
 			ref="container"
-			class="reading-lists-grid">
+			:class="'reading-lists-' + options[ 2 ]">
 			<list-item
 				v-for="list in lists"
 				:key="list.id"
@@ -88,6 +88,7 @@ module.exports = exports = {
 			} else {
 				const sort = options[ 0 ].replace( 's:', '' );
 				const direction = options[ 1 ].replace( 'd:', '' );
+				const view = options[ 2 ].replace( 'v:', '' );
 
 				if ( sort !== this.options[ 0 ] || direction !== this.options[ 1 ] ) {
 					this.loadingLists = true;
@@ -96,7 +97,7 @@ module.exports = exports = {
 					this.infinite = false;
 				}
 
-				this.options = [ sort, direction ];
+				this.options = [ sort, direction, view ];
 			}
 
 			if ( this.loadingLists ) {
@@ -135,7 +136,7 @@ module.exports = exports = {
 	},
 	async mounted() {
 		if ( !this.enableToolbar ) {
-			this.options = [ 'updated', 'descending' ];
+			this.options = [ 'updated', 'descending', 'grid' ];
 			await this.getLists( null, true );
 		}
 

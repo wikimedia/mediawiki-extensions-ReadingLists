@@ -15,7 +15,7 @@
 		.reading-lists-sort-text {
 			font-size: @font-size-small;
 			font-weight: @font-weight-normal;
-			color: @color-subtle;
+			color: @color-placeholder;
 			margin-left: @spacing-50;
 		}
 
@@ -50,21 +50,23 @@
 		}
 
 		.cdx-progress-bar {
-			width: @size-half;
+			width: 50%;
 			margin-top: @spacing-200;
 			margin-left: auto;
 			margin-right: auto;
 		}
 	}
 
-	.reading-lists-grid {
+	.reading-lists-grid,
+	.reading-lists-compact {
 		display: grid;
 		grid-auto-rows: 1fr;
-		// Auto-fit to fill the row with as many columns as possible.
-		// Minimum width of a column is `@size-1600` (16rem equal to 256px).
-		grid-template-columns: repeat( auto-fit, minmax( @size-1600, 1fr ) );
 		gap: @spacing-100;
 		margin-top: @spacing-200;
+
+		@media only screen and ( min-width: @min-width-breakpoint-tablet ) {
+			grid-template-columns: repeat( 3, 1fr );
+		}
 
 		+ .cdx-button {
 			display: block;
@@ -74,24 +76,55 @@
 		}
 
 		.cdx-card {
-			flex-direction: row;
+			overflow: hidden;
 			align-items: stretch;
-			// Set 0 padding to flush thumbnails and instead use padding on text container.
-			padding: 0;
+		}
+
+		.cdx-card__text {
+			height: 100%;
 			overflow: hidden;
 		}
 
-		.cdx-card__thumbnail {
-			min-width: @size-800;
-			min-height: @size-800;
-			margin-right: 0;
+		.cdx-card__text__title,
+		.cdx-card__text__description {
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
 		}
 
-		// Apply necessary specificity to set thumbnail size.
-		.cdx-card__thumbnail.cdx-thumbnail .cdx-thumbnail__placeholder,
-		.cdx-card__thumbnail.cdx-thumbnail .cdx-thumbnail__image {
-			width: @size-full;
-			height: @size-full;
+		.cdx-card__text__title {
+			font-size: @font-size-medium;
+			-webkit-line-clamp: 1;
+		}
+
+		.cdx-card__text__description {
+			font-size: @font-size-small;
+			margin-top: 0;
+			-webkit-line-clamp: 2;
+		}
+
+		.cdx-card__text__supporting-text {
+			font-size: @font-size-x-small;
+			margin-top: auto;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.cdx-card--is-link {
+			cursor: pointer;
+		}
+	}
+
+	.reading-lists-grid {
+		.cdx-card {
+			flex-direction: row;
+		}
+
+		.cdx-thumbnail__placeholder,
+		.cdx-thumbnail__image {
+			width: 100%;
+			height: 100%;
 			aspect-ratio: 1;
 			border-width: 0 @border-width-base 0 0;
 		}
@@ -99,46 +132,6 @@
 		.cdx-icon--medium {
 			min-width: 50px;
 			min-height: 50px;
-		}
-
-		.cdx-card__text {
-			height: @size-full;
-			padding: @spacing-50 @spacing-75;
-			overflow: hidden;
-		}
-
-		.cdx-card__text__title,
-		.cdx-card__text__description {
-			// Contradictory to its name, non standards conforming `-webkit-box` value is supported
-			// across all major browsers.
-			display: -webkit-box;
-			overflow: hidden;
-		}
-
-		.cdx-card__text__title {
-			font-family: @font-family-serif;
-			font-size: @font-size-xx-large;
-			font-weight: @font-weight-normal;
-			line-height: @line-height-xx-large;
-		}
-
-		.cdx-card__text__description {
-			color: @color-subtle;
-			font-size: @font-size-small;
-			line-height: @line-height-x-small;
-			// Contain text to a given amount of lines when used in combination with
-			// `display: -webkit-box`. It will end with ellipsis when
-			// `text-overflow: ellipsis` is included.
-			-webkit-line-clamp: 2;
-		}
-
-		.cdx-card__text__supporting-text {
-			color: @color-subtle;
-			font-size: @font-size-small;
-			line-height: @line-height-x-small;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
 		}
 	}
 
