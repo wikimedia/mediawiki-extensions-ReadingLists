@@ -2,10 +2,21 @@
 
 namespace MediaWiki\Extension\ReadingLists;
 
+use MediaWiki\Extension\ReadingLists\Service\UserPreferenceBatchUpdater;
+use MediaWiki\Extension\ReadingLists\Validator\ReadingListPreferenceEligibilityValidator;
 use MediaWiki\MediaWikiServices;
 
 /** @phpcs-require-sorted-array */
 return [
+	'ReadingLists.ReadingListEligibilityValidator' => static function (
+		MediaWikiServices $services
+	): ReadingListPreferenceEligibilityValidator {
+		return new ReadingListPreferenceEligibilityValidator(
+			$services->getUserEditTracker(),
+			$services->getWatchedItemStore(),
+			$services->get( 'ReadingLists.ReadingListRepositoryFactory' )
+		);
+	},
 	'ReadingLists.ReadingListRepositoryFactory' => static function (
 		MediaWikiServices $services
 	): ReadingListRepositoryFactory {
@@ -27,6 +38,13 @@ return [
 			$services->getLanguageNameUtils(),
 			$urlUtils,
 			$ownDomain
+		);
+	},
+	'UserPreferenceBatchUpdater' => static function ( MediaWikiServices $services ): UserPreferenceBatchUpdater {
+		return new UserPreferenceBatchUpdater(
+			$services->getDBLoadBalancerFactory(),
+			$services->getUserFactory(),
+			$services->getUserOptionsManager()
 		);
 	},
 ];
