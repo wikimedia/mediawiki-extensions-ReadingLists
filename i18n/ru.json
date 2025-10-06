@@ -44,7 +44,6 @@
 	"special-tab-readinglists-short": "Ваши списки",
 	"readinglists-total-articles": "{{formatnum:$1}} {{plural:$1|статья|статьи|статей}}",
 	"readinglists-default-title": "Сохраненные страницы",
-	"readinglists-empty-random": "Случайная статья",
 	"readinglists-display-sort": "Сортировать по",
 	"readinglists-display-direction-ascending": "По возрастанию",
 	"readinglists-import-empty-message": "Вы не можете импортировать списки списков",
