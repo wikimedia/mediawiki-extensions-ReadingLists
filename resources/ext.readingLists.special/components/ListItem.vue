@@ -2,7 +2,7 @@
 	<cdx-card
 		:url="urlValue"
 		:thumbnail="thumbnailValue"
-		force-thumbnail>
+		:force-thumbnail="false">
 		<template v-if="titleValue" #title>
 			{{ titleValue }}
 		</template>

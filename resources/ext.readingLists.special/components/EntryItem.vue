@@ -1,9 +1,10 @@
 <template>
 	<cdx-card
 		:url="entry.url"
-		:thumbnail="{ url: entry.thumbnail }"
-		:custom-placeholder-icon="!entry.url || undefined"
 		:class="{ 'cdx-card--is-link': entry.url || editing }"
+
+		:thumbnail="entry.thumbnail ? { url: entry.thumbnail } : undefined"
+		:force-thumbnail="false"
 		@click="onClick">
 		<template #title>
 			<div class="reading-lists-selectable">
