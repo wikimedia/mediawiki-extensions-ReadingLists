@@ -41,6 +41,7 @@
 	"apihelp-query+readinglistentries-param-limit": "{{doc-apihelp-param|query+readinglistentries|limit}}",
 	"apihelp-query+readinglistentries-example-1": "{{doc-apihelp-example|query+readinglistentries}}",
 	"apihelp-query+readinglistentries-example-2": "{{doc-apihelp-example|query+readinglistentries}}",
+	"apihelp-query+readinglistentries-example-3": "{{doc-apihelp-example|query+readinglistentries}}",
 	"apihelp-readinglists-summary": "{{doc-apihelp-summary|readinglists}}",
 	"apihelp-readinglists-param-command": "{{doc-apihelp-param|readinglists|command}}",
 	"apihelp-readinglists-extended-description": "{{doc-apihelp-extended-description|readinglists}}",

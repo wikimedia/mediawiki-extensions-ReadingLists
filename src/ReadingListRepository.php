@@ -672,12 +672,48 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->select( $this->getListEntryFields() )
 			->from( 'reading_list_entry' )
 			->join( 'reading_list_project', null, 'rle_rlp_id = rlp_id' )
-			->where( [ 'rle_rl_id' => $ids, 'rle_user_id' => $this->userId, 'rle_deleted' => 0 ] )
+			->where( [
+				'rle_rl_id' => $ids,
+				'rle_user_id' => $this->userId,
+				'rle_deleted' => 0
+			] )
 			->andWhere( $conditions )
 			->options( $options )
 			->caller( __METHOD__ )->fetchResultSet();
 
 		return $res;
+	}
+
+	/**
+	 * Get all list entries for the user.
+	 *
+	 * @param string $sortBy One of the SORT_BY_* constants.
+	 * @param string $sortDir One of the SORT_DIR_* constants.
+	 * @param int $limit
+	 * @param array|null $from DB position to continue from (or null to start at the beginning/end).
+	 * @throws ReadingListRepositoryException
+	 * @return IResultWrapper<ReadingListEntryRow>
+	 */
+	public function getAllListEntries(
+		string $sortBy = self::SORT_BY_UPDATED,
+		string $sortDir = self::SORT_DIR_ASC,
+		int $limit = 1000,
+		?array $from = null
+	) {
+		$this->assertUser();
+
+		// get all list ids for the user
+		$listIds = $this->dbr->newSelectQueryBuilder()
+			->select( 'rl_id' )
+			->from( 'reading_list' )
+			->where( [ 'rl_user_id' => $this->userId, 'rl_deleted' => 0 ] )
+			->caller( __METHOD__ )->fetchFieldValues();
+
+		if ( !$listIds ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-no-lists' );
+		}
+
+		return $this->getListEntries( $listIds, $sortBy, $sortDir, $limit, $from );
 	}
 
 	/**

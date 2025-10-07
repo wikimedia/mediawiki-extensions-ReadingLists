@@ -66,7 +66,15 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 		$limit = $this->getParameter( 'limit' );
 		$continue = $this->getParameter( 'continue' );
 
-		$mode = $changedSince !== null ? self::$MODE_CHANGES : self::$MODE_ALL;
+		$this->requireMaxOneParameter( $this->extractRequestParams(), 'lists', 'changedsince' );
+
+		if ( $changedSince !== null ) {
+			$mode = self::$MODE_CHANGES;
+		} elseif ( $lists !== null ) {
+			$mode = self::$MODE_ID;
+		} else {
+			$mode = self::$MODE_ALL;
+		}
 
 		if ( $sort === null ) {
 			$sort = ( $mode === self::$MODE_CHANGES ) ? 'updated' : 'name';
@@ -81,8 +89,6 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 		$sort = self::$sortParamMap[$sort];
 		$dir = self::$sortParamMap[$dir];
 		$continue = $this->decodeContinuationParameter( $continue, $mode, $sort );
-
-		$this->requireOnlyOneParameter( $this->extractRequestParams(), 'lists', 'changedsince' );
 
 		if ( $mode === self::$MODE_CHANGES ) {
 			$expiry = Utils::getDeletedExpiry();
@@ -102,8 +108,10 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 
 		if ( $mode === self::$MODE_CHANGES ) {
 			$res = $repository->getListEntriesByDateUpdated( $changedSince, $dir, $limit + 1, $continue );
-		} else {
+		} elseif ( $mode === self::$MODE_ID ) {
 			$res = $repository->getListEntries( $lists, $sort, $dir, $limit + 1, $continue );
+		} else {
+			$res = $repository->getAllListEntries( $sort, $dir, $limit + 1, $continue );
 		}
 
 		'@phan-var stdClass[] $res';
@@ -149,6 +157,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 				ParamValidator::PARAM_TYPE => 'integer',
 				ParamValidator::PARAM_ISMULTI => true,
 				ParamValidator::PARAM_ISMULTI_LIMIT1 => 100,
+				ParamValidator::PARAM_REQUIRED => false,
 			],
 			'changedsince' => [
 				ParamValidator::PARAM_TYPE => 'timestamp',
@@ -173,10 +182,12 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	protected function getExamplesMessages() {
 		$prefix = static::$prefix;
 		return [
-			"action=query&list=readinglistentries&{$prefix}lists=10|11|12"
+			"action=query&list=readinglistentries"
 				=> 'apihelp-query+readinglistentries-example-1',
-			"action=query&list=readinglistentries&{$prefix}changedsince=2013-01-01T00:00:00Z"
+			"action=query&list=readinglistentries&{$prefix}lists=10|11|12"
 				=> 'apihelp-query+readinglistentries-example-2',
+			"action=query&list=readinglistentries&{$prefix}changedsince=2013-01-01T00:00:00Z"
+				=> 'apihelp-query+readinglistentries-example-3',
 		];
 	}
 

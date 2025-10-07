@@ -908,6 +908,180 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider provideGetAllListEntries
+	 */
+	public function testGetAllListEntries( array $args, array $expected ) {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+		$defaultId = 1;
+
+		// add entry to the default list
+		$this->addListEntries( $defaultId, 1, [
+			[
+				'rle_user_id' => 1,
+				'rlp_project' => 'foo',
+				'rle_title' => 'Foo',
+				'rle_date_created' => wfTimestampNow(),
+				'rle_date_updated' => wfTimestampNow(),
+				'rle_deleted' => 0,
+			],
+		] );
+
+		// add non-default list with entries
+		$this->addLists( 1, [
+			[
+				'rl_is_default' => 0,
+				'rl_name' => 'test',
+				'entries' => [
+					[
+						'rlp_project' => 'foo',
+						'rle_title' => 'Bar',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20150101000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'foo2',
+						'rle_title' => 'Bar2',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20120101000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'foo3',
+						'rle_title' => 'Bar2',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20170101000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'foo4',
+						'rle_title' => 'Bar4',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20160101000000',
+						'rle_deleted' => 1,
+					],
+				],
+			],
+		] );
+		$compareResultItems = function ( $expected, $actual ) {
+			$this->assertSame( (string)$expected['rle_rl_id'], (string)$actual['rle_rl_id'], 'mismatch in list ID' );
+			$this->assertSame( $expected['rlp_project'], $actual['rlp_project'], 'mismatch in project' );
+			$this->assertSame( $expected['rle_title'], $actual['rle_title'], 'mismatch in title' );
+			$this->assertSame( (string)$expected['rle_deleted'], $actual['rle_deleted'], 'mismatch in deleted flag' );
+		};
+		$compare = function ( $expected, $res ) use ( $compareResultItems ) {
+			$data = $this->resultWrapperToArray( $res );
+			$this->assertSameSize( $expected, $data, 'result length is different!' );
+			array_map( $compareResultItems, $expected, $data, range( 1, count( $expected ) ) );
+		};
+
+		$res = call_user_func_array( [ $repository, 'getAllListEntries' ], $args );
+		$compare( $expected, $res );
+	}
+
+	public static function provideGetAllListEntries() {
+		$defaultId = 1;
+		$listId2 = 2;
+		$expectedEntries = [
+			'default-foo-Foo-20250101000000' => [
+				'rle_rl_id' => $defaultId,
+				'rlp_project' => 'foo',
+				'rle_title' => 'Foo',
+				'rle_date_created' => '20250101000000',
+				'rle_date_updated' => '20250101000000',
+				'rle_deleted' => 0,
+			],
+			'list2-foo-Bar-20150101000000' => [
+				'rle_rl_id' => $listId2,
+				'rlp_project' => 'foo',
+				'rle_title' => 'Bar',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20150101000000',
+				'rle_deleted' => 0,
+			],
+			'list2-foo2-Bar2-20120101000000' => [
+				'rle_rl_id' => $listId2,
+				'rlp_project' => 'foo2',
+				'rle_title' => 'Bar2',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20120101000000',
+				'rle_deleted' => 0,
+			],
+			'list2-foo3-Bar2-20170101000000' => [
+				'rle_rl_id' => $listId2,
+				'rlp_project' => 'foo3',
+				'rle_title' => 'Bar2',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20170101000000',
+				'rle_deleted' => 0,
+			],
+		];
+
+		return [
+			'sort by name, asc' => [
+				[
+					ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_ASC
+				],
+				[
+					$expectedEntries['list2-foo-Bar-20150101000000'],
+					$expectedEntries['list2-foo2-Bar2-20120101000000'],
+					$expectedEntries['list2-foo3-Bar2-20170101000000'],
+					$expectedEntries['default-foo-Foo-20250101000000']
+				],
+			],
+			'sort by name, desc' => [
+				[
+					ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_DESC
+				],
+				[
+					$expectedEntries['default-foo-Foo-20250101000000'],
+					$expectedEntries['list2-foo3-Bar2-20170101000000'],
+					$expectedEntries['list2-foo2-Bar2-20120101000000'],
+					$expectedEntries['list2-foo-Bar-20150101000000'],
+				],
+			],
+			'sort by name, offset with limit' => [
+				[
+					ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_ASC,
+					1,
+					[ 'Bar2', 1 ]
+				],
+				[
+					$expectedEntries['list2-foo2-Bar2-20120101000000'],
+				],
+			],
+			'sort by updated, asc' => [
+				[
+					ReadingListRepository::SORT_BY_UPDATED,
+					ReadingListRepository::SORT_DIR_ASC
+				],
+				[
+					$expectedEntries['list2-foo2-Bar2-20120101000000'],
+					$expectedEntries['list2-foo-Bar-20150101000000'],
+					$expectedEntries['list2-foo3-Bar2-20170101000000'],
+					$expectedEntries['default-foo-Foo-20250101000000'] ],
+			],
+			'sort by updated, desc' => [
+				[
+					ReadingListRepository::SORT_BY_UPDATED,
+					ReadingListRepository::SORT_DIR_DESC
+				],
+				[
+					$expectedEntries['default-foo-Foo-20250101000000'],
+					$expectedEntries['list2-foo3-Bar2-20170101000000'],
+					$expectedEntries['list2-foo-Bar-20150101000000'],
+					$expectedEntries['list2-foo2-Bar2-20120101000000']
+				],
+			],
+		];
+	}
+
 	public function testDeleteListEntry() {
 		$this->addProjects( [ 'dummy' ] );
 		$repository = $this->getReadingListRepository( 1 );
