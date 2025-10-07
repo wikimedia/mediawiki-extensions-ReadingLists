@@ -2,7 +2,7 @@
 	<cdx-card
 		:url="entry.url"
 		:thumbnail="{ url: entry.thumbnail }"
-		:custom-placeholder-icon="!entry.url || entry.missing ? cdxIconAlert : undefined"
+		:custom-placeholder-icon="!entry.url || undefined"
 		:class="{ 'cdx-card--is-link': entry.url || editing }"
 		@click="onClick">
 		<template #title>
@@ -26,7 +26,6 @@
 
 <script>
 const { CdxCard, CdxCheckbox } = require( '../../../codex.js' );
-const { cdxIconAlert } = require( '../../../icons.json' );
 
 // @vue/component
 module.exports = exports = {
@@ -52,8 +51,7 @@ module.exports = exports = {
 	emits: [ 'selected' ],
 	data() {
 		return {
-			msgSelectArticle: mw.msg( 'readinglists-select-article' ),
-			cdxIconAlert
+			msgSelectArticle: mw.msg( 'readinglists-select-article' )
 		};
 	},
 	methods: {
