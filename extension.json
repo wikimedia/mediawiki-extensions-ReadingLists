@@ -87,9 +87,13 @@
 			"description": "Enable sorting and editing toolbar on reading lists special page. @unstable"
 		}
 	},
+	"DefaultUserOptions": {
+		"readinglists-web-ui-enabled": "0"
+	},
 	"Hooks": {
 		"SkinTemplateNavigation::Universal": "main",
 		"GetBetaFeaturePreferences": "betafeatures",
+		"GetPreferences": "main",
 		"APIQuerySiteInfoGeneralInfo": "main",
 		"LoadExtensionSchemaUpdates": "schema"
 	},
@@ -98,7 +102,8 @@
 			"class": "MediaWiki\\Extension\\ReadingLists\\HookHandler",
 			"services": [
 				"MainConfig",
-				"ReadingLists.ReadingListRepositoryFactory"
+				"ReadingLists.ReadingListRepositoryFactory",
+				"UserOptionsLookup"
 			]
 		},
 		"betafeatures": {

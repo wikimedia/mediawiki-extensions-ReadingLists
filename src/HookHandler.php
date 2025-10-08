@@ -10,6 +10,8 @@ use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
 
 /**
@@ -19,7 +21,24 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 	public function __construct(
 		private readonly Config $config,
 		private readonly ReadingListRepositoryFactory $readingListRepositoryFactory,
+		private readonly UserOptionsLookup $userOptionsLookup
 	) {
+	}
+
+	/**
+	 * Adds a hidden preference, accessed via api. The preference indicates user eligibility
+	 * for showing the ReadingLists bookmark icon button in supported skins.
+	 *
+	 * @param User $user User whose preferences are being modified.
+	 * @param array[] &$preferences Preferences description array, to be fed to a HTMLForm object.
+	 * @return bool|void True or no return value to continue or false to abort
+	 */
+	public function onGetPreferences( $user, &$preferences ) {
+		$preferences += [
+			'readinglists-web-ui-enabled' => [
+				'type' => 'api',
+			],
+		];
 	}
 
 	/**
@@ -38,11 +57,7 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 
 		$user = $sktemplate->getUser();
 
-		if (
-			!$this->config->get( 'ReadingListBetaFeature' ) ||
-			!ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' ) ||
-			!BetaFeatures::isFeatureEnabled( $user, Constants::PREF_KEY_BETA_FEATURES )
-		) {
+		if ( !$this->isReadingListsEnabledForUser( $user ) ) {
 			return;
 		}
 
@@ -83,6 +98,19 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		];
 
 		$output->addModules( 'ext.readingLists.bookmark' );
+	}
+
+	private function isReadingListsEnabledForUser( UserIdentity $user ): bool {
+		$betaFeatureEnabled = $this->config->get( 'ReadingListBetaFeature' ) &&
+			ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' ) &&
+			BetaFeatures::isFeatureEnabled( $user, Constants::PREF_KEY_BETA_FEATURES );
+
+		$hiddenPreferenceEnabled = $this->userOptionsLookup->getOption(
+			$user,
+			Constants::PREF_KEY_WEB_UI_ENABLED
+		) === '1';
+
+		return $betaFeatureEnabled || $hiddenPreferenceEnabled;
 	}
 
 	/**
