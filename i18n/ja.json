@@ -61,7 +61,7 @@
 	"readinglists-show-more": "さらに表示する",
 	"readinglists-default-title": "保存済みページ",
 	"readinglists-default-description": "保存済み記事の既定リスト。",
-	"readinglists-empty-title": "リストは空です。",
+	"readinglists-empty-title": "保存したページはまだありません",
 	"action-action-readinglist-private": "他の利用者のあとで読むリストを読む",
 	"readinglists-empty-message": "リストがありません、作成してみませんか?",
 	"readinglists-list-empty-message": "このリストにはページがありません。このあとで読むリストに項目を追加するには、アプリをダウンロードして使用してください。",
