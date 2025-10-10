@@ -7,24 +7,18 @@ use MediaWiki\Api\Hook\APIQuerySiteInfoGeneralInfoHook;
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\BetaFeatures\BetaFeatures;
 use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\SpecialPage\SpecialPage;
-use MediaWiki\User\CentralId\CentralIdLookupFactory;
-use MediaWiki\User\UserEditTracker;
 use MediaWiki\User\UserIdentity;
-use Wikimedia\Rdbms\LBFactory;
 
 /**
  * Static entry points for hooks.
  */
 class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNavigation__UniversalHook {
 	public function __construct(
-		private readonly CentralIdLookupFactory $centralIdLookupFactory,
 		private readonly Config $config,
-		private readonly LBFactory $dbProvider,
-		private readonly UserEditTracker $userEditTracker,
+		private readonly ReadingListRepositoryFactory $readingListRepositoryFactory,
 	) {
 	}
 
@@ -52,11 +46,7 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			return;
 		}
 
-		/**
-		 * @var ReadingListRepositoryFactory $factory
-		 */
-		$factory = MediaWikiServices::getInstance()->getService( 'ReadingLists.ReadingListRepositoryFactory' );
-		$repository = $factory->getInstanceForUser( $user );
+		$repository = $this->readingListRepositoryFactory->getInstanceForUser( $user );
 
 		$links['user-menu'] = wfArrayInsertAfter( $links['user-menu'], [
 			'readinglists' => [

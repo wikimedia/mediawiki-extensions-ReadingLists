@@ -97,10 +97,8 @@
 		"main": {
 			"class": "MediaWiki\\Extension\\ReadingLists\\HookHandler",
 			"services": [
-				"CentralIdLookupFactory",
 				"MainConfig",
-				"DBLoadBalancerFactory",
-				"UserEditTracker"
+				"ReadingLists.ReadingListRepositoryFactory"
 			]
 		},
 		"betafeatures": {
