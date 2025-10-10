@@ -78,10 +78,17 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			return;
 		}
 
+		// NOTE: Non-existent pages still have a Title object.
+		// It should be rare that the Title is null here, but we should still check.
+		$title = $output->getTitle();
+		if ( !$title || $title->getNamespace() !== NS_MAIN ) {
+			return;
+		}
+
 		$list = $repository->setupForUser( true );
 		$entry = $repository->getListsByPage(
 			'@local',
-			$output->getTitle()->getPrefixedDBkey(),
+			$title->getPrefixedDBkey(),
 			1
 		)->fetchObject();
 
