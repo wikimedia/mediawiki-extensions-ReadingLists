@@ -235,7 +235,8 @@
 			],
 			"dependencies": [
 				"ext.readingLists.api",
-				"ext.readingLists.bookmark.icons"
+				"ext.readingLists.bookmark.icons",
+				"mediawiki.storage"
 			]
 		},
 		"ext.readingLists.bookmark.icons": {
@@ -247,6 +248,36 @@
 				"bookmark",
 				"bookmarkOutline",
 				"bookmarkList"
+			]
+		},
+		"ext.readingLists.onboarding": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexComponents": [
+				"CdxButton",
+				"CdxIcon",
+				"CdxImage",
+				"CdxPopover"
+			],
+			"dependencies": [
+				"mediawiki.storage",
+				"vue"
+			],
+			"messages": [
+				"readinglists-onboarding-title",
+				"readinglists-onboarding-text",
+				"readinglists-onboarding-close-button"
+			],
+			"packageFiles": [
+				"resources/ext.readingLists.onboarding/index.js",
+				"resources/ext.readingLists.onboarding/mountApp.js",
+				"resources/ext.readingLists.onboarding/components/OnboardingPopover.vue",
+				{
+					"name": "icons.json",
+					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
+					"callbackParam": [
+						"cdxIconClose"
+					]
+				}
 			]
 		}
 	},

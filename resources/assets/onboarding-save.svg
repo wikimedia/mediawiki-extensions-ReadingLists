@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="156" height="156" viewBox="0 0 156 156">
+	<defs>
+		<filter id="a" width="101" height="134.9" x="26" y="8" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+			<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+			<feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+			<feOffset/>
+			<feGaussianBlur stdDeviation="2"/>
+			<feColorMatrix values="0 0 0 0 0.2 0 0 0 0 0.4 0 0 0 0 0.8 0 0 0 0.15 0"/>
+			<feBlend in2="BackgroundImageFix" result="effect1_dropShadow_1345_12039"/>
+			<feBlend in="SourceGraphic" in2="effect1_dropShadow_1345_12039" result="shape"/>
+		</filter>
+	</defs>
+	<g filter="url(#a)">
+		<path fill="#fff" fill-rule="evenodd" d="m30 75.6.2-61.6a2 2 0 0 1 2-2H110v11.1a2 2 0 0 0 2 2h11v109.3c0 1.6-2.5 2.3-4 2.3-2.2 0-2 1.6-3.8 2.1s-1.9-2.1-3.8-2.1-2.1 2.1-4 2.1-1.7-2.1-3.8-2.1-2.2 2.1-4 2.1-1.8-2.1-4-2.1-2 2.1-3.9 2.1-1.7-2.1-3.7-2.1-1.9 1.6-3.8 2.1-2.2-2.1-4.1-2.1c-2 0-2 2.1-4 2.1-1.8 0-1.5-2.1-3.5-2.1s-2.3 2.1-4.2 2.1-2-2.1-4-2.1-1.8 2.1-3.8 2.1-2-2.1-4-2.1-1.8 2.1-3.8 2.1-1.8-2.1-3.8-2.1c-2.1 0-2.2 2.1-4.1 2.1-2 0-1.8-2.1-3.4-2.1s-2.4 2.7-4.3 2.1-1.6-2.1-3.6-2.1c-1.3 0-3.6-.7-3.6-2z" clip-rule="evenodd"/>
+	</g>
+	<path fill="#c8ccd1" fill-rule="evenodd" d="M110.6 26.2q-1.2-.1-1.3-1.4V13.4q-.1-.8.6-1.3 1-.2 1.7.3l10.9 11.3q.5.5.5 1.3-.1 1.2-1.3 1.2z" clip-rule="evenodd"/>
+	<ellipse cx="43.1" cy="28.3" fill="#edb537" rx="6.5" ry="6.4"/>
+	<path fill="#36c" fill-rule="evenodd" d="M92 36.8s15.8 10.5 19.3 6.6 0 5.6 0 5.6H80.2M30 42.5S42.6 51 60 51s4.3 5.6 4.3 5.6H30" clip-rule="evenodd"/>
+	<path fill="#edb537" fill-rule="evenodd" d="M32 56.7s68.7-32.2 60.1-16S123 37 123 37v19.8" clip-rule="evenodd"/>
+	<path fill="#fff" d="M30 56h93v1.5H30z"/>
+	<rect width="51.7" height="1.4" x="38.5" y="69.4" fill="#c8ccd1" rx=".7"/>
+	<g fill="#72777d">
+		<rect width="57.4" height="1.4" x="38.5" y="86.4" rx=".7"/>
+		<rect width="22.7" height="1.4" x="38.5" y="124.7" rx=".7"/>
+		<rect width="51.7" height="1.4" x="63.3" y="124.7" rx=".7"/>
+		<rect width="12" height="1.4" x="38.5" y="96.3" rx=".7"/>
+		<rect width="12" height="1.4" x="103" y="96.3" rx=".7"/>
+		<rect width="48.2" height="1.4" x="52.7" y="96.3" rx=".7"/>
+		<rect width="12" height="1.4" x="38.5" y="119.7" rx=".7"/>
+		<rect width="26.2" height="1.4" x="89.5" y="119.7" rx=".7"/>
+		<rect width="34.7" height="1.4" x="52.7" y="119.7" rx=".7"/>
+		<rect width="17" height="1.4" rx=".7" transform="matrix(-1 0 0 1 115 86.4)"/>
+		<rect width="57.4" height="1.4" x="38.5" y="111.2" rx=".7"/>
+		<rect width="9.9" height="1.4" x="76.7" y="81.5" rx=".7"/>
+		<rect width="26.2" height="1.4" x="88.8" y="81.5" rx=".7"/>
+		<rect width="36.1" height="1.4" x="38.5" y="81.5" rx=".7"/>
+		<rect width="76.5" height="1.4" x="38.5" y="106.3" rx=".7"/>
+		<rect width="76.5" height="1.4" x="38.5" y="101.3" rx=".7"/>
+		<rect width="76.5" height="1.4" x="38.5" y="129.6" rx=".7"/>
+		<rect width="76.5" height="1.4" x="38.5" y="91.4" rx=".7"/>
+		<rect width="36.1" height="1.4" x="38.5" y="64.5" rx=".7"/>
+	</g>
+	<circle cx="117" cy="131.9" r="17.9" fill="#fff" stroke="#72777d" stroke-width="2"/>
+	<path fill="#72777d" fill-rule="evenodd" d="M123 122h-12a2 2 0 0 0-2 2v18l8-5 8 5v-18a2 2 0 0 0-2-2" clip-rule="evenodd"/>
+</svg>

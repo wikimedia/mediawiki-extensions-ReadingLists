@@ -84,5 +84,8 @@
 	"readinglists-menu-item": "Saved pages",
 	"readinglists-bookmark": "Bookmark",
 	"readinglists-add-bookmark": "Add bookmark",
-	"readinglists-remove-bookmark": "Remove bookmark"
+	"readinglists-remove-bookmark": "Remove bookmark",
+	"readinglists-onboarding-title": "Save pages for later",
+	"readinglists-onboarding-text": "Found something interesting? You can now save it to your personal list.",
+	"readinglists-onboarding-close-button": "Close"
 }

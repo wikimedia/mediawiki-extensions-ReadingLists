@@ -92,5 +92,8 @@
 	"readinglists-menu-item": "Menu item added to both mobile and desktop site. Describes saved pages. May appear next to \"Watchlist\" in the user menu.",
 	"readinglists-bookmark": "Bookmark action",
 	"readinglists-add-bookmark": "Button label for adding a page bookmark",
-	"readinglists-remove-bookmark": "Button label for removing a page bookmark"
+	"readinglists-remove-bookmark": "Button label for removing a page bookmark",
+	"readinglists-onboarding-title": "Title of the onboarding popover for the saved pages feature, displayed the first time a user sees the bookmark icon button.",
+	"readinglists-onboarding-text": "Text of the onboarding popover for the saved pages feature, displayed the first time a user sees the bookmark icon button.",
+	"readinglists-onboarding-close-button": "Label for the close button in the onboarding popover for the saved pages feature.\n{{Identical|Close}}"
 }
