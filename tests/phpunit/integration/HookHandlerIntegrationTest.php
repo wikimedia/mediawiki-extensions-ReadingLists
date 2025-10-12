@@ -3,14 +3,19 @@
 namespace MediaWiki\Extension\ReadingLists\Tests\Integration;
 
 use MediaWiki\Context\RequestContext;
+use MediaWiki\Extension\MetricsPlatform\XLab\Experiment;
+use MediaWiki\Extension\MetricsPlatform\XLab\ExperimentManager;
+use MediaWiki\Extension\ReadingLists\Constants;
 use MediaWiki\Extension\ReadingLists\HookHandler;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
 use MediaWiki\Output\OutputPage;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use MediaWikiIntegrationTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -29,10 +34,6 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		$services = $this->getServiceContainer();
 
-		$userOptionsManager = $services->getUserOptionsManager();
-		$userOptionsManager->setOption( $this->user, 'readinglists-web-ui-enabled', '1' );
-		$userOptionsManager->saveOptions( $this->user );
-
 		$mockRepository = $this->createMockRepository();
 		$mockFactory = $this->createMock( ReadingListRepositoryFactory::class );
 		$mockFactory->method( 'getInstanceForUser' )->willReturn( $mockRepository );
@@ -43,6 +44,40 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 			$mockFactory,
 			$services->getUserOptionsLookup()
 		);
+	}
+
+	private function setupExperiment( $inAssignedGroup = true ) {
+		if ( !ExtensionRegistry::getInstance()->isLoaded( 'MetricsPlatform' ) ) {
+			$this->markTestSkipped( 'Test requires the MetricsPlatform extension' );
+		}
+
+		$services = $this->getServiceContainer();
+
+		$userOptionsManager = $services->getUserOptionsManager();
+		$userOptionsManager->setOption( $this->user, 'readinglists-web-ui-enabled', '1' );
+		$userOptionsManager->saveOptions( $this->user );
+
+		$mockExperiment = $this->createMock( Experiment::class );
+		$mockExperiment->method( 'isAssignedGroup' )->with( 'treatment' )->willReturn( true );
+
+		/** @var MockObject|ExperimentManager $mockExperimentManager */
+		$mockExperimentManager = $this->createMock( ExperimentManager::class );
+		$mockExperimentManager->method( 'getExperiment' )->willReturn( $mockExperiment );
+
+		$this->hookHandler->setExperimentManager( $mockExperimentManager );
+	}
+
+	private function setupBetaFeature() {
+		if ( !ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' ) ) {
+			$this->markTestSkipped( 'Test requires the BetaFeatures extension' );
+		}
+
+		$this->overrideConfigValue( 'ReadingListBetaFeature', true );
+
+		$services = $this->getServiceContainer();
+		$userOptionsManager = $services->getUserOptionsManager();
+		$userOptionsManager->setOption( $this->user, Constants::PREF_KEY_BETA_FEATURES, '1' );
+		$userOptionsManager->saveOptions( $this->user );
 	}
 
 	private function createMockRepository() {
@@ -89,7 +124,9 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		return $skin;
 	}
 
-	public function testBookmarkIconButtonAddedForMainNamespacePage() {
+	public function testBookmarkIconButtonAddedForMainNamespacePageWithExperiment() {
+		$this->setupExperiment();
+
 		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
 		$skin = $this->createSkinTemplate( $title );
 
@@ -101,7 +138,37 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$this->assertArrayHasKey( 'bookmark', $links['views'] );
 	}
 
-	public function testBookmarkIconButtonNotAddedForTalkPage() {
+	public function testBookmarkIconButtonNotAddedForMainNamespacePageWithUserNotInExperiment() {
+		$this->setupExperiment( false );
+
+		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
+		$skin = $this->createSkinTemplate( $title );
+
+		$links = $this->getLinks();
+
+		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$this->assertArrayHasKey( 'readinglists', $links['user-menu'] );
+		$this->assertArrayHasKey( 'bookmark', $links['views'] );
+	}
+
+	public function testBookmarkIconButtonAddedForMainNamespacePageWithBetaFeature() {
+		$this->setupBetaFeature();
+
+		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
+		$skin = $this->createSkinTemplate( $title );
+
+		$links = $this->getLinks();
+
+		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$this->assertArrayHasKey( 'readinglists', $links['user-menu'] );
+		$this->assertArrayHasKey( 'bookmark', $links['views'] );
+	}
+
+	public function testBookmarkIconButtonNotAddedForTalkPageWithExperiment() {
+		$this->setupExperiment();
+
 		$title = Title::makeTitle( NS_TALK, 'TestPage' );
 		$skin = $this->createSkinTemplate( $title );
 
@@ -113,7 +180,37 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
 	}
 
-	public function testBookmarkNotAddedForCategoryPage() {
+	public function testBookmarkIconButtonNotAddedForTalkPageWithBetaFeatureEnabled() {
+		$this->setupBetaFeature();
+
+		$title = Title::makeTitle( NS_TALK, 'TestPage' );
+		$skin = $this->createSkinTemplate( $title );
+
+		$links = $this->getLinks();
+
+		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$this->assertArrayHasKey( 'readinglists', $links['user-menu'] );
+		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
+	}
+
+	public function testBookmarkNotAddedForCategoryPageWithExperiment() {
+		$this->setupExperiment();
+
+		$title = Title::makeTitle( NS_CATEGORY, 'TestCategory' );
+		$skin = $this->createSkinTemplate( $title );
+
+		$links = $this->getLinks();
+
+		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$this->assertArrayHasKey( 'readinglists', $links['user-menu'] );
+		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
+	}
+
+	public function testBookmarkNotAddedForCategoryPageWithBetaFeatureEnabled() {
+		$this->setupBetaFeature();
+
 		$title = Title::makeTitle( NS_CATEGORY, 'TestCategory' );
 		$skin = $this->createSkinTemplate( $title );
 
@@ -126,6 +223,8 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 	}
 
 	public function testBookmarkNotAddedForUnsupportedSkin() {
+		$this->setupExperiment();
+
 		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
 		$skin = $this->createSkinTemplate( $title, true, 'monobook' );
 

@@ -6,6 +6,7 @@ use MediaWiki\Api\ApiQuerySiteinfo;
 use MediaWiki\Api\Hook\APIQuerySiteInfoGeneralInfoHook;
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\BetaFeatures\BetaFeatures;
+use MediaWiki\Extension\MetricsPlatform\XLab\ExperimentManager;
 use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Skin\SkinTemplate;
@@ -18,11 +19,21 @@ use MediaWiki\User\UserIdentity;
  * Static entry points for hooks.
  */
 class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNavigation__UniversalHook {
+
+	// The experiment name comes from the readingListAB.js module in the WikimediaEvents extension.
+	// If the experiment name changes, we must update it in both places.
+	private const EXPERIMENT_NAME = 'we-3-3-4-reading-list-test1';
+
 	public function __construct(
 		private readonly Config $config,
 		private readonly ReadingListRepositoryFactory $readingListRepositoryFactory,
-		private readonly UserOptionsLookup $userOptionsLookup
+		private readonly UserOptionsLookup $userOptionsLookup,
+		private ?ExperimentManager $experimentManager = null
 	) {
+	}
+
+	public function setExperimentManager( ExperimentManager $experimentManager ): void {
+		$this->experimentManager = $experimentManager;
 	}
 
 	/**
@@ -117,7 +128,13 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			Constants::PREF_KEY_WEB_UI_ENABLED
 		) === '1';
 
-		return $betaFeatureEnabled || $hiddenPreferenceEnabled;
+		$inExperimentTreatment = false;
+		if ( $this->experimentManager ) {
+			$experiment = $this->experimentManager->getExperiment( self::EXPERIMENT_NAME );
+			$inExperimentTreatment = $experiment->isAssignedGroup( 'treatment' );
+		}
+
+		return $betaFeatureEnabled || ( $hiddenPreferenceEnabled && $inExperimentTreatment );
 	}
 
 	/**

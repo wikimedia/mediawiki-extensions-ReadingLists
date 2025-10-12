@@ -104,6 +104,9 @@
 				"MainConfig",
 				"ReadingLists.ReadingListRepositoryFactory",
 				"UserOptionsLookup"
+			],
+			"optional_services": [
+				"MetricsPlatform.XLab.ExperimentManager"
 			]
 		},
 		"betafeatures": {
