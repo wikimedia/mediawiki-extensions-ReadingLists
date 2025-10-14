@@ -29,7 +29,12 @@ class ApiReadingListsSetupAndTeardownTest extends ApiTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->user = parent::getTestSysop()->getUser();
+
+		$this->setMwGlobals( [
+			'wgCentralIdLookupProvider' => 'local',
+		] );
+
+		$this->user = $this->getTestSysop()->getUser();
 	}
 
 	public function testSetup() {

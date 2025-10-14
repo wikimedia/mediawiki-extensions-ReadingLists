@@ -29,7 +29,12 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->user = parent::getTestSysop()->getUser();
+
+		$this->setMwGlobals( [
+			'wgCentralIdLookupProvider' => 'local',
+		] );
+
+		$this->user = $this->getTestSysop()->getUser();
 		$this->addProjects( [ 'foo' ] );
 		$listIds = $this->addLists( $this->user->mId, [
 			[

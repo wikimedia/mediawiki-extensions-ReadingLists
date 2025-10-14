@@ -122,6 +122,10 @@ trait ReadingListsTestHelperTrait {
 	}
 
 	private function readingListsSetup() {
+		$this->setMwGlobals( [
+			'wgCentralIdLookupProvider' => 'local',
+		] );
+
 		$apiParams['command'] = 'setup';
 		$apiParams['action']  = 'readinglists';
 		$apiParams['format']  = 'json';
