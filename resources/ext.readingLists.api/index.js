@@ -289,21 +289,6 @@ function deleteEntry( entryId ) {
 }
 
 /**
- * Delete multiple existing entries from a reading list.
- *
- * @param {number[]} entryIds
- * @return {Promise<any>}
- */
-function deleteEntries( entryIds ) {
-	return api.postWithEditToken( {
-		action: 'readinglists',
-		command: 'deleteentry',
-		batch: JSON.stringify( entryIds.map( ( id ) => ( { entry: id } ) ) ),
-		formatversion: 2
-	} );
-}
-
-/**
  * @param {string} data
  * @return {Object}
  */
@@ -367,7 +352,6 @@ module.exports = exports = {
 	getPagesFromManifest,
 	createEntry,
 	deleteEntry,
-	deleteEntries,
 	fromBase64,
 	toBase64,
 	stubApi

@@ -1,23 +1,13 @@
 <template>
 	<cdx-card
 		:url="entry.url"
-		:class="{ 'cdx-card--is-link': entry.url || editing }"
+		:class="{ 'cdx-card--is-link': entry.url }"
 
 		:thumbnail="entry.thumbnail ? { url: entry.thumbnail } : undefined"
 		:force-thumbnail="false"
 		@click="onClick">
 		<template #title>
-			<span v-if="editing" class="reading-lists-selectable">
-				<cdx-checkbox
-					v-if="editing"
-					:model-value="selected"
-					inline
-					:aria-label="msgSelectArticle"
-					@update:model-value="onToggle">
-				</cdx-checkbox>
-				{{ entry.title }}
-			</span>
-			<template v-else>{{ entry.title }}</template>
+			{{ entry.title }}
 		</template>
 
 		<template v-if="entry.description" #description>
@@ -27,11 +17,11 @@
 </template>
 
 <script>
-const { CdxCard, CdxCheckbox } = require( '../../../codex.js' );
+const { CdxCard } = require( '../../../codex.js' );
 
 // @vue/component
 module.exports = exports = {
-	components: { CdxCard, CdxCheckbox },
+	components: { CdxCard },
 	props: {
 		entry: {
 			type: Object,
@@ -40,31 +30,6 @@ module.exports = exports = {
 				title: 'Example',
 				description: 'Lorem ipsum dolor sit amet'
 			} )
-		},
-		selected: {
-			type: Boolean,
-			default: false
-		},
-		editing: {
-			type: Boolean,
-			default: false
-		}
-	},
-	emits: [ 'selected' ],
-	data() {
-		return {
-			msgSelectArticle: mw.msg( 'readinglists-select-article' )
-		};
-	},
-	methods: {
-		onClick( event ) {
-			if ( event.target.type !== 'checkbox' && this.editing ) {
-				event.preventDefault();
-				this.onToggle();
-			}
-		},
-		onToggle() {
-			this.$emit( 'selected', this.entry.id, !this.selected );
 		}
 	}
 };

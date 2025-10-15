@@ -84,7 +84,7 @@
 		},
 		"ReadingListsEnableSpecialPageToolbar": {
 			"value": false,
-			"description": "Enable sorting and editing toolbar on reading lists special page. @unstable"
+			"description": "Enable sorting toolbar on reading lists special page. @unstable"
 		}
 	},
 	"DefaultUserOptions": {
@@ -166,7 +166,6 @@
 				"readinglists-display-sort",
 				"readinglists-display-sort-name",
 				"readinglists-display-sort-updated",
-				"readinglists-edit-button",
 				"readinglists-empty-cta",
 				"readinglists-empty-title",
 				"readinglists-import-app",
@@ -174,12 +173,6 @@
 				"readinglists-import-disclaimer",
 				"readinglists-loading",
 				"readinglists-no-title",
-				"readinglists-remove",
-				"readinglists-remove-confirmation",
-				"readinglists-remove-success",
-				"readinglists-remove-title",
-				"readinglists-select-article",
-				"readinglists-selected-articles",
 				"readinglists-show-more",
 				"readinglists-sorted-by-recent",
 				"readinglists-special-title-imported",
@@ -189,12 +182,10 @@
 			"packageFiles": [
 				"resources/ext.readingLists.special/index.js",
 				"resources/ext.readingLists.special/components/DisplayButton.vue",
-				"resources/ext.readingLists.special/components/EditButton.vue",
 				"resources/ext.readingLists.special/components/EmptyList.vue",
 				"resources/ext.readingLists.special/components/EntryItem.vue",
 				"resources/ext.readingLists.special/components/ImportDialog.vue",
 				"resources/ext.readingLists.special/components/ListItem.vue",
-				"resources/ext.readingLists.special/components/RemoveButton.vue",
 				"resources/ext.readingLists.special/pages/Entries.vue",
 				"resources/ext.readingLists.special/pages/Lists.vue",
 				{

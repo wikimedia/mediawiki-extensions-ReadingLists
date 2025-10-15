@@ -28,24 +28,6 @@
 				@ready="onReady"
 				@changed="getEntries">
 			</display-button>
-
-			<edit-button
-				v-if="ready"
-				:editing="editing"
-				:disabled="loadingInfo || loadingEntries || imported !== null"
-				@changed="clearSelected">
-			</edit-button>
-
-			<remove-button
-				v-if="editing"
-				:disabled="loadingInfo || loadingEntries || selected.length === 0"
-				:selected="selected"
-				:list-id="listId"
-				:list-title="title"
-				:confirmation-msg="msgRemoveConfirmation"
-				@removing="onRemoving"
-				@removed="onRemoved">
-			</remove-button>
 		</div>
 
 		<template v-if="!loadingInfo">
@@ -56,10 +38,7 @@
 				<entry-item
 					v-for="entry in entries"
 					:key="entry.id"
-					:entry="entry"
-					:selected="selected.includes( entry.id )"
-					:editing="editing"
-					@selected="onSelected">
+					:entry="entry">
 				</entry-item>
 			</div>
 
@@ -84,11 +63,9 @@ const { ref } = require( 'vue' );
 const api = require( 'ext.readingLists.api' );
 const { CdxButton, CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
 const DisplayButton = require( '../components/DisplayButton.vue' );
-const EditButton = require( '../components/EditButton.vue' );
 const EmptyList = require( '../components/EmptyList.vue' );
 const EntryItem = require( '../components/EntryItem.vue' );
 const ImportDialog = require( '../components/ImportDialog.vue' );
-const RemoveButton = require( '../components/RemoveButton.vue' );
 const { ReadingListsEnableSpecialPageToolbar } = require( '../../../config.json' );
 
 // @vue/component
@@ -98,11 +75,9 @@ module.exports = exports = {
 		CdxMessage,
 		CdxProgressBar,
 		DisplayButton,
-		EditButton,
 		EmptyList,
 		EntryItem,
-		ImportDialog,
-		RemoveButton
+		ImportDialog
 	},
 	props: {
 		listId: {
@@ -128,14 +103,10 @@ module.exports = exports = {
 			entries: ref( [] ),
 			next: ref( null ),
 			infinite: ref( false ),
-			editing: ref( false ),
-			selected: ref( [] ),
 			sortingText: mw.msg( 'readinglists-sorted-by-recent' ),
 			msgLoading: mw.msg( 'readinglists-loading' ),
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
-			msgRemoveConfirmation: ref( mw.msg( 'readinglists-remove-confirmation', 0, '' ) ),
 			msgTotalArticles: ref( mw.msg( 'readinglists-total-articles', 0 ) ),
-			msgSelectedArticles: ref( mw.msg( 'readinglists-selected-articles', 0, 0 ) ),
 			enableToolbar: ReadingListsEnableSpecialPageToolbar
 		};
 	},
@@ -194,7 +165,6 @@ module.exports = exports = {
 				this.loadingEntries = true;
 
 				await this.getList();
-				this.clearSelected( this.editing && this.total !== 0 );
 
 				if ( this.total === 0 ) {
 					this.loadingEntries = false;
@@ -251,18 +221,6 @@ module.exports = exports = {
 				'readinglists-total-articles',
 				mw.language.convertNumber( this.total )
 			);
-
-			const count = this.selected.length;
-			this.msgSelectedArticles = mw.msg(
-				'readinglists-selected-articles',
-				mw.language.convertNumber( count ),
-				mw.language.convertNumber( this.total )
-			);
-			this.msgRemoveConfirmation = mw.msg(
-				'readinglists-remove-confirmation',
-				mw.language.convertNumber( count ),
-				this.title
-			);
 		},
 		registerScrollHandler() {
 			document.addEventListener( 'scroll', () => {
@@ -289,30 +247,8 @@ module.exports = exports = {
 			this.next = null;
 			this.infinite = false;
 		},
-		clearSelected( editing = false ) {
-			this.editing = editing;
-			this.selected = [];
-			this.updateMessages();
-		},
 		async onReady( options ) {
 			await this.initializePage( options );
-		},
-		onRemoving() {
-			this.loadingInfo = true;
-		},
-		async onRemoved() {
-			await this.getEntries( null, true );
-		},
-		onSelected( id, value ) {
-			const idx = this.selected.indexOf( id );
-
-			if ( value && idx === -1 ) {
-				this.selected.push( id );
-			} else {
-				this.selected.splice( idx, 1 );
-			}
-
-			this.updateMessages();
 		},
 		async onShowMore() {
 			this.infinite = true;

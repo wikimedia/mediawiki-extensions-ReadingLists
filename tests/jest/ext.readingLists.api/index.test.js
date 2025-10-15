@@ -474,31 +474,6 @@ describe( 'deleteEntry', () => {
 	} );
 } );
 
-describe( 'deleteEntries', () => {
-	test( 'returns success message', async () => {
-		const entryIds = ENTRIES.query.readinglistentries.map( ( entry ) => entry.id );
-
-		api.stubApi( {
-			postWithEditToken: jest.fn( ( { action, command, batch } ) => {
-				if ( action === 'readinglists' && command === 'deleteentry' ) {
-					const items = JSON.parse( batch );
-
-					for ( let i = 0; i < entryIds.length; i++ ) {
-						if ( items[ i ].entry !== entryIds[ i ] ) {
-							return {};
-						}
-					}
-
-					return DELETEENTRY;
-				}
-			} )
-		} );
-
-		const response = await api.deleteEntries( entryIds );
-		expect( response ).toStrictEqual( DELETEENTRY );
-	} );
-} );
-
 describe( 'fromBase64', () => {
 	const project = 'https://en.wikipedia.org';
 	const data = {
