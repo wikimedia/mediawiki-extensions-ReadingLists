@@ -111,7 +111,8 @@
 			"services": [
 				"MainConfig",
 				"ReadingLists.ReadingListRepositoryFactory",
-				"UserOptionsLookup"
+				"UserOptionsLookup",
+				"CentralIdLookupFactory"
 			],
 			"optional_services": [
 				"MetricsPlatform.XLab.ExperimentManager"

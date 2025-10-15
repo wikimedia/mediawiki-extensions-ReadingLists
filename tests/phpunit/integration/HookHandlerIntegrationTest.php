@@ -13,6 +13,8 @@ use MediaWiki\Output\OutputPage;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\Title\Title;
+use MediaWiki\User\CentralId\CentralIdLookup;
+use MediaWiki\User\CentralId\CentralIdLookupFactory;
 use MediaWiki\User\User;
 use MediaWikiIntegrationTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -34,15 +36,26 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		$services = $this->getServiceContainer();
 
-		$mockRepository = $this->createMockRepository();
-		$mockFactory = $this->createMock( ReadingListRepositoryFactory::class );
-		$mockFactory->method( 'getInstanceForUser' )->willReturn( $mockRepository );
+		$userOptionsManager = $services->getUserOptionsManager();
+		$userOptionsManager->setOption( $this->user, 'readinglists-web-ui-enabled', '1' );
+		$userOptionsManager->saveOptions( $this->user );
 
-		/** @var ReadingListRepositoryFactory $mockFactory */
+		/** @var ReadingListRepositoryFactory&MockObject $mockFactory */
+		$mockFactory = $this->createMock( ReadingListRepositoryFactory::class );
+		$mockFactory->method( 'create' )->willReturn( $this->createMockRepository() );
+
+		$mockCentralIdLookup = $this->createMock( CentralIdLookup::class );
+		$mockCentralIdLookup->method( 'centralIdFromLocalUser' )->willReturn( 1 );
+
+		/** @var CentralIdLookupFactory&MockObject $mockCentralIdLookupFactory */
+		$mockCentralIdLookupFactory = $this->createMock( CentralIdLookupFactory::class );
+		$mockCentralIdLookupFactory->method( 'getLookup' )->willReturn( $mockCentralIdLookup );
+
 		$this->hookHandler = new HookHandler(
 			$services->getMainConfig(),
 			$mockFactory,
-			$services->getUserOptionsLookup()
+			$services->getUserOptionsLookup(),
+			$mockCentralIdLookupFactory
 		);
 	}
 

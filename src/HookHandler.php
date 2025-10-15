@@ -11,6 +11,7 @@ use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\User\CentralId\CentralIdLookupFactory;
 use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
@@ -28,6 +29,7 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		private readonly Config $config,
 		private readonly ReadingListRepositoryFactory $readingListRepositoryFactory,
 		private readonly UserOptionsLookup $userOptionsLookup,
+		private readonly CentralIdLookupFactory $centralIdLookupFactory,
 		private ?ExperimentManager $experimentManager = null
 	) {
 	}
@@ -72,12 +74,20 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			return;
 		}
 
-		$repository = $this->readingListRepositoryFactory->getInstanceForUser( $user );
+		$centralId = $this->centralIdLookupFactory->getLookup()
+			->centralIdFromLocalUser( $user );
+
+		if ( !$centralId ) {
+			return;
+		}
+
+		$repository = $this->readingListRepositoryFactory->create( $centralId );
+		$defaultReadingListUrl = self::getDefaultReadingListUrl( $user, $repository );
 
 		$links['user-menu'] = wfArrayInsertAfter( $links['user-menu'], [
 			'readinglists' => [
 				'text' => $sktemplate->msg( 'readinglists-menu-item' )->text(),
-				'href' => self::getDefaultReadingListUrl( $user, $repository ),
+				'href' => $defaultReadingListUrl,
 				'icon' => 'bookmarkList',
 			],
 		], 'mytalk' );

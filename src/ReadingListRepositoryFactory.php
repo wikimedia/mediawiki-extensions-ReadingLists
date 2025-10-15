@@ -28,6 +28,7 @@ class ReadingListRepositoryFactory {
 	public function getInstanceForUser( UserIdentity $user ): ReadingListRepository {
 		$centralUserId = $this->centralIdLookupFactory->getLookup()
 			->centralIdFromLocalUser( $user );
-		return $this->create( $centralUserId );
+		$instance = $this->create( $centralUserId );
+		return $instance;
 	}
 }
