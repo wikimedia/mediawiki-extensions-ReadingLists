@@ -7,7 +7,7 @@
 		:force-thumbnail="false"
 		@click="onClick">
 		<template #title>
-			<div class="reading-lists-selectable">
+			<span v-if="editing" class="reading-lists-selectable">
 				<cdx-checkbox
 					v-if="editing"
 					:model-value="selected"
@@ -16,7 +16,8 @@
 					@update:model-value="onToggle">
 				</cdx-checkbox>
 				{{ entry.title }}
-			</div>
+			</span>
+			<template v-else>{{ entry.title }}</template>
 		</template>
 
 		<template v-if="entry.description" #description>
