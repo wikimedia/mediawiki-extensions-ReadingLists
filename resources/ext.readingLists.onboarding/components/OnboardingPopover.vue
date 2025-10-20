@@ -112,6 +112,8 @@ module.exports = defineComponent( {
 		display: block;
 		content: url( ../../assets/onboarding-save.svg );
 		margin: 0 auto;
+		// 9.75rem = 156px to match SVG width + account for padding.
+		height: calc( 9.75rem + ( @spacing-50 * 2 ) );
 	}
 }
 
