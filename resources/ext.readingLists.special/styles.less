@@ -1,6 +1,7 @@
 @import 'mediawiki.skin.variables.less';
-@min-width-card: 22rem; // equal to 352px.
-@max-width-card: 30rem; // equal to 480px.
+@min-width-card: 20rem; // equal to 320px.
+@max-width-card: 28rem; // equal to 448px. Note: alternatively up to `1fr`.
+@max-width-card--mobile: 34rem; // equal to 544px.
 
 .client-js {
 	.reading-lists__errorbox {
@@ -50,21 +51,56 @@
 .reading-lists-grid {
 	display: grid;
 	grid-auto-rows: 1fr;
-	// Auto-fit to fill the row with as many columns as possible.
+	// Auto-fit to fit as many columns as possible in the row.
 	// Minimum width of a column is 22rem equal to 352px.
-	grid-template-columns: repeat( auto-fit, minmax( @min-width-card, 1fr ) );
+	// Only for browsers which do _not_ support `:has()` below.
+	// Support: Chrome ≤ 105, Edge ≤ 105, Firefox ≤ 120, Safari ≤ 15.3
+	grid-template-columns: repeat( auto-fit, minmax( @min-width-card, @max-width-card ) );
 	// Align all items to the start of the row.
 	justify-content: start;
 	gap: @spacing-100;
-	// Limit to maximum 4 cards per row.
+	// Default: Limit to 4 items maximum per row.
+	// Note: Desktop and Desktop wide gets 4 items per row as well.
 	max-width: calc( 4 * @max-width-card + 3 * @spacing-100 );
 	margin-top: @spacing-75;
 
-	+ .cdx-button {
-		display: block;
-		margin-top: @spacing-200;
-		margin-left: auto;
-		margin-right: auto;
+	// Mobile: Limit to 1 item maximum per row, but with higher grid container max width.
+	@media screen and ( max-width: @max-width-breakpoint-mobile ) {
+		grid-template-columns: repeat( auto-fit, minmax( @min-width-card, @max-width-card--mobile ) );
+		max-width: calc( 2 * @max-width-card--mobile + 1 * @spacing-100 );
+	}
+
+	// Tablet: Limit to 2 items maximum per row.
+	// Note: As of current `@max-width-breakpoint-tablet` is 1119px.
+	@media screen and ( max-width: @max-width-breakpoint-tablet ) {
+		max-width: calc( 2 * @max-width-card--mobile + 1 * @spacing-100 );
+	}
+
+	// More modern browsers supporting `:has()`.
+	// Default: All items, no matter which number, get equal space via `1fr`.
+	// Support: Chrome ≥ 105, Edge ≥ 105, Safari ≥ 15.4 , Firefox ≥ 121
+	&:has( * ) {
+		grid-template-columns: repeat( auto-fit, minmax( @min-width-card, 1fr ) );
+	}
+
+	// Match container with only 1 item `:has( > :nth-child( 1 ) )` and not more.
+	&:has( :nth-child( 1 ) ):not( :has( :nth-child( 2 ) ) ) {
+		max-width: @max-width-card--mobile;
+	}
+
+	// Match container with only 2 items `:has( > :nth-child( 2 ) )` and not more.
+	&:has( :nth-child( 2 ) ):not( :has( :nth-child( 3 ) ) ) {
+		max-width: calc( 2 * @max-width-card--mobile + 1 * @spacing-100 );
+
+		@media screen and ( max-width: @max-width-breakpoint-mobile ) {
+			grid-template-columns: repeat( auto-fit, minmax( @min-width-card, @max-width-card--mobile ) );
+		}
+	}
+
+	// Match container with 3 items and more.
+	/* stylelint-disable-next-line no-descending-specificity */
+	&:has( :nth-child( 3 ) ) {
+		grid-template-columns: repeat( auto-fit, minmax( @min-width-card, 1fr ) );
 	}
 
 	.cdx-card {
@@ -72,12 +108,17 @@
 		// Allow thumbnail and text container to stretch to the same height.
 		align-items: stretch;
 		min-width: @min-width-card;
-		max-width: @max-width-card;
+		max-width: @max-width-card--mobile;
 		// Use same minimum height as thumbnail to avoid non-thumbnail lists to jump in height.
 		min-height: @size-800;
 		// Set 0 padding to flush thumbnails and instead use padding on text container.
 		padding: 0;
 		overflow: hidden;
+
+		// Mobile only: Max it out at `34rem` (544px), specifically important on landscape mode.
+		@media screen and ( max-width: @max-width-breakpoint-mobile ) {
+			max-width: @max-width-card--mobile;
+		}
 	}
 
 	.cdx-card__thumbnail {
@@ -104,9 +145,9 @@
 	.cdx-card__text {
 		// Let text container take all remaining space.
 		flex: 1 1 auto;
+		box-sizing: @box-sizing-base;
 		height: @size-full;
 		padding: @spacing-50 @spacing-75;
-		overflow: hidden;
 	}
 
 	.cdx-card__text__title,
@@ -144,6 +185,14 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+
+	// "Show more" button.
+	+ .cdx-button {
+		display: block;
+		margin-top: @spacing-200;
+		margin-left: auto;
+		margin-right: auto;
 	}
 }
 
