@@ -4,8 +4,7 @@
 		:class="{ 'cdx-card--is-link': entry.url }"
 
 		:thumbnail="entry.thumbnail ? { url: entry.thumbnail } : undefined"
-		:force-thumbnail="false"
-		@click="onClick">
+		:force-thumbnail="false">
 		<template #title>
 			{{ entry.title }}
 		</template>
