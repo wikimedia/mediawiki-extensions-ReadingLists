@@ -2,7 +2,7 @@
 	<cdx-popover
 		v-model:open="isOpen"
 		:anchor="bookmarkElement"
-		placement="bottom-start"
+		placement="bottom-end"
 		class="readinglists-onboarding-popover"
 		role="dialog"
 		aria-labelledby="readinglists-onboarding-title"
