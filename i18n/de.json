@@ -50,12 +50,6 @@
 	"readinglists-title": "Gespeicherte Seiten",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|Liste|Listen}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|Artikel}}",
-	"readinglists-selected-articles": "$1 von $2 {{PLURAL:$2|Artikel}} ausgewählt",
-	"readinglists-select-article": "Artikel auswählen",
-	"readinglists-remove": "Entfernen",
-	"readinglists-remove-title": "Bestätigung entfernen",
-	"readinglists-remove-confirmation": "Möchtest du $1 {{PLURAL:$1|Artikel}} wirklich aus $2 entfernen?",
-	"readinglists-remove-success": "$1 {{PLURAL:$1|Artikel wurde|Artikel wurden}} aus [[$2|$3]] entfernt.",
 	"readinglists-show-more": "Mehr anzeigen",
 	"readinglists-default-title": "Gespeicherte Seiten",
 	"readinglists-default-description": "Standardliste für deine gespeicherten Artikel.",
@@ -69,7 +63,6 @@
 	"readinglists-display-direction": "Richtung",
 	"readinglists-display-direction-ascending": "Aufsteigend",
 	"readinglists-display-direction-descending": "Absteigend",
-	"readinglists-edit-button": "Artikel bearbeiten",
 	"action-action-readinglist-private": "die Leselisten anderer Benutzer zu lesen",
 	"readinglists-empty-message": "Du hast keine Listen, warum erstellst du nicht eine?",
 	"readinglists-import-empty-message": "Du kannst keine Listen von Listen importieren.",
@@ -90,5 +83,8 @@
 	"readinglists-menu-item": "Gespeicherte Seiten",
 	"readinglists-bookmark": "Lesezeichen",
 	"readinglists-add-bookmark": "Lesezeichen hinzufügen",
-	"readinglists-remove-bookmark": "Lesezeichen entfernen"
+	"readinglists-remove-bookmark": "Lesezeichen entfernen",
+	"readinglists-onboarding-title": "Seiten für später speichern",
+	"readinglists-onboarding-text": "Hast du etwas Interessantes gefunden? Du kannst es jetzt in deiner persönlichen Liste speichern.",
+	"readinglists-onboarding-close-button": "Schließen"
 }

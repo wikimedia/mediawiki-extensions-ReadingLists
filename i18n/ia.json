@@ -46,12 +46,6 @@
 	"readinglists-title": "Paginas salveguardate",
 	"readinglists-total-lists": "$1 lista{{PLURAL:$1||s}}",
 	"readinglists-total-articles": "$1 articulo{{PLURAL:$1||s}}",
-	"readinglists-selected-articles": "$1 de $2 articulo{{PLURAL:$2||s}} seligite",
-	"readinglists-select-article": "Seliger articulo",
-	"readinglists-remove": "Remover",
-	"readinglists-remove-title": "Remover confirmation",
-	"readinglists-remove-confirmation": "Es tu secur de voler remover $1 articulo{{PLURAL:$1||s}} de $2?",
-	"readinglists-remove-success": "$1 articulo{{PLURAL:$1||s}} ha essite removite de [[$2|$3]].",
 	"readinglists-show-more": "Monstrar plus",
 	"readinglists-default-title": "Paginas salveguardate",
 	"readinglists-default-description": "Lista predefinite pro tu articulos salveguardate.",
@@ -65,7 +59,6 @@
 	"readinglists-display-direction": "Direction",
 	"readinglists-display-direction-ascending": "Ascendente",
 	"readinglists-display-direction-descending": "Descendente",
-	"readinglists-edit-button": "Modificar articulos",
 	"action-action-readinglist-private": "leger le listas de lectura de altere usatores",
 	"readinglists-empty-message": "Tu non ha listas. Proque non crear un?",
 	"readinglists-import-empty-message": "Non es possibile importar listas de listas.",
@@ -86,5 +79,8 @@
 	"readinglists-menu-item": "Paginas salveguardate",
 	"readinglists-bookmark": "Marcapagina",
 	"readinglists-add-bookmark": "Adder marcapagina",
-	"readinglists-remove-bookmark": "Remover marcapagina"
+	"readinglists-remove-bookmark": "Remover marcapagina",
+	"readinglists-onboarding-title": "Salveguardar paginas pro plus tarde",
+	"readinglists-onboarding-text": "Ha tu trovate qualcosa interessante? Tu pote ora salveguardar lo in tu lista personal.",
+	"readinglists-onboarding-close-button": "Clauder"
 }

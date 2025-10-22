@@ -30,16 +30,12 @@
 	"readinglists-title": "Gespäichert Säiten",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|Lëscht|Lëschten}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|Artikel|Artikelen}}",
-	"readinglists-selected-articles": "$1 vu(n) $2 {{PLURAL:$2|Artikel|Artikelen}} ausgewielt",
-	"readinglists-remove": "Ewechhuelen",
-	"readinglists-remove-title": "Confirmatioun ewechhuelen",
 	"readinglists-show-more": "Méi weisen",
 	"readinglists-default-title": "Gespäichert Säiten",
 	"readinglists-empty-title": "Nach keng gespäichert Säiten",
 	"readinglists-display-sort": "Sortéieren no",
 	"readinglists-display-sort-name": "Numm",
 	"readinglists-display-sort-updated": "Aktualiséiert",
-	"readinglists-edit-button": "Artikel änneren",
 	"readinglists-import-empty-message": "Dir kënnt keng Lëschte vu Lëschten importéieren.",
 	"readinglists-export": "Lëscht deelen",
 	"readinglists-watchlist": "Iwwerwaachungslëscht",
@@ -48,5 +44,6 @@
 	"readinglists-menu-item": "Gespäichert Säiten",
 	"readinglists-bookmark": "Lieszeechen",
 	"readinglists-add-bookmark": "Lieszeechen derbäisetzen",
-	"readinglists-remove-bookmark": "Lieszeechen ewechhuelen"
+	"readinglists-remove-bookmark": "Lieszeechen ewechhuelen",
+	"readinglists-onboarding-close-button": "Zoumaachen"
 }

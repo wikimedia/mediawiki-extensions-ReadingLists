@@ -7,8 +7,5 @@
 	},
 	"readinglists-total-lists": "$1 {{PLURAL:$1|జాబితా|జాబితాలు}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|వ్యాసం|వ్యాసాలు}}",
-	"readinglists-selected-articles": "$2 లో $1 {{PLURAL:$2|వ్యాసాన్ని|వ్యాసాలను}} ఎంచుకున్నారు",
-	"readinglists-remove-confirmation": "$2 నుండి $1 {{PLURAL:$1|వ్యాసాన్ని|వ్యాసాలను}} తీసెయ్యాలనే నిశ్చయించుకున్నారా?",
-	"readinglists-remove-success": "[[$2|$3]] నుండి $1 {{PLURAL:$1|వ్యాసాన్ని|వ్యాసాలను}} తీసివేసాం.",
 	"readinglists-import-button-label": "జాబితా చూపించు"
 }

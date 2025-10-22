@@ -49,12 +49,6 @@
 	"readinglists-title": "Páxinas gardadas",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|lista|listas}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|artigo|artigos}}",
-	"readinglists-selected-articles": "$1 de $2 {{PLURAL:$2|artigo seleccionado|artigos seleccionados}}",
-	"readinglists-select-article": "Seleccionar o artigo",
-	"readinglists-remove": "Eliminar",
-	"readinglists-remove-title": "Confirmación da eliminación",
-	"readinglists-remove-confirmation": "Queres eliminar $1 {{PLURAL:$1|artigo|artigos}} de «$2»?",
-	"readinglists-remove-success": "{{PLURAL:$1|Eliminouse|Elimináronse}} $1 {{PLURAL:$1|artigo|artigos}} de «[[$2|$3]]».",
 	"readinglists-show-more": "Mostrar máis",
 	"readinglists-default-title": "Páxinas gardadas",
 	"readinglists-default-description": "Lista por defecto para os seus artigos gardados.",
@@ -68,7 +62,6 @@
 	"readinglists-display-direction": "Dirección",
 	"readinglists-display-direction-ascending": "Ascendente",
 	"readinglists-display-direction-descending": "Descendente",
-	"readinglists-edit-button": "Editar os artigos",
 	"action-action-readinglist-private": "ler as listas de lectura doutros usuarios",
 	"readinglists-empty-message": "Non tes listas, por que non creas unha?",
 	"readinglists-import-empty-message": "Non podes importar listas de listas.",
@@ -89,5 +82,8 @@
 	"readinglists-menu-item": "Páxinas gardadas",
 	"readinglists-bookmark": "Marcador",
 	"readinglists-add-bookmark": "Engadir o marcador",
-	"readinglists-remove-bookmark": "Eliminar o marcador"
+	"readinglists-remove-bookmark": "Eliminar o marcador",
+	"readinglists-onboarding-title": "Gardar páxinas para máis tarde",
+	"readinglists-onboarding-text": "Atopaches algo interesante? Agora podes gardalo na túa lista persoal.",
+	"readinglists-onboarding-close-button": "Pechar"
 }
