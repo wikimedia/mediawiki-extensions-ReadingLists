@@ -1,3 +1,4 @@
 const mountApp = require( './mountApp.js' );
 
-mountApp();
+module.exports = mountApp;
+module.exports.initOnboardingPopover = mountApp.initOnboardingPopover;

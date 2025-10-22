@@ -96,5 +96,7 @@
 	"readinglists-remove-bookmark": "Button label for removing a page bookmark",
 	"readinglists-onboarding-title": "Title of the onboarding popover for the saved pages feature, displayed the first time a user sees the bookmark icon button.",
 	"readinglists-onboarding-text": "Text of the onboarding popover for the saved pages feature, displayed the first time a user sees the bookmark icon button.",
-	"readinglists-onboarding-close-button": "Label for the close button in the onboarding popover for the saved pages feature.\n{{Identical|Close}}"
+	"readinglists-onboarding-close-button": "Label for the close button in the onboarding popover for the saved pages feature.\n{{Identical|Close}}",
+	"readinglists-onboarding-saved-pages-title": "Title of the saved pages onboarding popover, displayed the first time a user saves a page to their reading list.",
+	"readinglists-onboarding-saved-pages-text": "Body text of the saved pages onboarding popover. The popover is displayed the first time a user saves a page to their reading list."
 }

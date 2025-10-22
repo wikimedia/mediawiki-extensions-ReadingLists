@@ -106,14 +106,22 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 			}
 		}
 
-		// The following CSS classes are used here:
-		// * mw-notification-tag-saved
-		// * mw-notification-type-success
-		// * mw-notification-type-notice
-		mw.notify( msg, {
-			tag: 'saved',
-			type: isSaved ? 'success' : 'notice'
-		} );
+		const popoverStorageKey = 'readinglists-saved-pages-dialog-seen';
+
+		if ( !isMinerva && isSaved && listPageCount === 1 &&
+			!mw.storage.get( popoverStorageKey )
+		) {
+			initSavedPagesOnboardingPopover();
+		} else {
+			// The following CSS classes are used here:
+			// * mw-notification-tag-saved
+			// * mw-notification-type-success
+			// * mw-notification-type-notice
+			mw.notify( msg, {
+				tag: 'saved',
+				type: isSaved ? 'success' : 'notice'
+			} );
+		}
 
 		/**
 		 * Fires when the page saved status has changed.
@@ -126,6 +134,19 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 		 * @param {string} eventSource
 		 */
 		mw.hook( 'readingLists.bookmark.edit' ).fire( isSaved, entryId, listPageCount, eventSource );
+	}
+
+	function initSavedPagesOnboardingPopover() {
+		mw.loader.using( 'ext.readingLists.onboarding' ).then( ( require ) => {
+			const { initOnboardingPopover: initPopover } = require( 'ext.readingLists.onboarding' );
+			initPopover(
+				'#pt-readinglists-2',
+				'readinglists-saved-pages-dialog-seen',
+				'readinglists-onboarding-saved-pages-title',
+				'readinglists-onboarding-saved-pages-text',
+				mw.config.get( 'wgExtensionAssetsPath' ) + '/ReadingLists/resources/assets/onboarding-saved-list.svg'
+			);
+		} );
 	}
 
 	/**

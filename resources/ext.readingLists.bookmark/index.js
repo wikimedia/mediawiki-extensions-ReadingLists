@@ -22,16 +22,19 @@ bookmarks.forEach( ( bookmarkElement ) => {
 	initBookmark( bookmarkElement, isMinerva, eventSource );
 } );
 
-// Minerva also has #ca-bookmark, so it is necessary to check
-// both the skin name and the presence of the bookmark element
-if (
-	skinName === 'vector-2022' &&
-	!mw.storage.get( 'readinglists-bookmark-dialog-seen' ) &&
-	document.querySelector( '#ca-bookmark' )
-) {
-	setTimeout( () => {
-		mw.requestIdleCallback( () => {
-			mw.loader.using( 'ext.readingLists.onboarding' );
-		}, { timeout: 2000 } );
-	}, 1000 );
+function initOnboardingPopover() {
+	mw.loader.using( 'ext.readingLists.onboarding' ).then( ( require ) => {
+		const { initOnboardingPopover: initPopover } = require( 'ext.readingLists.onboarding' );
+		initPopover(
+			'#ca-bookmark',
+			'readinglists-bookmark-dialog-seen',
+			'readinglists-onboarding-title',
+			'readinglists-onboarding-text',
+			mw.config.get( 'wgExtensionAssetsPath' ) + '/ReadingLists/resources/assets/onboarding-save.svg'
+		);
+	} );
+}
+
+if ( skinName === 'vector-2022' ) {
+	initOnboardingPopover();
 }

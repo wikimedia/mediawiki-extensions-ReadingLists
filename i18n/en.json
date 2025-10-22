@@ -87,5 +87,7 @@
 	"readinglists-remove-bookmark": "Unsave",
 	"readinglists-onboarding-title": "Save pages for later",
 	"readinglists-onboarding-text": "Found something interesting? You can now save it to your personal list.",
-	"readinglists-onboarding-close-button": "Close"
+	"readinglists-onboarding-close-button": "Close",
+	"readinglists-onboarding-saved-pages-title": "Your saved pages",
+	"readinglists-onboarding-saved-pages-text": "Access all your saved pages here."
 }

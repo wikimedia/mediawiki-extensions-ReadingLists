@@ -10,7 +10,10 @@
 		@update:open="handleOpenChange"
 	>
 		<template #header>
-			<div class="readinglists-onboarding-banner">
+			<div
+				class="readinglists-onboarding-banner"
+				:style="{ '--banner-image': `url(${bannerImagePath})` }"
+			>
 				<cdx-button
 					class="readinglists-onboarding-close-button"
 					weight="quiet"
@@ -24,17 +27,17 @@
 		</template>
 		<div class="readinglists-onboarding-content">
 			<h4 id="readinglists-onboarding-title" class="readinglists-onboarding-title">
-				{{ $i18n( 'readinglists-onboarding-title' ).text() }}
+				{{ titleText }}
 			</h4>
 			<p id="readinglists-onboarding-text" class="readinglists-onboarding-text">
-				{{ $i18n( 'readinglists-onboarding-text' ).text() }}
+				{{ bodyText }}
 			</p>
 		</div>
 	</cdx-popover>
 </template>
 
 <script>
-const { ref, defineComponent } = require( 'vue' );
+const { ref, defineComponent, computed } = require( 'vue' );
 const { CdxPopover, CdxButton, CdxIcon } = require( '../../../codex.js' );
 const { cdxIconClose } = require( '../../../icons.json' );
 
@@ -49,6 +52,18 @@ module.exports = defineComponent( {
 			type: [ HTMLElement, Object ],
 			required: true
 		},
+		titleMsgKey: {
+			type: String,
+			required: true
+		},
+		bodyMsgKey: {
+			type: String,
+			required: true
+		},
+		bannerImagePath: {
+			type: String,
+			required: true
+		},
 		onDismiss: {
 			type: Function,
 			required: true
@@ -56,6 +71,12 @@ module.exports = defineComponent( {
 	},
 	setup( props ) {
 		const isOpen = ref( true );
+
+		/* eslint-disable mediawiki/msg-doc */
+		const titleText = computed( () => mw.msg( props.titleMsgKey ) );
+		const bodyText = computed( () => mw.msg( props.bodyMsgKey ) );
+		/* eslint-enable mediawiki/msg-doc */
+
 		const closeButtonLabel = mw.msg( 'readinglists-onboarding-close-button' );
 
 		const handleOpenChange = ( newValue ) => {
@@ -70,6 +91,8 @@ module.exports = defineComponent( {
 
 		return {
 			isOpen,
+			titleText,
+			bodyText,
 			closeButtonLabel,
 			cdxIconClose,
 			handleOpenChange,
@@ -109,10 +132,11 @@ module.exports = defineComponent( {
 	width: @size-full;
 
 	&::before {
+		content: var( --banner-image );
 		display: block;
-		content: url( ../../assets/onboarding-save.svg );
 		margin: 0 auto;
-		// 9.75rem = 156px to match SVG width + account for padding.
+		// 9.75rem = 156px  (assuming 1rem = 16px) to match SVG width
+		// and account for padding.
 		height: calc( 9.75rem + ( @spacing-50 * 2 ) );
 	}
 }
