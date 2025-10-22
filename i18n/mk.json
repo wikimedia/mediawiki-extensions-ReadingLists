@@ -44,7 +44,7 @@
 	"readinglists-import-error": "Не можам да ги прикажам списоците за читање од дадените податоци.",
 	"readinglists-import-size-error": "Списокот е преголем за да се прикаже.",
 	"special-tab-readinglists-short": "Ваши списоци",
-	"readinglists-default-title": "Зачувај",
+	"readinglists-default-title": "Зачувани страници",
 	"readinglists-default-description": "Стандарден список за вашите зачувани статии.",
 	"action-action-readinglist-private": "читање на списоци за читање на други корисници",
 	"readinglists-empty-message": "Немате ниеден список. Зошто не направите некој?",
