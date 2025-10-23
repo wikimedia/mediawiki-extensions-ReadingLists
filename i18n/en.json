@@ -83,8 +83,8 @@
 	"readinglists-beta-feature-description": "Collect private lists of articles to read later.",
 	"readinglists-menu-item": "Saved pages",
 	"readinglists-bookmark": "Bookmark",
-	"readinglists-add-bookmark": "Add bookmark",
-	"readinglists-remove-bookmark": "Remove bookmark",
+	"readinglists-add-bookmark": "Save",
+	"readinglists-remove-bookmark": "Unsave",
 	"readinglists-onboarding-title": "Save pages for later",
 	"readinglists-onboarding-text": "Found something interesting? You can now save it to your personal list.",
 	"readinglists-onboarding-close-button": "Close"
