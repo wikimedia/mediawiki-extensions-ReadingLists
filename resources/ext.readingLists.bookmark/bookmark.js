@@ -92,7 +92,6 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 		// * readinglists-browser-remove-entry-success
 		const msg = mw.message(
 			`readinglists-browser-${ ( isSaved ? 'add' : 'remove' ) }-entry-success`,
-			mw.config.get( 'wgPageName' ),
 			mw.config.get( 'wgTitle' ),
 			`Special:ReadingLists/${ mw.user.getName() }/${ listId }`,
 			mw.msg( 'readinglists-default-title' )
@@ -107,7 +106,14 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 			}
 		}
 
-		mw.notify( msg, { tag: 'saved', type: isSaved ? 'success' : 'info' } );
+		// The following CSS classes are used here:
+		// * mw-notification-tag-saved
+		// * mw-notification-type-success
+		// * mw-notification-type-notice
+		mw.notify( msg, {
+			tag: 'saved',
+			type: isSaved ? 'success' : 'notice'
+		} );
 
 		/**
 		 * Fires when the page saved status has changed.
