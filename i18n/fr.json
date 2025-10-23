@@ -5,6 +5,7 @@
 			"Asteralee",
 			"Bananax47",
 			"DePlusJean",
+			"Dyolf77 (WMF)",
 			"Escargot bleu",
 			"Gomoko",
 			"JLTRY",
@@ -94,5 +95,8 @@
 	"readinglists-menu-item": "Pages enregistrées",
 	"readinglists-bookmark": "Marque-page",
 	"readinglists-add-bookmark": "Ajouter un marque-page",
-	"readinglists-remove-bookmark": "Supprimer le marque-page"
+	"readinglists-remove-bookmark": "Supprimer le marque-page",
+	"readinglists-onboarding-title": "Enregistrer les pages pour plus tard",
+	"readinglists-onboarding-text": "Vous avez trouvé quelque chose d'intéressant ? Vous pouvez maintenant l'ajouter à votre liste personnelle.",
+	"readinglists-onboarding-close-button": "Fermer"
 }

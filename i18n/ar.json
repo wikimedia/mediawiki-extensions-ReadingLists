@@ -3,6 +3,7 @@
 		"authors": [
 			"Alshamiri1",
 			"Dbrant",
+			"Dyolf77 (WMF)",
 			"Meno25",
 			"Mohammed Qays",
 			"Scblr",
@@ -85,5 +86,8 @@
 	"readinglists-menu-item": "الصفحات المحفوظة",
 	"readinglists-bookmark": "علامة مرجعية",
 	"readinglists-add-bookmark": "إضافة إشارة مرجعية",
-	"readinglists-remove-bookmark": "إزالة الإشارة المرجعية"
+	"readinglists-remove-bookmark": "إزالة الإشارة المرجعية",
+	"readinglists-onboarding-title": "حفظ الصفحات لوقت لاحق",
+	"readinglists-onboarding-text": "هل وجدتم شيئًا مثيرًا للاهتمام؟ يمكنكم الآن حفظه في قائمتكم الشخصية.",
+	"readinglists-onboarding-close-button": "إغلاق"
 }
