@@ -1,8 +1,6 @@
 <template>
 	<cdx-card
 		:url="entry.url"
-		:class="{ 'cdx-card--is-link': entry.url }"
-
 		:thumbnail="entry.thumbnail ? { url: entry.thumbnail } : undefined"
 		:force-thumbnail="false">
 		<template #title>
