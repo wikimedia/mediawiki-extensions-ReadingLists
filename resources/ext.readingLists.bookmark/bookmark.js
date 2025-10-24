@@ -69,12 +69,12 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 	 * @return {number} -1 if the reading list size is not known
 	 */
 	function updateListCount( listId, isSaved ) {
-		if ( !currentReadingListSize[ listId ] ) {
+		if ( currentReadingListSize[ listId ] === undefined ) {
 			return -1;
-		} else {
-			currentReadingListSize[ listId ] += ( isSaved ? 1 : -1 );
-			return currentReadingListSize[ listId ];
 		}
+
+		currentReadingListSize[ listId ] += ( isSaved ? 1 : -1 );
+		return currentReadingListSize[ listId ];
 	}
 
 	/**
