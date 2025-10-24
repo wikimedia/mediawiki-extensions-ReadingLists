@@ -82,8 +82,8 @@
 	"readinglists-beta-feature-description": "Sammel private Listen von Artikeln zum späteren Lesen.",
 	"readinglists-menu-item": "Gespeicherte Seiten",
 	"readinglists-bookmark": "Lesezeichen",
-	"readinglists-add-bookmark": "Lesezeichen hinzufügen",
-	"readinglists-remove-bookmark": "Lesezeichen entfernen",
+	"readinglists-add-bookmark": "Speichern",
+	"readinglists-remove-bookmark": "Löschen",
 	"readinglists-onboarding-title": "Seiten für später speichern",
 	"readinglists-onboarding-text": "Hast du etwas Interessantes gefunden? Du kannst es jetzt in deiner persönlichen Liste speichern.",
 	"readinglists-onboarding-close-button": "Schließen"

@@ -41,5 +41,7 @@
 	"readinglists-watchlist": "Osservati speciali",
 	"readinglists-watchlist-description": "Pagine che segui per nuove modifiche.",
 	"readinglists-import-button-label": "Apri nell'app",
-	"readinglists-menu-item": "Pagine salvate"
+	"readinglists-menu-item": "Pagine salvate",
+	"readinglists-add-bookmark": "Salva",
+	"readinglists-remove-bookmark": "Annulla salvataggio"
 }
