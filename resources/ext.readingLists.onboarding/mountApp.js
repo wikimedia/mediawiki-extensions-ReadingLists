@@ -59,11 +59,15 @@ function showPopover( bookmarkElement ) {
 		app.unmount();
 		container.remove();
 		window.removeEventListener( 'resize', throttledHandleResize );
+		bookmarkElement.removeEventListener( 'click', removePopover );
 		observer.disconnect();
 	}
 
 	observer.observe( bookmarkElement );
 	window.addEventListener( 'resize', throttledHandleResize );
+
+	bookmarkElement.addEventListener( 'click', removePopover );
+
 	app.mount( container );
 }
 
