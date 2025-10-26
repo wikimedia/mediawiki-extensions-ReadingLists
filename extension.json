@@ -2,7 +2,15 @@
 	"name": "ReadingLists",
 	"version": "0.1.0",
 	"author": [
-		"Gergő Tisza"
+		"[https://www.mediawiki.org/wiki/Readers/Reader_Experience Reader Experience Team]",
+		"Bernard Wang",
+		"Dillon Hardy",
+		"Gergő Tisza",
+		"Jon Robson",
+		"Katie Filbert",
+		"Loren Mora",
+		"Steph Toyofuku",
+		"Volker E."
 	],
 	"url": "https://www.mediawiki.org/wiki/Extension:ReadingLists",
 	"descriptionmsg": "readinglists-desc",
