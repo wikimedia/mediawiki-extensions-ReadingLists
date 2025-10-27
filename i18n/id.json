@@ -2,7 +2,33 @@
 	"@metadata": {
 		"authors": [
 			"Agam Riyandana",
-			"DARMAS BUDI SANTOSO"
+			"DARMAS BUDI SANTOSO",
+			"BAPerdana-WMF"
 		]
-	}
+	},
+	"readinglists-db-error-not-set-up": "Daftar bacaan belum dibuat untuk pengguna ini.",
+	"readinglists-db-error-already-set-up": "Daftar bacaan telah dibuat untuk pengguna ini.",
+	"readinglists-db-error-cannot-delete-default-list": "Daftar standar tidak dapat dihapus.",
+	"readinglists-db-error-cannot-update-default-list": "Daftar standar tidak dapat diperbarui.",
+	"readinglists-db-error-no-such-list": "Daftar $1 tidak ada.",
+	"readinglists-db-error-no-such-list-entry": "Daftar masukan $1 tidak ada.",
+	"readinglists-db-error-not-own-list": "Daftar $1 merupakan milik pengguna lain.",
+	"readinglists-db-error-not-own-list-entry": "Daftar masukan $1 merupakan milik pengguna lain.",
+	"readinglists-db-error-list-deleted": "Daftar $1 telah dihapus.",
+	"readinglists-db-error-list-entry-deleted": "Daftar masukan $1 telah dihapus.",
+	"readinglists-db-error-duplicate-list": "Daftar dengan nama ini sudah ada.",
+	"readinglists-db-error-duplicate-page": "Daftar berikut sudah berisi halaman ini.",
+	"readinglists-db-error-empty-list-ids": "Parameter daftar ID tidak boleh kosong.",
+	"readinglists-db-error-user-required": "Metode ini tidak dapat dipanggil tanpa menentukan pengguna.",
+	"readinglists-db-error-list-limit": "Pengguna tidak dapat memiliki lebih dari $1 daftar.",
+	"readinglists-db-error-entry-limit": "Daftar $1 tidak dapat berisi lebih dari $2 masukan.",
+	"readinglists-db-error-too-long": "Nilai untuk bidang $1 tidak dapat lebih besar dari $2 bita.",
+	"readinglists-db-error-no-such-project": "'$1' bukanlah proyek yang diakui.",
+	"readinglists-browser-login-prompt": "Masuk log untuk menyimpan artikel",
+	"readinglists-browser-error-intro": "Telah terjadi kesalahan: $1",
+	"readinglists-browser-enable-sync-prompt": "Aktifkan sinkronisasi pada aplikasi Wikipedia milik Anda untuk mulai menyimpan artikel",
+	"readinglists-browser-extension-info-link-text": "Pelajari selengkapnya",
+	"readinglists-browser-list-entry-limit-exceeded": "Artikel tidak bisa disimpan. Anda telah mencapai batas $1 artikel per daftar",
+	"readinglists-browser-extension-product-title": "Daftar Bacaan Wikipedia",
+	"readinglists-browser-page-not-supported": "$1 tidak mendukung halaman ini"
 }

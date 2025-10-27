@@ -7,6 +7,8 @@
 			"Samoasambia"
 		]
 	},
+	"readinglists-db-error-not-set-up": "Tälle käyttäjälle ei ole määritetty lukulistoja.",
+	"readinglists-db-error-already-set-up": "Tälle käyttäjälle on jo määritetty lukulistat.",
 	"readinglists-db-error-cannot-delete-default-list": "Oletuslistaa ei voi poistaa.",
 	"readinglists-db-error-cannot-update-default-list": "Oletuslistaa ei voi päivittää.",
 	"readinglists-db-error-no-such-list": "Listaa $1 ei ole olemassa.",
@@ -19,8 +21,11 @@
 	"readinglists-db-error-duplicate-page": "Tämä sivu on jo listalla.",
 	"readinglists-db-error-list-limit": "Käyttäjällä voi olla enintään $1 {{PLURAL:$1|lista|listaa}}.",
 	"readinglists-db-error-entry-limit": "Listassa $1 voi olla enintään $2 {{PLURAL:$2|kohde|kohdetta}}.",
+	"readinglists-db-error-too-long": "Kentän $1 arvo ei voi olla pidempi kuin $2 tavua.",
+	"readinglists-db-error-no-such-project": "Hanketta ”$1” ei tunnistettu.",
 	"readinglists-browser-login-prompt": "Kirjaudu sisään tallentaaksesi artikkeleita",
 	"readinglists-browser-error-intro": "Tapahtui virhe: $1",
+	"readinglists-browser-enable-sync-prompt": "Ota käytöön synkronointi Wikipedia-sovelluksellasi aloittaaksesi artikkelien tallentamisen",
 	"readinglists-browser-extension-info-link-text": "Lisätietoja",
 	"readinglists-browser-list-entry-limit-exceeded": "Artikkelia ei voida tallentaa. Olet saavuttanut $1 artikkelin rajan lukulistaa kohden.",
 	"readinglists-browser-extension-product-title": "Wikipedia-lukulistat",

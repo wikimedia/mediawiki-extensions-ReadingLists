@@ -1,0 +1,30 @@
+{
+	"@metadata": {
+		"authors": [
+			"BAPerdana-WMF"
+		]
+	},
+	"apierror-readinglists-project-title-param": "<var>$1project</var> dan <var>$1title</var> harus digunakan secara bersamaan.",
+	"apierror-readinglists-too-old": "Stempel waktu yang tercatat <var>$1changedsince</var> tidak dapat lebih lama dengan <kbd>$2</kbd>.",
+	"apierror-readinglists-invalidsort-notbyname": "Opsi pengurutan <kbd>name</kbd> tidak dapat digunakan secara bersamaan dengan <var>$1changedsince</var>.",
+	"apierror-readinglists-batch-invalid-json": "Parameter JSON tidak valid untuk <var>batch</var>: $1",
+	"apierror-readinglists-batch-invalid-structure": "Masukan tidak valid untuk parameter <var>batch</var>: harus memiliki serangkaian objek yang memiliki nilai skalar.",
+	"apierror-readinglists-batch-toomanyvalues": "Masukan tidak valid untuk parameter <var>batch</var>: terlalu banyak masukan, maksimum yang diizinkan adalah $1",
+	"apierror-readinglists-batch-missingparam-at-least-one-of": "Pada setiap objek dalam masukan <var>batch</var>, setidaknya salah satu dari bidang $1 diperlukan.",
+	"apihelp-query+readinglists-summary": "Urutkan atau saring daftar baca pengguna, serta tampilkan metadatanya.",
+	"apihelp-query+readinglists-param-list": "Daftar ID.",
+	"apihelp-query+readinglists-example-1": "Dapatkan daftar bacaan pengguna saat ini.",
+	"apihelp-query+readinglists-example-2": "Dapatkan daftar bacaan pengguna saat ini yang telah berubah sejak <kbd>2013-01-01T00:00:00Z</kbd>.",
+	"apihelp-query+readinglists-example-3": "Dapatkan daftar bacaan pengguna saat ini yang berisi halaman <kbd>Anjing</kbd> dari proyek <kbd>en.wikipedia.org</kbd>",
+	"apihelp-query+readinglistentries-summary": "Daftar halaman dari daftar tertentu.",
+	"apihelp-readinglists+setup-summary": "Aktifkan daftar untuk pengguna saat ini.",
+	"apihelp-readinglists+teardown-summary": "Nonaktifkan daftar untuk pengguna saat ini.",
+	"apihelp-readinglists+update-example-2": "Perbarui beberapa daftar.",
+	"apihelp-readinglists+delete-example-2": "Hapus beberapa daftar.",
+	"apihelp-readinglists+createentry-param-list": "Daftar ID.",
+	"apihelp-readinglists+createentry-example-2": "Tambah berbagai halaman ke daftar.",
+	"apihelp-readinglists+deleteentry-summary": "Hapus halaman dari daftar milik pengguna saat ini.",
+	"apihelp-readinglists+deleteentry-param-entry": "ID Entri. Ini diperlukan, kecuali melakukan penghapusan sekaligus.",
+	"apihelp-readinglists+deleteentry-example-1": "Hapus daftar masukan dengan ID <kbd>8</kbd>.",
+	"apihelp-readinglists+deleteentry-example-2": "Hapus beberapa daftar masukan."
+}
