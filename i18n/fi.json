@@ -75,8 +75,8 @@
 	"readinglists-beta-feature-description": "Kerää yksityisiä listoja artikkeleista myöhempää lukemista varten.",
 	"readinglists-menu-item": "Tallennetut sivut",
 	"readinglists-bookmark": "Kirjanmerkki",
-	"readinglists-add-bookmark": "Lisää kirjanmerkki",
-	"readinglists-remove-bookmark": "Poista kirjanmerkki",
+	"readinglists-add-bookmark": "Tallenna",
+	"readinglists-remove-bookmark": "Poista",
 	"readinglists-onboarding-title": "Tallenna sivuja myöhempää lukemista varten",
 	"readinglists-onboarding-text": "Löysitkö jotain mielenkiintoista? Voit nyt tallentaa sen henkilökohtaiselle listallesi.",
 	"readinglists-onboarding-close-button": "Sulje"

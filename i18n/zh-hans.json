@@ -31,8 +31,8 @@
 	"readinglists-db-error-entry-limit": "列表$1不能有超过$2{{PLURAL:$2|项}}。",
 	"readinglists-db-error-too-long": "用于字段$1的值不能超过$2字节。",
 	"readinglists-db-error-no-such-project": "“$1”不是受认可的项目。",
-	"readinglists-browser-add-entry-success": "[[$1|$2]]已添加到[[$3|$4]]。",
-	"readinglists-browser-remove-entry-success": "[[$1|$2]]已从[[$3|$4]]移除。",
+	"readinglists-browser-add-entry-success": "<b>$1</b>已添加到您的[[$2|$3]]。",
+	"readinglists-browser-remove-entry-success": "<b>$1</b>已从您的[[$2|$3]]中移除。",
 	"readinglists-browser-login-prompt": "登录以保存条目",
 	"readinglists-browser-error-intro": "发生错误：$1",
 	"readinglists-browser-enable-sync-prompt": "在您的维基百科应用上启用同步以开始保存条目",
@@ -54,7 +54,7 @@
 	"readinglists-total-lists": "$1{{PLURAL:$1|个列表}}",
 	"readinglists-total-articles": "$1{{PLURAL:$1|个条目}}",
 	"readinglists-show-more": "显示更多",
-	"readinglists-default-title": "已保存页面",
+	"readinglists-default-title": "已保存项目",
 	"readinglists-default-description": "用于您已保存条目的默认列表",
 	"readinglists-empty-title": "尚无保存的页面",
 	"readinglists-empty-cta": "使用任意条目上的保存图标来在此处添加页面。",
@@ -85,6 +85,9 @@
 	"readinglists-beta-feature-description": "收集私有条目列表以供稍后阅读。",
 	"readinglists-menu-item": "已保存页面",
 	"readinglists-bookmark": "书签",
-	"readinglists-add-bookmark": "添加书签",
-	"readinglists-remove-bookmark": "移除书签"
+	"readinglists-add-bookmark": "保存",
+	"readinglists-remove-bookmark": "取消保存",
+	"readinglists-onboarding-title": "保存页面以供日后查阅",
+	"readinglists-onboarding-text": "发现感兴趣的内容了吗？您可以现在将其保存到个人列表。",
+	"readinglists-onboarding-close-button": "关闭"
 }

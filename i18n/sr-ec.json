@@ -4,13 +4,13 @@
 			"Milicevic01"
 		]
 	},
-	"readinglists-browser-add-entry-success": "[[$1|$2]] је додата у [[$3|$4]].",
-	"readinglists-browser-remove-entry-success": "[[$1|$2]] је уклоњена из [[$3|$4]].",
+	"readinglists-browser-add-entry-success": "<b>$1</b> је додата у [[$2|$3]].",
+	"readinglists-browser-remove-entry-success": "<b>$1</b> је уклоњена из [[$2|$3]].",
 	"readinglists-special-subpage-title": "Сачувано",
 	"readinglists-loading": "Молимо сачекајте...",
 	"readinglists-title": "Сачуване странице",
 	"readinglists-show-more": "Прикажи више",
-	"readinglists-default-title": "Сачуване странице",
+	"readinglists-default-title": "сачуване странице",
 	"readinglists-empty-title": "Ваш списак је празан.",
 	"readinglists-display-sort": "Поређај по",
 	"readinglists-display-sort-name": "Назив",
@@ -22,5 +22,6 @@
 	"readinglists-watchlist-description": "Странице које сте уређивали или пратите",
 	"readinglists-import-button-label": "Отвори у апликацији",
 	"readinglists-menu-item": "Сачувано",
+	"readinglists-add-bookmark": "Сачувај",
 	"readinglists-onboarding-close-button": "Затвори"
 }
