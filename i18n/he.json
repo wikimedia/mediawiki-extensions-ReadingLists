@@ -80,5 +80,8 @@
 	"readinglists-menu-item": "דפים שמורים",
 	"readinglists-bookmark": "הוספת סימנייה",
 	"readinglists-add-bookmark": "שמירה",
-	"readinglists-remove-bookmark": "ביטול שמירה"
+	"readinglists-remove-bookmark": "ביטול שמירה",
+	"readinglists-onboarding-title": "שמירת דפים לאחר־כך",
+	"readinglists-onboarding-text": "מצאת משהו מעניין? עכשיו אפשר לשמור את זה לרשימה האישית שלך.",
+	"readinglists-onboarding-close-button": "סגירה"
 }
