@@ -16,5 +16,6 @@
 	"readinglists-show-more": "और दिखायें",
 	"readinglists-import-disclaimer": "इस साइट पर एक यूज़र ने दूसरों से (शायद आप से)पठन सूची शेयर करने के लिए बनाई है. इसे मॉडरेट नहीं किया गया है और इसके कंटेंट साइट के एडिटर्स को नहीं दर्शाते है.",
 	"readinglists-import-button-label": "लिस्ट देखें",
-	"readinglists-import-button-hint": "टैप बटन:"
+	"readinglists-import-button-hint": "टैप बटन:",
+	"readinglists-add-bookmark": "सहेजें"
 }
