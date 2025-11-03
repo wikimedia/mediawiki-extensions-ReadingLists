@@ -4,7 +4,8 @@
 			"Ciell",
 			"Mainframe98",
 			"McDutchie",
-			"Romaine"
+			"Romaine",
+			"Siebrand"
 		]
 	},
 	"readinglists-desc": "Biedt gebruikers de mogelijkheid om afgeschermde artikellijsten te beheren, zoals bladwijzers of lijsten met “Opgeslagen pagina’s”.",
@@ -27,8 +28,8 @@
 	"readinglists-db-error-entry-limit": "Op de lijst $1 kunnen niet meer dan $2 vermelding{{PLURAL:$2||en}} staan.",
 	"readinglists-db-error-too-long": "De waarde voor het veld $1 mag niet langer zijn dan $2 bytes.",
 	"readinglists-db-error-no-such-project": "‘$1’ is geen erkend project.",
-	"readinglists-browser-add-entry-success": "[[$1|$2]] is aan [[$3|$4]] toegevoegd.",
-	"readinglists-browser-remove-entry-success": "[[$1|$2]] is uit [[$3|$4]] verwijderd.",
+	"readinglists-browser-add-entry-success": "<b>$1</b> is toegevoegd aan uw [[$2|$3]].",
+	"readinglists-browser-remove-entry-success": "<b>$1</b> is verwijderd uit uw [[$2|$3]].",
 	"readinglists-browser-login-prompt": "Meld u aan om artikelen op te slaan",
 	"readinglists-browser-error-intro": "Er is een fout opgetreden: $1",
 	"readinglists-browser-enable-sync-prompt": "Schakel synchronisatie in uw Wikipedia-app in om artikelen op te gaan slaan",
@@ -50,7 +51,7 @@
 	"readinglists-total-lists": "$1 lijst{{PLURAL:$1||en}}",
 	"readinglists-total-articles": "$1 artikel{{PLURAL:$1||en}}",
 	"readinglists-show-more": "Meer weergeven",
-	"readinglists-default-title": "Opgeslagen pagina’s",
+	"readinglists-default-title": "opgeslagen items",
 	"readinglists-default-description": "De standaardlijst voor uw opgeslagen artikelen.",
 	"readinglists-empty-title": "Nog geen opgeslagen pagina’s",
 	"readinglists-empty-cta": "Gebruik het pictogram Opslaan bij een artikel om hier pagina’s toe te voegen.",
@@ -81,6 +82,9 @@
 	"readinglists-beta-feature-description": "Verzamel privélijsten met artikelen om later te lezen.",
 	"readinglists-menu-item": "Opgeslagen pagina’s",
 	"readinglists-bookmark": "Bladwijzer",
-	"readinglists-add-bookmark": "Bladwijzer toevoegen",
-	"readinglists-remove-bookmark": "Bladwijzer verwijderen"
+	"readinglists-add-bookmark": "Opslaan",
+	"readinglists-remove-bookmark": "Verwijderen",
+	"readinglists-onboarding-title": "Pagina's opslaan voor later",
+	"readinglists-onboarding-text": "Iets interessants gevonden? u kunt het nu opslaan in uw persoonlijke lijst.",
+	"readinglists-onboarding-close-button": "Sluiten"
 }
