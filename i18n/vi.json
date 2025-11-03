@@ -1,7 +1,33 @@
 {
 	"@metadata": {
 		"authors": [
-			"Nguyenphutrong2"
+			"Nguyenphutrong2",
+			"Bluetpp"
 		]
-	}
+	},
+	"readinglists-db-error-not-set-up": "Danh sách đọc chưa được thiết lập cho người dùng này.",
+	"readinglists-db-error-already-set-up": "Danh sách đọc đã được thiết lập cho người dùng này rồi.",
+	"readinglists-db-error-cannot-delete-default-list": "Không thể xóa danh sách mặc định.",
+	"readinglists-db-error-cannot-update-default-list": "Không thể cập nhật danh sách mặc định.",
+	"readinglists-db-error-no-such-list": "Danh sách $1 không tồn tại.",
+	"readinglists-db-error-no-such-list-entry": "Mục nhập danh sách $1 không tồn tại.",
+	"readinglists-db-error-not-own-list": "Danh sách $1 thuộc về người dùng khác.",
+	"readinglists-db-error-not-own-list-entry": "Mục nhập danh sách $1 thuộc về người dùng khác.",
+	"readinglists-db-error-list-deleted": "Danh sách $1 đã bị xóa.",
+	"readinglists-db-error-list-entry-deleted": "Mục nhập danh sách $1 đã bị xóa.",
+	"readinglists-db-error-duplicate-list": "Một danh sách có tên này đã tồn tại.",
+	"readinglists-db-error-duplicate-page": "Danh sách đã có trang này rồi.",
+	"readinglists-db-error-empty-list-ids": "Không được để trống tham số id danh sách.",
+	"readinglists-db-error-user-required": "Không thể gọi phương pháp này nếu không chỉ định người dùng.",
+	"readinglists-db-error-list-limit": "Người dùng không thể có nhiều hơn $1 {{PLURAL:$1|danh sách}}.",
+	"readinglists-db-error-entry-limit": "Danh sách $1 không thể có nhiều hơn $2 {{PLURAL:$2|mục nhập}}.",
+	"readinglists-db-error-too-long": "Giá trị cho trường $1 không thể dài hơn $2 byte.",
+	"readinglists-db-error-no-such-project": "'$1' không phải là một dự án được công nhận.",
+	"readinglists-browser-login-prompt": "Đăng nhập để lưu bài viết",
+	"readinglists-browser-error-intro": "Đã xuất hiện lỗi: $1",
+	"readinglists-browser-enable-sync-prompt": "Bật đồng bộ trên ứng dụng Wikipedia của bạn để bắt đầu lưu bài viết",
+	"readinglists-browser-extension-info-link-text": "Tìm hiểu thêm",
+	"readinglists-browser-list-entry-limit-exceeded": "Không thể lưu bài viết. Bạn đã đạt đến giới hạn $1 bài viết cho mỗi danh sách.",
+	"readinglists-browser-extension-product-title": "Danh sách đọc Wikipedia",
+	"readinglists-browser-page-not-supported": "$1 không hỗ trợ trang này"
 }
