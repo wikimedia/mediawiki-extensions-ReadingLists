@@ -95,16 +95,7 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 			mw.config.get( 'wgTitle' ),
 			`Special:ReadingLists/${ mw.user.getName() }/${ listId }`,
 			mw.msg( 'readinglists-default-title' )
-		).parseDom();
-
-		// Hide the page link icon in the notification
-		if ( msg.length > 0 ) {
-			const a = msg[ 0 ];
-
-			if ( a.nodeType === Node.ELEMENT_NODE ) {
-				a.classList.remove( 'external' );
-			}
-		}
+		);
 
 		const popoverStorageKey = 'readinglists-saved-pages-dialog-seen';
 
