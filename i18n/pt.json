@@ -47,7 +47,7 @@
 	"readinglists-total-lists": "{{formatnum:$1}} {{plural:$1|lista|listas}}",
 	"readinglists-total-articles": "{{formatnum:$1}} {{plural:$1|artigo|artigos}}",
 	"readinglists-show-more": "Mostrar mais",
-	"readinglists-default-title": "Páginas gravadas",
+	"readinglists-default-title": "itens guardados",
 	"readinglists-default-description": "Lista por omissão para os seus artigos gravados.",
 	"readinglists-empty-title": "A sua lista está vazia.",
 	"readinglists-empty-cta": "Visite um artigo e guarde-o para começar a criar a sua lista.",

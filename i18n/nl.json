@@ -86,5 +86,7 @@
 	"readinglists-remove-bookmark": "Verwijderen",
 	"readinglists-onboarding-title": "Pagina's opslaan voor later",
 	"readinglists-onboarding-text": "Iets interessants gevonden? u kunt het nu opslaan in uw persoonlijke lijst.",
-	"readinglists-onboarding-close-button": "Sluiten"
+	"readinglists-onboarding-close-button": "Sluiten",
+	"readinglists-onboarding-saved-pages-title": "Uw opgeslagen pagina’s",
+	"readinglists-onboarding-saved-pages-text": "Bekijk hier al uw opgeslagen pagina’s."
 }

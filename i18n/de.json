@@ -86,5 +86,7 @@
 	"readinglists-remove-bookmark": "Löschen",
 	"readinglists-onboarding-title": "Seiten für später speichern",
 	"readinglists-onboarding-text": "Hast du etwas Interessantes gefunden? Du kannst es jetzt in deiner persönlichen Liste speichern.",
-	"readinglists-onboarding-close-button": "Schließen"
+	"readinglists-onboarding-close-button": "Schließen",
+	"readinglists-onboarding-saved-pages-title": "Deine gespeicherten Seiten",
+	"readinglists-onboarding-saved-pages-text": "Zugriff auf alle gespeicherten Seiten hier."
 }
