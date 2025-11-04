@@ -15,15 +15,12 @@ use MediaWiki\User\CentralId\CentralIdLookupFactory;
 use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
+use MediaWiki\WikiMap\WikiMap;
 
 /**
  * Static entry points for hooks.
  */
 class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNavigation__UniversalHook {
-
-	// The experiment name comes from the readingListAB.js module in the WikimediaEvents extension.
-	// If the experiment name changes, we must update it in both places.
-	private const EXPERIMENT_NAME = 'we-3-3-4-reading-list-test1';
 
 	public function __construct(
 		private readonly Config $config,
@@ -140,7 +137,13 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 
 		$inExperimentTreatment = false;
 		if ( $this->experimentManager ) {
-			$experiment = $this->experimentManager->getExperiment( self::EXPERIMENT_NAME );
+			$wikiId = WikiMap::getCurrentWikiId();
+			// NOTE: These need to be the same as the experiment names
+			// defined in WikimediaEvents, in readingListAB.js.
+			$experimentName = $wikiId === 'enwiki'
+				? 'we-3-3-4-reading-list-test1-en'
+				: 'we-3-3-4-reading-list-test1';
+			$experiment = $this->experimentManager->getExperiment( $experimentName );
 			$inExperimentTreatment = $experiment->isAssignedGroup( 'treatment' );
 		}
 
