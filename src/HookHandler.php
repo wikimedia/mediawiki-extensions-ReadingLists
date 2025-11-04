@@ -93,7 +93,7 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		], 'mytalk' );
 
 		$output = $sktemplate->getOutput();
-		$output->addModules( 'ext.readingLists.bookmark.icons' );
+		$output->addModuleStyles( 'ext.readingLists.bookmark.icons' );
 
 		if ( !$output->isArticle() ) {
 			return;

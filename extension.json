@@ -253,7 +253,9 @@
 		},
 		"ext.readingLists.bookmark.icons": {
 			"class": "MediaWiki\\ResourceLoader\\OOUIIconPackModule",
-			"selectorWithoutVariant": ".mw-ui-icon-{name}, .minerva-icon--{name}",
+			"defaultColor": "#000",
+			"selectorWithVariant": ".vector-icon.mw-ui-icon-wikimedia-{name}-{variant}, .minerva-icon--{name}-{variant}",
+			"selectorWithoutVariant": ".vector-icon.mw-ui-icon-wikimedia-{name}, .minerva-icon--{name}",
 			"useMaskImage": true,
 			"useDataURI": false,
 			"icons": [
