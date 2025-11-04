@@ -121,7 +121,8 @@
 		}
 	}
 
-	.cdx-card__thumbnail {
+	// Specify higher equally to Codex component in component precedence.
+	.cdx-card__thumbnail.cdx-thumbnail {
 		// Provide a subtle background color, in case there is any text box expanding glitch.
 		background-color: @background-color-neutral-subtle;
 		min-width: @size-800;
@@ -130,7 +131,7 @@
 		margin-right: 0;
 
 		// Apply necessary specificity to set thumbnail size.
-		&.cdx-thumbnail .cdx-thumbnail__image {
+		.cdx-thumbnail__image {
 			// Center vertically and top align thumbnail image.
 			background-position: center 0;
 			width: @size-full;
