@@ -44,5 +44,7 @@
 	"readinglists-watchlist-description": "صفحه‌هایی که ویرایش‌های جدید در آن‌ها را دنبال می‌کنید.",
 	"readinglists-import-button-label": "باز کردن در برنامه",
 	"readinglists-import-button-hint": "روی این دکمه ضربه بزنید:",
-	"readinglists-import-app-launch-hint": "لطفاً از نصب شدن نرم‌افزار مطمئن شوید."
+	"readinglists-import-app-launch-hint": "لطفاً از نصب شدن نرم‌افزار مطمئن شوید.",
+	"readinglists-onboarding-saved-pages-title": "صفحه‌های ذخیره‌شدهٔ شما",
+	"readinglists-onboarding-saved-pages-text": "از اینجا به تمام صفحه‌های ذخیره‌شدهٔ خود دسترسی داشته باشید."
 }

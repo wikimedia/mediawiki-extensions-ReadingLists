@@ -85,5 +85,7 @@
 	"readinglists-remove-bookmark": "Non gardar",
 	"readinglists-onboarding-title": "Gardar páxinas para máis tarde",
 	"readinglists-onboarding-text": "Atopaches algo interesante? Agora podes gardalo na túa lista persoal.",
-	"readinglists-onboarding-close-button": "Pechar"
+	"readinglists-onboarding-close-button": "Pechar",
+	"readinglists-onboarding-saved-pages-title": "As túas páxinas gardadas",
+	"readinglists-onboarding-saved-pages-text": "Accede aquí a todas as túas páxinas gardadas."
 }

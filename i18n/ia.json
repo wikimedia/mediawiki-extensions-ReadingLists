@@ -82,5 +82,7 @@
 	"readinglists-remove-bookmark": "Non plus salveguardar",
 	"readinglists-onboarding-title": "Salveguardar paginas pro plus tarde",
 	"readinglists-onboarding-text": "Ha tu trovate qualcosa interessante? Tu pote ora salveguardar lo in tu lista personal.",
-	"readinglists-onboarding-close-button": "Clauder"
+	"readinglists-onboarding-close-button": "Clauder",
+	"readinglists-onboarding-saved-pages-title": "Tu paginas salveguardate",
+	"readinglists-onboarding-saved-pages-text": "Accede a tote tu paginas salveguardate hic."
 }
