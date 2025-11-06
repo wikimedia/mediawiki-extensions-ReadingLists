@@ -25,8 +25,8 @@
 	"readinglists-db-error-entry-limit": "Списокот $1 не може да има повеќе од $2 {{PLURAL:$2|ставка|ставки}}.",
 	"readinglists-db-error-too-long": "Вредноста за полето $1 не може да е подолга од $2 бајти.",
 	"readinglists-db-error-no-such-project": "„$1“ не е признаен проект.",
-	"readinglists-browser-add-entry-success": "[[$1|$2]] е додадена во [[$3|$4]].",
-	"readinglists-browser-remove-entry-success": "[[$1|$2]] е отстранета од [[$3|$4]].",
+	"readinglists-browser-add-entry-success": "<b>$1</b> е додадена во вашиот [[$3|$4]].",
+	"readinglists-browser-remove-entry-success": "<b>$1</b> е отстранета од вашиот [[$2|$3]].",
 	"readinglists-browser-login-prompt": "Најавете се за да зачувувате статии",
 	"readinglists-browser-error-intro": "Се појави грешка: $1",
 	"readinglists-browser-enable-sync-prompt": "Овозможете усогласување на вашиот прилог за Википедија за да почнете со зачувување на статиите",
@@ -48,7 +48,7 @@
 	"readinglists-total-lists": "$1 {{PLURAL:$1|список|списоци}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|статија|статии}}",
 	"readinglists-show-more": "Прикажи повеќе",
-	"readinglists-default-title": "Зачувани страници",
+	"readinglists-default-title": "зачувани ставки",
 	"readinglists-default-description": "Стандарден список за вашите зачувани статии.",
 	"readinglists-empty-title": "Засега нема зачувани страници.",
 	"readinglists-empty-cta": "Уоптребете ја иконата за зачувување на било која статија за да додавете страници овде.",
@@ -79,6 +79,11 @@
 	"readinglists-beta-feature-description": "Собирај приватни списоци на статии за читање подоцна.",
 	"readinglists-menu-item": "Зачувани страници",
 	"readinglists-bookmark": "Обележувач",
-	"readinglists-add-bookmark": "Додај обележувач",
-	"readinglists-remove-bookmark": "Отстрани обележувач"
+	"readinglists-add-bookmark": "Зачувај",
+	"readinglists-remove-bookmark": "Одзачувај",
+	"readinglists-onboarding-title": "Зачувај страници за подоцна",
+	"readinglists-onboarding-text": "Најдовте нешто интересно? Сега можете да го зачувате во ваш личен список.",
+	"readinglists-onboarding-close-button": "Затвори",
+	"readinglists-onboarding-saved-pages-title": "Вашите зачувани страници",
+	"readinglists-onboarding-saved-pages-text": "Тука имате пристап до сите ваши зачувани страници."
 }

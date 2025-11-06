@@ -89,5 +89,7 @@
 	"readinglists-remove-bookmark": "إلغاء الحفظ",
 	"readinglists-onboarding-title": "حفظ الصفحات لوقت لاحق",
 	"readinglists-onboarding-text": "هل وجدتم شيئًا مثيرًا للاهتمام؟ يمكنكم الآن حفظه في قائمتكم الشخصية.",
-	"readinglists-onboarding-close-button": "إغلاق"
+	"readinglists-onboarding-close-button": "إغلاق",
+	"readinglists-onboarding-saved-pages-title": "صفحاتك المحفوظة",
+	"readinglists-onboarding-saved-pages-text": "يمكنك الوصول إلى جميع صفحاتك المحفوظة هنا."
 }

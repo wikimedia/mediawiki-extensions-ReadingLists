@@ -5,6 +5,7 @@
 			"Diman Russkov",
 			"Dirruw'o",
 			"Edible Melon",
+			"EneshTranslates",
 			"Happy13241",
 			"Kareyac",
 			"Movses",
@@ -51,5 +52,7 @@
 	"readinglists-share-url-notify": "Информация, относящаяся к этому списку для чтения, скопирована в буфер обмена.",
 	"readinglists-import-app-launch-hint": "Убедитесь, что установлена последняя версия приложения.",
 	"readinglists-menu-item": "Сохраненные страницы",
-	"readinglists-add-bookmark": "Сохранить"
+	"readinglists-add-bookmark": "Сохранить",
+	"readinglists-onboarding-saved-pages-title": "Ваши сохранённые страницы",
+	"readinglists-onboarding-saved-pages-text": "Получите доступ ко всем вашим сохранённым страницам здесь."
 }
