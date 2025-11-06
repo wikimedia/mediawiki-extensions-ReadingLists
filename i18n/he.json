@@ -25,8 +25,8 @@
 	"readinglists-db-error-entry-limit": "ברשימה $1 לא {{PLURAL:$2|יכול להיות יותר מפריט אחד|יכולים להיות יותר מ־$2 פריטים}}.",
 	"readinglists-db-error-too-long": "הערך עבור השדה $1 לא יכול להיות ארוך מ־$2 בתים.",
 	"readinglists-db-error-no-such-project": "\"$1\" אינו מיזם מוכר.",
-	"readinglists-browser-add-entry-success": "הדף [[$1|$2]] נוסף לרשימה [[$3|$4]].",
-	"readinglists-browser-remove-entry-success": "הדף [[$1|$2]] הוסר מהרשימה [[$3|$4]].",
+	"readinglists-browser-add-entry-success": "הדף <b>$1</b> נוסף לרשימתך [[$2|$3]].",
+	"readinglists-browser-remove-entry-success": "הדף <b>$1</b> הוסר מרשימתך [[$2|$3]].",
 	"readinglists-browser-login-prompt": "יש להיכנס לחשבון כדי לשמור ערכים",
 	"readinglists-browser-error-intro": "אירעה שגיאה: $1",
 	"readinglists-browser-enable-sync-prompt": "יש להפעיל את הסנכרון ביישום הוויקיפדיה שלך כדי להתחיל לשמור ערכים",
@@ -48,7 +48,7 @@
 	"readinglists-total-lists": "{{PLURAL:$1|רשימה אחת|$1 רשימות}}",
 	"readinglists-total-articles": "{{PLURAL:$1|ערך אחד|$1 ערכים}}",
 	"readinglists-show-more": "להציג עוד",
-	"readinglists-default-title": "דפים שמורים",
+	"readinglists-default-title": "פריטים שמורים",
 	"readinglists-default-description": "רשימת ברירת מחדל עבור הערכים השמורים שלך.",
 	"readinglists-empty-title": "עדיין אין דפים שמורים",
 	"readinglists-empty-cta": "יש להשתמש בסמל השמירה בכל ערך כדי להוסיף כאן דפים.",
@@ -79,6 +79,9 @@
 	"readinglists-beta-feature-description": "איסוף רשימות פרטיות של ערכים לקריאה מאוחר יותר.",
 	"readinglists-menu-item": "דפים שמורים",
 	"readinglists-bookmark": "הוספת סימנייה",
-	"readinglists-add-bookmark": "הוספת סימנייה",
-	"readinglists-remove-bookmark": "הסרת סימנייה"
+	"readinglists-add-bookmark": "שמירה",
+	"readinglists-remove-bookmark": "ביטול שמירה",
+	"readinglists-onboarding-title": "שמירת דפים לאחר־כך",
+	"readinglists-onboarding-text": "מצאת משהו מעניין? עכשיו אפשר לשמור את זה לרשימה האישית שלך.",
+	"readinglists-onboarding-close-button": "סגירה"
 }

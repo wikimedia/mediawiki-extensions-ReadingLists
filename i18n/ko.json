@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ykhwong"
+			"Ykhwong",
+			"Ellif"
 		]
 	},
 	"readinglists-desc": "사용자가 북마크나 \"나중에 읽기\" 목록과 같은 개인 문서 목록을 관리할 수 있게 합니다.",
@@ -38,6 +39,6 @@
 	"readinglists-beta-feature-name": "읽기 목록",
 	"readinglists-menu-item": "저장됨",
 	"readinglists-bookmark": "북마크",
-	"readinglists-add-bookmark": "북마크 추가",
-	"readinglists-remove-bookmark": "북마크 제거"
+	"readinglists-add-bookmark": "저장",
+	"readinglists-remove-bookmark": "저장하지 않음"
 }

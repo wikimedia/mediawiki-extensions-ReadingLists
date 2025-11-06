@@ -28,7 +28,7 @@
 	"readinglists-db-error-list-limit": "Пользователи не могут иметь более $1 {{PLURAL:$1|списка|списков}}.",
 	"readinglists-db-error-entry-limit": "Список $1 не может содержать более $2 {{PLURAL:$2|записи|записей}}.",
 	"readinglists-db-error-too-long": "Значение для поля $1 не может быть длиннее $2 байт.",
-	"readinglists-browser-add-entry-success": "Страница [[$1|$2]] добавлена в [[$3|$4]].",
+	"readinglists-browser-add-entry-success": "\"<b>$1</b>\" добавлено в ваш [[$2|$3]].",
 	"readinglists-browser-login-prompt": "Войдите, чтобы сохранять статьи",
 	"readinglists-browser-error-intro": "Произошла ошибка:$1",
 	"readinglists-browser-enable-sync-prompt": "Включите синхронизацию в приложении Википедии, чтобы начать сохранять статьи",
@@ -43,12 +43,13 @@
 	"readinglists-import-size-error": "Список слишком велик для отображения.",
 	"special-tab-readinglists-short": "Ваши списки",
 	"readinglists-total-articles": "{{formatnum:$1}} {{plural:$1|статья|статьи|статей}}",
-	"readinglists-default-title": "Сохраненные страницы",
+	"readinglists-default-title": "сохраненные страницы",
 	"readinglists-display-sort": "Сортировать по",
 	"readinglists-display-direction-ascending": "По возрастанию",
 	"readinglists-import-empty-message": "Вы не можете импортировать списки списков",
 	"readinglists-watchlist-monitor": "Вы можете отслеживать изменения страниц в этом списке с помощью инструмента [список наблюдения за $1 ].",
 	"readinglists-share-url-notify": "Информация, относящаяся к этому списку для чтения, скопирована в буфер обмена.",
 	"readinglists-import-app-launch-hint": "Убедитесь, что установлена последняя версия приложения.",
-	"readinglists-menu-item": "Сохраненные страницы"
+	"readinglists-menu-item": "Сохраненные страницы",
+	"readinglists-add-bookmark": "Сохранить"
 }

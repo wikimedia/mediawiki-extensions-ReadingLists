@@ -28,7 +28,7 @@
 	"readinglists-db-error-entry-limit": "列出 $1 唔可以有超過 $2{{PLURAL:$2|個項目}}。",
 	"readinglists-db-error-too-long": "欄位 $1 嘅值唔可以長過 $2 字節。",
 	"readinglists-db-error-no-such-project": "「$1」唔係一個獲認可嘅項目。",
-	"readinglists-browser-add-entry-success": "[[$1|$2]]已經加咗去[[$3|$4]]。",
+	"readinglists-browser-add-entry-success": "<b>$1</b>已經加咗去你嘅[[$2|$3]]。",
 	"readinglists-browser-remove-entry-success": "[[$1|$2]]已經由[[$3|$4]]度剷走咗。",
 	"readinglists-browser-login-prompt": "簽到嚟儲存文章",
 	"readinglists-browser-error-intro": "發生咗個錯誤： $1",
