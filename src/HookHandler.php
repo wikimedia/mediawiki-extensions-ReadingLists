@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\ReadingLists;
 use MediaWiki\Api\ApiQuerySiteinfo;
 use MediaWiki\Api\Hook\APIQuerySiteInfoGeneralInfoHook;
 use MediaWiki\Config\Config;
+use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\Extension\BetaFeatures\BetaFeatures;
 use MediaWiki\Extension\MetricsPlatform\XLab\ExperimentManager;
 use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
@@ -79,7 +80,9 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		}
 
 		$repository = $this->readingListRepositoryFactory->create( $centralId );
-		$defaultReadingListUrl = self::getDefaultReadingListUrl( $user, $repository );
+
+		$defaultListId = $repository->getDefaultListIdForUser() ?: null;
+		$defaultReadingListUrl = self::getDefaultReadingListUrl( $user, $defaultListId );
 
 		$links['user-menu'] = wfArrayInsertAfter( $links['user-menu'], [
 			'readinglists' => [
@@ -88,6 +91,15 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 				'icon' => 'bookmarkList',
 			],
 		], 'mytalk' );
+
+		if ( $defaultListId === null ) {
+			DeferredUpdates::addCallableUpdate(
+				static function () use ( $repository ) {
+					$repository->setupForUser( true );
+				},
+				DeferredUpdates::POSTSEND
+			);
+		}
 
 		$output = $sktemplate->getOutput();
 		$output->addModuleStyles( 'ext.readingLists.bookmark.icons' );
@@ -103,22 +115,30 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			return;
 		}
 
-		$list = $repository->setupForUser( true );
-		$entry = $repository->getListsByPage(
-			'@local',
-			$title->getPrefixedDBkey(),
-			1
-		)->fetchObject();
+		$list = null;
+		$entry = false;
 
+		if ( $defaultListId !== null ) {
+			$list = $repository->selectValidList( $defaultListId );
+			$entry = $repository->getListsByPage(
+				'@local',
+				$title->getPrefixedDBkey(),
+				1
+			)->fetchObject();
+		}
+
+		// If the list id is null, then list setup occurs async in bookmark.js.
+		// When a user saves their first page, these attributes are updated accordingly
+		// after list setup.
 		$links['views']['bookmark'] = [
 			'text' => $sktemplate->msg(
 				'readinglists-' . ( $entry === false ? 'add' : 'remove' ) . '-bookmark'
 			)->text(),
 			'icon' => $entry === false ? 'bookmarkOutline' : 'bookmark',
 			'href' => '#',
-			'data-mw-list-id' => $list->rl_id,
+			'data-mw-list-id' => $list ? $list->rl_id : null,
 			'data-mw-entry-id' => $entry === false ? null : $entry->rle_id,
-			'data-mw-list-page-count' => $list->rl_size,
+			'data-mw-list-page-count' => $list ? $list->rl_size : 0,
 			'link-class' => 'reading-lists-bookmark'
 		];
 
@@ -153,13 +173,11 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 	/**
 	 * Get the URL for the user's default reading list or fallback to generic page
 	 * @param UserIdentity $user
-	 * @param ReadingListRepository $repository
+	 * @param ?int $defaultListId
 	 * @return string
 	 */
-	private static function getDefaultReadingListUrl( UserIdentity $user, ReadingListRepository $repository ): string {
-		$defaultListId = $repository->getDefaultListIdForUser();
-
-		if ( $defaultListId === false ) {
+	private static function getDefaultReadingListUrl( UserIdentity $user, ?int $defaultListId ): string {
+		if ( $defaultListId === null ) {
 			return SpecialPage::getTitleFor( 'ReadingLists' )->getLinkURL();
 		}
 

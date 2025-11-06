@@ -172,6 +172,23 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 	}
 
 	/**
+	 * Update the bookmarkList menu item URL to point to the user's default list,
+	 * to be called once the user has saved their first page. This will update the reading
+	 * list icon visible besides the user menu dropdown and the saved pages menu item that
+	 * is shown at lower resolutions.
+	 *
+	 * @param {string} listId
+	 */
+	function updateBookmarkListMenuUrl( listId ) {
+		const bookmarkUrl = mw.util.getUrl( `Special:ReadingLists/${ mw.user.getName() }/${ listId }` );
+		const links = document.querySelectorAll( '#pt-readinglists a, #pt-readinglists-2 a' );
+
+		for ( let i = 0; i < links.length; i++ ) {
+			links[ i ].href = bookmarkUrl;
+		}
+	}
+
+	/**
 	 * Binds a click listener to the bookmark element
 	 */
 	async function bindClickListener() {
@@ -186,6 +203,8 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 				try {
 					const { setup: { list: { id } } } = await api.setup();
 					currentListId = bookmark.dataset.mwListId = id;
+					currentReadingListSize[ currentListId ] = bookmark.dataset.mwListPageCount = 0;
+					updateBookmarkListMenuUrl( currentListId );
 				} catch ( err ) {
 					// The following messages are used here:
 					// * readinglists-browser-error-intro
