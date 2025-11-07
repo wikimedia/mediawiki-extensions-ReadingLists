@@ -105,7 +105,7 @@
 	// Match container with 4 items and more.
 	/* stylelint-disable-next-line no-descending-specificity */
 	&:has( :nth-child( 4 ) ) {
-		grid-template-columns: repeat( auto-fit, minmax( @min-width-card, @max-width-card ) );
+		max-width: calc( 4 * @max-width-card--mobile + 3 * @spacing-100 );
 	}
 
 	.cdx-card {
