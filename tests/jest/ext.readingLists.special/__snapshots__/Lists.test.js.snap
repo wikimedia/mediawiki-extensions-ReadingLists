@@ -77,6 +77,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
       <div
         class="cdx-menu-button__menu-wrapper"
       >
+        <!--teleport start-->
         <div
           class="cdx-menu"
           style="display: none; visibility: hidden; position: absolute; top: 0px; left: 0px; transform: translate(0px, 0px);"
@@ -381,6 +382,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
             <!--v-if-->
           </ul>
         </div>
+        <!--teleport end-->
       </div>
     </div>
   </div>
