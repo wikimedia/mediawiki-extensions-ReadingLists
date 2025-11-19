@@ -1,4 +1,6 @@
 /coverage/
-/jest.setup.js
-/jest.config.js
+/docs/
+/node_modules/
 /vendor
+/jest.config.js
+/jest.setup.js

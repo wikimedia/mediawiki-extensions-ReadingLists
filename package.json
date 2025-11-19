@@ -3,9 +3,13 @@
 	"private": true,
 	"scripts": {
 		"api-testing": "mocha --timeout 0 --recursive tests/api-testing",
-		"lint": "eslint --no-ignore --config tests/api-testing/.eslintrc.json tests/api-testing",
+		"lint": "npm run lint:i18n && npm run lint:scripts && npm run lint:scripts:tests && npm run lint:styles",
+		"lint:i18n": "banana-checker i18n/ i18n/api/",
+		"lint:scripts": "eslint --cache --ignore-pattern tests/api-testing .",
+		"lint:scripts:tests": "eslint --cache --no-ignore --config tests/api-testing/.eslintrc.json tests/api-testing",
+		"lint:styles": "stylelint --cache -f verbose \"resources/**/*.{css,less,vue}\"",
 		"test:unit": "jest --verbose",
-		"test": "grunt test && npm run test:unit",
+		"test": "npm run lint && npm run test:unit",
 		"coverage": "npm run test:unit"
 	},
 	"devDependencies": {
@@ -15,11 +19,8 @@
 		"@wikimedia/codex": "2.3.2",
 		"@wikimedia/types-wikimedia": "0.4.4",
 		"api-testing": "1.7.1",
-		"eslint-config-wikimedia": "0.32.1",
-		"grunt": "1.6.1",
+		"eslint-config-wikimedia": "0.32.2",
 		"grunt-banana-checker": "0.13.0",
-		"grunt-eslint": "24.3.0",
-		"grunt-stylelint": "0.20.1",
 		"jest": "29.7.0",
 		"jest-environment-jsdom": "29.7.0",
 		"stylelint-config-wikimedia": "0.18.0",
