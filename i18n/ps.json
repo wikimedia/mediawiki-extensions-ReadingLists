@@ -4,5 +4,5 @@
 			"شاه زمان پټان"
 		]
 	},
-	"readinglists-browser-add-entry-success": "[[$1|$2]] [[$3|$4]] ته ورگډ‌شوی دی."
+	"readinglists-browser-add-entry-success": "<b>$1</b> ستاسو [[$2|$3]] ورگډ شوی دی."
 }

@@ -2,9 +2,12 @@
 	"@metadata": {
 		"authors": [
 			"Belkacem77",
-			"Sayem AtVkm"
+			"Sayem AtVkm",
+			"ButterflyOfFire"
 		]
 	},
 	"readinglists-desc": "Sireg iseqdacen ad sferken tibdarin tusligin n imagraden, am ticraḍ n isebtar neɣ tibdarin \"Ɣeṛ ticki\".",
-	"readinglists-db-error-list-deleted": "Tettwakkes tebdart $1"
+	"readinglists-db-error-list-deleted": "Tettwakkes tebdart $1",
+	"readinglists-add-bookmark": "Sekles",
+	"readinglists-onboarding-close-button": "Mdel"
 }

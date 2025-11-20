@@ -3,10 +3,12 @@
 		"authors": [
 			"BaRaN6161 TURK",
 			"Hedda",
-			"ToprakM"
+			"ToprakM",
+			"Sakblue",
+			"SaldırganSincap"
 		]
 	},
-	"readinglists-desc": "Kullanıcıların yer imleri veya \"Daha Sonra Oku\" listeleri gibi özel madde listelerini yönetmesine olanak tanır.",
+	"readinglists-desc": "Kullanıcıların yer imleri veya \"Kaydedilen sayfalar\" listeleri gibi özel madde listelerini yönetmelerine izin verir.",
 	"readinglists-db-error-not-set-up": "Bu kullanıcı için okuma listeleri ayarlanmadı.",
 	"readinglists-db-error-already-set-up": "Bu kullanıcı için okuma listeleri zaten oluşturulmuş.",
 	"readinglists-db-error-cannot-delete-default-list": "Varsayılan liste silinemez.",
@@ -25,12 +27,13 @@
 	"readinglists-db-error-entry-limit": "$1 listesinde $2'den fazla {{PLURAL:$2|giriş|giriş}} olamaz.",
 	"readinglists-db-error-too-long": "$1 alanı için değer $2 bayttan uzun olamaz.",
 	"readinglists-db-error-no-such-project": "'$1' tanınmış bir proje değil.",
-	"readinglists-browser-add-entry-success": "$1 okuma listenize kaydedildi",
+	"readinglists-browser-add-entry-success": "<b>$1</b> [[$2|$3]] listenize eklendi.",
 	"readinglists-browser-login-prompt": "Maddeleri kaydetmek için giriş yapın",
 	"readinglists-browser-error-intro": "Bir hata oluştu: $1",
 	"readinglists-browser-enable-sync-prompt": "Maddeleri kaydetmeye başlamak için Vikipedi uygulamanızda senkronizasyonu etkinleştirin",
 	"readinglists-browser-extension-info-link-text": "Daha fazla bilgi",
 	"readinglists-browser-list-entry-limit-exceeded": "Madde kaydedilemez. Liste başına $1 madde sınırına ulaştınız",
 	"readinglists-browser-extension-product-title": "Vikipedi Okuma Listeleri",
-	"readinglists-browser-page-not-supported": "$1, bu sayfayı desteklemiyor"
+	"readinglists-browser-page-not-supported": "$1, bu sayfayı desteklemiyor",
+	"readinglists-default-title": "kaydedilen öğeler"
 }
