@@ -58,5 +58,8 @@
 	"readinglists-import-button-label": "Visa lista",
 	"readinglists-import-button-hint": "Tryck på knappen:",
 	"readinglists-share-url-notify": "Information om denna läslista har kopierats till ditt urklipp.",
-	"readinglists-import-app-launch-hint": "Se till att den senaste versionen av appen är installerad."
+	"readinglists-import-app-launch-hint": "Se till att den senaste versionen av appen är installerad.",
+	"readinglists-beta-feature-name": "Läslistor",
+	"readinglists-beta-feature-description": "Samla in privata listor över artiklar som du kan läsa senare.",
+	"readinglists-bookmark": "Bokmärk"
 }
