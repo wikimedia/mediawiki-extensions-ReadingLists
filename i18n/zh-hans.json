@@ -89,5 +89,7 @@
 	"readinglists-remove-bookmark": "取消保存",
 	"readinglists-onboarding-title": "保存页面以供日后查阅",
 	"readinglists-onboarding-text": "发现感兴趣的内容了吗？您可以现在将其保存到个人列表。",
-	"readinglists-onboarding-close-button": "关闭"
+	"readinglists-onboarding-close-button": "关闭",
+	"readinglists-onboarding-saved-pages-title": "您的保存页面",
+	"readinglists-onboarding-saved-pages-text": "在此访问您所有的保存页面。"
 }
