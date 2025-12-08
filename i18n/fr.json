@@ -98,5 +98,7 @@
 	"readinglists-remove-bookmark": "Annuler l'enregistrement",
 	"readinglists-onboarding-title": "Enregistrer les pages pour plus tard",
 	"readinglists-onboarding-text": "Vous avez trouvé quelque chose d'intéressant ? Vous pouvez maintenant l'ajouter à votre liste personnelle.",
-	"readinglists-onboarding-close-button": "Fermer"
+	"readinglists-onboarding-close-button": "Fermer",
+	"readinglists-onboarding-saved-pages-title": "Vos pages enregistrées",
+	"readinglists-onboarding-saved-pages-text": "Accédez ici à toutes vos pages enregistrées."
 }
