@@ -3,7 +3,8 @@
 		"authors": [
 			"Agam Riyandana",
 			"BAPerdana-WMF",
-			"DARMAS BUDI SANTOSO"
+			"DARMAS BUDI SANTOSO",
+			"Penyuwangi"
 		]
 	},
 	"readinglists-desc": "Memungkinkan pengguna untuk mengelola daftar pribadi yang berisi artikel, seperti penanda halaman atau daftar halaman yang disimpan.",
@@ -30,7 +31,7 @@
 	"readinglists-browser-remove-entry-success": "[[$1|$2]] telah dihapus dari [[$3|$4]].",
 	"readinglists-browser-login-prompt": "Masuk log untuk menyimpan artikel",
 	"readinglists-browser-error-intro": "Telah terjadi kesalahan: $1",
-	"readinglists-browser-enable-sync-prompt": "Aktifkan sinkronisasi pada aplikasi Wikipedia milik Anda untuk mulai menyimpan artikel",
+	"readinglists-browser-enable-sync-prompt": "Nyalakan sinkronisasi pada aplikasi Wikipedia milik Anda untuk mulai menyimpan artikel",
 	"readinglists-browser-extension-info-link-text": "Pelajari selengkapnya",
 	"readinglists-browser-list-entry-limit-exceeded": "Artikel tidak bisa disimpan. Anda telah mencapai batas $1 artikel per daftar",
 	"readinglists-browser-extension-product-title": "Daftar Bacaan Wikipedia",
@@ -41,7 +42,7 @@
 	"readinglists-loading": "Mohon tunggu...",
 	"reading-list-purpose": "Silakan masuk log untuk melihat daftar bacaan pribadi Anda.",
 	"reading-list-purpose-for-temp-user": "Silakan buat akun untuk membuat daftar bacaan pribadi.",
-	"readinglists-error": "Peramban Anda tidak dapat menggunakan fitur ini. Harap aktifkan JavaScript atau coba gunakan peramban lainnya.",
+	"readinglists-error": "Peramban Anda tidak dapat menggunakan fitur ini. Harap nyalakan JavaScript atau coba gunakan peramban lainnya.",
 	"readinglists-import-error": "Tidak dapat menampilkan daftar dari data yang diberikan.",
 	"readinglists-import-size-error": "Daftar terlalu besar untuk ditampilkan.",
 	"special-tab-readinglists-short": "Daftar Anda",
