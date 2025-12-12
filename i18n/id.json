@@ -72,7 +72,7 @@
 	"readinglists-watchlist-description": "Halaman yang Anda ikuti untuk suntingan baru.",
 	"readinglists-watchlist-monitor": "Anda dapat memantau suntingan pada halaman di daftar ini menggunakan perkakas [$1 daftar pantauan].",
 	"readinglists-import-app-misconfigured": "Situs web ini tidak mendukung impor daftar pada saat ini.",
-	"readinglists-import-disclaimer": "Seorang pengguna di situs ini telah membuat daftar bacaan untuk dibagikan kepada orang lain (mungkin Anda). Daftar ini tidak dimoderasi, serta isinya tidak mencerminkan editor situs.",
+	"readinglists-import-disclaimer": "Seorang pengguna di situs ini telah membuat daftar bacaan untuk dibagikan kepada orang lain (mungkin Anda). Daftar ini tidak dimoderasi, serta isinya tidak mencerminkan penyunting situs.",
 	"readinglists-import-button-label": "Buka di aplikasi",
 	"readinglists-import-button-hint": "Ketuk tombol:",
 	"readinglists-share-url-notify": "Informasi yang berkaitan dengan daftar bacaan ini telah disalin ke papan klip Anda.",
