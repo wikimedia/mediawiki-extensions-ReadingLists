@@ -3,7 +3,8 @@
 		"authors": [
 			"Agam Riyandana",
 			"DARMAS BUDI SANTOSO",
-			"BAPerdana-WMF"
+			"BAPerdana-WMF",
+			"Penyuwangi"
 		]
 	},
 	"readinglists-db-error-not-set-up": "Daftar bacaan belum dibuat untuk pengguna ini.",
@@ -26,7 +27,7 @@
 	"readinglists-db-error-no-such-project": "'$1' bukanlah proyek yang diakui.",
 	"readinglists-browser-login-prompt": "Masuk log untuk menyimpan artikel",
 	"readinglists-browser-error-intro": "Telah terjadi kesalahan: $1",
-	"readinglists-browser-enable-sync-prompt": "Aktifkan sinkronisasi pada aplikasi Wikipedia milik Anda untuk mulai menyimpan artikel",
+	"readinglists-browser-enable-sync-prompt": "Nyalakan sinkronisasi pada aplikasi Wikipedia milik Anda untuk mulai menyimpan artikel",
 	"readinglists-browser-extension-info-link-text": "Pelajari selengkapnya",
 	"readinglists-browser-list-entry-limit-exceeded": "Artikel tidak bisa disimpan. Anda telah mencapai batas $1 artikel per daftar",
 	"readinglists-browser-extension-product-title": "Daftar Bacaan Wikipedia",
