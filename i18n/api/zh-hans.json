@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"GuoPC",
 			"Hanyanbo98",
 			"LittlePaw365",
 			"Liuxinyu970226",
@@ -30,7 +31,7 @@
 	"apihelp-query+readinglists-example-2": "获取当前用户自<kbd>2013-01-01T00:00:00Z</kbd>以来，已更改的阅读列表。",
 	"apihelp-query+readinglists-example-3": "获取当前用户的阅读列表中，包含来自项目<kbd>en.wikipedia.org</kbd>的页面<kbd>Dog</kbd>的列表。",
 	"apihelp-query+readinglistentries-summary": "列举特定列表的页面。",
-	"apihelp-query+readinglistentries-extended-description": "此模块有两种操作模式。与<var>$1lists</var>参数一起使用时，它返回指定列表中的页面。与<var>$1changedsince</var>参数一起使用时，它返回自指定日期起，当前用户的任意列表中已更改的所有列表项。（这意味着用于设备同步，并且与其他模式不同，也包含删除的项目，虽然不是已删除列表的项目。）",
+	"apihelp-query+readinglistentries-extended-description": "此模块有三种操作模式。与<var>$1lists</var>参数一起使用时，它返回指定列表中的页面。与<var>$1changedsince</var>参数一起使用时，它返回自指定日期起，当前用户的任意列表中已更改的所有列表项。（这意味着用于设备同步，并且与其他模式不同，也包含删除的项目，虽然不是已删除列表的项目。）不带任何参数则会返回当前用户所有列表中的所有项目。",
 	"apihelp-query+readinglistentries-param-lists": "用于返回页面的列表 ID（可选）。如果未指定，则返回所有列表的条目。",
 	"apihelp-query+readinglistentries-param-changedsince": "显示自该时间戳以来，已更改的列表项。必须在<kbd>$1</kbd>之后。",
 	"apihelp-query+readinglistentries-param-sort": "要排序的属性。<kbd>name</kbd>不能与<var>$1changedsince</var>一起使用。当设置<var>$1changedsince</var>时默认值为<kbd>updated</kbd>，除此之外的情况下默认值为<kbd>name</kbd>。",
@@ -39,7 +40,7 @@
 	"apihelp-query+readinglistentries-param-dir": "排序方向：<kbd>ascending</kbd>（A到Z，最旧到最新）或<kbd>descending</kbd>。",
 	"apihelp-query+readinglistentries-param-limit": "返回的结果项数。",
 	"apihelp-query+readinglistentries-example-1": "获取当前用户所有阅读列表中的所有页面。",
-	"apihelp-query+readinglistentries-example-2": "获取当前用户自<kbd>2013-01-01T00:00:00Z</kbd>以来，已更改的列表项。",
+	"apihelp-query+readinglistentries-example-2": "获取ID为<kbd>10</kbd>、<kbd>11</kbd>和<kbd>12</kbd>的阅读列表中的页面。",
 	"apihelp-readinglists-summary": "阅读列表写入操作。",
 	"apihelp-readinglists-param-command": "用于阅读列表写入操作的命令（API模块）。",
 	"apihelp-readinglists-extended-description": "创建/更新/删除/排序阅读列表及项目。参见各种命令的文档以获取详情。",

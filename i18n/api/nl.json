@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Ciell",
-			"McDutchie"
+			"McDutchie",
+			"Siebrand"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var> en <var>$1title</var> moeten samen worden gebruikt.",
@@ -27,16 +28,16 @@
 	"apihelp-query+readinglists-example-2": "Haal de leeslijsten op van de huidige gebruiker die zijn gewijzigd sinds <kbd>2013-01-01T00:00:00Z</kbd>.",
 	"apihelp-query+readinglists-example-3": "Haal de leeslijsten op van de huidige gebruiker waarin de pagina <kbd>Dog</kbd> van het project <kbd>en.wikipedia.org</kbd> voorkomt.",
 	"apihelp-query+readinglistentries-summary": "Maak een lijst van de pagina’s van een bepaalde lijst.",
-	"apihelp-query+readinglistentries-extended-description": "Deze module heeft twee werkwijzen. Met de parameter <var>$1lists</var> worden de pagina’s in de gegeven lijst(en) geretourneerd. Met de parameter <var>$1changedsince</var> worden alle sinds de opgegeven datum gewijzigde lijstitems uit elke lijst van de huidige gebruiker geretourneerd. (Dit is bedoeld voor apparaatsynchronisatie en omvat, in tegenstelling tot de andere modi, ook verwijderde vermeldingen, maar geen vermeldingen uit verwijderde lijsten.)",
-	"apihelp-query+readinglistentries-param-lists": "De lijst-ID’s waarvoor pagina's moeten worden geretourneerd.",
+	"apihelp-query+readinglistentries-extended-description": "Deze module heeft twee werkwijzen. Met de parameter <var>$1lists</var> worden de pagina’s in de gegeven lijst(en) geretourneerd. Met de parameter <var>$1changedsince</var> worden alle sinds de opgegeven datum gewijzigde lijstitems uit elke lijst van de huidige gebruiker geretourneerd. (Dit is bedoeld voor apparaatsynchronisatie en omvat, in tegenstelling tot de andere modi, ook verwijderde vermeldingen, maar geen vermeldingen uit verwijderde lijsten.) Zonder parameters retourneert het alle items uit alle lijsten van de huidige gebruiker.",
+	"apihelp-query+readinglistentries-param-lists": "De lijst-ID’s waarvoor pagina's moeten worden geretourneerd. Optioneel. Indien niet opgegeven, geeft het de gegevens van alle lijsten terug.",
 	"apihelp-query+readinglistentries-param-changedsince": "Toon lijstitems die sinds dit tijdstempel zijn gewijzigd. Moet na <kbd>$1</kbd> komen.",
 	"apihelp-query+readinglistentries-param-sort": "Eigenschap waarop moet worden gesorteerd. <kbd>name</kbd> kan niet samen met <var>$1changedsince</var> worden gebruikt. De standaardwaarde is <kbd>updated</kbd> wanneer <var>$1changedsince</var> is ingesteld, of anders <kbd>name</kbd>.",
 	"apihelp-query+readinglistentries-paramvalue-sort-name": "De titel van het artikel. (De projectnaam wordt genegeerd. Er wordt gesorteerd op binaire waarde; elk ASCII-teken in hoofdletters wordt bijvoorbeeld gesorteerd vóór kleine letters.)",
 	"apihelp-query+readinglistentries-paramvalue-sort-updated": "Tijdstempel laatste update.",
 	"apihelp-query+readinglistentries-param-dir": "Sorteerrichting: <kbd>ascending</kbd> (oplopend, van A naar Z, van oud naar nieuw) of <kbd>descending</kbd> (aflopend).",
 	"apihelp-query+readinglistentries-param-limit": "Aantal te retourneren resultaatitems.",
-	"apihelp-query+readinglistentries-example-1": "Haal de pagina’s met ID <kbd>10</kbd> , <kbd>11</kbd> en <kbd>12</kbd> uit de leeslijsten.",
-	"apihelp-query+readinglistentries-example-2": "Haal de lijstitems op van de huidige gebruiker die zijn gewijzigd sinds <kbd>2013-01-01T00:00:00Z</kbd>.",
+	"apihelp-query+readinglistentries-example-1": "Haal alle pagina's op van alle leeslijsten van de huidige gebruiker.",
+	"apihelp-query+readinglistentries-example-2": "Haal de pagina’s met ID <kbd>10</kbd>, <kbd>11</kbd> en <kbd>12</kbd> uit de leeslijsten.",
 	"apihelp-readinglists-summary": "Schrijfbewerkingen voor leeslijsten.",
 	"apihelp-readinglists-param-command": "Commando (API-submodule) voor het lezen van lijstschrijfbewerkingen.",
 	"apihelp-readinglists-extended-description": "Leeslijsten en vermeldingen maken/bijwerken/verwijderen/sorteren. Zie de documentatie van de verschillende commando’s voor details.",
