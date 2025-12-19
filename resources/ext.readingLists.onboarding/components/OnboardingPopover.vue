@@ -107,7 +107,7 @@ module.exports = exports = {
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
 
-.readinglists-onboarding-popover {
+.cdx-popover.readinglists-onboarding-popover {
 	padding: 0;
 	min-width: @size-2400;
 	max-width: @size-2400;

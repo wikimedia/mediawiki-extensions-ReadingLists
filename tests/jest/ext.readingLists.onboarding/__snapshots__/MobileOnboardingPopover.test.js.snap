@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MobileOnboardingPopover rendering behavior matches the snapshot 1`] = `
+<div
+  class="cdx-popover readinglists-mobile-onboarding-popover"
+  role="dialog"
+>
+  <header
+    class="cdx-popover__header"
+  >
+    <span
+      class="cdx-popover__header__title"
+    >
+      readinglists-mobile-onboarding-popover-title
+    </span>
+  </header>
+  <div
+    class="cdx-popover__body"
+  >
+    
+    <p>
+      readinglists-mobile-onboarding-popover-body
+    </p>
+    
+  </div>
+  <footer
+    class="cdx-popover__footer"
+  >
+    <button
+      class="cdx-popover__footer__primary-action"
+    >
+      readinglists-onboarding-ok-button
+    </button>
+  </footer>
+</div>
+`;

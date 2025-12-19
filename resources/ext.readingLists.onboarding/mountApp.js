@@ -1,5 +1,6 @@
 const { createMwApp } = require( 'vue' );
 const OnboardingPopover = require( './components/OnboardingPopover.vue' );
+const MobileOnboardingPopover = require( './components/MobileOnboardingPopover.vue' );
 
 /**
  * @param {Object} config Configuration object for the onboarding popover.
@@ -17,11 +18,15 @@ async function mountApp( config ) {
 
 	validateConfig( config );
 
-	const { target, storageKey, titleMsgKey, bodyMsgKey, bannerImagePath } = config;
+	const { target, storageKey, titleMsgKey, bodyMsgKey, bannerImagePath, skinName } = config;
 
 	const bookmarkElement = target;
 
 	if ( !bookmarkElement || !bookmarkElement.offsetParent ) {
+		return;
+	}
+
+	if ( bookmarkElement.dataset.mwEntryId ) {
 		return;
 	}
 
@@ -32,7 +37,7 @@ async function mountApp( config ) {
 		return;
 	}
 
-	showPopover( bookmarkElement, titleMsgKey, bodyMsgKey, bannerImagePath );
+	showPopover( bookmarkElement, titleMsgKey, bodyMsgKey, bannerImagePath, skinName );
 
 	// approximately 6 months expiration time
 	mw.storage.set( storageKey, true, 60 * 60 * 24 * 180 );
@@ -74,6 +79,10 @@ function validateConfig( config ) {
 	if ( !mw.message( config.bodyMsgKey ).exists() ) {
 		throw new Error( `Message key "${ config.bodyMsgKey }" does not exist` );
 	}
+
+	if ( !config.skinName || typeof config.skinName !== 'string' ) {
+		throw new Error( 'config.skinName must be a string' );
+	}
 }
 
 /**
@@ -81,23 +90,29 @@ function validateConfig( config ) {
  * @param {string} titleMsgKey
  * @param {string} bodyMsgKey
  * @param {string} bannerImagePath
+ * @param {string} skinName
  */
-function showPopover( bookmarkElement, titleMsgKey, bodyMsgKey, bannerImagePath ) {
-	// preload the banner image
-	const img = new Image();
-	img.src = bannerImagePath;
+function showPopover( bookmarkElement, titleMsgKey, bodyMsgKey, bannerImagePath, skinName ) {
+	const isMinerva = skinName === 'minerva';
 
 	const container = document.createElement( 'div' );
 	container.classList.add( 'reading-lists-onboarding-container' );
 	document.body.appendChild( container );
 
-	const app = createMwApp( OnboardingPopover, {
+	const component = isMinerva ? MobileOnboardingPopover : OnboardingPopover;
+	const props = {
 		bookmarkElement,
 		titleMsgKey,
 		bodyMsgKey,
-		bannerImagePath,
 		onDismiss: removePopover
-	} );
+	};
+	if ( !isMinerva ) {
+		const img = new Image();
+		img.src = bannerImagePath;
+		props.bannerImagePath = bannerImagePath;
+	}
+
+	const app = createMwApp( component, props );
 
 	function handleResize() {
 		if ( !bookmarkElement.offsetParent ) {
@@ -139,13 +154,15 @@ function showPopover( bookmarkElement, titleMsgKey, bodyMsgKey, bannerImagePath 
  * @param {string} titleMsgKey i18n message key for popover title
  * @param {string} bodyMsgKey i18n message key for popover body text
  * @param {string} bannerImagePath Path to banner image
+ * @param {string} skinName Name of the skin
  */
 function initOnboardingPopover(
 	targetSelector,
 	storageKey,
 	titleMsgKey,
 	bodyMsgKey,
-	bannerImagePath
+	bannerImagePath,
+	skinName
 ) {
 	const targetElement = document.querySelector( targetSelector );
 
@@ -157,9 +174,13 @@ function initOnboardingPopover(
 		return;
 	}
 
+	if ( skinName !== 'vector-2022' && skinName !== 'minerva' ) {
+		return;
+	}
+
 	setTimeout( () => {
 		mw.requestIdleCallback( () => {
-			mw.loader.using( 'ext.readingLists.onboarding' ).then( ( require ) => {
+			mw.loader.using( 'ext.readingLists.onboarding' ).then( () => {
 				const mountAppFn = require( 'ext.readingLists.onboarding' );
 				try {
 					mountAppFn( {
@@ -167,7 +188,8 @@ function initOnboardingPopover(
 						storageKey,
 						titleMsgKey,
 						bodyMsgKey,
-						bannerImagePath
+						bannerImagePath,
+						skinName
 					} ).catch( ( error ) => {
 						mw.log.error( 'Failed to mount onboarding popover:', error );
 					} );

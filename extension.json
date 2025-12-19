@@ -280,12 +280,14 @@
 				"readinglists-onboarding-title",
 				"readinglists-onboarding-text",
 				"readinglists-onboarding-close-button",
+				"readinglists-onboarding-ok-button",
 				"readinglists-onboarding-saved-pages-title",
 				"readinglists-onboarding-saved-pages-text"
 			],
 			"packageFiles": [
 				"resources/ext.readingLists.onboarding/index.js",
 				"resources/ext.readingLists.onboarding/mountApp.js",
+				"resources/ext.readingLists.onboarding/components/MobileOnboardingPopover.vue",
 				"resources/ext.readingLists.onboarding/components/OnboardingPopover.vue",
 				{
 					"name": "icons.json",

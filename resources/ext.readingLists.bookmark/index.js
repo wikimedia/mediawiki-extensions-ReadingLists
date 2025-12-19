@@ -22,19 +22,25 @@ bookmarks.forEach( ( bookmarkElement ) => {
 	initBookmark( bookmarkElement, isMinerva, eventSource );
 } );
 
-function initOnboardingPopover() {
+/**
+ * Initializes the onboarding popover.
+ *
+ * @param {string} anchorSelector CSS selector for the element to anchor popover to.
+ */
+function initOnboardingPopover( anchorSelector ) {
 	mw.loader.using( 'ext.readingLists.onboarding' ).then( ( require ) => {
 		const { initOnboardingPopover: initPopover } = require( 'ext.readingLists.onboarding' );
 		initPopover(
-			'#ca-bookmark',
+			anchorSelector,
 			'readinglists-bookmark-dialog-seen',
 			'readinglists-onboarding-title',
 			'readinglists-onboarding-text',
-			mw.config.get( 'wgExtensionAssetsPath' ) + '/ReadingLists/resources/assets/onboarding-save.svg'
+			mw.config.get( 'wgExtensionAssetsPath' ) + '/ReadingLists/resources/assets/onboarding-save.svg',
+			mw.config.get( 'skin' )
 		);
 	} );
 }
 
-if ( skinName === 'vector-2022' ) {
-	initOnboardingPopover();
+if ( skinName === 'vector-2022' || skinName === 'minerva' ) {
+	initOnboardingPopover( '#ca-bookmark' );
 }

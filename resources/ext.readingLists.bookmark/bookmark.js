@@ -135,7 +135,8 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 				'readinglists-saved-pages-dialog-seen',
 				'readinglists-onboarding-saved-pages-title',
 				'readinglists-onboarding-saved-pages-text',
-				mw.config.get( 'wgExtensionAssetsPath' ) + '/ReadingLists/resources/assets/onboarding-saved-list.svg'
+				mw.config.get( 'wgExtensionAssetsPath' ) + '/ReadingLists/resources/assets/onboarding-saved-list.svg',
+				mw.config.get( 'skin' )
 			);
 		} );
 	}
