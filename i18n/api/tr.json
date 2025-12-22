@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"BaRaN6161 TURK",
-			"Cobija"
+			"Cobija",
+			"SaldırganSincap"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var> ve <var>$1title</var> birlikte kullanılmalıdır.",
@@ -24,7 +25,7 @@
 	"apihelp-query+readinglists-param-dir": "Yönü sırala: <kbd>ascending</kbd> (A'dan Z'ye, en eskiden yeniye) veya <kbd>descending</kbd>. <var>$1project</var> ve <var>$1title</var> ayarlandığında yok sayılır.",
 	"apihelp-query+readinglists-param-limit": "Döndürülecek sonuç öğelerinin sayısı.",
 	"apihelp-query+readinglists-example-1": "Geçerli kullanıcının okuma listelerini alın.",
-	"apihelp-query+readinglists-example-2": "<kbd>2013-01-01T00:00:00Z</kbd>'den bu yana değişen geçerli kullanıcının okuma listelerini alın.",
+	"apihelp-query+readinglists-example-2": "<kbd>2013-01-01T00:00:00Z</kbd> tarihinden bu yana değişen mevcut kullanıcının okuma listelerini alın.",
 	"apihelp-query+readinglists-example-3": "<kbd>en.wikipedia.org</kbd> projesinden <kbd>Dog</kbd> sayfasını içeren geçerli kullanıcının okuma listelerini alın",
 	"apihelp-query+readinglistentries-summary": "Belirli bir listenin sayfalarını listeler.",
 	"apihelp-query+readinglistentries-extended-description": "Bu modülün iki çalışma modu vardır. <var>$1lists</var> parametresiyle, verilen listelerdeki sayfaları döndürür. <var>$1changedsince</var> parametresiyle, geçerli kullanıcının herhangi bir listesinden, belirtilen tarihten bu yana değiştirilen tüm liste girdilerini döndürür. (Bu, cihaz senkronizasyonu içindir ve diğer modların aksine, silinmiş listelerin girişlerini içermese de silinmiş girişleri içerir.)",
