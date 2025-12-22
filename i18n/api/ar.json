@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Meno25",
 			"ديفيد"
 		]
 	},
@@ -26,16 +27,17 @@
 	"apihelp-query+readinglists-example-2": "احصل على قوائم القراءة للمستخدم الحالي والتي قد تغيرت منذ <kbd>2013-01-01T00:00:00Z</kbd>.",
 	"apihelp-query+readinglists-example-3": "احصل على قوائم القراءة للمستخدم الحالي والتي تحتوي على الصفحة <kbd>Dog</kbd> من المشروع <kbd>en.wikipedia.org</kbd>",
 	"apihelp-query+readinglistentries-summary": "إدراج صفحات قائمة معينة.",
-	"apihelp-query+readinglistentries-extended-description": "هذه الوحدة لديها وضعان للتشغيل: باستخدام الوسيط <var>$1lists</var>، تقوم بإرجاع الصفحات في القائمة(القوائم) المحددة، باستخدام الوسيط <var>$1changedsince</var>، تقوم بإرجاع كافة إدخالات القائمة من أية قائمة بالمستخدم الحالي والتي تم تغييرها منذ التاريخ المحدد. (وهذا مخصص لمزامنة الجهاز، وخلافا للأوضاع الأخرى، يتضمن المدخلات المحذوفة، على الرغم من عدم وجود إدخالات في القوائم المحذوفة.)",
-	"apihelp-query+readinglistentries-param-lists": "معرفات القائمة التي لإرجاع الصفحات.",
+	"apihelp-query+readinglistentries-extended-description": "تحتوي هذه الوحدة على ثلاثة أوضاع تشغيل. عند استخدام المعامل <var>$1 lists</var> ، تُعيد الصفحات الموجودة في القائمة (القوائم) المُحددة. عند استخدام المعامل <var>$1 changedsince</var> ، تُعيد جميع عناصر القوائم من أي قائمة للمستخدم الحالي التي تم تغييرها منذ التاريخ المُحدد. (هذا مُخصص لمزامنة الأجهزة، وعلى عكس الأوضاع الأخرى، يشمل العناصر المحذوفة، ولكن ليس عناصر القوائم المحذوفة). بدون أي معلمات، تُعيد جميع العناصر من جميع قوائم المستخدم الحالي.",
+	"apihelp-query+readinglistentries-param-lists": "معرّفات القوائم التي سيتم إرجاع الصفحات الخاصة بها. اختياري. في حال عدم تحديدها، يتم إرجاع المدخلات من جميع القوائم.",
 	"apihelp-query+readinglistentries-param-changedsince": "إظهار إدخالات القائمة التي تم تغييرها منذ ذلك الطابع الزمني، يجب أن يكون بعد <kbd>$1</kbd>.",
 	"apihelp-query+readinglistentries-param-sort": "خاصية للفرز حسبها، لا يمكن استخدام <kbd>name</kbd> مع <var>$1changedsince</var>، الافتراضي <kbd>updated</kbd> عند تعيين <var>$1changedsince</var> و<kbd>name</kbd> على خلاف ذلك.",
 	"apihelp-query+readinglistentries-paramvalue-sort-name": "عنوان المقالة. (يتم تجاهل اسم المشروع، يتم الفرز حسب القيمة الثنائية، على سبيل المثال، سيتم فرز أي حرف ASCII كبير قبل أي حرف صغير.)",
 	"apihelp-query+readinglistentries-paramvalue-sort-updated": "آخر طابع زمني للتحديث.",
 	"apihelp-query+readinglistentries-param-dir": "اتجاه الفرز: <kbd>ascending</kbd> (من الألف إلى الياء، الأقدم إلى الأحدث) أو <kbd>descending</kbd>.",
 	"apihelp-query+readinglistentries-param-limit": "عدد عناصر النتيجة للعودة.",
-	"apihelp-query+readinglistentries-example-1": "الحصول على الصفحات من قوائم القراءة بالممعرف <kbd>10</kbd> و<kbd>11</kbd> و<kbd>12</kbd>.",
-	"apihelp-query+readinglistentries-example-2": "احصل على إدخالات القائمة للمستخدم الحالي التي قد تغيرت منذ <kbd>2013-01-01T00:00:00Z</kbd>.",
+	"apihelp-query+readinglistentries-example-1": "احصل على جميع الصفحات من جميع قوائم القراءة الخاصة بالمستخدم الحالي.",
+	"apihelp-query+readinglistentries-example-2": "احصل على الصفحات من قوائم القراءة التي تحمل المعرفات <kbd>10</kbd> و <kbd>11</kbd> و <kbd>12</kbd> .",
+	"apihelp-query+readinglistentries-example-3": "احصل على قائمة إدخالات المستخدم الحالي التي تغيرت منذ <kbd>2013-01-01T00:00:00Z</kbd> .",
 	"apihelp-readinglists-summary": "عمليات كتابة قائمة القراءة.",
 	"apihelp-readinglists-param-command": "الأمر (submodule API) لعمليات كتابة قائمة القراءة.",
 	"apihelp-readinglists-extended-description": "إنشاء/تحديث/حذف/فرز قوائم القراءة والإدخالات، انظر توثيق مختلف الأوامر للتفاصيل.",
