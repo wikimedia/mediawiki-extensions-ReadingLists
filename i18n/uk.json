@@ -4,6 +4,7 @@
 			"Andriy.v",
 			"DDPAT",
 			"Ice bulldog",
+			"Movses",
 			"Piramidion",
 			"Ата"
 		]
@@ -27,7 +28,7 @@
 	"readinglists-db-error-entry-limit": "Список $1 не може мати більше $2 {{PLURAL:$2|пункту|пунктів}}.",
 	"readinglists-db-error-too-long": "Значення поля $1 не може бути довшим $2 байтів.",
 	"readinglists-db-error-no-such-project": "«$1» — не розпізнається як проєкт.",
-	"readinglists-browser-add-entry-success": "[[$1|$2]] додано у [[$3|$4]].",
+	"readinglists-browser-add-entry-success": "<b>$1</b> додано до вашого списку [[$2|$3]].",
 	"readinglists-browser-login-prompt": "Увійдіть, щоб зберігати статті",
 	"readinglists-browser-error-intro": "Сталася помилка: $1",
 	"readinglists-browser-enable-sync-prompt": "Увімкнути синхронцзацію на Вашому додатку Вікіпедії, щоб почати зберігати статті",
