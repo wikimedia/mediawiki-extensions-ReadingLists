@@ -10,7 +10,7 @@
 			"Woytecr"
 		]
 	},
-	"readinglists-desc": "Umożliwia użytkownikom zarządzanie prywatnymi listami artykułów, takimi jak zakładki czy listy „Przeczytaj później”",
+	"readinglists-desc": "Umożliwia użytkownikom zarządzanie prywatnymi listami artykułów, takimi jak zakładki czy listy „Zapisane strony”",
 	"readinglists-db-error-no-such-list": "Lista $1 nie istnieje.",
 	"readinglists-db-error-not-own-list": "Lista $1 należy do innego użytkownika.",
 	"readinglists-browser-login-prompt": "Zaloguj się, aby zapisać artykuły",
