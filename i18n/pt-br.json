@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Eduardo Addad de Oliveira",
-			"Eduardoaddad"
+			"Eduardoaddad",
+			"Fúlvio"
 		]
 	},
 	"readinglists-desc": "Permite aos usuários gerenciar listas privadas de artigos, como marcadores ou listas \"Leia mais tarde\".",
@@ -33,7 +34,7 @@
 	"readinglists-browser-extension-product-title": "Listas de leitura da Wikipédia",
 	"readinglists-browser-page-not-supported": "$1 não tem suporte para esta página",
 	"readinglists-special-title": "Listas de leitura",
-	"readinglists-description": "Todas as suas listas de leitura em um só lugar.",
+	"readinglists-description": "Todas as suas listas salvas em um só lugar.",
 	"readinglists-loading": "Por favor, aguarde...",
 	"reading-list-purpose": "Entre para ver as suas listas de leitura privadas, por favor.",
 	"readinglists-error": "O seu navegador não tem a capacidade de usar o funcionalidade de listas de leitura. Ative o JavaScript ou tente noutro ''browser''.",
