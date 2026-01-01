@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Stefan2255",
 			"WikiPhoenix"
 		]
 	},
@@ -26,16 +27,16 @@
 	"apihelp-query+readinglists-example-2": "Hämta läslistor för aktuell användare som har ändrats sedan <kbd>2013-01-01T00:00:00Z</kbd>.",
 	"apihelp-query+readinglists-example-3": "Hämta läslistor för aktuell användare som innehåller sidan <kbd>Dog</kbd> från projektet <kbd>en.wikipedia.org</kbd>",
 	"apihelp-query+readinglistentries-summary": "Lista sidorna för en bestämd lista.",
-	"apihelp-query+readinglistentries-extended-description": "Denna modul har två användningslägen. Med parametern <var>$1lists</var> returnerar den sidan i angivna listor. Med parametern <var>$1changedsince</var> returnerar den alla listelement i alla listor av nuvarande användare som har ändrats sedan angivet datum. (Detta är avsett för enhetssynkronisering och, till skillnad från andra lägen, inkluderar raderade element, fast inte element i raderade listor.)",
-	"apihelp-query+readinglistentries-param-lists": "Listans ID:n som ska returnera sidor.",
+	"apihelp-query+readinglistentries-extended-description": "Denna modul har tre användningslägen. Med parametern <var>$1lists</var> returnerar den sidan i angivna listor. Med parametern <var>$1changedsince</var> returnerar den alla listelement i alla listor av nuvarande användare som har ändrats sedan angivet datum. (Detta är avsett för enhetssynkronisering och, till skillnad från andra lägen, inkluderar raderade element, fast inte element i raderade listor.) Utan några parametrar returnerar den alla poster från alla listor för den aktuella användaren.",
+	"apihelp-query+readinglistentries-param-lists": "Listans ID:n som ska returnera sidor. Om inget anges returneras poster från alla listor.",
 	"apihelp-query+readinglistentries-param-changedsince": "Visa listelement som har ändrats sedan denna tidsstämpel. Måste vara efter <kbd>$1</kbd>.",
 	"apihelp-query+readinglistentries-param-sort": "Egenskap att sortera efter. <kbd>name</kbd> kan inte användas tillsammans med <var>$1changedsince</var>. Standard är <kbd>updated</kbd> när <var>$1changedsince</var> anges och är annars <kbd>name</kbd>.",
 	"apihelp-query+readinglistentries-paramvalue-sort-name": "Artikeltitel. (Projektnamnet ignoreras. Sorteras efter binärt värde; d.v.s. alla versala ASCII-tecken kommer att sorteras före alla gemena.)",
 	"apihelp-query+readinglistentries-paramvalue-sort-updated": "Tidsstämpel för senast uppdaterad.",
 	"apihelp-query+readinglistentries-param-dir": "Sorteringsriktning: <kbd>ascending</kbd> (A till Ö, äldst till nyast) eller <kbd>descending</kbd>.",
 	"apihelp-query+readinglistentries-param-limit": "Antal resultatobjekt att returnera.",
-	"apihelp-query+readinglistentries-example-1": "Hämta sidor från läslistor med ID <kbd>10</kbd>, <kbd>11</kbd> och <kbd>12</kbd>.",
-	"apihelp-query+readinglistentries-example-2": "Hämta listelementen för aktuell användare som har ändrats sedan <kbd>2013-01-01T00:00:00Z</kbd>.",
+	"apihelp-query+readinglistentries-example-1": "Hämta alla sidor från alla läslistor för den aktuella användaren.",
+	"apihelp-query+readinglistentries-example-2": "Hämta sidor från läslistor med ID <kbd>10</kbd>, <kbd>11</kbd> och <kbd>12</kbd>.",
 	"apihelp-readinglists-summary": "Skrivoperationer för läslistor.",
 	"apihelp-readinglists-param-command": "Kommando (API-submodul) till skrivoperationer för läslistor.",
 	"apihelp-readinglists-extended-description": "Skapa/uppdatera/radera/sortera läslistor och element. Se dokumentationen för diverse kommandon för detaljer.",
