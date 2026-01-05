@@ -3,7 +3,8 @@
 		"authors": [
 			"Chrumps",
 			"CiaPan",
-			"Wojtas"
+			"Wojtas",
+			"Woytecr"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var> i <var>$1title</var> muszą być używane razem.",
