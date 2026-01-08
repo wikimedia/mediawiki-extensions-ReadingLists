@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Ykhwong",
-			"Ellif"
+			"Ellif",
+			"YeBoy371"
 		]
 	},
 	"readinglists-desc": "사용자가 북마크나 \"나중에 읽기\" 목록과 같은 개인 문서 목록을 관리할 수 있게 합니다.",
@@ -23,7 +24,7 @@
 	"readinglists-db-error-list-limit": "사용자는 $1개가 넘는 {{PLURAL:$1|목록}}을 가질 수 없습니다.",
 	"readinglists-db-error-too-long": "$1 필드의 값은 $2바이트를 초과할 수 없습니다.",
 	"readinglists-db-error-no-such-project": "'$1'은(는) 알려진 프로젝트가 아닙니다.",
-	"readinglists-browser-add-entry-success": "$1 문서를 읽기 목록에 저장했습니다",
+	"readinglists-browser-add-entry-success": "<b>$1</b>가 [[$2|$3]]에 추가되었습니다.",
 	"readinglists-browser-login-prompt": "로그인하여 문서를 저장합니다",
 	"readinglists-browser-error-intro": "오류가 발생했습니다: $1",
 	"readinglists-browser-enable-sync-prompt": "문서 저장을 시작하기 위해 위키백과 앱에서 동기화를 사용합니다",
@@ -32,12 +33,12 @@
 	"readinglists-browser-extension-product-title": "위키백과 읽기 목록",
 	"readinglists-browser-page-not-supported": "$1은(는) 이 문서를 지원하지 않습니다",
 	"readinglists-special-title-imported": "읽기 목록: 다른 사용자로부터 가져오기",
-	"readinglists-special-subpage-title": "저장됨",
+	"readinglists-special-subpage-title": "저장된 문서",
 	"reading-list-purpose-for-temp-user": "비공개 읽기 목록을 만들려면 계정을 생성해 주십시오.",
 	"readinglists-import-empty-message": "목록의 목록을 가져올 수 없습니다.",
-	"readinglists-import-button-label": "목록 보기",
+	"readinglists-import-button-label": "앱에서 열기",
 	"readinglists-beta-feature-name": "읽기 목록",
-	"readinglists-menu-item": "저장됨",
+	"readinglists-menu-item": "저장된 문서",
 	"readinglists-bookmark": "북마크",
 	"readinglists-add-bookmark": "저장",
 	"readinglists-remove-bookmark": "저장하지 않음"

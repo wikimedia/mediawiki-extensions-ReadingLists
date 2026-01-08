@@ -3,7 +3,8 @@
 		"authors": [
 			"Chrumps",
 			"CiaPan",
-			"Wojtas"
+			"Wojtas",
+			"Woytecr"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var> i <var>$1title</var> muszą być używane razem.",
@@ -12,6 +13,6 @@
 	"apihelp-readinglists+update-param-name": "Nowa nazwa listy. Ta nazwa albo opis są wymagane, z wyjątkiem aktualizacji wsadowej.",
 	"apihelp-readinglists+update-param-description": "Nowy opis listy",
 	"apihelp-readinglists+delete-param-list": "Identyfikator listy, Wymagany, z wyjątkiem usuwania wsadowego.",
-	"apihelp-readinglists+createentry-param-title": "Tyruł strony.",
+	"apihelp-readinglists+createentry-param-title": "Tytuł strony (wraz z lokalną nazwą przestrzeni nazw). Wymagany, chyba że tworzysz masowo. Zalecany jest format czytelny dla człowieka (spacje, a nie podkreślenia). API traktuje tytuły jako surowe ciągi znaków; normalizacja (np. wielkość liter w tytule) leży po stronie aplikacji klienckich.",
 	"apihelp-readinglists+deleteentry-param-entry": "Identyfikator wpisu, Wymagany, z wyjątkiem usuwania wsadowego."
 }
