@@ -37,6 +37,7 @@
 	"apihelp-query+readinglistentries-param-limit": "Antal resultatobjekt att returnera.",
 	"apihelp-query+readinglistentries-example-1": "Hämta alla sidor från alla läslistor för den aktuella användaren.",
 	"apihelp-query+readinglistentries-example-2": "Hämta sidor från läslistor med ID <kbd>10</kbd>, <kbd>11</kbd> och <kbd>12</kbd>.",
+	"apihelp-query+readinglistentries-example-3": "Hämta listposterna för den aktuella användaren som har ändrats sedan <kbd>2013-01-01T00:00:00Z</kbd>.",
 	"apihelp-readinglists-summary": "Skrivoperationer för läslistor.",
 	"apihelp-readinglists-param-command": "Kommando (API-submodul) till skrivoperationer för läslistor.",
 	"apihelp-readinglists-extended-description": "Skapa/uppdatera/radera/sortera läslistor och element. Se dokumentationen för diverse kommandon för detaljer.",
