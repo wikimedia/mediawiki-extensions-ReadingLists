@@ -36,6 +36,7 @@
 	"apihelp-query+readinglistentries-param-limit": "Numero de elementos resultante a restituer.",
 	"apihelp-query+readinglistentries-example-1": "Obtener tote le paginas de tote le listas de lectura del usator actual.",
 	"apihelp-query+readinglistentries-example-2": "Obtener le paginas del listas de lectura con ID <kbd>10</kbd>, <kbd>11</kbd> e <kbd>12</kbd>.",
+	"apihelp-query+readinglistentries-example-3": "Obtener le entratas de lista del usator actual que ha cambiate depost <kbd>2013-01-01T00:00:00Z</kbd>.",
 	"apihelp-readinglists-summary": "Operationes de scriptura de listas de lectura.",
 	"apihelp-readinglists-param-command": "Commando (submodulo del API) pro operationes de scriptura de listas de lectura.",
 	"apihelp-readinglists-extended-description": "Crear/actualisar/deler/ordinar listas de lectura e lor entratas. Vide le documentation del varie commandos pro detalios.",
