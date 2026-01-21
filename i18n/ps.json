@@ -3,5 +3,10 @@
 		"authors": [
 			"شاه زمان پټان"
 		]
-	}
+	},
+	"readinglists-db-error-not-set-up": "دې کارن لپاره لوستلړونه نه دي اوڼل شوي.",
+	"readinglists-db-error-no-projects": "لوستلړونو سره کارېدونکې هېڅ پروژه نوم‌ليکل شوې نه ده. \nد پروژې نوم‌ليکلو لپاره populateProjectsFromSiteMatrix سکريپټ وکاروئ.",
+	"readinglists-db-error-already-set-up": "دې کارن لپاره لوستلړونه لا دمخه اوڼل شوې دي.",
+	"readinglists-db-error-cannot-delete-default-list": "تلواليز لړليک نشي ړنگېدی.",
+	"readinglists-db-error-cannot-update-default-list": "تلواليز لړليک نشي هم‌مهالېدی."
 }
