@@ -115,7 +115,7 @@
 				"CentralIdLookupFactory"
 			],
 			"optional_services": [
-				"MetricsPlatform.XLab.ExperimentManager"
+				"TestKitchen.ExperimentManager"
 			]
 		},
 		"betafeatures": {

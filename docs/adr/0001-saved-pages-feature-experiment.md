@@ -15,7 +15,7 @@ How do we roll out the ReadingLists saved pages "boomkark" feature on web for de
 
 We want to bring the ReadingLists feature that currently exists on the mobile apps to web users. This would allow users to save pages to a list.
 
-For readers, we are placing a button in the vector-page-toolbar where the watchstar is currently. This would make it easy to save pages to their reading list. We plan to gradually roll out this feature via Experimentation Lab (xLab) to logged in users on desktop (Vector 2022 skin) who:
+For readers, we are placing a button in the vector-page-toolbar where the watchstar is currently. This would make it easy to save pages to their reading list. We plan to gradually roll out this feature via Test Kitchen to logged in users on desktop (Vector 2022 skin) who:
 
 - Have 0 edits
 - Not using their watchlist, with no article namespace pages in their watchlist.

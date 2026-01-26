@@ -3,12 +3,12 @@
 namespace MediaWiki\Extension\ReadingLists\Tests\Integration;
 
 use MediaWiki\Context\RequestContext;
-use MediaWiki\Extension\MetricsPlatform\XLab\Experiment;
-use MediaWiki\Extension\MetricsPlatform\XLab\ExperimentManager;
 use MediaWiki\Extension\ReadingLists\Constants;
 use MediaWiki\Extension\ReadingLists\HookHandler;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
+use MediaWiki\Extension\TestKitchen\Sdk\Experiment;
+use MediaWiki\Extension\TestKitchen\Sdk\ExperimentManager;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Skin\SkinTemplate;
@@ -60,8 +60,8 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 	}
 
 	private function setupExperiment( $inAssignedGroup = true ) {
-		if ( !ExtensionRegistry::getInstance()->isLoaded( 'MetricsPlatform' ) ) {
-			$this->markTestSkipped( 'Test requires the MetricsPlatform extension' );
+		if ( !ExtensionRegistry::getInstance()->isLoaded( 'TestKitchen' ) ) {
+			$this->markTestSkipped( 'Test requires the TestKitchen extension' );
 		}
 
 		$services = $this->getServiceContainer();
