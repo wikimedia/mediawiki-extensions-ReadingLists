@@ -5,5 +5,16 @@
 		]
 	},
 	"readinglists-browser-login-prompt": "ਲੇਖਾਂ ਨੂੰ ਸੰਭਾਲਣ ਲਈ ਦਾਖ਼ਲ ਹੋਵੋ",
-	"readinglists-watchlist": "ਨਿਗਰਾਨ-ਸੂਚੀ"
+	"readinglists-browser-extension-info-link-text": "ਹੋਰ ਸਿੱਖੋ",
+	"readinglists-special-subpage-title": "ਸਾਂਭੋ ਹੋਏ ਵਰਕੇ",
+	"readinglists-loading": "ਕਿਰਪਾ ਕਰਕੇ ਉਡੀਕੋ...",
+	"readinglists-show-more": "ਹੋਰ ਵਿਖਾਓ",
+	"readinglists-display-sort-name": "ਨਾਂ",
+	"readinglists-display-sort-updated": "ਨਵਿਆਈਆ ਗਿਆ",
+	"readinglists-display-direction-ascending": "ਚੜ੍ਹਦੀ ਤਰਤੀਬ ਵਿੱਚ",
+	"readinglists-display-direction-descending": "ਲਹਿੰਦੀ ਤਰਤੀਬ ਵਿੱਚ",
+	"readinglists-watchlist": "ਨਿਗਰਾਨ-ਸੂਚੀ",
+	"readinglists-menu-item": "ਸਾਂਭੋ ਹੋਏ ਵਰਕੇ",
+	"readinglists-add-bookmark": "ਸਾਂਭੋ",
+	"readinglists-onboarding-close-button": "ਬੰਦ ਕਰੋ"
 }
