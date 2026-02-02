@@ -11,7 +11,8 @@
 			"Tacsipacsi",
 			"Tgr",
 			"Umherirrender",
-			"Verdy p"
+			"Verdy p",
+			"Woytecr"
 		]
 	},
 	"readinglists-desc": "{{desc|name=ReadingLists|url=https://www.mediawiki.org/wiki/Extension:ReadingLists}}\n\n\"Saved pages\" is {{msg-mw|Readinglists-default-title}}",
@@ -64,7 +65,7 @@
 	"readinglists-display-menu": "Display button label for screen readers.",
 	"readinglists-display-sort": "Header for \"Sort by\" in the display menu.",
 	"readinglists-display-sort-name": "Option for \"sort: name\" in the display menu.",
-	"readinglists-display-sort-updated": "Option for \"sport: updated\" in the display menu.",
+	"readinglists-display-sort-updated": "Option for \"sort: updated\" in the display menu.",
 	"readinglists-sorted-by-recent": "Text displayed next to the page title, to indicate that the sorting order is by most recently updated in the reading list.",
 	"readinglists-display-direction": "Header for \"Direction\" in the display menu. The options are {{msg-mw|Readinglists-display-direction-ascending}} and {{msg-mw|Readinglists-display-direction-descending}}.",
 	"readinglists-display-direction-ascending": "Option for {{msg-mw|Readinglists-display-direction}} in the display menu.",

@@ -38,6 +38,7 @@
 	"apihelp-query+readinglistentries-param-limit": "Aantal te retourneren resultaatitems.",
 	"apihelp-query+readinglistentries-example-1": "Haal alle pagina's op van alle leeslijsten van de huidige gebruiker.",
 	"apihelp-query+readinglistentries-example-2": "Haal de pagina’s met ID <kbd>10</kbd>, <kbd>11</kbd> en <kbd>12</kbd> uit de leeslijsten.",
+	"apihelp-query+readinglistentries-example-3": "Haal de lijst op met gegevens van de huidige gebruiker die zijn gewijzigd sinds <kbd>2013-01-01T00:00:00Z</kbd> .",
 	"apihelp-readinglists-summary": "Schrijfbewerkingen voor leeslijsten.",
 	"apihelp-readinglists-param-command": "Commando (API-submodule) voor het lezen van lijstschrijfbewerkingen.",
 	"apihelp-readinglists-extended-description": "Leeslijsten en vermeldingen maken/bijwerken/verwijderen/sorteren. Zie de documentatie van de verschillende commando’s voor details.",
