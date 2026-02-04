@@ -28,7 +28,7 @@
 	"apihelp-query+readinglists-example-3": "קבלת רשימות הקריאה של המשתמש הנוכחי שכוללות את הדף <kbd>Dog</kbd> במיזם <kbd>en.wikipedia.org</kbd>",
 	"apihelp-query+readinglistentries-summary": "קבלת רשימת הדפים מרשימה מסוימת.",
 	"apihelp-query+readinglistentries-extended-description": "ישנם שלושה מצבי פעולה עבור המודול הזה. עם הפרמטר <var>$1lists</var>, המודול מחזיר את הדפים ברשימה או ברשימות הנתונות. עם הפרמטר <var>$1changedsince</var>, המודול מחזיר את כל הערכים מכל הרשימות של המשתמש הנוכחי ששונו מאז התאריך הנתון. (מצב זה נועד לסנכרון בין מכשירים. בניגוד למצבי הפעולה האחרים, מצב זה כולל ערכים שנמחקו, אך אינו כולל ערכים ברשימות שנמחקו.) ללא שום פרמטרים, הוא מחזיר את כל הרשומות מכל הרשימות של המשתמש הנוכחי.",
-	"apihelp-query+readinglistentries-param-lists": "מזהי הרשימות שעבורן יוחזרו הדפים. לא חובה. אם זה לא צוין, מחיר את כל הרשומות מכל הרשימות.",
+	"apihelp-query+readinglistentries-param-lists": "מזהי הרשימות שעבורן יוחזרו הדפים. לא חובה. אם לא צוין, יוחזרו הערכים מכל הרשימות.",
 	"apihelp-query+readinglistentries-param-changedsince": "הצגת ערכים ברשימה ששונו מאז התאריך והשעה האלה. המועד חייב להיות אחרי <kbd>$1</kbd>.",
 	"apihelp-query+readinglistentries-param-sort": "לפי איזה מאפיין למיין את התוצאות. לא ניתן להשתמש ב־<kbd>name</kbd> ביחד עם <var>$1changedsince</var>. ברירת המחדל היא <kbd>updated</kbd> כאשר <var>$1changedsince</var> מוגדר; אחרת, ברירת המחדל היא <kbd>name</kbd>.",
 	"apihelp-query+readinglistentries-paramvalue-sort-name": "כותרת הערך. (אין משמעות לשם המיזם. המיון נעשה לפי הערך הבינארי; למשל: כל תו ASCII באותיות רישיות יופיע לפני כל תו באותיות קטנות.)",
