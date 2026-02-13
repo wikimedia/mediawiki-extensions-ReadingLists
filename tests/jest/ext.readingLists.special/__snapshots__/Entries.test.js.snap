@@ -1,11 +1,134 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Entries renders with toolbar disabled 1`] = `
+exports[`Entries renders all items from all lists on special page 1`] = `
 <div
   data-v-app=""
 >
   
   <!--v-if-->
+  <!--v-if-->
+  <p
+    class="reading-lists-sorting"
+  >
+    Sorted by most recent.
+  </p>
+  <!--v-if-->
+  
+  <div
+    class="reading-lists-grid"
+  >
+    
+    <a
+      class="cdx-card cdx-card--is-link cdx-card--title-only"
+      href="https://en.wikipedia.org/wiki/Sleep"
+    >
+      <!--v-if-->
+      <span
+        class="cdx-card__text"
+      >
+        <span
+          class="cdx-card__text__title"
+        >
+          
+          Sleep
+          
+        </span>
+        <!--v-if-->
+        <!--v-if-->
+      </span>
+    </a>
+    <a
+      class="cdx-card cdx-card--is-link cdx-card--title-only"
+      href="https://en.wikipedia.org/wiki/Birthday"
+    >
+      <!--v-if-->
+      <span
+        class="cdx-card__text"
+      >
+        <span
+          class="cdx-card__text__title"
+        >
+          
+          Birthday
+          
+        </span>
+        <!--v-if-->
+        <!--v-if-->
+      </span>
+    </a>
+    <a
+      class="cdx-card cdx-card--is-link cdx-card--title-only"
+      href="https://en.wikipedia.org/wiki/Nap"
+    >
+      <!--v-if-->
+      <span
+        class="cdx-card__text"
+      >
+        <span
+          class="cdx-card__text__title"
+        >
+          
+          Nap
+          
+        </span>
+        <!--v-if-->
+        <!--v-if-->
+      </span>
+    </a>
+    <a
+      class="cdx-card cdx-card--is-link cdx-card--title-only"
+      href="https://en.wikipedia.org/wiki/TestPage"
+    >
+      <!--v-if-->
+      <span
+        class="cdx-card__text"
+      >
+        <span
+          class="cdx-card__text__title"
+        >
+          
+          TestPage
+          
+        </span>
+        <!--v-if-->
+        <!--v-if-->
+      </span>
+    </a>
+    <a
+      class="cdx-card cdx-card--is-link cdx-card--title-only"
+      href="https://en.wikipedia.org/wiki/Germany"
+    >
+      <!--v-if-->
+      <span
+        class="cdx-card__text"
+      >
+        <span
+          class="cdx-card__text__title"
+        >
+          
+          Germany
+          
+        </span>
+        <!--v-if-->
+        <!--v-if-->
+      </span>
+    </a>
+    
+  </div>
+  
+  <!--v-if-->
+  
+  
+  <!--v-if-->
+  
+</div>
+`;
+
+exports[`Entries renders with toolbar disabled 1`] = `
+<div
+  data-v-app=""
+>
+  
   <!--v-if-->
   <!--v-if-->
   <p
@@ -34,7 +157,6 @@ exports[`Entries renders with toolbar enabled 1`] = `
   data-v-app=""
 >
   
-  <!--v-if-->
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->

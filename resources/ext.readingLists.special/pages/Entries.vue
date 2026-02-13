@@ -6,13 +6,15 @@
 	<template v-else>
 		<import-dialog v-if="imported !== null"></import-dialog>
 
-		<h2 v-if="!isDefaultList" class="reading-lists-title">
-			{{ title }}
-		</h2>
+		<template v-if="!isDefaultList && !isAllListItems">
+			<h2 v-if="title" class="reading-lists-title">
+				{{ title }}
+			</h2>
 
-		<p v-if="description && !isDefaultList" class="reading-lists-description">
-			{{ description }}
-		</p>
+			<p v-if="description" class="reading-lists-description">
+				{{ description }}
+			</p>
+		</template>
 
 		<p v-if="!enableToolbar" class="reading-lists-sorting">
 			{{ sortingText }}
@@ -95,6 +97,7 @@ module.exports = exports = {
 			loadingEntries: ref( true ),
 			title: ref( '' ),
 			isDefaultList: ref( true ),
+			isAllListItems: ref( false ),
 			description: ref( '' ),
 			total: ref( 0 ),
 			error: ref( '' ),
@@ -129,16 +132,21 @@ module.exports = exports = {
 			this.loadingInfo = true;
 
 			try {
-				const list = this.imported || await api.getList( this.listId );
+				if ( this.imported || this.listId ) {
+					const list = this.imported || await api.getList( this.listId );
 
-				if ( list.error !== undefined ) {
-					throw list.error;
+					if ( list.error !== undefined ) {
+						throw list.error;
+					}
+
+					this.title = list.name;
+					this.description = list.description;
+					this.total = list.size;
+					this.isDefaultList = !!list.default;
+				} else {
+					this.isDefaultList = false;
+					this.isAllListItems = true;
 				}
-
-				this.title = list.name;
-				this.description = list.description;
-				this.total = list.size;
-				this.isDefaultList = !!list.default;
 				this.updateMessages();
 			} catch ( err ) {
 				this.handleError( err );
@@ -166,7 +174,7 @@ module.exports = exports = {
 
 				await this.getList();
 
-				if ( this.total === 0 ) {
+				if ( !this.isAllListItems && this.total === 0 ) {
 					this.loadingEntries = false;
 				}
 			}
@@ -187,7 +195,6 @@ module.exports = exports = {
 						12,
 						this.next
 					);
-
 					entries = query.entries;
 					next = query.next;
 				} else if ( this.imported.error !== undefined ) {

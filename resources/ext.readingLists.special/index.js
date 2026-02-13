@@ -14,7 +14,11 @@ const parts = page.split( '/' );
 async function mountApp() {
 	let app;
 
-	if ( parts.length < 3 ) {
+	// show imported list, if limport or lexport parameter is present,
+	// otherwise the php special page redirects to Special:ReadingLists/{user_name}.
+	// keeping the logic for Lists.vue here but now we redirect
+	// Special:ReadingLists to Special:ReadingLists/{user_name} per T400361.
+	if ( parts.length < 2 ) {
 		const search = new URLSearchParams( window.location.search );
 		const imported = search.get( 'limport' ) || search.get( 'lexport' );
 
@@ -25,10 +29,15 @@ async function mountApp() {
 				imported: await api.fromBase64( imported )
 			} );
 		}
-	} else {
+	// show specific reading list (default or custom, based on reading list id)
+	// e.g. Special:ReadingLists/{user_name}/{list_id}
+	} else if ( parts.length >= 3 ) {
 		app = createMwApp( Entries, {
 			listId: parseInt( parts[ 2 ] )
 		} );
+	// show all items from all reading lists on Special:ReadingLists/{user_name} page
+	} else {
+		app = createMwApp( Entries );
 	}
 
 	app.mount( '.reading-lists-container' );

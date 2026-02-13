@@ -32,6 +32,12 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 			return;
 		}
 
+		if ( ( $subPage === '' || $subPage === null ) && !$exportFeature ) {
+			$redirectTitle = $this->getPageTitle( $this->getUser()->getName() );
+			$this->getOutput()->redirect( $redirectTitle->getLocalURL() );
+			return;
+		}
+
 		$output = $this->getOutput();
 		$config = $this->getConfig();
 
@@ -42,10 +48,11 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 		}
 
 		// Special:ReadingLists/ExampleUser/1 is a subpage, with a specific reading list
-		// Special:ReadingLists/ExampleUser (or Special:ReadingLists)
-		// is the overview page "Reading lists" for the user.
+		// Special:ReadingLists/ExampleUser shows all list items from all lists for the user.
+		// Special:ReadingLists redirects to Special:ReadingLists/ExampleUser
+		// if the request is not for viewing an exported list.
 		$parts = $subPage ? explode( '/', $subPage ) : [];
-		if ( count( $parts ) >= 2 ) {
+		if ( count( $parts ) >= 1 ) {
 			$output->setPageTitleMsg( $this->msg( 'readinglists-special-subpage-title' ) );
 		} else {
 			$output->setPageTitleMsg( $this->msg( 'readinglists-title' ) );

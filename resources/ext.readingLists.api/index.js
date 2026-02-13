@@ -94,7 +94,8 @@ async function getList( listId ) {
 }
 
 /**
- * Get the entries saved in a specific reading list.
+ * Get the entries saved in a specific reading list
+ * or from all reading lists if listId is not provided.
  *
  * @param {number} listId
  * @param {string} sort
@@ -103,18 +104,26 @@ async function getList( listId ) {
  * @param {string|null} next
  * @return {Promise<any>}
  */
-async function getEntries( listId, sort = 'name', direction = 'asc', limit = 12, next = null ) {
+async function getEntries( listId = null, sort = 'name', direction = 'asc', limit = 12, next = null ) {
 	try {
-		const { query: { readinglistentries: entries }, continue: rlecontinue } = await api.get( {
+		const apiParams = {
 			action: 'query',
 			list: 'readinglistentries',
-			rlelists: listId,
 			rlesort: sort,
 			rledir: direction,
 			rlelimit: limit,
 			rlecontinue: next || undefined,
 			formatversion: 2
-		} );
+		};
+
+		if ( listId ) {
+			apiParams.rlelists = listId;
+		}
+
+		const {
+			query: { readinglistentries: entries },
+			continue: rlecontinue
+		} = await api.get( apiParams );
 
 		const manifest = {};
 

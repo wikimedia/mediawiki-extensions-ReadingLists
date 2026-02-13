@@ -1,0 +1,79 @@
+{
+	"batchcomplete": true,
+	"query": {
+		"pages": [
+			{
+				"ns": 0,
+				"title": "Germany",
+				"missing": true,
+				"contentmodel": "wikitext",
+				"pagelanguage": "en",
+				"pagelanguagehtmlcode": "en",
+				"pagelanguagedir": "ltr",
+				"fullurl": "https://en.wikipedia.org/wiki/Germany",
+				"editurl": "https://en.wikipedia.org/w/index.php?title=Germany&action=edit",
+				"canonicalurl": "https://en.wikipedia.org/wiki/Germany"
+			},
+			{
+				"pageid": 567,
+				"ns": 0,
+				"title": "Sleep",
+				"contentmodel": "wikitext",
+				"pagelanguage": "en",
+				"pagelanguagehtmlcode": "en",
+				"pagelanguagedir": "ltr",
+				"touched": "2026-01-26T20:00:01Z",
+				"lastrevid": 569,
+				"length": 4,
+				"fullurl": "https://en.wikipedia.org/wiki/Sleep",
+				"editurl": "https://en.wikipedia.org/w/index.php?title=Sleep&action=edit",
+				"canonicalurl": "https://en.wikipedia.org/wiki/Sleep"
+			},
+			{
+				"pageid": 568,
+				"ns": 0,
+				"title": "Nap",
+				"contentmodel": "wikitext",
+				"pagelanguage": "en",
+				"pagelanguagehtmlcode": "en",
+				"pagelanguagedir": "ltr",
+				"touched": "2026-01-26T20:01:00Z",
+				"lastrevid": 570,
+				"length": 8,
+				"fullurl": "https://en.wikipedia.org/wiki/Nap",
+				"editurl": "https://en.wikipedia.org/w/index.php?title=Nap&action=edit",
+				"canonicalurl": "https://en.wikipedia.org/wiki/Nap"
+			},
+			{
+				"pageid": 569,
+				"ns": 0,
+				"title": "Birthday",
+				"contentmodel": "wikitext",
+				"pagelanguage": "en",
+				"pagelanguagehtmlcode": "en",
+				"pagelanguagedir": "ltr",
+				"touched": "2026-01-26T20:01:32Z",
+				"lastrevid": 571,
+				"length": 4,
+				"fullurl": "https://en.wikipedia.org/wiki/Birthday",
+				"editurl": "https://en.wikipedia.org/w/index.php?title=Birthday&action=edit",
+				"canonicalurl": "https://en.wikipedia.org/wiki/Birthday"
+			},
+			{
+				"pageid": 571,
+				"ns": 0,
+				"title": "TestPage",
+				"contentmodel": "wikitext",
+				"pagelanguage": "en",
+				"pagelanguagehtmlcode": "en",
+				"pagelanguagedir": "ltr",
+				"touched": "2026-01-27T21:31:12Z",
+				"lastrevid": 575,
+				"length": 1347,
+				"fullurl": "https://en.wikipedia.org/wiki/TestPage",
+				"editurl": "https://en.wikipedia.org/w/index.php?title=TestPage&action=edit",
+				"canonicalurl": "https://en.wikipedia.org/wiki/TestPage"
+			}
+		]
+	}
+}

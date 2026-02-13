@@ -1,0 +1,47 @@
+{
+	"batchcomplete": true,
+	"query": {
+		"readinglistentries": [
+			{
+				"id": 9,
+				"listId": 4,
+				"project": "https://en.wikipedia.org",
+				"title": "Sleep",
+				"created": "2026-02-13T20:17:23Z",
+				"updated": "2026-02-13T20:17:23Z"
+			},
+			{
+				"id": 8,
+				"listId": 6,
+				"project": "https://en.wikipedia.org",
+				"title": "Birthday",
+				"created": "2026-02-13T20:16:56Z",
+				"updated": "2026-02-13T20:16:56Z"
+			},
+			{
+				"id": 7,
+				"listId": 6,
+				"project": "https://en.wikipedia.org",
+				"title": "Nap",
+				"created": "2026-02-13T20:16:46Z",
+				"updated": "2026-02-13T20:16:46Z"
+			},
+			{
+				"id": 6,
+				"listId": 5,
+				"project": "https://en.wikipedia.org",
+				"title": "TestPage",
+				"created": "2026-02-13T20:16:35Z",
+				"updated": "2026-02-13T20:16:35Z"
+			},
+			{
+				"id": 5,
+				"listId": 3,
+				"project": "https://en.wikipedia.org",
+				"title": "Germany",
+				"created": "2026-02-13T20:16:02Z",
+				"updated": "2026-02-13T20:16:02Z"
+			}
+		]
+	}
+}
