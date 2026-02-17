@@ -84,13 +84,22 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		$defaultListId = $repository->getDefaultListIdForUser() ?: null;
 		$defaultReadingListUrl = self::getDefaultReadingListUrl( $user, $defaultListId );
 
-		$links['user-menu'] = wfArrayInsertAfter( $links['user-menu'], [
+		$userMenu = $links['user-menu'] ?? [];
+
+		// Insert readinglists after 'mytalk', or after 'sandbox' if present.
+		// Reference: T413413.
+		$insertAfter = 'mytalk';
+		if ( isset( $userMenu['sandbox'] ) ) {
+			$insertAfter = 'sandbox';
+		}
+
+		$links['user-menu'] = wfArrayInsertAfter( $userMenu, [
 			'readinglists' => [
 				'text' => $sktemplate->msg( 'readinglists-menu-item' )->text(),
 				'href' => $defaultReadingListUrl,
 				'icon' => 'bookmarkList',
 			],
-		], 'mytalk' );
+		], $insertAfter );
 
 		if ( $defaultListId === null ) {
 			DeferredUpdates::addCallableUpdate(
