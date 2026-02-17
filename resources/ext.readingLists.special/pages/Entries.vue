@@ -28,7 +28,7 @@
 				:disabled="loadingInfo || loadingEntries"
 				:imported="imported !== null"
 				@ready="onReady"
-				@changed="getEntries">
+				@changed="onDisplayOptionsChanged">
 			</display-button>
 		</div>
 
@@ -99,19 +99,34 @@ module.exports = exports = {
 			isDefaultList: ref( true ),
 			isAllListItems: ref( false ),
 			description: ref( '' ),
-			total: ref( 0 ),
 			error: ref( '' ),
 			ready: ref( false ),
-			options: ref( [ 'updated', 'descending', 'grid' ] ),
+			sort: ref( 'updated' ),
+			direction: ref( 'descending' ),
 			entries: ref( [] ),
 			next: ref( null ),
 			infinite: ref( false ),
-			sortingText: mw.msg( 'readinglists-sorted-by-recent' ),
 			msgLoading: mw.msg( 'readinglists-loading' ),
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
-			msgTotalArticles: ref( mw.msg( 'readinglists-total-articles', 0 ) ),
 			enableToolbar: ReadingListsEnableSpecialPageToolbar
 		};
+	},
+	computed: {
+		sortingText() {
+			if ( !this.enableToolbar ) {
+				return mw.msg( 'readinglists-sorted-by-recent' );
+			}
+			// message keys used:
+			// - readinglists-display-sort-name
+			// - readinglists-display-sort-updated
+			// - readinglists-display-direction-ascending
+			// - readinglists-display-direction-descending
+			// eslint-disable-next-line mediawiki/msg-doc
+			const sortLabel = mw.msg( `readinglists-display-sort-${ this.sort }` );
+			// eslint-disable-next-line mediawiki/msg-doc
+			const dirLabel = mw.msg( `readinglists-display-direction-${ this.direction }` );
+			return `${ sortLabel }, ${ dirLabel }`;
+		}
 	},
 	methods: {
 		handleError( err ) {
@@ -141,47 +156,19 @@ module.exports = exports = {
 
 					this.title = list.name;
 					this.description = list.description;
-					this.total = list.size;
 					this.isDefaultList = !!list.default;
 				} else {
 					this.isDefaultList = false;
 					this.isAllListItems = true;
 				}
-				this.updateMessages();
 			} catch ( err ) {
 				this.handleError( err );
 			} finally {
 				this.loadingInfo = false;
 			}
 		},
-		async getEntries( options = null, clear = false ) {
-			if ( options === null ) {
-				this.loadingEntries = true;
-			} else {
-				const sort = options[ 0 ].replace( 's:', '' );
-				const direction = options[ 1 ].replace( 'd:', '' );
-
-				if ( sort !== this.options[ 0 ] || direction !== this.options[ 1 ] ) {
-					clear = true;
-				}
-
-				this.options = [ sort, direction ];
-			}
-
-			if ( clear ) {
-				this.clearEntries();
-				this.loadingEntries = true;
-
-				await this.getList();
-
-				if ( !this.isAllListItems && this.total === 0 ) {
-					this.loadingEntries = false;
-				}
-			}
-
-			if ( !this.loadingEntries ) {
-				return;
-			}
+		async getEntries() {
+			this.loadingEntries = true;
 
 			try {
 				let entries;
@@ -190,8 +177,8 @@ module.exports = exports = {
 				if ( this.imported === null ) {
 					const query = await api.getEntries(
 						this.listId,
-						this.options[ 0 ],
-						this.options[ 1 ],
+						this.sort,
+						this.direction,
 						12,
 						this.next
 					);
@@ -202,11 +189,11 @@ module.exports = exports = {
 				} else {
 					entries = this.imported.list.slice();
 
-					if ( this.options[ 0 ] === 'name' ) {
+					if ( this.sort === 'name' ) {
 						entries.sort( ( a, b ) => a.title.localeCompare( b.title ) );
 					}
 
-					if ( this.options[ 1 ] === 'descending' ) {
+					if ( this.direction === 'descending' ) {
 						entries.reverse();
 					}
 				}
@@ -223,12 +210,6 @@ module.exports = exports = {
 				this.loadingEntries = false;
 			}
 		},
-		updateMessages() {
-			this.msgTotalArticles = mw.msg(
-				'readinglists-total-articles',
-				mw.language.convertNumber( this.total )
-			);
-		},
 		registerScrollHandler() {
 			document.addEventListener( 'scroll', () => {
 				if (
@@ -243,19 +224,37 @@ module.exports = exports = {
 				}
 			} );
 		},
-		async initializePage( options = null ) {
-			await this.getEntries( options );
+		async initializePage() {
+			await this.getEntries();
 			this.ready = true;
 			this.registerScrollHandler();
 		},
-		clearEntries() {
-			this.loadingEntries = true;
+		async refreshEntries() {
 			this.entries = [];
 			this.next = null;
 			this.infinite = false;
+
+			await this.getEntries();
+		},
+		applySortOptions( options ) {
+			this.sort = options[ 0 ].replace( 's:', '' );
+			this.direction = options[ 1 ].replace( 'd:', '' );
 		},
 		async onReady( options ) {
-			await this.initializePage( options );
+			this.applySortOptions( options );
+			await this.getList();
+			await this.initializePage();
+		},
+		async onDisplayOptionsChanged( options ) {
+			const prevSort = this.sort;
+			const prevDirection = this.direction;
+			this.applySortOptions( options );
+
+			if ( this.sort === prevSort && this.direction === prevDirection ) {
+				return;
+			}
+
+			await this.refreshEntries();
 		},
 		async onShowMore() {
 			this.infinite = true;
@@ -265,7 +264,6 @@ module.exports = exports = {
 	async mounted() {
 		if ( !this.enableToolbar ) {
 			await this.getList();
-			this.loadingEntries = true;
 			await this.initializePage();
 		}
 	}
