@@ -35,11 +35,11 @@ class BetaFeatureHookHandler implements GetBetaFeaturePreferencesHook {
 			$prefs[Constants::PREF_KEY_BETA_FEATURES] = [
 				'label-message' => 'readinglists-beta-feature-name',
 				'desc-message' => 'readinglists-beta-feature-description',
-				'screenshot' => "$path/ReadingLists/resources/assets/beta.png",
+				'screenshot' => "$path/ReadingLists/resources/assets/beta.svg",
 				'info-link'
-					=> 'https://www.mediawiki.org/wiki/Extension:ReadingLists/Beta_Feature',
+					=> 'https://www.mediawiki.org/wiki/Readers/Reader_Experience/WE3.3.4_Reading_lists',
 				'discussion-link'
-					=> 'https://www.mediawiki.org/wiki/Extension_talk:ReadingLists/Beta_Feature',
+					=> 'https://www.mediawiki.org/wiki/Talk:Readers/Reader_Experience/WE3.3.4_Reading_lists',
 			];
 		}
 	}
