@@ -24,12 +24,21 @@ class ApiReadingListsCreateEntry extends ApiBase {
 	 */
 	public function execute() {
 		$params = $this->extractRequestParams();
-		$listId = $this->getParameter( 'list' );
 		$this->requireOnlyOneParameter( $params, 'project', 'batch' );
 		$this->requireOnlyOneParameter( $params, 'title', 'batch' );
 
 		$repository = $this->getReadingListRepository( $this->getUser() );
+
+		$listId = $this->getParameter( 'list' );
 		if ( isset( $params['project'] ) ) {
+			// For single-entry mode, this will default to the user's default list,
+			// if the list parameter is not provided.
+			// NOTE: setupForUser is idempotent and will return the existing default list
+			// or otherwise initialze the default list if it doesn't exist yet.
+			if ( $listId === null ) {
+				$defaultList = $repository->setupForUser( true );
+				$listId = $defaultList->rl_id;
+			}
 			// Lists can contain titles from other wikis, and we have no idea of the exact title
 			// validation rules used there; but in practice it's unlikely the rules would differ,
 			// and allowing things like <> or # in the title could result in vulnerabilities in
@@ -46,6 +55,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 			$this->getResult()->addValue( null, $this->getModuleName(),
 				[ 'id' => $entry->rle_id, 'entry' => $entryData ] );
 		} else {
+			$this->requireAtLeastOneParameter( $params, 'list' );
 			$entryIds = $entryData = [];
 			foreach ( $this->getBatchOps( $params['batch'] ) as $op ) {
 				$this->requireAtLeastOneBatchParameter( $op, 'project' );
@@ -71,7 +81,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 		return [
 			'list' => [
 				ParamValidator::PARAM_TYPE => 'integer',
-				ParamValidator::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_REQUIRED => false,
 			],
 			'project' => [
 				ParamValidator::PARAM_TYPE => 'string',

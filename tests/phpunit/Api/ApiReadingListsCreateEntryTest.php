@@ -31,13 +31,14 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		$this->user = parent::getTestSysop()->getUser();
-		$this->readingListsSetup();
 	}
 
 	/**
 	 * @dataProvider createEntryProvider
 	 */
 	public function testCreateEntry( $projects, $apiParams, $expected ) {
+		$this->readingListsSetup();
+
 		$this->addProjects( $projects );
 		$listIds = $this->addLists( $this->user->mId, [
 			[
@@ -65,10 +66,56 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 		];
 	}
 
+	public function testCreateEntry_omittingListParamAddToExistingDefaultList() {
+		$defaultListId = $this->readingListsSetup();
+		$this->addProjects( [ 'https://en.wikipedia.org' ] );
+
+		$this->apiParams['project'] = 'https://en.wikipedia.org';
+		$this->apiParams['title'] = 'Kitten';
+
+		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
+		$this->assertEquals( 'Success', $result[0]['createentry']['result'] );
+
+		$entry = $result[0]['createentry']['entry'];
+
+		$this->assertEquals( $defaultListId, $entry['listId'] );
+		$this->assertEquals( 'https://en.wikipedia.org', $entry['project'] );
+		$this->assertEquals( 'Kitten', $entry['title'] );
+	}
+
+	public function testCreateEntry_omittingListParamSetupAndAddToDefaultList() {
+		$this->needsTeardown = true;
+		$this->setMwGlobals( [
+			'wgCentralIdLookupProvider' => 'local',
+		] );
+
+		$this->addProjects( [ 'https://en.wikipedia.org' ] );
+
+		$this->apiParams['project'] = 'https://en.wikipedia.org';
+		$this->apiParams['title'] = 'Another Kitten';
+
+		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
+		$this->assertEquals( 'Success', $result[0]['createentry']['result'] );
+
+		$entry = $result[0]['createentry']['entry'];
+		$this->assertEquals( 'https://en.wikipedia.org', $entry['project'] );
+		$this->assertEquals( 'Another Kitten', $entry['title'] );
+
+		$listsResult = $this->doApiRequest( [
+			'action' => 'query',
+			'meta' => 'readinglists',
+			'rllist' => $entry['listId'],
+		], null, false, $this->user );
+
+		$list = $listsResult[0]['query']['readinglists'][0];
+		$this->assertTrue( $list['default'] );
+	}
+
 	/**
 	 * @dataProvider createEntryBatchProvider
 	 */
 	public function testCreateEntryBatch( $projects, $apiParams, $expected ) {
+		$this->readingListsSetup();
 		$this->addProjects( $projects );
 		$listIds = $this->addLists( $this->user->mId, [
 			[
@@ -107,10 +154,25 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 		];
 	}
 
+	public function testCreateEntryBatch_withoutListParamFails() {
+		$this->readingListsSetup();
+		$this->addProjects( [ 'https://en.wikipedia.org' ] );
+
+		$this->apiParams['batch'] = json_encode( [
+			(object)[ 'project' => 'https://en.wikipedia.org', 'title' => 'Dog' ],
+			(object)[ 'project' => 'https://en.wikipedia.org', 'title' => 'Cat' ],
+		] );
+
+		$this->expectException( ApiUsageException::class );
+		$this->expectExceptionMessage( 'The parameter "list" is required' );
+		$this->doApiRequestWithToken( $this->apiParams, null, $this->user );
+	}
+
 	/**
 	 * @dataProvider createEntryUnrecognizedProjectProvider
 	 */
 	public function testCreateEntryUnrecognizedProject( $projects, $apiParams, $expected ) {
+		$this->readingListsSetup();
 		$this->addProjects( $projects );
 		$listIds = $this->addLists( $this->user->mId, [
 			[
@@ -140,7 +202,9 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 	}
 
 	protected function tearDown(): void {
-		$this->readingListsTeardown();
+		if ( $this->needsTeardown ) {
+			$this->readingListsTeardown();
+		}
 		parent::tearDown();
 	}
 }

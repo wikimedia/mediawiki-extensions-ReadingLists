@@ -6,6 +6,9 @@ use MediaWiki\Api\ApiUsageException;
 
 trait ReadingListsTestHelperTrait {
 
+	/** @var bool Whether readingListsTeardown() is needed */
+	private $needsTeardown = false;
+
 	/**
 	 * Creates reading_list rows from the given data, with some magic fields:
 	 * - missing user ids will be added automatically
@@ -121,7 +124,8 @@ trait ReadingListsTestHelperTrait {
 		return $ids;
 	}
 
-	private function readingListsSetup() {
+	private function readingListsSetup(): int {
+		$this->needsTeardown = true;
 		$this->setMwGlobals( [
 			'wgCentralIdLookupProvider' => 'local',
 		] );
@@ -130,7 +134,8 @@ trait ReadingListsTestHelperTrait {
 		$apiParams['action']  = 'readinglists';
 		$apiParams['format']  = 'json';
 		$this->addProjects( [ 'test' ] );
-		$this->doApiRequestWithToken( $apiParams, null, $this->user );
+		$result = $this->doApiRequestWithToken( $apiParams, null, $this->user );
+		return $result[0]['setup']['list']['id'];
 	}
 
 	private function readingListsTeardown() {
