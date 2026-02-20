@@ -79,27 +79,10 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			return;
 		}
 
+		$this->addSpecialPageLinkToUserMenu( $user, $sktemplate, $links );
+
 		$repository = $this->readingListRepositoryFactory->create( $centralId );
-
 		$defaultListId = $repository->getDefaultListIdForUser() ?: null;
-		$defaultReadingListUrl = self::getDefaultReadingListUrl( $user, $defaultListId );
-
-		$userMenu = $links['user-menu'] ?? [];
-
-		// Insert readinglists after 'mytalk', or after 'sandbox' if present.
-		// Reference: T413413.
-		$insertAfter = 'mytalk';
-		if ( isset( $userMenu['sandbox'] ) ) {
-			$insertAfter = 'sandbox';
-		}
-
-		$links['user-menu'] = wfArrayInsertAfter( $userMenu, [
-			'readinglists' => [
-				'text' => $sktemplate->msg( 'readinglists-menu-item' )->text(),
-				'href' => $defaultReadingListUrl,
-				'icon' => 'bookmarkList',
-			],
-		], $insertAfter );
 
 		if ( $defaultListId === null ) {
 			DeferredUpdates::addCallableUpdate(
@@ -154,6 +137,32 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		$output->addModules( 'ext.readingLists.bookmark' );
 	}
 
+	private function addSpecialPageLinkToUserMenu(
+		UserIdentity $user,
+		SkinTemplate $sktemplate,
+		array &$links
+	): void {
+		$userMenu = $links['user-menu'] ?? [];
+
+		// Insert readinglists after 'mytalk', or after 'sandbox' if present.
+		// Reference: T413413.
+		$insertAfter = 'mytalk';
+		if ( isset( $userMenu['sandbox'] ) ) {
+			$insertAfter = 'sandbox';
+		}
+
+		$userName = $user->getName();
+		$specialPageUrl = SpecialPage::getTitleFor( 'ReadingLists', $userName )->getLinkURL();
+
+		$links['user-menu'] = wfArrayInsertAfter( $userMenu, [
+			'readinglists' => [
+				'text' => $sktemplate->msg( 'readinglists-menu-item' )->text(),
+				'href' => $specialPageUrl,
+				'icon' => 'bookmarkList',
+			],
+		], $insertAfter );
+	}
+
 	private function isReadingListsEnabledForUser( UserIdentity $user ): bool {
 		$betaFeatureEnabled = $this->config->get( 'ReadingListBetaFeature' ) &&
 			ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' ) &&
@@ -177,21 +186,6 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		}
 
 		return $betaFeatureEnabled || ( $hiddenPreferenceEnabled && $inExperimentTreatment );
-	}
-
-	/**
-	 * Get the URL for the user's default reading list or fallback to generic page
-	 * @param UserIdentity $user
-	 * @param ?int $defaultListId
-	 * @return string
-	 */
-	private static function getDefaultReadingListUrl( UserIdentity $user, ?int $defaultListId ): string {
-		if ( $defaultListId === null ) {
-			return SpecialPage::getTitleFor( 'ReadingLists' )->getLinkURL();
-		}
-
-		$userName = $user->getName();
-		return SpecialPage::getTitleFor( 'ReadingLists', $userName . '/' . $defaultListId )->getLinkURL();
 	}
 
 	/**

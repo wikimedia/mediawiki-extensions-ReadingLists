@@ -32,6 +32,8 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
+		$this->setUserLang( 'en' );
+
 		$this->user = $this->getTestUser()->getUser();
 
 		$services = $this->getServiceContainer();
@@ -249,11 +251,47 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
 	}
 
+	public function testReadingListsSpecialPageLinkAddedToUserMenuAfterSandboxLink() {
+		$this->setupBetaFeature();
+
+		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
+		$skin = $this->createSkinTemplate( $title );
+
+		$links = $this->getLinks();
+
+		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$userMenu = $links['user-menu'];
+		$this->assertArrayHasKey( 'readinglists', $userMenu, 'Reading Lists link not found in user menu' );
+
+		// assert that the reading lists link is after the sandbox link
+		$sandboxIndex = array_search( 'sandbox', array_keys( $userMenu ) );
+		$readingListsIndex = array_search( 'readinglists', array_keys( $userMenu ) );
+
+		$expectedReadingListsIndex = $sandboxIndex + 1;
+		$this->assertSame(
+			$expectedReadingListsIndex,
+			$readingListsIndex,
+			'Reading Lists link should be immediately after Sandbox link in user menu'
+		);
+
+		$readingListsLink = $userMenu['readinglists'];
+
+		$this->assertSame( 'Saved pages', $readingListsLink['text'] );
+		$this->assertSame( 'bookmarkList', $readingListsLink['icon'] );
+		$this->assertStringEndsWith(
+			'Special:ReadingLists/' . strtr( $this->user->getName(), ' ', '_' ),
+			$readingListsLink['href'],
+			'URL should be like Special:ReadingLists/{user_name}'
+		);
+	}
+
 	private function getLinks() {
 		return [
 			'user-menu' => [
 				'userpage' => [ 'text' => 'TestUser', 'href' => '/wiki/User:TestUser' ],
 				'mytalk' => [ 'text' => 'Talk', 'href' => '/wiki/User_talk:TestUser' ],
+				'sandbox' => [ 'text' => 'Sandbox', 'href' => '/wiki/User:TestUser/sandbox' ],
 				'preferences' => [ 'text' => 'Preferences', 'href' => '/wiki/Special:Preferences' ],
 				'watchlist' => [ 'text' => 'Watchlist', 'href' => '/wiki/Special:Watchlist' ],
 			],
