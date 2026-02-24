@@ -7,6 +7,7 @@
 			"Omotecho",
 			"Otokoume",
 			"Shirayuki",
+			"Yaakiyu.jp",
 			"Yusuke1109"
 		]
 	},
@@ -78,7 +79,7 @@
 	"readinglists-share-url-notify": "このあとで読むリストに関する情報がクリップボードにコピーされました。",
 	"readinglists-import-app-launch-hint": "アプリの最新バージョンがインストールされていることを確認してください。",
 	"readinglists-beta-feature-name": "あとで読むリスト",
-	"readinglists-beta-feature-description": "後で読む記事の個人的なリストを収集します。",
+	"readinglists-beta-feature-description": "* ページを保存して、後で読んだり参照したりできます。\n* Wikipediaアプリとウェブサイトから保存したページはすべて、1つのリストに同期されます。\n\nご注意ください:\n* ベータ版では、新しい機能が追加される可能性があります。\n* このベータ機能は2026年7月まで有効で、その後はWikipediaで恒久的にアクセスできるようになります。上記のディスカッションリンクからフィードバックをお待ちしております。",
 	"readinglists-menu-item": "保存済みページ",
 	"readinglists-bookmark": "ブックマーク",
 	"readinglists-add-bookmark": "保存",
