@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Geraki",
 			"Jimkats",
 			"KATRINE1992",
 			"Matěj Suchánek",
@@ -18,5 +19,6 @@
 	"readinglists-browser-login-prompt": "Συνδεθείτε για να αποθηκεύσετε άρθρα",
 	"readinglists-browser-error-intro": "Ενα σφάλμα συνέβη: $1",
 	"readinglists-browser-extension-info-link-text": "Μάθετε περισσότερα",
-	"readinglists-browser-list-entry-limit-exceeded": "Το άρθρο δεν μπορεί να αποθηκευθεί. Έχετε φτάσει το όριο των $1 άρθρων ανά λίστα"
+	"readinglists-browser-list-entry-limit-exceeded": "Το άρθρο δεν μπορεί να αποθηκευθεί. Έχετε φτάσει το όριο των $1 άρθρων ανά λίστα",
+	"readinglists-beta-feature-name": "Αποθηκευμένες σελίδες"
 }
