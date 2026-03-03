@@ -37,11 +37,12 @@
 </template>
 
 <script>
-const { ref, defineComponent, computed } = require( 'vue' );
+const { ref, computed } = require( 'vue' );
 const { CdxPopover, CdxButton, CdxIcon } = require( '../../../codex.js' );
 const { cdxIconClose } = require( '../../../icons.json' );
 
-module.exports = defineComponent( {
+// @vue/component
+module.exports = exports = {
 	components: {
 		CdxPopover,
 		CdxButton,
@@ -87,6 +88,7 @@ module.exports = defineComponent( {
 
 		const handleClose = () => {
 			isOpen.value = false;
+			props.onDismiss();
 		};
 
 		return {
@@ -99,7 +101,7 @@ module.exports = defineComponent( {
 			handleClose
 		};
 	}
-} );
+};
 </script>
 
 <style lang="less">

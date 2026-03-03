@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OnboardingPopover rendering behavior matches the snapshot 1`] = `
+<div
+  aria-describedby="readinglists-onboarding-text"
+  aria-labelledby="readinglists-onboarding-title"
+  class="cdx-popover readinglists-onboarding-popover"
+  role="dialog"
+>
+  <header
+    class="cdx-popover__header"
+  >
+    
+    <div
+      class="readinglists-onboarding-banner"
+      style="--banner-image: url(/path/to/banner.svg);"
+    >
+      <button
+        aria-label="readinglists-onboarding-close-button"
+        class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only readinglists-onboarding-close-button"
+        type="button"
+      >
+        
+        <span
+          class="cdx-icon cdx-icon--medium"
+        >
+          <svg
+            aria-hidden="true"
+            height="20"
+            viewBox="0 0 20 20"
+            width="20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!--v-if-->
+            <g>
+              <path
+                d="m4.34 2.93 12.73 12.73-1.41 1.41L2.93 4.35z"
+              />
+              <path
+                d="M17.07 4.34 4.34 17.07l-1.41-1.41L15.66 2.93z"
+              />
+            </g>
+          </svg>
+        </span>
+        
+      </button>
+    </div>
+    
+  </header>
+  <div
+    class="cdx-popover__body"
+  >
+    
+    <div
+      class="readinglists-onboarding-content"
+    >
+      <h4
+        class="readinglists-onboarding-title"
+        id="readinglists-onboarding-title"
+      >
+        readinglists-onboarding-title
+      </h4>
+      <p
+        class="readinglists-onboarding-text"
+        id="readinglists-onboarding-text"
+      >
+        readinglists-onboarding-text
+      </p>
+    </div>
+    
+  </div>
+</div>
+`;
