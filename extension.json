@@ -282,7 +282,9 @@
 				"readinglists-onboarding-close-button",
 				"readinglists-onboarding-ok-button",
 				"readinglists-onboarding-saved-pages-title",
-				"readinglists-onboarding-saved-pages-text"
+				"readinglists-onboarding-saved-pages-text",
+				"readinglists-mobile-onboarding-saved-pages-title",
+				"readinglists-mobile-onboarding-saved-pages-text"
 			],
 			"packageFiles": [
 				"resources/ext.readingLists.onboarding/index.js",

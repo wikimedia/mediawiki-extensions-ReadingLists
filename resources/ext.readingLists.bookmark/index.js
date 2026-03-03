@@ -36,11 +36,16 @@ function initOnboardingPopover( anchorSelector ) {
 			'readinglists-onboarding-title',
 			'readinglists-onboarding-text',
 			mw.config.get( 'wgExtensionAssetsPath' ) + '/ReadingLists/resources/assets/onboarding-save.svg',
-			mw.config.get( 'skin' )
+			skinName
 		);
 	} );
 }
 
-if ( skinName === 'vector-2022' || skinName === 'minerva' ) {
+if ( !( skinName === 'vector-2022' || skinName === 'minerva' ) ) {
+	return;
+}
+
+const bookmarkForOnboarding = document.querySelector( '#ca-bookmark' );
+if ( bookmarkForOnboarding && !bookmarkForOnboarding.dataset.mwEntryId ) {
 	initOnboardingPopover( '#ca-bookmark' );
 }

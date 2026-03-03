@@ -99,9 +99,7 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 
 		const popoverStorageKey = 'readinglists-saved-pages-dialog-seen';
 
-		if ( !isMinerva && isSaved && listPageCount === 1 &&
-			!mw.storage.get( popoverStorageKey )
-		) {
+		if ( isSaved && !mw.storage.get( popoverStorageKey ) ) {
 			initSavedPagesOnboardingPopover();
 		} else {
 			// The following CSS classes are used here:
@@ -128,15 +126,37 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 	}
 
 	function initSavedPagesOnboardingPopover() {
+		const skinConfig = {
+			minerva: {
+				anchorSelector: '.minerva-user-menu',
+				titleMsgKey: 'readinglists-mobile-onboarding-saved-pages-title',
+				bodyMsgKey: 'readinglists-mobile-onboarding-saved-pages-text',
+				bannerImagePath: null
+			},
+			'vector-2022': {
+				anchorSelector: '#pt-readinglists-2',
+				titleMsgKey: 'readinglists-onboarding-saved-pages-title',
+				bodyMsgKey: 'readinglists-onboarding-saved-pages-text',
+				bannerImagePath: mw.config.get( 'wgExtensionAssetsPath' ) +
+					'/ReadingLists/resources/assets/onboarding-saved-list.svg'
+			}
+		};
+
+		const skinName = mw.config.get( 'skin' );
+		const config = skinConfig[ skinName ];
+		if ( !config ) {
+			return;
+		}
+
 		mw.loader.using( 'ext.readingLists.onboarding' ).then( ( require ) => {
 			const { initOnboardingPopover: initPopover } = require( 'ext.readingLists.onboarding' );
 			initPopover(
-				'#pt-readinglists-2',
+				config.anchorSelector,
 				'readinglists-saved-pages-dialog-seen',
-				'readinglists-onboarding-saved-pages-title',
-				'readinglists-onboarding-saved-pages-text',
-				mw.config.get( 'wgExtensionAssetsPath' ) + '/ReadingLists/resources/assets/onboarding-saved-list.svg',
-				mw.config.get( 'skin' )
+				config.titleMsgKey,
+				config.bodyMsgKey,
+				config.bannerImagePath,
+				skinName
 			);
 		} );
 	}

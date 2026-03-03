@@ -8,7 +8,7 @@ const MobileOnboardingPopover = require( './components/MobileOnboardingPopover.v
  * @param {string} config.storageKey Local storage key for popover display status.
  * @param {string} config.titleMsgKey i18n message key for popover title.
  * @param {string} config.bodyMsgKey i18n message key for popover body text.
- * @param {string} config.bannerImagePath Path to banner image.
+ * @param {string|null} [config.bannerImagePath] Path to banner image (desktop only).
  * @return {Promise<void>}
  */
 async function mountApp( config ) {
@@ -20,24 +20,18 @@ async function mountApp( config ) {
 
 	const { target, storageKey, titleMsgKey, bodyMsgKey, bannerImagePath, skinName } = config;
 
-	const bookmarkElement = target;
-
-	if ( !bookmarkElement || !bookmarkElement.offsetParent ) {
+	if ( !target || !target.offsetParent ) {
 		return;
 	}
 
-	if ( bookmarkElement.dataset.mwEntryId ) {
-		return;
-	}
-
-	const rect = bookmarkElement.getBoundingClientRect();
+	const rect = target.getBoundingClientRect();
 	const isInViewport = rect.top >= 0 && rect.bottom <= window.innerHeight;
 
 	if ( !isInViewport ) {
 		return;
 	}
 
-	showPopover( bookmarkElement, titleMsgKey, bodyMsgKey, bannerImagePath, skinName );
+	showPopover( target, titleMsgKey, bodyMsgKey, bannerImagePath, skinName );
 
 	// approximately 6 months expiration time
 	mw.storage.set( storageKey, true, 60 * 60 * 24 * 180 );
@@ -68,8 +62,14 @@ function validateConfig( config ) {
 		throw new Error( 'config.bodyMsgKey must be a string' );
 	}
 
-	if ( !config.bannerImagePath || typeof config.bannerImagePath !== 'string' ) {
-		throw new Error( 'config.bannerImagePath must be a string' );
+	if ( !config.skinName || typeof config.skinName !== 'string' ) {
+		throw new Error( 'config.skinName must be a string' );
+	}
+
+	if ( config.skinName !== 'minerva' ) {
+		if ( !config.bannerImagePath || typeof config.bannerImagePath !== 'string' ) {
+			throw new Error( 'config.bannerImagePath must be a string' );
+		}
 	}
 
 	if ( !mw.message( config.titleMsgKey ).exists() ) {
@@ -79,20 +79,16 @@ function validateConfig( config ) {
 	if ( !mw.message( config.bodyMsgKey ).exists() ) {
 		throw new Error( `Message key "${ config.bodyMsgKey }" does not exist` );
 	}
-
-	if ( !config.skinName || typeof config.skinName !== 'string' ) {
-		throw new Error( 'config.skinName must be a string' );
-	}
 }
 
 /**
- * @param {Element} bookmarkElement
+ * @param {Element} anchorElement
  * @param {string} titleMsgKey
  * @param {string} bodyMsgKey
  * @param {string} bannerImagePath
  * @param {string} skinName
  */
-function showPopover( bookmarkElement, titleMsgKey, bodyMsgKey, bannerImagePath, skinName ) {
+function showPopover( anchorElement, titleMsgKey, bodyMsgKey, bannerImagePath, skinName ) {
 	const isMinerva = skinName === 'minerva';
 
 	const container = document.createElement( 'div' );
@@ -101,7 +97,7 @@ function showPopover( bookmarkElement, titleMsgKey, bodyMsgKey, bannerImagePath,
 
 	const component = isMinerva ? MobileOnboardingPopover : OnboardingPopover;
 	const props = {
-		bookmarkElement,
+		bookmarkElement: anchorElement,
 		titleMsgKey,
 		bodyMsgKey,
 		onDismiss: removePopover
@@ -115,7 +111,7 @@ function showPopover( bookmarkElement, titleMsgKey, bodyMsgKey, bannerImagePath,
 	const app = createMwApp( component, props );
 
 	function handleResize() {
-		if ( !bookmarkElement.offsetParent ) {
+		if ( !anchorElement.offsetParent ) {
 			removePopover();
 		}
 	}
@@ -136,14 +132,14 @@ function showPopover( bookmarkElement, titleMsgKey, bodyMsgKey, bannerImagePath,
 		app.unmount();
 		container.remove();
 		window.removeEventListener( 'resize', throttledHandleResize );
-		bookmarkElement.removeEventListener( 'click', removePopover );
+		anchorElement.removeEventListener( 'click', removePopover );
 		observer.disconnect();
 	}
 
-	observer.observe( bookmarkElement );
+	observer.observe( anchorElement );
 	window.addEventListener( 'resize', throttledHandleResize );
 
-	bookmarkElement.addEventListener( 'click', removePopover );
+	anchorElement.addEventListener( 'click', removePopover );
 
 	app.mount( container );
 }
@@ -153,7 +149,7 @@ function showPopover( bookmarkElement, titleMsgKey, bodyMsgKey, bannerImagePath,
  * @param {string} storageKey Local storage key for popover display status.
  * @param {string} titleMsgKey i18n message key for popover title
  * @param {string} bodyMsgKey i18n message key for popover body text
- * @param {string} bannerImagePath Path to banner image
+ * @param {string|null} bannerImagePath Path to banner image (desktop only, null for mobile)
  * @param {string} skinName Name of the skin
  */
 function initOnboardingPopover(
