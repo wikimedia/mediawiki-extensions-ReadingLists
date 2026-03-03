@@ -2,7 +2,7 @@
 -- Source: sql/tables.json
 -- Do not modify this file directly.
 -- See https://www.mediawiki.org/wiki/Manual:Schema_changes
-CREATE TABLE reading_list (
+CREATE TABLE /*_*/reading_list (
   rl_id SERIAL NOT NULL,
   rl_user_id INT NOT NULL,
   rl_is_default SMALLINT DEFAULT 0 NOT NULL,
@@ -15,28 +15,28 @@ CREATE TABLE reading_list (
   PRIMARY KEY(rl_id)
 );
 
-CREATE INDEX rl_user_default ON reading_list (rl_user_id, rl_is_default);
+CREATE INDEX rl_user_default ON /*_*/reading_list (rl_user_id, rl_is_default);
 
-CREATE UNIQUE INDEX rl_user_deleted_name_id ON reading_list (
+CREATE UNIQUE INDEX rl_user_deleted_name_id ON /*_*/reading_list (
   rl_user_id, rl_deleted, rl_name, rl_id
 );
 
-CREATE UNIQUE INDEX rl_user_deleted_updated_id ON reading_list (
+CREATE UNIQUE INDEX rl_user_deleted_updated_id ON /*_*/reading_list (
   rl_user_id, rl_deleted, rl_date_updated,
   rl_id
 );
 
-CREATE UNIQUE INDEX rl_user_name_id ON reading_list (rl_user_id, rl_name, rl_id);
+CREATE UNIQUE INDEX rl_user_name_id ON /*_*/reading_list (rl_user_id, rl_name, rl_id);
 
-CREATE UNIQUE INDEX rl_user_updated_id ON reading_list (
+CREATE UNIQUE INDEX rl_user_updated_id ON /*_*/reading_list (
   rl_user_id, rl_deleted, rl_date_updated,
   rl_id
 );
 
-CREATE INDEX rl_deleted_updated ON reading_list (rl_deleted, rl_date_updated);
+CREATE INDEX rl_deleted_updated ON /*_*/reading_list (rl_deleted, rl_date_updated);
 
 
-CREATE TABLE reading_list_entry (
+CREATE TABLE /*_*/reading_list_entry (
   rle_id SERIAL NOT NULL,
   rle_rl_id INT NOT NULL,
   rle_user_id INT NOT NULL,
@@ -48,34 +48,34 @@ CREATE TABLE reading_list_entry (
   PRIMARY KEY(rle_id)
 );
 
-CREATE UNIQUE INDEX rle_list_project_title ON reading_list_entry (rle_rl_id, rle_rlp_id, rle_title);
+CREATE UNIQUE INDEX rle_list_project_title ON /*_*/reading_list_entry (rle_rl_id, rle_rlp_id, rle_title);
 
-CREATE UNIQUE INDEX rle_list_deleted_title_id ON reading_list_entry (
+CREATE UNIQUE INDEX rle_list_deleted_title_id ON /*_*/reading_list_entry (
   rle_rl_id, rle_deleted, rle_title,
   rle_id
 );
 
-CREATE UNIQUE INDEX rle_list_deleted_updated_id ON reading_list_entry (
+CREATE UNIQUE INDEX rle_list_deleted_updated_id ON /*_*/reading_list_entry (
   rle_rl_id, rle_deleted, rle_date_updated,
   rle_id
 );
 
-CREATE UNIQUE INDEX rle_user_updated_id ON reading_list_entry (
+CREATE UNIQUE INDEX rle_user_updated_id ON /*_*/reading_list_entry (
   rle_user_id, rle_date_updated, rle_id
 );
 
-CREATE UNIQUE INDEX rle_user_project_title ON reading_list_entry (
+CREATE UNIQUE INDEX rle_user_project_title ON /*_*/reading_list_entry (
   rle_user_id, rle_rlp_id, rle_title,
   rle_rl_id
 );
 
-CREATE INDEX rle_deleted_updated ON reading_list_entry (rle_deleted, rle_date_updated);
+CREATE INDEX rle_deleted_updated ON /*_*/reading_list_entry (rle_deleted, rle_date_updated);
 
 
-CREATE TABLE reading_list_project (
+CREATE TABLE /*_*/reading_list_project (
   rlp_id SERIAL NOT NULL,
   rlp_project TEXT NOT NULL,
   PRIMARY KEY(rlp_id)
 );
 
-CREATE UNIQUE INDEX rlp_project ON reading_list_project (rlp_project);
+CREATE UNIQUE INDEX rlp_project ON /*_*/reading_list_project (rlp_project);
