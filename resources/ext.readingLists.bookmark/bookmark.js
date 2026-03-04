@@ -5,7 +5,7 @@ const api = require( 'ext.readingLists.api' );
  */
 const currentReadingListSize = {};
 
-module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
+function initBookmark( bookmark, isMinerva, eventSource ) {
 	// Assumes last <span> element is the label.
 	// Even if there is no label defined, the <span> must exist.
 	const label = bookmark.lastElementChild;
@@ -131,14 +131,16 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 				anchorSelector: '.minerva-user-menu',
 				titleMsgKey: 'readinglists-mobile-onboarding-saved-pages-title',
 				bodyMsgKey: 'readinglists-mobile-onboarding-saved-pages-text',
-				bannerImagePath: null
+				bannerImagePath: null,
+				moduleName: 'ext.readingLists.onboarding.mobile'
 			},
 			'vector-2022': {
 				anchorSelector: '#pt-readinglists-2',
 				titleMsgKey: 'readinglists-onboarding-saved-pages-title',
 				bodyMsgKey: 'readinglists-onboarding-saved-pages-text',
 				bannerImagePath: mw.config.get( 'wgExtensionAssetsPath' ) +
-					'/ReadingLists/resources/assets/onboarding-saved-list.svg'
+					'/ReadingLists/resources/assets/onboarding-saved-list.svg',
+				moduleName: 'ext.readingLists.onboarding.desktop'
 			}
 		};
 
@@ -148,17 +150,14 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 			return;
 		}
 
-		mw.loader.using( 'ext.readingLists.onboarding' ).then( ( require ) => {
-			const { initOnboardingPopover: initPopover } = require( 'ext.readingLists.onboarding' );
-			initPopover(
-				config.anchorSelector,
-				'readinglists-saved-pages-dialog-seen',
-				config.titleMsgKey,
-				config.bodyMsgKey,
-				config.bannerImagePath,
-				skinName
-			);
-		} );
+		initOnboardingPopover(
+			config.anchorSelector,
+			'readinglists-saved-pages-dialog-seen',
+			config.titleMsgKey,
+			config.bodyMsgKey,
+			config.bannerImagePath,
+			config.moduleName
+		);
 	}
 
 	/**
@@ -272,4 +271,56 @@ module.exports = function initBookmark( bookmark, isMinerva, eventSource ) {
 	}
 
 	init();
-};
+}
+
+/**
+ * Initializes the onboarding popover by loading the appropriate skin-specific module.
+ *
+ * @param {string} anchorSelector CSS selector for the element to anchor popover to.
+ * @param {string} storageKey Local storage key for popover display status.
+ * @param {string} titleMsgKey i18n message key for popover title.
+ * @param {string} bodyMsgKey i18n message key for popover body text.
+ * @param {string|null} bannerImagePath Path to banner image (desktop only, null for mobile).
+ * @param {string} moduleName Resource loader module name to load.
+ */
+function initOnboardingPopover(
+	anchorSelector,
+	storageKey,
+	titleMsgKey,
+	bodyMsgKey,
+	bannerImagePath,
+	moduleName
+) {
+	const targetElement = document.querySelector( anchorSelector );
+
+	if ( !targetElement ) {
+		return;
+	}
+
+	if ( mw.storage.get( storageKey ) ) {
+		return;
+	}
+
+	setTimeout( () => {
+		mw.requestIdleCallback( () => {
+			mw.loader.using( moduleName ).then( () => {
+				const mountAppFn = require( moduleName );
+				try {
+					mountAppFn( {
+						target: targetElement,
+						storageKey,
+						titleMsgKey,
+						bodyMsgKey,
+						bannerImagePath
+					} ).catch( ( error ) => {
+						mw.log.error( 'Failed to mount onboarding popover:', error );
+					} );
+				} catch ( error ) {
+					mw.log.error( 'Failed to mount onboarding popover:', error );
+				}
+			} );
+		}, { timeout: 2000 } );
+	}, 1000 );
+}
+
+module.exports = { initBookmark, initOnboardingPopover };

@@ -1,4 +1,4 @@
-const initBookmark = require( './bookmark.js' );
+const { initBookmark, initOnboardingPopover } = require( './bookmark.js' );
 const skinName = mw.config.get( 'skin' );
 const isMinerva = skinName === 'minerva';
 const bookmarks = document.querySelectorAll( isMinerva ? '#ca-bookmark' : '.reading-lists-bookmark' );
@@ -22,30 +22,22 @@ bookmarks.forEach( ( bookmarkElement ) => {
 	initBookmark( bookmarkElement, isMinerva, eventSource );
 } );
 
-/**
- * Initializes the onboarding popover.
- *
- * @param {string} anchorSelector CSS selector for the element to anchor popover to.
- */
-function initOnboardingPopover( anchorSelector ) {
-	mw.loader.using( 'ext.readingLists.onboarding' ).then( ( require ) => {
-		const { initOnboardingPopover: initPopover } = require( 'ext.readingLists.onboarding' );
-		initPopover(
-			anchorSelector,
-			'readinglists-bookmark-dialog-seen',
-			'readinglists-onboarding-title',
-			'readinglists-onboarding-text',
-			mw.config.get( 'wgExtensionAssetsPath' ) + '/ReadingLists/resources/assets/onboarding-save.svg',
-			skinName
-		);
-	} );
-}
-
 if ( !( skinName === 'vector-2022' || skinName === 'minerva' ) ) {
 	return;
 }
 
+const moduleName = isMinerva ?
+	'ext.readingLists.onboarding.mobile' :
+	'ext.readingLists.onboarding.desktop';
+
 const bookmarkForOnboarding = document.querySelector( '#ca-bookmark' );
 if ( bookmarkForOnboarding && !bookmarkForOnboarding.dataset.mwEntryId ) {
-	initOnboardingPopover( '#ca-bookmark' );
+	initOnboardingPopover(
+		'#ca-bookmark',
+		'readinglists-bookmark-dialog-seen',
+		'readinglists-onboarding-title',
+		'readinglists-onboarding-text',
+		mw.config.get( 'wgExtensionAssetsPath' ) + '/ReadingLists/resources/assets/onboarding-save.svg',
+		moduleName
+	);
 }

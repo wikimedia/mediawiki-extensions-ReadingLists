@@ -38,8 +38,8 @@
 
 <script>
 const { ref, computed } = require( 'vue' );
-const { CdxPopover, CdxButton, CdxIcon } = require( '../../../codex.js' );
-const { cdxIconClose } = require( '../../../icons.json' );
+const { CdxPopover, CdxButton, CdxIcon } = require( '../../codex.js' );
+const { cdxIconClose } = require( '../../icons.json' );
 
 // @vue/component
 module.exports = exports = {

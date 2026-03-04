@@ -265,32 +265,35 @@
 			]
 		},
 		"ext.readingLists.onboarding": {
+			"dependencies": [
+				"mediawiki.storage",
+				"vue"
+			],
+			"packageFiles": [
+				"resources/ext.readingLists.onboarding/index.js",
+				"resources/ext.readingLists.onboarding/mountApp.js"
+			]
+		},
+		"ext.readingLists.onboarding.desktop": {
 			"class": "MediaWiki\\ResourceLoader\\CodexModule",
 			"codexComponents": [
 				"CdxButton",
 				"CdxIcon",
-				"CdxImage",
 				"CdxPopover"
 			],
 			"dependencies": [
-				"mediawiki.storage",
-				"vue"
+				"ext.readingLists.onboarding"
 			],
 			"messages": [
 				"readinglists-onboarding-title",
 				"readinglists-onboarding-text",
 				"readinglists-onboarding-close-button",
-				"readinglists-onboarding-ok-button",
 				"readinglists-onboarding-saved-pages-title",
-				"readinglists-onboarding-saved-pages-text",
-				"readinglists-mobile-onboarding-saved-pages-title",
-				"readinglists-mobile-onboarding-saved-pages-text"
+				"readinglists-onboarding-saved-pages-text"
 			],
 			"packageFiles": [
-				"resources/ext.readingLists.onboarding/index.js",
-				"resources/ext.readingLists.onboarding/mountApp.js",
-				"resources/ext.readingLists.onboarding/components/MobileOnboardingPopover.vue",
-				"resources/ext.readingLists.onboarding/components/OnboardingPopover.vue",
+				"resources/ext.readingLists.onboarding.desktop/index.js",
+				"resources/ext.readingLists.onboarding.desktop/OnboardingPopover.vue",
 				{
 					"name": "icons.json",
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
@@ -298,6 +301,26 @@
 						"cdxIconClose"
 					]
 				}
+			]
+		},
+		"ext.readingLists.onboarding.mobile": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexComponents": [
+				"CdxPopover"
+			],
+			"dependencies": [
+				"ext.readingLists.onboarding"
+			],
+			"messages": [
+				"readinglists-onboarding-title",
+				"readinglists-onboarding-text",
+				"readinglists-onboarding-ok-button",
+				"readinglists-mobile-onboarding-saved-pages-title",
+				"readinglists-mobile-onboarding-saved-pages-text"
+			],
+			"packageFiles": [
+				"resources/ext.readingLists.onboarding.mobile/index.js",
+				"resources/ext.readingLists.onboarding.mobile/MobileOnboardingPopover.vue"
 			]
 		}
 	},

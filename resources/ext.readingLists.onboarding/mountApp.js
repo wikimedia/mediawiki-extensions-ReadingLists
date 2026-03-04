@@ -1,9 +1,8 @@
 const { createMwApp } = require( 'vue' );
-const OnboardingPopover = require( './components/OnboardingPopover.vue' );
-const MobileOnboardingPopover = require( './components/MobileOnboardingPopover.vue' );
 
 /**
  * @param {Object} config Configuration object for the onboarding popover.
+ * @param {Object} config.component Vue component to create and render in showPopover.
  * @param {Element} config.target DOM element to anchor the popover to.
  * @param {string} config.storageKey Local storage key for popover display status.
  * @param {string} config.titleMsgKey i18n message key for popover title.
@@ -18,7 +17,7 @@ async function mountApp( config ) {
 
 	validateConfig( config );
 
-	const { target, storageKey, titleMsgKey, bodyMsgKey, bannerImagePath, skinName } = config;
+	const { component, target, storageKey, titleMsgKey, bodyMsgKey, bannerImagePath } = config;
 
 	if ( !target || !target.offsetParent ) {
 		return;
@@ -31,7 +30,7 @@ async function mountApp( config ) {
 		return;
 	}
 
-	showPopover( target, titleMsgKey, bodyMsgKey, bannerImagePath, skinName );
+	showPopover( component, target, titleMsgKey, bodyMsgKey, bannerImagePath );
 
 	// approximately 6 months expiration time
 	mw.storage.set( storageKey, true, 60 * 60 * 24 * 180 );
@@ -44,6 +43,10 @@ async function mountApp( config ) {
 function validateConfig( config ) {
 	if ( !config || typeof config !== 'object' ) {
 		throw new Error( 'config must be an object' );
+	}
+
+	if ( !config.component ) {
+		throw new Error( 'config must include a component' );
 	}
 
 	if ( !config.target || !( config.target instanceof Element ) ) {
@@ -62,16 +65,6 @@ function validateConfig( config ) {
 		throw new Error( 'config.bodyMsgKey must be a string' );
 	}
 
-	if ( !config.skinName || typeof config.skinName !== 'string' ) {
-		throw new Error( 'config.skinName must be a string' );
-	}
-
-	if ( config.skinName !== 'minerva' ) {
-		if ( !config.bannerImagePath || typeof config.bannerImagePath !== 'string' ) {
-			throw new Error( 'config.bannerImagePath must be a string' );
-		}
-	}
-
 	if ( !mw.message( config.titleMsgKey ).exists() ) {
 		throw new Error( `Message key "${ config.titleMsgKey }" does not exist` );
 	}
@@ -82,27 +75,24 @@ function validateConfig( config ) {
 }
 
 /**
+ * @param {Object} component Vue component to render
  * @param {Element} anchorElement
  * @param {string} titleMsgKey
  * @param {string} bodyMsgKey
  * @param {string} bannerImagePath
- * @param {string} skinName
  */
-function showPopover( anchorElement, titleMsgKey, bodyMsgKey, bannerImagePath, skinName ) {
-	const isMinerva = skinName === 'minerva';
-
+function showPopover( component, anchorElement, titleMsgKey, bodyMsgKey, bannerImagePath ) {
 	const container = document.createElement( 'div' );
 	container.classList.add( 'reading-lists-onboarding-container' );
 	document.body.appendChild( container );
 
-	const component = isMinerva ? MobileOnboardingPopover : OnboardingPopover;
 	const props = {
 		bookmarkElement: anchorElement,
 		titleMsgKey,
 		bodyMsgKey,
 		onDismiss: removePopover
 	};
-	if ( !isMinerva ) {
+	if ( bannerImagePath ) {
 		const img = new Image();
 		img.src = bannerImagePath;
 		props.bannerImagePath = bannerImagePath;
@@ -144,58 +134,4 @@ function showPopover( anchorElement, titleMsgKey, bodyMsgKey, bannerImagePath, s
 	app.mount( container );
 }
 
-/**
- * @param {string} targetSelector CSS selector for the element to anchor popover to
- * @param {string} storageKey Local storage key for popover display status.
- * @param {string} titleMsgKey i18n message key for popover title
- * @param {string} bodyMsgKey i18n message key for popover body text
- * @param {string|null} bannerImagePath Path to banner image (desktop only, null for mobile)
- * @param {string} skinName Name of the skin
- */
-function initOnboardingPopover(
-	targetSelector,
-	storageKey,
-	titleMsgKey,
-	bodyMsgKey,
-	bannerImagePath,
-	skinName
-) {
-	const targetElement = document.querySelector( targetSelector );
-
-	if ( !targetElement ) {
-		return;
-	}
-
-	if ( mw.storage.get( storageKey ) ) {
-		return;
-	}
-
-	if ( skinName !== 'vector-2022' && skinName !== 'minerva' ) {
-		return;
-	}
-
-	setTimeout( () => {
-		mw.requestIdleCallback( () => {
-			mw.loader.using( 'ext.readingLists.onboarding' ).then( () => {
-				const mountAppFn = require( 'ext.readingLists.onboarding' );
-				try {
-					mountAppFn( {
-						target: targetElement,
-						storageKey,
-						titleMsgKey,
-						bodyMsgKey,
-						bannerImagePath,
-						skinName
-					} ).catch( ( error ) => {
-						mw.log.error( 'Failed to mount onboarding popover:', error );
-					} );
-				} catch ( error ) {
-					mw.log.error( 'Failed to mount onboarding popover:', error );
-				}
-			} );
-		}, { timeout: 2000 } );
-	}, 1000 );
-}
-
 module.exports = mountApp;
-module.exports.initOnboardingPopover = initOnboardingPopover;

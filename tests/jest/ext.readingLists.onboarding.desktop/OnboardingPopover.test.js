@@ -1,6 +1,6 @@
 const { mount, config } = require( '@vue/test-utils' );
 
-const OnboardingPopover = require( '../../../resources/ext.readingLists.onboarding/components/OnboardingPopover.vue' );
+const OnboardingPopover = require( '../../../resources/ext.readingLists.onboarding.desktop/OnboardingPopover.vue' );
 
 describe( 'OnboardingPopover', () => {
 	let mockBookmarkElement;

@@ -16,7 +16,7 @@
 
 <script>
 const { ref, computed } = require( 'vue' );
-const { CdxPopover } = require( '../../../codex.js' );
+const { CdxPopover } = require( '../../codex.js' );
 
 // @vue/component
 module.exports = exports = {
