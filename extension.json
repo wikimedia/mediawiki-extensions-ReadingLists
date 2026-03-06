@@ -16,6 +16,7 @@
 	"descriptionmsg": "readinglists-desc",
 	"license-name": "GPL-2.0-or-later",
 	"type": "other",
+	"callback": "MediaWiki\\Extension\\ReadingLists\\ExtensionRegistration::onRegistration",
 	"requires": {
 		"MediaWiki": ">= 1.46"
 	},
@@ -93,6 +94,10 @@
 		"ReadingListsEnableSpecialPageToolbar": {
 			"value": false,
 			"description": "Enable sorting toolbar on reading lists special page. @unstable"
+		},
+		"ReadingListsBetaDefaultForNewAccountsAfter": {
+			"value": null,
+			"description": "MW timestamp in YYYYMMDDHHMMSS format (e.g. '20260301000000') after which new accounts get the ReadingLists beta feature enabled by default. Set to null to disable."
 		}
 	},
 	"DefaultUserOptions": {
