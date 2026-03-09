@@ -24,5 +24,7 @@
 	"readinglists-menu-item": "Сачувано",
 	"readinglists-add-bookmark": "Сачувај",
 	"readinglists-onboarding-close-button": "Затвори",
-	"readinglists-onboarding-saved-pages-title": "Ваше сачуване странице"
+	"readinglists-onboarding-ok-button": "У реду",
+	"readinglists-onboarding-saved-pages-title": "Ваше сачуване странице",
+	"readinglists-mobile-onboarding-saved-pages-title": "Сачувано"
 }

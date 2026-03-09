@@ -46,5 +46,8 @@
 	"readinglists-add-bookmark": "Späicheren",
 	"readinglists-remove-bookmark": "Läschen",
 	"readinglists-onboarding-close-button": "Zoumaachen",
-	"readinglists-onboarding-saved-pages-title": "Är gespäichert Säiten"
+	"readinglists-onboarding-ok-button": "OK",
+	"readinglists-onboarding-saved-pages-title": "Är gespäichert Säiten",
+	"readinglists-mobile-onboarding-saved-pages-title": "Gespäichert Säiten",
+	"readinglists-mobile-onboarding-saved-pages-text": "Gräift iwwer dëse Menü op all Är gespäichert Säiten zou."
 }

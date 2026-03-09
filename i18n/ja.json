@@ -78,7 +78,7 @@
 	"readinglists-import-button-hint": "ボタンをタップ:",
 	"readinglists-share-url-notify": "このあとで読むリストに関する情報がクリップボードにコピーされました。",
 	"readinglists-import-app-launch-hint": "アプリの最新バージョンがインストールされていることを確認してください。",
-	"readinglists-beta-feature-name": "あとで読むリスト",
+	"readinglists-beta-feature-name": "保存済みページ",
 	"readinglists-beta-feature-description": "* ページを保存して、後で読んだり参照したりできます。\n* Wikipediaアプリとウェブサイトから保存したページはすべて、1つのリストに同期されます。\n\nご注意ください:\n* ベータ版では、新しい機能が追加される可能性があります。\n* このベータ機能は2026年7月まで有効で、その後はWikipediaで恒久的にアクセスできるようになります。上記のディスカッションリンクからフィードバックをお待ちしております。",
 	"readinglists-menu-item": "保存済みページ",
 	"readinglists-bookmark": "ブックマーク",
@@ -86,5 +86,9 @@
 	"readinglists-remove-bookmark": "保存解除",
 	"readinglists-onboarding-title": "後のためにページを保存する",
 	"readinglists-onboarding-text": "興味のあるものを見つけましたか？個人リストに保存できるようになりました。",
-	"readinglists-onboarding-close-button": "閉じる"
+	"readinglists-onboarding-close-button": "閉じる",
+	"readinglists-onboarding-saved-pages-title": "あなたの保存済みページ",
+	"readinglists-onboarding-saved-pages-text": "ここからすべてのあなたの保存済みページにアクセスします。",
+	"readinglists-mobile-onboarding-saved-pages-title": "保存済みページ",
+	"readinglists-mobile-onboarding-saved-pages-text": "このメニューからすべてのあなたの保存済みページにアクセスします。"
 }

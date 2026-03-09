@@ -82,6 +82,8 @@
 	"readinglists-onboarding-title": "Tallenna sivuja myöhempää lukemista varten",
 	"readinglists-onboarding-text": "Löysitkö jotain mielenkiintoista? Voit nyt tallentaa sen henkilökohtaiselle listallesi.",
 	"readinglists-onboarding-close-button": "Sulje",
+	"readinglists-onboarding-ok-button": "OK",
 	"readinglists-onboarding-saved-pages-title": "Tallennetut sivusi",
-	"readinglists-onboarding-saved-pages-text": "Pääse kaikkiin tallennettuihin sivuihisi täällä."
+	"readinglists-onboarding-saved-pages-text": "Pääse kaikkiin tallennettuihin sivuihisi täällä.",
+	"readinglists-mobile-onboarding-saved-pages-title": "Tallennetut sivut"
 }

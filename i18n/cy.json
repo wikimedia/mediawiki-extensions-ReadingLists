@@ -15,5 +15,7 @@
 	"readinglists-default-title": "eitemau wedi'u cadw",
 	"readinglists-no-title": "Rhestr heb deitl",
 	"readinglists-export": "Rhannu rhestr",
-	"readinglists-import-button-label": "Mewnforio"
+	"readinglists-import-button-label": "Mewnforio",
+	"readinglists-onboarding-ok-button": "Iawn",
+	"readinglists-mobile-onboarding-saved-pages-title": "Tudalennau wedi'u cadw"
 }
