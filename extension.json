@@ -175,7 +175,7 @@
 			"messages": [
 				"cancel",
 				"readinglists-browser-error-intro",
-				"readinglists-db-error-no-such-list",
+				"readinglists-special-error-list-not-found",
 				"readinglists-display-direction",
 				"readinglists-display-direction-ascending",
 				"readinglists-display-direction-descending",

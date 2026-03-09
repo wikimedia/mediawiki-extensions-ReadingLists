@@ -130,15 +130,18 @@ module.exports = exports = {
 	},
 	methods: {
 		handleError( err ) {
-			// eslint-disable-next-line no-console
-			console.error( err );
-
 			if ( typeof err === 'string' ) {
-				const key = err === 'badinteger' ? 'readinglists-db-error-no-such-list' : err;
-				const args = key === 'readinglists-db-error-no-such-list' ? this.listId : undefined;
+				const listNotFoundErrors = [
+					'badinteger',
+					'readinglists-db-error-no-such-list',
+					'readinglists-db-error-not-own-list',
+					'readinglists-db-error-list-deleted'
+				];
+				const key = listNotFoundErrors.includes( err ) ?
+					'readinglists-special-error-list-not-found' : err;
 
 				// eslint-disable-next-line mediawiki/msg-doc
-				this.error = mw.msg( key, args );
+				this.error = mw.msg( key );
 			} else {
 				this.error = err.toString();
 			}

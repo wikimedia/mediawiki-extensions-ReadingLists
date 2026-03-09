@@ -53,6 +53,7 @@
 	"readinglists-error": "Error shown to older browsers.",
 	"readinglists-import-error": "Error that shows when you try to import bad data.",
 	"readinglists-import-size-error": "Error that shows on large lists.",
+	"readinglists-special-error-list-not-found": "Error shown on Special:ReadingLists when a user tries to view a reading list that does not exist, has been deleted, or belongs to another user.",
 	"special-tab-readinglists-short": "Tab that shows on special page to take you back to your lists",
 	"readinglists-title": "Title that appears on the [[Special:ReadingLists]] page, which shows an overview of all reading lists that a user has.",
 	"readinglists-total-lists": "Message that shows the total number of reading lists a user created.\n\nParameters:\n* $1 - Lists count",

@@ -43,6 +43,7 @@
 	"readinglists-error": "Your browser is unable to use the reading lists feature. Please enable JavaScript or try in another browser.",
 	"readinglists-import-error": "Unable to display the list from the data given.",
 	"readinglists-import-size-error": "The list is too large to display.",
+	"readinglists-special-error-list-not-found": "This list could not be found.",
 	"special-tab-readinglists-short": "Your lists",
 	"readinglists-title": "Saved pages",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|list|lists}}",
