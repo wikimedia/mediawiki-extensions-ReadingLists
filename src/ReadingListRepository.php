@@ -710,7 +710,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->caller( __METHOD__ )->fetchFieldValues();
 
 		if ( !$listIds ) {
-			throw new ReadingListRepositoryException( 'readinglists-db-error-no-lists' );
+			return new FakeResultWrapper( [] );
 		}
 
 		return $this->getListEntries( $listIds, $sortBy, $sortDir, $limit, $from );
