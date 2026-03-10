@@ -103,5 +103,6 @@
 	"readinglists-onboarding-saved-pages-title": "Title of the saved pages onboarding popover, displayed the first time a user saves a page to their reading list.",
 	"readinglists-onboarding-saved-pages-text": "Body text of the saved pages onboarding popover. The popover is displayed the first time a user saves a page to their reading list.",
 	"readinglists-mobile-onboarding-saved-pages-title": "Title of the mobile saved pages onboarding popover, displayed after a user saves their first page. Points to the user menu where saved pages can be accessed.",
-	"readinglists-mobile-onboarding-saved-pages-text": "Body text of the mobile saved pages onboarding popover, displayed after a user saves their first page. Points to the user menu where saved pages can be accessed."
+	"readinglists-mobile-onboarding-saved-pages-text": "Body text of the mobile saved pages onboarding popover, displayed after a user saves their first page. Points to the user menu where saved pages can be accessed.",
+	"readinglists-beta-tag": "Label for the beta tag displayed next to the page title on Special:ReadingLists, indicating that the feature is still in development."
 }

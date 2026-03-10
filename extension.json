@@ -163,6 +163,7 @@
 				"CdxCheckbox",
 				"CdxDialog",
 				"CdxIcon",
+				"CdxInfoChip",
 				"CdxMenuButton",
 				"CdxMessage",
 				"CdxProgressBar",
@@ -174,6 +175,7 @@
 			],
 			"messages": [
 				"cancel",
+				"readinglists-beta-tag",
 				"readinglists-browser-error-intro",
 				"readinglists-special-error-list-not-found",
 				"readinglists-display-direction",
