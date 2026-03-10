@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Amire80",
+			"Ats384",
 			"Guycn2"
 		]
 	},
@@ -85,5 +86,6 @@
 	"readinglists-onboarding-text": "מצאת משהו מעניין? עכשיו אפשר לשמור את זה לרשימה האישית שלך.",
 	"readinglists-onboarding-close-button": "סגירה",
 	"readinglists-onboarding-saved-pages-title": "הדפים השמורים שלך",
-	"readinglists-onboarding-saved-pages-text": "גישה לכל הדפים השמורים שלך כאן."
+	"readinglists-onboarding-saved-pages-text": "גישה לכל הדפים השמורים שלך כאן.",
+	"readinglists-mobile-onboarding-saved-pages-title": "דפים שמורים"
 }

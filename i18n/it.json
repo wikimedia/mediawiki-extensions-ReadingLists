@@ -43,5 +43,7 @@
 	"readinglists-import-button-label": "Apri nell'app",
 	"readinglists-menu-item": "Pagine salvate",
 	"readinglists-add-bookmark": "Salva",
-	"readinglists-remove-bookmark": "Annulla salvataggio"
+	"readinglists-remove-bookmark": "Annulla salvataggio",
+	"readinglists-onboarding-ok-button": "OK",
+	"readinglists-mobile-onboarding-saved-pages-title": "Pagine salvate"
 }
