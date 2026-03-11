@@ -11,6 +11,7 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
+use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Permissions\Authority;
 use MediaWiki\Rest\Validator\Validator;
@@ -280,6 +281,16 @@ trait ReadingListsHandlerTrait {
 				NumericDef::PARAM_MAX => $maxLimit,
 			],
 		];
+	}
+
+	/**
+	 * @see ApiTrait::invalidateBookmarkBloomFilter (identical, for Action API handlers)
+	 */
+	protected function invalidateBookmarkBloomFilter( UserIdentity $user ): void {
+		/** @var BookmarkEntryLookupService $lookupService */
+		$lookupService = MediaWikiServices::getInstance()
+			->getService( 'ReadingLists.BookmarkEntryLookupService' );
+		$lookupService->invalidateBookmarkBloomFilter( $user );
 	}
 
 	/**

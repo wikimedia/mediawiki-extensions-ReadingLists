@@ -11,6 +11,7 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Wikimedia\Rdbms\Database;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IDBAccessObject;
@@ -750,6 +751,60 @@ class ReadingListRepository implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Get saved page titles for a given project and the current user.
+	 * Used to build a bloom filter for fast bookmark lookups.
+	 *
+	 * @param string $project Project identifier (e.g. '@local')
+	 * @param int $limit
+	 * @param int $flags Database access flags
+	 * @return string[] Array of rle_title values
+	 * @throws ReadingListRepositoryException
+	 */
+	public function getSavedPageTitlesForProject(
+		string $project,
+		int $limit = 1000,
+		int $flags = 0
+	) {
+		$this->assertUser();
+		$this->assertFieldLength( 'rlp_project', $project );
+
+		$projectId = $this->getProjectId( $project );
+		if ( !$projectId ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-project',
+				[ $project ] );
+		}
+
+		return $this->getReadConnection( $flags )->newSelectQueryBuilder()
+			->distinct()
+			->select( [ 'rle_title' ] )
+			->from( 'reading_list_entry' )
+			->join( 'reading_list', null, 'rl_id = rle_rl_id' )
+			->where( [
+				'rle_rlp_id' => $projectId,
+				'rle_user_id' => $this->userId,
+				'rle_deleted' => 0,
+				'rl_deleted' => 0
+			] )
+			->limit( $limit )
+			->caller( __METHOD__ )
+			->fetchFieldValues();
+	}
+
+	/**
+	 * Returns WANObjectCache set options for the DB connection used to build
+	 * the bookmark bloom filter.
+	 *
+	 * This lets WANObjectCache record freshness metadata based on whether the
+	 * source query used a replica or READ_LATEST.
+	 *
+	 * @param int $flags IDBAccessObject read flags
+	 * @return array
+	 */
+	public function getSavedPagesCacheSetOptions( int $flags = 0 ): array {
+		return Database::getCacheSetOptions( $this->getReadConnection( $flags ) );
+	}
+
+	/**
 	 * Delete a page from a list.
 	 * @param int $id
 	 * @return void
@@ -859,6 +914,16 @@ class ReadingListRepository implements LoggerAwareInterface {
 			$this->dbw->endAtomic( __METHOD__ );
 		}
 	}
+
+	private function getReadConnection( int $flags ): IReadableDatabase {
+		if ( ( $flags & IDBAccessObject::READ_LATEST ) == IDBAccessObject::READ_LATEST ) {
+			return $this->dbw;
+		}
+
+		return $this->dbr;
+	}
+
+	// sync
 
 	/**
 	 * Get lists that have changed since a given date.
@@ -1032,7 +1097,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @throws ReadingListRepositoryException
 	 * @return IResultWrapper<ReadingListRowWithEntryId>
 	 */
-	public function getListsByPage( $project, $title, $limit = 1000, $from = null ) {
+	public function getListsByPage( $project, $title, $limit = 1000, $from = null ): IResultWrapper {
 		$this->assertUser();
 		$projectId = $this->getProjectId( $project );
 		if ( !$projectId ) {

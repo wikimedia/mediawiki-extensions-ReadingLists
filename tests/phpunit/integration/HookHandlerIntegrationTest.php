@@ -7,8 +7,10 @@ use MediaWiki\Extension\ReadingLists\Constants;
 use MediaWiki\Extension\ReadingLists\HookHandler;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
+use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\Extension\TestKitchen\Sdk\Experiment;
 use MediaWiki\Extension\TestKitchen\Sdk\ExperimentManager;
+use MediaWiki\JobQueue\JobQueueGroup;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Request\FauxRequest;
@@ -20,6 +22,9 @@ use MediaWiki\User\CentralId\CentralIdLookupFactory;
 use MediaWiki\User\User;
 use MediaWikiIntegrationTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\NullLogger;
+use Wikimedia\ObjectCache\HashBagOStuff;
+use Wikimedia\ObjectCache\WANObjectCache;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -100,9 +105,24 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		return new HookHandler(
 			$services->getMainConfig(),
 			$mockFactory,
+			$this->createBookmarkEntryLookupService( $mockFactory, $mockCentralIdLookupFactory ),
 			$services->getUserOptionsLookup(),
 			$mockCentralIdLookupFactory,
 			$services->getUserIdentityUtils()
+		);
+	}
+
+	private function createBookmarkEntryLookupService(
+		ReadingListRepositoryFactory $mockFactory,
+		CentralIdLookupFactory $mockCentralIdLookupFactory
+	): BookmarkEntryLookupService {
+		return new BookmarkEntryLookupService(
+			$mockFactory,
+			new WANObjectCache( [ 'cache' => new HashBagOStuff() ] ),
+			$mockCentralIdLookupFactory,
+			$this->createMock( JobQueueGroup::class ),
+			new NullLogger(),
+			10000
 		);
 	}
 
@@ -124,6 +144,7 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$mockRepository->method( 'getDefaultListIdForUser' )->willReturn( 1 );
 		$mockRepository->method( 'selectValidList' )->willReturn( $mockList );
 		$mockRepository->method( 'getListsByPage' )->willReturn( new FakeResultWrapper( $pageLists ) );
+		$mockRepository->method( 'getSavedPageTitlesForProject' )->willReturn( [] );
 
 		return $mockRepository;
 	}

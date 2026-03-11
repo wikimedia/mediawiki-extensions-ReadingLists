@@ -583,6 +583,24 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		);
 	}
 
+	public function testGetSavedPageTitlesForProject_excludesDeletedLists() {
+		$this->addProjects( [ 'dummy', 'https://en.wikipedia.org' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$activeList = $repository->addList( 'active', 'active' );
+		$deletedList = $repository->addList( 'deleted', 'deleted' );
+
+		$repository->addListEntry( $activeList->rl_id, 'https://en.wikipedia.org', 'Cat' );
+		$repository->addListEntry( $deletedList->rl_id, 'https://en.wikipedia.org', 'Dog' );
+		$repository->deleteList( $deletedList->rl_id );
+
+		$this->assertEqualsCanonicalizing(
+			[ 'Cat' ],
+			$repository->getSavedPageTitlesForProject( 'https://en.wikipedia.org' )
+		);
+	}
+
 	public function testAddListEntry() {
 		$this->addProjects( [ 'dummy' ] );
 		$repository = $this->getReadingListRepository( 1 );

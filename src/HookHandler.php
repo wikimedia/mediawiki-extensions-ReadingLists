@@ -7,6 +7,7 @@ use MediaWiki\Api\Hook\APIQuerySiteInfoGeneralInfoHook;
 use MediaWiki\Config\Config;
 use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\Extension\BetaFeatures\BetaFeatures;
+use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\Extension\TestKitchen\Sdk\ExperimentManager;
 use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
 use MediaWiki\Registration\ExtensionRegistry;
@@ -37,6 +38,7 @@ class HookHandler implements
 	public function __construct(
 		private readonly Config $config,
 		private readonly ReadingListRepositoryFactory $readingListRepositoryFactory,
+		private readonly BookmarkEntryLookupService $bookmarkEntryLookupService,
 		private readonly UserOptionsLookup $userOptionsLookup,
 		private readonly CentralIdLookupFactory $centralIdLookupFactory,
 		private readonly UserIdentityUtils $userIdentityUtils,
@@ -120,25 +122,32 @@ class HookHandler implements
 		}
 
 		$list = null;
-		$entry = false;
+		$entry = null;
 		$hasCustomListEntry = false;
 
 		if ( $defaultListId !== null ) {
 			$list = $repository->selectValidList( $defaultListId );
-			$listsByPage = $repository->getListsByPage(
-				'@local',
-				$title->getPrefixedDBkey(),
-				2
+			$status = $this->bookmarkEntryLookupService->getBookmarkEntryStatus(
+				$title,
+				$centralId
 			);
-			foreach ( $listsByPage as $pageList ) {
-				if ( $entry === false ) {
-					// this is the default list entry
-					// or custom if the page is not in the default list
-					$entry = $pageList;
-				}
-				if ( !$pageList->rl_is_default ) {
-					$hasCustomListEntry = true;
-					break;
+			// On failure, fall through with $entry = null so the button
+			// renders in its default "unsaved" state rather than disappearing.
+			$entry = $status->isOK() ? $status->getValue() : null;
+
+			if ( $entry !== null ) {
+				$listsByPage = $repository->getListsByPage(
+					'@local',
+					$title->getPrefixedDBkey(),
+					2
+				);
+				foreach ( $listsByPage as $pageList ) {
+					if ( $entry === null || $pageList->rl_is_default ) {
+						$entry = $pageList;
+					}
+					if ( !$pageList->rl_is_default ) {
+						$hasCustomListEntry = true;
+					}
 				}
 			}
 		}
@@ -148,12 +157,12 @@ class HookHandler implements
 		// after list setup.
 		$links['views']['bookmark'] = [
 			'text' => $sktemplate->msg(
-				'readinglists-' . ( $entry === false ? 'add' : 'remove' ) . '-bookmark'
+				'readinglists-' . ( $entry === null ? 'add' : 'remove' ) . '-bookmark'
 			)->text(),
-			'icon' => $entry === false ? 'bookmarkOutline' : 'bookmark',
+			'icon' => $entry === null ? 'bookmarkOutline' : 'bookmark',
 			'href' => '#',
 			'data-mw-list-id' => $list ? $list->rl_id : null,
-			'data-mw-entry-id' => $entry === false ? null : $entry->rle_id,
+			'data-mw-entry-id' => $entry ? $entry->rle_id : null,
 			'data-mw-in-custom-list' => $hasCustomListEntry ? 1 : null,
 			'data-mw-list-page-count' => $list ? $list->rl_size : 0,
 			'link-class' => 'reading-lists-bookmark'

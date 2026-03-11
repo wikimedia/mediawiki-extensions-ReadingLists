@@ -10,6 +10,7 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
+use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
@@ -107,6 +108,16 @@ trait ApiTrait {
 			$config->get( 'ReadingListsMaxEntriesPerList' ) );
 		$repository->setLogger( $this->logger );
 		return $repository;
+	}
+
+	/**
+	 * @see ReadingListsHandlerTrait::invalidateBookmarkBloomFilter (identical, for REST handlers)
+	 */
+	protected function invalidateBookmarkBloomFilter( UserIdentity $user ): void {
+		/** @var BookmarkEntryLookupService $lookupService */
+		$lookupService = MediaWikiServices::getInstance()
+			->getService( 'ReadingLists.BookmarkEntryLookupService' );
+		$lookupService->invalidateBookmarkBloomFilter( $user );
 	}
 
 	/**

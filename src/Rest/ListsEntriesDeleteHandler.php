@@ -78,6 +78,8 @@ class ListsEntriesDeleteHandler extends SimpleHandler {
 			$this->die( $e->getMessageObject() );
 		}
 
+		$this->invalidateBookmarkBloomFilter( $this->getAuthority()->getUser() );
+
 		// Return value is expected to be an empty json object
 		return $this->getResponseFactory()->createJson( new stdClass );
 	}

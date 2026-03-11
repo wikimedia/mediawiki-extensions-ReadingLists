@@ -3,6 +3,7 @@
 namespace MediaWiki\Extension\ReadingLists\Tests\Integration\Rest;
 
 use MediaWiki\Extension\ReadingLists\Rest\ListsDeleteHandler;
+use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\Extension\ReadingLists\Tests\RestTestHelperTrait;
 use MediaWiki\Rest\LocalizedHttpException;
 use MediaWiki\Rest\RequestData;
@@ -20,6 +21,11 @@ class ListsDeleteHandlerTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	public function testListsDeleteSuccess() {
+		$bookmarkEntryLookupService = $this->createMock( BookmarkEntryLookupService::class );
+		$bookmarkEntryLookupService->expects( $this->once() )
+			->method( 'invalidateBookmarkBloomFilter' );
+		$this->setService( 'ReadingLists.BookmarkEntryLookupService', $bookmarkEntryLookupService );
+
 		$services = $this->getServiceContainer();
 		$handler = new ListsDeleteHandler(
 			$services->getDBLoadBalancerFactory(),

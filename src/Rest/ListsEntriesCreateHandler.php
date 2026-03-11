@@ -80,7 +80,9 @@ class ListsEntriesCreateHandler extends SimpleHandler {
 		$project = $validatedBody['project'];
 		$title = $validatedBody['title'];
 
-		return $this->createListEntry( $id, $project, $title, $this->getRepository() );
+		$result = $this->createListEntry( $id, $project, $title, $this->getRepository() );
+		$this->invalidateBookmarkBloomFilter( $this->getAuthority()->getUser() );
+		return $result;
 	}
 
 	/**

@@ -68,9 +68,11 @@ class ListsDeleteHandler extends SimpleHandler {
 	 */
 	public function run( int $id ) {
 		$this->checkAuthority( $this->getAuthority() );
+		$user = $this->getAuthority()->getUser();
 
 		try {
 			$this->getRepository()->deleteList( $id );
+			$this->invalidateBookmarkBloomFilter( $user );
 		} catch ( ReadingListRepositoryException $e ) {
 			$this->die( $e->getMessageObject() );
 		}

@@ -2,12 +2,27 @@
 
 namespace MediaWiki\Extension\ReadingLists;
 
+use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\Extension\ReadingLists\Service\UserPreferenceBatchUpdater;
 use MediaWiki\Extension\ReadingLists\Validator\ReadingListPreferenceEligibilityValidator;
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 
 /** @phpcs-require-sorted-array */
 return [
+	'ReadingLists.BookmarkEntryLookupService' => static function (
+		MediaWikiServices $services
+	): BookmarkEntryLookupService {
+		$config = $services->getConfigFactory()->makeConfig( 'ReadingLists' );
+		return new BookmarkEntryLookupService(
+			$services->get( 'ReadingLists.ReadingListRepositoryFactory' ),
+			$services->getMainWANObjectCache(),
+			$services->getCentralIdLookupFactory(),
+			$services->getJobQueueGroup(),
+			LoggerFactory::getInstance( 'ReadingLists' ),
+			$config->get( 'ReadingListsBloomFilterMaxItems' )
+		);
+	},
 	'ReadingLists.ReadingListEligibilityValidator' => static function (
 		MediaWikiServices $services
 	): ReadingListPreferenceEligibilityValidator {

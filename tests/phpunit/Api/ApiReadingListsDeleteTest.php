@@ -3,6 +3,7 @@
 namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
 use MediaWiki\Api\ApiUsageException;
+use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
@@ -35,6 +36,11 @@ class ApiReadingListsDeleteTest extends ApiTestCase {
 	}
 
 	public function testDelete() {
+		$bookmarkEntryLookupService = $this->createMock( BookmarkEntryLookupService::class );
+		$bookmarkEntryLookupService->expects( $this->once() )
+			->method( 'invalidateBookmarkBloomFilter' );
+		$this->setService( 'ReadingLists.BookmarkEntryLookupService', $bookmarkEntryLookupService );
+
 		$listIds = $this->addLists( $this->user->mId, [
 			[
 				'rl_is_default' => 0,

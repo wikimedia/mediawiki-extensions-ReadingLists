@@ -102,6 +102,10 @@
 		"ReadingListsEnableBetaQuickSurvey": {
 			"value": false,
 			"description": "Whether to enable the QuickSurvey for the ReadingLists beta feature."
+		},
+		"ReadingListsBloomFilterMaxItems": {
+			"value": 10000,
+			"description": "Maximum number of bookmarked pages to include in the bloom filter. Users exceeding this skip the filter and query the database directly."
 		}
 	},
 	"DefaultUserOptions": {
@@ -122,6 +126,7 @@
 			"services": [
 				"MainConfig",
 				"ReadingLists.ReadingListRepositoryFactory",
+				"ReadingLists.BookmarkEntryLookupService",
 				"UserOptionsLookup",
 				"CentralIdLookupFactory",
 				"UserIdentityUtils"
@@ -376,6 +381,9 @@
 	"ServiceWiringFiles": [
 		"ServiceWiring.php"
 	],
+	"JobClasses": {
+		"buildBookmarkBloomFilter": "MediaWiki\\Extension\\ReadingLists\\Job\\BuildBloomFilterJob"
+	},
 	"MessagesDirs": {
 		"ReadingLists": [
 			"i18n",

@@ -24,7 +24,8 @@ class ApiReadingListsDelete extends ApiBase {
 		$params = $this->extractRequestParams();
 		$this->requireOnlyOneParameter( $params, 'list', 'batch' );
 
-		$repository = $this->getReadingListRepository( $this->getUser() );
+		$user = $this->getUser();
+		$repository = $this->getReadingListRepository( $user );
 		if ( isset( $params['list'] ) ) {
 			$repository->deleteList( $params['list'] );
 		} else {
@@ -33,6 +34,7 @@ class ApiReadingListsDelete extends ApiBase {
 				$repository->deleteList( $op['list'] );
 			}
 		}
+		$this->invalidateBookmarkBloomFilter( $user );
 	}
 
 	/**

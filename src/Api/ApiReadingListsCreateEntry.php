@@ -27,7 +27,8 @@ class ApiReadingListsCreateEntry extends ApiBase {
 		$this->requireOnlyOneParameter( $params, 'project', 'batch' );
 		$this->requireOnlyOneParameter( $params, 'title', 'batch' );
 
-		$repository = $this->getReadingListRepository( $this->getUser() );
+		$user = $this->getUser();
+		$repository = $this->getReadingListRepository( $user );
 
 		$listId = $this->getParameter( 'list' );
 		if ( isset( $params['project'] ) ) {
@@ -72,6 +73,7 @@ class ApiReadingListsCreateEntry extends ApiBase {
 			$this->getResult()->addIndexedTagName( [ $this->getModuleName(), 'ids' ], 'id' );
 			$this->getResult()->addIndexedTagName( [ $this->getModuleName(), 'entries' ], 'entry' );
 		}
+		$this->invalidateBookmarkBloomFilter( $user );
 	}
 
 	/**

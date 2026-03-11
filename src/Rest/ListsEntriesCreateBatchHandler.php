@@ -90,6 +90,7 @@ class ListsEntriesCreateBatchHandler extends SimpleHandler {
 			$result['entries'][] = $res['entry'];
 		}
 
+		$this->invalidateBookmarkBloomFilter( $this->getAuthority()->getUser() );
 		return $result;
 	}
 
