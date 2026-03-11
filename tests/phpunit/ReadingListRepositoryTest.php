@@ -909,27 +909,32 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * @dataProvider provideGetAllListEntries
+	 * Set up test data for getAllListEntries with no duplicate articles across lists.
+	 *
+	 * Data setup:
+	 * - Default list (id=1): foo:Foo (updated 2026-03)
+	 * - Custom list (id=2): foo:Bar (updated 2024), foo2:Bar2 (updated 2022),
+	 *   foo3:Bar2 (updated 2025), foo4:Bar4 (updated 2026, DELETED)
+	 *
+	 * @return ReadingListRepository
 	 */
-	public function testGetAllListEntries( array $args, array $expected ) {
+	private function setUpNonDuplicateEntries(): ReadingListRepository {
 		$this->addProjects( [ 'dummy' ] );
 		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 		$defaultId = 1;
 
-		// add entry to the default list
 		$this->addListEntries( $defaultId, 1, [
 			[
 				'rle_user_id' => 1,
 				'rlp_project' => 'foo',
 				'rle_title' => 'Foo',
-				'rle_date_created' => wfTimestampNow(),
-				'rle_date_updated' => wfTimestampNow(),
+				'rle_date_created' => '20260301000000',
+				'rle_date_updated' => '20260301000000',
 				'rle_deleted' => 0,
 			],
 		] );
 
-		// add non-default list with entries
 		$this->addLists( 1, [
 			[
 				'rl_is_default' => 0,
@@ -938,148 +943,366 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 					[
 						'rlp_project' => 'foo',
 						'rle_title' => 'Bar',
-						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20150101000000',
+						'rle_date_created' => '20200101000000',
+						'rle_date_updated' => '20240101000000',
 						'rle_deleted' => 0,
 					],
 					[
 						'rlp_project' => 'foo2',
 						'rle_title' => 'Bar2',
-						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20120101000000',
+						'rle_date_created' => '20200101000000',
+						'rle_date_updated' => '20220101000000',
 						'rle_deleted' => 0,
 					],
 					[
 						'rlp_project' => 'foo3',
 						'rle_title' => 'Bar2',
-						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20170101000000',
+						'rle_date_created' => '20200101000000',
+						'rle_date_updated' => '20250101000000',
 						'rle_deleted' => 0,
 					],
 					[
 						'rlp_project' => 'foo4',
 						'rle_title' => 'Bar4',
-						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20160101000000',
+						'rle_date_created' => '20200101000000',
+						'rle_date_updated' => '20260201000000',
 						'rle_deleted' => 1,
 					],
 				],
 			],
 		] );
-		$compareResultItems = function ( $expected, $actual ) {
-			$this->assertSame( (string)$expected['rle_rl_id'], (string)$actual['rle_rl_id'], 'mismatch in list ID' );
-			$this->assertSame( $expected['rlp_project'], $actual['rlp_project'], 'mismatch in project' );
-			$this->assertSame( $expected['rle_title'], $actual['rle_title'], 'mismatch in title' );
-			$this->assertSame( (string)$expected['rle_deleted'], $actual['rle_deleted'], 'mismatch in deleted flag' );
-		};
-		$compare = function ( $expected, $res ) use ( $compareResultItems ) {
-			$data = $this->resultWrapperToArray( $res );
-			$this->assertSameSize( $expected, $data, 'result length is different!' );
-			array_map( $compareResultItems, $expected, $data, range( 1, count( $expected ) ) );
-		};
 
-		$res = call_user_func_array( [ $repository, 'getAllListEntries' ], $args );
-		$compare( $expected, $res );
+		return $repository;
 	}
 
-	public static function provideGetAllListEntries() {
+	private function getTitles( array $data ): array {
+		return array_map( static function ( $row ) {
+			return $row['rlp_project'] . ':' . $row['rle_title'];
+		}, $data );
+	}
+
+	public function testGetAllListEntriesNoDuplicatesSortByNameAsc() {
+		$repository = $this->setUpNonDuplicateEntries();
+
+		$res = $repository->getAllListEntries(
+			ReadingListRepository::SORT_BY_NAME,
+			ReadingListRepository::SORT_DIR_ASC
+		);
+		$this->assertSame(
+			[ 'foo:Bar', 'foo2:Bar2', 'foo3:Bar2', 'foo:Foo' ],
+			$this->getTitles( $this->resultWrapperToArray( $res ) ),
+			'Deleted entry (foo4:Bar4) should be excluded'
+		);
+	}
+
+	public function testGetAllListEntriesNoDuplicatesSortByNameDesc() {
+		$repository = $this->setUpNonDuplicateEntries();
+
+		$res = $repository->getAllListEntries(
+			ReadingListRepository::SORT_BY_NAME,
+			ReadingListRepository::SORT_DIR_DESC
+		);
+		$this->assertSame(
+			[ 'foo:Foo', 'foo3:Bar2', 'foo2:Bar2', 'foo:Bar' ],
+			$this->getTitles( $this->resultWrapperToArray( $res ) )
+		);
+	}
+
+	public function testGetAllListEntriesNoDuplicatesSortByNamePagination() {
+		$repository = $this->setUpNonDuplicateEntries();
+
+		$res = $repository->getAllListEntries(
+			ReadingListRepository::SORT_BY_NAME,
+			ReadingListRepository::SORT_DIR_ASC,
+			2,
+			[ 'Bar2', 1 ]
+		);
+		$this->assertSame(
+			[ 'foo2:Bar2', 'foo3:Bar2' ],
+			$this->getTitles( $this->resultWrapperToArray( $res ) ),
+			'Pagination from Bar2 with limit 2'
+		);
+	}
+
+	public function testGetAllListEntriesNoDuplicatesSortByUpdatedAsc() {
+		$repository = $this->setUpNonDuplicateEntries();
+
+		$res = $repository->getAllListEntries(
+			ReadingListRepository::SORT_BY_UPDATED,
+			ReadingListRepository::SORT_DIR_ASC
+		);
+		$this->assertSame(
+			[ 'foo2:Bar2', 'foo:Bar', 'foo3:Bar2', 'foo:Foo' ],
+			$this->getTitles( $this->resultWrapperToArray( $res ) )
+		);
+	}
+
+	public function testGetAllListEntriesNoDuplicatesSortByUpdatedDesc() {
+		$repository = $this->setUpNonDuplicateEntries();
+
+		$res = $repository->getAllListEntries(
+			ReadingListRepository::SORT_BY_UPDATED,
+			ReadingListRepository::SORT_DIR_DESC
+		);
+		$this->assertSame(
+			[ 'foo:Foo', 'foo3:Bar2', 'foo:Bar', 'foo2:Bar2' ],
+			$this->getTitles( $this->resultWrapperToArray( $res ) )
+		);
+	}
+
+	/**
+	 * Set up test data for getAllListEntries with duplicate articles across lists.
+	 *
+	 * Data setup:
+	 * - Default list (id=1): foo:Alpha (updated 2024-01), foo:Beta (updated 2024-02),
+	 *   foo:Foo (updated 2024-06), foo:Baz (updated 2024-10)
+	 * - Custom list (id=2): foo:Alpha (updated 2024-05), foo:Bar (updated 2024-07),
+	 *   foo:Foo (updated 2024-09), foo:Gamma (updated 2024-05, DELETED), foo:Delta (updated 2024-05)
+	 *
+	 * @return ReadingListRepository
+	 */
+	private function setUpDuplicateEntries(): ReadingListRepository {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
 		$defaultId = 1;
-		$listId2 = 2;
-		$expectedEntries = [
-			'default-foo-Foo-20250101000000' => [
-				'rle_rl_id' => $defaultId,
+
+		// add default list entries
+		$this->addListEntries( $defaultId, 1, [
+			[
+				'rlp_project' => 'foo',
+				'rle_title' => 'Alpha',
+				'rle_date_created' => '20240101000000',
+				'rle_date_updated' => '20240101000000',
+				'rle_deleted' => 0,
+			],
+			[
+				'rlp_project' => 'foo',
+				'rle_title' => 'Beta',
+				'rle_date_created' => '20240201000000',
+				'rle_date_updated' => '20240201000000',
+				'rle_deleted' => 0,
+			],
+			[
 				'rlp_project' => 'foo',
 				'rle_title' => 'Foo',
-				'rle_date_created' => '20250101000000',
-				'rle_date_updated' => '20250101000000',
+				'rle_date_created' => '20240101000000',
+				'rle_date_updated' => '20240601000000',
 				'rle_deleted' => 0,
 			],
-			'list2-foo-Bar-20150101000000' => [
-				'rle_rl_id' => $listId2,
+			[
 				'rlp_project' => 'foo',
-				'rle_title' => 'Bar',
-				'rle_date_created' => '20100101000000',
-				'rle_date_updated' => '20150101000000',
+				'rle_title' => 'Baz',
+				'rle_date_created' => '20240101000000',
+				'rle_date_updated' => '20241001000000',
 				'rle_deleted' => 0,
 			],
-			'list2-foo2-Bar2-20120101000000' => [
-				'rle_rl_id' => $listId2,
-				'rlp_project' => 'foo2',
-				'rle_title' => 'Bar2',
-				'rle_date_created' => '20100101000000',
-				'rle_date_updated' => '20120101000000',
-				'rle_deleted' => 0,
-			],
-			'list2-foo3-Bar2-20170101000000' => [
-				'rle_rl_id' => $listId2,
-				'rlp_project' => 'foo3',
-				'rle_title' => 'Bar2',
-				'rle_date_created' => '20100101000000',
-				'rle_date_updated' => '20170101000000',
-				'rle_deleted' => 0,
-			],
-		];
+		] );
 
-		return [
-			'sort by name, asc' => [
-				[
-					ReadingListRepository::SORT_BY_NAME,
-					ReadingListRepository::SORT_DIR_ASC
-				],
-				[
-					$expectedEntries['list2-foo-Bar-20150101000000'],
-					$expectedEntries['list2-foo2-Bar2-20120101000000'],
-					$expectedEntries['list2-foo3-Bar2-20170101000000'],
-					$expectedEntries['default-foo-Foo-20250101000000']
-				],
-			],
-			'sort by name, desc' => [
-				[
-					ReadingListRepository::SORT_BY_NAME,
-					ReadingListRepository::SORT_DIR_DESC
-				],
-				[
-					$expectedEntries['default-foo-Foo-20250101000000'],
-					$expectedEntries['list2-foo3-Bar2-20170101000000'],
-					$expectedEntries['list2-foo2-Bar2-20120101000000'],
-					$expectedEntries['list2-foo-Bar-20150101000000'],
-				],
-			],
-			'sort by name, offset with limit' => [
-				[
-					ReadingListRepository::SORT_BY_NAME,
-					ReadingListRepository::SORT_DIR_ASC,
-					1,
-					[ 'Bar2', 1 ]
-				],
-				[
-					$expectedEntries['list2-foo2-Bar2-20120101000000'],
-				],
-			],
-			'sort by updated, asc' => [
-				[
-					ReadingListRepository::SORT_BY_UPDATED,
-					ReadingListRepository::SORT_DIR_ASC
-				],
-				[
-					$expectedEntries['list2-foo2-Bar2-20120101000000'],
-					$expectedEntries['list2-foo-Bar-20150101000000'],
-					$expectedEntries['list2-foo3-Bar2-20170101000000'],
-					$expectedEntries['default-foo-Foo-20250101000000'] ],
-			],
-			'sort by updated, desc' => [
-				[
-					ReadingListRepository::SORT_BY_UPDATED,
-					ReadingListRepository::SORT_DIR_DESC
-				],
-				[
-					$expectedEntries['default-foo-Foo-20250101000000'],
-					$expectedEntries['list2-foo3-Bar2-20170101000000'],
-					$expectedEntries['list2-foo-Bar-20150101000000'],
-					$expectedEntries['list2-foo2-Bar2-20120101000000']
+		$this->addLists( 1, [
+			[
+				'rl_is_default' => 0,
+				'rl_name' => 'custom',
+				'entries' => [
+					[
+						'rlp_project' => 'foo',
+						'rle_title' => 'Alpha',
+						'rle_date_created' => '20240101000000',
+						'rle_date_updated' => '20240501000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'foo',
+						'rle_title' => 'Bar',
+						'rle_date_created' => '20240201000000',
+						'rle_date_updated' => '20240701000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'foo',
+						'rle_title' => 'Foo',
+						'rle_date_created' => '20240301000000',
+						'rle_date_updated' => '20240901000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'foo',
+						'rle_title' => 'Gamma',
+						'rle_date_created' => '20240101000000',
+						'rle_date_updated' => '20240501000000',
+						'rle_deleted' => 1,
+					],
+					[
+						'rlp_project' => 'foo',
+						'rle_title' => 'Delta',
+						'rle_date_created' => '20240101000000',
+						'rle_date_updated' => '20240501000000',
+						'rle_deleted' => 0,
+					],
 				],
 			],
-		];
+		] );
+
+		return $repository;
+	}
+
+	public function testGetAllListEntriesWithDuplicatesSortByName() {
+		$repository = $this->setUpDuplicateEntries();
+
+		// Deduplicated: Alpha and Foo each appear only once, Gamma excluded (deleted)
+		$res = $repository->getAllListEntries(
+			ReadingListRepository::SORT_BY_NAME,
+			ReadingListRepository::SORT_DIR_ASC
+		);
+		$data = $this->resultWrapperToArray( $res );
+		$this->assertSame(
+			[ 'foo:Alpha', 'foo:Bar', 'foo:Baz', 'foo:Beta', 'foo:Delta', 'foo:Foo' ],
+			$this->getTitles( $data ),
+			'Deduplicated: Alpha and Foo each appear only once, deleted entry Gamma excluded'
+		);
+		// For name sort ASC, the entry with the smallest rle_id wins as representative
+		$this->assertSame(
+			[
+				[ 'id' => 1, 'listId' => 1 ],
+				[ 'id' => 6, 'listId' => 2 ],
+				[ 'id' => 4, 'listId' => 1 ],
+				[ 'id' => 2, 'listId' => 1 ],
+				[ 'id' => 9, 'listId' => 2 ],
+				[ 'id' => 3, 'listId' => 1 ],
+			],
+			array_map( static function ( $row ) {
+				return [
+					'id' => (int)$row['rle_id'],
+					'listId' => (int)$row['rle_rl_id'],
+				];
+			}, $data ),
+			'Deduplicated rows should return a real representative entry'
+		);
+
+		// Not deduplicated: Alpha and Foo each appear twice, Gamma excluded
+		$res = $repository->getAllListEntries(
+			ReadingListRepository::SORT_BY_NAME,
+			ReadingListRepository::SORT_DIR_ASC,
+			1000,
+			null,
+			false
+		);
+		$this->assertSame(
+			[ 'foo:Alpha', 'foo:Alpha', 'foo:Bar', 'foo:Baz', 'foo:Beta',
+				'foo:Delta', 'foo:Foo', 'foo:Foo' ],
+			$this->getTitles( $this->resultWrapperToArray( $res ) ),
+			'Not deduplicated: Alpha and Foo each appear twice, deleted entry Gamma excluded'
+		);
+	}
+
+	public function testGetAllListEntriesWithDuplicatesSortByUpdated() {
+		$repository = $this->setUpDuplicateEntries();
+
+		// Deduplicated: representative is the entry with the newest updated date
+		// Alpha: custom entry (2024-05) wins over default (2024-01)
+		// Foo: custom entry (2024-09) wins over default (2024-06)
+		$res = $repository->getAllListEntries(
+			ReadingListRepository::SORT_BY_UPDATED,
+			ReadingListRepository::SORT_DIR_DESC
+		);
+		$data = $this->resultWrapperToArray( $res );
+		$this->assertSame(
+			[ 'foo:Baz', 'foo:Foo', 'foo:Bar', 'foo:Delta', 'foo:Alpha', 'foo:Beta' ],
+			$this->getTitles( $data ),
+			'Deduplicated: sorted by updated date desc, deleted entry Gamma excluded'
+		);
+		// Foo representative is custom entry (id=7), Alpha representative is custom entry (id=5)
+		$this->assertSame(
+			[
+				[ 'id' => 4, 'listId' => 1 ],
+				[ 'id' => 7, 'listId' => 2 ],
+				[ 'id' => 6, 'listId' => 2 ],
+				[ 'id' => 9, 'listId' => 2 ],
+				[ 'id' => 5, 'listId' => 2 ],
+				[ 'id' => 2, 'listId' => 1 ],
+			],
+			array_map( static function ( $row ) {
+				return [
+					'id' => (int)$row['rle_id'],
+					'listId' => (int)$row['rle_rl_id'],
+				];
+			}, $data )
+		);
+
+		$res = $repository->getAllListEntries(
+			ReadingListRepository::SORT_BY_UPDATED,
+			ReadingListRepository::SORT_DIR_DESC,
+			1000,
+			null,
+			false
+		);
+		$this->assertSame(
+			[ 'foo:Baz', 'foo:Foo', 'foo:Bar', 'foo:Foo', 'foo:Delta',
+				'foo:Alpha', 'foo:Beta', 'foo:Alpha' ],
+			$this->getTitles( $this->resultWrapperToArray( $res ) ),
+			'Not deduplicated: Alpha and Foo each appear twice, deleted entry Gamma excluded'
+		);
+	}
+
+	public function testGetAllListEntriesDuplicatesWithLimit() {
+		$repository = $this->setUpDuplicateEntries();
+
+		// Deduplicated with limit 2: Alpha appears once, so Alpha + Bar
+		$res = $repository->getAllListEntries(
+			ReadingListRepository::SORT_BY_NAME,
+			ReadingListRepository::SORT_DIR_ASC,
+			2
+		);
+		$this->assertSame(
+			[ 'foo:Alpha', 'foo:Bar' ],
+			$this->getTitles( $this->resultWrapperToArray( $res ) ),
+			'Deduplicated: limit 2 returns Alpha and Bar'
+		);
+
+		// Not deduplicated with limit 2: Alpha from each list fills the limit
+		$res = $repository->getAllListEntries(
+			ReadingListRepository::SORT_BY_NAME,
+			ReadingListRepository::SORT_DIR_ASC,
+			2,
+			null,
+			false
+		);
+		$this->assertSame(
+			[ 'foo:Alpha', 'foo:Alpha' ],
+			$this->getTitles( $this->resultWrapperToArray( $res ) ),
+			'Not deduplicated: limit 2 returns both Alpha entries'
+		);
+	}
+
+	public function testGetAllListEntriesDuplicatesWithPagination() {
+		$repository = $this->setUpDuplicateEntries();
+
+		// Deduplicated: paginating from Beta with limit 2
+		$res = $repository->getAllListEntries(
+			ReadingListRepository::SORT_BY_NAME,
+			ReadingListRepository::SORT_DIR_ASC,
+			2,
+			[ 'Beta', 2 ]
+		);
+		$this->assertSame(
+			[ 'foo:Beta', 'foo:Delta' ],
+			$this->getTitles( $this->resultWrapperToArray( $res ) ),
+			'Deduplicated: paginating from Beta returns Beta and Delta'
+		);
+
+		// Not deduplicated: same pagination, same result (no duplicates in this range)
+		$res = $repository->getAllListEntries(
+			ReadingListRepository::SORT_BY_NAME,
+			ReadingListRepository::SORT_DIR_ASC,
+			2,
+			[ 'Beta', 2 ],
+			false
+		);
+		$this->assertSame(
+			[ 'foo:Beta', 'foo:Delta' ],
+			$this->getTitles( $this->resultWrapperToArray( $res ) ),
+			'Not deduplicated: paginating from Beta returns Beta and Delta'
+		);
 	}
 
 	public function testDeleteListEntry() {

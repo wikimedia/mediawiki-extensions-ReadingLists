@@ -17,6 +17,7 @@ use Wikimedia\Rdbms\IDBAccessObject;
 use Wikimedia\Rdbms\IReadableDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\LBFactory;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 use Wikimedia\Rdbms\RawSQLValue;
 
 /**
@@ -685,12 +686,18 @@ class ReadingListRepository implements LoggerAwareInterface {
 	}
 
 	/**
-	 * Get all list entries for the user.
+	 * Get all list entries for the user, across all lists, deduplicated by default,
+	 * if same page (project+title) appears in multiple lists.
 	 *
 	 * @param string $sortBy One of the SORT_BY_* constants.
 	 * @param string $sortDir One of the SORT_DIR_* constants.
 	 * @param int $limit
-	 * @param array|null $from DB position to continue from (or null to start at the beginning/end).
+	 * @param array|null $from Pagination cursor to continue from, or null to start at the
+	 *   beginning/end. This is a two-element array of [ sortValue, entryId ] where sortValue is a title
+	 *   string (for SORT_BY_NAME) or a timestamp (for SORT_BY_UPDATED), and entryId is the
+	 *   rle_id of the last seen entry, used as a tiebreaker.
+	 * @param bool $deduplicate When true, the same article (project+title) across multiple lists
+	 *   appears only once. When false, returns all entries including duplicates.
 	 * @throws ReadingListRepositoryException
 	 * @return IResultWrapper<ReadingListEntryRow>
 	 */
@@ -698,22 +705,48 @@ class ReadingListRepository implements LoggerAwareInterface {
 		string $sortBy = self::SORT_BY_UPDATED,
 		string $sortDir = self::SORT_DIR_ASC,
 		int $limit = 1000,
-		?array $from = null
+		?array $from = null,
+		bool $deduplicate = true
 	) {
 		$this->assertUser();
-
-		// get all list ids for the user
-		$listIds = $this->dbr->newSelectQueryBuilder()
-			->select( 'rl_id' )
-			->from( 'reading_list' )
-			->where( [ 'rl_user_id' => $this->userId, 'rl_deleted' => 0 ] )
-			->caller( __METHOD__ )->fetchFieldValues();
+		$listIds = $this->getUserListIds();
 
 		if ( !$listIds ) {
 			return new FakeResultWrapper( [] );
 		}
 
-		return $this->getListEntries( $listIds, $sortBy, $sortDir, $limit, $from );
+		if ( !$deduplicate ) {
+			return $this->getListEntries( $listIds, $sortBy, $sortDir, $limit, $from );
+		}
+
+		[ $conditions, $options ] = $this->processSort(
+			'rle',
+			$sortBy,
+			$sortDir,
+			$limit,
+			$from,
+			'rle1'
+		);
+
+		return $this->dbr->newSelectQueryBuilder()
+			->select( $this->getAliasedListEntryFields( 'rle1', 'rlp' ) )
+			->from( 'reading_list_entry', 'rle1' )
+			->join( 'reading_list_project', 'rlp', 'rle1.rle_rlp_id = rlp.rlp_id' )
+			->leftJoin(
+				'reading_list_entry',
+				'rle2',
+				$this->getDeduplicatedEntryJoinConditions( $listIds, $sortBy, $sortDir )
+			)
+			->where( [
+				'rle1.rle_rl_id' => $listIds,
+				'rle1.rle_user_id' => $this->userId,
+				'rle1.rle_deleted' => 0,
+				'rle2.rle_id' => null,
+			] )
+			->andWhere( $conditions )
+			->options( $options )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 	}
 
 	/**
@@ -1075,6 +1108,29 @@ class ReadingListRepository implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Get reading_list_entry fields with table-qualified column names.
+	 *
+	 * NOTE: $entryAlias is needed here for queries involving a self-join
+	 * (e.g. getAllListEntries deduplication), where reading_list_entry appears
+	 * twice and unqualified column names would be ambiguous.
+	 *
+	 * @param string $entryAlias Table alias for reading_list_entry (e.g. 'rle1')
+	 * @param string $projectAlias Table alias for reading_list_project (e.g. 'rlp')
+	 * @return array
+	 */
+	private function getAliasedListEntryFields( string $entryAlias, string $projectAlias ) {
+		return [
+			'rle_id' => "$entryAlias.rle_id",
+			'rle_rl_id' => "$entryAlias.rle_rl_id",
+			'rlp_project' => "$projectAlias.rlp_project",
+			'rle_title' => "$entryAlias.rle_title",
+			'rle_date_created' => "$entryAlias.rle_date_created",
+			'rle_date_updated' => "$entryAlias.rle_date_updated",
+			'rle_deleted' => "$entryAlias.rle_deleted",
+		];
+	}
+
+	/**
 	 * Require the user to be specified.
 	 * @throws ReadingListRepositoryException
 	 */
@@ -1101,40 +1157,124 @@ class ReadingListRepository implements LoggerAwareInterface {
 	}
 
 	/**
-	 * Validate sort parameters.
-	 * @param string $tablePrefix 'rl' or 'rle', depending on whether we are sorting lists or entries.
+	 * Get all non-deleted list IDs for the current user.
+	 * @return array List of rl_id values, or empty array if the user has no lists.
+	 */
+	private function getUserListIds(): array {
+		return $this->dbr->newSelectQueryBuilder()
+			->select( 'rl_id' )
+			->from( 'reading_list' )
+			->where( [ 'rl_user_id' => $this->userId, 'rl_deleted' => 0 ] )
+			->caller( __METHOD__ )
+			->fetchFieldValues();
+	}
+
+	/**
+	 * @param array $from Two-element array of [ sortValue, entryId ].
+	 * @param string $sortBy One of the SORT_BY_* constants.
+	 * @param string $sortDir One of the SORT_DIR_* constants.
+	 * @return array [ operator ('>' or '<'), sortValue (string), id (int) ]
+	 */
+	private function parsePaginationCursor( array $from, string $sortBy, string $sortDir ): array {
+		if ( count( $from ) !== 2 || !is_string( $from[0] ) || !is_numeric( $from[1] ) ) {
+			throw new LogicException( 'Invalid $from parameter' );
+		}
+		$op = ( $sortDir === self::SORT_DIR_ASC ) ? '>' : '<';
+		$fromSortValue = ( $sortBy === self::SORT_BY_NAME )
+			? $from[0]
+			: $this->dbr->timestamp( $from[0] );
+		$fromId = (int)$from[1];
+		return [ $op, $fromSortValue, $fromId ];
+	}
+
+	/**
+	 * Build the LEFT JOIN conditions for deduplicating entries by project+title.
+	 *
+	 * Uses an anti-join pattern: for each entry (rle1), a LEFT JOIN brings in a
+	 * second copy of the table (rle2) that matches the same page (project+title)
+	 * but is "preferred" according to the current sort.
+	 *
+	 * The caller then filters with WHERE rle2.rle_id IS NULL, so only rows with
+	 * no preferred alternative survive — giving one selected row per unique page.
+	 *
+	 * For sort-by-name, the row with the smallest (ASC) or largest (DESC) rle_id wins.
+	 * For sort-by-updated, the row with the newest rle_date_updated wins,
+	 * with rle_id as a tiebreaker.
+	 *
+	 * This can be used in getAllListEntries() to deduplicate entries by project+title.
+	 *
+	 * @param int[] $listIds
 	 * @param string $sortBy
 	 * @param string $sortDir
+	 * @return array
+	 */
+	private function getDeduplicatedEntryJoinConditions(
+		array $listIds,
+		string $sortBy,
+		string $sortDir
+	): array {
+		$idOp = $sortDir === self::SORT_DIR_ASC ? '<' : '>';
+		if ( $sortBy === self::SORT_BY_NAME ) {
+			$preferredRowCondition = "rle2.rle_id $idOp rle1.rle_id";
+		} else {
+			$preferredRowCondition = $this->dbr->makeList( [
+				'rle2.rle_date_updated > rle1.rle_date_updated',
+				$this->dbr->makeList( [
+					'rle2.rle_date_updated = rle1.rle_date_updated',
+					"rle2.rle_id $idOp rle1.rle_id",
+				], ISQLPlatform::LIST_AND ),
+			], ISQLPlatform::LIST_OR );
+		}
+
+		return [
+			'rle2.rle_user_id = rle1.rle_user_id',
+			'rle2.rle_rlp_id = rle1.rle_rlp_id',
+			'rle2.rle_title = rle1.rle_title',
+			'rle2.rle_deleted = 0',
+			$this->dbr->makeList( [ 'rle2.rle_rl_id' => $listIds ], ISQLPlatform::LIST_AND ),
+			$preferredRowCondition,
+		];
+	}
+
+	/**
+	 * @param string $tablePrefix 'rl' or 'rle', depending on whether we are sorting lists or entries.
+	 * @param string $sortBy One of the SORT_BY_* constants.
+	 * @param string $sortDir One of the SORT_DIR_* constants.
 	 * @param int $limit
-	 * @param array|null $from [sortby-value, id]
+	 * @param array|null $from Pagination cursor as [sortby-value, id], or null.
+	 * @param string|null $tableAlias Table alias prefix for field names (e.g. 'rle1'),
+	 *   needed when the query involves a self-join. Null for unaliased queries.
 	 * @return array [ conditions, options ] Merge these into the corresponding IDatabase::select
 	 *   parameters.
 	 */
-	private function processSort( $tablePrefix, $sortBy, $sortDir, $limit, $from ) {
+	private function processSort(
+		string $tablePrefix,
+		string $sortBy,
+		string $sortDir,
+		int $limit,
+		?array $from,
+		?string $tableAlias = null
+	) {
 		if ( !in_array( $sortBy, [ self::SORT_BY_NAME, self::SORT_BY_UPDATED ], true ) ) {
 			throw new LogicException( 'Invalid $sortBy parameter: ' . $sortBy );
 		}
 		if ( !in_array( $sortDir, [ self::SORT_DIR_ASC, self::SORT_DIR_DESC ], true ) ) {
 			throw new LogicException( 'Invalid $sortDir parameter: ' . $sortDir );
 		}
-		if ( is_array( $from ) ) {
-			if ( count( $from ) !== 2 || !is_string( $from[0] ) || !is_numeric( $from[1] ) ) {
-				throw new LogicException( 'Invalid $from parameter' );
-			}
-		} elseif ( $from !== null ) {
-			throw new LogicException( 'Invalid $from parameter type: ' . get_debug_type( $from ) );
-		}
 
+		$fieldPrefix = $tableAlias !== null ? "$tableAlias." : '';
 		if ( $tablePrefix === 'rl' ) {
-			$mainField = ( $sortBy === self::SORT_BY_NAME ) ? 'rl_name' : 'rl_date_updated';
+			$mainField = $fieldPrefix .
+				( $sortBy === self::SORT_BY_NAME ? 'rl_name' : 'rl_date_updated' );
 		} else {
-			$mainField = ( $sortBy === self::SORT_BY_NAME ) ? 'rle_title' : 'rle_date_updated';
+			$mainField = $fieldPrefix .
+				( $sortBy === self::SORT_BY_NAME ? 'rle_title' : 'rle_date_updated' );
 		}
-		$idField = "{$tablePrefix}_id";
+		$idField = $fieldPrefix . "{$tablePrefix}_id";
 		$conditions = [];
 		$options = [
 			'ORDER BY' => [ "$mainField $sortDir" ],
-			'LIMIT' => (int)$limit,
+			'LIMIT' => $limit,
 		];
 		// List names are unique and need no tiebreaker.
 		if ( $sortBy !== self::SORT_BY_NAME || $tablePrefix !== 'rl' ) {
@@ -1142,11 +1282,11 @@ class ReadingListRepository implements LoggerAwareInterface {
 		}
 
 		if ( $from !== null ) {
-			$op = ( $sortDir === self::SORT_DIR_ASC ) ? '>' : '<';
-			$safeFromMain = ( $sortBy === self::SORT_BY_NAME )
-				? $from[0]
-				: $this->dbr->timestamp( $from[0] );
-			$safeFromId = (int)$from[1];
+			[ $op, $safeFromMain, $safeFromId ] = $this->parsePaginationCursor(
+				$from,
+				$sortBy,
+				$sortDir
+			);
 			// List names are unique and need no tiebreaker.
 			if ( $sortBy === self::SORT_BY_NAME && $tablePrefix === 'rl' ) {
 				$condition = $this->dbw->expr( $mainField, "$op=", $safeFromMain );
