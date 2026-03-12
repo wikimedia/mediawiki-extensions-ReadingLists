@@ -35,7 +35,7 @@ class BetaFeatureHookHandler implements GetBetaFeaturePreferencesHook {
 			$prefs[Constants::PREF_KEY_BETA_FEATURES] = [
 				'label-message' => 'readinglists-beta-feature-name',
 				'desc-message' => 'readinglists-beta-feature-description',
-				'screenshot' => "$path/ReadingLists/resources/assets/beta.svg",
+				'screenshot' => "$path/ReadingLists/resources/assets/beta-feature.svg",
 				'info-link'
 					=> 'https://www.mediawiki.org/wiki/Readers/Reader_Experience/WE3.3.4_Reading_lists',
 				'discussion-link'
