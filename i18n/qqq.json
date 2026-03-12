@@ -12,6 +12,7 @@
 			"Tgr",
 			"Umherirrender",
 			"Verdy p",
+			"Volker E.",
 			"Woytecr"
 		]
 	},
@@ -57,12 +58,12 @@
 	"special-tab-readinglists-short": "Tab that shows on special page to take you back to your lists",
 	"readinglists-title": "Title that appears on the [[Special:ReadingLists]] page, which shows an overview of all reading lists that a user has.",
 	"readinglists-total-lists": "Message that shows the total number of reading lists a user created.\n\nParameters:\n* $1 - Lists count",
-	"readinglists-total-articles": "Message that shows the total number of articles in a reading list.\n\nParameters:\n* $1 - Articles count",
+	"readinglists-total-articles": "Message that shows the total number of pages in a reading list.\n\nParameters:\n* $1 - Items count",
 	"readinglists-show-more": "Show more button label for Special:ReadingLists.",
 	"readinglists-default-title": "Title for the default list.",
 	"readinglists-default-description": "Description for the default list.",
-	"readinglists-empty-title": "Title that shows on a list with no articles in it.",
-	"readinglists-empty-cta": "Call to action that shows on a list with no articles in it.",
+	"readinglists-empty-title": "Title that shows on a list with no pages in it.",
+	"readinglists-empty-cta": "Call to action that shows on a list with no pages in it.",
 	"readinglists-display-menu": "Display button label for screen readers.",
 	"readinglists-display-sort": "Header for \"Sort by\" in the display menu.",
 	"readinglists-display-sort-name": "Option for \"sort: name\" in the display menu.",
