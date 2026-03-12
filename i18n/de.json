@@ -46,6 +46,7 @@
 	"readinglists-error": "Dein Browser kann die Leselistenfunktion nicht verwenden. Bitte aktiviere JavaScript oder versuche es in einem anderen Browser.",
 	"readinglists-import-error": "Die Liste kann anhand der angegebenen Daten nicht angezeigt werden.",
 	"readinglists-import-size-error": "Die Liste ist zu groß zum Anzeigen.",
+	"readinglists-special-error-list-not-found": "Diese Liste konnte nicht gefunden werden.",
 	"special-tab-readinglists-short": "Deine Listen",
 	"readinglists-title": "Gespeicherte Seiten",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|Liste|Listen}}",
@@ -91,5 +92,6 @@
 	"readinglists-onboarding-saved-pages-title": "Deine gespeicherten Seiten",
 	"readinglists-onboarding-saved-pages-text": "Zugriff auf alle gespeicherten Seiten hier.",
 	"readinglists-mobile-onboarding-saved-pages-title": "Gespeicherte Seiten",
-	"readinglists-mobile-onboarding-saved-pages-text": "Greife über dieses Menü auf alle deine gespeicherten Seiten zu."
+	"readinglists-mobile-onboarding-saved-pages-text": "Greife über dieses Menü auf alle deine gespeicherten Seiten zu.",
+	"readinglists-beta-tag": "Beta"
 }
