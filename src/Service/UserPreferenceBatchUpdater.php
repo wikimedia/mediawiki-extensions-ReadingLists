@@ -24,7 +24,7 @@ class UserPreferenceBatchUpdater {
 	 * @param string $value
 	 * @throws \InvalidArgumentException
 	 */
-	public function addUserPreference( UserIdentity $user, string $preference, string $value ): void {
+	public function addUserPreferenceToBatch( UserIdentity $user, string $preference, string $value ): void {
 		$key = $user->getId() . ':' . $preference;
 
 		if ( isset( $this->updateBatch[$key] ) ) {
@@ -63,13 +63,15 @@ class UserPreferenceBatchUpdater {
 			return 0;
 		}
 
-		$count = count( $this->updateBatch );
+		$dbw = $this->lbFactory->getPrimaryDatabase();
+		$dbw->newInsertQueryBuilder()
+			->insertInto( 'user_properties' )
+			->rows( array_values( $this->updateBatch ) )
+			->ignore()
+			->caller( __METHOD__ )
+			->execute();
 
-		$this->lbFactory->getPrimaryDatabase()->insert(
-			'user_properties',
-			array_values( $this->updateBatch ),
-			__METHOD__
-		);
+		$insertedCount = $dbw->affectedRows();
 
 		foreach ( $this->updateBatch as $update ) {
 			$user = $this->userFactory->newFromId( $update['up_user'] );
@@ -79,7 +81,7 @@ class UserPreferenceBatchUpdater {
 
 		$this->updateBatch = [];
 
-		return $count;
+		return $insertedCount;
 	}
 
 }

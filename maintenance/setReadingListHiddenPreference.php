@@ -350,7 +350,7 @@ class SetReadingListHiddenPreference extends Maintenance {
 		}
 
 		if ( !$this->dryRun ) {
-			$this->batchUpdater->addUserPreference(
+			$this->batchUpdater->addUserPreferenceToBatch(
 			$user,
 			Constants::PREF_KEY_WEB_UI_ENABLED,
 				'1'

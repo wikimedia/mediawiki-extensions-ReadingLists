@@ -9,6 +9,7 @@ use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserIdentity;
 use PHPUnit\Framework\MockObject\MockObject;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\InsertQueryBuilder;
 use Wikimedia\Rdbms\LBFactory;
 
 /**
@@ -30,6 +31,12 @@ class UserPreferenceBatchUpdaterTest extends \MediaWikiUnitTestCase {
 
 		$this->lbFactory->method( 'getPrimaryDatabase' )
 			->willReturn( $this->database );
+
+		// newInsertQueryBuilder returns a real InsertQueryBuilder that delegates
+		// insert() back to the mock IDatabase, so existing insert() expectations
+		// continue to work.
+		$this->database->method( 'newInsertQueryBuilder' )
+			->willReturnCallback( fn () => new InsertQueryBuilder( $this->database ) );
 	}
 
 	private function createService(): UserPreferenceBatchUpdater {
@@ -48,7 +55,7 @@ class UserPreferenceBatchUpdaterTest extends \MediaWikiUnitTestCase {
 
 		$this->assertFalse( $service->hasPendingUpdates() );
 
-		$service->addUserPreference( $user, 'test-pref', 'test-value' );
+		$service->addUserPreferenceToBatch( $user, 'test-pref', 'test-value' );
 
 		$this->assertTrue( $service->hasPendingUpdates() );
 	}
@@ -64,9 +71,9 @@ class UserPreferenceBatchUpdaterTest extends \MediaWikiUnitTestCase {
 			'getId' => 456
 		] );
 
-		$service->addUserPreference( $user1, 'pref1', 'value1' );
-		$service->addUserPreference( $user2, 'pref2', 'value2' );
-		$service->addUserPreference( $user2, 'pref3', 'value3' );
+		$service->addUserPreferenceToBatch( $user1, 'pref1', 'value1' );
+		$service->addUserPreferenceToBatch( $user2, 'pref2', 'value2' );
+		$service->addUserPreferenceToBatch( $user2, 'pref3', 'value3' );
 
 		$this->assertTrue( $service->hasPendingUpdates() );
 	}
@@ -78,11 +85,11 @@ class UserPreferenceBatchUpdaterTest extends \MediaWikiUnitTestCase {
 			'getId' => 123
 		] );
 
-		$service->addUserPreference( $user1, 'pref1', 'value1' );
+		$service->addUserPreferenceToBatch( $user1, 'pref1', 'value1' );
 
 		$this->expectException( \InvalidArgumentException::class );
 
-		$service->addUserPreference( $user1, 'pref1', 'value2' );
+		$service->addUserPreferenceToBatch( $user1, 'pref1', 'value2' );
 	}
 
 	public function testHasPendingUpdates_noPendingUpdates() {
@@ -134,10 +141,14 @@ class UserPreferenceBatchUpdaterTest extends \MediaWikiUnitTestCase {
 						'up_value' => 'test-value'
 					]
 				],
+				$this->anything(),
 				$this->anything()
 			);
 
-		$service->addUserPreference( $user, 'test-pref', 'test-value' );
+		$this->database->method( 'affectedRows' )
+			->willReturn( 1 );
+
+		$service->addUserPreferenceToBatch( $user, 'test-pref', 'test-value' );
 		$result = $service->executeBatchUpdate();
 
 		$this->assertSame( 1, $result );
@@ -188,11 +199,15 @@ class UserPreferenceBatchUpdaterTest extends \MediaWikiUnitTestCase {
 						'up_value' => 'value2'
 					]
 				],
+				$this->anything(),
 				$this->anything()
 			);
 
-		$service->addUserPreference( $user1, 'pref1', 'value1' );
-		$service->addUserPreference( $user2, 'pref2', 'value2' );
+		$this->database->method( 'affectedRows' )
+			->willReturn( 2 );
+
+		$service->addUserPreferenceToBatch( $user1, 'pref1', 'value1' );
+		$service->addUserPreferenceToBatch( $user2, 'pref2', 'value2' );
 
 		$result = $service->executeBatchUpdate();
 
@@ -213,16 +228,19 @@ class UserPreferenceBatchUpdaterTest extends \MediaWikiUnitTestCase {
 
 		$this->database->expects( $this->exactly( 2 ) )
 			->method( 'insert' )
-			->with( 'user_properties', $this->anything(), $this->anything() );
+			->with( 'user_properties', $this->anything(), $this->anything(), $this->anything() );
 
-		$service->addUserPreference( $user, 'pref1', 'value1' );
+		$this->database->method( 'affectedRows' )
+			->willReturn( 1 );
+
+		$service->addUserPreferenceToBatch( $user, 'pref1', 'value1' );
 		$this->assertTrue( $service->hasPendingUpdates() );
 
 		$result1 = $service->executeBatchUpdate();
 		$this->assertSame( 1, $result1 );
 		$this->assertFalse( $service->hasPendingUpdates() );
 
-		$service->addUserPreference( $user, 'pref2', 'value2' );
+		$service->addUserPreferenceToBatch( $user, 'pref2', 'value2' );
 		$this->assertTrue( $service->hasPendingUpdates() );
 
 		$result2 = $service->executeBatchUpdate();
