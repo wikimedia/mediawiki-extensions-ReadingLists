@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Beta16",
-			"Greis"
+			"Greis",
+			"Neonsn0w"
 		]
 	},
 	"readinglists-desc": "Consente agli utenti di gestire elenchi privati di voci, come segnalibri o elenchi di \"Pagine salvate\".",
@@ -26,6 +27,7 @@
 	"readinglists-loading": "Attendi per favore...",
 	"reading-list-purpose-for-temp-user": "Crea un'utenza per creare elenchi di lettura privati.",
 	"readinglists-import-size-error": "L'elenco è troppo grande per essere visualizzato.",
+	"readinglists-special-error-list-not-found": "Impossibile trovare questo elenco.",
 	"special-tab-readinglists-short": "I tuoi elenchi",
 	"readinglists-title": "Pagine salvate",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|elenco|elenchi}}",
@@ -45,5 +47,6 @@
 	"readinglists-add-bookmark": "Salva",
 	"readinglists-remove-bookmark": "Annulla salvataggio",
 	"readinglists-onboarding-ok-button": "OK",
-	"readinglists-mobile-onboarding-saved-pages-title": "Pagine salvate"
+	"readinglists-mobile-onboarding-saved-pages-title": "Pagine salvate",
+	"readinglists-beta-tag": "Beta"
 }

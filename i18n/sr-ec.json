@@ -6,9 +6,13 @@
 	},
 	"readinglists-browser-add-entry-success": "<b>$1</b> је додата у [[$2|$3]].",
 	"readinglists-browser-remove-entry-success": "<b>$1</b> је уклоњена из [[$2|$3]].",
+	"readinglists-browser-login-prompt": "Пријавите се да сачувате странице",
+	"readinglists-browser-list-entry-limit-exceeded": "Страница не може бити сачувана. Максимално $1 по списку.",
 	"readinglists-special-subpage-title": "Сачувано",
 	"readinglists-loading": "Молимо сачекајте...",
+	"readinglists-special-error-list-not-found": "Списак није пронађен.",
 	"readinglists-title": "Сачуване странице",
+	"readinglists-total-articles": "$1 {{PLURAL:$1|страница|странице}}",
 	"readinglists-show-more": "Прикажи више",
 	"readinglists-default-title": "сачуване странице",
 	"readinglists-empty-title": "Ваш списак је празан.",
@@ -26,5 +30,6 @@
 	"readinglists-onboarding-close-button": "Затвори",
 	"readinglists-onboarding-ok-button": "У реду",
 	"readinglists-onboarding-saved-pages-title": "Ваше сачуване странице",
-	"readinglists-mobile-onboarding-saved-pages-title": "Сачувано"
+	"readinglists-mobile-onboarding-saved-pages-title": "Сачувано",
+	"readinglists-beta-tag": "Бета"
 }

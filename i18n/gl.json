@@ -45,6 +45,7 @@
 	"readinglists-error": "O teu navegador non pode utilizar a función de listas de lectura. Activa o JavaScript ou inténtao noutro navegador.",
 	"readinglists-import-error": "Non se puido mostrar a lista a partir dos datos proporcionados.",
 	"readinglists-import-size-error": "A lista é demasiado grande para amosala.",
+	"readinglists-special-error-list-not-found": "Non se puido atopar a lista.",
 	"special-tab-readinglists-short": "As túas listas",
 	"readinglists-title": "Páxinas gardadas",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|lista|listas}}",
@@ -90,5 +91,6 @@
 	"readinglists-onboarding-saved-pages-title": "As túas páxinas gardadas",
 	"readinglists-onboarding-saved-pages-text": "Accede aquí a todas as túas páxinas gardadas.",
 	"readinglists-mobile-onboarding-saved-pages-title": "Páxinas gardadas",
-	"readinglists-mobile-onboarding-saved-pages-text": "Accede a todas as túas páxinas gardadas desde este menú."
+	"readinglists-mobile-onboarding-saved-pages-text": "Accede a todas as túas páxinas gardadas desde este menú.",
+	"readinglists-beta-tag": "Beta"
 }
