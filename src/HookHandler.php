@@ -164,9 +164,12 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 	}
 
 	private function isReadingListsEnabledForUser( UserIdentity $user ): bool {
-		$betaFeatureEnabled = $this->config->get( 'ReadingListBetaFeature' ) &&
-			ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' ) &&
-			BetaFeatures::isFeatureEnabled( $user, Constants::PREF_KEY_BETA_FEATURES );
+		$betaFeatureIsAvailable = $this->config->get( 'ReadingListBetaFeature' ) &&
+			ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' );
+
+		if ( $betaFeatureIsAvailable ) {
+			return BetaFeatures::isFeatureEnabled( $user, Constants::PREF_KEY_BETA_FEATURES );
+		}
 
 		$hiddenPreferenceEnabled = $this->userOptionsLookup->getOption(
 			$user,
@@ -185,7 +188,7 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			$inExperimentTreatment = $experiment->isAssignedGroup( 'treatment' );
 		}
 
-		return $betaFeatureEnabled || ( $hiddenPreferenceEnabled && $inExperimentTreatment );
+		return $hiddenPreferenceEnabled && $inExperimentTreatment;
 	}
 
 	/**

@@ -66,6 +66,8 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 			$this->markTestSkipped( 'Test requires the TestKitchen extension' );
 		}
 
+		$this->overrideConfigValue( 'ReadingListBetaFeature', false );
+
 		$services = $this->getServiceContainer();
 
 		$userOptionsManager = $services->getUserOptionsManager();
@@ -73,7 +75,7 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$userOptionsManager->saveOptions( $this->user );
 
 		$mockExperiment = $this->createMock( Experiment::class );
-		$mockExperiment->method( 'isAssignedGroup' )->with( 'treatment' )->willReturn( true );
+		$mockExperiment->method( 'isAssignedGroup' )->with( 'treatment' )->willReturn( $inAssignedGroup );
 
 		/** @var MockObject|ExperimentManager $mockExperimentManager */
 		$mockExperimentManager = $this->createMock( ExperimentManager::class );
@@ -163,8 +165,8 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
 
-		$this->assertArrayHasKey( 'readinglists', $links['user-menu'] );
-		$this->assertArrayHasKey( 'bookmark', $links['views'] );
+		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
+		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
 	}
 
 	public function testBookmarkIconButtonAddedForMainNamespacePageWithBetaFeature() {
@@ -234,6 +236,30 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
 
 		$this->assertArrayHasKey( 'readinglists', $links['user-menu'] );
+		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
+	}
+
+	public function testDisabledBetaFeatureRespectedEvenWithHiddenPreference() {
+		if ( !ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' ) ) {
+			$this->markTestSkipped( 'Test requires the BetaFeatures extension' );
+		}
+
+		$this->overrideConfigValue( 'ReadingListBetaFeature', true );
+
+		$services = $this->getServiceContainer();
+		$userOptionsManager = $services->getUserOptionsManager();
+		$userOptionsManager->setOption( $this->user, Constants::PREF_KEY_WEB_UI_ENABLED, '1' );
+		$userOptionsManager->setOption( $this->user, Constants::PREF_KEY_BETA_FEATURES, '0' );
+		$userOptionsManager->saveOptions( $this->user );
+
+		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
+		$skin = $this->createSkinTemplate( $title );
+
+		$links = $this->getLinks();
+
+		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
 		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
 	}
 
