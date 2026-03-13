@@ -9,8 +9,7 @@ if ( bookmarks.length === 0 ) {
 }
 
 bookmarks.forEach( ( bookmarkElement ) => {
-	// ReadingsLists instrument: T414368
-	// This is for the ReadingList long-term instrument to know which bookmark the user clicked
+	// ReadingLists instrument: track which bookmark the user clicked
 	let eventSource = 'toolbar';
 
 	if ( bookmarkElement.id === 'ca-bookmark-sticky-header' ) {

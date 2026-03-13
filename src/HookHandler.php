@@ -9,19 +9,15 @@ use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\BetaFeatures\BetaFeatures;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupResult;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
-use MediaWiki\Extension\TestKitchen\Sdk\ExperimentManager;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\ResourceLoader\Hook\ResourceLoaderGetConfigVarsHook;
 use MediaWiki\Skin\Hook\SkinTemplateNavigation__UniversalHook;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\CentralId\CentralIdLookupFactory;
-use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\Options\UserOptionsManager;
-use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
 use MediaWiki\User\UserIdentityUtils;
-use MediaWiki\WikiMap\WikiMap;
 use Wikimedia\ArrayUtils\ArrayUtils;
 
 /**
@@ -41,47 +37,10 @@ class HookHandler implements
 	public function __construct(
 		private readonly Config $config,
 		private readonly BookmarkEntryLookupService $bookmarkEntryLookupService,
-		private readonly UserOptionsLookup $userOptionsLookup,
 		private readonly UserOptionsManager $userOptionsManager,
 		private readonly CentralIdLookupFactory $centralIdLookupFactory,
-		private readonly UserIdentityUtils $userIdentityUtils,
-		private ?ExperimentManager $experimentManager = null
+		private readonly UserIdentityUtils $userIdentityUtils
 	) {
-	}
-
-	public function setExperimentManager( ExperimentManager $experimentManager ): void {
-		$this->experimentManager = $experimentManager;
-	}
-
-	/**
-	 * Get whether the user is assigned a group in an experiment.
-	 *
-	 * @param string $experimentName
-	 * @param string $group
-	 * @return bool|null
-	 */
-	public function isAssignedGroup( $experimentName, $group ) {
-		if ( !$this->experimentManager ) {
-			return null;
-		}
-		$experiment = $this->experimentManager->getExperiment( $experimentName );
-		return $experiment->isAssignedGroup( $group );
-	}
-
-	/**
-	 * Adds a hidden preference, accessed via api. The preference indicates user eligibility
-	 * for showing the ReadingLists bookmark icon button in supported skins.
-	 *
-	 * @param User $user User whose preferences are being modified.
-	 * @param array[] &$preferences Preferences description array, to be fed to a HTMLForm object.
-	 * @return bool|void True or no return value to continue or false to abort
-	 */
-	public function onGetPreferences( $user, &$preferences ) {
-		$preferences += [
-			'readinglists-web-ui-enabled' => [
-				'type' => 'api',
-			],
-		];
 	}
 
 	/**
@@ -99,21 +58,17 @@ class HookHandler implements
 
 		$user = $sktemplate->getUser();
 		$readingListsEnabledForUser = $this->isReadingListsEnabledForUser( $user );
-		$inAccountCreationCtaTreatment = false;
+		$inAccountCreationCta = !$user->isRegistered() &&
+			$sktemplate->getSkinName() === 'minerva' &&
+			$this->config->get( 'ReadingListsMinervaCTA' );
+
+		// Show bookmark to logged-in opted into ReadingList
+		// Show bookmark to logged-out users in MinervaNeue when account creation CTA is enabled
 		if ( $readingListsEnabledForUser ) {
 			$this->addSpecialPageLinkToUserMenu( $user, $sktemplate, $links );
-		} elseif ( $user->isRegistered() ) {
-			// Don't show bookmark to logged-in or temp users not opted into ReadingLists.
+		} elseif ( !$inAccountCreationCta ) {
+			// Hide bookmark for everyone else
 			return;
-		} elseif (
-			$sktemplate->getSkinName() !== 'minerva' ||
-			!$this->isAssignedGroup( 'account-creation-reading-list-cta', 'treatment' )
-		) {
-			// Don't show bookmark for logged-out users not in the CTA experiment treatment group.
-			// Experiment is MinervaNeue-only.
-			return;
-		} else {
-			$inAccountCreationCtaTreatment = true;
 		}
 
 		$output = $sktemplate->getOutput();
@@ -184,7 +139,7 @@ class HookHandler implements
 			}
 		}
 
-		if ( $inAccountCreationCtaTreatment ) {
+		if ( $inAccountCreationCta ) {
 			$output->addModules( 'ext.readingLists.bookmark.anonymous' );
 		}
 	}
@@ -236,20 +191,7 @@ class HookHandler implements
 			return BetaFeatures::isFeatureEnabled( $user, Constants::PREF_KEY_BETA_FEATURES );
 		}
 
-		$hiddenPreferenceEnabled = $this->userOptionsLookup->getOption(
-			$user,
-			Constants::PREF_KEY_WEB_UI_ENABLED
-		) === '1';
-
-		$wikiId = WikiMap::getCurrentWikiId();
-		// NOTE: These need to be the same as the experiment names
-		// defined in WikimediaEvents, in readingListAB.js.
-		$experimentName = $wikiId === 'enwiki'
-			? 'we-3-3-4-reading-list-test1-en'
-			: 'we-3-3-4-reading-list-test1';
-		$inReadingListABTreatment = $this->isAssignedGroup( $experimentName, 'treatment' );
-
-		return $hiddenPreferenceEnabled && $inReadingListABTreatment;
+		return false;
 	}
 
 	/**
@@ -307,7 +249,7 @@ class HookHandler implements
 
 		// If the URL parameter is present, the user came from the account creation CTA.
 		if ( $type === 'signup' && $isFromReadingListsAccountCreationCta ) {
-			// For the experiment (account-creation-reading-list-cta), add a URL parameter that will
+			// For the account creation reading list cta, add a URL parameter that will
 			// be used to send an account_created event.
 			$returnToQueryArray['readingListsAccountJustCreated'] = '1';
 

@@ -20,14 +20,12 @@
 				<div class="readinglists-cta-dialog__actions">
 					<a
 						:class="getFakeButtonClasses( 'primary' )"
-						:href="createAccountUrl"
-						@click="handlePrimaryActionClick">
+						:href="createAccountUrl">
 						{{ primaryActionLabel }}
 					</a>
 					<a
 						:class="getFakeButtonClasses( 'default' )"
-						:href="loginUrl"
-						@click="handleDefaultActionClick">
+						:href="loginUrl">
 						{{ defaultActionLabel }}
 					</a>
 				</div>
@@ -97,26 +95,6 @@ module.exports = exports = {
 			}
 		}
 
-		const experiment = mw.testKitchen.compat.getExperiment( 'account-creation-reading-list-cta' );
-		if ( experiment ) {
-			// eslint-disable-next-line camelcase
-			experiment.send( 'init', { action_subtype: 'init_sign_up' } );
-		}
-
-		function handlePrimaryActionClick() {
-			if ( experiment ) {
-				// eslint-disable-next-line camelcase
-				experiment.send( 'click', { action_subtype: 'sign_up' } );
-			}
-		}
-
-		function handleDefaultActionClick() {
-			if ( experiment ) {
-				// eslint-disable-next-line camelcase
-				experiment.send( 'click', { action_subtype: 'login' } );
-			}
-		}
-
 		return {
 			isOpen,
 			title,
@@ -128,9 +106,7 @@ module.exports = exports = {
 			defaultActionLabel,
 			loginUrl,
 			getFakeButtonClasses,
-			onUpdateOpen,
-			handlePrimaryActionClick,
-			handleDefaultActionClick
+			onUpdateOpen
 		};
 	}
 };
