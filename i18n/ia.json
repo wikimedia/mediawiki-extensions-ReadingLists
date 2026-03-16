@@ -42,6 +42,7 @@
 	"readinglists-error": "Tu navigator non pote usar le function de listas de lectura. Per favor activa JavaScript o tenta lo in un altere navigator.",
 	"readinglists-import-error": "Le lista non pote esser monstrate a partir del datos fornite.",
 	"readinglists-import-size-error": "Le lista es troppo grande pro esser monstrate.",
+	"readinglists-special-error-list-not-found": "Iste lista non poteva esser trovate.",
 	"special-tab-readinglists-short": "Tu listas",
 	"readinglists-title": "Paginas salveguardate",
 	"readinglists-total-lists": "$1 lista{{PLURAL:$1||s}}",
@@ -83,6 +84,10 @@
 	"readinglists-onboarding-title": "Salveguardar paginas pro plus tarde",
 	"readinglists-onboarding-text": "Ha tu trovate qualcosa interessante? Tu pote ora salveguardar lo in tu lista personal.",
 	"readinglists-onboarding-close-button": "Clauder",
+	"readinglists-onboarding-ok-button": "OK",
 	"readinglists-onboarding-saved-pages-title": "Tu paginas salveguardate",
-	"readinglists-onboarding-saved-pages-text": "Accede a tote tu paginas salveguardate hic."
+	"readinglists-onboarding-saved-pages-text": "Accede a tote tu paginas salveguardate hic.",
+	"readinglists-mobile-onboarding-saved-pages-title": "Paginas salveguardate",
+	"readinglists-mobile-onboarding-saved-pages-text": "Accede a tote tu paginas salveguardate a partir de iste menu.",
+	"readinglists-beta-tag": "Beta"
 }
