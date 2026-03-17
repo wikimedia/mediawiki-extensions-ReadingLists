@@ -7,7 +7,6 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
-use MediaWiki\MediaWikiServices;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -1403,6 +1402,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 */
 	private function getEquivalentPageTitles( string $title ): array {
 		$normalizedTitle = str_replace( '_', ' ', $title );
+
 		return array_unique( [
 			$normalizedTitle,
 			str_replace( ' ', '_', $normalizedTitle ),
@@ -1504,15 +1504,6 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @return string
 	 */
 	private function getLocalProject(): string {
-		$url = MediaWikiServices::getInstance()->getUrlUtils()->getCanonicalServer();
-		if ( $url === '' ) {
-			return '';
-		}
-
-		$parts = MediaWikiServices::getInstance()->getUrlUtils()->parse( $url );
-		$parts['port'] = null;
-		$project = MediaWikiServices::getInstance()->getUrlUtils()->assemble( $parts );
-
-		return $project;
+		return Utils::getLocalProject();
 	}
 }

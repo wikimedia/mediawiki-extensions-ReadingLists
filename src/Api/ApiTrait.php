@@ -10,9 +10,11 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
+use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Message\Message;
+use MediaWiki\Title\Title;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use MediaWiki\User\UserIdentity;
 use Psr\Log\LoggerInterface;
@@ -232,6 +234,17 @@ trait ApiTrait {
 			$item['deleted'] = true;
 		}
 		return $item;
+	}
+
+	protected function validateTitle( string $title ): void {
+		if ( !Title::newFromText( $title ) ) {
+			// @phan-suppress-next-line PhanUndeclaredMethod
+			$this->dieWithError( [ 'apierror-invalidtitle', wfEscapeWikiText( $title ) ] );
+		}
+	}
+
+	protected function isLocalProject( string $project ): bool {
+		return $project === Utils::getLocalProject();
 	}
 
 }

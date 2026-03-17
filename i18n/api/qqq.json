@@ -81,7 +81,11 @@
 	"apihelp-readinglists+createentry-example-2": "{{doc-apihelp-example|readinglists+createentry}}",
 	"apihelp-readinglists+deleteentry-summary": "{{doc-apihelp-summary|readinglists+deleteentry}}",
 	"apihelp-readinglists+deleteentry-param-entry": "{{doc-apihelp-param|readinglists+deleteentry|entry}}",
+	"apihelp-readinglists+deleteentry-param-project": "{{doc-apihelp-param|readinglists+deleteentry|project}}",
+	"apihelp-readinglists+deleteentry-param-title": "{{doc-apihelp-param|readinglists+deleteentry|title}}",
 	"apihelp-readinglists+deleteentry-param-batch": "{{doc-apihelp-param|readinglists+deleteentry|batch}}",
 	"apihelp-readinglists+deleteentry-example-1": "{{doc-apihelp-example|readinglists+deleteentry}}",
-	"apihelp-readinglists+deleteentry-example-2": "{{doc-apihelp-example|readinglists+deleteentry}}"
+	"apihelp-readinglists+deleteentry-example-2": "{{doc-apihelp-example|readinglists+deleteentry}}",
+	"apihelp-readinglists+deleteentry-example-3": "{{doc-apihelp-example|readinglists+deleteentry}}",
+	"apihelp-readinglists+deleteentry-example-4": "{{doc-apihelp-example|readinglists+deleteentry}}"
 }
