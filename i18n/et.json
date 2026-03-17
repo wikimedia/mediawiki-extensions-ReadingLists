@@ -4,5 +4,11 @@
 			"Rivoz"
 		]
 	},
-	"readinglists-bookmark": "Järjehoidja"
+	"readinglists-browser-login-prompt": "Lehekülje salvestamiseks logi sisse",
+	"readinglists-special-error-list-not-found": "Seda nimekirja ei leitud.",
+	"readinglists-total-articles": "$1 {{PLURAL:$1|lehekülg|lehekülge}}",
+	"readinglists-bookmark": "Järjehoidja",
+	"readinglists-onboarding-ok-button": "OK",
+	"readinglists-mobile-onboarding-saved-pages-title": "Salvestatud leheküljed",
+	"readinglists-beta-tag": "Beeta"
 }
