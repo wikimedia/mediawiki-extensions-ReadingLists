@@ -809,7 +809,56 @@ class ReadingListRepository implements LoggerAwareInterface {
 		] );
 	}
 
-	// sync
+	/**
+	 * Delete all list entries for a given page title and project.
+	 * @param string $title
+	 * @param string $project
+	 * @return void
+	 * @throws ReadingListRepositoryException
+	 */
+	public function deleteListEntriesByPageTitleAndProject( $title, $project ) {
+		$this->assertUser();
+		$projectId = $this->getProjectId( $project );
+		if ( !$projectId ) {
+			return;
+		}
+
+		$this->dbw->startAtomic( __METHOD__ );
+		try {
+			$listEntryIds = $this->getMatchingEntryIdsByListId( $projectId, $title );
+			// Flatten entry IDs across matching lists,
+			// with taking into account no matching entries.
+			$entryIds = array_merge( [], ...array_values( $listEntryIds ) );
+
+			if ( $entryIds ) {
+				$this->dbw->newUpdateQueryBuilder()
+					->update( 'reading_list_entry' )
+					->set( [
+						'rle_deleted' => 1,
+						'rle_date_updated' => $this->dbw->timestamp(),
+					] )
+					->where( [ 'rle_id' => $entryIds ] )
+					->caller( __METHOD__ )
+					->execute();
+
+				foreach ( $listEntryIds as $listId => $entryIdsForList ) {
+					$deletedCount = count( $entryIdsForList );
+					$this->dbw->newUpdateQueryBuilder()
+						->update( 'reading_list' )
+						->set( [ 'rl_size' => new RawSQLValue( 'rl_size - ' . $deletedCount ) ] )
+						->where( [
+							'rl_id' => $listId,
+							// Match deleteListEntry(), avoid decrementing to negative.
+							$this->dbw->expr( 'rl_size', '>', 0 ),
+						] )
+						->caller( __METHOD__ )
+						->execute();
+				}
+			}
+		} finally {
+			$this->dbw->endAtomic( __METHOD__ );
+		}
+	}
 
 	/**
 	 * Get lists that have changed since a given date.
@@ -1343,6 +1392,48 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->where( [ 'rlp_project' => $project ] )
 			->caller( __METHOD__ )->fetchField();
 		return $id === false ? null : (int)$id;
+	}
+
+	/**
+	 * Account for title normalization differences in how pages are saved.
+	 * See T419466
+	 *
+	 * @param string $title
+	 * @return string[]
+	 */
+	private function getEquivalentPageTitles( string $title ): array {
+		$normalizedTitle = str_replace( '_', ' ', $title );
+		return array_unique( [
+			$normalizedTitle,
+			str_replace( ' ', '_', $normalizedTitle ),
+		] );
+	}
+
+	/**
+	 * @param int $projectId
+	 * @param string $title
+	 * @return array<int,int[]>
+	 */
+	private function getMatchingEntryIdsByListId( int $projectId, string $title ): array {
+		$rows = $this->dbw->newSelectQueryBuilder()
+			->select( [ 'rle_id', 'rle_rl_id' ] )
+			->from( 'reading_list_entry' )
+			->where( [
+				'rle_user_id' => $this->userId,
+				'rle_rlp_id' => $projectId,
+				'rle_title' => $this->getEquivalentPageTitles( $title ),
+				'rle_deleted' => 0,
+			] )
+			->forUpdate()
+			->caller( __METHOD__ )
+			->fetchResultSet();
+
+		$listEntryIds = [];
+		foreach ( $rows as $row ) {
+			$listEntryIds[(int)$row->rle_rl_id][] = (int)$row->rle_id;
+		}
+
+		return $listEntryIds;
 	}
 
 	/**

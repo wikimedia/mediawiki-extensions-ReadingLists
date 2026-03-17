@@ -6,6 +6,7 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
+use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use PHPUnit\Framework\Constraint\Exception;
 use Wikimedia\Rdbms\IResultWrapper;
@@ -714,6 +715,82 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				$repository->addListEntry( $listId2, 'https://en.wikipedia.org', 'Baz' );
 			}
 		);
+	}
+
+	public function testDeleteListEntriesByPageTitleAndProject() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
+		$parts['port'] = null;
+		$localProject = $urlUtils->assemble( $parts );
+		$this->addProjects( [ $localProject ] );
+		[ $listId, $listId2 ] = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+			],
+			[
+				'rl_name' => 'bar',
+				'rl_deleted' => '0',
+			],
+		] );
+		[ $spaceEntryId, $otherEntryId ] = $this->addListEntries( $listId, 1, [
+			[
+				'rlp_project' => $localProject,
+				'rle_title' => 'Foo Bar',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20150101000000',
+				'rle_deleted' => 0,
+			],
+			[
+				'rlp_project' => $localProject,
+				'rle_title' => 'Something Else',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20150101000000',
+				'rle_deleted' => 0,
+			],
+		] );
+		[ $underscoreEntryId ] = $this->addListEntries( $listId2, 1, [
+			[
+				'rlp_project' => $localProject,
+				'rle_title' => 'Foo_Bar',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20150101000000',
+				'rle_deleted' => 0,
+			],
+		] );
+
+		$repository->deleteListEntriesByPageTitleAndProject( 'Foo_Bar', $localProject );
+
+		$rows = $this->getDb()->newSelectQueryBuilder()
+			->select( [ 'rle_id', 'rle_deleted' ] )
+			->from( 'reading_list_entry' )
+			->where( [ 'rle_id' => [ $spaceEntryId, $otherEntryId, $underscoreEntryId ] ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
+		$deletedById = [];
+		foreach ( $rows as $row ) {
+			$deletedById[$row->rle_id] = $row->rle_deleted;
+		}
+		$this->assertSame( '1', $deletedById[$spaceEntryId] );
+		$this->assertSame( '0', $deletedById[$otherEntryId] );
+		$this->assertSame( '1', $deletedById[$underscoreEntryId] );
+
+		$sizes = $this->getDb()->newSelectQueryBuilder()
+			->select( [ 'rl_id', 'rl_size' ] )
+			->from( 'reading_list' )
+			->where( [ 'rl_id' => [ $listId, $listId2 ] ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
+		$sizesById = [];
+		foreach ( $sizes as $row ) {
+			$sizesById[$row->rl_id] = $row->rl_size;
+		}
+		$this->assertSame( '1', $sizesById[$listId] );
+		$this->assertSame( '0', $sizesById[$listId2] );
 	}
 
 	/**
