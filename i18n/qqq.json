@@ -12,7 +12,8 @@
 			"Umherirrender",
 			"Verdy p",
 			"SaldırganSincap",
-			"Woytecr"
+			"Woytecr",
+			"Volker E."
 		]
 	},
 	"readinglists-desc": "{{desc|name=ReadingLists|url=https://www.mediawiki.org/wiki/Extension:ReadingLists}}\n\n\"Saved pages\" is {{msg-mw|Readinglists-default-title}}",
@@ -60,7 +61,7 @@
 	"readinglists-show-more": "Show more button label for Special:ReadingLists.",
 	"readinglists-default-title": "Title for the default list.",
 	"readinglists-default-description": "Description for the default list.",
-	"readinglists-empty-title": "Title that shows on a list with no articles in it.",
+	"readinglists-empty-title": "Title that shows on a list with no pages in it.",
 	"readinglists-empty-cta": "Call to action that shows on a list with no articles in it.",
 	"readinglists-display-menu": "Display button label for screen readers.",
 	"readinglists-display-sort": "Header for \"Sort by\" in the display menu.",
