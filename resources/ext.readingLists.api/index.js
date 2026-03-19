@@ -298,6 +298,22 @@ function deleteEntry( entryId ) {
 }
 
 /**
+ * Delete all entries for a given page title on the local project.
+ *
+ * @param {string} title
+ * @return {Promise<any>}
+ */
+function deleteEntryByPageTitle( title ) {
+	return api.postWithEditToken( {
+		action: 'readinglists',
+		command: 'deleteentry',
+		title,
+		project: '@local',
+		formatversion: 2
+	} );
+}
+
+/**
  * @param {string} data
  * @return {Object}
  */
@@ -361,6 +377,7 @@ module.exports = exports = {
 	getPagesFromManifest,
 	createEntry,
 	deleteEntry,
+	deleteEntryByPageTitle,
 	fromBase64,
 	toBase64,
 	stubApi

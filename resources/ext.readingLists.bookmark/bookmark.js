@@ -93,7 +93,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		const msg = mw.message(
 			`readinglists-browser-${ ( isSaved ? 'add' : 'remove' ) }-entry-success`,
 			mw.config.get( 'wgTitle' ),
-			`Special:ReadingLists/${ mw.user.getName() }/${ listId }`,
+			`Special:ReadingLists/${ mw.user.getName() }`,
 			mw.msg( 'readinglists-default-title' )
 		);
 
@@ -175,13 +175,13 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	/**
 	 * Handles frontend logic for the api.deleteEntry() function
 	 *
-	 * @param {number} entryId
+	 * @param {string} pageTitle
 	 * @param {string} listId
 	 * @return {Promise<void>}
 	 */
-	async function removePageFromReadingList( entryId, listId ) {
+	async function removePageFromReadingList( pageTitle, listId ) {
 		try {
-			await api.deleteEntry( entryId );
+			await api.deleteEntryByPageTitle( pageTitle );
 		} catch ( err ) {
 			if ( err !== 'readinglists-db-error-list-entry-deleted' ) {
 				throw err;
@@ -239,12 +239,13 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			}
 
 			const entryId = bookmark.dataset.mwEntryId;
+			const pageTitle = mw.config.get( 'wgPageName' );
 
 			try {
 				if ( !entryId ) {
 					await addPageToReadingList( currentListId );
 				} else {
-					await removePageFromReadingList( entryId, currentListId );
+					await removePageFromReadingList( pageTitle, currentListId );
 				}
 			} catch ( err ) {
 				// The following messages are used here:

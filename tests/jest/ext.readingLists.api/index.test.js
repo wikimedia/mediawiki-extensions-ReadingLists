@@ -474,6 +474,28 @@ describe( 'deleteEntry', () => {
 	} );
 } );
 
+describe( 'deleteEntryByPageTitle', () => {
+	test( 'returns success message', async () => {
+		const title = CREATEENTRY.createentry.entry.title;
+
+		api.stubApi( {
+			postWithEditToken: jest.fn( ( { action, command, project, title: pageTitle } ) => {
+				if (
+					action === 'readinglists' &&
+					command === 'deleteentry' &&
+					project === '@local' &&
+					pageTitle === title
+				) {
+					return DELETEENTRY;
+				}
+			} )
+		} );
+
+		const response = await api.deleteEntryByPageTitle( title );
+		expect( response ).toStrictEqual( DELETEENTRY );
+	} );
+} );
+
 describe( 'fromBase64', () => {
 	const project = 'https://en.wikipedia.org';
 	const data = {
