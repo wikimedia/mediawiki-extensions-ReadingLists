@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Beta16",
+			"FL2226",
 			"Greis",
 			"Neonsn0w"
 		]
@@ -49,5 +50,6 @@
 	"readinglists-remove-bookmark": "Annulla salvataggio",
 	"readinglists-onboarding-ok-button": "OK",
 	"readinglists-mobile-onboarding-saved-pages-title": "Pagine salvate",
+	"readinglists-mobile-onboarding-saved-pages-text": "Accedi a tutte le tue pagine salvate da questo menu.",
 	"readinglists-beta-tag": "Beta"
 }

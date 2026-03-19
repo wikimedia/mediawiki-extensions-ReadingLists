@@ -29,7 +29,7 @@
 	"readinglists-db-error-too-long": "Значення поля $1 не може бути довшим $2 байтів.",
 	"readinglists-db-error-no-such-project": "«$1» — не розпізнається як проєкт.",
 	"readinglists-browser-add-entry-success": "<b>$1</b> додано до вашого списку [[$2|$3]].",
-	"readinglists-browser-login-prompt": "Увійдіть, щоб зберігати статті",
+	"readinglists-browser-login-prompt": "Увійдіть, щоб зберегти сторінки",
 	"readinglists-browser-error-intro": "Сталася помилка: $1",
 	"readinglists-browser-enable-sync-prompt": "Увімкнути синхронцзацію на Вашому додатку Вікіпедії, щоб почати зберігати статті",
 	"readinglists-browser-extension-info-link-text": "Дізнатись більше",
