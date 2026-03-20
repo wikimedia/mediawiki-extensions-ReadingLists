@@ -14,7 +14,7 @@
 	"readinglists-db-error-too-long": "$1 এর মান $2 বাইটের বেশী হতে পারবে না।",
 	"readinglists-browser-add-entry-success": "[[$3|$4]] তালিকায় [[$1|$2]] যোগ করা হয়েছে",
 	"readinglists-browser-remove-entry-success": "[[$3|$4]] থেকে [[$1|$2]] সরানো হয়েছে।",
-	"readinglists-browser-login-prompt": "নিবন্ধ সংরক্ষণ করতে প্রবেশ করুন",
+	"readinglists-browser-login-prompt": "পাতা সংরক্ষণ করতে প্রবেশ করুন",
 	"readinglists-browser-error-intro": "একটি ত্রুটি দেখা দিয়েছে: $1",
 	"readinglists-browser-enable-sync-prompt": "নিবন্ধ সংরক্ষণ শুরু করতে আপনার উইকিপিডিয়া অ্যাপে সিঙ্কিং সক্ষম করুন",
 	"readinglists-browser-extension-info-link-text": "আরও জানুন",
