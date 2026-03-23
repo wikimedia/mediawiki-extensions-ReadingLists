@@ -9,7 +9,7 @@
 			"Ата"
 		]
 	},
-	"readinglists-desc": "Дозволяє користувачам керувати приватними списками статей, такими як списки закладок чи «Збережені сторінки».",
+	"readinglists-desc": "Дозволяє користувачам керувати приватними списками, такими як списки закладок чи «Збережені сторінки».",
 	"readinglists-db-error-not-set-up": "Списки читання ще не налаштовані для цього користувача.",
 	"readinglists-db-error-already-set-up": "Списки читання вже налаштовані для цього користувача.",
 	"readinglists-db-error-cannot-delete-default-list": "Стандартний список неможливо вилучити.",
@@ -31,9 +31,9 @@
 	"readinglists-browser-add-entry-success": "<b>$1</b> додано до вашого списку [[$2|$3]].",
 	"readinglists-browser-login-prompt": "Увійдіть, щоб зберегти сторінки",
 	"readinglists-browser-error-intro": "Сталася помилка: $1",
-	"readinglists-browser-enable-sync-prompt": "Увімкнути синхронцзацію на Вашому додатку Вікіпедії, щоб почати зберігати статті",
+	"readinglists-browser-enable-sync-prompt": "Увімкнути синхронізацію на Вашому додатку Вікіпедії, щоб почати зберігати сторінки",
 	"readinglists-browser-extension-info-link-text": "Дізнатись більше",
-	"readinglists-browser-list-entry-limit-exceeded": "Статтю зберегти не вдалося. Ви досягли ліміту ($1) статей на список",
+	"readinglists-browser-list-entry-limit-exceeded": "Сторінку зберегти не вдалося. Ви досягли ліміту ($1) елементів на список",
 	"readinglists-browser-extension-product-title": "Списки для читання Вікіпедії",
 	"readinglists-browser-page-not-supported": "$1 не підтримує цю сторінку"
 }

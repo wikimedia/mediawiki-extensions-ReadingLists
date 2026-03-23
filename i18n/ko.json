@@ -41,5 +41,7 @@
 	"readinglists-menu-item": "저장된 문서",
 	"readinglists-bookmark": "북마크",
 	"readinglists-add-bookmark": "저장",
-	"readinglists-remove-bookmark": "저장하지 않음"
+	"readinglists-remove-bookmark": "저장하지 않음",
+	"readinglists-onboarding-ok-button": "확인",
+	"readinglists-beta-tag": "베타"
 }
