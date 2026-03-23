@@ -278,6 +278,25 @@
 				"mediawiki.storage"
 			]
 		},
+		"ext.readingLists.bookmark.confirmPopover": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexComponents": [
+				"CdxPopover"
+			],
+			"dependencies": [
+				"vue"
+			],
+			"messages": [
+				"readinglists-unsave-from-custom-list-body",
+				"readinglists-unsave-from-custom-list-cancel",
+				"readinglists-unsave-from-custom-list-confirm",
+				"readinglists-unsave-from-custom-list-title"
+			],
+			"packageFiles": [
+				"resources/ext.readingLists.bookmark.confirmPopover/index.js",
+				"resources/ext.readingLists.bookmark.confirmPopover/ConfirmUnsavePopover.vue"
+			]
+		},
 		"ext.readingLists.bookmark.icons": {
 			"class": "MediaWiki\\ResourceLoader\\OOUIIconPackModule",
 			"defaultColor": "#000",

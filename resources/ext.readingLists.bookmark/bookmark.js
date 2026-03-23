@@ -5,6 +5,18 @@ const api = require( 'ext.readingLists.api' );
  */
 const currentReadingListSize = {};
 
+function getErrorMessage( err ) {
+	if ( typeof err === 'string' ) {
+		return mw.msg( err );
+	}
+
+	if ( err && typeof err.message === 'string' ) {
+		return err.message;
+	}
+
+	return String( err );
+}
+
 function initBookmark( bookmark, isMinerva, eventSource ) {
 	// Assumes last <span> element is the label.
 	// Even if there is no label defined, the <span> must exist.
@@ -192,6 +204,30 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	}
 
 	/**
+	 * Shows the confirmation popover for unsaving a page from a custom reading list
+	 *
+	 * @param {Element} anchorElement
+	 * @return {Promise<boolean>}
+	 */
+	async function confirmUnsaveFromCustomList( anchorElement ) {
+		await mw.loader.using( 'ext.readingLists.bookmark.confirmPopover' );
+		const confirmPopoverModule = require( 'ext.readingLists.bookmark.confirmPopover' );
+
+		return confirmPopoverModule.confirmUnsaveFromCustomList( anchorElement, isMinerva );
+	}
+
+	/**
+	 * Preloads the confirmation popover for unsaving a page
+	 * that is in at least one custom reading list, to avoid
+	 * delay loading the popover when the user clicks the unsave button.
+	 */
+	function preloadConfirmDialog() {
+		mw.requestIdleCallback( () => {
+			mw.loader.using( 'ext.readingLists.bookmark.confirmPopover' );
+		}, { timeout: 1000 } );
+	}
+
+	/**
 	 * Update the bookmarkList menu item URL to point to the user's default list,
 	 * to be called once the user has saved their first page. This will update the reading
 	 * list icon visible besides the user menu dropdown and the saved pages menu item that
@@ -230,7 +266,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 					// * readinglists-browser-error-intro
 					// * readinglists-db-error-list-entry-deleted
 					mw.notify(
-						mw.msg( 'readinglists-browser-error-intro', mw.msg( err ) ),
+						mw.msg( 'readinglists-browser-error-intro', getErrorMessage( err ) ),
 						{ tag: 'saved', type: 'error' }
 					);
 
@@ -239,12 +275,19 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			}
 
 			const entryId = bookmark.dataset.mwEntryId;
+			const inCustomList = bookmark.dataset.mwInCustomList === '1';
 			const pageTitle = mw.config.get( 'wgPageName' );
 
 			try {
 				if ( !entryId ) {
 					await addPageToReadingList( currentListId );
 				} else {
+					if ( inCustomList ) {
+						const confirmed = await confirmUnsaveFromCustomList( bookmark );
+						if ( !confirmed ) {
+							return;
+						}
+					}
 					await removePageFromReadingList( pageTitle, currentListId );
 				}
 			} catch ( err ) {
@@ -252,7 +295,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 				// * readinglists-browser-error-intro
 				// * readinglists-db-error-list-entry-deleted
 				mw.notify(
-					mw.msg( 'readinglists-browser-error-intro', mw.msg( err ) ),
+					mw.msg( 'readinglists-browser-error-intro', getErrorMessage( err ) ),
 					{ tag: 'saved', type: 'error' }
 				);
 
@@ -264,6 +307,12 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	function init() {
 		const isSaved = !!bookmark.dataset.mwEntryId;
 		setBookmarkStatus( isSaved, bookmark.dataset.mwEntryId );
+
+		if ( bookmark.dataset.mwInCustomList === '1' ) {
+			const anchorElement = document.querySelector( '#ca-bookmark' );
+			preloadConfirmDialog( anchorElement );
+		}
+
 		bindClickListener();
 
 		mw.hook( 'readingLists.bookmark.edit' ).add( ( newSaved, entryId ) => {
@@ -305,7 +354,7 @@ function initOnboardingPopover(
 	setTimeout( () => {
 		mw.requestIdleCallback( () => {
 			mw.loader.using( moduleName ).then( () => {
-				const mountAppFn = require( moduleName );
+				const mountAppFn = mw.loader.require( moduleName );
 				try {
 					mountAppFn( {
 						target: targetElement,

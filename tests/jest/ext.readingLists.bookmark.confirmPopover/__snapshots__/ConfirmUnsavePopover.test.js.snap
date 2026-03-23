@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfirmUnsavePopover ConfirmUnsavePopover rendering matches the snapshot 1`] = `
+<div
+  class="cdx-popover readinglists-confirm-unsave-popover"
+  data-placement="bottom-end"
+  role="dialog"
+>
+  <header
+    class="cdx-popover__header"
+  >
+    Remove from all reading lists?
+  </header>
+  <div
+    class="cdx-popover__body"
+  >
+    
+    <p>
+      This page is in one or more of your reading lists in the Wikipedia app.
+    </p>
+    
+  </div>
+  <footer
+    class="cdx-popover__footer"
+  >
+    <button
+      class="cdx-popover__footer__primary"
+    >
+      Remove
+    </button>
+    <button
+      class="cdx-popover__footer__default"
+    >
+      Cancel
+    </button>
+  </footer>
+</div>
+`;
