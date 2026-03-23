@@ -111,14 +111,26 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 
 		$list = null;
 		$entry = false;
+		$hasCustomListEntry = false;
 
 		if ( $defaultListId !== null ) {
 			$list = $repository->selectValidList( $defaultListId );
-			$entry = $repository->getListsByPage(
+			$listsByPage = $repository->getListsByPage(
 				'@local',
 				$title->getPrefixedDBkey(),
-				1
-			)->fetchObject();
+				2
+			);
+			foreach ( $listsByPage as $pageList ) {
+				if ( $entry === false ) {
+					// this is the default list entry
+					// or custom if the page is not in the default list
+					$entry = $pageList;
+				}
+				if ( !$pageList->rl_is_default ) {
+					$hasCustomListEntry = true;
+					break;
+				}
+			}
 		}
 
 		// If the list id is null, then list setup occurs async in bookmark.js.
@@ -132,6 +144,7 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			'href' => '#',
 			'data-mw-list-id' => $list ? $list->rl_id : null,
 			'data-mw-entry-id' => $entry === false ? null : $entry->rle_id,
+			'data-mw-in-custom-list' => $hasCustomListEntry ? 1 : null,
 			'data-mw-list-page-count' => $list ? $list->rl_size : 0,
 			'link-class' => 'reading-lists-bookmark'
 		];

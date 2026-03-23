@@ -6,6 +6,7 @@ use LogicException;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
+use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithEntryId;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -1029,7 +1030,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @param int|null $from List ID to continue from (or null to start at the beginning/end).
 	 *
 	 * @throws ReadingListRepositoryException
-	 * @return IResultWrapper<ReadingListRow>
+	 * @return IResultWrapper<ReadingListRowWithEntryId>
 	 */
 	public function getListsByPage( $project, $title, $limit = 1000, $from = null ) {
 		$this->assertUser();

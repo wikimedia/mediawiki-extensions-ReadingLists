@@ -44,25 +44,7 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$userOptionsManager = $services->getUserOptionsManager();
 		$userOptionsManager->setOption( $this->user, 'readinglists-web-ui-enabled', '1' );
 		$userOptionsManager->saveOptions( $this->user );
-
-		/** @var ReadingListRepositoryFactory&MockObject $mockFactory */
-		$mockFactory = $this->createMock( ReadingListRepositoryFactory::class );
-		$mockFactory->method( 'create' )->willReturn( $this->createMockRepository() );
-
-		$mockCentralIdLookup = $this->createMock( CentralIdLookup::class );
-		$mockCentralIdLookup->method( 'centralIdFromLocalUser' )->willReturn( 1 );
-
-		/** @var CentralIdLookupFactory&MockObject $mockCentralIdLookupFactory */
-		$mockCentralIdLookupFactory = $this->createMock( CentralIdLookupFactory::class );
-		$mockCentralIdLookupFactory->method( 'getLookup' )->willReturn( $mockCentralIdLookup );
-
-		$this->hookHandler = new HookHandler(
-			$services->getMainConfig(),
-			$mockFactory,
-			$services->getUserOptionsLookup(),
-			$mockCentralIdLookupFactory,
-			$services->getUserIdentityUtils()
-		);
+		$this->hookHandler = $this->createHookHandler();
 	}
 
 	private function setupExperiment( $inAssignedGroup = true ) {
@@ -101,7 +83,30 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$userOptionsManager->saveOptions( $this->user );
 	}
 
-	private function createMockRepository() {
+	private function createHookHandler( ?ReadingListRepository $mockRepository = null ): HookHandler {
+		$services = $this->getServiceContainer();
+
+		/** @var ReadingListRepositoryFactory&MockObject $mockFactory */
+		$mockFactory = $this->createMock( ReadingListRepositoryFactory::class );
+		$mockFactory->method( 'create' )->willReturn( $mockRepository ?? $this->createMockRepository() );
+
+		$mockCentralIdLookup = $this->createMock( CentralIdLookup::class );
+		$mockCentralIdLookup->method( 'centralIdFromLocalUser' )->willReturn( 1 );
+
+		/** @var CentralIdLookupFactory&MockObject $mockCentralIdLookupFactory */
+		$mockCentralIdLookupFactory = $this->createMock( CentralIdLookupFactory::class );
+		$mockCentralIdLookupFactory->method( 'getLookup' )->willReturn( $mockCentralIdLookup );
+
+		return new HookHandler(
+			$services->getMainConfig(),
+			$mockFactory,
+			$services->getUserOptionsLookup(),
+			$mockCentralIdLookupFactory,
+			$services->getUserIdentityUtils()
+		);
+	}
+
+	private function createMockRepository( array $pageLists = [] ) {
 		$mockList = (object)[
 			'rl_id' => 1,
 			'rl_is_default' => 1,
@@ -117,7 +122,8 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$mockRepository = $this->createMock( ReadingListRepository::class );
 		$mockRepository->method( 'setupForUser' )->willReturn( $mockList );
 		$mockRepository->method( 'getDefaultListIdForUser' )->willReturn( 1 );
-		$mockRepository->method( 'getListsByPage' )->willReturn( new FakeResultWrapper( [] ) );
+		$mockRepository->method( 'selectValidList' )->willReturn( $mockList );
+		$mockRepository->method( 'getListsByPage' )->willReturn( new FakeResultWrapper( $pageLists ) );
 
 		return $mockRepository;
 	}
@@ -185,6 +191,34 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		$this->assertArrayHasKey( 'readinglists', $links['user-menu'] );
 		$this->assertArrayHasKey( 'bookmark', $links['views'] );
+	}
+
+	public function testBookmarkIncludesInCustomListDataAttribute() {
+		$this->hookHandler = $this->createHookHandler(
+			$this->createMockRepository( [
+				(object)[
+					'rl_id' => 1,
+					'rl_is_default' => 1,
+					'rle_id' => 10,
+				],
+				(object)[
+					'rl_id' => 2,
+					'rl_is_default' => 0,
+					'rle_id' => 11,
+				],
+			] )
+		);
+		$this->setupExperiment();
+
+		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
+		$skin = $this->createSkinTemplate( $title );
+
+		$links = $this->getLinks();
+
+		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$this->assertSame( 10, $links['views']['bookmark']['data-mw-entry-id'] );
+		$this->assertSame( 1, $links['views']['bookmark']['data-mw-in-custom-list'] );
 	}
 
 	public function testBookmarkIconButtonNotAddedForTalkPageWithExperiment() {
