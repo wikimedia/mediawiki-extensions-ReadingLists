@@ -117,7 +117,8 @@
 				"MainConfig",
 				"ReadingLists.ReadingListRepositoryFactory",
 				"UserOptionsLookup",
-				"CentralIdLookupFactory"
+				"CentralIdLookupFactory",
+				"UserIdentityUtils"
 			],
 			"optional_services": [
 				"TestKitchen.ExperimentManager"

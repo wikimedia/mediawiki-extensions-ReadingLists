@@ -11,7 +11,9 @@ use MediaWiki\Extension\TestKitchen\Sdk\Experiment;
 use MediaWiki\Extension\TestKitchen\Sdk\ExperimentManager;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Registration\ExtensionRegistry;
+use MediaWiki\Request\FauxRequest;
 use MediaWiki\Skin\SkinTemplate;
+use MediaWiki\Tests\User\TempUser\TempUserTestTrait;
 use MediaWiki\Title\Title;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use MediaWiki\User\CentralId\CentralIdLookupFactory;
@@ -25,6 +27,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @covers \MediaWiki\Extension\ReadingLists\HookHandler
  */
 class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
+	use TempUserTestTrait;
 
 	private User $user;
 	private HookHandler $hookHandler;
@@ -57,7 +60,8 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 			$services->getMainConfig(),
 			$mockFactory,
 			$services->getUserOptionsLookup(),
-			$mockCentralIdLookupFactory
+			$mockCentralIdLookupFactory,
+			$services->getUserIdentityUtils()
 		);
 	}
 
@@ -268,6 +272,24 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
 		$skin = $this->createSkinTemplate( $title, true, 'monobook' );
+
+		$links = $this->getLinks();
+
+		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
+		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
+	}
+
+	public function testBookmarkNotAddedForTempUser() {
+		$this->enableAutoCreateTempUser();
+		$tempUser = $this->getServiceContainer()->getTempUserCreator()
+			->create( null, new FauxRequest() )
+			->getUser();
+
+		$skin = $this->createMock( SkinTemplate::class );
+		$skin->method( 'getSkinName' )->willReturn( 'vector-2022' );
+		$skin->method( 'getUser' )->willReturn( $tempUser );
 
 		$links = $this->getLinks();
 

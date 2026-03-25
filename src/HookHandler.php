@@ -16,6 +16,7 @@ use MediaWiki\User\CentralId\CentralIdLookupFactory;
 use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
+use MediaWiki\User\UserIdentityUtils;
 use MediaWiki\WikiMap\WikiMap;
 
 /**
@@ -28,6 +29,7 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 		private readonly ReadingListRepositoryFactory $readingListRepositoryFactory,
 		private readonly UserOptionsLookup $userOptionsLookup,
 		private readonly CentralIdLookupFactory $centralIdLookupFactory,
+		private readonly UserIdentityUtils $userIdentityUtils,
 		private ?ExperimentManager $experimentManager = null
 	) {
 	}
@@ -164,6 +166,10 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 	}
 
 	private function isReadingListsEnabledForUser( UserIdentity $user ): bool {
+		if ( $this->userIdentityUtils->isTemp( $user ) ) {
+			return false;
+		}
+
 		$betaFeatureIsAvailable = $this->config->get( 'ReadingListBetaFeature' ) &&
 			ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' );
 
