@@ -4,5 +4,7 @@
 			"Cabal"
 		]
 	},
-	"apihelp-query+readinglistentries-param-dir": "ਛਾਂਟਣ ਦੀ ਦਿਸ਼ਾ: <kbd>ਚੜ੍ਹਦੀ ਤਰਤੀਬ</kbd> (A ਤੋਂ Z, ਸਭ ਤੋਂ ਪੁਰਾਣੀ ਤੋਂ ਨਵੀਂ) ਜਾਂ <kbd>ਲਹਿੰਦੀ ਤਰਤੀਬ</kbd>।"
+	"apihelp-query+readinglistentries-param-dir": "ਛਾਂਟਣ ਦੀ ਦਿਸ਼ਾ: <kbd>ਚੜ੍ਹਦੀ ਤਰਤੀਬ</kbd> (A ਤੋਂ Z, ਸਭ ਤੋਂ ਪੁਰਾਣੀ ਤੋਂ ਨਵੀਂ) ਜਾਂ <kbd>ਲਹਿੰਦੀ ਤਰਤੀਬ</kbd>।",
+	"apihelp-readinglists+createentry-param-project": "ਵਰਕੇ ਦੀ ਮੇਜ਼ਬਾਨੀ ਕਰਨ ਵਾਲੇ ਵਿਕੀ ਦਾ ਪ੍ਰੋਜੈਕਟ ਨਾਂ। ਆਮ ਤੌਰ 'ਤੇ ਇਹ ਵਿਕੀ ਦਾ ਡੋਮੇਨ ਨਾਂ ਜਾਂ ਮਕਾਮੀ ਵਿਕੀ ਲਈ <kbd>@local</kbd> ਹੁੰਦਾ ਏ। ਜਦੋਂ ਤੱਕ ਥੋਕ ਵਿੱਚ ਕੰਮ ਨਹੀਂ ਕਰ ਰਹੇ, ਉਦੋਂ ਤੱਕ ਇਹ ਭਰਨਾ ਲਾਜ਼ਮੀ ਏ। ਪੂਰ-ਸਿਰਜਣਾ(Batch creation) ਤੋਂ ਬਿਨਾਂ ਲੋੜੀਂਦਾ ਏ।",
+	"apihelp-readinglists+deleteentry-param-project": "ਵਰਕੇ ਦੀ ਮੇਜ਼ਬਾਨੀ ਕਰਨ ਵਾਲੇ ਵਿਕੀ ਦਾ ਪ੍ਰੋਜੈਕਟ ਨਾਂ। <var>$1title</var> ਦੇ ਨਾਲ ਵਰਤਿਆ ਜਾਣਾ ਚਾਹੀਦਾ ਏ। ਦਿੱਤੇ ਪ੍ਰੋਜੈਕਟ ਅਤੇ ਸਿਰਲੇਖ ਨਾਲ ਮੇਲ ਖਾਂਦੀਆਂ ਸਾਰੇ ਇੰਦਰਾਜਾਂ ਨੂੰ ਮਿਟਾਉਂਦਾ ਏ।"
 }

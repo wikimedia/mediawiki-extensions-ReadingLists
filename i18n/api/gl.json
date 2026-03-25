@@ -72,14 +72,18 @@
 	"apihelp-readinglists+createentry-summary": "Engadir unha páxina nova a unha lista pertencente ó usuario actual.",
 	"apihelp-readinglists+createentry-extended-description": "As entradas da lista deben ser únicas. As páxinas non se limitan ao wiki desde onde se accede á API. O usuario debe ter menos de $1 {{PLURAL:$1|entrada (non eliminada)|entradas (non eliminadas)}} na lista.",
 	"apihelp-readinglists+createentry-param-list": "Identificador da lista.",
-	"apihelp-readinglists+createentry-param-project": "Nome do proxecto do wiki que aloxa a páxina. (Normalmente, isto é o nome de dominio do wiki.) Obrigatorio a menos que esteas a facer unha creación por lotes.",
+	"apihelp-readinglists+createentry-param-project": "Nome do proxecto do wiki que aloxa a páxina. Normalmente, isto é o nome de dominio do wiki ou <kbd>@local</kbd> para o wiki local. Obrigatorio a menos que esteas a facer unha creación por lotes.",
 	"apihelp-readinglists+createentry-param-title": "Título da páxina (incluído o nome localizado do espazo de nomes). Obrigatorio a menos que esteas a facer unha creación por lotes. Recoméndase un formato lexible por humanos (con espazos no canto de barras baixas). A API trata os títulos como cadeas de texto en bruto; a normalización (como o uso de maiúsculas) déixase aos clientes.",
 	"apihelp-readinglists+createentry-param-batch": "Datos por lotes para crear varias entradas de lista (na mesma lista) nunha única solicitude, en forma de matriz JSON cun ou máis obxectos cos campos <var>project</var> e <var>title</var>.",
 	"apihelp-readinglists+createentry-example-1": "Engadir a páxina <kbd>Dog</kbd> do proxecto <kbd>en.wikipedia.org</kbd> á lista co identificador <kbd>33</kbd>.",
 	"apihelp-readinglists+createentry-example-2": "Engadir varias páxinas a unha lista.",
 	"apihelp-readinglists+deleteentry-summary": "Eliminar unha páxina dunha lista pertencente ó usuario actual.",
 	"apihelp-readinglists+deleteentry-param-entry": "Identificador da entrada. Obrigatorio a menos que esteas a facer unha eliminación por lotes.",
+	"apihelp-readinglists+deleteentry-param-project": "Nome do proxecto do wiki que aloxa a páxina. Debe usarse xunto con <var>$1title</var>. Elimina todas as entradas que coincidan co proxecto e o título dados.",
+	"apihelp-readinglists+deleteentry-param-title": "Título da páxina a eliminar. Debe usarse xunto con <var>$1project</var>.",
 	"apihelp-readinglists+deleteentry-param-batch": "Datos por lotes para borrar varias entradas de listas nunha única solicitude, en forma de matriz JSON cun ou máis obxectos co campo <var>entry</var>.",
 	"apihelp-readinglists+deleteentry-example-1": "Eliminar a entrada de lista que ten o identificador <kbd>8</kbd>.",
-	"apihelp-readinglists+deleteentry-example-2": "Eliminar varias entradas de lista."
+	"apihelp-readinglists+deleteentry-example-2": "Eliminar varias entradas de lista.",
+	"apihelp-readinglists+deleteentry-example-3": "Eliminar todas as entradas da páxina <kbd>Dog</kbd> no proxecto <kbd>en.wikipedia.org</kbd>.",
+	"apihelp-readinglists+deleteentry-example-4": "Eliminar todas as entradas da páxina <kbd>Garfield the Cat</kbd> no proxecto <kbd>@local</kbd>."
 }
