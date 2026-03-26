@@ -16,6 +16,8 @@
 			</p>
 		</template>
 
+		<survey v-if="showSurvey" @survey-completed="onSurveyCompleted"></survey>
+
 		<p v-if="!enableToolbar" class="reading-lists-sorting">
 			{{ sortingText }}
 		</p>
@@ -68,7 +70,10 @@ const DisplayButton = require( '../components/DisplayButton.vue' );
 const EmptyList = require( '../components/EmptyList.vue' );
 const EntryItem = require( '../components/EntryItem.vue' );
 const ImportDialog = require( '../components/ImportDialog.vue' );
+const Survey = require( '../components/Survey.vue' );
 const { ReadingListsEnableSpecialPageToolbar } = require( '../../../config.json' );
+
+const surveyStorageKey = 'readinglists-beta-survey';
 
 // @vue/component
 module.exports = exports = {
@@ -79,7 +84,8 @@ module.exports = exports = {
 		DisplayButton,
 		EmptyList,
 		EntryItem,
-		ImportDialog
+		ImportDialog,
+		Survey
 	},
 	props: {
 		listId: {
@@ -108,7 +114,8 @@ module.exports = exports = {
 			infinite: ref( false ),
 			msgLoading: mw.msg( 'readinglists-loading' ),
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
-			enableToolbar: ReadingListsEnableSpecialPageToolbar
+			enableToolbar: ReadingListsEnableSpecialPageToolbar,
+			showSurvey: ref( false )
 		};
 	},
 	computed: {
@@ -231,6 +238,7 @@ module.exports = exports = {
 			await this.getEntries();
 			this.ready = true;
 			this.registerScrollHandler();
+			this.maybeShowSurvey();
 		},
 		async refreshEntries() {
 			this.entries = [];
@@ -262,6 +270,33 @@ module.exports = exports = {
 		async onShowMore() {
 			this.infinite = true;
 			await this.getEntries();
+		},
+		maybeShowSurvey() {
+			// Don't show if the survey is not enabled or there are no saved pages.
+			const enabled = mw.config.get( 'wgReadingListsEnableBetaQuickSurvey' );
+			if ( !enabled || this.entries.length < 1 ) {
+				return;
+			}
+
+			// This token is either a count of the number of times the user has seen the survey, or
+			// a ~ if they have completed the survey.
+			const betaSurveyToken = mw.storage.get( surveyStorageKey ) || 0;
+			if ( betaSurveyToken === '~' ) {
+				return;
+			}
+
+			// Show survey a max of 10 times.
+			const betaSurveyTokenAsNumber = Number( betaSurveyToken );
+			if ( betaSurveyTokenAsNumber > 10 ) {
+				return;
+			}
+
+			// Store key for ~4 months, slightly longer than the beta feature period.
+			mw.storage.set( surveyStorageKey, betaSurveyTokenAsNumber + 1, 60 * 60 * 24 * 120 );
+			this.showSurvey = true;
+		},
+		onSurveyCompleted() {
+			mw.storage.set( surveyStorageKey, '~', 60 * 60 * 24 * 120 );
 		}
 	},
 	async mounted() {

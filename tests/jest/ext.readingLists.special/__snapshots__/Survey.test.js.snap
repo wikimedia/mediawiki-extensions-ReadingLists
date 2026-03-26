@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Survey matches the snapshot 1`] = `
+<div
+  class="reading-lists-survey"
+>
+  
+  <!-- TODO: include privacy policy (T421455). -->
+  <div
+    class="reading-lists-survey__question"
+  >
+    Are you enjoying this feature?
+  </div>
+  <div
+    class="reading-lists-survey__options"
+  >
+    
+    <button
+      class="cdx-button cdx-button--action-default cdx-button--weight-normal cdx-button--size-medium cdx-button--framed reading-lists-survey__option-button"
+    >
+      
+      👍 Yes
+      
+    </button>
+    <button
+      class="cdx-button cdx-button--action-default cdx-button--weight-normal cdx-button--size-medium cdx-button--framed reading-lists-survey__option-button"
+    >
+      
+      👎 No
+      
+    </button>
+    
+  </div>
+  <!--teleport start-->
+  <transition-stub
+    appear="true"
+    css="true"
+    name="cdx-dialog-fade"
+    persisted="false"
+  >
+    <!--v-if-->
+  </transition-stub>
+  <!--teleport end-->
+  
+</div>
+`;

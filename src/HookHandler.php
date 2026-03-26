@@ -10,6 +10,7 @@ use MediaWiki\Extension\BetaFeatures\BetaFeatures;
 use MediaWiki\Extension\TestKitchen\Sdk\ExperimentManager;
 use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
 use MediaWiki\Registration\ExtensionRegistry;
+use MediaWiki\ResourceLoader\Hook\ResourceLoaderGetConfigVarsHook;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\CentralId\CentralIdLookupFactory;
@@ -22,7 +23,16 @@ use MediaWiki\WikiMap\WikiMap;
 /**
  * Static entry points for hooks.
  */
-class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNavigation__UniversalHook {
+class HookHandler implements
+	APIQuerySiteInfoGeneralInfoHook,
+	SkinTemplateNavigation__UniversalHook,
+	ResourceLoaderGetConfigVarsHook
+{
+
+	private const SURVEY_NAME = 'ReadingLists beta feature survey';
+	private const SURVEY_QUESTION = 'readinglists-betafeature-quicksurvey-question';
+	private const SURVEY_ANSWER_POSITIVE = 'readinglists-betafeature-quicksurvey-answer-positive';
+	private const SURVEY_ANSWER_NEGATIVE = 'readinglists-betafeature-quicksurvey-answer-negative';
 
 	public function __construct(
 		private readonly Config $config,
@@ -231,6 +241,57 @@ class HookHandler implements APIQuerySiteInfoGeneralInfoHook, SkinTemplateNaviga
 			'maxListsPerUser' => $this->config->get( 'ReadingListsMaxListsPerUser' ),
 			'maxEntriesPerList' => $this->config->get( 'ReadingListsMaxEntriesPerList' ),
 			'deletedRetentionDays' => $this->config->get( 'ReadingListsDeletedRetentionDays' ),
+		];
+	}
+
+	/**
+	 * Return whether the beta feature survey is enabled.
+	 *
+	 * @return bool
+	 */
+	private function isBetaSurveyEnabled() {
+		return $this->config->get( 'ReadingListsEnableBetaQuickSurvey' );
+	}
+
+	/** @inheritDoc */
+	public function onResourceLoaderGetConfigVars( array &$vars, $skin, Config $config ): void {
+		$vars['wgReadingListsEnableBetaQuickSurvey'] = $this->isBetaSurveyEnabled();
+	}
+
+	/**
+	 * Configure QuickSurveys.
+	 *
+	 * @param array &$surveys
+	 */
+	public function onQuickSurveysEnabled( &$surveys ) {
+		$enabled = $this->isBetaSurveyEnabled();
+
+		$surveys[] = [
+			'name' => self::SURVEY_NAME,
+			'type' => 'internal',
+			'enabled' => $enabled,
+			'questions' => [
+				[
+					'name' => 'enjoyment',
+					'question' => self::SURVEY_QUESTION,
+					'layout' => 'single-answer',
+					'answers' => [
+						[ 'label' => self::SURVEY_ANSWER_POSITIVE ],
+						[ 'label' => self::SURVEY_ANSWER_NEGATIVE ]
+					],
+					'shuffleAnswersDisplay' => false,
+				],
+			],
+			"embedElementId" => "~",
+			// Audience logic will be handled in a Vue component.
+			'audience' => [],
+			// TODO: include a real privacy policy (T421455).
+			'privacyPolicy' => 'ext-quicksurveys-example-external-survey-privacy-policy',
+			'coverage' => 100,
+			'platforms' => [
+				'desktop' => [ 'stable' ],
+				'mobile' => [ 'stable' ]
+			],
 		];
 	}
 }

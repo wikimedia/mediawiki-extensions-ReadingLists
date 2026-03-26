@@ -98,6 +98,10 @@
 		"ReadingListsBetaDefaultForNewAccountsAfter": {
 			"value": null,
 			"description": "MW timestamp in YYYYMMDDHHMMSS format (e.g. '20260301000000') after which new accounts get the ReadingLists beta feature enabled by default. Set to null to disable."
+		},
+		"ReadingListsEnableBetaQuickSurvey": {
+			"value": false,
+			"description": "Whether to enable the QuickSurvey for the ReadingLists beta feature."
 		}
 	},
 	"DefaultUserOptions": {
@@ -108,7 +112,9 @@
 		"GetBetaFeaturePreferences": "betafeatures",
 		"GetPreferences": "main",
 		"APIQuerySiteInfoGeneralInfo": "main",
-		"LoadExtensionSchemaUpdates": "schema"
+		"LoadExtensionSchemaUpdates": "schema",
+		"ResourceLoaderGetConfigVars": "main",
+		"QuickSurveysEnabled": "main"
 	},
 	"HookHandlers": {
 		"main": {
@@ -172,6 +178,7 @@
 				"CdxMenuButton",
 				"CdxMessage",
 				"CdxProgressBar",
+				"CdxTextArea",
 				"CdxToggleButton"
 			],
 			"dependencies": [
@@ -201,7 +208,14 @@
 				"readinglists-sorted-by-recent",
 				"readinglists-special-title-imported",
 				"readinglists-total-articles",
-				"readinglists-total-lists"
+				"readinglists-total-lists",
+				"readinglists-betafeature-quicksurvey-question",
+				"readinglists-betafeature-quicksurvey-answer-positive",
+				"readinglists-betafeature-quicksurvey-answer-negative",
+				"readinglists-betafeature-quicksurvey-question-feedback",
+				"readinglists-betafeature-quicksurvey-feedback-placeholder",
+				"readinglists-betafeature-quicksurvey-submit",
+				"readinglists-betafeature-quicksurvey-thank-you"
 			],
 			"packageFiles": [
 				"resources/ext.readingLists.special/index.js",
@@ -210,6 +224,7 @@
 				"resources/ext.readingLists.special/components/EntryItem.vue",
 				"resources/ext.readingLists.special/components/ImportDialog.vue",
 				"resources/ext.readingLists.special/components/ListItem.vue",
+				"resources/ext.readingLists.special/components/Survey.vue",
 				"resources/ext.readingLists.special/pages/Entries.vue",
 				"resources/ext.readingLists.special/pages/Lists.vue",
 				{

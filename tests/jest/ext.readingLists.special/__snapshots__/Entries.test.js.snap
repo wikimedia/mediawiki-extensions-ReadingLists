@@ -7,6 +7,7 @@ exports[`Entries renders all items from all lists on special page 1`] = `
   
   <!--v-if-->
   <!--v-if-->
+  <!--v-if-->
   <p
     class="reading-lists-sorting"
   >
@@ -131,6 +132,7 @@ exports[`Entries renders with toolbar disabled 1`] = `
   
   <!--v-if-->
   <!--v-if-->
+  <!--v-if-->
   <p
     class="reading-lists-sorting"
   >
@@ -157,6 +159,7 @@ exports[`Entries renders with toolbar enabled 1`] = `
   data-v-app=""
 >
   
+  <!--v-if-->
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->

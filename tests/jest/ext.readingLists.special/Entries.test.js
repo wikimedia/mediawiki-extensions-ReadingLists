@@ -38,6 +38,25 @@ function setupAllItemsApiStub() {
 }
 
 describe( 'Entries', () => {
+	beforeEach( () => {
+		mw.config = {
+			get: jest.fn( ( key ) => {
+				// Disable the beta survey.
+				if ( key === 'wgReadingListsEnableBetaQuickSurvey' ) {
+					return false;
+				}
+			} )
+		};
+		mw.storage = {
+			get: jest.fn()
+		};
+
+	} );
+
+	afterEach( () => {
+		jest.restoreAllMocks();
+	} );
+
 	test( 'renders with toolbar disabled', async () => {
 		setupEntriesApiStub();
 		mw.util = { getUrl: jest.fn( ( path ) => `/wiki/${ path }` ) };

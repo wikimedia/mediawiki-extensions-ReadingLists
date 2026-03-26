@@ -105,5 +105,12 @@
 	"readinglists-onboarding-saved-pages-text": "Body text of the saved pages onboarding popover. The popover is displayed the first time a user saves a page to their reading list.",
 	"readinglists-mobile-onboarding-saved-pages-title": "Title of the mobile saved pages onboarding popover, displayed after a user saves their first page. Points to the user menu where saved pages can be accessed.",
 	"readinglists-mobile-onboarding-saved-pages-text": "Body text of the mobile saved pages onboarding popover, displayed after a user saves their first page. Points to the user menu where saved pages can be accessed.",
-	"readinglists-beta-tag": "Label for the beta tag displayed next to the page title on Special:ReadingLists, indicating that the feature is still in development."
+	"readinglists-beta-tag": "Label for the beta tag displayed next to the page title on Special:ReadingLists, indicating that the feature is still in development.",
+	"readinglists-betafeature-quicksurvey-question": "QuickSurvey question asking for feedback on the ReadingLists beta feature.",
+	"readinglists-betafeature-quicksurvey-answer-positive": "Positive response to survey question",
+	"readinglists-betafeature-quicksurvey-answer-negative": "Negative response to survey question",
+	"readinglists-betafeature-quicksurvey-question-feedback": "Follow-up question asking for qualitative feedback",
+	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Placeholder text for the feedback textarea",
+	"readinglists-betafeature-quicksurvey-submit": "Label for the dialog submit button",
+	"readinglists-betafeature-quicksurvey-thank-you": "Thank you message after survey is completed"
 }

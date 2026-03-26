@@ -95,5 +95,12 @@
 	"readinglists-onboarding-saved-pages-text": "Access all your saved pages here.",
 	"readinglists-mobile-onboarding-saved-pages-title": "Saved pages",
 	"readinglists-mobile-onboarding-saved-pages-text": "Access all your saved pages from this menu.",
-	"readinglists-beta-tag": "Beta"
+	"readinglists-beta-tag": "Beta",
+	"readinglists-betafeature-quicksurvey-question": "Are you enjoying this feature?",
+	"readinglists-betafeature-quicksurvey-answer-positive": "👍 Yes",
+	"readinglists-betafeature-quicksurvey-answer-negative": "👎 No",
+	"readinglists-betafeature-quicksurvey-question-feedback": "What would make this more useful for you?",
+	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Add your feedback",
+	"readinglists-betafeature-quicksurvey-submit": "Submit",
+	"readinglists-betafeature-quicksurvey-thank-you": "Thank you for your feedback"
 }
