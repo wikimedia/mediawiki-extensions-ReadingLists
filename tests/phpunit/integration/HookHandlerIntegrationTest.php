@@ -7,6 +7,7 @@ use MediaWiki\Extension\ReadingLists\Constants;
 use MediaWiki\Extension\ReadingLists\HookHandler;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
+use MediaWiki\Extension\ReadingLists\Service\BookmarkBloomFilterCache;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\Extension\TestKitchen\Sdk\Experiment;
 use MediaWiki\Extension\TestKitchen\Sdk\ExperimentManager;
@@ -118,11 +119,15 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 	): BookmarkEntryLookupService {
 		return new BookmarkEntryLookupService(
 			$mockFactory,
-			new WANObjectCache( [ 'cache' => new HashBagOStuff() ] ),
 			$mockCentralIdLookupFactory,
 			$this->createMock( JobQueueGroup::class ),
-			new NullLogger(),
-			10000
+			new BookmarkBloomFilterCache(
+				$mockFactory,
+				new WANObjectCache( [ 'cache' => new HashBagOStuff() ] ),
+				new NullLogger(),
+				10000
+			),
+			new NullLogger()
 		);
 	}
 

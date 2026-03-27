@@ -6,6 +6,7 @@ use MediaWiki\Extension\ReadingLists\Job\BuildBloomFilterJob;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
+use MediaWiki\Extension\ReadingLists\Service\BookmarkBloomFilterCache;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\JobQueue\JobQueueGroup;
 use MediaWiki\Title\Title;
@@ -19,7 +20,6 @@ use Wikimedia\ObjectCache\HashBagOStuff;
 use Wikimedia\ObjectCache\WANObjectCache;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\FakeResultWrapper;
-use Wikimedia\Rdbms\IDBAccessObject;
 
 /**
  * @covers \MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService
@@ -40,7 +40,6 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 	private function createService(
 		ReadingListRepository $repository,
-		int $maxItems = self::MAX_ITEMS,
 		?JobQueueGroup $jobQueueGroup = null
 	): BookmarkEntryLookupService {
 		/** @var ReadingListRepositoryFactory&MockObject $factory */
@@ -49,9 +48,25 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 		return new BookmarkEntryLookupService(
 			$factory,
-			$this->cache,
 			$this->createMockCentralIdLookupFactory(),
 			$jobQueueGroup ?? $this->createMock( JobQueueGroup::class ),
+			$this->createBloomFilterCache( $repository, $this->cache ),
+			new NullLogger()
+		);
+	}
+
+	private function createBloomFilterCache(
+		ReadingListRepository $repository,
+		?WANObjectCache $cache = null,
+		int $maxItems = self::MAX_ITEMS
+	): BookmarkBloomFilterCache {
+		/** @var ReadingListRepositoryFactory&MockObject $factory */
+		$factory = $this->createMock( ReadingListRepositoryFactory::class );
+		$factory->method( 'create' )->willReturn( $repository );
+
+		return new BookmarkBloomFilterCache(
+			$factory,
+			$cache ?? $this->cache,
 			new NullLogger(),
 			$maxItems
 		);
@@ -92,7 +107,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$repository->expects( $this->never() )->method( 'getListsByPage' );
 
 		$service = $this->createService( $repository );
-		$service->rebuildBloomFilter( self::CENTRAL_ID );
+		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
 		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Elephant' ), self::CENTRAL_ID );
 
 		$this->assertTrue( $status->isOK() );
@@ -130,7 +145,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 			} );
 
 		$service = $this->createService( $repository );
-		$service->rebuildBloomFilter( self::CENTRAL_ID );
+		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
 		$status = $service->getBookmarkEntryStatus(
 			$this->createTitle( 'United_Arab_Emirates' ),
 			self::CENTRAL_ID
@@ -153,7 +168,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 			->willReturn( new FakeResultWrapper( [ $entry ] ) );
 
 		$service = $this->createService( $repository );
-		$service->rebuildBloomFilter( self::CENTRAL_ID );
+		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
 		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Page_1' ), self::CENTRAL_ID );
 
 		$this->assertTrue( $status->isOK() );
@@ -174,7 +189,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 					&& $job->getParams()['centralId'] === self::CENTRAL_ID;
 			} ) );
 
-		$service = $this->createService( $repository, self::MAX_ITEMS, $jobQueueGroup );
+		$service = $this->createService( $repository, $jobQueueGroup );
 
 		$checkKey = $this->cache->makeKey( 'readinglists', 'bloom-check', self::CENTRAL_ID );
 		$timeBefore = $this->cache->getCheckKeyTime( $checkKey );
@@ -184,20 +199,6 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 		$timeAfter = $this->cache->getCheckKeyTime( $checkKey );
 		$this->assertGreaterThanOrEqual( $timeBefore, $timeAfter );
-	}
-
-	public function testRebuildBloomFilter_usesPrimaryReadForAsyncCacheRebuild() {
-		$repository = $this->createMock( ReadingListRepository::class );
-		$repository->expects( $this->once() )->method( 'getSavedPagesCacheSetOptions' )
-			->with( IDBAccessObject::READ_LATEST )
-			->willReturn( [] );
-		$repository->expects( $this->once() )->method( 'getSavedPageTitlesForProject' )
-			->with( '@local', self::MAX_ITEMS + 1, IDBAccessObject::READ_LATEST )
-			->willReturn( [ 'Cat' ] );
-		$repository->expects( $this->never() )->method( 'getListsByPage' );
-
-		$service = $this->createService( $repository );
-		$service->rebuildBloomFilter( self::CENTRAL_ID );
 	}
 
 	public function testGetBookmarkEntry_queuesRebuildAndUsesDbLookupWhenBloomFilterCacheMissing() {
@@ -213,7 +214,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$jobQueueGroup = $this->createMock( JobQueueGroup::class );
 		$jobQueueGroup->expects( $this->once() )->method( 'lazyPush' );
 
-		$service = $this->createService( $repository, self::MAX_ITEMS, $jobQueueGroup );
+		$service = $this->createService( $repository, $jobQueueGroup );
 
 		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
 
@@ -234,8 +235,8 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$jobQueueGroup = $this->createMock( JobQueueGroup::class );
 		$jobQueueGroup->expects( $this->exactly( 2 ) )->method( 'lazyPush' );
 
-		$service = $this->createService( $repository, self::MAX_ITEMS, $jobQueueGroup );
-		$service->rebuildBloomFilter( self::CENTRAL_ID );
+		$service = $this->createService( $repository, $jobQueueGroup );
+		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
 		$service->invalidateBookmarkBloomFilter( $this->createMock( UserIdentity::class ) );
 
 		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
@@ -253,7 +254,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$repository->expects( $this->never() )->method( 'getListsByPage' );
 
 		$service = $this->createService( $repository );
-		$service->rebuildBloomFilter( self::CENTRAL_ID );
+		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
 
 		$service->getBookmarkEntryStatus( $this->createTitle( 'Dog' ), self::CENTRAL_ID );
 		$service->getBookmarkEntryStatus( $this->createTitle( 'Fish' ), self::CENTRAL_ID );
@@ -264,8 +265,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$builderRepository->expects( $this->once() )->method( 'getSavedPageTitlesForProject' );
 		$builderRepository->expects( $this->never() )->method( 'getListsByPage' );
 
-		$builderService = $this->createService( $builderRepository );
-		$builderService->rebuildBloomFilter( self::CENTRAL_ID );
+		$this->createBloomFilterCache( $builderRepository )->rebuildBloomFilter( self::CENTRAL_ID );
 
 		$freshCache = new WANObjectCache( [ 'cache' => $this->cacheBackend ] );
 
@@ -279,11 +279,10 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 		$service = new BookmarkEntryLookupService(
 			$factory,
-			$freshCache,
 			$this->createMockCentralIdLookupFactory(),
 			$this->createMock( JobQueueGroup::class ),
-			new NullLogger(),
-			self::MAX_ITEMS
+			$this->createBloomFilterCache( $cachedRepository, $freshCache ),
+			new NullLogger()
 		);
 
 		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Fish' ), self::CENTRAL_ID );
@@ -300,9 +299,10 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$failingRepository->expects( $this->atLeastOnce() )->method( 'getListsByPage' )
 			->willReturn( new FakeResultWrapper( [ $entry ] ) );
 
-		$failingService = $this->createService( $failingRepository );
-		$failingService->rebuildBloomFilter( self::CENTRAL_ID );
-		$status = $failingService->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
+		$cache = $this->createBloomFilterCache( $failingRepository );
+		$cache->rebuildBloomFilter( self::CENTRAL_ID );
+		$service = $this->createService( $failingRepository );
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
 		$this->assertTrue( $status->isOK() );
 		$this->assertSame(
 			$entry,
@@ -322,11 +322,10 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 		$service = new BookmarkEntryLookupService(
 			$factory,
-			$freshCache,
 			$this->createMockCentralIdLookupFactory(),
 			$this->createMock( JobQueueGroup::class ),
-			new NullLogger(),
-			self::MAX_ITEMS
+			$this->createBloomFilterCache( $cachedRepository, $freshCache ),
+			new NullLogger()
 		);
 
 		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
@@ -343,8 +342,8 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 			->willThrowException( $this->createMock( ReadingListRepositoryException::class ) );
 		$failingRepository->expects( $this->never() )->method( 'getListsByPage' );
 
+		$this->createBloomFilterCache( $failingRepository )->rebuildBloomFilter( self::CENTRAL_ID );
 		$service = $this->createService( $failingRepository );
-		$service->rebuildBloomFilter( self::CENTRAL_ID );
 		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
 
 		$this->assertFalse( $status->isOK() );
@@ -361,9 +360,9 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$builderRepository->expects( $this->atLeastOnce() )->method( 'getListsByPage' )
 			->willReturn( new FakeResultWrapper( [ $entry ] ) );
 
-		$builderService = $this->createService( $builderRepository );
-		$builderService->rebuildBloomFilter( self::CENTRAL_ID );
-		$status = $builderService->getBookmarkEntryStatus( $this->createTitle( 'Page_1' ), self::CENTRAL_ID );
+		$this->createBloomFilterCache( $builderRepository )->rebuildBloomFilter( self::CENTRAL_ID );
+		$status = $this->createService( $builderRepository )
+			->getBookmarkEntryStatus( $this->createTitle( 'Page_1' ), self::CENTRAL_ID );
 		$this->assertTrue( $status->isOK() );
 		$this->assertNotNull( $status->getValue() );
 
@@ -380,11 +379,10 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 		$service = new BookmarkEntryLookupService(
 			$factory,
-			$freshCache,
 			$this->createMockCentralIdLookupFactory(),
 			$this->createMock( JobQueueGroup::class ),
-			new NullLogger(),
-			self::MAX_ITEMS
+			$this->createBloomFilterCache( $cachedRepository, $freshCache ),
+			new NullLogger()
 		);
 
 		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Page_1' ), self::CENTRAL_ID );
@@ -397,23 +395,11 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$repository->expects( $this->never() )->method( 'getListsByPage' );
 
 		$service = $this->createService( $repository );
-		$service->rebuildBloomFilter( self::CENTRAL_ID );
+		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
 		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Anything' ), self::CENTRAL_ID );
 
 		$this->assertTrue( $status->isOK() );
 		$this->assertNull( $status->getValue() );
-	}
-
-	public function testConstructor_throwsOnInvalidMaxItems() {
-		$this->expectException( \InvalidArgumentException::class );
-		new BookmarkEntryLookupService(
-			$this->createMock( ReadingListRepositoryFactory::class ),
-			$this->cache,
-			$this->createMockCentralIdLookupFactory(),
-			$this->createMock( JobQueueGroup::class ),
-			new NullLogger(),
-			0
-		);
 	}
 
 	public function testTitleSpacesNormalizedToUnderscoresInFilter() {
@@ -424,7 +410,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 			->willReturn( new FakeResultWrapper( [ $entry ] ) );
 
 		$service = $this->createService( $repository );
-		$service->rebuildBloomFilter( self::CENTRAL_ID );
+		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
 		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Main_Page' ), self::CENTRAL_ID );
 
 		$this->assertTrue( $status->isOK() );

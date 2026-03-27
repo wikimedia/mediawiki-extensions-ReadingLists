@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extension\ReadingLists;
 
+use MediaWiki\Extension\ReadingLists\Service\BookmarkBloomFilterCache;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\Extension\ReadingLists\Service\UserPreferenceBatchUpdater;
 use MediaWiki\Extension\ReadingLists\Validator\ReadingListPreferenceEligibilityValidator;
@@ -10,17 +11,26 @@ use MediaWiki\MediaWikiServices;
 
 /** @phpcs-require-sorted-array */
 return [
+	'ReadingLists.BookmarkBloomFilterCache' => static function (
+		MediaWikiServices $services
+	): BookmarkBloomFilterCache {
+		$config = $services->getConfigFactory()->makeConfig( 'ReadingLists' );
+		return new BookmarkBloomFilterCache(
+			$services->get( 'ReadingLists.ReadingListRepositoryFactory' ),
+			$services->getMainWANObjectCache(),
+			LoggerFactory::getInstance( 'ReadingLists' ),
+			$config->get( 'ReadingListsBloomFilterMaxItems' )
+		);
+	},
 	'ReadingLists.BookmarkEntryLookupService' => static function (
 		MediaWikiServices $services
 	): BookmarkEntryLookupService {
-		$config = $services->getConfigFactory()->makeConfig( 'ReadingLists' );
 		return new BookmarkEntryLookupService(
 			$services->get( 'ReadingLists.ReadingListRepositoryFactory' ),
-			$services->getMainWANObjectCache(),
 			$services->getCentralIdLookupFactory(),
 			$services->getJobQueueGroup(),
-			LoggerFactory::getInstance( 'ReadingLists' ),
-			$config->get( 'ReadingListsBloomFilterMaxItems' )
+			$services->get( 'ReadingLists.BookmarkBloomFilterCache' ),
+			LoggerFactory::getInstance( 'ReadingLists' )
 		);
 	},
 	'ReadingLists.ReadingListEligibilityValidator' => static function (

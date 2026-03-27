@@ -3,7 +3,7 @@
 namespace MediaWiki\Extension\ReadingLists\Tests\Integration\Job;
 
 use MediaWiki\Extension\ReadingLists\Job\BuildBloomFilterJob;
-use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
+use MediaWiki\Extension\ReadingLists\Service\BookmarkBloomFilterCache;
 use MediaWikiIntegrationTestCase;
 
 /**
@@ -12,10 +12,10 @@ use MediaWikiIntegrationTestCase;
 class BuildBloomFilterJobTest extends MediaWikiIntegrationTestCase {
 
 	public function testRunRebuildsBloomFilterForCentralId(): void {
-		$service = $this->createMock( BookmarkEntryLookupService::class );
-		$service->expects( $this->once() )->method( 'rebuildBloomFilter' )
+		$cache = $this->createMock( BookmarkBloomFilterCache::class );
+		$cache->expects( $this->once() )->method( 'rebuildBloomFilter' )
 			->with( 42 );
-		$this->setService( 'ReadingLists.BookmarkEntryLookupService', $service );
+		$this->setService( 'ReadingLists.BookmarkBloomFilterCache', $cache );
 
 		$job = new BuildBloomFilterJob( [ 'centralId' => 42 ] );
 

@@ -3,7 +3,7 @@
 namespace MediaWiki\Extension\ReadingLists\Job;
 
 use Job;
-use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
+use MediaWiki\Extension\ReadingLists\Service\BookmarkBloomFilterCache;
 use MediaWiki\MediaWikiServices;
 
 /**
@@ -23,10 +23,10 @@ class BuildBloomFilterJob extends Job implements \GenericParameterJob {
 	}
 
 	public function run(): bool {
-		/** @var BookmarkEntryLookupService $service */
-		$service = MediaWikiServices::getInstance()
-			->getService( 'ReadingLists.BookmarkEntryLookupService' );
-		$service->rebuildBloomFilter( $this->params['centralId'] );
+		/** @var BookmarkBloomFilterCache $cache */
+		$cache = MediaWikiServices::getInstance()
+			->getService( 'ReadingLists.BookmarkBloomFilterCache' );
+		$cache->rebuildBloomFilter( $this->params['centralId'] );
 		return true;
 	}
 
