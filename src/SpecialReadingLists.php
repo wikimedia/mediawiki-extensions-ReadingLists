@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\ReadingLists;
 use MediaWiki\Exception\UserNotLoggedIn;
 use MediaWiki\Html\Html;
 use MediaWiki\SpecialPage\UnlistedSpecialPage;
+use Wikimedia\Codex\Utility\Codex;
 
 class SpecialReadingLists extends UnlistedSpecialPage {
 	/**
@@ -52,11 +53,19 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 		// Special:ReadingLists redirects to Special:ReadingLists/ExampleUser
 		// if the request is not for viewing an exported list.
 		$parts = $subPage ? explode( '/', $subPage ) : [];
-		if ( count( $parts ) >= 1 ) {
-			$output->setPageTitleMsg( $this->msg( 'readinglists-special-subpage-title' ) );
-		} else {
-			$output->setPageTitleMsg( $this->msg( 'readinglists-title' ) );
-		}
+		$titleMsg = count( $parts ) >= 1
+			? $this->msg( 'readinglists-special-subpage-title' )
+			: $this->msg( 'readinglists-title' );
+
+		$chip = ( new Codex() )->infoChip()
+			->setText( $this->msg( 'readinglists-beta-tag' )->text() )
+			->setStatus( 'notice' )
+			->setAttributes( [ 'class' => 'reading-lists-beta-tag' ] )
+			->setIcon( 'cdx-icon--lab-flask' )
+			->build()
+			->getHtml();
+
+		$output->setPageTitle( $titleMsg->escaped() . $chip );
 
 		$output->addHTML( Html::errorBox(
 			$this->msg( 'readinglists-error' )->parse(),

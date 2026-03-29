@@ -140,6 +140,11 @@
 	},
 	"ResourceModules": {
 		"ext.readingLists.special.styles": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexComponents": [
+				"CdxInfoChip"
+			],
+			"codexStyleOnly": true,
 			"styles": [
 				"resources/ext.readingLists.special/styles.less"
 			]
@@ -164,7 +169,6 @@
 				"CdxCheckbox",
 				"CdxDialog",
 				"CdxIcon",
-				"CdxInfoChip",
 				"CdxMenuButton",
 				"CdxMessage",
 				"CdxProgressBar",

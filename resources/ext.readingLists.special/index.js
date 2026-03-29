@@ -43,21 +43,4 @@ async function mountApp() {
 	app.mount( '.reading-lists-container' );
 }
 
-function addBetaTag() {
-	const heading = document.getElementById( 'firstHeading' );
-	if ( !heading ) {
-		return;
-	}
-	const chip = document.createElement( 'div' );
-	chip.className = 'cdx-info-chip cdx-info-chip--success reading-lists-beta-tag';
-
-	const text = document.createElement( 'span' );
-	text.className = 'cdx-info-chip__text';
-	text.textContent = mw.msg( 'readinglists-beta-tag' );
-	chip.appendChild( text );
-
-	heading.appendChild( chip );
-}
-
 mountApp();
-addBetaTag();
