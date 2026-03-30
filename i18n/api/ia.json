@@ -76,7 +76,11 @@
 	"apihelp-readinglists+createentry-example-2": "Adder plure paginas a un lista.",
 	"apihelp-readinglists+deleteentry-summary": "Deler un pagina de un lista que pertine al usator actual.",
 	"apihelp-readinglists+deleteentry-param-entry": "ID del entrata. Obligatori excepte pro le deletion per lotes.",
+	"apihelp-readinglists+deleteentry-param-project": "Nomine de projecto del wiki que alberga le pagina. Debe esser usate insimul con <var>$1title</var>. Isto elimina tote le entratas que corresponde al projecto e titulo date.",
+	"apihelp-readinglists+deleteentry-param-title": "Le titulo del pagina a deler. Debe esser usate insimul con <var>$1project</var>.",
 	"apihelp-readinglists+deleteentry-param-batch": "Datos de lot pro deler plure entratas de lista in un sol requesta, in le forma de un matrice JSON con un o plus objectos con un campo <var>entry</var>.",
 	"apihelp-readinglists+deleteentry-example-1": "Deler le entrata de lista con ID <kbd>8</kbd>.",
-	"apihelp-readinglists+deleteentry-example-2": "Deler plure entratas de lista."
+	"apihelp-readinglists+deleteentry-example-2": "Deler plure entratas de lista.",
+	"apihelp-readinglists+deleteentry-example-3": "Dele tote le entratas pro le pagina <kbd>Dog</kbd> del projecto <kbd>en.wikipedia.org</kbd>.",
+	"apihelp-readinglists+deleteentry-example-4": "Dele tote le entratas pro le pagina <kbd>Garfield the Cat</kbd> del projecto <kbd>@local</kbd>."
 }

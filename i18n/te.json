@@ -2,10 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Chaduvari",
-			"V Bhavya"
+			"V Bhavya",
+			"Veeven"
 		]
 	},
 	"readinglists-total-lists": "$1 {{PLURAL:$1|జాబితా|జాబితాలు}}",
-	"readinglists-total-articles": "$1 {{PLURAL:$1|వ్యాసం|వ్యాసాలు}}",
+	"readinglists-total-articles": "$1 {{PLURAL:$1|పేజీ|పేజీలు}}",
 	"readinglists-import-button-label": "జాబితా చూపించు"
 }

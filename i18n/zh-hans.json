@@ -7,6 +7,7 @@
 			"Lantianjialiang",
 			"Liuxinyu970226",
 			"Peterxy12",
+			"SaoMikoto",
 			"沈澄心",
 			"范"
 		]
@@ -33,7 +34,7 @@
 	"readinglists-db-error-no-such-project": "“$1”不是受认可的项目。",
 	"readinglists-browser-add-entry-success": "<b>$1</b>已添加到您的[[$2|$3]]。",
 	"readinglists-browser-remove-entry-success": "<b>$1</b>已从您的[[$2|$3]]中移除。",
-	"readinglists-browser-login-prompt": "登录以保存条目",
+	"readinglists-browser-login-prompt": "登录以保存页面",
 	"readinglists-browser-error-intro": "发生错误：$1",
 	"readinglists-browser-enable-sync-prompt": "在您的维基百科应用上启用同步以开始保存条目",
 	"readinglists-browser-extension-info-link-text": "了解更多",
@@ -52,7 +53,7 @@
 	"special-tab-readinglists-short": "您的列表",
 	"readinglists-title": "已保存页面",
 	"readinglists-total-lists": "$1{{PLURAL:$1|个列表}}",
-	"readinglists-total-articles": "$1{{PLURAL:$1|个条目}}",
+	"readinglists-total-articles": "$1个条目",
 	"readinglists-show-more": "显示更多",
 	"readinglists-default-title": "已保存项目",
 	"readinglists-default-description": "用于您已保存条目的默认列表",

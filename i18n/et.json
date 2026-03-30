@@ -1,14 +1,29 @@
 {
 	"@metadata": {
 		"authors": [
+			"Pikne",
 			"Rivoz"
 		]
 	},
+	"readinglists-browser-add-entry-success": "<b>$1</b> on lisatud sinu [[$2|$3]] loendisse.",
+	"readinglists-browser-remove-entry-success": "<b>$1</b> on eemaldatud sinu [[$2|$3]] loendist.",
 	"readinglists-browser-login-prompt": "Lehekülje salvestamiseks logi sisse",
+	"readinglists-special-subpage-title": "Salvestatud leheküljed",
 	"readinglists-special-error-list-not-found": "Seda nimekirja ei leitud.",
+	"readinglists-title": "Salvestatud leheküljed",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|lehekülg|lehekülge}}",
+	"readinglists-default-title": "salvestatud üksuste",
+	"readinglists-sorted-by-recent": "Järjekorras eespool kõige hilisemad.",
+	"readinglists-beta-feature-name": "Salvestatud leheküljed",
+	"readinglists-menu-item": "Salvestatud leheküljed",
 	"readinglists-bookmark": "Järjehoidja",
-	"readinglists-onboarding-ok-button": "OK",
+	"readinglists-onboarding-title": "Salvesta leheküljed hilisemaks",
+	"readinglists-onboarding-text": "Kas leidsid midagi huvitavat? Saad nüüd salvestada selle isiklikku loendisse.",
+	"readinglists-onboarding-close-button": "Sule",
+	"readinglists-onboarding-ok-button": "Sobib",
+	"readinglists-onboarding-saved-pages-title": "Sinu salvestatud leheküljed",
+	"readinglists-onboarding-saved-pages-text": "Pääsed siit kõigi enda salvestatud lehekülgede juurde.",
 	"readinglists-mobile-onboarding-saved-pages-title": "Salvestatud leheküljed",
+	"readinglists-mobile-onboarding-saved-pages-text": "Pääsed kõigi enda salvestatud lehekülgede juurde selle menüü kaudu.",
 	"readinglists-beta-tag": "Beeta"
 }
