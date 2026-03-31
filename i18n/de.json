@@ -85,6 +85,10 @@
 	"readinglists-bookmark": "Lesezeichen",
 	"readinglists-add-bookmark": "Speichern",
 	"readinglists-remove-bookmark": "Löschen",
+	"readinglists-unsave-from-custom-list-title": "Von allen Leselisten entfernen?",
+	"readinglists-unsave-from-custom-list-body": "Diese Seite ist in einer oder mehreren deiner Leselisten in der Wikipedia-App enthalten.",
+	"readinglists-unsave-from-custom-list-confirm": "Entfernen",
+	"readinglists-unsave-from-custom-list-cancel": "Abbrechen",
 	"readinglists-onboarding-title": "Seiten für später speichern",
 	"readinglists-onboarding-text": "Hast du etwas Interessantes gefunden? Du kannst es jetzt in deiner persönlichen Liste speichern.",
 	"readinglists-onboarding-close-button": "Schließen",
@@ -93,5 +97,12 @@
 	"readinglists-onboarding-saved-pages-text": "Zugriff auf alle gespeicherten Seiten hier.",
 	"readinglists-mobile-onboarding-saved-pages-title": "Gespeicherte Seiten",
 	"readinglists-mobile-onboarding-saved-pages-text": "Greife über dieses Menü auf alle deine gespeicherten Seiten zu.",
-	"readinglists-beta-tag": "Beta"
+	"readinglists-beta-tag": "Beta",
+	"readinglists-betafeature-quicksurvey-question": "Gefällt dir diese Funktion?",
+	"readinglists-betafeature-quicksurvey-answer-positive": "👍 Ja",
+	"readinglists-betafeature-quicksurvey-answer-negative": "👎 Nein",
+	"readinglists-betafeature-quicksurvey-question-feedback": "Was würde dies für dich nützlicher machen?",
+	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Deine Rückmeldung hinzufügen",
+	"readinglists-betafeature-quicksurvey-submit": "Speichern",
+	"readinglists-betafeature-quicksurvey-thank-you": "Vielen Dank für die Rückmeldung!"
 }

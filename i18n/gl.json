@@ -84,6 +84,10 @@
 	"readinglists-bookmark": "Marcador",
 	"readinglists-add-bookmark": "Gardar",
 	"readinglists-remove-bookmark": "Non gardar",
+	"readinglists-unsave-from-custom-list-title": "Queres eliminala de todas as listas de lectura?",
+	"readinglists-unsave-from-custom-list-body": "Esta páxina está nunha ou máis listas de lectura na aplicación da Wikipedia.",
+	"readinglists-unsave-from-custom-list-confirm": "Eliminar",
+	"readinglists-unsave-from-custom-list-cancel": "Cancelar",
 	"readinglists-onboarding-title": "Gardar páxinas para máis tarde",
 	"readinglists-onboarding-text": "Atopaches algo interesante? Agora podes gardalo na túa lista persoal.",
 	"readinglists-onboarding-close-button": "Pechar",
@@ -92,5 +96,12 @@
 	"readinglists-onboarding-saved-pages-text": "Accede aquí a todas as túas páxinas gardadas.",
 	"readinglists-mobile-onboarding-saved-pages-title": "Páxinas gardadas",
 	"readinglists-mobile-onboarding-saved-pages-text": "Accede a todas as túas páxinas gardadas desde este menú.",
-	"readinglists-beta-tag": "Beta"
+	"readinglists-beta-tag": "Beta",
+	"readinglists-betafeature-quicksurvey-question": "Gústache esta funcionalidade?",
+	"readinglists-betafeature-quicksurvey-answer-positive": "👍 Si",
+	"readinglists-betafeature-quicksurvey-answer-negative": "👎 Non",
+	"readinglists-betafeature-quicksurvey-question-feedback": "Que faría que isto fose máis útil para ti?",
+	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Achega os teus comentarios",
+	"readinglists-betafeature-quicksurvey-submit": "Enviar",
+	"readinglists-betafeature-quicksurvey-thank-you": "Grazas polos teus comentarios"
 }
