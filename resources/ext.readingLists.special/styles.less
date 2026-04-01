@@ -10,14 +10,15 @@
 }
 
 .reading-lists-beta-tag.cdx-info-chip {
-	margin-left: @spacing-75;
-	vertical-align: middle;
 	// Use Codex InfoChip "subtle" variant before it's part of Codex PHP.
 	background-color: @background-color-transparent;
+	margin-bottom: @spacing-12;
+	margin-left: @spacing-50;
 	border-color: @border-color-base;
 	font-family: @font-family-base;
-	// Apply for MinervaNeue skin.
+	// Apply `font-weight`for MinervaNeue skin.
 	font-weight: @font-weight-normal;
+	vertical-align: middle;
 
 	.cdx-icon--lab-flask {
 		.cdx-mixin-css-icon( @cdx-icon-lab-flask, @param-fill-color: @color-icon-notice, @param-size-icon: @size-icon-small );
