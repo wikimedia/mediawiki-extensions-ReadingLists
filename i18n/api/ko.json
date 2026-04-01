@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Ykhwong",
-			"아라"
+			"아라",
+			"Bisang"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var>와 <var>$1title</var>는 함께 사용해야 합니다.",
