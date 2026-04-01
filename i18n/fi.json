@@ -80,6 +80,10 @@
 	"readinglists-bookmark": "Kirjanmerkki",
 	"readinglists-add-bookmark": "Tallenna",
 	"readinglists-remove-bookmark": "Poista",
+	"readinglists-unsave-from-custom-list-title": "Poista kaikilta lukulistoilta?",
+	"readinglists-unsave-from-custom-list-body": "Tämä sivu on yhdellä tai usemmalla lukulistoistasi Wikipedia-sovelluksessa.",
+	"readinglists-unsave-from-custom-list-confirm": "Poista",
+	"readinglists-unsave-from-custom-list-cancel": "Peruuta",
 	"readinglists-onboarding-title": "Tallenna sivuja myöhempää lukemista varten",
 	"readinglists-onboarding-text": "Löysitkö jotain mielenkiintoista? Voit nyt tallentaa sen henkilökohtaiselle listallesi.",
 	"readinglists-onboarding-close-button": "Sulje",
@@ -87,5 +91,12 @@
 	"readinglists-onboarding-saved-pages-title": "Tallennetut sivusi",
 	"readinglists-onboarding-saved-pages-text": "Pääse kaikkiin tallennettuihin sivuihisi täällä.",
 	"readinglists-mobile-onboarding-saved-pages-title": "Tallennetut sivut",
-	"readinglists-beta-tag": "Beeta"
+	"readinglists-beta-tag": "Beeta",
+	"readinglists-betafeature-quicksurvey-question": "Pidätkö tästä ominaisuudesta?",
+	"readinglists-betafeature-quicksurvey-answer-positive": "👍 Kyllä",
+	"readinglists-betafeature-quicksurvey-answer-negative": "👎 Ei",
+	"readinglists-betafeature-quicksurvey-question-feedback": "Mikä tekisi tästä ominaisuudesta sinulle hyödyllisemmän?",
+	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Lisää palautteesi",
+	"readinglists-betafeature-quicksurvey-submit": "Lähetä",
+	"readinglists-betafeature-quicksurvey-thank-you": "Kiitos palautteestasi"
 }

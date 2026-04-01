@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Entropy lover nagnto",
 			"Kly",
 			"LowensteinYang",
 			"Mutolisp",
@@ -84,9 +85,12 @@
 	"readinglists-bookmark": "書籤",
 	"readinglists-add-bookmark": "儲存",
 	"readinglists-remove-bookmark": "取消儲存",
+	"readinglists-unsave-from-custom-list-cancel": "取消",
 	"readinglists-onboarding-title": "儲存頁面以供事後使用",
 	"readinglists-onboarding-text": "發現到感興趣的內容嗎？現在您可以將其儲存到您的個人清單。",
 	"readinglists-onboarding-close-button": "關閉",
 	"readinglists-onboarding-saved-pages-title": "您的儲存頁面",
-	"readinglists-onboarding-saved-pages-text": "在此存取您所有的儲存頁面。"
+	"readinglists-onboarding-saved-pages-text": "在此存取您所有的儲存頁面。",
+	"readinglists-betafeature-quicksurvey-answer-positive": "👍 是",
+	"readinglists-betafeature-quicksurvey-answer-negative": "👎 否"
 }

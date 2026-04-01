@@ -48,8 +48,19 @@
 	"readinglists-menu-item": "Pagine salvate",
 	"readinglists-add-bookmark": "Salva",
 	"readinglists-remove-bookmark": "Annulla salvataggio",
+	"readinglists-unsave-from-custom-list-title": "Rimuovi da tutti gli elenchi di lettura?",
+	"readinglists-unsave-from-custom-list-body": "Questa pagina è presente in uno o più dei tuoi elenchi di lettura nell'applicazione di Wikipedia.",
+	"readinglists-unsave-from-custom-list-confirm": "Rimuovi",
+	"readinglists-unsave-from-custom-list-cancel": "Annulla",
 	"readinglists-onboarding-ok-button": "OK",
 	"readinglists-mobile-onboarding-saved-pages-title": "Pagine salvate",
 	"readinglists-mobile-onboarding-saved-pages-text": "Accedi a tutte le tue pagine salvate da questo menu.",
-	"readinglists-beta-tag": "Beta"
+	"readinglists-beta-tag": "Beta",
+	"readinglists-betafeature-quicksurvey-question": "Ti piace questa funzionalità?",
+	"readinglists-betafeature-quicksurvey-answer-positive": "👍 Sì",
+	"readinglists-betafeature-quicksurvey-answer-negative": "👎 No",
+	"readinglists-betafeature-quicksurvey-question-feedback": "Cosa renderebbe questo strumento più utile per te?",
+	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Aggiungi il tuo commento",
+	"readinglists-betafeature-quicksurvey-submit": "Invia",
+	"readinglists-betafeature-quicksurvey-thank-you": "Grazie per il tuo feedback"
 }
