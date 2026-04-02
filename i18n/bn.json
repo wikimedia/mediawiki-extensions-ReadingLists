@@ -30,5 +30,6 @@
 	"readinglists-watchlist": "নজরতালিকা",
 	"readinglists-import-disclaimer": "এই সাইটের একজন ব্যবহারকারী (সম্ভবত আপনি) অন্যদের সাথে শেয়ার করার জন্য একটি পঠন তালিকা তৈরি করেছেন। এটি নিয়ন্ত্রিত নয়, এবং এর বিষয়বস্তু সাইটের সম্পাদকদের প্রতিফলিত করে না।",
 	"readinglists-import-button-label": "অ্যাপে খুলুন",
-	"readinglists-import-button-hint": "বোতামে ট্যাপ করুন:"
+	"readinglists-import-button-hint": "বোতামে ট্যাপ করুন:",
+	"readinglists-betafeature-quicksurvey-submit": "জমা দিন"
 }

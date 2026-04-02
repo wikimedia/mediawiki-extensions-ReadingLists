@@ -13,5 +13,9 @@
 	"readinglists-display-direction-ascending": "چڑھدا ہویا",
 	"readinglists-import-button-label": "تندیر ݙیکھو",
 	"readinglists-menu-item": "محفوظ تھی ڳیا",
-	"readinglists-onboarding-ok-button": "ٹھیک ہے"
+	"readinglists-unsave-from-custom-list-confirm": "ہٹاؤ",
+	"readinglists-unsave-from-custom-list-cancel": "منسوخ",
+	"readinglists-onboarding-ok-button": "ٹھیک ہے",
+	"readinglists-betafeature-quicksurvey-answer-positive": "👍 جیا",
+	"readinglists-betafeature-quicksurvey-answer-negative": "👎 کو"
 }
