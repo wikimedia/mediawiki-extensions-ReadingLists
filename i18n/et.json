@@ -1,8 +1,19 @@
 {
 	"@metadata": {
 		"authors": [
-			"Rivoz"
+			"Rivoz",
+			"Pikne"
 		]
 	},
-	"readinglists-bookmark": "Järjehoidja"
+	"readinglists-browser-add-entry-success": "<b>$1</b> on lisatud sinu [[$2|$3]] loendisse.",
+	"readinglists-browser-remove-entry-success": "<b>$1</b> on eemaldatud sinu [[$2|$3]] loendist.",
+	"readinglists-special-subpage-title": "Salvestatud leheküljed",
+	"readinglists-title": "Salvestatud leheküljed",
+	"readinglists-default-title": "salvestatud üksuste",
+	"readinglists-sorted-by-recent": "Järjekorras eespool kõige hilisemad.",
+	"readinglists-menu-item": "Salvestatud leheküljed",
+	"readinglists-bookmark": "Järjehoidja",
+	"readinglists-onboarding-title": "Salvesta leheküljed hilisemaks",
+	"readinglists-onboarding-text": "Kas leidsid midagi huvitavat? Saad nüüd salvestada selle isiklikku loendisse.",
+	"readinglists-onboarding-close-button": "Sule"
 }
