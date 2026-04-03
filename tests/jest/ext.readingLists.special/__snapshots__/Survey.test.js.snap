@@ -5,11 +5,16 @@ exports[`Survey matches the snapshot 1`] = `
   class="reading-lists-survey"
 >
   
-  <!-- TODO: include privacy policy (T421455). -->
   <div
     class="reading-lists-survey__question"
   >
     Are you enjoying this feature?
+  </div>
+  <!-- eslint-disable-next-line vue/no-v-html -->
+  <div
+    class="reading-lists-survey__privacy-policy"
+  >
+    [https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Privacy policy]
   </div>
   <div
     class="reading-lists-survey__options"

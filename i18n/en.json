@@ -105,6 +105,7 @@
 	"readinglists-betafeature-quicksurvey-answer-negative": "👎 No",
 	"readinglists-betafeature-quicksurvey-question-feedback": "What would make this more useful for you?",
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Add your feedback",
+	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Privacy policy]",
 	"readinglists-betafeature-quicksurvey-submit": "Submit",
 	"readinglists-betafeature-quicksurvey-thank-you": "Thank you for your feedback"
 }

@@ -115,6 +115,7 @@
 	"readinglists-betafeature-quicksurvey-answer-negative": "Negative response to survey question",
 	"readinglists-betafeature-quicksurvey-question-feedback": "Follow-up question asking for qualitative feedback",
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Placeholder text for the feedback textarea",
+	"readinglists-betafeature-quicksurvey-privacy-policy": "Privacy policy link shown below the survey question. Contains a wikitext link to the privacy statement.",
 	"readinglists-betafeature-quicksurvey-submit": "Label for the dialog submit button",
 	"readinglists-betafeature-quicksurvey-thank-you": "Thank you message after survey is completed"
 }

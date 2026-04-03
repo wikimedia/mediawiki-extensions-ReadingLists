@@ -294,8 +294,7 @@ class HookHandler implements
 			"embedElementId" => "~",
 			// Audience logic will be handled in a Vue component.
 			'audience' => [],
-			// TODO: include a real privacy policy (T421455).
-			'privacyPolicy' => 'ext-quicksurveys-example-external-survey-privacy-policy',
+			'privacyPolicy' => 'readinglists-betafeature-quicksurvey-privacy-policy',
 			'coverage' => 100,
 			'platforms' => [
 				'desktop' => [ 'stable' ],

@@ -1,8 +1,9 @@
 <template>
 	<div class="reading-lists-survey">
 		<template v-if="!completed">
-			<!-- TODO: include privacy policy (T421455). -->
 			<div class="reading-lists-survey__question">{{ msgQuestion }}</div>
+			<!-- eslint-disable-next-line vue/no-v-html -->
+			<div class="reading-lists-survey__privacy-policy" v-html="msgPrivacyPolicy"></div>
 			<div class="reading-lists-survey__options">
 				<cdx-button
 					v-for="option in options"
@@ -77,6 +78,8 @@ module.exports = exports = {
 			msgQuestion: mw.msg( 'readinglists-betafeature-quicksurvey-question' ),
 			msgFeedbackQuestion: mw.msg( 'readinglists-betafeature-quicksurvey-question-feedback' ),
 			msgPlaceholder: mw.msg( 'readinglists-betafeature-quicksurvey-feedback-placeholder' ),
+			// .parse() to convert the wikitext link in the message to HTML
+			msgPrivacyPolicy: mw.message( 'readinglists-betafeature-quicksurvey-privacy-policy' ).parse(),
 			msgSubmit: mw.msg( 'readinglists-betafeature-quicksurvey-submit' ),
 			msgThankYou: mw.msg( 'readinglists-betafeature-quicksurvey-thank-you' )
 		};
@@ -130,6 +133,12 @@ module.exports = exports = {
 
 	&__question {
 		text-align: center;
+	}
+
+	&__privacy-policy {
+		text-align: center;
+		margin-top: @spacing-50;
+		font-size: @font-size-small;
 	}
 
 	&__options {
