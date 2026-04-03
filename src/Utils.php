@@ -52,19 +52,4 @@ class Utils {
 		return $repository;
 	}
 
-	/**
-	 * @return string
-	 */
-	public static function getLocalProject(): string {
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
-		$url = $urlUtils->getCanonicalServer();
-		if ( $url === '' ) {
-			return '';
-		}
-
-		$parts = $urlUtils->parse( $url );
-		$parts['port'] = null;
-		return $urlUtils->assemble( $parts );
-	}
-
 }

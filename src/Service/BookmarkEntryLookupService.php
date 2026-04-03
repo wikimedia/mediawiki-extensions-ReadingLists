@@ -28,8 +28,8 @@ class BookmarkEntryLookupService {
 	/**
 	 * Look up whether a page is in the user's reading list.
 	 *
-	 * On success, the StatusValue's value is the reading list entry object,
-	 * or null if the page is not bookmarked.
+	 * On success, the StatusValue's value is a matching reading list row for a list
+	 * containing the page, or null if the page is not bookmarked.
 	 * On failure (DB error, configuration issue), the StatusValue
 	 * is not OK and contains an error.
 	 *
@@ -41,7 +41,7 @@ class BookmarkEntryLookupService {
 		$filterStatus = $this->bookmarkBloomFilterCache->getCachedBloomFilterStatus( $centralId );
 		if ( $filterStatus === false ) {
 			$this->queueBloomFilterBuildJob( $centralId );
-			return $this->lookupBookmarkEntryInDb( $title, $centralId );
+			return $this->lookupBookmarkListInDb( $title, $centralId );
 		}
 
 		$prefixedDBkey = $title->getPrefixedDBkey();
@@ -59,36 +59,36 @@ class BookmarkEntryLookupService {
 			return StatusValue::newGood( null );
 		}
 
-		return $this->lookupBookmarkEntryInDb( $title, $centralId );
+		return $this->lookupBookmarkListInDb( $title, $centralId );
 	}
 
-	private function lookupBookmarkEntryInDb( Title $title, int $centralId ): StatusValue {
+	private function lookupBookmarkListInDb( Title $title, int $centralId ): StatusValue {
 		$repository = $this->readingListRepositoryFactory->create( $centralId );
 
 		// FIXME: The API does not normalize titles on write, so the DB may
 		// contain spaces or underscores for the same title (T407936). The
 		// bloom filter normalizes to underscores (see buildBookmarkedPagesBloomFilter),
-		// but the DB lookup must try both formats to find existing entries.
+		// but the DB lookup must try both formats to find matching lists.
 		try {
-			$entry = $repository->getListsByPage( '@local', $title->getPrefixedDBkey(), 1 )->fetchObject();
-			if ( !$entry ) {
-				$entry = $repository->getListsByPage( '@local', $title->getPrefixedText(), 1 )->fetchObject();
+			$listRow = $repository->getListsByPage( '@local', $title->getPrefixedDBkey(), 1 )->fetchObject();
+			if ( !$listRow ) {
+				$listRow = $repository->getListsByPage( '@local', $title->getPrefixedText(), 1 )->fetchObject();
 			}
 		} catch ( DBError $e ) {
-			$this->logger->warning( 'Failed to look up bookmark entry due to a database error', [
+			$this->logger->warning( 'Failed to look up bookmark list match due to a database error', [
 				'exception' => $e,
 				'centralId' => $centralId,
 			] );
 			return StatusValue::newFatal( 'readinglists-bookmark-lookup-db-error' );
 		} catch ( ReadingListRepositoryException $e ) {
-			$this->logger->warning( 'Failed to look up bookmark entry: invalid project or configuration', [
+			$this->logger->warning( 'Failed to look up bookmark list match: invalid project or configuration', [
 				'exception' => $e,
 				'centralId' => $centralId,
 			] );
 			return StatusValue::newFatal( 'readinglists-bookmark-lookup-config-error' );
 		}
 
-		return StatusValue::newGood( $entry ?: null );
+		return StatusValue::newGood( $listRow ?: null );
 	}
 
 	/**

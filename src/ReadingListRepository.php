@@ -6,7 +6,6 @@ use LogicException;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
-use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithEntryId;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -19,6 +18,7 @@ use Wikimedia\Rdbms\IReadableDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\LBFactory;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
+use Wikimedia\Rdbms\RawSQLExpression;
 use Wikimedia\Rdbms\RawSQLValue;
 
 /**
@@ -72,17 +72,22 @@ class ReadingListRepository implements LoggerAwareInterface {
 	/** @var int|null */
 	private ?int $userId;
 
+	private readonly ReadingListEntryTitleNormalizer $readingListEntryTitleNormalizer;
+
 	/**
 	 * @param ?int $userId Central ID of the user.
 	 * @param LBFactory $lbFactory
 	 */
 	public function __construct(
 		?int $userId,
-		private readonly LBFactory $lbFactory
+		private readonly LBFactory $lbFactory,
+		?ReadingListEntryTitleNormalizer $readingListEntryTitleNormalizer = null
 	) {
 		$this->userId = (int)$userId ?: null;
 		$this->dbw = $lbFactory->getPrimaryDatabase( Utils::VIRTUAL_DOMAIN );
 		$this->dbr = $lbFactory->getReplicaDatabase( Utils::VIRTUAL_DOMAIN );
+		$this->readingListEntryTitleNormalizer = $readingListEntryTitleNormalizer ??
+			new ReadingListEntryTitleNormalizer();
 		$this->logger = new NullLogger();
 	}
 
@@ -164,7 +169,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->set( [
 				// 'rl_name' is randomized in anticipation of
 				// eventually enforcing uniqueness with an
-				// index (in which case it can't be limited to
+				// index (in which case it cannot be limited to
 				// non-deleted lists).
 				'rl_name' => new RawSQLValue( $this->dbw->buildConcat( [
 					$this->dbw->addQuotes( 'deleted-' ),
@@ -275,7 +280,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 		}
 		if ( $this->listLimit && $this->getListCount( IDBAccessObject::READ_LATEST ) >= $this->listLimit ) {
 			// We could check whether the list exists already, in which case we could just
-			// update the existing list and return success, but that's too much of an edge case
+			// update the existing list and return success, but that is too much of an edge case
 			// to be worth bothering with.
 			throw new ReadingListRepositoryException( 'readinglists-db-error-list-limit',
 				[ $this->listLimit ] );
@@ -509,8 +514,8 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * When the given page is already on the list, do nothing, just return it.
 	 * @param int $listId List ID
 	 * @param string $project Project identifier (typically a domain name)
-	 * @param string $title Page title (treated as a plain string with no normalization;
-	 *   in localized namespace-prefixed format with spaces is recommended)
+	 * @param string $title Page title. Local titles are stored using full Title normalization;
+	 *   cross-wiki titles only normalize spaces to underscores.
 	 * @return ReadingListEntryRowWithMergeFlag The new (or existing) list entry.
 	 * @throws ReadingListRepositoryException
 	 * @suppress PhanTypeMismatchReturn Use of doc traits
@@ -518,7 +523,6 @@ class ReadingListRepository implements LoggerAwareInterface {
 	public function addListEntry( $listId, $project, $title ) {
 		$this->assertUser();
 		$this->assertFieldLength( 'rlp_project', $project );
-		$this->assertFieldLength( 'rle_title', $title );
 		$this->selectValidList( $listId, IDBAccessObject::READ_EXCLUSIVE );
 		if (
 			$this->entryLimit
@@ -536,6 +540,12 @@ class ReadingListRepository implements LoggerAwareInterface {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-project',
 				[ $project ] );
 		}
+		$title = $this->readingListEntryTitleNormalizer->normalizeForStorage(
+			$project,
+			$title,
+			$this->getLocalProject()
+		);
+		$this->assertFieldLength( 'rle_title', $title );
 
 		// due to the combination of soft deletion + unique constraint on
 		// rle_rl_id + rle_rlp_id + rle_title, recreation needs special handling
@@ -880,7 +890,10 @@ class ReadingListRepository implements LoggerAwareInterface {
 
 		$this->dbw->startAtomic( __METHOD__ );
 		try {
-			$listEntryIds = $this->getMatchingEntryIdsByListId( $projectId, $title );
+			// $projectId is used to filter the database rows, while $project is used
+			// in determining whether to normalize the title for local vs cross-wiki entries.
+			$listEntryIds = $this->getMatchingEntryIdsByListId( $project, $projectId, $title );
+
 			// Flatten entry IDs across matching lists,
 			// with taking into account no matching entries.
 			$entryIds = array_merge( [], ...array_values( $listEntryIds ) );
@@ -1090,12 +1103,12 @@ class ReadingListRepository implements LoggerAwareInterface {
 	/**
 	 * Return all lists which contain a given page.
 	 * @param string $project Project identifier (typically a domain name)
-	 * @param string $title Page title (in localized prefixed DBkey format)
+	 * @param string $title Page title
 	 * @param int $limit
 	 * @param int|null $from List ID to continue from (or null to start at the beginning/end).
 	 *
 	 * @throws ReadingListRepositoryException
-	 * @return IResultWrapper<ReadingListRowWithEntryId>
+	 * @return IResultWrapper<ReadingListRow>
 	 */
 	public function getListsByPage( $project, $title, $limit = 1000, $from = null ): IResultWrapper {
 		$this->assertUser();
@@ -1104,36 +1117,45 @@ class ReadingListRepository implements LoggerAwareInterface {
 			return new FakeResultWrapper( [] );
 		}
 
-		$conditions = [
-			'rle_user_id' => $this->userId,
-			'rle_rlp_id' => $projectId,
-			'rle_title' => $title,
-			'rle_deleted' => 0,
-			'rl_deleted' => 0
-		];
+		$subquery = $this->dbr->newSelectQueryBuilder()
+			->select( '1' )
+			->from( 'reading_list_entry' )
+			->where( [
+				'rle_user_id' => $this->userId,
+				'rle_rlp_id' => $projectId,
+				'rle_title' => $this->getEquivalentPageTitlesForLookup( $project, $title ),
+				'rle_deleted' => 0,
+				'rle_rl_id = rl.rl_id',
+			] )
+			->caller( __METHOD__ );
 
 		$queryBuilder = $this->dbr->newSelectQueryBuilder()
-			->select( array_merge( $this->getListFields(), [ 'rle_id' ] ) )
-			->from( 'reading_list_entry' )
-			->join( 'reading_list', null, 'rl_id = rle_rl_id' )
-			->where( $conditions )
+			->select( $this->getAliasedListFields( 'rl' ) )
+			->from( 'reading_list', 'rl' )
+			->where( [
+				'rl.rl_user_id' => $this->userId,
+				'rl.rl_deleted' => 0,
+			] )
+			// EXISTS avoids returning duplicate lists while still matching
+			// any equivalent stored title form for the page.
+			->andWhere( new RawSQLExpression( 'EXISTS(' . $subquery->getSQL() . ')' ) )
 			->limit( (int)$limit )
 			->caller( __METHOD__ );
 
 		if ( $from !== null ) {
 			$queryBuilder->andWhere(
-				$this->dbr->expr( 'rle_rl_id', '>=', (int)$from )
+				$this->dbr->expr( 'rl.rl_id', '>=', (int)$from )
 			);
 		}
 
 		// Avoid default list showing on pages > 1, so exclude it and skip order by
 		if ( $from ) {
-			$queryBuilder->where( 'rl_is_default = 0' );
+			$queryBuilder->andWhere( 'rl.rl_is_default = 0' );
 		} else {
-			$queryBuilder->orderBy( 'rl_is_default', 'DESC' );
+			$queryBuilder->orderBy( 'rl.rl_is_default', 'DESC' );
 		}
 
-		$res = $queryBuilder->orderBy( 'rle_rl_id', 'ASC' )->fetchResultSet();
+		$res = $queryBuilder->orderBy( 'rl.rl_id', 'ASC' )->fetchResultSet();
 		if (
 			$res->numRows() === 0 &&
 			!$this->getDefaultListIdForUser( IDBAccessObject::READ_LATEST )
@@ -1199,6 +1221,25 @@ class ReadingListRepository implements LoggerAwareInterface {
 			'rl_date_updated',
 			'rl_size',
 			'rl_deleted',
+		];
+	}
+
+	/**
+	 * Get reading_list fields with table-qualified column names.
+	 *
+	 * @param string $listAlias Table alias for reading_list (e.g. 'rl')
+	 * @return array
+	 */
+	private function getAliasedListFields( string $listAlias ) {
+		return [
+			'rl_id' => "$listAlias.rl_id",
+			'rl_is_default' => "$listAlias.rl_is_default",
+			'rl_name' => "$listAlias.rl_name",
+			'rl_description' => "$listAlias.rl_description",
+			'rl_date_created' => "$listAlias.rl_date_created",
+			'rl_date_updated' => "$listAlias.rl_date_updated",
+			'rl_size' => "$listAlias.rl_size",
+			'rl_deleted' => "$listAlias.rl_deleted",
 		];
 	}
 
@@ -1463,31 +1504,56 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * Account for title normalization differences in how pages are saved.
 	 * See T419466
 	 *
+	 * Generates multiple title variants (raw, space-form, underscore-form,
+	 * normalized, and normalized-space-form) so that lookups match both
+	 * newly normalized entries and legacy rows written before title
+	 * normalization was introduced.
+	 *
+	 * Once a migration script has normalized all existing rows (T422028),
+	 * and remove duplicates, then this method can be simplified to only use
+	 * the canonical normalized form.
+	 *
+	 * @param string $project
 	 * @param string $title
 	 * @return string[]
 	 */
-	private function getEquivalentPageTitles( string $title ): array {
-		$normalizedTitle = str_replace( '_', ' ', $title );
+	private function getEquivalentPageTitlesForLookup( string $project, string $title ): array {
+		$titleVariants = [];
 
-		return array_unique( [
-			$normalizedTitle,
-			str_replace( ' ', '_', $normalizedTitle ),
-		] );
+		// raw title and space/underscore variants for legacy data
+		$titleVariants[] = $title;
+		$titleVariants[] = str_replace( '_', ' ', $title );
+		$titleVariants[] = str_replace( ' ', '_', $title );
+
+		// normalized title (canonical form for new writes)
+		$normalizedTitle = $this->readingListEntryTitleNormalizer->normalizeForStorage(
+			$project,
+			$title,
+			$this->getLocalProject()
+		);
+
+		$titleVariants[] = $normalizedTitle;
+		$titleVariants[] = str_replace( '_', ' ', $normalizedTitle );
+
+		return array_unique( $titleVariants );
 	}
 
 	/**
-	 * @param int $projectId
-	 * @param string $title
+	 * @param string $project Project identifier from the caller, used to determine
+	 *   the correct local vs cross-wiki title normalization rules.
+	 * @param int $projectId Database ID of the project row, used to filter
+	 *   reading_list_entry rows by rle_rlp_id.
+	 * @param string $title Page title to match against equivalent stored title variants.
 	 * @return array<int,int[]>
 	 */
-	private function getMatchingEntryIdsByListId( int $projectId, string $title ): array {
+	private function getMatchingEntryIdsByListId( string $project, int $projectId, string $title ): array {
 		$rows = $this->dbw->newSelectQueryBuilder()
 			->select( [ 'rle_id', 'rle_rl_id' ] )
 			->from( 'reading_list_entry' )
 			->where( [
 				'rle_user_id' => $this->userId,
 				'rle_rlp_id' => $projectId,
-				'rle_title' => $this->getEquivalentPageTitles( $title ),
+				'rle_title' => $this->getEquivalentPageTitlesForLookup( $project, $title ),
 				'rle_deleted' => 0,
 			] )
 			->forUpdate()
@@ -1570,6 +1636,6 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @return string
 	 */
 	private function getLocalProject(): string {
-		return Utils::getLocalProject();
+		return LocalProjectHelper::getLocalProject();
 	}
 }

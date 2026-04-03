@@ -8,10 +8,10 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
+use MediaWiki\Extension\ReadingLists\LocalProjectHelper;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
-use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Message\Message;
@@ -255,7 +255,7 @@ trait ApiTrait {
 	}
 
 	protected function isLocalProject( string $project ): bool {
-		return $project === Utils::getLocalProject();
+		return LocalProjectHelper::isLocalProject( $project, LocalProjectHelper::getLocalProject() );
 	}
 
 }

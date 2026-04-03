@@ -114,32 +114,31 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$this->assertNull( $status->getValue() );
 	}
 
-	public function testGetBookmarkEntry_returnsReadingListEntryForSavedPage() {
-		$entry = (object)[ 'rle_id' => 1, 'rle_title' => 'Cat' ];
+	public function testGetBookmarkEntry_returnsMatchingReadingListRowForSavedPage() {
+		$matchingList = (object)[ 'rl_id' => 1, 'rl_name' => 'Saved pages' ];
 
 		$repository = $this->createMockRepository( [ 'Cat', 'Dog' ] );
 		$repository->method( 'getListsByPage' )
-			->willReturn( new FakeResultWrapper( [ $entry ] ) );
+			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
 
 		$service = $this->createService( $repository );
 		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
 
 		$this->assertTrue( $status->isOK() );
-		$this->assertNotNull( $status->getValue() );
-		$this->assertSame( 'Cat', $status->getValue()->rle_title );
+		$this->assertSame( $matchingList, $status->getValue() );
 	}
 
 	public function testGetBookmarkEntry_forTitleWithSpaces() {
-		$entry = (object)[ 'rle_id' => 1, 'rle_title' => 'United Arab Emirates' ];
+		$matchingList = (object)[ 'rl_id' => 1, 'rl_name' => 'Saved pages' ];
 
 		$repository = $this->createMockRepository( [ 'United Arab Emirates' ] );
 		$repository->method( 'getListsByPage' )
-			->willReturnCallback( static function ( $project, $title ) use ( $entry ) {
+			->willReturnCallback( static function ( $project, $title ) use ( $matchingList ) {
 				if ( $title === 'United_Arab_Emirates' ) {
 					return new FakeResultWrapper( [] );
 				}
 				if ( $title === 'United Arab Emirates' ) {
-					return new FakeResultWrapper( [ $entry ] );
+					return new FakeResultWrapper( [ $matchingList ] );
 				}
 				return new FakeResultWrapper( [] );
 			} );
@@ -152,8 +151,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		);
 
 		$this->assertTrue( $status->isOK() );
-		$this->assertNotNull( $status->getValue() );
-		$this->assertSame( 'United Arab Emirates', $status->getValue()->rle_title );
+		$this->assertSame( $matchingList, $status->getValue() );
 	}
 
 	public function testGetBookmarkEntry_exceedingMaxItemsFallsBackToDbQuery() {
@@ -161,11 +159,11 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 			static fn ( int $i ) => "Page_$i",
 			range( 1, self::MAX_ITEMS + 1 )
 		);
-		$entry = (object)[ 'rle_id' => 1, 'rle_title' => 'Page_1' ];
+		$matchingList = (object)[ 'rl_id' => 1, 'rl_name' => 'Saved pages' ];
 
 		$repository = $this->createMockRepository( $titles );
 		$repository->expects( $this->atLeastOnce() )->method( 'getListsByPage' )
-			->willReturn( new FakeResultWrapper( [ $entry ] ) );
+			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
 
 		$service = $this->createService( $repository );
 		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
@@ -202,14 +200,14 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 	}
 
 	public function testGetBookmarkEntry_queuesRebuildAndUsesDbLookupWhenBloomFilterCacheMissing() {
-		$entry = (object)[ 'rle_id' => 1, 'rle_title' => 'Cat' ];
+		$matchingList = (object)[ 'rl_id' => 1, 'rl_name' => 'Saved pages' ];
 
 		$repository = $this->createMock( ReadingListRepository::class );
 		$repository->expects( $this->never() )->method( 'getSavedPagesCacheSetOptions' );
 		$repository->expects( $this->never() )->method( 'getSavedPageTitlesForProject' );
 		$repository->expects( $this->once() )->method( 'getListsByPage' )
 			->with( '@local', 'Cat', 1 )
-			->willReturn( new FakeResultWrapper( [ $entry ] ) );
+			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
 
 		$jobQueueGroup = $this->createMock( JobQueueGroup::class );
 		$jobQueueGroup->expects( $this->once() )->method( 'lazyPush' );
@@ -220,17 +218,17 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 		$this->assertTrue( $status->isOK() );
 		$this->assertSame(
-			$entry,
+			$matchingList,
 			$status->getValue()
 		);
 	}
 
 	public function testGetBookmarkEntry_usesDbLookupWhenBloomFilterWasInvalidated() {
-		$entry = (object)[ 'rle_id' => 1, 'rle_title' => 'Cat' ];
+		$matchingList = (object)[ 'rl_id' => 1, 'rl_name' => 'Saved pages' ];
 
 		$repository = $this->createMockRepository( [ 'Cat' ] );
 		$repository->expects( $this->atLeastOnce() )->method( 'getListsByPage' )
-			->willReturn( new FakeResultWrapper( [ $entry ] ) );
+			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
 
 		$jobQueueGroup = $this->createMock( JobQueueGroup::class );
 		$jobQueueGroup->expects( $this->exactly( 2 ) )->method( 'lazyPush' );
@@ -243,15 +241,20 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 		$this->assertTrue( $status->isOK() );
 		$this->assertSame(
-			$entry,
+			$matchingList,
 			$status->getValue()
 		);
 	}
 
 	public function testGetBookmarkEntry_onlyQueriesBookmarksOnceForMultipleLookups() {
 		$repository = $this->createMockRepository( [ 'Cat' ] );
+
+		// this should be called only once to build the bloom filter
 		$repository->expects( $this->once() )->method( 'getSavedPageTitlesForProject' );
-		$repository->expects( $this->never() )->method( 'getListsByPage' );
+
+		// if there is a false positive or saved page, then this can be called.
+		$repository->method( 'getListsByPage' )
+			->willReturn( new FakeResultWrapper( [] ) );
 
 		$service = $this->createService( $repository );
 		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
@@ -291,13 +294,13 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 	}
 
 	public function testGetBookmarkEntry_stillWorksWhenBloomFilterBuildFailsDueToDbError() {
-		$entry = (object)[ 'rle_id' => 1, 'rle_title' => 'Cat' ];
+		$matchingList = (object)[ 'rl_id' => 1, 'rl_name' => 'Saved pages' ];
 
 		$failingRepository = $this->createMock( ReadingListRepository::class );
 		$failingRepository->expects( $this->once() )->method( 'getSavedPageTitlesForProject' )
 			->willThrowException( new DBError( null, 'temporary failure' ) );
 		$failingRepository->expects( $this->atLeastOnce() )->method( 'getListsByPage' )
-			->willReturn( new FakeResultWrapper( [ $entry ] ) );
+			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
 
 		$cache = $this->createBloomFilterCache( $failingRepository );
 		$cache->rebuildBloomFilter( self::CENTRAL_ID );
@@ -305,7 +308,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
 		$this->assertTrue( $status->isOK() );
 		$this->assertSame(
-			$entry,
+			$matchingList,
 			$status->getValue()
 		);
 
@@ -317,7 +320,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$cachedRepository = $this->createMock( ReadingListRepository::class );
 		$cachedRepository->expects( $this->never() )->method( 'getSavedPageTitlesForProject' );
 		$cachedRepository->expects( $this->atLeastOnce() )->method( 'getListsByPage' )
-			->willReturn( new FakeResultWrapper( [ $entry ] ) );
+			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
 		$factory->method( 'create' )->willReturn( $cachedRepository );
 
 		$service = new BookmarkEntryLookupService(
@@ -331,7 +334,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
 		$this->assertTrue( $status->isOK() );
 		$this->assertSame(
-			$entry,
+			$matchingList,
 			$status->getValue()
 		);
 	}
@@ -354,11 +357,11 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 			static fn ( int $i ) => "Page_$i",
 			range( 1, self::MAX_ITEMS + 1 )
 		);
-		$entry = (object)[ 'rle_id' => 1, 'rle_title' => 'Page_1' ];
+		$matchingList = (object)[ 'rl_id' => 1, 'rl_name' => 'Saved pages' ];
 
 		$builderRepository = $this->createMockRepository( $titles );
 		$builderRepository->expects( $this->atLeastOnce() )->method( 'getListsByPage' )
-			->willReturn( new FakeResultWrapper( [ $entry ] ) );
+			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
 
 		$this->createBloomFilterCache( $builderRepository )->rebuildBloomFilter( self::CENTRAL_ID );
 		$status = $this->createService( $builderRepository )
@@ -374,7 +377,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$cachedRepository = $this->createMock( ReadingListRepository::class );
 		$cachedRepository->expects( $this->never() )->method( 'getSavedPageTitlesForProject' );
 		$cachedRepository->expects( $this->atLeastOnce() )->method( 'getListsByPage' )
-			->willReturn( new FakeResultWrapper( [ $entry ] ) );
+			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
 		$factory->method( 'create' )->willReturn( $cachedRepository );
 
 		$service = new BookmarkEntryLookupService(
@@ -403,11 +406,11 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 	}
 
 	public function testTitleSpacesNormalizedToUnderscoresInFilter() {
-		$entry = (object)[ 'rle_id' => 1, 'rle_title' => 'Main Page' ];
+		$matchingList = (object)[ 'rl_id' => 1, 'rl_name' => 'Saved pages' ];
 
 		$repository = $this->createMockRepository( [ 'Main Page' ] );
 		$repository->method( 'getListsByPage' )
-			->willReturn( new FakeResultWrapper( [ $entry ] ) );
+			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
 
 		$service = $this->createService( $repository );
 		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );

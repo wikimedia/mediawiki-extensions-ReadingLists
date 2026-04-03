@@ -50,7 +50,7 @@ function catchAsyncClicks( element ) {
  *
  * @param {Object} options
  * @param {string} [options.iconClass]
- * @param {number} [options.entryId]
+ * @param {string} [options.saved]
  * @param {string} [options.inCustomList]
  * @param {number} [options.listId]
  * @param {number} [options.listPageCount]
@@ -58,7 +58,7 @@ function catchAsyncClicks( element ) {
  */
 function createBookmarkElement( {
 	iconClass = 'vector-icon',
-	entryId,
+	saved,
 	inCustomList,
 	listId,
 	listPageCount
@@ -74,8 +74,8 @@ function createBookmarkElement( {
 	bookmark.appendChild( icon );
 	bookmark.appendChild( label );
 
-	if ( entryId !== undefined ) {
-		bookmark.dataset.mwEntryId = entryId;
+	if ( saved !== undefined ) {
+		bookmark.dataset.mwSaved = saved;
 	}
 	if ( inCustomList !== undefined ) {
 		bookmark.dataset.mwInCustomList = inCustomList;
@@ -210,7 +210,7 @@ describe( 'initBookmark', () => {
 
 			test( 'sets solid icon and remove bookmark label for saved page', () => {
 				const bookmark = createBookmarkElement( {
-					entryId: 99,
+					saved: '1',
 					listId: 1,
 					listPageCount: 5
 				} );
@@ -241,7 +241,7 @@ describe( 'initBookmark', () => {
 			test( 'sets solid icon and remove bookmark label for saved page', () => {
 				const bookmark = createBookmarkElement( {
 					iconClass: 'minerva-icon',
-					entryId: 99,
+					saved: '1',
 					listId: 1,
 					listPageCount: 5
 				} );
@@ -258,7 +258,7 @@ describe( 'initBookmark', () => {
 
 	describe( 'click bookmark button to save page', () => {
 		describe( 'Vector skin bookmark click to save', () => {
-			test( 'calls createEntry, updates icon, sets entryId, fires hook', async () => {
+			test( 'calls createEntry, updates icon, fires hook', async () => {
 				const hookCallback = jest.fn();
 				mw.hook( 'readingLists.bookmark.edit' ).add( hookCallback );
 
@@ -276,8 +276,8 @@ describe( 'initBookmark', () => {
 				const icon = bookmark.querySelector( '.vector-icon' );
 				expectIconClasses( icon, VECTOR_SOLID_BOOKMARK_CLASSES );
 				expectIconClassesAbsent( icon, VECTOR_OUTLINE_BOOKMARK_CLASSES );
-				expect( bookmark.dataset.mwEntryId ).toBe( '54321' );
-				expect( hookCallback ).toHaveBeenCalledWith( true, 54321, 4, 'toolbar' );
+				expect( bookmark.dataset.mwSaved ).toBe( '1' );
+				expect( hookCallback ).toHaveBeenCalledWith( true, null, 4, 'toolbar' );
 			} );
 
 			test( 'triggers onboarding popover on first save when not yet seen', async () => {
@@ -327,7 +327,7 @@ describe( 'initBookmark', () => {
 		} );
 
 		describe( 'Minerva skin bookmark button click to save', () => {
-			test( 'calls createEntry, updates icon, sets entryId, fires hook', async () => {
+			test( 'calls createEntry, updates icon, fires hook', async () => {
 				const hookCallback = jest.fn();
 				mw.hook( 'readingLists.bookmark.edit' ).add( hookCallback );
 
@@ -348,8 +348,8 @@ describe( 'initBookmark', () => {
 				const icon = bookmark.querySelector( '.minerva-icon' );
 				expectIconClasses( icon, MINERVA_SOLID_BOOKMARK_CLASSES );
 				expectIconClassesAbsent( icon, MINERVA_OUTLINE_BOOKMARK_CLASSES );
-				expect( bookmark.dataset.mwEntryId ).toBe( '54321' );
-				expect( hookCallback ).toHaveBeenCalledWith( true, 54321, 4, MINERVA_EVENT_SOURCE );
+				expect( bookmark.dataset.mwSaved ).toBe( '1' );
+				expect( hookCallback ).toHaveBeenCalledWith( true, null, 4, MINERVA_EVENT_SOURCE );
 			} );
 
 			test( 'triggers onboarding popover on first save when not yet seen', async () => {
@@ -408,13 +408,13 @@ describe( 'initBookmark', () => {
 	} );
 
 	describe( 'click bookmark button to unsave page', () => {
-		test( 'calls deleteEntryByPageTitle, updates icon, removes entryId, fires hook on Vector skin', async () => {
+		test( 'calls deleteEntryByPageTitle, updates icon, fires hook on Vector skin', async () => {
 			const hookCallback = jest.fn();
 			mw.hook( 'readingLists.bookmark.edit' ).add( hookCallback );
 			const postWithEditToken = jest.fn( () => DELETEENTRY );
 
 			const bookmark = createBookmarkElement( {
-				entryId: 99,
+				saved: '1',
 				listId: 12345,
 				listPageCount: 5
 			} );
@@ -432,7 +432,7 @@ describe( 'initBookmark', () => {
 			expectIconClasses( icon, VECTOR_OUTLINE_BOOKMARK_CLASSES );
 			expectIconClassesAbsent( icon, VECTOR_SOLID_BOOKMARK_CLASSES );
 
-			expect( bookmark.dataset.mwEntryId ).toBeUndefined();
+			expect( bookmark.dataset.mwSaved ).toBeUndefined();
 			expect( hookCallback ).toHaveBeenCalledWith( false, null, 4, 'toolbar' );
 			expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( {
 				action: 'readinglists',
@@ -446,14 +446,14 @@ describe( 'initBookmark', () => {
 			);
 		} );
 
-		test( 'calls deleteEntryByPageTitle, updates icon, removes entryId, fires hook on Minerva skin', async () => {
+		test( 'calls deleteEntryByPageTitle, updates icon, fires hook on Minerva skin', async () => {
 			const hookCallback = jest.fn();
 			mw.hook( 'readingLists.bookmark.edit' ).add( hookCallback );
 			const postWithEditToken = jest.fn( () => DELETEENTRY );
 
 			const bookmark = createBookmarkElement( {
 				iconClass: 'minerva-icon',
-				entryId: 99,
+				saved: '1',
 				listId: 12345,
 				listPageCount: 5
 			} );
@@ -471,7 +471,7 @@ describe( 'initBookmark', () => {
 			expectIconClasses( icon, MINERVA_OUTLINE_BOOKMARK_CLASSES );
 			expectIconClassesAbsent( icon, MINERVA_SOLID_BOOKMARK_CLASSES );
 
-			expect( bookmark.dataset.mwEntryId ).toBeUndefined();
+			expect( bookmark.dataset.mwSaved ).toBeUndefined();
 			expect( hookCallback ).toHaveBeenCalledWith( false, null, 4, MINERVA_EVENT_SOURCE );
 			expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( {
 				action: 'readinglists',
@@ -488,7 +488,7 @@ describe( 'initBookmark', () => {
 		test( 'loads confirm popover before removing page from a custom list', async () => {
 			const postWithEditToken = jest.fn( () => DELETEENTRY );
 			const bookmark = createBookmarkElement( {
-				entryId: 99,
+				saved: '1',
 				inCustomList: '1',
 				listId: 12345,
 				listPageCount: 5
@@ -516,7 +516,7 @@ describe( 'initBookmark', () => {
 		test( 'does not remove page when custom list confirmation is cancelled', async () => {
 			const postWithEditToken = jest.fn( () => DELETEENTRY );
 			const bookmark = createBookmarkElement( {
-				entryId: 99,
+				saved: '1',
 				inCustomList: '1',
 				listId: 12345,
 				listPageCount: 5
@@ -532,7 +532,6 @@ describe( 'initBookmark', () => {
 
 			expect( confirmUnsaveFromCustomList ).toHaveBeenCalled();
 			expect( postWithEditToken ).not.toHaveBeenCalled();
-			expect( bookmark.dataset.mwEntryId ).toBe( '99' );
 		} );
 	} );
 
@@ -596,7 +595,7 @@ describe( 'initBookmark', () => {
 
 		test( 'shows error notification when deleteEntryByPageTitle rejects with unexpected error on Vector skin', async () => {
 			const bookmark = createBookmarkElement( {
-				entryId: 99,
+				saved: '1',
 				listId: 12345,
 				listPageCount: 5
 			} );

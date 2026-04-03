@@ -225,12 +225,10 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 				(object)[
 					'rl_id' => 1,
 					'rl_is_default' => 1,
-					'rle_id' => 10,
 				],
 				(object)[
 					'rl_id' => 2,
 					'rl_is_default' => 0,
-					'rle_id' => 11,
 				],
 			] )
 		);
@@ -243,7 +241,7 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
 
-		$this->assertSame( 10, $links['views']['bookmark']['data-mw-entry-id'] );
+		$this->assertSame( 1, $links['views']['bookmark']['data-mw-saved'] );
 		$this->assertSame( 1, $links['views']['bookmark']['data-mw-in-custom-list'] );
 	}
 

@@ -679,6 +679,230 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		);
 	}
 
+	public function testAddListEntry_normalizesLocalTitleOnInsert() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
+		$parts['port'] = null;
+		$localProject = $urlUtils->assemble( $parts );
+		$this->addProjects( [ $localProject, 'https://commons.wikimedia.org' ] );
+		[ $listId ] = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+			],
+		] );
+
+		$localEntry = $repository->addListEntry( $listId, '@local', 'formula one' );
+		$this->assertSame(
+			'Formula_one',
+			$localEntry->rle_title,
+			'Converts spaces to underscores and first-letter capitalization for local titles'
+		);
+	}
+
+	public function testAddListEntry_normalizesCrossProjectTitleOnInsert() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
+		$parts['port'] = null;
+		$localProject = $urlUtils->assemble( $parts );
+		$this->addProjects( [ $localProject, 'https://commons.wikimedia.org' ] );
+		[ $listId ] = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+			],
+		] );
+
+		$crossWikiEntry = $repository->addListEntry(
+			$listId,
+			'https://commons.wikimedia.org',
+			'formula one'
+		);
+		$this->assertSame(
+			'formula_one',
+			$crossWikiEntry->rle_title,
+			'Only converts spaces to underscores for cross-project titles, not capitalization'
+		);
+	}
+
+	public function testAddListEntry_matchesExistingLocalEntryAfterNormalization() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
+		$parts['port'] = null;
+		$localProject = $urlUtils->assemble( $parts );
+		$this->addProjects( [ $localProject ] );
+		[ $listId ] = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+			],
+		] );
+
+		$localEntry = $repository->addListEntry( $listId, '@local', 'formula one' );
+		$localDupeEntry = $repository->addListEntry( $listId, $localProject, 'Formula_one' );
+		$this->assertSame( $localEntry->rle_id, $localDupeEntry->rle_id );
+		$this->assertTrue( $localDupeEntry->merged );
+	}
+
+	public function testAddListEntry_matchesExistingCrossProjectEntryAfterNormalization() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$this->addProjects( [ 'https://commons.wikimedia.org' ] );
+		[ $listId ] = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+			],
+		] );
+
+		$crossWikiEntry = $repository->addListEntry(
+			$listId,
+			'https://commons.wikimedia.org',
+			'formula one'
+		);
+
+		$crossWikiDupeEntry = $repository->addListEntry(
+			$listId,
+			'https://commons.wikimedia.org',
+			'formula_one'
+		);
+		$this->assertSame( $crossWikiEntry->rle_id, $crossWikiDupeEntry->rle_id );
+		$this->assertTrue( $crossWikiDupeEntry->merged );
+	}
+
+	public function testGetListsByPage_matchesLocalPageAfterNormalization() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
+		$parts['port'] = null;
+		$localProject = $urlUtils->assemble( $parts );
+		$this->addProjects( [ $localProject ] );
+		[ $listId ] = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+			],
+		] );
+
+		$repository->addListEntry( $listId, '@local', 'formula one' );
+
+		$rows = $this->resultWrapperToArray(
+			$repository->getListsByPage( $localProject, 'formula one', 10 )
+		);
+		$this->assertCount( 1, $rows );
+		$this->assertSame( (string)$listId, $rows[0]['rl_id'] );
+	}
+
+	public function testGetListsByPage_matchesCrossProjectPageAfterNormalization() {
+		$this->addProjects( [ 'dummy', 'https://commons.wikimedia.org' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+		[ $listId ] = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+			],
+		] );
+
+		$repository->addListEntry( $listId, 'https://commons.wikimedia.org', 'formula one' );
+
+		$rows = $this->resultWrapperToArray(
+			$repository->getListsByPage( 'https://commons.wikimedia.org', 'formula one', 10 )
+		);
+		$this->assertCount( 1, $rows );
+		$this->assertSame( (string)$listId, $rows[0]['rl_id'] );
+	}
+
+	public function testGetListsByPage_matchesLegacyLocalPageTitleVariants() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
+		$parts['port'] = null;
+		$localProject = $urlUtils->assemble( $parts );
+		$this->addProjects( [ $localProject ] );
+		[ $listId ] = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+			],
+		] );
+		$this->addListEntries( $listId, 1, [
+			[
+				'rlp_project' => $localProject,
+				'rle_title' => 'formula_one',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20150101000000',
+				'rle_deleted' => 0,
+			],
+		] );
+
+		$rows = $this->resultWrapperToArray(
+			$repository->getListsByPage( $localProject, 'formula one', 10 )
+		);
+		$this->assertCount( 1, $rows );
+		$this->assertSame( (string)$listId, $rows[0]['rl_id'] );
+	}
+
+	public function testGetListsByPage_deduplicatesListsWithMultipleMatchingEntries() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
+		$parts['port'] = null;
+		$localProject = $urlUtils->assemble( $parts );
+		$this->addProjects( [ $localProject ] );
+		[ $listId ] = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+			],
+		] );
+		$this->addListEntries( $listId, 1, [
+			[
+				'rlp_project' => $localProject,
+				'rle_title' => 'Formula_one',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20150101000000',
+				'rle_deleted' => 0,
+			],
+			[
+				'rlp_project' => $localProject,
+				'rle_title' => 'formula_one',
+				'rle_date_created' => '20100102000000',
+				'rle_date_updated' => '20150102000000',
+				'rle_deleted' => 0,
+			],
+		] );
+
+		$rows = $this->resultWrapperToArray(
+			$repository->getListsByPage( $localProject, 'formula one', 10 )
+		);
+		$this->assertCount( 1, $rows );
+		$this->assertSame( (string)$listId, $rows[0]['rl_id'] );
+	}
+
 	public function testAddListEntry_count() {
 		$this->addProjects( [ 'dummy' ] );
 		$repository = $this->getReadingListRepository( 1 );
@@ -809,6 +1033,72 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		}
 		$this->assertSame( '1', $sizesById[$listId] );
 		$this->assertSame( '0', $sizesById[$listId2] );
+	}
+
+	public function testDeleteListEntriesByPageTitleAndProject_normalizesLocalLookup() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
+		$parts['port'] = null;
+		$localProject = $urlUtils->assemble( $parts );
+		$this->addProjects( [ $localProject ] );
+		[ $listId ] = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+			],
+		] );
+
+		$entry = $repository->addListEntry( $listId, '@local', 'formula one' );
+		$repository->deleteListEntriesByPageTitleAndProject( 'formula one', $localProject );
+
+		$row = $this->getDb()->newSelectQueryBuilder()
+			->select( [ 'rle_deleted' ] )
+			->from( 'reading_list_entry' )
+			->where( [ 'rle_id' => $entry->rle_id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
+		$this->assertSame( '1', $row->rle_deleted );
+	}
+
+	public function testDeleteListEntriesByPageTitleAndProject_matchesLegacyLocalTitleVariants() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
+		$parts['port'] = null;
+		$localProject = $urlUtils->assemble( $parts );
+		$this->addProjects( [ $localProject ] );
+		[ $listId ] = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+			],
+		] );
+		[ $entryId ] = $this->addListEntries( $listId, 1, [
+			[
+				'rlp_project' => $localProject,
+				'rle_title' => 'formula_one',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20150101000000',
+				'rle_deleted' => 0,
+			],
+		] );
+
+		$repository->deleteListEntriesByPageTitleAndProject( 'formula one', $localProject );
+
+		$row = $this->getDb()->newSelectQueryBuilder()
+			->select( [ 'rle_deleted' ] )
+			->from( 'reading_list_entry' )
+			->where( [ 'rle_id' => $entryId ] )
+			->caller( __METHOD__ )
+			->fetchRow();
+		$this->assertSame( '1', $row->rle_deleted );
 	}
 
 	/**

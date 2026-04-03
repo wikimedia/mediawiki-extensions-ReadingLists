@@ -98,7 +98,7 @@ trait ApiQueryTrait {
 	 *   - null if there was no continuation parameter;
 	 *   - [ rl(e)_name, rl(e)_id ] for MODE_ALL/MODE_CHANGES when sorting by name;
 	 *   - [ rl(e)_date_updated, rl(e)_id ] for MODE_ALL/MODE_CHANGES when sorting by updated time;
-	 *   - rle_id for MODE_PAGE.
+	 *   - rl_id for MODE_PAGE.
 	 * @throws ApiUsageException
 	 * @suppress PhanUndeclaredMethod
 	 */

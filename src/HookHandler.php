@@ -122,7 +122,7 @@ class HookHandler implements
 		}
 
 		$list = null;
-		$entry = null;
+		$matchingList = null;
 		$hasCustomListEntry = false;
 
 		if ( $defaultListId !== null ) {
@@ -131,19 +131,19 @@ class HookHandler implements
 				$title,
 				$centralId
 			);
-			// On failure, fall through with $entry = null so the button
+			// On failure, fall through with no match so the button
 			// renders in its default "unsaved" state rather than disappearing.
-			$entry = $status->isOK() ? $status->getValue() : null;
+			$matchingList = $status->isOK() ? $status->getValue() : null;
 
-			if ( $entry !== null ) {
+			if ( $matchingList !== null ) {
 				$listsByPage = $repository->getListsByPage(
 					'@local',
 					$title->getPrefixedDBkey(),
 					2
 				);
 				foreach ( $listsByPage as $pageList ) {
-					if ( $entry === null || $pageList->rl_is_default ) {
-						$entry = $pageList;
+					if ( $matchingList === null || $pageList->rl_is_default ) {
+						$matchingList = $pageList;
 					}
 					if ( !$pageList->rl_is_default ) {
 						$hasCustomListEntry = true;
@@ -157,12 +157,12 @@ class HookHandler implements
 		// after list setup.
 		$links['views']['bookmark'] = [
 			'text' => $sktemplate->msg(
-				'readinglists-' . ( $entry === null ? 'add' : 'remove' ) . '-bookmark'
+				'readinglists-' . ( $matchingList === null ? 'add' : 'remove' ) . '-bookmark'
 			)->text(),
-			'icon' => $entry === null ? 'bookmarkOutline' : 'bookmark',
+			'icon' => $matchingList === null ? 'bookmarkOutline' : 'bookmark',
 			'href' => '#',
 			'data-mw-list-id' => $list ? $list->rl_id : null,
-			'data-mw-entry-id' => $entry ? $entry->rle_id : null,
+			'data-mw-saved' => $matchingList !== null ? 1 : null,
 			'data-mw-in-custom-list' => $hasCustomListEntry ? 1 : null,
 			'data-mw-list-page-count' => $list ? $list->rl_size : 0,
 			'link-class' => 'reading-lists-bookmark'

@@ -38,17 +38,15 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	}
 
 	/**
-	 * Updates the bookmark button text and display an added/removed notification
+	 * Updates the bookmark button text and icon
 	 *
 	 * @param {boolean} isSaved
-	 * @param {number} entryId
 	 */
-	function setBookmarkStatus( isSaved, entryId ) {
-		// Update entryId data attribute
-		if ( entryId ) {
-			bookmark.dataset.mwEntryId = entryId;
+	function setBookmarkStatus( isSaved ) {
+		if ( isSaved ) {
+			bookmark.dataset.mwSaved = '1';
 		} else {
-			delete bookmark.dataset.mwEntryId;
+			delete bookmark.dataset.mwSaved;
 		}
 
 		if ( icon !== null ) {
@@ -94,9 +92,8 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	 *
 	 * @param {boolean} isSaved
 	 * @param {string} listId
-	 * @param {number} entryId
 	 */
-	function updateBookmarkStatus( isSaved, listId, entryId ) {
+	function updateBookmarkStatus( isSaved, listId ) {
 		const listPageCount = updateListCount( listId, isSaved );
 
 		// The following messages are used here:
@@ -130,11 +127,11 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		 * @event readingLists.bookmark.edit
 		 * @memberof mw.Hooks
 		 * @param {boolean} isSaved
-		 * @param {number} entryId
+		 * @param {null} entryId Deprecated, always null.
 		 * @param {number} newListSize
 		 * @param {string} eventSource
 		 */
-		mw.hook( 'readingLists.bookmark.edit' ).fire( isSaved, entryId, listPageCount, eventSource );
+		mw.hook( 'readingLists.bookmark.edit' ).fire( isSaved, null, listPageCount, eventSource );
 	}
 
 	function initSavedPagesOnboardingPopover() {
@@ -179,13 +176,13 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	 * @return {Promise<void>}
 	 */
 	async function addPageToReadingList( listId ) {
-		const { createentry: { entry: { id } } } = await api.createEntry( listId, mw.config.get( 'wgPageName' ) );
+		await api.createEntry( listId, mw.config.get( 'wgPageName' ) );
 
-		updateBookmarkStatus( true, listId, id );
+		updateBookmarkStatus( true, listId );
 	}
 
 	/**
-	 * Handles frontend logic for the api.deleteEntry() function
+	 * Handles frontend logic for removing a page from a reading list
 	 *
 	 * @param {string} pageTitle
 	 * @param {string} listId
@@ -200,7 +197,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			}
 		}
 
-		updateBookmarkStatus( false, listId, null );
+		updateBookmarkStatus( false, listId );
 	}
 
 	/**
@@ -274,12 +271,11 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 				}
 			}
 
-			const entryId = bookmark.dataset.mwEntryId;
 			const inCustomList = bookmark.dataset.mwInCustomList === '1';
 			const pageTitle = mw.config.get( 'wgPageName' );
 
 			try {
-				if ( !entryId ) {
+				if ( bookmark.dataset.mwSaved !== '1' ) {
 					await addPageToReadingList( currentListId );
 				} else {
 					if ( inCustomList ) {
@@ -305,8 +301,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	}
 
 	function init() {
-		const isSaved = !!bookmark.dataset.mwEntryId;
-		setBookmarkStatus( isSaved, bookmark.dataset.mwEntryId );
+		setBookmarkStatus( bookmark.dataset.mwSaved === '1' );
 
 		if ( bookmark.dataset.mwInCustomList === '1' ) {
 			const anchorElement = document.querySelector( '#ca-bookmark' );
@@ -315,8 +310,8 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 
 		bindClickListener();
 
-		mw.hook( 'readingLists.bookmark.edit' ).add( ( newSaved, entryId ) => {
-			setBookmarkStatus( newSaved, entryId );
+		mw.hook( 'readingLists.bookmark.edit' ).add( ( newSaved ) => {
+			setBookmarkStatus( newSaved );
 		} );
 	}
 
