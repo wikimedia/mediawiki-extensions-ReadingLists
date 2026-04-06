@@ -97,6 +97,7 @@
 	"readinglists-betafeature-quicksurvey-answer-negative": "👎 Ei",
 	"readinglists-betafeature-quicksurvey-question-feedback": "Mikä tekisi tästä ominaisuudesta sinulle hyödyllisemmän?",
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Lisää palautteesi",
+	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Tietosuojaseloste]",
 	"readinglists-betafeature-quicksurvey-submit": "Lähetä",
 	"readinglists-betafeature-quicksurvey-thank-you": "Kiitos palautteestasi"
 }

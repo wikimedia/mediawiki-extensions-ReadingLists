@@ -4,5 +4,15 @@
 			"Joao Xavier"
 		]
 	},
-	"readinglists-browser-extension-info-link-text": "Lernez pluse"
+	"readinglists-browser-extension-info-link-text": "Lernez pluse",
+	"readinglists-unsave-from-custom-list-confirm": "Removez",
+	"readinglists-unsave-from-custom-list-cancel": "Nuligez",
+	"readinglists-betafeature-quicksurvey-question": "Ka vu prizas ca resurso?",
+	"readinglists-betafeature-quicksurvey-answer-positive": "👍 Yes",
+	"readinglists-betafeature-quicksurvey-answer-negative": "👎 No",
+	"readinglists-betafeature-quicksurvey-question-feedback": "Quale ol povus divenar plu utila por vu?",
+	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Adjuntez vua retrokomento (''feedback'')",
+	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Politiko pri privateso]",
+	"readinglists-betafeature-quicksurvey-submit": "Sendez",
+	"readinglists-betafeature-quicksurvey-thank-you": "Gratuli pro vua retrokomento (''feedback'')"
 }

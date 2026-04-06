@@ -1,0 +1,20 @@
+{
+	"@metadata": {
+		"authors": [
+			"KormiSK",
+			"Luky001"
+		]
+	},
+	"readinglists-desc": "Umožňuje používateľom spravovať si súkromné zoznamy článkov, napr. záložky alebo zoznamy „Prečítať neskôr“.",
+	"readinglists-unsave-from-custom-list-title": "Odstrániť zo všetkých zoznamov na čítanie?",
+	"readinglists-unsave-from-custom-list-body": "Táto stránka sa nachádza v jednom alebo viacerých vašich zoznamoch na čítanie v aplikácii Wikipédie.",
+	"readinglists-unsave-from-custom-list-confirm": "Odstrániť",
+	"readinglists-unsave-from-custom-list-cancel": "Zrušiť",
+	"readinglists-betafeature-quicksurvey-question": "Páči sa vám táto funkcia?",
+	"readinglists-betafeature-quicksurvey-answer-positive": "👍 Áno",
+	"readinglists-betafeature-quicksurvey-answer-negative": "👎 Nie",
+	"readinglists-betafeature-quicksurvey-question-feedback": "Čo by to pre vás urobilo užitočnejším?",
+	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Pridajte svoju spätnú väzbu",
+	"readinglists-betafeature-quicksurvey-submit": "Odoslať",
+	"readinglists-betafeature-quicksurvey-thank-you": "Ďakujeme za Vašu spätnú väzbu!"
+}

@@ -71,14 +71,18 @@
 	"apihelp-readinglists+createentry-summary": "Een nieuwe pagina toevoegen aan een lijst van de huidige gebruiker.",
 	"apihelp-readinglists+createentry-extended-description": "Lijstvermeldingen moeten uniek zijn. Pagina’s zijn niet beperkt tot de wiki waar de API wordt aangesproken. De gebruiker moet minder dan $1 (niet-verwijderde) vermelding{{PLURAL:$1||en}} in de lijst hebben.",
 	"apihelp-readinglists+createentry-param-list": "Lijst-ID.",
-	"apihelp-readinglists+createentry-param-project": "Projectnaam van de wiki waarop de pagina is ondergebracht. (Normaal gesproken is dit de domeinnaam van de wiki.) Vereist tenzij u een batch-aanmaak uitvoert.",
+	"apihelp-readinglists+createentry-param-project": "Projectnaam van de wiki die de pagina host. Dit is meestal de domeinnaam van de wiki of <kbd>@local</kbd> voor de lokale wiki. Vereist, tenzij het om een batchaanmaak gaat.",
 	"apihelp-readinglists+createentry-param-title": "Paginatitel (met inbegrip van de gelokaliseerde naamruimte-naam). Vereist tenzij een batch-aanmaak wordt uitgevoerd. Een voor mensen leesbaar formaat (spaties en geen onderstrepingstekens) wordt aanbevolen. De API behandelt titels als onbewerkte tekenreeksen; normalisatie (zoals hoofd- en kleine letters) wordt overgelaten aan de cliëntprogramma’s.",
 	"apihelp-readinglists+createentry-param-batch": "Batchgegevens voor het aanmaken van meerdere lijstvermeldingen (in dezelfde lijst) in één verzoek, in de vorm van een JSON-array met een of meer objecten met de velden <var>project</var> en <var>title</var>.",
 	"apihelp-readinglists+createentry-example-1": "Voeg de pagina <kbd>Dog</kbd> uit project <kbd>en.wikipedia.org</kbd> toe aan de lijst met ID <kbd>33</kbd>.",
 	"apihelp-readinglists+createentry-example-2": "Voeg meerdere pagina’s toe aan een lijst.",
 	"apihelp-readinglists+deleteentry-summary": "Een pagina verwijderen uit een lijst van de huidige gebruiker.",
 	"apihelp-readinglists+deleteentry-param-entry": "Vermeldings-ID. Vereist tenzij batchverwijdering wordt uitgevoerd.",
+	"apihelp-readinglists+deleteentry-param-project": "Projectnaam van de wiki waarop de pagina wordt gehost. Moet samen met <var>$1title</var> worden gebruikt. Verwijdert alle vermeldingen die overeenkomen met het opgegeven project en de titel.",
+	"apihelp-readinglists+deleteentry-param-title": "Paginatitel die verwijderd moet worden. Moet samen met <var>$1project</var> gebruikt worden.",
 	"apihelp-readinglists+deleteentry-param-batch": "Batchgegevens voor het verwijderen van meerdere lijstvermeldingen in één verzoek, in de vorm van een JSON-array met een of meer objecten met een veld <var>entry</var>.",
 	"apihelp-readinglists+deleteentry-example-1": "Verwijder de lijstvermelding met ID <kbd>8</kbd>.",
-	"apihelp-readinglists+deleteentry-example-2": "Meerdere lijstvermeldingen verwijderen."
+	"apihelp-readinglists+deleteentry-example-2": "Meerdere lijstvermeldingen verwijderen.",
+	"apihelp-readinglists+deleteentry-example-3": "Verwijder alle vermeldingen voor de pagina <kbd>Hond</kbd> van project <kbd>en.wikipedia.org</kbd>.",
+	"apihelp-readinglists+deleteentry-example-4": "Verwijder alle vermeldingen voor de pagina <kbd>Garfield de Kat</kbd> uit project <kbd>@local</kbd>."
 }

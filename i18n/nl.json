@@ -86,6 +86,10 @@
 	"readinglists-bookmark": "Bladwijzer",
 	"readinglists-add-bookmark": "Opslaan",
 	"readinglists-remove-bookmark": "Verwijderen",
+	"readinglists-unsave-from-custom-list-title": "Van alle leeslijsten verwijderen?",
+	"readinglists-unsave-from-custom-list-body": "Deze pagina staat in een of meer van uw leeslijsten in de Wikipedia-app.",
+	"readinglists-unsave-from-custom-list-confirm": "Verwijderen",
+	"readinglists-unsave-from-custom-list-cancel": "Annuleren",
 	"readinglists-onboarding-title": "Pagina's opslaan voor later",
 	"readinglists-onboarding-text": "Iets interessants gevonden? u kunt het nu opslaan in uw persoonlijke lijst.",
 	"readinglists-onboarding-close-button": "Sluiten",
@@ -94,5 +98,13 @@
 	"readinglists-onboarding-saved-pages-text": "Bekijk hier al uw opgeslagen pagina’s.",
 	"readinglists-mobile-onboarding-saved-pages-title": "Opgeslagen pagina’s",
 	"readinglists-mobile-onboarding-saved-pages-text": "Via dit menu heeft u toegang tot al uw opgeslagen pagina's.",
-	"readinglists-beta-tag": "Bèta"
+	"readinglists-beta-tag": "Bèta",
+	"readinglists-betafeature-quicksurvey-question": "Ervaart u deze functie als plezierig?",
+	"readinglists-betafeature-quicksurvey-answer-positive": "👍 Ja",
+	"readinglists-betafeature-quicksurvey-answer-negative": "👎 Nee",
+	"readinglists-betafeature-quicksurvey-question-feedback": "Hoe kan dit nuttiger voor u gemaakt worden?",
+	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Geef ons uw terugkoppeling",
+	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Privacybeleid]",
+	"readinglists-betafeature-quicksurvey-submit": "Opslaan",
+	"readinglists-betafeature-quicksurvey-thank-you": "Bedankt voor uw terugkoppeling"
 }
