@@ -24,14 +24,28 @@ exports[`Survey matches the snapshot 1`] = `
       class="cdx-button cdx-button--action-default cdx-button--weight-normal cdx-button--size-medium cdx-button--framed reading-lists-survey__option-button"
     >
       
-      👍 Yes
+      <!-- eslint-disable-next-line max-len -->
+      <span
+        aria-hidden="true"
+        class="reading-lists-survey__option-button__cue"
+      >
+        👍
+      </span>
+       Yes
       
     </button>
     <button
       class="cdx-button cdx-button--action-default cdx-button--weight-normal cdx-button--size-medium cdx-button--framed reading-lists-survey__option-button"
     >
       
-      👎 No
+      <!-- eslint-disable-next-line max-len -->
+      <span
+        aria-hidden="true"
+        class="reading-lists-survey__option-button__cue"
+      >
+        👎
+      </span>
+       No
       
     </button>
     

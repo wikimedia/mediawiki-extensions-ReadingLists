@@ -1,7 +1,9 @@
 <template>
 	<div class="reading-lists-survey">
 		<template v-if="!completed">
-			<div class="reading-lists-survey__question">{{ msgQuestion }}</div>
+			<div class="reading-lists-survey__question">
+				{{ msgQuestion }}
+			</div>
 			<!-- eslint-disable-next-line vue/no-v-html -->
 			<div class="reading-lists-survey__privacy-policy" v-html="msgPrivacyPolicy"></div>
 			<div class="reading-lists-survey__options">
@@ -10,6 +12,8 @@
 					:key="option.key"
 					class="reading-lists-survey__option-button"
 					@click="onClickOption( option.key )">
+					<!-- eslint-disable-next-line max-len -->
+					<span aria-hidden="true" class="reading-lists-survey__option-button__cue">{{ option.cue }}</span>
 					{{ option.label }}
 				</cdx-button>
 			</div>
@@ -50,7 +54,9 @@ const {
 const SURVEY_NAME = 'ReadingLists beta feature survey';
 const SURVEY_QUESTION = 'readinglists-betafeature-quicksurvey-question';
 const SURVEY_ANSWER_POSITIVE = 'readinglists-betafeature-quicksurvey-answer-positive';
+const SURVEY_ANSWER_POSITIVE_CUE = 'readinglists-betafeature-quicksurvey-answer-positive-cue';
 const SURVEY_ANSWER_NEGATIVE = 'readinglists-betafeature-quicksurvey-answer-negative';
+const SURVEY_ANSWER_NEGATIVE_CUE = 'readinglists-betafeature-quicksurvey-answer-negative-cue';
 
 /**
  * User sentiment survey.
@@ -68,8 +74,20 @@ module.exports = exports = {
 	data() {
 		return {
 			options: [
-				{ key: SURVEY_ANSWER_POSITIVE, label: mw.msg( SURVEY_ANSWER_POSITIVE ) },
-				{ key: SURVEY_ANSWER_NEGATIVE, label: mw.msg( SURVEY_ANSWER_NEGATIVE ) }
+				{
+					key: SURVEY_ANSWER_POSITIVE,
+					// eslint-disable-next-line mediawiki/msg-doc
+					label: mw.msg( SURVEY_ANSWER_POSITIVE ),
+					// eslint-disable-next-line mediawiki/msg-doc
+					cue: mw.msg( SURVEY_ANSWER_POSITIVE_CUE )
+				},
+				{
+					key: SURVEY_ANSWER_NEGATIVE,
+					// eslint-disable-next-line mediawiki/msg-doc
+					label: mw.msg( SURVEY_ANSWER_NEGATIVE ),
+					// eslint-disable-next-line mediawiki/msg-doc
+					cue: mw.msg( SURVEY_ANSWER_NEGATIVE_CUE )
+				}
 			],
 			selectedOption: null,
 			freeTextAnswer: '',
@@ -125,6 +143,7 @@ module.exports = exports = {
 </script>
 
 <style lang="less">
+@import 'mediawiki.mixins.less';
 @import 'mediawiki.skin.variables.less';
 
 .reading-lists-survey {
@@ -146,6 +165,11 @@ module.exports = exports = {
 		justify-content: center;
 		gap: @spacing-75;
 		margin-top: @spacing-75;
+	}
+
+	&__option-button__cue {
+		display: inline-block;
+		margin-right: @spacing-12;
 	}
 }
 </style>
