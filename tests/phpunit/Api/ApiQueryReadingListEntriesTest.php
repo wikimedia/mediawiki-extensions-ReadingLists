@@ -285,6 +285,40 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 		];
 	}
 
+	public function testTitleWithUnderscoresIsFormattedWithSpaces(): void {
+		ConvertibleTimestamp::setFakeTime( '2018-09-13T20:59:36Z' );
+
+		$listIds = $this->addLists( $this->user->mId, [
+			[
+				'rl_is_default' => 0,
+				'rl_name' => 'test',
+				'rl_description' => '',
+				'rl_date_created' => '20170913205936',
+				'rl_date_updated' => '20170913205936',
+				'rl_deleted' => 0,
+				'entries' => [
+					[
+						'rlp_project' => 'foo',
+						'rle_title' => 'Title_With_Underscores',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180817000000',
+						'rle_deleted' => 0,
+					],
+				],
+			],
+		] );
+
+		$result = $this->doApiRequest(
+			array_merge( $this->apiParams, [ 'rlelists' => (string)$listIds[0] ] ),
+			null,
+			$this->user
+		);
+
+		$entries = $result[0]['query']['readinglistentries'];
+		$this->assertCount( 1, $entries );
+		$this->assertSame( 'Title With Underscores', $entries[0]['title'] );
+	}
+
 	/**
 	 * @dataProvider apiQueryEntriesFromAllListsProvider
 	 */

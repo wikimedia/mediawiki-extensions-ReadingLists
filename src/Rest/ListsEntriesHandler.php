@@ -117,12 +117,11 @@ class ListsEntriesHandler extends SimpleHandler {
 			$this->die( $e->getMessageObject() );
 		}
 
-		'@phan-var stdClass[] $res';
 		foreach ( $res as $i => $row ) {
-			// @phan-suppress-next-line PhanTypeMismatchArgument
+			'@phan-var ReadingListEntryRow $row';
 			$item = $this->getListEntryFromRow( $row );
 			if ( $i >= $limit ) {
-				$result['next'] = $this->makeNext( $item, $sort, $item['title'] );
+				$result['next'] = $this->makeNext( $item, $sort, $row->rle_title );
 				break;
 			}
 			$result['entries'][] = $item;

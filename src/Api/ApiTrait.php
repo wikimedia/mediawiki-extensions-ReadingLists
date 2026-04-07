@@ -233,7 +233,7 @@ trait ApiTrait {
 			'id' => (int)$row->rle_id,
 			'listId' => (int)$row->rle_rl_id,
 			'project' => $row->rlp_project,
-			'title' => $row->rle_title,
+			'title' => strtr( $row->rle_title, '_', ' ' ),
 			'created' => wfTimestamp( TS_ISO_8601, $row->rle_date_created ),
 			'updated' => wfTimestamp( TS_ISO_8601, $row->rle_date_updated ),
 		];

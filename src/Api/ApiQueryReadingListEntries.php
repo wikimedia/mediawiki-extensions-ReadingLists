@@ -114,23 +114,21 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 			$res = $repository->getAllListEntries( $sort, $dir, $limit + 1, $continue );
 		}
 
-		'@phan-var stdClass[] $res';
 		$titles = [];
 		$fits = true;
 
 		foreach ( $res as $i => $row ) {
-			// @phan-suppress-next-line PhanTypeMismatchArgument
+			'@phan-var ReadingListEntryRow $row';
 			$item = $this->getResultItem( $row, $mode );
 
 			if ( $i >= $limit ) {
 				// we reached the extra row.
 				$this->setContinueEnumParameter( 'continue',
-					$this->encodeContinuationParameter( $item, $mode, $sort ) );
+					$this->encodeContinuationParameter( $item, $mode, $sort, $row->rle_title ) );
 				break;
 			}
 
 			if ( $resultPageSet ) {
-				// @phan-suppress-next-line PhanTypeMismatchArgument
 				$titles[] = $this->getResultTitle( $row );
 			} else {
 				$fits = $result->addValue( $path, null, $item );
@@ -138,7 +136,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 
 			if ( !$fits ) {
 				$this->setContinueEnumParameter( 'continue',
-					$this->encodeContinuationParameter( $item, $mode, $sort ) );
+					$this->encodeContinuationParameter( $item, $mode, $sort, $row->rle_title ) );
 				break;
 			}
 		}

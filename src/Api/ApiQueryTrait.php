@@ -67,14 +67,18 @@ trait ApiQueryTrait {
 	 * @param array $item Result item to continue from.
 	 * @param string $mode One of the MODE_* constants.
 	 * @param string $sort One of the SORT_BY_* constants.
+	 * @param string|null $rawName Raw (DB-format) name to use instead of $item['name'/'title'].
+	 *   Use this for list entries to avoid passing a space-formatted title to the DB query.
 	 * @return string
 	 * @suppress PhanUndeclaredStaticProperty
 	 */
-	private function encodeContinuationParameter( array $item, $mode, $sort ) {
+	private function encodeContinuationParameter( array $item, $mode, $sort, $rawName = null ) {
 		if ( $mode === self::$MODE_PAGE ) {
 			return $item['id'];
 		} elseif ( $sort === ReadingListRepository::SORT_BY_NAME ) {
-			if ( self::$prefix === 'rl' ) {
+			if ( $rawName !== null ) {
+				$name = $rawName;
+			} elseif ( self::$prefix === 'rl' ) {
 				$name = $item['name'];
 			} else {
 				$name = $item['title'];

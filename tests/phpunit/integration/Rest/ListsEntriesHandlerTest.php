@@ -191,6 +191,34 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 		);
 	}
 
+	public function testListsEntriesTitleWithUnderscores(): void {
+		$services = $this->getServiceContainer();
+		$handler = new ListsEntriesHandler(
+			$services->getDBLoadBalancerFactory(),
+			$services->getMainConfig(),
+			$this->getMockCentralIdLookup(),
+			$this->getMockReverseInterwikiLookup( '' )
+		);
+
+		$repository = $this->getReadingListRepository( $handler );
+		$list = $repository->addList( 'dogs', 'Woof!' );
+		$entry = $repository->addListEntry( $list->rl_id, 'foo', 'Title_With_Underscores' );
+
+		$request = new RequestData( [
+			'pathParams' => [ 'id' => $list->rl_id ],
+			'queryParams' => []
+		] );
+		$data = $this->executeReadingListsHandlerAndGetBodyData( $handler, $request );
+
+		$this->assertCount( 1, $data['entries'] );
+		$this->checkReadingListEntry(
+			$data['entries'][0],
+			(int)$entry->rle_id,
+			'foo',
+			'Title With Underscores'
+		);
+	}
+
 	/**
 	 * @dataProvider listsFailureProvider
 	 */

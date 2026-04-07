@@ -74,7 +74,7 @@ class ListsChangesSinceHandler extends ListsHandler {
 			if ( $i >= $params['limit'] ) {
 				// We reached the extra row. Create and return a "next" value that the client
 				// can send with a subsequent request for pagination.
-				$entriesNext = $this->makeNext( $item, $params['sort'], $item['title'] );
+				$entriesNext = $this->makeNext( $item, $params['sort'], $row->rle_title );
 				break;
 			}
 			$entries[$i] = $item;
