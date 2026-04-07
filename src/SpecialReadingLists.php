@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extension\ReadingLists;
 
+use MediaWiki\Config\Config;
 use MediaWiki\Exception\UserNotLoggedIn;
 use MediaWiki\Html\Html;
 use MediaWiki\SpecialPage\UnlistedSpecialPage;
@@ -11,8 +12,11 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 	/**
 	 * Construct function
 	 */
-	public function __construct() {
+	private readonly Config $config;
+
+	public function __construct( Config $config ) {
 		parent::__construct( 'ReadingLists' );
+		$this->config = $config;
 	}
 
 	/**
@@ -40,9 +44,8 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 		}
 
 		$output = $this->getOutput();
-		$config = $this->getConfig();
 
-		$anonymizedPreviews = $config->get( 'ReadingListsAnonymizedPreviews' );
+		$anonymizedPreviews = $this->config->get( 'ReadingListsAnonymizedPreviews' );
 
 		if ( $exportFeature && $anonymizedPreviews ) {
 			$output->addHtmlClasses( 'reading-lists-anonymized-previews' );

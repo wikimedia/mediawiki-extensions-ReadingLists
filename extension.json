@@ -48,7 +48,12 @@
 		"ReadingLists": "MediaWiki\\Config\\GlobalVarConfig::newInstance"
 	},
 	"SpecialPages": {
-		"ReadingLists": "MediaWiki\\Extension\\ReadingLists\\SpecialReadingLists"
+		"ReadingLists": {
+			"class": "MediaWiki\\Extension\\ReadingLists\\SpecialReadingLists",
+			"services": [
+				"MainConfig"
+			]
+		}
 	},
 	"config": {
 		"ReadingListBetaFeature": {
