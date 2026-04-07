@@ -297,8 +297,8 @@ class HookHandler implements
 			'privacyPolicy' => 'readinglists-betafeature-quicksurvey-privacy-policy',
 			'coverage' => 100,
 			'platforms' => [
-				'desktop' => [ 'stable' ],
-				'mobile' => [ 'stable' ]
+				'desktop',
+				'mobile'
 			],
 		];
 	}
