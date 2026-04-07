@@ -1,6 +1,8 @@
 {
 	"batchcomplete": true,
 	"query": {
+		"normalized": [],
+		"redirects": [],
 		"pages": [
 			{
 				"ns": 0,

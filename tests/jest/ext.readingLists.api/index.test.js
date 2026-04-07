@@ -330,6 +330,7 @@ describe( 'getEntries', () => {
 			expect( err ).toBe( 'badinteger' );
 		}
 	} );
+
 } );
 
 describe( 'getPagesFromManifest', () => {
@@ -412,6 +413,58 @@ describe( 'getPagesFromManifest', () => {
 			project,
 			pageid: page.pageid || 1
 		} ) ) );
+	} );
+
+	test( 'matches entries by title when API response has no normalized or redirects data', async () => {
+		const entries = [ { id: 9, title: 'Sleep' } ];
+
+		api.stubApi( {
+			get: jest.fn( ( { action }, { url } ) => {
+				if ( action === 'query' && url === `${ project }/w/api.php` ) {
+					return {
+						batchcomplete: true,
+						query: {
+							pages: [ {
+								pageid: 567,
+								ns: 0,
+								title: 'Sleep',
+								canonicalurl: `${ project }/wiki/Sleep`
+							} ]
+						}
+					};
+				}
+			} )
+		} );
+
+		const result = await api.getPagesFromManifest( project, entries );
+		expect( result[ 0 ] ).toMatchObject( { id: 9, title: 'Sleep', missing: false } );
+	} );
+
+	test( 'resolves entry title through normalization and redirect', async () => {
+		const entries = [ { id: 1, title: 'New_York_New_York' } ];
+
+		api.stubApi( {
+			get: jest.fn( ( { action }, { url } ) => {
+				if ( action === 'query' && url === `${ project }/w/api.php` ) {
+					return {
+						batchcomplete: true,
+						query: {
+							normalized: [ { from: 'New_York_New_York', to: 'New York New York' } ],
+							redirects: [ { from: 'New York New York', to: 'New York City' } ],
+							pages: [ {
+								pageid: 645042,
+								ns: 0,
+								title: 'New York City',
+								canonicalurl: `${ project }/wiki/New_York_City`
+							} ]
+						}
+					};
+				}
+			} )
+		} );
+
+		const result = await api.getPagesFromManifest( project, entries );
+		expect( result[ 0 ] ).toMatchObject( { id: 1, title: 'New York City', missing: false } );
 	} );
 
 	test( 'returns fallback on error', async () => {
@@ -543,8 +596,64 @@ describe( 'fromBase64', () => {
 			'InvalidCharacterError'
 		) } );
 	} );
+
+	test( 'preserves name when already present in encoded data', async () => {
+		api.stubApi( {
+			get: jest.fn( ( { action }, { url } ) => {
+				if ( action === 'query' && url === `${ project }/w/api.php` ) {
+					return PAGES;
+				}
+			} )
+		} );
+
+		const encoded = btoa( JSON.stringify( {
+			name: 'Custom Name',
+			description: 'desc',
+			list: { en: PAGES.query.pages.map( ( { pageid } ) => pageid || 1 ) }
+		} ) );
+		const result = await api.fromBase64( encoded );
+		expect( result.name ).toBe( 'Custom Name' );
+		expect( result.description ).toBe( 'desc' );
+	} );
 } );
 
 describe( 'toBase64', () => {
+	test( 'returns a base64 string that decodes to the original values', () => {
+		const name = 'My List';
+		const description = 'A test list';
+		const list = { en: [ 1, 2, 3 ] };
+		const result = api.toBase64( name, description, list );
+		expect( typeof result ).toBe( 'string' );
+		expect( JSON.parse( atob( result ) ) ).toStrictEqual( { name, description, list } );
+	} );
 
+	test( 'throws on characters outside Latin-1 range in name', () => {
+		expect( () => api.toBase64( '中文', 'desc', {} ) ).toThrow();
+	} );
+
+	test( 'produces output that fromBase64 can parse back', async () => {
+		const project = 'https://en.wikipedia.org';
+		const list = { en: PAGES.query.pages.map( ( { pageid } ) => pageid || 1 ) };
+
+		api.stubApi( {
+			get: jest.fn( ( { action }, { url } ) => {
+				if ( action === 'query' && url === `${ project }/w/api.php` ) {
+					return PAGES;
+				}
+			} )
+		} );
+
+		const encoded = api.toBase64( 'Test', 'desc', list );
+		const result = await api.fromBase64( encoded );
+		expect( result.name ).toBe( 'Test' );
+		expect( result.description ).toBe( 'desc' );
+		expect( result.list ).toStrictEqual(
+			PAGES.query.pages.map( ( page, i ) => entryToPage( {
+				id: -1 - i,
+				project,
+				pageid: page.pageid || 1
+			} ) )
+		);
+		expect( result.size ).toBe( PAGES.query.pages.length );
+	} );
 } );
