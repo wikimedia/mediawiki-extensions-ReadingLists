@@ -30,7 +30,9 @@ const moduleName = isMinerva ?
 	'ext.readingLists.onboarding.desktop';
 
 const bookmarkForOnboarding = document.querySelector( '#ca-bookmark' );
-if ( bookmarkForOnboarding && !bookmarkForOnboarding.dataset.mwEntryId ) {
+const isMainPage = mw.config.get( 'wgIsMainPage' );
+
+if ( bookmarkForOnboarding && !bookmarkForOnboarding.dataset.mwEntryId && !isMainPage ) {
 	initOnboardingPopover(
 		'#ca-bookmark',
 		'readinglists-bookmark-dialog-seen',
