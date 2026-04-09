@@ -143,7 +143,10 @@ function applyMwOverrides( { hookFn } ) {
 		get: jest.fn( ( key ) => DEFAULT_CONFIG_VALUES[ key ] )
 	} );
 	Object.assign( mw.user, {
-		getName: jest.fn( () => 'TestUser' )
+		getName: jest.fn( () => 'TestUser' ),
+		options: {
+			get: jest.fn( () => 0 )
+		}
 	} );
 	Object.assign( mw.util, {
 		getUrl: jest.fn( ( title ) => `/wiki/${ title }` )
@@ -278,6 +281,10 @@ describe( 'initBookmark', () => {
 			} );
 
 			test( 'triggers onboarding popover on first save when not yet seen', async () => {
+				mw.user.options.get.mockImplementation( ( name ) => (
+					name === 'growthexperiments-tour-homepage-discovery' ? 1 : 0
+				) );
+
 				jest.useFakeTimers();
 
 				const anchor = document.createElement( 'div' );
@@ -346,6 +353,10 @@ describe( 'initBookmark', () => {
 			} );
 
 			test( 'triggers onboarding popover on first save when not yet seen', async () => {
+				mw.user.options.get.mockImplementation( ( name ) => (
+					name === 'growthexperiments-tour-homepage-discovery' ? 1 : 0
+				) );
+
 				jest.useFakeTimers();
 
 				const anchor = document.createElement( 'div' );
@@ -616,6 +627,13 @@ describe( 'initBookmark', () => {
 } );
 
 describe( 'initOnboardingPopover', () => {
+	beforeEach( () => {
+		// in most cases, we want to assume the homepage popup has already been seen
+		mw.user.options.get.mockImplementation( ( name ) => (
+			name === 'growthexperiments-tour-homepage-discovery' ? 1 : 0
+		) );
+	} );
+
 	test( 'returns early if anchor element not found in DOM', () => {
 		initOnboardingPopover(
 			'#nonexistent-element',
@@ -681,5 +699,29 @@ describe( 'initOnboardingPopover', () => {
 			{ timeout: 2000 }
 		);
 		expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
+	} );
+
+	test( 'defers loading onboarding popover if the homepage tour hasn\'t been seen yet', () => {
+		jest.useFakeTimers();
+
+		mw.user.options.get.mockRestore();
+
+		const anchor = document.createElement( 'div' );
+		anchor.id = 'test-anchor';
+		document.body.appendChild( anchor );
+
+		initOnboardingPopover(
+			'#test-anchor',
+			'test-storage-key',
+			'title-key',
+			'body-key',
+			null,
+			'ext.readingLists.onboarding.mobile'
+		);
+
+		jest.advanceTimersByTime( 1000 );
+
+		expect( mw.user.options.get ).toHaveBeenCalledWith( 'growthexperiments-tour-homepage-discovery' );
+		expect( mw.loader.using ).not.toHaveBeenCalled();
 	} );
 } );

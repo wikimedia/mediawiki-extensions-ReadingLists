@@ -351,6 +351,11 @@ function initOnboardingPopover(
 		return;
 	}
 
+	// T421942 - we don't want these dialogues to overlap, so give precedence to the user homepage
+	if ( !mw.user.options.get( 'growthexperiments-tour-homepage-discovery' ) ) {
+		return;
+	}
+
 	setTimeout( () => {
 		mw.requestIdleCallback( () => {
 			mw.loader.using( moduleName ).then( () => {
