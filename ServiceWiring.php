@@ -18,7 +18,7 @@ return [
 		return new BookmarkBloomFilterCache(
 			$services->get( 'ReadingLists.ReadingListRepositoryFactory' ),
 			$services->getMainWANObjectCache(),
-			LoggerFactory::getInstance( 'ReadingLists' ),
+			LoggerFactory::getInstance( 'readinglists' ),
 			$config->get( 'ReadingListsBloomFilterMaxItems' )
 		);
 	},
@@ -30,7 +30,8 @@ return [
 			$services->getCentralIdLookupFactory(),
 			$services->getJobQueueGroup(),
 			$services->get( 'ReadingLists.BookmarkBloomFilterCache' ),
-			LoggerFactory::getInstance( 'ReadingLists' )
+			$services->getStatsFactory()->withComponent( 'readinglists' ),
+			LoggerFactory::getInstance( 'readinglists' )
 		);
 	},
 	'ReadingLists.ReadingListEligibilityValidator' => static function (

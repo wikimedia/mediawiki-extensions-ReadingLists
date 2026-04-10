@@ -20,6 +20,8 @@ use Wikimedia\ObjectCache\HashBagOStuff;
 use Wikimedia\ObjectCache\WANObjectCache;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\FakeResultWrapper;
+use Wikimedia\Stats\StatsFactory;
+use Wikimedia\Stats\UnitTestingHelper;
 
 /**
  * @covers \MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService
@@ -40,7 +42,8 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 	private function createService(
 		ReadingListRepository $repository,
-		?JobQueueGroup $jobQueueGroup = null
+		?JobQueueGroup $jobQueueGroup = null,
+		?StatsFactory $statsFactory = null
 	): BookmarkEntryLookupService {
 		/** @var ReadingListRepositoryFactory&MockObject $factory */
 		$factory = $this->createMock( ReadingListRepositoryFactory::class );
@@ -51,6 +54,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 			$this->createMockCentralIdLookupFactory(),
 			$jobQueueGroup ?? $this->createMock( JobQueueGroup::class ),
 			$this->createBloomFilterCache( $repository, $this->cache ),
+			$statsFactory ?? StatsFactory::newNull(),
 			new NullLogger()
 		);
 	}
@@ -102,6 +106,10 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		return $repository;
 	}
 
+	private function newStatsHelper(): UnitTestingHelper {
+		return StatsFactory::newUnitTestingHelper();
+	}
+
 	public function testGetBookmarkEntry_returnsNullForNonSavedPage() {
 		$repository = $this->createMockRepository( [ 'Cat', 'Dog' ] );
 		$repository->expects( $this->never() )->method( 'getListsByPage' );
@@ -126,6 +134,37 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 		$this->assertTrue( $status->isOK() );
 		$this->assertSame( $matchingList, $status->getValue() );
+	}
+
+	public function testGetBookmarkEntry_emitsCacheMissMetric() {
+		$matchingList = (object)[ 'rl_id' => 1, 'rl_name' => 'Saved pages' ];
+		$statsHelper = $this->newStatsHelper();
+
+		$repository = $this->createMock( ReadingListRepository::class );
+		$repository->expects( $this->never() )->method( 'getSavedPagesCacheSetOptions' );
+		$repository->expects( $this->never() )->method( 'getSavedPageTitlesForProject' );
+		$repository->expects( $this->once() )->method( 'getListsByPage' )
+			->with( '@local', 'Cat', 1 )
+			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
+
+		$jobQueueGroup = $this->createMock( JobQueueGroup::class );
+		$jobQueueGroup->expects( $this->once() )->method( 'lazyPush' );
+
+		$service = $this->createService(
+			$repository,
+			$jobQueueGroup,
+			$statsHelper->getStatsFactory()
+		);
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
+
+		$this->assertTrue( $status->isOK() );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="cache_miss"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_db_lookup_total{reason="cache_miss"}'
+		) );
 	}
 
 	public function testGetBookmarkEntry_forTitleWithSpaces() {
@@ -285,6 +324,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 			$this->createMockCentralIdLookupFactory(),
 			$this->createMock( JobQueueGroup::class ),
 			$this->createBloomFilterCache( $cachedRepository, $freshCache ),
+			StatsFactory::newNull(),
 			new NullLogger()
 		);
 
@@ -328,6 +368,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 			$this->createMockCentralIdLookupFactory(),
 			$this->createMock( JobQueueGroup::class ),
 			$this->createBloomFilterCache( $cachedRepository, $freshCache ),
+			StatsFactory::newNull(),
 			new NullLogger()
 		);
 
@@ -385,6 +426,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 			$this->createMockCentralIdLookupFactory(),
 			$this->createMock( JobQueueGroup::class ),
 			$this->createBloomFilterCache( $cachedRepository, $freshCache ),
+			StatsFactory::newNull(),
 			new NullLogger()
 		);
 
@@ -403,6 +445,355 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 		$this->assertTrue( $status->isOK() );
 		$this->assertNull( $status->getValue() );
+	}
+
+	public function testGetBookmarkEntry_emitsDefiniteNegativeMetric() {
+		$statsHelper = $this->newStatsHelper();
+		$repository = $this->createMockRepository( [ 'Cat', 'Dog' ] );
+		$repository->expects( $this->never() )->method( 'getListsByPage' );
+
+		$service = $this->createService(
+			$repository,
+			null,
+			$statsHelper->getStatsFactory()
+		);
+		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Elephant' ), self::CENTRAL_ID );
+
+		$this->assertTrue( $status->isOK() );
+		$this->assertNull( $status->getValue() );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="definite_negative"}'
+		) );
+	}
+
+	public function testGetBookmarkEntry_emitsTruePositiveAndDbLookupMetrics() {
+		$entry = (object)[ 'rle_id' => 1, 'rle_title' => 'Cat' ];
+		$statsHelper = $this->newStatsHelper();
+		$repository = $this->createMockRepository( [ 'Cat' ] );
+		$repository->expects( $this->once() )
+			->method( 'getListsByPage' )
+			->willReturn( new FakeResultWrapper( [ $entry ] ) );
+
+		$service = $this->createService(
+			$repository,
+			null,
+			$statsHelper->getStatsFactory()
+		);
+		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
+
+		$this->assertTrue( $status->isOK() );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="true_positive"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_db_lookup_total{reason="probable_positive"}'
+		) );
+	}
+
+	public function testGetBookmarkEntry_emitsFalsePositiveAndDbLookupMetrics() {
+		$statsHelper = $this->newStatsHelper();
+		$repository = $this->createMockRepository( [ 'Cat' ] );
+		$repository->expects( $this->exactly( 2 ) )
+			->method( 'getListsByPage' )
+			->willReturn( new FakeResultWrapper( [] ) );
+
+		$service = $this->createService(
+			$repository,
+			null,
+			$statsHelper->getStatsFactory()
+		);
+		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
+
+		$this->assertTrue( $status->isOK() );
+		$this->assertNull( $status->getValue() );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="false_positive"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_db_lookup_total{reason="probable_positive"}'
+		) );
+	}
+
+	public function testGetBookmarkEntry_emitsTooLargeBypassMetric() {
+		$titles = array_map(
+			static fn ( int $i ) => "Page_$i",
+			range( 1, self::MAX_ITEMS + 1 )
+		);
+		$entry = (object)[ 'rle_id' => 1, 'rle_title' => 'Page_1' ];
+		$statsHelper = $this->newStatsHelper();
+
+		$repository = $this->createMockRepository( $titles );
+		$repository->expects( $this->atLeastOnce() )
+			->method( 'getListsByPage' )
+			->willReturn( new FakeResultWrapper( [ $entry ] ) );
+
+		$service = $this->createService(
+			$repository,
+			null,
+			$statsHelper->getStatsFactory()
+		);
+		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Page_1' ), self::CENTRAL_ID );
+
+		$this->assertTrue( $status->isOK() );
+		$this->assertNotNull( $status->getValue() );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="too_large_bypass_found"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_db_lookup_total{reason="too_large_bypass"}'
+		) );
+	}
+
+	public function testGetBookmarkEntry_emitsCacheStatusErrorMetric() {
+		$statsHelper = $this->newStatsHelper();
+		$failingRepository = $this->createMock( ReadingListRepository::class );
+		$failingRepository->expects( $this->once() )->method( 'getSavedPageTitlesForProject' )
+			->willThrowException( $this->createMock( ReadingListRepositoryException::class ) );
+		$failingRepository->expects( $this->never() )->method( 'getListsByPage' );
+
+		$this->createBloomFilterCache( $failingRepository )->rebuildBloomFilter( self::CENTRAL_ID );
+		$service = $this->createService(
+			$failingRepository,
+			null,
+			$statsHelper->getStatsFactory()
+		);
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
+
+		$this->assertFalse( $status->isOK() );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="error"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_error_total{stage="cache_status"}'
+		) );
+	}
+
+	public function testGetBookmarkEntry_emitsBuildDbErrorBypassMetrics() {
+		$entry = (object)[ 'rle_id' => 1, 'rle_title' => 'Cat' ];
+		$statsHelper = $this->newStatsHelper();
+		$failingRepository = $this->createMock( ReadingListRepository::class );
+		$failingRepository->expects( $this->once() )->method( 'getSavedPageTitlesForProject' )
+			->willThrowException( new DBError( null, 'temporary failure' ) );
+		$failingRepository->expects( $this->atLeastOnce() )
+			->method( 'getListsByPage' )
+			->willReturn( new FakeResultWrapper( [ $entry ] ) );
+
+		$this->createBloomFilterCache( $failingRepository )->rebuildBloomFilter( self::CENTRAL_ID );
+		$service = $this->createService(
+			$failingRepository,
+			null,
+			$statsHelper->getStatsFactory()
+		);
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
+
+		$this->assertTrue( $status->isOK() );
+		$this->assertSame( $entry, $status->getValue() );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="build_db_error_bypass"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_db_lookup_total{reason="build_db_error_bypass"}'
+		) );
+	}
+
+	public function testGetBookmarkEntry_emitsCacheUnusableMetricsForCachedPayloadWithoutState() {
+		$entry = (object)[ 'rle_id' => 1, 'rle_title' => 'Cat' ];
+		$statsHelper = $this->newStatsHelper();
+		$repository = $this->createMockRepository();
+		$repository->expects( $this->atLeastOnce() )
+			->method( 'getListsByPage' )
+			->willReturn( new FakeResultWrapper( [ $entry ] ) );
+
+		$this->cache->set(
+			$this->cache->makeKey( 'readinglists', 'bloom', self::CENTRAL_ID ),
+			[
+				'filter' => [],
+			],
+			3600,
+			[ 'version' => BookmarkBloomFilterCache::CACHE_VERSION ]
+		);
+
+		$service = $this->createService(
+			$repository,
+			null,
+			$statsHelper->getStatsFactory()
+		);
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
+
+		$this->assertTrue( $status->isOK() );
+		$this->assertSame( $entry, $status->getValue() );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="cache_unusable"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_db_lookup_total{reason="cache_unusable"}'
+		) );
+	}
+
+	public function testGetBookmarkEntry_emitsBuildDbErrorBypassDbLookupErrorMetric() {
+		$statsHelper = $this->newStatsHelper();
+		$failingRepository = $this->createMock( ReadingListRepository::class );
+		$failingRepository->expects( $this->once() )->method( 'getSavedPageTitlesForProject' )
+			->willThrowException( new DBError( null, 'temporary failure' ) );
+		$failingRepository->expects( $this->once() )
+			->method( 'getListsByPage' )
+			->with( '@local', 'Cat', 1 )
+			->willThrowException( new DBError( null, 'temporary failure' ) );
+
+		$this->createBloomFilterCache( $failingRepository )->rebuildBloomFilter( self::CENTRAL_ID );
+		$service = $this->createService(
+			$failingRepository,
+			null,
+			$statsHelper->getStatsFactory()
+		);
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
+
+		$this->assertFalse( $status->isOK() );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="error"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_error_total{stage="build_db_error_bypass_db_lookup"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_db_lookup_total{reason="build_db_error_bypass"}'
+		) );
+	}
+
+	public function testGetBookmarkEntry_emitsDbLookupErrorMetric() {
+		$statsHelper = $this->newStatsHelper();
+		$failingRepository = $this->createMock( ReadingListRepository::class );
+		$failingRepository->expects( $this->never() )->method( 'getSavedPagesCacheSetOptions' );
+		$failingRepository->expects( $this->never() )->method( 'getSavedPageTitlesForProject' );
+		$failingRepository->expects( $this->once() )
+			->method( 'getListsByPage' )
+			->with( '@local', 'Cat', 1 )
+			->willThrowException( new DBError( null, 'temporary failure' ) );
+
+		$jobQueueGroup = $this->createMock( JobQueueGroup::class );
+		$jobQueueGroup->expects( $this->once() )->method( 'lazyPush' );
+
+		$service = $this->createService(
+			$failingRepository,
+			$jobQueueGroup,
+			$statsHelper->getStatsFactory()
+		);
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
+
+		$this->assertFalse( $status->isOK() );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="error"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_error_total{stage="cache_miss_db_lookup"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_db_lookup_total{reason="cache_miss"}'
+		) );
+	}
+
+	public function testGetBookmarkEntry_emitsTooLargeDbLookupErrorMetric() {
+		$titles = array_map(
+			static fn ( int $i ) => "Page_$i",
+			range( 1, self::MAX_ITEMS + 1 )
+		);
+		$statsHelper = $this->newStatsHelper();
+		$failingRepository = $this->createMockRepository( $titles );
+		$failingRepository->expects( $this->once() )
+			->method( 'getListsByPage' )
+			->with( '@local', 'Page_1', 1 )
+			->willThrowException( new DBError( null, 'temporary failure' ) );
+
+		$service = $this->createService(
+			$failingRepository,
+			null,
+			$statsHelper->getStatsFactory()
+		);
+		$this->createBloomFilterCache( $failingRepository )->rebuildBloomFilter( self::CENTRAL_ID );
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Page_1' ), self::CENTRAL_ID );
+
+		$this->assertFalse( $status->isOK() );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="error"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_error_total{stage="too_large_bypass_db_lookup"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_db_lookup_total{reason="too_large_bypass"}'
+		) );
+	}
+
+	public function testGetBookmarkEntry_emitsTooLargeResultMetricWhenEntryMissing() {
+		$titles = array_map(
+			static fn ( int $i ) => "Page_$i",
+			range( 1, self::MAX_ITEMS + 1 )
+		);
+		$statsHelper = $this->newStatsHelper();
+		$repository = $this->createMockRepository( $titles );
+		$repository->expects( $this->exactly( 2 ) )->method( 'getListsByPage' )
+			->willReturn( new FakeResultWrapper( [] ) );
+
+		$service = $this->createService(
+			$repository,
+			null,
+			$statsHelper->getStatsFactory()
+		);
+		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Page_1' ), self::CENTRAL_ID );
+
+		$this->assertTrue( $status->isOK() );
+		$this->assertNull( $status->getValue() );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="too_large_bypass_not_found"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_db_lookup_total{reason="too_large_bypass"}'
+		) );
+	}
+
+	public function testGetBookmarkEntry_emitsProbablePositiveDbLookupErrorMetric() {
+		$statsHelper = $this->newStatsHelper();
+		$failingRepository = $this->createMockRepository( [ 'Cat' ] );
+		$failingRepository->expects( $this->once() )
+			->method( 'getListsByPage' )
+			->with( '@local', 'Cat', 1 )
+			->willThrowException( new DBError( null, 'temporary failure' ) );
+
+		$service = $this->createService(
+			$failingRepository,
+			null,
+			$statsHelper->getStatsFactory()
+		);
+		$this->createBloomFilterCache( $failingRepository )->rebuildBloomFilter( self::CENTRAL_ID );
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
+
+		$this->assertFalse( $status->isOK() );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="error"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_error_total{stage="probable_positive_db_lookup"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_db_lookup_total{reason="probable_positive"}'
+		) );
 	}
 
 	public function testTitleSpacesNormalizedToUnderscoresInFilter() {

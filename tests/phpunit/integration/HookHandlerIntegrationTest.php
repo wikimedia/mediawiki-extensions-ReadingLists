@@ -28,6 +28,7 @@ use Psr\Log\NullLogger;
 use Wikimedia\ObjectCache\HashBagOStuff;
 use Wikimedia\ObjectCache\WANObjectCache;
 use Wikimedia\Rdbms\FakeResultWrapper;
+use Wikimedia\Stats\StatsFactory;
 
 /**
  * @group Database
@@ -147,6 +148,7 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 				new NullLogger(),
 				10000
 			),
+			StatsFactory::newNull(),
 			new NullLogger()
 		);
 	}

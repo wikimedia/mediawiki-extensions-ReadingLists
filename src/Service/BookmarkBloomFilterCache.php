@@ -19,6 +19,7 @@ class BookmarkBloomFilterCache {
 	public const BUILD_DB_ERROR = 'db-error';
 	public const BUILD_CONFIG_ERROR = 'config-error';
 	public const BUILD_TOO_LARGE = 'too-large';
+	public const BUILD_UNUSABLE = 'unusable';
 
 	private const BLOOM_FILTER_FALSE_POSITIVE_RATE = 0.01;
 	private const BLOOM_FILTER_CACHE_TTL = ExpirationAwareness::TTL_WEEK;
@@ -39,9 +40,9 @@ class BookmarkBloomFilterCache {
 	 * Fetches the bloom filter for a user from cache.
 	 *
 	 * Returns false when the cache entry is missing, stale, or version-mismatched.
-	 * Otherwise returns a StatusValue containing a BloomFilter, null for a
-	 * non-usable cached state such as too-large/db-error, or a fatal status for
-	 * configuration errors.
+	 * Otherwise returns a StatusValue. An OK status contains either a BloomFilter
+	 * or a BUILD_* state string describing a known fallback path. A non-OK status
+	 * represents a real failure, such as a configuration error.
 	 *
 	 * @param int $centralId
 	 * @return StatusValue|false
@@ -136,28 +137,34 @@ class BookmarkBloomFilterCache {
 	}
 
 	/**
-	 * Returns a StatusValue containing a BloomFilter for usable cached data,
-	 * null for non-usable cached states, or a fatal status for configuration
-	 * errors. The central ID is used only for logging.
+	 * Converts cached bloom-filter data into a StatusValue.
+	 *
+	 * An OK status contains either a usable BloomFilter or a BUILD_* state string
+	 * for a known fallback path. A non-OK status represents a real failure, such
+	 * as a configuration error. The central ID is used only for logging.
 	 *
 	 * @param array $cachedBloomFilter
 	 * @param int $centralId
 	 * @return StatusValue
 	 */
 	private function deserializeCachedBloomFilter( array $cachedBloomFilter, int $centralId ): StatusValue {
-		$state = $cachedBloomFilter['state'] ?? self::BUILD_DB_ERROR;
+		$state = $cachedBloomFilter['state'] ?? self::BUILD_UNUSABLE;
 
 		if ( $state === self::BUILD_CONFIG_ERROR ) {
 			return StatusValue::newFatal( 'readinglists-bloom-filter-config-error' );
 		}
 
+		if ( $state === self::BUILD_TOO_LARGE || $state === self::BUILD_DB_ERROR ) {
+			return StatusValue::newGood( $state );
+		}
+
 		if ( $state !== self::BUILD_SUCCESS ) {
-			return StatusValue::newGood( null );
+			return StatusValue::newGood( self::BUILD_UNUSABLE );
 		}
 
 		$filterData = $cachedBloomFilter['filter'] ?? null;
 		if ( !is_array( $filterData ) ) {
-			return StatusValue::newGood( null );
+			return StatusValue::newGood( self::BUILD_UNUSABLE );
 		}
 
 		try {
@@ -167,7 +174,7 @@ class BookmarkBloomFilterCache {
 				'exception' => $e,
 				'centralId' => $centralId,
 			] );
-			return StatusValue::newGood( null );
+			return StatusValue::newGood( self::BUILD_UNUSABLE );
 		}
 
 		return StatusValue::newGood( $filter );
@@ -203,7 +210,7 @@ class BookmarkBloomFilterCache {
 			$ttl = self::BLOOM_FILTER_FAILURE_TTL;
 			return [ 'state' => self::BUILD_DB_ERROR ];
 		} catch ( ReadingListRepositoryException $e ) {
-			$this->logger->warning( 'Failed to build bloom filter: invalid project or configuration', [
+			$this->logger->error( 'Failed to build bloom filter: invalid project or configuration', [
 				'exception' => $e,
 				'centralId' => $centralId,
 			] );

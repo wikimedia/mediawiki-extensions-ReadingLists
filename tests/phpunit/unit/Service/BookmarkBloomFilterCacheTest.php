@@ -77,7 +77,7 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 	}
 
 	public function testGetBloomFilterStatus_returnsFatalForInvalidProjectConfig() {
-		$repository = $this->createMock( ReadingListRepository::class );
+		$repository = $this->createMockRepository();
 		$repository->expects( $this->once() )->method( 'getSavedPageTitlesForProject' )
 			->willThrowException( $this->createMock( ReadingListRepositoryException::class ) );
 
@@ -90,7 +90,7 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $status->isOK() );
 	}
 
-	public function testGetBloomFilterStatus_returnsNullWhenUserExceedsMaxItems() {
+	public function testGetBloomFilterStatus_returnsTooLargeStateWhenUserExceedsMaxItems() {
 		$titles = array_map(
 			static fn ( int $i ) => "Page_$i",
 			range( 1, self::MAX_ITEMS + 1 )
@@ -103,7 +103,41 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 
 		$this->assertInstanceOf( \StatusValue::class, $status );
 		$this->assertTrue( $status->isOK() );
-		$this->assertNull( $status->getValue() );
+		$this->assertSame( BookmarkBloomFilterCache::BUILD_TOO_LARGE, $status->getValue() );
+	}
+
+	public function testGetBloomFilterStatus_returnsDbErrorStateWhenRebuildFails() {
+		$repository = $this->createMock( ReadingListRepository::class );
+		$repository->expects( $this->once() )->method( 'getSavedPageTitlesForProject' )
+			->willThrowException( new \Wikimedia\Rdbms\DBError( null, 'temporary failure' ) );
+
+		$cache = $this->createBloomFilterCache( $repository );
+		$cache->rebuildBloomFilter( self::CENTRAL_ID );
+
+		$status = $cache->getCachedBloomFilterStatus( self::CENTRAL_ID );
+
+		$this->assertInstanceOf( \StatusValue::class, $status );
+		$this->assertTrue( $status->isOK() );
+		$this->assertSame( BookmarkBloomFilterCache::BUILD_DB_ERROR, $status->getValue() );
+	}
+
+	public function testGetBloomFilterStatus_returnsUnusableStateWhenCachedPayloadHasNoState() {
+		$cache = $this->createBloomFilterCache( $this->createMockRepository() );
+
+		$this->cache->set(
+			$this->cache->makeKey( 'readinglists', 'bloom', self::CENTRAL_ID ),
+			[
+				'filter' => [],
+			],
+			3600,
+			[ 'version' => BookmarkBloomFilterCache::CACHE_VERSION ]
+		);
+
+		$status = $cache->getCachedBloomFilterStatus( self::CENTRAL_ID );
+
+		$this->assertInstanceOf( \StatusValue::class, $status );
+		$this->assertTrue( $status->isOK() );
+		$this->assertSame( BookmarkBloomFilterCache::BUILD_UNUSABLE, $status->getValue() );
 	}
 
 	public function testInvalidateBloomFilter_marksCachedFilterStale() {
