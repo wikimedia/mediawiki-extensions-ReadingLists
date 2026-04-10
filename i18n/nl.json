@@ -47,7 +47,7 @@
 	"readinglists-error": "Uw browser kan de leeslijsten-functie niet gebruiken. Schakel JavaScript in of probeer het in een andere browser.",
 	"readinglists-import-error": "Het is niet mogelijk op basis van de verstrekte gegevens de lijst weer te geven.",
 	"readinglists-import-size-error": "De lijst is te groot om weer te geven.",
-	"readinglists-special-error-list-not-found": "Deze lijst kon niet worden gevonden.",
+	"readinglists-special-error-list-not-found": "U hebt geen toegang tot deze pagina. Mogelijk bent u aangemeld met een ander account dan het account dat in de URL wordt vermeld.",
 	"special-tab-readinglists-short": "Uw lijsten",
 	"readinglists-title": "Opgeslagen pagina’s",
 	"readinglists-total-lists": "$1 lijst{{PLURAL:$1||en}}",

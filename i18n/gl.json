@@ -45,7 +45,7 @@
 	"readinglists-error": "O teu navegador non pode utilizar a función de listas de lectura. Activa o JavaScript ou inténtao noutro navegador.",
 	"readinglists-import-error": "Non se puido mostrar a lista a partir dos datos proporcionados.",
 	"readinglists-import-size-error": "A lista é demasiado grande para amosala.",
-	"readinglists-special-error-list-not-found": "Non se puido atopar a lista.",
+	"readinglists-special-error-list-not-found": "Non podes acceder a esta páxina. Se cadra iniciaches sesión nunha conta diferente á que aparece no enderezo URL.",
 	"special-tab-readinglists-short": "As túas listas",
 	"readinglists-title": "Páxinas gardadas",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|lista|listas}}",

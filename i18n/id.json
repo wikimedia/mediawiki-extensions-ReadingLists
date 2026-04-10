@@ -3,6 +3,7 @@
 		"authors": [
 			"Agam Riyandana",
 			"BAPerdana-WMF",
+			"Budhiastawa",
 			"DARMAS BUDI SANTOSO",
 			"Penyuwangi"
 		]
@@ -45,6 +46,7 @@
 	"readinglists-error": "Peramban Anda tidak dapat menggunakan fitur ini. Harap nyalakan JavaScript atau coba gunakan peramban lainnya.",
 	"readinglists-import-error": "Tidak dapat menampilkan daftar dari data yang diberikan.",
 	"readinglists-import-size-error": "Daftar terlalu besar untuk ditampilkan.",
+	"readinglists-special-error-list-not-found": "Anda tidak dapat mengakses halaman ini. Anda mungkin masuk ke akun yang berbeda dari akun yang tertera di URL.",
 	"special-tab-readinglists-short": "Daftar Anda",
 	"readinglists-title": "Halaman tersimpan",
 	"readinglists-total-lists": "$1 daftar",
@@ -85,5 +87,7 @@
 	"readinglists-remove-bookmark": "Hapus markah",
 	"readinglists-onboarding-title": "Simpan halaman untuk nanti",
 	"readinglists-onboarding-text": "Menemukan sesuatu yang menarik? Anda dapat menyimpannya dalam daftar pribadi milik Anda sendiri.",
-	"readinglists-onboarding-close-button": "Tutup"
+	"readinglists-onboarding-close-button": "Tutup",
+	"readinglists-betafeature-quicksurvey-answer-positive": "Ya",
+	"readinglists-betafeature-quicksurvey-answer-negative": "Tidak"
 }
