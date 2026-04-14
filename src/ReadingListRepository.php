@@ -273,8 +273,8 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 */
 	public function addList( $name, $description = '' ) {
 		$this->assertUser();
-		$this->assertFieldLength( 'rl_name', $name );
-		$this->assertFieldLength( 'rl_description', $description );
+		self::assertFieldLength( 'rl_name', $name );
+		self::assertFieldLength( 'rl_description', $description );
 		if ( !$this->getDefaultListIdForUser( IDBAccessObject::READ_LOCKING ) ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
@@ -401,8 +401,8 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 */
 	public function updateList( $id, $name = null, $description = null ) {
 		$this->assertUser();
-		$this->assertFieldLength( 'rl_name', $name );
-		$this->assertFieldLength( 'rl_description', $description );
+		self::assertFieldLength( 'rl_name', $name );
+		self::assertFieldLength( 'rl_description', $description );
 		$row = $this->selectValidList( $id, IDBAccessObject::READ_LOCKING );
 		if ( $row->rl_is_default ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-cannot-update-default-list' );
@@ -522,7 +522,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 */
 	public function addListEntry( $listId, $project, $title ) {
 		$this->assertUser();
-		$this->assertFieldLength( 'rlp_project', $project );
+		self::assertFieldLength( 'rlp_project', $project );
 		$this->selectValidList( $listId, IDBAccessObject::READ_EXCLUSIVE );
 		if (
 			$this->entryLimit
@@ -545,7 +545,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			$title,
 			$this->getLocalProject()
 		);
-		$this->assertFieldLength( 'rle_title', $title );
+		self::assertFieldLength( 'rle_title', $title );
 
 		// due to the combination of soft deletion + unique constraint on
 		// rle_rl_id + rle_rlp_id + rle_title, recreation needs special handling
@@ -776,7 +776,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 		int $flags = 0
 	) {
 		$this->assertUser();
-		$this->assertFieldLength( 'rlp_project', $project );
+		self::assertFieldLength( 'rlp_project', $project );
 
 		$projectId = $this->getProjectId( $project );
 		if ( !$projectId ) {
@@ -1204,6 +1204,26 @@ class ReadingListRepository implements LoggerAwareInterface {
 		return (bool)$this->dbw->affectedRows();
 	}
 
+	/**
+	 * Maintenance only: migrate legacy list entry titles that contain spaces to underscore form,
+	 * and soft-delete space-form rows when an active underscore duplicate exists (ADR 0003 migration).
+	 *
+	 * @param int|null $listId Process only entries in this list, or null for all non-deleted lists.
+	 * @param int $batchSize Rows to fetch per batch.
+	 * @param bool $dryRun If true, compute stats without writing.
+	 * @param int|null $limit Stop after this many candidate rows.
+	 * @return int[] Counters: updated, soft_deleted, blocked_by_soft_deleted, skipped
+	 */
+	public function migrateNormalizeEntryTitles(
+		?int $listId = null,
+		int $batchSize = 1000,
+		bool $dryRun = false,
+		?int $limit = null
+	): array {
+		$migration = new ReadingListEntryTitleMigrationService( $this->dbw, $this->lbFactory );
+		return $migration->migrateNormalizeEntryTitles( $listId, $batchSize, $dryRun, $limit );
+	}
+
 	// helper methods
 
 	/**
@@ -1297,11 +1317,13 @@ class ReadingListRepository implements LoggerAwareInterface {
 
 	/**
 	 * Ensures that the value to be written to the database does not exceed the DB field length.
+	 *
+	 * @internal For use by ReadingLists code including maintenance services; not a stable public API.
 	 * @param string $field Field name.
-	 * @param string $value Value to write.
+	 * @param string|null $value Value to write.
 	 * @throws ReadingListRepositoryException
 	 */
-	private function assertFieldLength( $field, $value ) {
+	public static function assertFieldLength( $field, $value ) {
 		if ( !isset( self::$fieldLength[$field] ) ) {
 			throw new LogicException( 'Tried to assert length for invalid field ' . $field );
 		}
