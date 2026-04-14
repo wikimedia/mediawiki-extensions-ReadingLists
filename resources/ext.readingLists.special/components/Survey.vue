@@ -4,8 +4,6 @@
 			<div class="reading-lists-survey__question">
 				{{ msgQuestion }}
 			</div>
-			<!-- eslint-disable-next-line vue/no-v-html -->
-			<div class="reading-lists-survey__privacy-policy" v-html="msgPrivacyPolicy"></div>
 			<div class="reading-lists-survey__options">
 				<cdx-button
 					v-for="option in options"
@@ -17,6 +15,8 @@
 					{{ option.label }}
 				</cdx-button>
 			</div>
+			<!-- eslint-disable-next-line vue/no-v-html -->
+			<div class="reading-lists-survey__privacy-policy" v-html="msgPrivacyPolicy"></div>
 			<cdx-dialog
 				id="reading-lists-survey-dialog"
 				v-model:open="dialogOpen"
@@ -156,7 +156,7 @@ module.exports = exports = {
 
 	&__privacy-policy {
 		text-align: center;
-		margin-top: @spacing-50;
+		margin-top: @spacing-100;
 		font-size: @font-size-small;
 	}
 
