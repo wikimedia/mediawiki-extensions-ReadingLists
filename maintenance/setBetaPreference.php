@@ -83,7 +83,7 @@ class SetBetaPreference extends Maintenance {
 	private function initializeServices(): void {
 		$services = MediaWikiServices::getInstance();
 
-		$this->batchUpdater = $services->get( 'UserPreferenceBatchUpdater' );
+		$this->batchUpdater = $services->get( 'ReadingLists.UserPreferenceBatchUpdater' );
 		$this->userIdentityLookup = $services->getUserIdentityLookup();
 	}
 

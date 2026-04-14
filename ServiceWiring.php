@@ -50,7 +50,9 @@ return [
 			$services->getCentralIdLookupFactory()
 		);
 	},
-	'ReverseInterwikiLookup' => static function ( MediaWikiServices $services ): ReverseInterwikiLookupInterface {
+	'ReadingLists.ReverseInterwikiLookup' => static function (
+		MediaWikiServices $services
+	): ReverseInterwikiLookupInterface {
 		$ownServer = $services->getMainConfig()->get( 'CanonicalServer' );
 		$urlUtils = $services->getUrlUtils();
 		$ownServerParts = $urlUtils->parse( $ownServer );
@@ -65,7 +67,9 @@ return [
 			$ownDomain
 		);
 	},
-	'UserPreferenceBatchUpdater' => static function ( MediaWikiServices $services ): UserPreferenceBatchUpdater {
+	'ReadingLists.UserPreferenceBatchUpdater' => static function (
+		MediaWikiServices $services
+	): UserPreferenceBatchUpdater {
 		return new UserPreferenceBatchUpdater(
 			$services->getDBLoadBalancerFactory(),
 			$services->getUserFactory(),

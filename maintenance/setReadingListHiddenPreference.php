@@ -138,7 +138,7 @@ class SetReadingListHiddenPreference extends Maintenance {
 		$this->userIdentityUtils = $services->getUserIdentityUtils();
 		$this->userOptionsManager = $services->getUserOptionsManager();
 		$this->eligibilityValidator = $services->get( 'ReadingLists.ReadingListEligibilityValidator' );
-		$this->batchUpdater = $services->get( 'UserPreferenceBatchUpdater' );
+		$this->batchUpdater = $services->get( 'ReadingLists.UserPreferenceBatchUpdater' );
 		$this->centralIdLookup = $services->getCentralIdLookupFactory()->getLookup();
 		$this->userIdentityLookup = $services->getUserIdentityLookup();
 	}

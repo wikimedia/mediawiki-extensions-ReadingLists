@@ -204,7 +204,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	 * @return ReverseInterwikiLookup
 	 */
 	private function getReverseInterwikiLookup() {
-		return MediaWikiServices::getInstance()->getService( 'ReverseInterwikiLookup' );
+		return MediaWikiServices::getInstance()->getService( 'ReadingLists.ReverseInterwikiLookup' );
 	}
 
 	/**

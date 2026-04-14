@@ -24,12 +24,12 @@ class ServiceWiringTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testReverseInterwikiLookup() {
-		$service = MediaWikiServices::getInstance()->getService( 'ReverseInterwikiLookup' );
+		$service = MediaWikiServices::getInstance()->getService( 'ReadingLists.ReverseInterwikiLookup' );
 		$this->assertInstanceOf( ReverseInterwikiLookupInterface::class, $service );
 	}
 
 	public function testUserPreferenceBatchUpdater() {
-		$service = MediaWikiServices::getInstance()->getService( 'UserPreferenceBatchUpdater' );
+		$service = MediaWikiServices::getInstance()->getService( 'ReadingLists.UserPreferenceBatchUpdater' );
 		$this->assertInstanceOf( UserPreferenceBatchUpdater::class, $service );
 	}
 
