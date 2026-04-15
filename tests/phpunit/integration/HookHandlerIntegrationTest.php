@@ -36,6 +36,7 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 	use TempUserTestTrait;
 
 	private User $user;
+	private User $anonUser;
 	private HookHandler $hookHandler;
 
 	protected function setUp(): void {
@@ -46,10 +47,12 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$this->user = $this->getTestUser()->getUser();
 
 		$services = $this->getServiceContainer();
-
 		$userOptionsManager = $services->getUserOptionsManager();
 		$userOptionsManager->setOption( $this->user, 'readinglists-web-ui-enabled', '1' );
 		$userOptionsManager->saveOptions( $this->user );
+
+		$this->anonUser = new User();
+
 		$this->hookHandler = $this->createHookHandler();
 	}
 
@@ -65,6 +68,22 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$userOptionsManager = $services->getUserOptionsManager();
 		$userOptionsManager->setOption( $this->user, 'readinglists-web-ui-enabled', '1' );
 		$userOptionsManager->saveOptions( $this->user );
+
+		$mockExperiment = $this->createMock( Experiment::class );
+		$mockExperiment->method( 'isAssignedGroup' )->with( 'treatment' )->willReturn( $inAssignedGroup );
+
+		/** @var MockObject|ExperimentManager $mockExperimentManager */
+		$mockExperimentManager = $this->createMock( ExperimentManager::class );
+		$mockExperimentManager->method( 'getExperiment' )->willReturn( $mockExperiment );
+
+		$this->hookHandler->setExperimentManager( $mockExperimentManager );
+	}
+
+	// For the account-creation-reading-list-cta experiment.
+	private function setupCTAExperiment( $inAssignedGroup = true ) {
+		if ( !ExtensionRegistry::getInstance()->isLoaded( 'TestKitchen' ) ) {
+			$this->markTestSkipped( 'Test requires the TestKitchen extension' );
+		}
 
 		$mockExperiment = $this->createMock( Experiment::class );
 		$mockExperiment->method( 'isAssignedGroup' )->with( 'treatment' )->willReturn( $inAssignedGroup );
@@ -154,10 +173,15 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		return $mockRepository;
 	}
 
-	private function createSkinTemplate( Title $title, bool $isArticle = true, string $skinName = 'vector-2022' ) {
+	private function createSkinTemplate(
+		Title $title,
+		bool $isArticle = true,
+		string $skinName = 'vector-2022',
+		?User $user = null
+	) {
 		$context = new RequestContext();
 		$context->setTitle( $title );
-		$context->setUser( $this->user );
+		$context->setUser( $user ?? $this->user );
 
 		$output = new OutputPage( $context );
 		$output->setTitle( $title );
@@ -167,7 +191,7 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		$skin = $this->createMock( SkinTemplate::class );
 		$skin->method( 'getSkinName' )->willReturn( $skinName );
-		$skin->method( 'getUser' )->willReturn( $this->user );
+		$skin->method( 'getUser' )->willReturn( $user ?? $this->user );
 		$skin->method( 'getOutput' )->willReturn( $output );
 		$skin->method( 'getTitle' )->willReturn( $title );
 		$skin->method( 'msg' )->willReturnCallback( static function ( $key ) use ( $context ) {
@@ -196,6 +220,48 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
 		$skin = $this->createSkinTemplate( $title );
+
+		$links = $this->getLinks();
+
+		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
+		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
+	}
+
+	public function testBookmarkIconButtonAddedForMainNamespacePageWithCTAExperiment() {
+		$this->setupCTAExperiment();
+
+		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
+		$skin = $this->createSkinTemplate( $title, true, 'minerva', $this->anonUser );
+
+		$links = $this->getLinks();
+
+		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
+		$this->assertArrayHasKey( 'bookmark', $links['views'] );
+	}
+
+	public function testBookmarkIconButtonNotAddedForMainNamespacePageWithUserNotInCTAExperiment() {
+		$this->setupCTAExperiment( false );
+
+		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
+		$skin = $this->createSkinTemplate( $title, true, 'minerva', $this->anonUser );
+
+		$links = $this->getLinks();
+
+		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
+		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
+	}
+
+	public function testBookmarkIconButtonNotAddedForMainNamespacePageWithCTAExperimentInVector() {
+		$this->setupCTAExperiment();
+
+		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
+		$skin = $this->createSkinTemplate( $title, true, 'vector-2022', $this->anonUser );
 
 		$links = $this->getLinks();
 

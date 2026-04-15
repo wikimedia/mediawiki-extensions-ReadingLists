@@ -51,6 +51,21 @@ class HookHandler implements
 	}
 
 	/**
+	 * Get whether the user is assigned a group in an experiment.
+	 *
+	 * @param string $experimentName
+	 * @param string $group
+	 * @return bool|null
+	 */
+	public function isAssignedGroup( $experimentName, $group ) {
+		if ( !$this->experimentManager ) {
+			return null;
+		}
+		$experiment = $this->experimentManager->getExperiment( $experimentName );
+		return $experiment->isAssignedGroup( $group );
+	}
+
+	/**
 	 * Adds a hidden preference, accessed via api. The preference indicates user eligibility
 	 * for showing the ReadingLists bookmark icon button in supported skins.
 	 *
@@ -81,30 +96,38 @@ class HookHandler implements
 		}
 
 		$user = $sktemplate->getUser();
-
-		if ( !$this->isReadingListsEnabledForUser( $user ) ) {
+		$readingListsEnabledForUser = $this->isReadingListsEnabledForUser( $user );
+		if ( $readingListsEnabledForUser ) {
+			$this->addSpecialPageLinkToUserMenu( $user, $sktemplate, $links );
+		} elseif ( $user->isRegistered() ) {
+			// Don't show bookmark to logged-in or temp users not opted into ReadingLists.
+			return;
+		} elseif (
+			$sktemplate->getSkinName() !== 'minerva' ||
+			!$this->isAssignedGroup( 'account-creation-reading-list-cta', 'treatment' )
+		) {
+			// Don't show bookmark for logged-out users not in the CTA experiment treatment group.
+			// Experiment is MinervaNeue-only.
 			return;
 		}
 
 		$centralId = $this->centralIdLookupFactory->getLookup()
 			->centralIdFromLocalUser( $user );
 
-		if ( !$centralId ) {
-			return;
-		}
+		$repository = null;
+		$defaultListId = null;
+		if ( $centralId ) {
+			$repository = $this->readingListRepositoryFactory->create( $centralId );
+			$defaultListId = $repository->getDefaultListIdForUser() ?: null;
 
-		$this->addSpecialPageLinkToUserMenu( $user, $sktemplate, $links );
-
-		$repository = $this->readingListRepositoryFactory->create( $centralId );
-		$defaultListId = $repository->getDefaultListIdForUser() ?: null;
-
-		if ( $defaultListId === null ) {
-			DeferredUpdates::addCallableUpdate(
-				static function () use ( $repository ) {
-					$repository->setupForUser( true );
-				},
-				DeferredUpdates::POSTSEND
-			);
+			if ( $defaultListId === null ) {
+				DeferredUpdates::addCallableUpdate(
+					static function () use ( $repository ) {
+						$repository->setupForUser( true );
+					},
+					DeferredUpdates::POSTSEND
+				);
+			}
 		}
 
 		$output = $sktemplate->getOutput();
@@ -125,7 +148,7 @@ class HookHandler implements
 		$matchingList = null;
 		$hasCustomListEntry = false;
 
-		if ( $defaultListId !== null ) {
+		if ( $repository !== null && $defaultListId !== null ) {
 			$list = $repository->selectValidList( $defaultListId );
 			$status = $this->bookmarkEntryLookupService->getBookmarkEntryStatus(
 				$title,
@@ -168,7 +191,9 @@ class HookHandler implements
 			'link-class' => 'reading-lists-bookmark'
 		];
 
-		$output->addModules( 'ext.readingLists.bookmark' );
+		if ( $readingListsEnabledForUser ) {
+			$output->addModules( 'ext.readingLists.bookmark' );
+		}
 	}
 
 	private function addSpecialPageLinkToUserMenu(
@@ -214,19 +239,15 @@ class HookHandler implements
 			Constants::PREF_KEY_WEB_UI_ENABLED
 		) === '1';
 
-		$inExperimentTreatment = false;
-		if ( $this->experimentManager ) {
-			$wikiId = WikiMap::getCurrentWikiId();
-			// NOTE: These need to be the same as the experiment names
-			// defined in WikimediaEvents, in readingListAB.js.
-			$experimentName = $wikiId === 'enwiki'
-				? 'we-3-3-4-reading-list-test1-en'
-				: 'we-3-3-4-reading-list-test1';
-			$experiment = $this->experimentManager->getExperiment( $experimentName );
-			$inExperimentTreatment = $experiment->isAssignedGroup( 'treatment' );
-		}
+		$wikiId = WikiMap::getCurrentWikiId();
+		// NOTE: These need to be the same as the experiment names
+		// defined in WikimediaEvents, in readingListAB.js.
+		$experimentName = $wikiId === 'enwiki'
+			? 'we-3-3-4-reading-list-test1-en'
+			: 'we-3-3-4-reading-list-test1';
+		$inReadingListABTreatment = $this->isAssignedGroup( $experimentName, 'treatment' );
 
-		return $hiddenPreferenceEnabled && $inExperimentTreatment;
+		return $hiddenPreferenceEnabled && $inReadingListABTreatment;
 	}
 
 	/**
