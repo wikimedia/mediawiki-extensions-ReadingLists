@@ -219,6 +219,62 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 		);
 	}
 
+	public function testListsEntriesTitleWithUnderscoresPaginationUsesRawNextToken(): void {
+		$services = $this->getServiceContainer();
+		$handler = new ListsEntriesHandler(
+			$services->getDBLoadBalancerFactory(),
+			$services->getMainConfig(),
+			$this->getMockCentralIdLookup(),
+			$this->getMockReverseInterwikiLookup( '' )
+		);
+
+		$repository = $this->getReadingListRepository( $handler );
+		$list = $repository->addList( 'dogs', 'Woof!' );
+		$applePie = $repository->addListEntry( $list->rl_id, 'foo', 'Apple_pie' );
+		$bananaSplit = $repository->addListEntry( $list->rl_id, 'foo', 'Banana_split' );
+		$cherryCake = $repository->addListEntry( $list->rl_id, 'foo', 'Cherry_cake' );
+
+		$request = new RequestData( [
+			'pathParams' => [ 'id' => $list->rl_id ],
+			'queryParams' => [ 'limit' => 1, 'sort' => 'name', 'dir' => 'ascending' ]
+		] );
+		$data = $this->executeReadingListsHandlerAndGetBodyData( $handler, $request );
+
+		$this->assertCount( 1, $data['entries'] );
+		$this->checkReadingListEntry(
+			$data['entries'][0],
+			(int)$applePie->rle_id,
+			'foo',
+			'Apple pie'
+		);
+		$this->assertSame( 'Banana_split|' . (int)$bananaSplit->rle_id, $data['next'] );
+
+		$handler = new ListsEntriesHandler(
+			$services->getDBLoadBalancerFactory(),
+			$services->getMainConfig(),
+			$this->getMockCentralIdLookup(),
+			$this->getMockReverseInterwikiLookup( '' )
+		);
+		$request = new RequestData( [
+			'pathParams' => [ 'id' => $list->rl_id ],
+			'queryParams' => [
+				'limit' => 1,
+				'sort' => 'name',
+				'dir' => 'ascending',
+				'next' => $data['next']
+			]
+		] );
+		$data = $this->executeReadingListsHandlerAndGetBodyData( $handler, $request );
+
+		$this->assertCount( 1, $data['entries'] );
+		$this->checkReadingListEntry(
+			$data['entries'][0],
+			(int)$bananaSplit->rle_id,
+			'foo',
+			'Banana split'
+		);
+	}
+
 	/**
 	 * @dataProvider listsFailureProvider
 	 */

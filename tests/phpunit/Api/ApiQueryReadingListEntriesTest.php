@@ -326,6 +326,81 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 		$this->assertSame( 'Title With Underscores', $entries[0]['title'] );
 	}
 
+	public function testTitleWithUnderscoresPaginationUsesRawContinueToken(): void {
+		ConvertibleTimestamp::setFakeTime( '2018-09-13T20:59:36Z' );
+
+		$listIds = $this->addLists( $this->user->mId, [
+			[
+				'rl_is_default' => 0,
+				'rl_name' => 'test',
+				'rl_description' => '',
+				'rl_date_created' => '20170913205936',
+				'rl_date_updated' => '20170913205936',
+				'rl_deleted' => 0,
+				'entries' => [
+					[
+						'rlp_project' => 'foo',
+						'rle_title' => 'Apple_pie',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180816000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'foo',
+						'rle_title' => 'Banana_split',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180817000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'foo',
+						'rle_title' => 'Cherry_cake',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180818000000',
+						'rle_deleted' => 0,
+					],
+				],
+			],
+		] );
+
+		$firstPage = $this->doApiRequest(
+			array_merge( $this->apiParams, [
+				'rlelists' => (string)$listIds[0],
+				'rlesort' => 'name',
+				'rledir' => 'ascending',
+				'rlelimit' => 1,
+			] ),
+			null,
+			false,
+			$this->getTestSysop()->getAuthority()
+		);
+
+		$firstPageEntries = $firstPage[0]['query']['readinglistentries'];
+		$this->assertCount( 1, $firstPageEntries );
+		$this->assertSame( 'Apple pie', $firstPageEntries[0]['title'] );
+
+		$secondPage = $this->doApiRequest(
+			array_merge( $this->apiParams, [
+				'rlelists' => (string)$listIds[0],
+				'rlesort' => 'name',
+				'rledir' => 'ascending',
+				'rlelimit' => 1,
+				'rlecontinue' => $firstPage[0]['continue']['rlecontinue'],
+			] ),
+			null,
+			false,
+			$this->getTestSysop()->getAuthority()
+		);
+
+		$secondPageEntries = $secondPage[0]['query']['readinglistentries'];
+		$this->assertCount( 1, $secondPageEntries );
+		$this->assertSame(
+			'Banana_split|' . $secondPageEntries[0]['id'],
+			$firstPage[0]['continue']['rlecontinue']
+		);
+		$this->assertSame( 'Banana split', $secondPageEntries[0]['title'] );
+	}
+
 	/**
 	 * @dataProvider apiQueryEntriesFromAllListsProvider
 	 */
