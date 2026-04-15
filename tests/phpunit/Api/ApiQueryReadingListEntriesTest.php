@@ -120,7 +120,13 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 
 		$this->apiParams = array_merge( $this->apiParams, $apiParams );
 
-		$result = $this->doApiRequest( $this->apiParams, null, $this->user );
+		$result = $this->doApiRequest(
+			$this->apiParams,
+			null,
+			false,
+			$this->getTestSysop()->getAuthority()
+		);
+
 		unset( $result[0]['query']['readinglists-synctimestamp'] );
 		$this->assertEquals( $expected, $result[0], $message );
 	}
@@ -311,7 +317,8 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 		$result = $this->doApiRequest(
 			array_merge( $this->apiParams, [ 'rlelists' => (string)$listIds[0] ] ),
 			null,
-			$this->user
+			false,
+			$this->getTestSysop()->getAuthority()
 		);
 
 		$entries = $result[0]['query']['readinglistentries'];
