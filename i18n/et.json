@@ -25,5 +25,7 @@
 	"readinglists-onboarding-saved-pages-text": "Pääsed siit kõigi enda salvestatud lehekülgede juurde.",
 	"readinglists-mobile-onboarding-saved-pages-title": "Salvestatud leheküljed",
 	"readinglists-mobile-onboarding-saved-pages-text": "Pääsed kõigi enda salvestatud lehekülgede juurde selle menüü kaudu.",
-	"readinglists-beta-tag": "Beeta"
+	"readinglists-beta-tag": "Beeta",
+	"readinglists-betafeature-quicksurvey-answer-positive": "Jah",
+	"readinglists-betafeature-quicksurvey-answer-negative": "Ei"
 }
