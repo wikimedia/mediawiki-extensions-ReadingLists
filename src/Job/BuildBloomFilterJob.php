@@ -2,8 +2,9 @@
 
 namespace MediaWiki\Extension\ReadingLists\Job;
 
-use Job;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkBloomFilterCache;
+use MediaWiki\JobQueue\GenericParameterJob;
+use MediaWiki\JobQueue\Job;
 use MediaWiki\MediaWikiServices;
 
 /**
@@ -15,7 +16,7 @@ use MediaWiki\MediaWikiServices;
  * If the job hasn't run yet, the next page view falls back to
  * a direct DB lookup for the current page.
  */
-class BuildBloomFilterJob extends Job implements \GenericParameterJob {
+class BuildBloomFilterJob extends Job implements GenericParameterJob {
 
 	public function __construct( array $params ) {
 		parent::__construct( 'buildBookmarkBloomFilter', $params );

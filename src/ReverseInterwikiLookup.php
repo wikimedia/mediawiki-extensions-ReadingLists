@@ -3,7 +3,7 @@
 namespace MediaWiki\Extension\ReadingLists;
 
 use MediaWiki\Interwiki\InterwikiLookup;
-use MediaWiki\Languages\LanguageNameUtils;
+use MediaWiki\Language\LanguageNameUtils;
 use MediaWiki\Utils\UrlUtils;
 
 /**

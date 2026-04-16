@@ -9,10 +9,10 @@ use MediaWiki\Maintenance\Maintenance;
 use MediaWiki\Maintenance\MaintenanceFatalError;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\CentralId\CentralIdLookup;
+use MediaWiki\User\Options\UserOptionsManager;
 use MediaWiki\User\UserIdentity;
 use MediaWiki\User\UserIdentityLookup;
 use MediaWiki\User\UserIdentityUtils;
-use MediaWiki\User\UserOptionsManager;
 use Psr\Log\LogLevel;
 
 require_once getenv( 'MW_INSTALL_PATH' ) !== false
