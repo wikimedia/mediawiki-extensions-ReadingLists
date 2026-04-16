@@ -9,7 +9,8 @@
 			"Peterxy12",
 			"沈澄心",
 			"范",
-			"SaoMikoto"
+			"SaoMikoto",
+			"Saoutax"
 		]
 	},
 	"readinglists-desc": "允许用户管理私有条目列表，例如书签或“已保存页面”列表。",
@@ -42,7 +43,7 @@
 	"readinglists-browser-extension-product-title": "维基百科阅读列表",
 	"readinglists-browser-page-not-supported": "$1不支持此页面",
 	"readinglists-special-title-imported": "阅读列表：从其他用户导入",
-	"readinglists-special-subpage-title": "已保存页面",
+	"readinglists-special-subpage-title": "已保存的页面",
 	"readinglists-description": "您所有已保存的列表都放在同一处。",
 	"readinglists-loading": "请稍候……",
 	"reading-list-purpose": "请登录以查看您的私人阅读列表。",
@@ -51,7 +52,7 @@
 	"readinglists-import-error": "无法显示来自给定数据的列表。",
 	"readinglists-import-size-error": "列表太大无法显示。",
 	"special-tab-readinglists-short": "您的列表",
-	"readinglists-title": "已保存页面",
+	"readinglists-title": "已保存的页面",
 	"readinglists-total-lists": "$1{{PLURAL:$1|个列表}}",
 	"readinglists-total-articles": "$1{{PLURAL:$1|个条目}}",
 	"readinglists-show-more": "显示更多",
@@ -84,7 +85,7 @@
 	"readinglists-import-app-launch-hint": "请确保安装了该应用程序的最新版本。",
 	"readinglists-beta-feature-name": "阅读列表",
 	"readinglists-beta-feature-description": "收集私有条目列表以供稍后阅读。",
-	"readinglists-menu-item": "已保存页面",
+	"readinglists-menu-item": "已保存的页面",
 	"readinglists-bookmark": "书签",
 	"readinglists-add-bookmark": "保存",
 	"readinglists-remove-bookmark": "取消保存",
