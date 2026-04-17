@@ -82,5 +82,13 @@
 	"readinglists-remove-bookmark": "Bỏ lưu",
 	"readinglists-onboarding-title": "Lưu trang để đọc sau",
 	"readinglists-onboarding-text": "Tìm thấy gì đó thú vị? Hiện tại bạn có thể lưu nó vào danh sách cá nhân của mình.",
-	"readinglists-onboarding-close-button": "Đóng"
+	"readinglists-onboarding-close-button": "Đóng",
+	"readinglists-betafeature-quicksurvey-question": "Bạn có thích tính năng này không?",
+	"readinglists-betafeature-quicksurvey-answer-positive": "Có",
+	"readinglists-betafeature-quicksurvey-answer-negative": "Không",
+	"readinglists-betafeature-quicksurvey-question-feedback": "Điều gì có thể giúp tính năng này hữu dụng hơn với bạn?",
+	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Thêm phản hồi của bạn",
+	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Chính sách riêng tư]",
+	"readinglists-betafeature-quicksurvey-submit": "Gửi",
+	"readinglists-betafeature-quicksurvey-thank-you": "Cảm ơn ý kiến đóng góp của bạn"
 }

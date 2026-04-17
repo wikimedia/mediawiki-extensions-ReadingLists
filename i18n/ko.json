@@ -42,6 +42,15 @@
 	"readinglists-bookmark": "북마크",
 	"readinglists-add-bookmark": "저장",
 	"readinglists-remove-bookmark": "저장하지 않음",
+	"readinglists-unsave-from-custom-list-title": "모든 읽기 목록에서 제거할까요?",
+	"readinglists-unsave-from-custom-list-confirm": "제거",
+	"readinglists-unsave-from-custom-list-cancel": "취소",
 	"readinglists-onboarding-ok-button": "확인",
-	"readinglists-beta-tag": "베타"
+	"readinglists-beta-tag": "베타",
+	"readinglists-betafeature-quicksurvey-question": "이 기능이 마음에 드시나요?",
+	"readinglists-betafeature-quicksurvey-answer-positive": "예",
+	"readinglists-betafeature-quicksurvey-answer-negative": "아니요",
+	"readinglists-betafeature-quicksurvey-feedback-placeholder": "내 의견 추가하기",
+	"readinglists-betafeature-quicksurvey-submit": "제출",
+	"readinglists-betafeature-quicksurvey-thank-you": "의견을 주셔서 감사합니다"
 }
