@@ -32,7 +32,7 @@
 			<div
 				v-if="entries.length !== 0"
 				ref="container"
-				class="reading-lists-grid">
+				class="reading-lists-items reading-lists-items--view-cards">
 				<entry-item
 					v-for="entry in entries"
 					:key="entry.id"

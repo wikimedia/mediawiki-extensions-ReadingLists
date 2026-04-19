@@ -37,7 +37,7 @@ exports[`Entries without custom lists renders all items from all lists on specia
   </p>
   
   <div
-    class="reading-lists-grid"
+    class="reading-lists-items reading-lists-items--view-cards"
   >
     
     <a
@@ -173,7 +173,7 @@ exports[`Entries without custom lists renders with toolbar disabled 1`] = `
   </p>
   
   <div
-    class="reading-lists-grid"
+    class="reading-lists-items reading-lists-items--view-cards"
   >
     
     <a
