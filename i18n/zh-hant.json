@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"EBlackorby-WMF",
 			"Entropy lover nagnto",
 			"Kly",
 			"LowensteinYang",
@@ -91,6 +92,11 @@
 	"readinglists-onboarding-close-button": "關閉",
 	"readinglists-onboarding-saved-pages-title": "您的儲存頁面",
 	"readinglists-onboarding-saved-pages-text": "在此存取您所有的儲存頁面。",
+	"readinglists-betafeature-quicksurvey-question": "您喜歡這個功能嗎?",
 	"readinglists-betafeature-quicksurvey-answer-positive": "是",
-	"readinglists-betafeature-quicksurvey-answer-negative": "否"
+	"readinglists-betafeature-quicksurvey-answer-negative": "否",
+	"readinglists-betafeature-quicksurvey-question-feedback": "如何能讓這個功能對您更有用？",
+	"readinglists-betafeature-quicksurvey-feedback-placeholder": "添加您的反饋",
+	"readinglists-betafeature-quicksurvey-submit": "提交",
+	"readinglists-betafeature-quicksurvey-thank-you": "謝謝你的回應"
 }
