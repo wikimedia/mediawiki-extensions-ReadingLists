@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CtaDialog matches the snapshot 1`] = `
+<div>
+  <!--teleport start-->
+  <transition-stub
+    appear="true"
+    css="true"
+    name="cdx-dialog-fade"
+    persisted="false"
+  >
+    <div
+      class="cdx-dialog-backdrop"
+    >
+      <div
+        tabindex="0"
+      />
+      <div
+        aria-labelledby="v-0"
+        aria-modal="true"
+        class="cdx-dialog readinglists-cta-dialog"
+        role="dialog"
+      >
+        <header
+          class="cdx-dialog__header cdx-dialog__header--default"
+        >
+          
+          <div
+            class="cdx-dialog__header__title-group"
+          >
+            <h2
+              class="cdx-dialog__header__title"
+              id="v-0"
+            >
+              Save pages
+            </h2>
+            <p
+              class="cdx-dialog__header__subtitle"
+            >
+              You can now save Wikipedia pages to your personal list.
+            </p>
+          </div>
+          <button
+            aria-label="Close"
+            class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only cdx-dialog__header__close-button"
+            type="button"
+          >
+            
+            <span
+              class="cdx-icon cdx-icon--medium"
+            >
+              <svg
+                aria-hidden="true"
+                height="20"
+                viewBox="0 0 20 20"
+                width="20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <!--v-if-->
+                <g>
+                  <path
+                    d="m4.34 2.93 12.73 12.73-1.41 1.41L2.93 4.35z"
+                  />
+                  <path
+                    d="M17.07 4.34 4.34 17.07l-1.41-1.41L15.66 2.93z"
+                  />
+                </g>
+              </svg>
+            </span>
+            
+          </button>
+          
+        </header>
+        <div
+          class="cdx-dialog-focus-trap"
+          tabindex="-1"
+        />
+        <div
+          class="cdx-dialog__body cdx-scrollable-container"
+        >
+          
+          <p>
+            Please log in or create an account to start saving.
+          </p>
+          <div
+            class="readinglists-cta-dialog__illustration"
+          />
+          
+        </div>
+        <footer
+          class="cdx-dialog__footer"
+        >
+          
+          <div
+            class="readinglists-cta-dialog__actions"
+          >
+            <a
+              class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-primary cdx-button--action-progressive"
+            >
+              Create account
+            </a>
+            <a
+              class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled"
+            >
+              Log in
+            </a>
+          </div>
+          
+        </footer>
+      </div>
+      <div
+        tabindex="0"
+      />
+      <div />
+    </div>
+  </transition-stub>
+  <!--teleport end-->
+</div>
+`;

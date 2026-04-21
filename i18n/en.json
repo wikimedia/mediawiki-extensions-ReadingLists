@@ -109,5 +109,11 @@
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Add your feedback",
 	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Privacy policy]",
 	"readinglists-betafeature-quicksurvey-submit": "Submit",
-	"readinglists-betafeature-quicksurvey-thank-you": "Thank you for your feedback"
+	"readinglists-betafeature-quicksurvey-thank-you": "Thank you for your feedback",
+	"readinglists-cta-dialog-title": "Save pages",
+	"readinglists-cta-dialog-subtitle": "You can now save Wikipedia pages to your personal list.",
+	"readinglists-cta-dialog-call-to-action": "Please log in or create an account to start saving.",
+	"readinglists-cta-dialog-create-account": "Create account",
+	"readinglists-cta-dialog-log-in": "Log in",
+	"readinglists-cta-dialog-close": "Close"
 }

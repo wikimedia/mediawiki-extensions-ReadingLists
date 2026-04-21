@@ -119,5 +119,11 @@
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Placeholder text for the feedback textarea",
 	"readinglists-betafeature-quicksurvey-privacy-policy": "Privacy policy link shown below the survey question. Contains a wikitext link to the privacy statement.",
 	"readinglists-betafeature-quicksurvey-submit": "Label for the dialog submit button",
-	"readinglists-betafeature-quicksurvey-thank-you": "Thank you message after survey is completed"
+	"readinglists-betafeature-quicksurvey-thank-you": "Thank you message after survey is completed",
+	"readinglists-cta-dialog-title": "Title of the dialog shown to anonymous users when they click the bookmark button",
+	"readinglists-cta-dialog-subtitle": "Subtitle of the dialog shown to anonymous users when they click the bookmark button",
+	"readinglists-cta-dialog-call-to-action": "Body text of the dialog shown to anonymous users when they click the bookmark button",
+	"readinglists-cta-dialog-create-account": "Label for the create account link in the dialog shown to anonymous users when they click the bookmark button",
+	"readinglists-cta-dialog-log-in": "Label for the log in link in the dialog shown to anonymous users when they click the bookmark button",
+	"readinglists-cta-dialog-close": "Label for the close button of the dialog shown to anonymous users when they click the bookmark button"
 }

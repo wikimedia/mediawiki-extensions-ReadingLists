@@ -97,6 +97,7 @@ class HookHandler implements
 
 		$user = $sktemplate->getUser();
 		$readingListsEnabledForUser = $this->isReadingListsEnabledForUser( $user );
+		$inAccountCreationCtaTreatment = false;
 		if ( $readingListsEnabledForUser ) {
 			$this->addSpecialPageLinkToUserMenu( $user, $sktemplate, $links );
 		} elseif ( $user->isRegistered() ) {
@@ -109,6 +110,8 @@ class HookHandler implements
 			// Don't show bookmark for logged-out users not in the CTA experiment treatment group.
 			// Experiment is MinervaNeue-only.
 			return;
+		} else {
+			$inAccountCreationCtaTreatment = true;
 		}
 
 		$centralId = $this->centralIdLookupFactory->getLookup()
@@ -193,6 +196,10 @@ class HookHandler implements
 
 		if ( $readingListsEnabledForUser ) {
 			$output->addModules( 'ext.readingLists.bookmark' );
+		}
+
+		if ( $inAccountCreationCtaTreatment ) {
+			$output->addModules( 'ext.readingLists.bookmark.anonymous' );
 		}
 	}
 

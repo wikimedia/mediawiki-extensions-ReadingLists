@@ -286,6 +286,27 @@
 				"mediawiki.storage"
 			]
 		},
+		"ext.readingLists.bookmark.anonymous": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexComponents": [
+				"CdxDialog"
+			],
+			"dependencies": [
+				"vue"
+			],
+			"messages": [
+				"readinglists-cta-dialog-title",
+				"readinglists-cta-dialog-subtitle",
+				"readinglists-cta-dialog-call-to-action",
+				"readinglists-cta-dialog-create-account",
+				"readinglists-cta-dialog-log-in",
+				"readinglists-cta-dialog-close"
+			],
+			"packageFiles": [
+				"resources/ext.readingLists.bookmark.anonymous/index.js",
+				"resources/ext.readingLists.bookmark.anonymous/CtaDialog.vue"
+			]
+		},
 		"ext.readingLists.bookmark.confirmPopover": {
 			"class": "MediaWiki\\ResourceLoader\\CodexModule",
 			"codexComponents": [
