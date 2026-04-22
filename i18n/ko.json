@@ -38,6 +38,7 @@
 	"readinglists-import-empty-message": "목록의 목록을 가져올 수 없습니다.",
 	"readinglists-import-button-label": "앱에서 열기",
 	"readinglists-beta-feature-name": "저장된 문서",
+	"readinglists-beta-feature-description": "* 나중에 읽거나 참조할 수 있도록 문서를 저장할 수 있습니다.\n* 위키백과 앱과 웹사이트에서 저장한 문서는 모두 하나의 목록으로 동기화됩니다.\n\n참고:\n* 베타 기간 동안 새로운 기능이 추가될 수 있습니다.\n* 이 베타 기능은 2026년 7월까지 운영되며, 이후 위키백과에서 영구적으로 사용할 수 있는 기능이 될 것입니다. 위의 토론 링크를 통해 의견을 보내주세요.",
 	"readinglists-menu-item": "저장된 문서",
 	"readinglists-bookmark": "북마크",
 	"readinglists-add-bookmark": "저장",
