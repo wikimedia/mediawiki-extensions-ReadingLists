@@ -66,6 +66,31 @@ describe( 'ConfirmUnsavePopover', () => {
 		} );
 	} );
 
+	describe( 'ConfirmUnsavePopover props', () => {
+		test( 'primaryAction has a destructive action type', () => {
+			mountPopover();
+			expect( wrapper.vm.primaryAction.actionType ).toBe( 'destructive' );
+		} );
+
+		test( 'placement is bottom-start when isMinerva is true', () => {
+			wrapper = mount( ConfirmUnsavePopover, {
+				props: {
+					anchorElement: document.createElement( 'button' ),
+					isMinerva: true,
+					onConfirm,
+					onCancel
+				},
+				global: {
+					stubs: {
+						teleport: true,
+						CdxPopover: cdxPopoverStub
+					}
+				}
+			} );
+			expect( wrapper.vm.placement ).toBe( 'bottom-start' );
+		} );
+	} );
+
 	describe( 'ConfirmUnsavePopover actions', () => {
 		test( 'calls onConfirm when the primary action is clicked', async () => {
 			mountPopover();
@@ -94,6 +119,16 @@ describe( 'ConfirmUnsavePopover', () => {
 			wrapper.findComponent( cdxPopoverStub ).vm.$emit( 'update:open', false );
 
 			expect( onCancel ).toHaveBeenCalled();
+			expect( onConfirm ).not.toHaveBeenCalled();
+		} );
+
+		test( 'does not call onCancel when the popover emits open', async () => {
+			mountPopover();
+			await wrapper.vm.$nextTick();
+
+			wrapper.findComponent( cdxPopoverStub ).vm.$emit( 'update:open', true );
+
+			expect( onCancel ).not.toHaveBeenCalled();
 			expect( onConfirm ).not.toHaveBeenCalled();
 		} );
 	} );
