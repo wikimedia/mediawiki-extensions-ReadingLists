@@ -127,7 +127,7 @@ class ListsEntriesCreateHandlerTest extends \MediaWikiIntegrationTestCase {
 		$this->expectException( LocalizedHttpException::class );
 
 		// If the id parameter is the name of a list, it is reset to that list's id value.
-		if ( isset( $this->listIds[$id] ) ) {
+		if ( $id !== null && isset( $this->listIds[$id] ) ) {
 			$id = $this->listIds[$id];
 		}
 
