@@ -62,10 +62,18 @@ module.exports = exports = {
 		const primaryActionLabel = computed( () => mw.msg( 'readinglists-cta-dialog-create-account' ) );
 		const defaultActionLabel = computed( () => mw.msg( 'readinglists-cta-dialog-log-in' ) );
 
+		const returnTo = mw.config.get( 'wgPageName' );
 		const urlParams = {
-			returnto: mw.config.get( 'wgPageName' )
+			returnto: returnTo
 		};
-		const createAccountUrl = computed( () => mw.util.getUrl( 'Special:CreateAccount', urlParams ) );
+
+		// Signup instrumentation relies on type=signup and a returntoquery marker
+		// so the redirect flow can be attributed back to this dialog.
+		const createAccountUrl = computed( () => mw.util.getUrl( 'Special:CreateAccount', {
+			returnto: returnTo,
+			returntoquery: 'readingListsAccountCreationCta=1',
+			type: 'signup'
+		} ) );
 		const loginUrl = computed( () => mw.util.getUrl( 'Special:UserLogin', urlParams ) );
 
 		function getFakeButtonClasses( action ) {

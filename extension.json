@@ -117,6 +117,7 @@
 		"readinglists-web-ui-enabled": "0"
 	},
 	"Hooks": {
+		"CentralAuthPostLoginRedirect": "main",
 		"SkinTemplateNavigation::Universal": "main",
 		"GetBetaFeaturePreferences": "betafeatures",
 		"GetPreferences": "main",

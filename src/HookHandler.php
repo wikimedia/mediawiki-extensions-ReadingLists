@@ -295,6 +295,32 @@ class HookHandler implements
 		$vars['wgReadingListsEnableBetaQuickSurvey'] = $this->isBetaSurveyEnabled();
 	}
 
+	/** @inheritDoc */
+	public function onCentralAuthPostLoginRedirect(
+		string &$returnTo,
+		string &$returnToQuery,
+		bool $_unused1,
+		string $type,
+		string &$_unused2
+	): bool {
+		$returnToQueryArray = wfCgiToArray( $returnToQuery );
+		$isFromReadingListsAccountCreationCta = array_key_exists(
+			'readingListsAccountCreationCta',
+			$returnToQueryArray
+		);
+		unset( $returnToQueryArray['readingListsAccountCreationCta'] );
+
+		// If the URL parameter is present, the user came from the account creation CTA. For the
+		// experiment (account-creation-reading-list-cta), add a URL parameter that will be used to
+		// send an account_created event.
+		if ( $type === 'signup' && $isFromReadingListsAccountCreationCta ) {
+			$returnToQueryArray['readingListsAccountJustCreated'] = '1';
+		}
+
+		$returnToQuery = wfArrayToCgi( $returnToQueryArray );
+		return true;
+	}
+
 	/**
 	 * Configure QuickSurveys.
 	 *

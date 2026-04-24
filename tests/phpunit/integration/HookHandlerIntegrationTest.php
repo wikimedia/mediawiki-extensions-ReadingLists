@@ -12,6 +12,7 @@ use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\Extension\TestKitchen\Sdk\Experiment;
 use MediaWiki\Extension\TestKitchen\Sdk\ExperimentManager;
 use MediaWiki\JobQueue\JobQueueGroup;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Request\FauxRequest;
@@ -199,6 +200,21 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		} );
 
 		return $skin;
+	}
+
+	private function allowCentralAuthTempUserCreation(): void {
+		if ( !ExtensionRegistry::getInstance()->isLoaded( 'CentralAuth' ) ) {
+			return;
+		}
+
+		$config = $this->getServiceContainer()->getMainConfig();
+		$authManagerConfig = $config->get( MainConfigNames::AuthManagerConfig );
+		$authManagerAutoConfig = $config->get( MainConfigNames::AuthManagerAutoConfig );
+
+		$authManagerConfig['preauth']['CentralAuthSharedDomainPreAuthenticationProvider'] =
+			$authManagerAutoConfig['preauth']['CentralAuthSharedDomainPreAuthenticationProvider'];
+
+		$this->overrideConfigValue( MainConfigNames::AuthManagerConfig, $authManagerConfig );
 	}
 
 	public function testBookmarkIconButtonAddedForMainNamespacePageWithExperiment() {
@@ -407,6 +423,7 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 	public function testBookmarkNotAddedForTempUser() {
 		$this->enableAutoCreateTempUser();
+		$this->allowCentralAuthTempUserCreation();
 		$tempUser = $this->getServiceContainer()->getTempUserCreator()
 			->create( null, new FauxRequest() )
 			->getUser();
@@ -455,6 +472,57 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 			'Special:ReadingLists/' . strtr( $this->user->getName(), ' ', '_' ),
 			$readingListsLink['href'],
 			'URL should be like Special:ReadingLists/{user_name}'
+		);
+	}
+
+	public function testCentralAuthPostLoginRedirectAddsReadingListsAccountJustCreatedForSignup(): void {
+		$returnTo = 'Taco';
+		$returnToQuery = 'readingListsAccountCreationCta=1&foo=bar';
+		$unused = '';
+
+		$this->assertTrue(
+			$this->hookHandler->onCentralAuthPostLoginRedirect(
+				$returnTo,
+				$returnToQuery,
+				false,
+				'signup',
+				$unused
+			)
+		);
+
+		$this->assertSame( 'Taco', $returnTo );
+		$this->assertSame( '', $unused );
+		$this->assertSame(
+			[
+				'foo' => 'bar',
+				'readingListsAccountJustCreated' => '1',
+			],
+			wfCgiToArray( $returnToQuery )
+		);
+	}
+
+	public function testCentralAuthPostLoginRedirectDoesNotAddAccountCreationCTAFlagForUserLogin(): void {
+		$returnTo = 'Taco';
+		$returnToQuery = 'readingListsAccountCreationCta=1&foo=bar';
+		$unused = '';
+
+		$this->assertTrue(
+			$this->hookHandler->onCentralAuthPostLoginRedirect(
+				$returnTo,
+				$returnToQuery,
+				false,
+				'',
+				$unused
+			)
+		);
+
+		$this->assertSame( 'Taco', $returnTo );
+		$this->assertSame( '', $unused );
+		$this->assertSame(
+			[
+				'foo' => 'bar',
+			],
+			wfCgiToArray( $returnToQuery )
 		);
 	}
 
