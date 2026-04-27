@@ -42,6 +42,9 @@ const mw = {
 	requestIdleCallback: jest.fn( ( fn ) => fn() ),
 	log: {
 		error: jest.fn()
+	},
+	testKitchen: {
+		compat: jest.fn()
 	}
 };
 

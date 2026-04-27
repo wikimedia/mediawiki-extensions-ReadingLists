@@ -30,4 +30,12 @@ function launchCtaDialog() {
 bookmark.addEventListener( 'click', ( event ) => {
 	event.preventDefault();
 	launchCtaDialog();
+
+	mw.loader.using( 'ext.testKitchen' ).then( () => {
+		const experiment = mw.testKitchen.compat.getExperiment( 'account-creation-reading-list-cta' );
+		if ( experiment ) {
+			// eslint-disable-next-line camelcase
+			experiment.send( 'click', { action_subtype: 'save_article_to_reading_list' } );
+		}
+	} );
 } );

@@ -13,6 +13,14 @@ jest.mock( '../../../codex.js', () => ( {
 	}
 } ) );
 
+mw.testKitchen = {
+	compat: {
+		getExperiment: jest.fn( () => ( {
+			send: jest.fn() // Properly mock the `send` method
+		} ) )
+	}
+};
+
 describe( 'Anonymous bookmark button', () => {
 	let mockApp;
 
