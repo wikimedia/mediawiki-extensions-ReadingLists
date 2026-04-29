@@ -18,7 +18,7 @@
 	"type": "other",
 	"callback": "MediaWiki\\Extension\\ReadingLists\\ExtensionRegistration::onRegistration",
 	"requires": {
-		"MediaWiki": ">= 1.46"
+		"MediaWiki": ">= 1.47.0"
 	},
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\ReadingLists\\": "src/"
