@@ -99,5 +99,11 @@
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Lisää palautteesi",
 	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Tietosuojaseloste]",
 	"readinglists-betafeature-quicksurvey-submit": "Lähetä",
-	"readinglists-betafeature-quicksurvey-thank-you": "Kiitos palautteestasi"
+	"readinglists-betafeature-quicksurvey-thank-you": "Kiitos palautteestasi",
+	"readinglists-cta-dialog-title": "Tallenna sivuja",
+	"readinglists-cta-dialog-subtitle": "Voit nyt tallentaa Wikipedia-sivuja henkilökohtaiselle listallesi.",
+	"readinglists-cta-dialog-call-to-action": "Kirjaudu sisään tai luo tunnus tallentaaksesi sivuja.",
+	"readinglists-cta-dialog-create-account": "Luo tunnus",
+	"readinglists-cta-dialog-log-in": "Kirjaudu sisään",
+	"readinglists-cta-dialog-close": "Sulje"
 }

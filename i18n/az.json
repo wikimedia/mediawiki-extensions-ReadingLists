@@ -103,5 +103,11 @@
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Rəyinizi əlavə edin",
 	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Məxfilik siyasəti]",
 	"readinglists-betafeature-quicksurvey-submit": "Göndər",
-	"readinglists-betafeature-quicksurvey-thank-you": "Rəyiniz üçün təşəkkürlər"
+	"readinglists-betafeature-quicksurvey-thank-you": "Rəyiniz üçün təşəkkürlər",
+	"readinglists-cta-dialog-title": "Səhifələri yadda saxla",
+	"readinglists-cta-dialog-subtitle": "Artıq Vikipediya səhifələrini şəxsi siyahınızda saxlaya bilərsiniz.",
+	"readinglists-cta-dialog-call-to-action": "Yadda saxlamağa başlamaq üçün daxil olun və ya hesab yaradın.",
+	"readinglists-cta-dialog-create-account": "Hesab yarat",
+	"readinglists-cta-dialog-log-in": "Daxil ol",
+	"readinglists-cta-dialog-close": "Bağla"
 }

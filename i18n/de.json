@@ -105,5 +105,11 @@
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Deine Rückmeldung hinzufügen",
 	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Datenschutzrichtlinie]",
 	"readinglists-betafeature-quicksurvey-submit": "Speichern",
-	"readinglists-betafeature-quicksurvey-thank-you": "Vielen Dank für die Rückmeldung!"
+	"readinglists-betafeature-quicksurvey-thank-you": "Vielen Dank für die Rückmeldung!",
+	"readinglists-cta-dialog-title": "Seiten speichern",
+	"readinglists-cta-dialog-subtitle": "Du kannst jetzt Wikipedia-Seiten in deiner persönlichen Liste speichern.",
+	"readinglists-cta-dialog-call-to-action": "Bitte melde dich an oder erstelle ein Konto, um mit dem Speichern zu beginnen.",
+	"readinglists-cta-dialog-create-account": "Benutzerkonto erstellen",
+	"readinglists-cta-dialog-log-in": "Anmelden",
+	"readinglists-cta-dialog-close": "Schließen"
 }

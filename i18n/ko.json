@@ -7,7 +7,7 @@
 			"Ykhwong"
 		]
 	},
-	"readinglists-desc": "사용자가 북마크나 \"나중에 읽기\" 목록과 같은 개인 문서 목록을 관리할 수 있게 합니다.",
+	"readinglists-desc": "사용자가 북마크나 \"저장된 문서\" 목록과 같은 개인 항목 목록을 관리할 수 있게 합니다.",
 	"readinglists-db-error-not-set-up": "이 사용자에 대해 읽기 목록이 설정되지 않았습니다.",
 	"readinglists-db-error-already-set-up": "읽기 목록은 이 사용자에 대해 이미 설정되어 있습니다.",
 	"readinglists-db-error-cannot-delete-default-list": "기본 목록은 삭제할 수 없습니다.",
@@ -30,7 +30,7 @@
 	"readinglists-browser-error-intro": "오류가 발생했습니다: $1",
 	"readinglists-browser-enable-sync-prompt": "문서 저장을 시작하기 위해 위키백과 앱에서 동기화를 사용합니다",
 	"readinglists-browser-extension-info-link-text": "더 알아보기",
-	"readinglists-browser-list-entry-limit-exceeded": "문서를 저장할 수 없습니다. 목록 당 문서 $1개의 제한에 도달했습니다",
+	"readinglists-browser-list-entry-limit-exceeded": "문서를 저장할 수 없습니다. 목록 당 항목 $1개의 제한에 도달했습니다",
 	"readinglists-browser-extension-product-title": "위키백과 읽기 목록",
 	"readinglists-browser-page-not-supported": "$1은(는) 이 문서를 지원하지 않습니다",
 	"readinglists-special-title-imported": "읽기 목록: 다른 사용자로부터 가져오기",

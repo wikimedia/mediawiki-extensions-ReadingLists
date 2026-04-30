@@ -104,5 +104,11 @@
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Achega os teus comentarios",
 	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Política de protección de datos]",
 	"readinglists-betafeature-quicksurvey-submit": "Enviar",
-	"readinglists-betafeature-quicksurvey-thank-you": "Grazas polos teus comentarios"
+	"readinglists-betafeature-quicksurvey-thank-you": "Grazas polos teus comentarios",
+	"readinglists-cta-dialog-title": "Gardar páxinas",
+	"readinglists-cta-dialog-subtitle": "Agora podes gardar páxinas da Wikipedia na túa lista persoal.",
+	"readinglists-cta-dialog-call-to-action": "Inicia sesión ou crea unha conta para gardar gáxinas.",
+	"readinglists-cta-dialog-create-account": "Crear unha conta",
+	"readinglists-cta-dialog-log-in": "Acceder ao sistema",
+	"readinglists-cta-dialog-close": "Pechar"
 }

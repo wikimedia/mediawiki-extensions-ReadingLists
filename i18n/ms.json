@@ -102,5 +102,11 @@
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Tambahkan maklum balas anda",
 	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Dasar privasi]",
 	"readinglists-betafeature-quicksurvey-submit": "Hantar",
-	"readinglists-betafeature-quicksurvey-thank-you": "Terima kasih atas maklum balas anda"
+	"readinglists-betafeature-quicksurvey-thank-you": "Terima kasih atas maklum balas anda",
+	"readinglists-cta-dialog-title": "Simpan laman",
+	"readinglists-cta-dialog-subtitle": "Anda kini boleh simpan laman Wikipedia ke senarai peribadi anda.",
+	"readinglists-cta-dialog-call-to-action": "Sila log masuk atau buka akaun untuk mula menyimpan.",
+	"readinglists-cta-dialog-create-account": "Cipta akaun",
+	"readinglists-cta-dialog-log-in": "Log masuk",
+	"readinglists-cta-dialog-close": "Tutup"
 }
