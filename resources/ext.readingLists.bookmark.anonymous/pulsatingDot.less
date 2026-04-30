@@ -1,0 +1,13 @@
+/* stylelint-disable selector-max-id */
+// Core positions the pseudo-elements from top/left;
+// so using margin for offsets so the dot sits over the bookmark icon.
+#page-actions-bookmark.mw-pulsating-dot {
+	position: relative;
+
+	&::before,
+	&::after {
+		// value ensures that the dot always sits centered over the bookmark icon.
+		margin-left: 50%;
+		margin-top: 0.4rem;
+	}
+}

@@ -293,7 +293,11 @@
 				"CdxDialog"
 			],
 			"dependencies": [
+				"mediawiki.storage",
 				"vue"
+			],
+			"styles": [
+				"resources/ext.readingLists.bookmark.anonymous/pulsatingDot.less"
 			],
 			"messages": [
 				"readinglists-cta-dialog-title",
@@ -305,6 +309,7 @@
 			],
 			"packageFiles": [
 				"resources/ext.readingLists.bookmark.anonymous/index.js",
+				"resources/ext.readingLists.bookmark.anonymous/pulsatingDot.js",
 				"resources/ext.readingLists.bookmark.anonymous/CtaDialog.vue"
 			]
 		},
