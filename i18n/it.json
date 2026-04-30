@@ -4,7 +4,8 @@
 			"Beta16",
 			"Greis",
 			"Neonsn0w",
-			"FL2226"
+			"FL2226",
+			"ZandDev"
 		]
 	},
 	"readinglists-desc": "Consente agli utenti di gestire elenchi privati di voci, come segnalibri o elenchi di \"Pagine salvate\".",
@@ -14,8 +15,8 @@
 	"readinglists-db-error-list-limit": "Gli utenti non possono avere più di $1 {{PLURAL:$1|elenco|elenchi}}.",
 	"readinglists-db-error-entry-limit": "L'elenco $1 non può avere più di $2 {{PLURAL:$2|elemento|elementi}}.",
 	"readinglists-db-error-too-long": "Il valore per il campo $1 non può superare i $2 byte.",
-	"readinglists-browser-add-entry-success": "<b>$1</b> è stato aggiunto al tuo [[$2|$3]].",
-	"readinglists-browser-remove-entry-success": "<b>$1</b> è stato rimosso dal tuo [[$2|$3]].",
+	"readinglists-browser-add-entry-success": "<b>$1</b> è stato aggiunto al tuo elenco di [[$2|$3]].",
+	"readinglists-browser-remove-entry-success": "<b>$1</b> è stato rimosso dal tuo elenco di [[$2|$3]].",
 	"readinglists-browser-login-prompt": "Accedi per salvare le voci",
 	"readinglists-browser-error-intro": "Si è verificato un errore: $1",
 	"readinglists-browser-enable-sync-prompt": "Attiva la sincronizzazione sulla tua applicazione di Wikipedia per iniziare a salvare le voci",
@@ -39,11 +40,16 @@
 	"readinglists-display-sort": "Ordina per",
 	"readinglists-display-sort-name": "Nome",
 	"readinglists-display-direction-ascending": "Crescente",
+	"readinglists-display-direction-descending": "Decrescente",
+	"action-action-readinglist-private": "leggere gli elenchi di lettura di altri utenti",
 	"readinglists-import-empty-message": "Non è possibile importare elenchi di elenchi.",
+	"readinglists-no-title": "Elenco senza titolo",
+	"readinglists-export": "Condividi elenco",
 	"readinglists-watchlist": "Osservati speciali",
 	"readinglists-watchlist-description": "Pagine che segui per nuove modifiche.",
 	"readinglists-import-button-label": "Apri nell'app",
 	"readinglists-menu-item": "Pagine salvate",
 	"readinglists-add-bookmark": "Salva",
-	"readinglists-remove-bookmark": "Annulla salvataggio"
+	"readinglists-remove-bookmark": "Annulla salvataggio",
+	"readinglists-onboarding-close-button": "Chiudi"
 }
