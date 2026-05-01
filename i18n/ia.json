@@ -42,7 +42,7 @@
 	"readinglists-error": "Tu navigator non pote usar le function de listas de lectura. Per favor activa JavaScript o tenta lo in un altere navigator.",
 	"readinglists-import-error": "Le lista non pote esser monstrate a partir del datos fornite.",
 	"readinglists-import-size-error": "Le lista es troppo grande pro esser monstrate.",
-	"readinglists-special-error-list-not-found": "Iste lista non poteva esser trovate.",
+	"readinglists-special-error-list-not-found": "Tu non pote acceder a iste pagina. Es possibile que tu ha aperite session in un altere conto que illo indicate in le adresse URL.",
 	"special-tab-readinglists-short": "Tu listas",
 	"readinglists-title": "Paginas salveguardate",
 	"readinglists-total-lists": "$1 lista{{PLURAL:$1||s}}",
