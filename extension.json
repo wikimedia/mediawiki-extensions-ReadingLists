@@ -35,13 +35,25 @@
 	"APIListModules": {
 		"readinglistentries": {
 			"class": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiQueryReadingListEntries",
-			"factory": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiQueryReadingListEntries::factory"
+			"factory": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiQueryReadingListEntries::factory",
+			"services": [
+				"ReadingLists.ReadingListRepositoryFactory",
+				"ReadingLists.BookmarkEntryLookupService",
+				"CentralIdLookupFactory",
+				"MainConfig"
+			]
 		}
 	},
 	"APIMetaModules": {
 		"readinglists": {
 			"class": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiQueryReadingLists",
-			"factory": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiQueryReadingLists::factory"
+			"factory": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiQueryReadingLists::factory",
+			"services": [
+				"ReadingLists.ReadingListRepositoryFactory",
+				"ReadingLists.BookmarkEntryLookupService",
+				"CentralIdLookupFactory",
+				"MainConfig"
+			]
 		}
 	},
 	"ConfigRegistry": {

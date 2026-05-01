@@ -61,6 +61,12 @@ class ApiReadingLists extends ApiBase {
 				return [
 					'class' => $class,
 					'factory' => "$class::factory",
+					'services' => [
+						'ReadingLists.ReadingListRepositoryFactory',
+						'ReadingLists.BookmarkEntryLookupService',
+						'CentralIdLookupFactory',
+						'MainConfig',
+					],
 				];
 			}, self::$submodules );
 			$this->moduleManager = new ApiModuleManager(

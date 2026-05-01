@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\ReadingLists\Api;
 
 use MediaWiki\Api\ApiBase;
 use MediaWiki\Api\ApiUsageException;
+use MediaWiki\Config\Config;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
@@ -13,13 +14,12 @@ use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Message\Message;
 use MediaWiki\Title\Title;
 use MediaWiki\User\CentralId\CentralIdLookup;
+use MediaWiki\User\CentralId\CentralIdLookupFactory;
 use MediaWiki\User\UserIdentity;
 use Psr\Log\LoggerInterface;
-use Wikimedia\Rdbms\LBFactory;
 
 /**
  * Shared initialization and helper methods for the APIs.
@@ -35,20 +35,41 @@ trait ApiTrait {
 	/** @var ReadingListRepository */
 	private $repository;
 
-	/** @var LBFactory */
-	private $loadBalancerFactory;
+	/** @var ReadingListRepositoryFactory */
+	private $readingListRepositoryFactory;
+
+	/** @var BookmarkEntryLookupService */
+	private $bookmarkEntryLookupService;
+
+	/** @var CentralIdLookupFactory */
+	private $centralIdLookupFactory;
+
+	/** @var Config */
+	private $mainConfig;
 
 	/** @var ApiBase */
 	private $parent;
 
 	/**
-	 * Static entry point for initializing the module
+	 * Static entry point for initializing the module.
+	 * ObjectFactory passes extraArgs ($parent, $name) first, then resolved services.
 	 * @param ApiBase $parent Parent module
 	 * @param string $name Module name
+	 * @param ReadingListRepositoryFactory $readingListRepositoryFactory
+	 * @param BookmarkEntryLookupService $bookmarkEntryLookupService
+	 * @param CentralIdLookupFactory $centralIdLookupFactory
+	 * @param Config $mainConfig
 	 * @return static
 	 * @suppress PhanUndeclaredStaticProperty, PhanUndeclaredMethod
 	 */
-	public static function factory( ApiBase $parent, $name ) {
+	public static function factory(
+		ApiBase $parent,
+		string $name,
+		ReadingListRepositoryFactory $readingListRepositoryFactory,
+		BookmarkEntryLookupService $bookmarkEntryLookupService,
+		CentralIdLookupFactory $centralIdLookupFactory,
+		Config $mainConfig
+	) {
 		if ( static::$prefix ) {
 			// We are in one of the read modules, $parent is ApiQuery.
 			// This is an ApiQueryBase subclass so we need to pass ApiQuery.
@@ -59,11 +80,10 @@ trait ApiTrait {
 			$module = new static( $parent->getMain(), $name, static::$prefix );
 		}
 		$module->parent = $parent;
-
-		$services = MediaWikiServices::getInstance();
-		$loadBalancerFactory = $services->getDBLoadBalancerFactory();
-		$module->injectDatabaseDependencies( $loadBalancerFactory );
-
+		$module->readingListRepositoryFactory = $readingListRepositoryFactory;
+		$module->bookmarkEntryLookupService = $bookmarkEntryLookupService;
+		$module->centralIdLookupFactory = $centralIdLookupFactory;
+		$module->mainConfig = $mainConfig;
 		$module->logger = LoggerFactory::getInstance( 'readinglists' );
 
 		return $module;
@@ -78,34 +98,19 @@ trait ApiTrait {
 	}
 
 	/**
-	 * Set database-related dependencies. Required when initializing a module that uses this trait.
-	 * @param LBFactory $loadBalancerFactory
-	 */
-	protected function injectDatabaseDependencies( LBFactory $loadBalancerFactory ) {
-		$this->loadBalancerFactory = $loadBalancerFactory;
-	}
-
-	/**
 	 * Get the repository for the given user.
 	 * @param UserIdentity|null $user
 	 * @return ReadingListRepository
-	 * @suppress PhanUndeclaredMethod
 	 */
 	protected function getReadingListRepository( ?UserIdentity $user = null ) {
-		$config = $this->getConfig();
-		$services = MediaWikiServices::getInstance();
-		$centralId = $services
-			->getCentralIdLookupFactory()
+		$centralId = $this->centralIdLookupFactory
 			->getLookup()
 			->centralIdFromLocalUser( $user, CentralIdLookup::AUDIENCE_RAW );
-
-		/**
-		 * @var ReadingListRepositoryFactory $factory
-		 */
-		$factory = $services->getService( 'ReadingLists.ReadingListRepositoryFactory' );
-		$repository = $factory->create( $centralId );
-		$repository->setLimits( $config->get( 'ReadingListsMaxListsPerUser' ),
-			$config->get( 'ReadingListsMaxEntriesPerList' ) );
+		$repository = $this->readingListRepositoryFactory->create( $centralId );
+		$repository->setLimits(
+			$this->mainConfig->get( 'ReadingListsMaxListsPerUser' ),
+			$this->mainConfig->get( 'ReadingListsMaxEntriesPerList' )
+		);
 		$repository->setLogger( $this->logger );
 		return $repository;
 	}
@@ -114,10 +119,7 @@ trait ApiTrait {
 	 * @see ReadingListsHandlerTrait::invalidateBookmarkBloomFilter (identical, for REST handlers)
 	 */
 	protected function invalidateBookmarkBloomFilter( UserIdentity $user ): void {
-		/** @var BookmarkEntryLookupService $lookupService */
-		$lookupService = MediaWikiServices::getInstance()
-			->getService( 'ReadingLists.BookmarkEntryLookupService' );
-		$lookupService->invalidateBookmarkBloomFilter( $user );
+		$this->bookmarkEntryLookupService->invalidateBookmarkBloomFilter( $user );
 	}
 
 	/**
