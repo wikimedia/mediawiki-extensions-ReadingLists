@@ -36,5 +36,8 @@
 	"readinglists-beta-tag": "Бета",
 	"readinglists-betafeature-quicksurvey-answer-positive": "Да",
 	"readinglists-betafeature-quicksurvey-answer-negative": "Не",
-	"readinglists-betafeature-quicksurvey-submit": "Проследи"
+	"readinglists-betafeature-quicksurvey-submit": "Проследи",
+	"readinglists-cta-dialog-create-account": "Отвори налог",
+	"readinglists-cta-dialog-log-in": "Пријава",
+	"readinglists-cta-dialog-close": "Затвори"
 }

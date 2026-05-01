@@ -69,5 +69,9 @@
 	"readinglists-betafeature-quicksurvey-question-feedback": "Cosa renderebbe questo strumento più utile per te?",
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Aggiungi il tuo commento",
 	"readinglists-betafeature-quicksurvey-submit": "Invia",
-	"readinglists-betafeature-quicksurvey-thank-you": "Grazie per il tuo feedback"
+	"readinglists-betafeature-quicksurvey-thank-you": "Grazie per il tuo feedback",
+	"readinglists-cta-dialog-title": "Salva pagine",
+	"readinglists-cta-dialog-create-account": "Registrati",
+	"readinglists-cta-dialog-log-in": "Entra",
+	"readinglists-cta-dialog-close": "Chiudi"
 }

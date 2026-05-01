@@ -88,5 +88,9 @@
 	"readinglists-onboarding-close-button": "סגירה",
 	"readinglists-onboarding-saved-pages-title": "הדפים השמורים שלך",
 	"readinglists-onboarding-saved-pages-text": "גישה לכל הדפים השמורים שלך כאן.",
-	"readinglists-mobile-onboarding-saved-pages-title": "דפים שמורים"
+	"readinglists-mobile-onboarding-saved-pages-title": "דפים שמורים",
+	"readinglists-cta-dialog-title": "שמירת דפים",
+	"readinglists-cta-dialog-create-account": "יצירת חשבון",
+	"readinglists-cta-dialog-log-in": "כניסה לחשבון",
+	"readinglists-cta-dialog-close": "סגירה"
 }

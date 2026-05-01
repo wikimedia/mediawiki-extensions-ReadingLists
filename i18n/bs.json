@@ -15,5 +15,8 @@
 	"readinglists-db-error-not-own-list-entry": "Stavka $1 pripada drugom korisniku.",
 	"readinglists-db-error-list-deleted": "Spisak $1 je obrisan.",
 	"readinglists-db-error-list-entry-deleted": "Stavka $1 je obrisana.",
-	"readinglists-db-error-duplicate-page": "Stranica je već na spisku."
+	"readinglists-db-error-duplicate-page": "Stranica je već na spisku.",
+	"readinglists-special-subpage-title": "Sačuvane stranice",
+	"readinglists-sorted-by-recent": "Poredano po vremenu čuvanja (prvo nedavne).",
+	"readinglists-menu-item": "Sačuvane stranice"
 }
