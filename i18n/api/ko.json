@@ -23,7 +23,7 @@
 	"apihelp-query+readinglists-example-2": "<kbd>2013-01-01T00:00:00Z</kbd> 이후로 변경된 현재 사용자의 읽기 목록을 가져옵니다.",
 	"apihelp-query+readinglists-example-3": "<kbd>en.wikipedia.org</kbd> 프로젝트에서 <kbd>Dog</kbd> 문서를 포함하는 현재 사용자의 읽기 목록을 가져옵니다",
 	"apihelp-query+readinglistentries-summary": "특정 목록의 문서를 나열합니다.",
-	"apihelp-query+readinglistentries-param-lists": "문서를 반환할 목록 ID입니다. 선택적입니다. 지정되지 않은 경우, 모든 목록의 항목을 반환합니다.",
+	"apihelp-query+readinglistentries-param-lists": "문서를 반환할 목록 ID입니다. 선택 사항입니다. 지정되지 않은 경우, 모든 목록의 항목을 반환합니다.",
 	"apihelp-query+readinglistentries-param-changedsince": "이 타임스탬프 이후로 변경된 목록 엔트리를 표시합니다. <kbd>$1</kbd> 이후여야 합니다.",
 	"apihelp-query+readinglistentries-paramvalue-sort-name": "문서의 제목입니다. (프로젝트 이름은 무시됩니다. 이진값으로 정렬됩니다. 이를테면 모든 ASCII 대문자는 소문자 보다 우선하여 정렬됩니다.)",
 	"apihelp-query+readinglistentries-param-dir": "정렬 방향: <kbd>ascending</kbd> (A부터 Z, 최초부터 최신) 또는 <kbd>descending</kbd>.",

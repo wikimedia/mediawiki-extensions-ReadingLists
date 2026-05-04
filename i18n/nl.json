@@ -106,5 +106,11 @@
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Geef ons uw terugkoppeling",
 	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Privacybeleid]",
 	"readinglists-betafeature-quicksurvey-submit": "Opslaan",
-	"readinglists-betafeature-quicksurvey-thank-you": "Bedankt voor uw terugkoppeling"
+	"readinglists-betafeature-quicksurvey-thank-you": "Bedankt voor uw terugkoppeling",
+	"readinglists-cta-dialog-title": "Pagina's opslaan",
+	"readinglists-cta-dialog-subtitle": "U kunt Wikipedia-pagina's nu opslaan in uw persoonlijke lijst.",
+	"readinglists-cta-dialog-call-to-action": "Meld u aan of maak een account aan om op te kunnen slaan.",
+	"readinglists-cta-dialog-create-account": "Account aanmaken",
+	"readinglists-cta-dialog-log-in": "Aanmelden",
+	"readinglists-cta-dialog-close": "Sluiten"
 }

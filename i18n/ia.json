@@ -99,6 +99,13 @@
 	"readinglists-betafeature-quicksurvey-answer-negative": "No",
 	"readinglists-betafeature-quicksurvey-question-feedback": "Que lo renderea plus utile pro te?",
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Adder tu opinion",
+	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Politica de confidentialitate]",
 	"readinglists-betafeature-quicksurvey-submit": "Submitter",
-	"readinglists-betafeature-quicksurvey-thank-you": "Gratias pro tu opinion"
+	"readinglists-betafeature-quicksurvey-thank-you": "Gratias pro tu opinion",
+	"readinglists-cta-dialog-title": "Salveguardar paginas",
+	"readinglists-cta-dialog-subtitle": "Ora es possibile salveguardar paginas de Wikipedia in tu lista personal.",
+	"readinglists-cta-dialog-call-to-action": "Per favor aperi session o crea un conto pro comenciar a salveguardar.",
+	"readinglists-cta-dialog-create-account": "Crear conto",
+	"readinglists-cta-dialog-log-in": "Aperir session",
+	"readinglists-cta-dialog-close": "Clauder"
 }
