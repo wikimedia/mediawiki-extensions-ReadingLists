@@ -20,7 +20,7 @@ class ApiReadingListsSetup extends ApiBase {
 	 * @inheritDoc
 	 */
 	public function execute() {
-		$list = $this->getReadingListRepository( $this->getUser() )->setupForUser();
+		$list = $this->getReadingListRepository( $this->getUser() )->setupForUser( true );
 		$listData = $this->getListFromRow( $list );
 		$this->getResult()->addValue( null, $this->getModuleName(),
 			[ 'list' => $listData ] );
