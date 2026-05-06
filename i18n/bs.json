@@ -15,5 +15,12 @@
 	"readinglists-db-error-not-own-list-entry": "Stavka $1 pripada drugom korisniku.",
 	"readinglists-db-error-list-deleted": "Spisak $1 je obrisan.",
 	"readinglists-db-error-list-entry-deleted": "Stavka $1 je obrisana.",
-	"readinglists-db-error-duplicate-page": "Stranica je već na spisku."
+	"readinglists-db-error-duplicate-list": "Već postoji spisak s ovim imenom.",
+	"readinglists-db-error-duplicate-page": "Stranica je već na spisku.",
+	"readinglists-db-error-list-limit": "Korisnici ne mogu imati više od $1 {{PLURAL:$1|spiska|spiskova}}.",
+	"readinglists-db-error-entry-limit": "Spisak $1 ne može sadržavati više od $2 {{PLURAL:$2|stavke|stavki}}.",
+	"readinglists-db-error-too-long": "Vrijednost polja $1 ne može biti veća od $2 bajtova.",
+	"readinglists-db-error-no-such-project": "'$1' nije prepoznati projekt.",
+	"readinglists-browser-error-intro": "Došlo je do greške: $1",
+	"readinglists-browser-extension-info-link-text": "Detaljnije"
 }
