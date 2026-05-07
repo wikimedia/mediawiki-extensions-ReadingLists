@@ -1,8 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Renessaince"
+			"Renessaince",
+			"Ucukor"
 		]
 	},
-	"readinglists-desc": "Дазваляе ўдзельнікам кіраваць прыватнымі сьпісамі артыкулаў, такімі як сьпіс закладак ці «Захаваныя старонкі»."
+	"readinglists-desc": "Дазваляе ўдзельнікам кіраваць прыватнымі сьпісамі артыкулаў, такімі як сьпіс закладак ці «Захаваныя старонкі».",
+	"readinglists-display-direction-ascending": "Водле ўзросту",
+	"readinglists-display-direction-descending": "Водле спаду"
 }
