@@ -196,6 +196,19 @@ class HookHandler implements
 
 		if ( $readingListsEnabledForUser ) {
 			$output->addModules( 'ext.readingLists.bookmark' );
+
+			// Move watch link to top of menu
+			$actionMenu = $links['actions'] ?? [];
+			if ( isset( $actionMenu['watch'] ) ) {
+				$watchLink = [ 'watch' => $actionMenu['watch'] ];
+				unset( $actionMenu['watch'] );
+				$links['actions'] = $watchLink + $actionMenu;
+			}
+			if ( isset( $actionMenu['unwatch'] ) ) {
+				$unwatchLink = [ 'unwatch' => $actionMenu['unwatch'] ];
+				unset( $actionMenu['unwatch'] );
+				$links['actions'] = $unwatchLink + $actionMenu;
+			}
 		}
 
 		if ( $inAccountCreationCtaTreatment ) {
