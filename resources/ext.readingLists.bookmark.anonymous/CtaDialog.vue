@@ -78,7 +78,9 @@ module.exports = exports = {
 		const createAccountUrl = computed( () => mw.util.getUrl( 'Special:CreateAccount', {
 			returnto: returnTo,
 			returntoquery: 'readingListsAccountCreationCta=1',
-			type: 'signup'
+			type: 'signup',
+			// Needed to skip the newcomer welcome survey. See T422169.
+			campaign: 'account-creation-reading-list-cta'
 		} ) );
 		const loginUrl = computed( () => mw.util.getUrl( 'Special:UserLogin', urlParams ) );
 

@@ -134,6 +134,7 @@
 				"ReadingLists.ReadingListRepositoryFactory",
 				"ReadingLists.BookmarkEntryLookupService",
 				"UserOptionsLookup",
+				"UserOptionsManager",
 				"CentralIdLookupFactory",
 				"UserIdentityUtils"
 			],

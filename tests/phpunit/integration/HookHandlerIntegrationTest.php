@@ -129,6 +129,7 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 			$mockFactory,
 			$this->createBookmarkEntryLookupService( $mockFactory, $mockCentralIdLookupFactory ),
 			$services->getUserOptionsLookup(),
+			$services->getUserOptionsManager(),
 			$mockCentralIdLookupFactory,
 			$services->getUserIdentityUtils()
 		);

@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\ReadingLists;
 use MediaWiki\Api\ApiQuerySiteinfo;
 use MediaWiki\Api\Hook\APIQuerySiteInfoGeneralInfoHook;
 use MediaWiki\Config\Config;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\Extension\BetaFeatures\BetaFeatures;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
@@ -16,6 +17,7 @@ use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\CentralId\CentralIdLookupFactory;
 use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\User\Options\UserOptionsManager;
 use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
 use MediaWiki\User\UserIdentityUtils;
@@ -40,6 +42,7 @@ class HookHandler implements
 		private readonly ReadingListRepositoryFactory $readingListRepositoryFactory,
 		private readonly BookmarkEntryLookupService $bookmarkEntryLookupService,
 		private readonly UserOptionsLookup $userOptionsLookup,
+		private readonly UserOptionsManager $userOptionsManager,
 		private readonly CentralIdLookupFactory $centralIdLookupFactory,
 		private readonly UserIdentityUtils $userIdentityUtils,
 		private ?ExperimentManager $experimentManager = null
@@ -323,11 +326,18 @@ class HookHandler implements
 		);
 		unset( $returnToQueryArray['readingListsAccountCreationCta'] );
 
-		// If the URL parameter is present, the user came from the account creation CTA. For the
-		// experiment (account-creation-reading-list-cta), add a URL parameter that will be used to
-		// send an account_created event.
+		// If the URL parameter is present, the user came from the account creation CTA.
 		if ( $type === 'signup' && $isFromReadingListsAccountCreationCta ) {
+			// For the experiment (account-creation-reading-list-cta), add a URL parameter that will
+			// be used to send an account_created event.
 			$returnToQueryArray['readingListsAccountJustCreated'] = '1';
+
+			// Turn off the homepage mobile discovery popover from GrowthExperiments.
+			$user = RequestContext::getMain()->getUser();
+			if ( $user && $user->isRegistered() ) {
+				$this->userOptionsManager->setOption( $user, 'homepage_mobile_discovery_notice_seen', 1 );
+				$this->userOptionsManager->saveOptions( $user );
+			}
 		}
 
 		$returnToQuery = wfArrayToCgi( $returnToQueryArray );
