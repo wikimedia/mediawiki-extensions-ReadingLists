@@ -71,6 +71,7 @@
 	"apihelp-readinglists+deleteentry-summary": "현재 사용자에 속하는 목록의 문서를 삭제합니다.",
 	"apihelp-readinglists+deleteentry-param-entry": "엔트리 ID입니다. 일괄 삭제가 아니라면 필수입니다.",
 	"apihelp-readinglists+deleteentry-param-project": "페이지를 호스팅하는 위키의 프로젝트 이름입니다. 반드시 <var>$1title</var>과 함께 사용해야 합니다. 지정된 프로젝트와 제목에 해당하는 모든 항목을 삭제합니다.",
+	"apihelp-readinglists+deleteentry-param-title": "삭제할 문서 제목입니다. <var>$1project</var>와 함께 사용되어야 합니다.",
 	"apihelp-readinglists+deleteentry-example-1": "ID <kbd>8</kbd>의 목록 엔트리를 삭제합니다.",
 	"apihelp-readinglists+deleteentry-example-2": "여러 목록 항목을 삭제합니다.",
 	"apihelp-readinglists+deleteentry-example-3": "<kbd>en.wikipedia.org</kbd> 프로젝트에서 <kbd>Dog</kbd> 문서의 모든 항목을 삭제합니다.",
