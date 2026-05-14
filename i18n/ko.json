@@ -26,8 +26,8 @@
 	"readinglists-db-error-entry-limit": "$1 목록은 $2개를 넘는 {{PLURAL:$1|항목}}을 가질 수 없습니다.",
 	"readinglists-db-error-too-long": "$1 필드의 값은 $2바이트를 초과할 수 없습니다.",
 	"readinglists-db-error-no-such-project": "'$1'은(는) 알려진 프로젝트가 아닙니다.",
-	"readinglists-browser-add-entry-success": "<b>$1</b>가 [[$2|$3]]에 추가되었습니다.",
-	"readinglists-browser-remove-entry-success": "<b>$1</b>가 [[$2|$3]]에서 제거되었습니다.",
+	"readinglists-browser-add-entry-success": "<b>$1</b> 문서가 [[$2|$3]]에 추가되었습니다.",
+	"readinglists-browser-remove-entry-success": "<b>$1</b> 문서가 [[$2|$3]]에서 제거되었습니다.",
 	"readinglists-browser-login-prompt": "로그인하여 문서를 저장합니다",
 	"readinglists-browser-error-intro": "오류가 발생했습니다: $1",
 	"readinglists-browser-enable-sync-prompt": "문서 저장을 시작하기 위해 위키백과 앱에서 동기화를 사용합니다",
@@ -70,5 +70,6 @@
 	"readinglists-add-bookmark": "저장",
 	"readinglists-remove-bookmark": "저장하지 않음",
 	"readinglists-onboarding-title": "나중을 위해 문서 저장",
+	"readinglists-onboarding-text": "흥미로운 것을 발견하셨나요? 이제 개인 목록에 저장할 수 있습니다.",
 	"readinglists-onboarding-close-button": "닫기"
 }

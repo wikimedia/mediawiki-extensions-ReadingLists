@@ -28,5 +28,8 @@
 	"readinglists-special-subpage-title": "Sačuvane stranice",
 	"readinglists-default-title": "sačuvane stavke",
 	"readinglists-sorted-by-recent": "Poredano po vremenu čuvanja (prvo nedavne).",
-	"readinglists-menu-item": "Sačuvane stranice"
+	"readinglists-menu-item": "Sačuvane stranice",
+	"readinglists-onboarding-title": "Sačuvaj stranice za kasnije",
+	"readinglists-onboarding-text": "Pronašli ste nešto zanimljivo? Sad to možete sačuvati na lični spisak.",
+	"readinglists-onboarding-close-button": "Zatvori"
 }
