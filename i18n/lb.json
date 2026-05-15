@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Robby",
-			"Volvox"
+			"Volvox",
+			"Les Meloures"
 		]
 	},
 	"readinglists-desc": "Erlaabt et de Benotzer, fir privat Lëschte vun Elementer ze geréieren, wéi z. B. Lieszeechelëschten oder Lëschte vu „Gespäicherte Säiten“.",
@@ -52,7 +53,7 @@
 	"readinglists-default-title": "Lëscht vu gespäicherten Elementer",
 	"readinglists-default-description": "Standardlëscht fir Är gespäichert Säiten.",
 	"readinglists-empty-title": "Nach keng gespäichert Säiten",
-	"readinglists-empty-cta": "Benotzt d'Späichersymbol op enger belibeger Säit, fir Anträg hei derbäizesetzen.",
+	"readinglists-empty-cta": "Benotzt d'Späichersymbol op enger belibeger Säit, fir Ännerungen hei derbäizesetzen.",
 	"readinglists-display-menu": "Menü weisen",
 	"readinglists-display-sort": "Sortéieren no",
 	"readinglists-display-sort-name": "Numm",
