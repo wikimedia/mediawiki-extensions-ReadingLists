@@ -73,10 +73,8 @@ module.exports = exports = {
 	setup( props ) {
 		const isOpen = ref( true );
 
-		/* eslint-disable mediawiki/msg-doc */
 		const titleText = computed( () => mw.msg( props.titleMsgKey ) );
 		const bodyText = computed( () => mw.msg( props.bodyMsgKey ) );
-		/* eslint-enable mediawiki/msg-doc */
 
 		const closeButtonLabel = mw.msg( 'readinglists-onboarding-close-button' );
 

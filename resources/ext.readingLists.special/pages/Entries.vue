@@ -128,9 +128,9 @@ module.exports = exports = {
 			// - readinglists-display-sort-updated
 			// - readinglists-display-direction-ascending
 			// - readinglists-display-direction-descending
-			// eslint-disable-next-line mediawiki/msg-doc
+
 			const sortLabel = mw.msg( `readinglists-display-sort-${ this.sort }` );
-			// eslint-disable-next-line mediawiki/msg-doc
+
 			const dirLabel = mw.msg( `readinglists-display-direction-${ this.direction }` );
 			return `${ sortLabel }, ${ dirLabel }`;
 		}
@@ -147,7 +147,6 @@ module.exports = exports = {
 				const key = listNotFoundErrors.includes( err ) ?
 					'readinglists-special-error-list-not-found' : err;
 
-				// eslint-disable-next-line mediawiki/msg-doc
 				this.error = mw.msg( key );
 			} else {
 				this.error = err.toString();

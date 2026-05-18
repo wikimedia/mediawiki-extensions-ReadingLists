@@ -44,11 +44,9 @@ module.exports = exports = {
 	setup( props ) {
 		const isOpen = ref( true );
 
-		/* eslint-disable mediawiki/msg-doc */
 		const titleText = computed( () => mw.msg( props.titleMsgKey ) );
 		const bodyText = computed( () => mw.msg( props.bodyMsgKey ) );
 		const okButtonText = computed( () => mw.msg( 'readinglists-onboarding-ok-button' ) );
-		/* eslint-enable mediawiki/msg-doc */
 
 		const handleOpenChange = ( newValue ) => {
 			if ( !newValue ) {

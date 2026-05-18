@@ -76,16 +76,16 @@ module.exports = exports = {
 			options: [
 				{
 					key: SURVEY_ANSWER_POSITIVE,
-					// eslint-disable-next-line mediawiki/msg-doc
+
 					label: mw.msg( SURVEY_ANSWER_POSITIVE ),
-					// eslint-disable-next-line mediawiki/msg-doc
+
 					cue: mw.msg( SURVEY_ANSWER_POSITIVE_CUE )
 				},
 				{
 					key: SURVEY_ANSWER_NEGATIVE,
-					// eslint-disable-next-line mediawiki/msg-doc
+
 					label: mw.msg( SURVEY_ANSWER_NEGATIVE ),
-					// eslint-disable-next-line mediawiki/msg-doc
+
 					cue: mw.msg( SURVEY_ANSWER_NEGATIVE_CUE )
 				}
 			],
