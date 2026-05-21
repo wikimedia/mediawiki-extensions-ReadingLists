@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\ReadingLists\Tests;
 
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
+use MediaWiki\Extension\ReadingLists\LocalProjectHelper;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\MediaWikiServices;
@@ -1249,6 +1250,11 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 					ReadingListRepository::SORT_DIR_ASC ],
 				[ $expected['default-foo'] ],
 			],
+			'filter by projects' => [
+				[ [ $defaultId, $testId ], ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_ASC, 1000, null, [ ' foo2 ', 'foo3' ] ],
+				[ $expected['list-foo2'], $expected['list-foo3'] ],
+			],
 		];
 	}
 
@@ -1291,6 +1297,44 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 					ReadingListRepository::SORT_DIR_ASC );
 			}
 		);
+		$this->assertFailsWith( 'readinglists-db-error-no-such-project',
+			static function () use ( $repository, $defaultId ) {
+				$repository->getListEntries( [ $defaultId ], ReadingListRepository::SORT_BY_NAME,
+					ReadingListRepository::SORT_DIR_ASC, 1000, null, [ ' ' ] );
+			}
+		);
+	}
+
+	public function testGetListEntriesLocalProjectFilterReturnsEmptyWhenNoEntriesMatch() {
+		$this->addProjects( [ 'dummy', LocalProjectHelper::getLocalProject() ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+		[ $listId ] = $this->addLists( 1, [
+			[
+				'rl_is_default' => 0,
+				'rl_name' => 'foreign entries',
+				'entries' => [
+					[
+						'rlp_project' => 'https://example.org',
+						'rle_title' => 'Moose',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180818000000',
+						'rle_deleted' => 0,
+					],
+				],
+			],
+		] );
+
+		$res = $repository->getListEntries(
+			[ $listId ],
+			ReadingListRepository::SORT_BY_NAME,
+			ReadingListRepository::SORT_DIR_ASC,
+			1000,
+			null,
+			[ '@local' ]
+		);
+
+		$this->assertSame( [], $this->resultWrapperToArray( $res ) );
 	}
 
 	/**
@@ -1431,6 +1475,23 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		);
 		$this->assertSame(
 			[ 'foo:Foo', 'foo3:Bar2', 'foo:Bar', 'foo2:Bar2' ],
+			$this->getTitles( $this->resultWrapperToArray( $res ) )
+		);
+	}
+
+	public function testGetAllListEntriesNoDuplicatesFilterByProjects() {
+		$repository = $this->setUpNonDuplicateEntries();
+
+		$res = $repository->getAllListEntries(
+			ReadingListRepository::SORT_BY_UPDATED,
+			ReadingListRepository::SORT_DIR_ASC,
+			1000,
+			null,
+			true,
+			[ ' foo ', 'foo3' ]
+		);
+		$this->assertSame(
+			[ 'foo:Bar', 'foo3:Bar2', 'foo:Foo' ],
 			$this->getTitles( $this->resultWrapperToArray( $res ) )
 		);
 	}
@@ -1971,6 +2032,10 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			'limit + offset 3' => [
 				[ '20100101000000', ReadingListRepository::SORT_DIR_ASC, 2, [ '20170101000000', 3 ] ],
 				[ 'foo2' ],
+			],
+			'filter by projects' => [
+				[ '20100101000000', ReadingListRepository::SORT_DIR_ASC, 1000, null, [ ' bar ', 'foo2' ] ],
+				[ 'bar', 'foo2' ],
 			],
 		];
 	}

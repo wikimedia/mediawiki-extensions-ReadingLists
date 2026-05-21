@@ -6,6 +6,7 @@ use LogicException;
 use MediaWiki\Api\ApiPageSet;
 use MediaWiki\Api\ApiQueryGeneratorBase;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
+use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup;
 use MediaWiki\Extension\ReadingLists\Utils;
@@ -60,6 +61,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 		$this->checkUserRightsAny( 'viewmyprivateinfo' );
 
 		$lists = $this->getParameter( 'lists' );
+		$projects = $this->getParameter( 'projects' ) ?? [];
 		$changedSince = $this->getParameter( 'changedsince' );
 		$sort = $this->getParameter( 'sort' );
 		$dir = $this->getParameter( 'dir' );
@@ -107,11 +109,31 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 		$repository = $this->getReadingListRepository( $this->getUser() );
 
 		if ( $mode === self::$MODE_CHANGES ) {
-			$res = $repository->getListEntriesByDateUpdated( $changedSince, $dir, $limit + 1, $continue );
+			$res = $repository->getListEntriesByDateUpdated(
+				$changedSince,
+				$dir,
+				$limit + 1,
+				$continue,
+				$projects
+			);
 		} elseif ( $mode === self::$MODE_ID ) {
-			$res = $repository->getListEntries( $lists, $sort, $dir, $limit + 1, $continue );
+			$res = $repository->getListEntries(
+				$lists,
+				$sort,
+				$dir,
+				$limit + 1,
+				$continue,
+				$projects
+			);
 		} else {
-			$res = $repository->getAllListEntries( $sort, $dir, $limit + 1, $continue );
+			$res = $repository->getAllListEntries(
+				$sort,
+				$dir,
+				$limit + 1,
+				$continue,
+				true,
+				$projects
+			);
 		}
 
 		$titles = [];
@@ -157,6 +179,13 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 				ParamValidator::PARAM_ISMULTI_LIMIT1 => 100,
 				ParamValidator::PARAM_REQUIRED => false,
 			],
+			'projects' => [
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_ISMULTI_LIMIT1 => 100,
+				ParamValidator::PARAM_REQUIRED => false,
+				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rlp_project'],
+			],
 			'changedsince' => [
 				ParamValidator::PARAM_TYPE => 'timestamp',
 				self::PARAM_HELP_MSG => $this->msg( 'apihelp-query+readinglistentries-param-changedsince',
@@ -186,6 +215,10 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 				=> 'apihelp-query+readinglistentries-example-2',
 			"action=query&list=readinglistentries&{$prefix}changedsince=2013-01-01T00:00:00Z"
 				=> 'apihelp-query+readinglistentries-example-3',
+			"action=query&list=readinglistentries&{$prefix}projects=@local"
+				=> 'apihelp-query+readinglistentries-example-4',
+			"action=query&list=readinglistentries&{$prefix}projects=enwiki|dewiki"
+				=> 'apihelp-query+readinglistentries-example-5',
 		];
 	}
 

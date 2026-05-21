@@ -189,7 +189,8 @@ module.exports = exports = {
 						this.sort,
 						this.direction,
 						12,
-						this.next
+						this.next,
+						[ '@local' ]
 					);
 					entries = query.entries;
 					next = query.next;

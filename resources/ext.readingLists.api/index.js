@@ -102,9 +102,10 @@ async function getList( listId ) {
  * @param {string} direction
  * @param {number} limit
  * @param {string|null} next
+ * @param {string[]} projects
  * @return {Promise<any>}
  */
-async function getEntries( listId = null, sort = 'name', direction = 'asc', limit = 12, next = null ) {
+async function getEntries( listId = null, sort = 'name', direction = 'asc', limit = 12, next = null, projects = [] ) {
 	try {
 		const apiParams = {
 			action: 'query',
@@ -118,6 +119,10 @@ async function getEntries( listId = null, sort = 'name', direction = 'asc', limi
 
 		if ( listId ) {
 			apiParams.rlelists = listId;
+		}
+
+		if ( projects.length ) {
+			apiParams.rleprojects = projects;
 		}
 
 		const {
@@ -153,7 +158,7 @@ async function getEntries( listId = null, sort = 'name', direction = 'asc', limi
 	} catch ( err ) {
 		if ( err === 'readinglists-db-error-not-set-up' ) {
 			await setup();
-			return getEntries( listId, sort, direction, limit, next );
+			return getEntries( listId, sort, direction, limit, next, projects );
 		}
 
 		throw err;

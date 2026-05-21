@@ -2,6 +2,8 @@
 
 namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
+use MediaWiki\Config\SiteConfiguration;
+use MediaWiki\Extension\ReadingLists\LocalProjectHelper;
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
@@ -288,6 +290,84 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 				],
 				'Sort entries by name ascending with continue parameter',
 			],
+			[
+				[
+					'rlesort' => 'updated',
+					'rledir' => 'descending',
+					'rlelists' => "1|2|3",
+					'rleprojects' => 'foo|foo3',
+				],
+				[
+					"batchcomplete" => true,
+					"query" => [
+						"readinglistentries" => [
+							[
+								'id' => 2,
+								'project' => 'foo',
+								'title' => 'Dog',
+								'created' => '2010-01-01T00:00:00Z',
+								'updated' => '2018-12-01T00:00:00Z',
+								'listId' => 2
+							],
+							[
+								'id' => 5,
+								'project' => 'foo3',
+								'title' => 'Dolphin',
+								'created' => '2010-01-01T00:00:00Z',
+								'updated' => '2018-10-01T00:00:00Z',
+								'listId' => 2
+							],
+							[
+								'id' => 6,
+								'project' => 'foo',
+								'title' => 'Cute eyes',
+								'created' => '2010-01-01T00:00:00Z',
+								'updated' => '2018-08-21T00:00:00Z',
+								'listId' => 3
+							],
+							[
+								'id' => 1,
+								'project' => 'foo',
+								'title' => 'default stuff',
+								'created' => '2010-01-01T00:00:00Z',
+								'updated' => '2018-08-17T00:00:00Z',
+								'listId' => 1
+							],
+						],
+					]
+				],
+				'Filter entries by projects for specific lists',
+			],
+			[
+				[
+					'rlechangedsince' => '2018-09-15T12:31:19Z',
+					'rleprojects' => 'foo1|foo3',
+				],
+				[
+					"batchcomplete" => true,
+					"query" => [
+						"readinglistentries" => [
+							[
+								'id' => 5,
+								'project' => 'foo3',
+								'title' => 'Dolphin',
+								'created' => '2010-01-01T00:00:00Z',
+								'updated' => '2018-10-01T00:00:00Z',
+								'listId' => 2
+							],
+							[
+								'id' => 3,
+								'project' => 'foo1',
+								'title' => 'Cat',
+								'created' => '2010-01-01T00:00:00Z',
+								'updated' => '2018-11-01T00:00:00Z',
+								'listId' => 2
+							],
+						],
+					]
+				],
+				'Filter changed entries by projects',
+			],
 		];
 	}
 
@@ -399,6 +479,142 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 			$firstPage[0]['continue']['rlecontinue']
 		);
 		$this->assertSame( 'Banana split', $secondPageEntries[0]['title'] );
+	}
+
+	public function testApiQueryProjectsFilterAcceptsLocalProject(): void {
+		$localProject = LocalProjectHelper::getLocalProject();
+
+		$this->addLists( $this->user->mId, [
+			[
+				'rl_is_default' => 0,
+				'rl_name' => 'local project',
+				'rl_description' => '',
+				'rl_date_created' => '20170913205936',
+				'rl_date_updated' => '20170913205936',
+				'rl_deleted' => 0,
+				'entries' => [
+					[
+						'rlp_project' => $localProject,
+						'rle_title' => 'Zebra',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180817000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'https://example.org',
+						'rle_title' => 'Moose',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180818000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => $localProject,
+						'rle_title' => 'Ant',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180819000000',
+						'rle_deleted' => 0,
+					],
+				],
+			],
+		] );
+
+		$result = $this->doApiRequest(
+			array_merge( $this->apiParams, [
+				'rlesort' => 'name',
+				'rledir' => 'ascending',
+				'rleprojects' => '@local',
+			] ),
+			null,
+			false,
+			$this->getTestSysop()->getAuthority()
+		);
+
+		$entries = $result[0]['query']['readinglistentries'];
+		$this->assertSame(
+			[
+				$localProject . ':Ant',
+				$localProject . ':Zebra',
+			],
+			array_map( static function ( $entry ) {
+				return $entry['project'] . ':' . $entry['title'];
+			}, $entries )
+		);
+	}
+
+	public function testApiQueryProjectsFilterAcceptsWikiIds(): void {
+		$conf = new SiteConfiguration();
+		$conf->suffixes = [ 'wiki' ];
+		$conf->settings = [
+			'wgServer' => [
+				'enwiki' => '//en.example.org',
+				'dewiki' => '//de.example.org',
+			],
+			'wgCanonicalServer' => [
+				'enwiki' => 'https://en.example.org',
+				'dewiki' => 'https://de.example.org',
+			],
+			'wgArticlePath' => [
+				'enwiki' => '/wiki/$1',
+				'dewiki' => '/wiki/$1',
+			],
+		];
+		$this->setMwGlobals( 'wgConf', $conf );
+
+		$this->addLists( $this->user->mId, [
+			[
+				'rl_is_default' => 0,
+				'rl_name' => 'wiki ids',
+				'rl_description' => '',
+				'rl_date_created' => '20170913205936',
+				'rl_date_updated' => '20170913205936',
+				'rl_deleted' => 0,
+				'entries' => [
+					[
+						'rlp_project' => 'https://en.example.org',
+						'rle_title' => 'Eagle',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180817000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'https://de.example.org',
+						'rle_title' => 'Bear',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180818000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'https://fr.example.org',
+						'rle_title' => 'Wolf',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180819000000',
+						'rle_deleted' => 0,
+					],
+				],
+			],
+		] );
+
+		$result = $this->doApiRequest(
+			array_merge( $this->apiParams, [
+				'rlesort' => 'name',
+				'rledir' => 'ascending',
+				'rleprojects' => 'enwiki|dewiki',
+			] ),
+			null,
+			false,
+			$this->getTestSysop()->getAuthority()
+		);
+
+		$entries = $result[0]['query']['readinglistentries'];
+		$this->assertSame(
+			[
+				'https://de.example.org:Bear',
+				'https://en.example.org:Eagle',
+			],
+			array_map( static function ( $entry ) {
+				return $entry['project'] . ':' . $entry['title'];
+			}, $entries )
+		);
 	}
 
 	/**

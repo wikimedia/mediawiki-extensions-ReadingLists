@@ -7,6 +7,7 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
+use MediaWiki\WikiMap\WikiMap;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -644,11 +645,18 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @param array|null $from DB position to continue from (or null to start at the beginning/end).
 	 *   When sorting by name, this should be the name and id of a list; when sorting by update time,
 	 *   the updated timestamp (in some form accepted by MWTimestamp) and the id.
+	 * @param string[] $projects Project identifiers to filter by, or an empty array for all projects.
+	 *   Values may be '@local', canonical project URLs from rlp_project, or wiki IDs such as 'enwiki'.
 	 * @return IResultWrapper<ReadingListEntryRow>
 	 * @throws ReadingListRepositoryException
 	 */
 	public function getListEntries(
-		array $ids, $sortBy, $sortDir, $limit = 1000, ?array $from = null
+		array $ids,
+		$sortBy,
+		$sortDir,
+		$limit = 1000,
+		?array $from = null,
+		array $projects = []
 	) {
 		$this->assertUser();
 		if ( !$ids ) {
@@ -679,6 +687,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			throw new ReadingListRepositoryException(
 				'readinglists-db-error-no-such-list', [ reset( $missing ) ] );
 		}
+		$projectIds = $this->getProjectIds( $projects );
 
 		$res = $this->dbr->newSelectQueryBuilder()
 			->select( $this->getListEntryFields() )
@@ -689,8 +698,13 @@ class ReadingListRepository implements LoggerAwareInterface {
 				'rle_user_id' => $this->userId,
 				'rle_deleted' => 0
 			] )
-			->andWhere( $conditions )
-			->options( $options )
+			->andWhere( $conditions );
+
+		if ( $projectIds !== [] ) {
+			$res->andWhere( [ 'rle_rlp_id' => $projectIds ] );
+		}
+
+		$res = $res->options( $options )
 			->caller( __METHOD__ )->fetchResultSet();
 
 		return $res;
@@ -709,6 +723,8 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 *   rle_id of the last seen entry, used as a tiebreaker.
 	 * @param bool $deduplicate When true, the same article (project+title) across multiple lists
 	 *   appears only once. When false, returns all entries including duplicates.
+	 * @param string[] $projects Project identifiers to filter by, or an empty array for all projects.
+	 *   Values may be '@local', canonical project URLs from rlp_project, or wiki IDs such as 'enwiki'.
 	 * @throws ReadingListRepositoryException
 	 * @return IResultWrapper<ReadingListEntryRow>
 	 */
@@ -717,7 +733,8 @@ class ReadingListRepository implements LoggerAwareInterface {
 		string $sortDir = self::SORT_DIR_ASC,
 		int $limit = 1000,
 		?array $from = null,
-		bool $deduplicate = true
+		bool $deduplicate = true,
+		array $projects = []
 	) {
 		$this->assertUser();
 		$listIds = $this->getUserListIds();
@@ -727,8 +744,10 @@ class ReadingListRepository implements LoggerAwareInterface {
 		}
 
 		if ( !$deduplicate ) {
-			return $this->getListEntries( $listIds, $sortBy, $sortDir, $limit, $from );
+			return $this->getListEntries( $listIds, $sortBy, $sortDir, $limit, $from, $projects );
 		}
+
+		$projectIds = $this->getProjectIds( $projects );
 
 		[ $conditions, $options ] = $this->processSort(
 			'rle',
@@ -739,7 +758,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			'rle1'
 		);
 
-		return $this->dbr->newSelectQueryBuilder()
+		$query = $this->dbr->newSelectQueryBuilder()
 			->select( $this->getAliasedListEntryFields( 'rle1', 'rlp' ) )
 			->from( 'reading_list_entry', 'rle1' )
 			->join( 'reading_list_project', 'rlp', 'rle1.rle_rlp_id = rlp.rlp_id' )
@@ -754,8 +773,13 @@ class ReadingListRepository implements LoggerAwareInterface {
 				'rle1.rle_deleted' => 0,
 				'rle2.rle_id' => null,
 			] )
-			->andWhere( $conditions )
-			->options( $options )
+			->andWhere( $conditions );
+
+		if ( $projectIds !== [] ) {
+			$query->andWhere( [ 'rle1.rle_rlp_id' => $projectIds ] );
+		}
+
+		return $query->options( $options )
 			->caller( __METHOD__ )
 			->fetchResultSet();
 	}
@@ -997,17 +1021,24 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @param int $limit
 	 * @param array|null $from DB position to continue from (or null to start at the beginning/end).
 	 *   Should contain the updated timestamp (in some form accepted by MWTimestamp) and the id.
+	 * @param string[] $projects Project identifiers to filter by, or an empty array for all projects.
+	 *   Values may be '@local', canonical project URLs from rlp_project, or wiki IDs such as 'enwiki'.
 	 * @throws ReadingListRepositoryException
 	 * @return IResultWrapper<ReadingListEntryRow>
 	 */
 	public function getListEntriesByDateUpdated(
-		$date, $sortDir = self::SORT_DIR_ASC, $limit = 1000, ?array $from = null
+		$date,
+		$sortDir = self::SORT_DIR_ASC,
+		$limit = 1000,
+		?array $from = null,
+		array $projects = []
 	) {
 		$this->assertUser();
+		$projectIds = $this->getProjectIds( $projects );
 		// Always sort by last updated; there is no supporting index for sorting by name.
 		[ $conditions, $options ] = $this->processSort( 'rle', self::SORT_BY_UPDATED,
 			$sortDir, $limit, $from );
-		$res = $this->dbr->newSelectQueryBuilder()
+		$query = $this->dbr->newSelectQueryBuilder()
 			->select( $this->getListEntryFields() )
 			->from( 'reading_list' )
 			->join( 'reading_list_entry', null, 'rl_id = rle_rl_id' )
@@ -1017,8 +1048,13 @@ class ReadingListRepository implements LoggerAwareInterface {
 				'rl_deleted' => 0,
 				$this->dbr->expr( 'rle_date_updated', '>', $this->dbr->timestamp( $date ) )
 			] )
-			->andWhere( $conditions )
-			->options( $options )
+			->andWhere( $conditions );
+
+		if ( $projectIds !== [] ) {
+			$query->andWhere( [ 'rle_rlp_id' => $projectIds ] );
+		}
+
+		$res = $query->options( $options )
 			->caller( __METHOD__ )->fetchResultSet();
 		return $res;
 	}
@@ -1503,7 +1539,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 
 	/**
 	 * Look up a project ID.
-	 * @param string $project
+	 * @param string $project Project identifier: '@local', canonical project URL, or wiki ID.
 	 * @return int|null
 	 */
 	private function getProjectId( $project ) {
@@ -1514,12 +1550,51 @@ class ReadingListRepository implements LoggerAwareInterface {
 			$project = $this->getLocalProject();
 		}
 
+		$id = $this->getProjectIdByProject( $project );
+		if ( $id !== null ) {
+			return $id;
+		}
+
+		$wiki = WikiMap::getWiki( $project );
+		if ( !$wiki ) {
+			return null;
+		}
+
+		return $this->getProjectIdByProject( $wiki->getCanonicalServer() );
+	}
+
+	/**
+	 * Look up the internal project ID for an exact rlp_project value.
+	 * @param string $project Canonical project URL as stored in rlp_project.
+	 * @return int|null
+	 */
+	private function getProjectIdByProject( string $project ): ?int {
 		$id = $this->dbr->newSelectQueryBuilder()
 			->select( 'rlp_id' )
 			->from( 'reading_list_project' )
 			->where( [ 'rlp_project' => $project ] )
 			->caller( __METHOD__ )->fetchField();
 		return $id === false ? null : (int)$id;
+	}
+
+	/**
+	 * @param string[] $projects Project identifiers to resolve, or an empty array for all projects.
+	 * @return int[] Project IDs.
+	 * @throws ReadingListRepositoryException
+	 */
+	private function getProjectIds( array $projects ): array {
+		$ids = [];
+		foreach ( array_unique( $projects ) as $project ) {
+			$project = trim( $project );
+			self::assertFieldLength( 'rlp_project', $project );
+			$id = $this->getProjectId( $project );
+			if ( !$id ) {
+				throw new ReadingListRepositoryException( 'readinglists-db-error-no-such-project',
+					[ $project ] );
+			}
+			$ids[] = $id;
+		}
+		return $ids;
 	}
 
 	/**
