@@ -3,6 +3,7 @@
 		"authors": [
 			"BaRaN6161 TURK",
 			"Hedda",
+			"Leo",
 			"Sakblue",
 			"SaldırganSincap",
 			"ToprakM"
@@ -37,5 +38,10 @@
 	"readinglists-browser-page-not-supported": "$1, bu sayfayı desteklemiyor",
 	"readinglists-default-title": "kaydedilen öğeler",
 	"readinglists-onboarding-saved-pages-title": "Kaydedilen sayfalarınız",
-	"readinglists-onboarding-saved-pages-text": "Kaydettiğiniz tüm sayfalara buradan erişin."
+	"readinglists-onboarding-saved-pages-text": "Kaydettiğiniz tüm sayfalara buradan erişin.",
+	"readinglists-cta-dialog-title": "Sayfaları kaydet",
+	"readinglists-cta-dialog-subtitle": "Artık Vikipedi sayfalarını kişisel listenize kaydedebilirsiniz.",
+	"readinglists-cta-dialog-call-to-action": "Kaydetmeye başlamak için lütfen giriş yapın veya bir hesap oluşturun.",
+	"readinglists-cta-dialog-create-account": "Hesap oluştur",
+	"readinglists-cta-dialog-log-in": "Oturum aç"
 }
