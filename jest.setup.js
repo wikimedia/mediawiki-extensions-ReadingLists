@@ -1,3 +1,4 @@
+const { config } = require( '@vue/test-utils' );
 const i18n = require( './i18n/en.json' );
 
 function ApiMock() {
@@ -49,3 +50,9 @@ const mw = {
 };
 
 global.mw = mw;
+
+config.global.directives = {
+	'i18n-html': ( el, binding ) => {
+		el.innerHTML = mw.msg( binding.arg, binding.value );
+	}
+};

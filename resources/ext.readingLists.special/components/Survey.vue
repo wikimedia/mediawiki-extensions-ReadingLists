@@ -15,8 +15,10 @@
 					{{ option.label }}
 				</cdx-button>
 			</div>
-			<!-- eslint-disable-next-line vue/no-v-html -->
-			<div class="reading-lists-survey__privacy-policy" v-html="msgPrivacyPolicy"></div>
+			<div
+				v-i18n-html:readinglists-betafeature-quicksurvey-privacy-policy
+				class="reading-lists-survey__privacy-policy"
+			></div>
 			<cdx-dialog
 				id="reading-lists-survey-dialog"
 				v-model:open="dialogOpen"
@@ -96,8 +98,6 @@ module.exports = exports = {
 			msgQuestion: mw.msg( 'readinglists-betafeature-quicksurvey-question' ),
 			msgFeedbackQuestion: mw.msg( 'readinglists-betafeature-quicksurvey-question-feedback' ),
 			msgPlaceholder: mw.msg( 'readinglists-betafeature-quicksurvey-feedback-placeholder' ),
-			// .parse() to convert the wikitext link in the message to HTML
-			msgPrivacyPolicy: mw.message( 'readinglists-betafeature-quicksurvey-privacy-policy' ).parse(),
 			msgSubmit: mw.msg( 'readinglists-betafeature-quicksurvey-submit' ),
 			msgThankYou: mw.msg( 'readinglists-betafeature-quicksurvey-thank-you' )
 		};
