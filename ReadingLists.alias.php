@@ -12,3 +12,7 @@ $specialPageAliases = [];
 $specialPageAliases['en'] = [
 	'ReadingLists' => [ 'ReadingLists' ],
 ];
+
+$specialPageAliases['uk'] = [
+	'ReadingLists' => [ 'Списки читання' ],
+];
