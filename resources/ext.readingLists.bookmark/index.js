@@ -31,8 +31,18 @@ const moduleName = isMinerva ?
 
 const bookmarkForOnboarding = document.querySelector( '#ca-bookmark' );
 const isMainPage = mw.config.get( 'wgIsMainPage' );
+const url = new URL( window.location.href );
+const isCurrentPageView = mw.config.get( 'wgAction' ) === 'view' &&
+	!url.searchParams.has( 'veaction' ) &&
+	!url.searchParams.has( 'diff' ) &&
+	!url.searchParams.has( 'oldid' );
 
-if ( bookmarkForOnboarding && !bookmarkForOnboarding.dataset.mwSaved && !isMainPage ) {
+if (
+	bookmarkForOnboarding &&
+	!bookmarkForOnboarding.dataset.mwSaved &&
+	!isMainPage &&
+	isCurrentPageView
+) {
 	initOnboardingPopover(
 		'#ca-bookmark',
 		'readinglists-bookmark-dialog-seen',
