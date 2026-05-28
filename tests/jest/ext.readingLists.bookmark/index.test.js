@@ -100,6 +100,7 @@ describe( 'ext.readingLists.bookmark index', () => {
 	} );
 
 	test.each( [
+		[ 'saved page', '/wiki/France', { saved: true } ],
 		[ 'main page', '/wiki/Main_Page', {}, { wgIsMainPage: true } ],
 		[ 'edit action', '/w/index.php?title=France&action=edit', {}, { wgAction: 'edit' } ],
 		[ 'submit action', '/w/index.php?title=France&action=submit', {}, { wgAction: 'submit' } ],

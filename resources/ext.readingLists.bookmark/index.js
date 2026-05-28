@@ -1,7 +1,8 @@
 const { initBookmark, initOnboardingPopover } = require( './bookmark.js' );
 const skinName = mw.config.get( 'skin' );
 const isMinerva = skinName === 'minerva';
-const bookmarks = document.querySelectorAll( isMinerva ? '#ca-bookmark' : '.reading-lists-bookmark' );
+const bookmarkSelector = isMinerva ? '#ca-bookmark' : '.reading-lists-bookmark';
+const bookmarks = document.querySelectorAll( bookmarkSelector );
 
 if ( bookmarks.length === 0 ) {
 	throw new Error( 'Bookmark not found' );
@@ -29,7 +30,7 @@ const moduleName = isMinerva ?
 	'ext.readingLists.onboarding.mobile' :
 	'ext.readingLists.onboarding.desktop';
 
-const bookmarkForOnboarding = document.querySelector( '#ca-bookmark' );
+const bookmarkForOnboarding = document.querySelector( bookmarkSelector );
 const isMainPage = mw.config.get( 'wgIsMainPage' );
 const url = new URL( window.location.href );
 const isCurrentPageView = mw.config.get( 'wgAction' ) === 'view' &&
