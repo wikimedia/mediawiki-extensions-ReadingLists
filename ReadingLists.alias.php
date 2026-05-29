@@ -13,6 +13,7 @@ $specialPageAliases['en'] = [
 	'ReadingLists' => [ 'ReadingLists' ],
 ];
 
+/** Ukrainian (Українська) */
 $specialPageAliases['uk'] = [
-	'ReadingLists' => [ 'Списки читання' ],
+	'ReadingLists' => [ 'Списки_читання' ],
 ];
