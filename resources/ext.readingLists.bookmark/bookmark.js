@@ -69,6 +69,11 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		// * readinglists-add-bookmark
 		// * readinglists-remove-bookmark
 		label.textContent = mw.msg( `readinglists-${ ( !isSaved ? 'add' : 'remove' ) }-bookmark` );
+
+		// The following messages are used here:
+		// * tooltip-ca-bookmark-add
+		// * tooltip-ca-bookmark-remove
+		bookmark.title = mw.msg( `tooltip-ca-bookmark-${ ( !isSaved ? 'add' : 'remove' ) }` );
 	}
 
 	/**

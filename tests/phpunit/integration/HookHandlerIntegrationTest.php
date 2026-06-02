@@ -232,6 +232,7 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		$this->assertArrayHasKey( 'readinglists', $links['user-menu'] );
 		$this->assertArrayHasKey( 'bookmark', $links['views'] );
+		$this->assertSame( 'ca-bookmark-add', $links['views']['bookmark']['single-id'] );
 	}
 
 	public function testBookmarkIconButtonNotAddedForMainNamespacePageWithUserNotInExperiment() {
@@ -328,6 +329,7 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		$this->assertSame( 1, $links['views']['bookmark']['data-mw-saved'] );
 		$this->assertSame( 1, $links['views']['bookmark']['data-mw-in-custom-list'] );
+		$this->assertSame( 'ca-bookmark-remove', $links['views']['bookmark']['single-id'] );
 	}
 
 	public function testBookmarkIconButtonNotAddedForTalkPageWithExperiment() {

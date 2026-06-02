@@ -280,6 +280,8 @@
 				"readinglists-browser-remove-entry-success",
 				"readinglists-default-title",
 				"readinglists-browser-error-intro",
+				"tooltip-ca-bookmark-add",
+				"tooltip-ca-bookmark-remove",
 				"notloggedin"
 			],
 			"dependencies": [
