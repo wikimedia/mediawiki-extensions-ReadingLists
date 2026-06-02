@@ -6,7 +6,6 @@ use MediaWiki\Api\ApiQuerySiteinfo;
 use MediaWiki\Api\Hook\APIQuerySiteInfoGeneralInfoHook;
 use MediaWiki\Config\Config;
 use MediaWiki\Context\RequestContext;
-use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\Extension\BetaFeatures\BetaFeatures;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\Extension\TestKitchen\Sdk\ExperimentManager;
@@ -124,16 +123,10 @@ class HookHandler implements
 		$defaultListId = null;
 		if ( $centralId ) {
 			$repository = $this->readingListRepositoryFactory->create( $centralId );
+			// The default list is created lazily when the user saves their first page
+			// (the client-side bookmark code calls the setup API if no list exists yet),
+			// so there is no need to eagerly create it here on page view. See T427944.
 			$defaultListId = $repository->getDefaultListIdForUser() ?: null;
-
-			if ( $defaultListId === null ) {
-				DeferredUpdates::addCallableUpdate(
-					static function () use ( $repository ) {
-						$repository->setupForUser( true );
-					},
-					DeferredUpdates::POSTSEND
-				);
-			}
 		}
 
 		$output = $sktemplate->getOutput();
