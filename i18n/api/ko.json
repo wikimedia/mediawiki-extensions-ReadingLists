@@ -30,7 +30,7 @@
 	"apihelp-query+readinglists-example-2": "<kbd>2013-01-01T00:00:00Z</kbd> 이후로 변경된 현재 사용자의 읽기 목록을 가져옵니다.",
 	"apihelp-query+readinglists-example-3": "<kbd>en.wikipedia.org</kbd> 프로젝트에서 <kbd>Dog</kbd> 문서를 포함하는 현재 사용자의 읽기 목록을 가져옵니다",
 	"apihelp-query+readinglistentries-summary": "특정 목록의 문서를 나열합니다.",
-	"apihelp-query+readinglistentries-extended-description": "이 모듈은 세 가지 작동 모드를 제공합니다. <var>$1lists</var> 매개변수를 사용하면 지정된 목록의 문서를 반환합니다. <var>$1 changedsince`</var> 매개변수를 사용하면 지정된 날짜 이후 현재 사용자의 모든 변경된 목록을 반환합니다. (이 기능은 기기 동기화를 위한 것으로, 다른 모드와 달리 삭제된 목록도 포함합니다. 목록 항목 변경 사항이 아닌 목록 메타데이터 변경 사항만 고려됩니다.) 이러한 매개변수 없이 사용하면 모든 목록을 반환합니다.",
+	"apihelp-query+readinglistentries-extended-description": "이 모듈은 세 가지 작동 모드를 제공합니다. <var>$1lists</var> 매개변수를 사용하면 지정된 목록의 문서를 반환합니다. <var>$1 changedsince`</var> 매개변수를 사용하면 지정된 날짜 이후 현재 사용자의 모든 변경된 목록을 반환합니다. (이 기능은 기기 동기화를 위한 것으로, 다른 모드와 달리 삭제된 목록도 포함합니다. 목록 항목 변경 사항이 아닌 목록 메타데이터 변경 사항만 고려됩니다.) 이러한 매개변수 없이 사용하면 모든 목록을 반환합니다. <var>$1projects</var> 매개변수는 특정 프로젝트의 결과를 한정시키기 위해 아무 모드와도 사용될 수 있습니다.",
 	"apihelp-query+readinglistentries-param-lists": "문서를 반환할 목록 ID입니다. 선택 사항입니다. 지정되지 않은 경우, 모든 목록의 항목을 반환합니다.",
 	"apihelp-query+readinglistentries-param-changedsince": "이 타임스탬프 이후로 변경된 목록 엔트리를 표시합니다. <kbd>$1</kbd> 이후여야 합니다.",
 	"apihelp-query+readinglistentries-param-sort": "정렬 기준으로 사용할 속성입니다. <kbd>name</kbd>은 <var>$1changedsince</var>와 함께 사용할 수 없습니다. <var>$1changedsince</var> 설정된 경우 기본값은 <kbd>updated</kbd>이고, 그렇지 않은 경우 <kbd>name</kbd>입니다.",
