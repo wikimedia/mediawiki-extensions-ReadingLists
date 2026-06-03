@@ -37,7 +37,18 @@
 	"readinglists-browser-list-entry-limit-exceeded": "Статтю зберегти не вдалося. Ви досягли ліміту ($1) статей на список",
 	"readinglists-browser-extension-product-title": "Списки для читання Вікіпедії",
 	"readinglists-browser-page-not-supported": "$1 не підтримує цю сторінку",
+	"readinglists-description": "Усі Ваші збережені списки в одному місці.",
+	"reading-list-purpose": "Будь ласка, увійдіть, щоб побачити свої приватні списки читання.",
+	"reading-list-purpose-for-temp-user": "Будь ласка, створіть обліковий запис, щоб створити приватні списки читання.",
+	"readinglists-import-error": "Не вдалося відобразити список з наданих даних.",
+	"readinglists-import-size-error": "Список занадто великий, щоб його відобразити.",
 	"special-tab-readinglists-short": "Ваші списки",
+	"action-action-readinglist-private": "читання списків читання інших користувачів",
+	"readinglists-no-title": "Неназваний список",
 	"readinglists-export": "Поділитися списком",
-	"readinglists-watchlist": "Список спостереження"
+	"readinglists-watchlist": "Список спостереження",
+	"readinglists-watchlist-description": "Сторінки, за якими Ви спостерігаєте щодо нових редагувань.",
+	"readinglists-import-app-misconfigured": "Цей вебсайт наразі не підтримує імпортування списків.",
+	"readinglists-share-url-notify": "Інформацію, пов'язану з цим списком читання, скопійовано до Вашого буфера обміну.",
+	"readinglists-bookmark": "Закладки"
 }
