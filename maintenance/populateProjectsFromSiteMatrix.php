@@ -6,6 +6,7 @@ use Generator;
 use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Extension\SiteMatrix\SiteMatrix;
 use MediaWiki\Maintenance\Maintenance;
+use Wikimedia\Rdbms\IReadableDatabase;
 
 // @codeCoverageIgnoreStart
 require_once getenv( 'MW_INSTALL_PATH' ) !== false
@@ -29,6 +30,7 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 		parent::__construct();
 		$this->addDescription(
 			'Populate (or update) the reading_list_project table from SiteMatrix data.' );
+		$this->addOption( 'dry-run', 'List projects that would be added without updating the database' );
 		$this->setBatchSize( 100 );
 		$this->requireExtension( 'ReadingLists' );
 		$this->requireExtension( 'SiteMatrix' );
@@ -45,6 +47,15 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 			Utils::VIRTUAL_DOMAIN
 		);
 		$inserted = 0;
+		$projects = $this->getProjectsToAdd( $dbw );
+
+		if ( $this->hasOption( 'dry-run' ) ) {
+			$this->output( "would insert " . count( $projects ) . " projects\n" );
+			foreach ( $projects as $project ) {
+				$this->output( "$project\n" );
+			}
+			return;
+		}
 
 		$this->output( "populating...\n" );
 		foreach ( $this->generateAllowedDomains() as [ $project ] ) {
@@ -61,6 +72,30 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 			}
 		}
 		$this->output( "inserted $inserted projects\n" );
+	}
+
+	/**
+	 * @param IReadableDatabase $db
+	 * @return string[]
+	 */
+	private function getProjectsToAdd( IReadableDatabase $db ): array {
+		$projects = [];
+		foreach ( $this->generateAllowedDomains() as [ $project ] ) {
+			$projects[$project] = true;
+		}
+		$projects = array_keys( $projects );
+
+		if ( !$projects ) {
+			return [];
+		}
+
+		$existingProjects = $db->newSelectQueryBuilder()
+			->select( 'rlp_project' )
+			->from( 'reading_list_project' )
+			->where( [ 'rlp_project' => $projects ] )
+			->caller( __METHOD__ )->fetchFieldValues();
+
+		return array_values( array_diff( $projects, $existingProjects ) );
 	}
 
 	/**
