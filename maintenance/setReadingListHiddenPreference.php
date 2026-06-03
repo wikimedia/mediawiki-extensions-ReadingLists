@@ -6,7 +6,6 @@ use MediaWiki\Extension\ReadingLists\Constants;
 use MediaWiki\Extension\ReadingLists\Service\UserPreferenceBatchUpdater;
 use MediaWiki\Extension\ReadingLists\Validator\ReadingListPreferenceEligibilityValidator;
 use MediaWiki\Maintenance\Maintenance;
-use MediaWiki\Maintenance\MaintenanceFatalError;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use MediaWiki\User\Options\UserOptionsManager;
@@ -143,9 +142,6 @@ class SetReadingListHiddenPreference extends Maintenance {
 		$this->userIdentityLookup = $services->getUserIdentityLookup();
 	}
 
-	/**
-	 * @throws MaintenanceFatalError
-	 */
 	public function execute() {
 		$this->initializeServices();
 
@@ -179,7 +175,6 @@ class SetReadingListHiddenPreference extends Maintenance {
 
 	/**
 	 * @param resource $file
-	 * @throws MaintenanceFatalError
 	 */
 	private function processInput( $file ): void {
 		$userIds = [];
@@ -302,7 +297,6 @@ class SetReadingListHiddenPreference extends Maintenance {
 	/**
 	 * @param int $userId
 	 * @return void
-	 * @throws MaintenanceFatalError
 	 */
 	private function processUser( int $userId ): void {
 		$user = $this->isGlobalIds
