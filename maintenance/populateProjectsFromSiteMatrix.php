@@ -58,18 +58,19 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 		}
 
 		$this->output( "populating...\n" );
-		foreach ( $this->generateAllowedDomains() as [ $project ] ) {
-			$dbw->newInsertQueryBuilder()
-				->insertInto( 'reading_list_project' )
-				->ignore()
-				->row( [ 'rlp_project' => $project ] )
-				->caller( __METHOD__ )->execute();
-			if ( $dbw->affectedRows() ) {
-				$inserted++;
-				if ( $inserted % $this->mBatchSize ) {
-					$this->waitForReplication();
+		foreach ( array_chunk( $projects, $this->getBatchSize() ) as $projectBatch ) {
+			$this->beginTransactionRound( __METHOD__ );
+			foreach ( $projectBatch as $project ) {
+				$dbw->newInsertQueryBuilder()
+					->insertInto( 'reading_list_project' )
+					->ignore()
+					->row( [ 'rlp_project' => $project ] )
+					->caller( __METHOD__ )->execute();
+				if ( $dbw->affectedRows() ) {
+					$inserted++;
 				}
 			}
+			$this->commitTransactionRound( __METHOD__ );
 		}
 		$this->output( "inserted $inserted projects\n" );
 	}
