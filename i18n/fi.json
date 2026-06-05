@@ -48,7 +48,7 @@
 	"readinglists-total-lists": "$1 {{PLURAL:$1|lista|listaa}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|sivu|sivua}}",
 	"readinglists-show-more": "Näytä lisää",
-	"readinglists-default-title": "tallennetut kohteet",
+	"readinglists-default-title": "tallennetut sivut",
 	"readinglists-default-description": "Oletuslista tallennetuille sivuillesi.",
 	"readinglists-empty-title": "Tallennettuja sivuja ei vielä ole",
 	"readinglists-empty-cta": "Käytä tallennuskuvaketta millä tahansa sivulla tallentaaksesi sivuja tänne.",
