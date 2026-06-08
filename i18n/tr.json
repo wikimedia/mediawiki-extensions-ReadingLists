@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"BaRaN6161 TURK",
+			"HakanIST",
 			"Hedda",
 			"Leo",
 			"Sakblue",
@@ -36,12 +37,23 @@
 	"readinglists-browser-list-entry-limit-exceeded": "Madde kaydedilemez. Liste başına $1 madde sınırına ulaştınız",
 	"readinglists-browser-extension-product-title": "Vikipedi Okuma Listeleri",
 	"readinglists-browser-page-not-supported": "$1, bu sayfayı desteklemiyor",
+	"readinglists-loading": "Lütfen bekleyin...",
 	"readinglists-default-title": "kaydedilen öğeler",
+	"readinglists-display-sort-name": "Ad",
+	"action-action-readinglist-private": "diğer kullanıcıların okuma listelerini okuma",
+	"readinglists-add-bookmark": "Kaydet",
+	"readinglists-unsave-from-custom-list-confirm": "Kaldır",
+	"readinglists-unsave-from-custom-list-cancel": "İptal",
+	"readinglists-onboarding-close-button": "Kapat",
 	"readinglists-onboarding-saved-pages-title": "Kaydedilen sayfalarınız",
 	"readinglists-onboarding-saved-pages-text": "Kaydettiğiniz tüm sayfalara buradan erişin.",
+	"readinglists-betafeature-quicksurvey-answer-positive": "Evet",
+	"readinglists-betafeature-quicksurvey-answer-negative": "Hayır",
+	"readinglists-betafeature-quicksurvey-submit": "Gönder",
 	"readinglists-cta-dialog-title": "Sayfaları kaydet",
 	"readinglists-cta-dialog-subtitle": "Artık Vikipedi sayfalarını kişisel listenize kaydedebilirsiniz.",
 	"readinglists-cta-dialog-call-to-action": "Kaydetmeye başlamak için lütfen giriş yapın veya bir hesap oluşturun.",
 	"readinglists-cta-dialog-create-account": "Hesap oluştur",
-	"readinglists-cta-dialog-log-in": "Oturum aç"
+	"readinglists-cta-dialog-log-in": "Oturum aç",
+	"readinglists-cta-dialog-close": "Kapat"
 }
