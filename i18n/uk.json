@@ -46,5 +46,8 @@
 	"action-action-readinglist-private": "читання списків читання інших користувачів",
 	"readinglists-no-title": "Неназваний список",
 	"readinglists-export": "Поділитися списком",
-	"readinglists-watchlist": "Список спостереження"
+	"readinglists-watchlist": "Список спостереження",
+	"readinglists-watchlist-description": "Сторінки, за якими Ви спостерігаєте щодо нових редагувань.",
+	"readinglists-import-app-misconfigured": "Цей вебсайт наразі не підтримує імпортування списків.",
+	"readinglists-share-url-notify": "Інформацію, пов'язану з цим списком читання, скопійовано до Вашого буфера обміну."
 }
