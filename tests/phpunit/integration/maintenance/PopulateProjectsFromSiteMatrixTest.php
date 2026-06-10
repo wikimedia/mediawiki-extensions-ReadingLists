@@ -21,6 +21,12 @@ class PopulateProjectsFromSiteMatrixTest extends MaintenanceBaseTestCase {
 	/** @var SiteMatrix&MockObject */
 	private $siteMatrix;
 
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->markTestSkippedIfExtensionNotLoaded( 'SiteMatrix' );
+	}
+
 	protected function getMaintenanceClass() {
 		return TestablePopulateProjectsFromSiteMatrix::class;
 	}
