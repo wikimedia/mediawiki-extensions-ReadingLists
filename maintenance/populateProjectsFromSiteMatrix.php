@@ -6,6 +6,7 @@ use Generator;
 use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\Extension\SiteMatrix\SiteMatrix;
 use MediaWiki\Maintenance\Maintenance;
+use Throwable;
 use Wikimedia\Rdbms\IReadableDatabase;
 
 // @codeCoverageIgnoreStart
@@ -31,6 +32,7 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 		$this->addDescription(
 			'Populate (or update) the reading_list_project table from SiteMatrix data.' );
 		$this->addOption( 'dry-run', 'List projects that would be added without updating the database' );
+		$this->addOption( 'verbose', 'Show verbose output' );
 		$this->setBatchSize( 100 );
 		$this->requireExtension( 'ReadingLists' );
 		$this->requireExtension( 'SiteMatrix' );
@@ -40,14 +42,16 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 	 * @inheritDoc
 	 */
 	public function execute() {
-		// Would be nicer to the put this in the constructor but there extensions are not loaded yet.
-		$this->siteMatrix = new SiteMatrix();
+		$this->siteMatrix = $this->getSiteMatrix();
 
 		$dbw = $this->getServiceContainer()->getDBLoadBalancerFactory()->getPrimaryDatabase(
 			Utils::VIRTUAL_DOMAIN
 		);
 		$inserted = 0;
 		$projects = $this->getProjectsToAdd( $dbw );
+
+		$this->verboseOutput( 'database domain ID: ' . $dbw->getDomainID() );
+		$this->verboseOutput( 'projects to insert: ' . count( $projects ) );
 
 		if ( $this->hasOption( 'dry-run' ) ) {
 			$this->output( "would insert " . count( $projects ) . " projects\n" );
@@ -57,22 +61,49 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 			return;
 		}
 
-		$this->output( "populating...\n" );
-		foreach ( array_chunk( $projects, $this->getBatchSize() ) as $projectBatch ) {
+		$batchSize = $this->getBatchSize();
+
+		$this->output( "populating with batch size $batchSize...\n" );
+		foreach ( array_chunk( $projects, $batchSize ) as $projectBatch ) {
 			$this->beginTransactionRound( __METHOD__ );
 			foreach ( $projectBatch as $project ) {
-				$dbw->newInsertQueryBuilder()
-					->insertInto( 'reading_list_project' )
-					->ignore()
-					->row( [ 'rlp_project' => $project ] )
-					->caller( __METHOD__ )->execute();
-				if ( $dbw->affectedRows() ) {
+				try {
+					$dbw->newInsertQueryBuilder()
+						->insertInto( 'reading_list_project' )
+						->row( [ 'rlp_project' => $project ] )
+						->caller( __METHOD__ )
+						->execute();
+				} catch ( Throwable $e ) {
+					$this->error( "failed to insert $project: " . $e->getMessage() );
+					throw $e;
+				}
+				$affectedRows = $dbw->affectedRows();
+				$this->verboseOutput( "insert $project affected rows: $affectedRows" );
+				if ( $affectedRows ) {
 					$inserted++;
 				}
 			}
-			$this->commitTransactionRound( __METHOD__ );
+			try {
+				$waitSucceeded = $this->commitTransactionRound( __METHOD__ );
+				$this->verboseOutput(
+					'transaction committed; replication wait ' . ( $waitSucceeded ? 'succeeded' : 'failed' )
+				);
+			} catch ( Throwable $e ) {
+				$this->error( 'failed to commit transaction round: ' . $e->getMessage() );
+				throw $e;
+			}
 		}
 		$this->output( "inserted $inserted projects\n" );
+	}
+
+	protected function getSiteMatrix(): SiteMatrix {
+		return new SiteMatrix();
+	}
+
+	private function verboseOutput( string $message ): void {
+		if ( $this->hasOption( 'verbose' ) ) {
+			$this->output( "$message\n" );
+		}
 	}
 
 	/**
@@ -82,7 +113,7 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 	private function getProjectsToAdd( IReadableDatabase $db ): array {
 		$projects = [];
 		foreach ( $this->generateAllowedDomains() as [ $project ] ) {
-			$projects[$project] = true;
+			$projects[$this->normalizeProject( $project )] = true;
 		}
 		$projects = array_keys( $projects );
 
@@ -93,10 +124,19 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 		$existingProjects = $db->newSelectQueryBuilder()
 			->select( 'rlp_project' )
 			->from( 'reading_list_project' )
-			->where( [ 'rlp_project' => $projects ] )
-			->caller( __METHOD__ )->fetchFieldValues();
+			->caller( __METHOD__ )
+			->fetchFieldValues();
+
+		$existingProjects = array_map(
+			fn ( $project ) => $this->normalizeProject( $project ),
+			$existingProjects
+		);
 
 		return array_values( array_diff( $projects, $existingProjects ) );
+	}
+
+	private function normalizeProject( string $project ): string {
+		return rtrim( $project );
 	}
 
 	/**
