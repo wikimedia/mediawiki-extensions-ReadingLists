@@ -37,9 +37,10 @@ class PopulateProjectsFromSiteMatrixTest extends MaintenanceBaseTestCase {
 
 		$projects = $this->getProjects();
 		$this->assertContains( 'https://en.wikipedia.org', $projects );
+		$this->assertContains( 'https://en.wiktionary.org', $projects );
 		$this->assertContains( 'https://ban.wikipedia.org', $projects );
 		$this->assertNotContains( 'https://private.wikipedia.org', $projects );
-		$this->assertStringContainsString( 'inserted 2 projects', $this->getActualOutputForAssertion() );
+		$this->assertStringContainsString( 'inserted 3 projects', $this->getActualOutputForAssertion() );
 	}
 
 	public function testDryRunListsProjectsWithoutWriting(): void {
@@ -53,8 +54,9 @@ class PopulateProjectsFromSiteMatrixTest extends MaintenanceBaseTestCase {
 		$this->assertNotContains( 'https://ban.wikipedia.org', $projects );
 
 		$output = $this->getActualOutputForAssertion();
-		$this->assertStringContainsString( 'would insert 2 projects', $output );
+		$this->assertStringContainsString( 'would insert 3 projects', $output );
 		$this->assertStringContainsString( 'https://en.wikipedia.org', $output );
+		$this->assertStringContainsString( 'https://en.wiktionary.org', $output );
 		$this->assertStringContainsString( 'https://ban.wikipedia.org', $output );
 		$this->assertStringNotContainsString( 'https://private.wikipedia.org', $output );
 	}
@@ -67,8 +69,9 @@ class PopulateProjectsFromSiteMatrixTest extends MaintenanceBaseTestCase {
 		$this->maintenance->execute();
 
 		$output = $this->getActualOutputForAssertion();
-		$this->assertStringContainsString( 'would insert 1 projects', $output );
+		$this->assertStringContainsString( 'would insert 2 projects', $output );
 		$this->assertStringNotContainsString( 'https://en.wikipedia.org', $output );
+		$this->assertStringContainsString( 'https://en.wiktionary.org', $output );
 		$this->assertStringContainsString( 'https://ban.wikipedia.org', $output );
 	}
 
@@ -80,8 +83,9 @@ class PopulateProjectsFromSiteMatrixTest extends MaintenanceBaseTestCase {
 		$this->maintenance->execute();
 
 		$output = $this->getActualOutputForAssertion();
-		$this->assertStringContainsString( 'would insert 1 projects', $output );
+		$this->assertStringContainsString( 'would insert 2 projects', $output );
 		$this->assertStringNotContainsString( "https://en.wikipedia.org\n", $output );
+		$this->assertStringContainsString( 'https://en.wiktionary.org', $output );
 		$this->assertStringContainsString( 'https://ban.wikipedia.org', $output );
 	}
 
@@ -91,7 +95,7 @@ class PopulateProjectsFromSiteMatrixTest extends MaintenanceBaseTestCase {
 		$this->maintenance->execute();
 		$this->maintenance->execute();
 
-		$this->assertSame( 2, $this->getProjectCount() );
+		$this->assertSame( 3, $this->getProjectCount() );
 		$this->assertStringContainsString( 'inserted 0 projects', $this->getActualOutputForAssertion() );
 	}
 
@@ -103,7 +107,7 @@ class PopulateProjectsFromSiteMatrixTest extends MaintenanceBaseTestCase {
 		$this->maintenance->execute();
 
 		$output = $this->getActualOutputForAssertion();
-		$this->assertStringContainsString( 'inserted 2 projects', $output );
+		$this->assertStringContainsString( 'inserted 3 projects', $output );
 		$this->assertStringContainsString( 'would insert 0 projects', $output );
 	}
 
@@ -115,7 +119,7 @@ class PopulateProjectsFromSiteMatrixTest extends MaintenanceBaseTestCase {
 
 		$output = $this->getActualOutputForAssertion();
 		$this->assertStringContainsString( 'database domain ID:', $output );
-		$this->assertStringContainsString( 'projects to insert: 2', $output );
+		$this->assertStringContainsString( 'projects to insert: 3', $output );
 		$this->assertStringContainsString(
 			'insert https://ban.wikipedia.org affected rows: 1',
 			$output
@@ -123,11 +127,51 @@ class PopulateProjectsFromSiteMatrixTest extends MaintenanceBaseTestCase {
 		$this->assertStringContainsString( 'transaction committed; replication wait', $output );
 	}
 
+	public function testFamilyOptionLimitsProjects(): void {
+		$this->configureSiteMatrix();
+		$this->maintenance->setOption( 'family', 'wikipedia' );
+
+		$this->maintenance->execute();
+
+		$projects = $this->getProjects();
+		$this->assertContains( 'https://en.wikipedia.org', $projects );
+		$this->assertContains( 'https://ban.wikipedia.org', $projects );
+		$this->assertNotContains( 'https://en.wiktionary.org', $projects );
+		$this->assertStringContainsString( 'inserted 2 projects', $this->getActualOutputForAssertion() );
+	}
+
+	public function testFamilyOptionAcceptsSiteMatrixFamilyCode(): void {
+		$this->configureSiteMatrix();
+		$this->maintenance->setOption( 'family', 'wiktionary' );
+
+		$this->maintenance->execute();
+
+		$projects = $this->getProjects();
+		$this->assertContains( 'https://en.wiktionary.org', $projects );
+		$this->assertNotContains( 'https://en.wikipedia.org', $projects );
+		$this->assertNotContains( 'https://ban.wikipedia.org', $projects );
+		$this->assertStringContainsString( 'inserted 1 projects', $this->getActualOutputForAssertion() );
+	}
+
+	public function testWikiIdOptionLimitsProjects(): void {
+		$this->configureSiteMatrix();
+		$this->maintenance->setOption( 'wiki-id', 'banwiki' );
+
+		$this->maintenance->execute();
+
+		$projects = $this->getProjects();
+		$this->assertContains( 'https://ban.wikipedia.org', $projects );
+		$this->assertNotContains( 'https://en.wikipedia.org', $projects );
+		$this->assertNotContains( 'https://en.wiktionary.org', $projects );
+		$this->assertStringContainsString( 'inserted 1 projects', $this->getActualOutputForAssertion() );
+	}
+
 	private function configureSiteMatrix(): void {
-		$this->siteMatrix->method( 'getSites' )->willReturn( [ 'wiki' ] );
+		$this->siteMatrix->method( 'getSites' )->willReturn( [ 'wiki', 'wiktionary' ] );
 		$this->siteMatrix->method( 'getLangList' )->willReturn( [ 'en' ] );
 		$this->siteMatrix->method( 'exist' )->willReturnMap( [
 			[ 'en', 'wiki', true ],
+			[ 'en', 'wiktionary', true ],
 		] );
 		$this->siteMatrix->method( 'getSpecials' )->willReturn( [
 			[ 'ban', 'wiki' ],
@@ -135,11 +179,13 @@ class PopulateProjectsFromSiteMatrixTest extends MaintenanceBaseTestCase {
 		] );
 		$this->siteMatrix->method( 'getDBName' )->willReturnMap( [
 			[ 'en', 'wiki', 'enwiki' ],
+			[ 'en', 'wiktionary', 'enwiktionary' ],
 			[ 'ban', 'wiki', 'banwiki' ],
 			[ 'private', 'wiki', 'privatewiki' ],
 		] );
 		$this->siteMatrix->method( 'getCanonicalUrl' )->willReturnMap( [
 			[ 'en', 'wiki', 'https://en.wikipedia.org' ],
+			[ 'en', 'wiktionary', 'https://en.wiktionary.org' ],
 			[ 'ban', 'wiki', 'https://ban.wikipedia.org' ],
 			[ 'private', 'wiki', 'https://private.wikipedia.org' ],
 		] );

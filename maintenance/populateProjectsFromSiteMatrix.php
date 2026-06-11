@@ -33,6 +33,18 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 			'Populate (or update) the reading_list_project table from SiteMatrix data.' );
 		$this->addOption( 'dry-run', 'List projects that would be added without updating the database' );
 		$this->addOption( 'verbose', 'Show verbose output' );
+		$this->addOption(
+			'family',
+			'Only populate projects for a SiteMatrix family, e.g. wikipedia',
+			false,
+			true
+		);
+		$this->addOption(
+			'wiki-id',
+			'Only populate one wiki by database name, e.g. banwiki',
+			false,
+			true
+		);
 		$this->setBatchSize( 100 );
 		$this->requireExtension( 'ReadingLists' );
 		$this->requireExtension( 'SiteMatrix' );
@@ -139,12 +151,25 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 		return rtrim( $project );
 	}
 
+	private function getFamilyOption(): ?string {
+		if ( !$this->hasOption( 'family' ) ) {
+			return null;
+		}
+
+		$family = $this->getOption( 'family' );
+		return $family === 'wikipedia' ? 'wiki' : $family;
+	}
+
 	/**
 	 * List all sites known to SiteMatrix.
 	 * @return Generator [ language, site ]
 	 */
 	private function generateSites() {
+		$family = $this->getFamilyOption();
 		foreach ( $this->siteMatrix->getSites() as $site ) {
+			if ( $family !== null && $site !== $family ) {
+				continue;
+			}
 			foreach ( $this->siteMatrix->getLangList() as $lang ) {
 				if ( !$this->siteMatrix->exist( $lang, $site ) ) {
 					continue;
@@ -154,6 +179,9 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 		}
 		foreach ( $this->siteMatrix->getSpecials() as $special ) {
 			[ $lang, $site ] = $special;
+			if ( $family !== null && $site !== $family ) {
+				continue;
+			}
 			yield [ $lang, $site ];
 		}
 	}
@@ -163,10 +191,14 @@ class PopulateProjectsFromSiteMatrix extends Maintenance {
 	 * @return Generator [ domain, dbname ]
 	 */
 	private function generateAllowedDomains() {
+		$wikiId = $this->getOption( 'wiki-id', null );
 		foreach ( $this->generateSites() as [ $lang, $site ] ) {
 			$dbName = $this->siteMatrix->getDBName( $lang, $site );
 			$domain = $this->siteMatrix->getCanonicalUrl( $lang, $site );
 
+			if ( $wikiId !== null && $dbName !== $wikiId ) {
+				continue;
+			}
 			if ( $this->siteMatrix->isPrivate( $dbName ) ) {
 				continue;
 			}
