@@ -2,10 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"KormiSK",
-			"Luky001"
+			"Luky001",
+			"Wizzard"
 		]
 	},
-	"readinglists-desc": "Umožňuje používateľom spravovať si súkromné zoznamy článkov, napr. záložky alebo zoznamy „Prečítať neskôr“.",
+	"readinglists-desc": "Umožňuje používateľom spravovať súkromné zoznamy položiek, napríklad záložky alebo zoznamy „Uložené stránky“.",
 	"readinglists-unsave-from-custom-list-title": "Odstrániť zo všetkých zoznamov na čítanie?",
 	"readinglists-unsave-from-custom-list-body": "Táto stránka sa nachádza v jednom alebo viacerých vašich zoznamoch na čítanie v aplikácii Wikipédie.",
 	"readinglists-unsave-from-custom-list-confirm": "Odstrániť",

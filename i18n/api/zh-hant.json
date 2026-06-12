@@ -3,7 +3,8 @@
 		"authors": [
 			"Kly",
 			"Winston Sung",
-			"捍粵者"
+			"捍粵者",
+			"LowensteinYang"
 		]
 	},
 	"apierror-readinglists-project-title-param": "<var>$1project</var> 與 <var>$1title</var> 必須同時使用。",
