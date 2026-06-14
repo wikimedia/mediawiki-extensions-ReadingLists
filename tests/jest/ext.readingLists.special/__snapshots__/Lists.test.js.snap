@@ -14,6 +14,7 @@ exports[`Lists renders with toolbar disabled 1`] = `
     
   </div>
   <!--v-if-->
+  
   <div
     aria-disabled="false"
     aria-label="Please wait..."
@@ -24,6 +25,8 @@ exports[`Lists renders with toolbar disabled 1`] = `
       class="cdx-progress-bar__bar"
     />
   </div>
+  <!--v-if-->
+  
   
 </div>
 `;
@@ -41,13 +44,13 @@ exports[`Lists renders with toolbar enabled 1`] = `
       style="display: none;"
     >
       <button
-        aria-controls="v-1"
+        aria-controls="v-2"
         aria-expanded="false"
         aria-haspopup="menu"
         aria-label="Display menu"
         class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only"
         disabled=""
-        id="v-0"
+        id="v-1"
       >
         
         
@@ -64,7 +67,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
             <!--v-if-->
             <g>
               <path
-                d="M10 0 3 8h14zm0 18-7-8h14z"
+                d="M14 14.5 10 18l-4-3.5V12h8zm0-9V8H6V5.5L10 2z"
               />
             </g>
           </svg>
@@ -81,10 +84,10 @@ exports[`Lists renders with toolbar enabled 1`] = `
           style="display: none; visibility: hidden; position: absolute; top: 0px; left: 0px; transform: translate(0px, 0px);"
         >
           <ul
-            aria-labelledby="v-0"
+            aria-labelledby="v-1"
             aria-multiselectable="true"
             class="cdx-menu__listbox"
-            id="v-1"
+            id="v-2"
             role="menu"
             tabindex="-1"
           >
@@ -96,8 +99,8 @@ exports[`Lists renders with toolbar enabled 1`] = `
               class="cdx-menu__group-wrapper"
             >
               <ul
-                aria-describedby="v-2-1-description"
-                aria-labelledby="v-2-1-label"
+                aria-describedby="v-3-1-description"
+                aria-labelledby="v-3-1-label"
                 class="cdx-menu__group"
                 role="group"
               >
@@ -110,7 +113,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
                   >
                     <span
                       class="cdx-menu__group__label"
-                      id="v-2-1-label"
+                      id="v-3-1-label"
                     >
                       Sort by
                     </span>
@@ -122,7 +125,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
                   aria-checked="true"
                   aria-disabled="false"
                   class="cdx-menu-item cdx-menu-item--selected cdx-menu-item--enabled cdx-menu__group__item"
-                  id="v-2-2"
+                  id="v-3-2"
                   role="option"
                 >
                   
@@ -142,7 +145,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
                         <!--v-if-->
                         <g>
                           <path
-                            d="M17.66 18h-2a.85.85 0 01-.56-.17 1.1 1.1 0 01-.32-.43l-1.33-3.53h-6.9L5.22 17.4a1.06 1.06 0 01-.31.41.83.83 0 01-.56.19h-2L8.68 2h2.63zm-4.92-6-2.2-5.84A16 16 0 0110 4.43q-.12.52-.27 1t-.27.77L7.26 12z"
+                            d="m15.692 18-2.174-5H6.481l-2.173 5h-2.18L9.082 2.002h1.834L17.873 18zm-8.34-7h5.296L10 4.907z"
                           />
                         </g>
                       </svg>
@@ -174,7 +177,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
                         <!--v-if-->
                         <g>
                           <path
-                            d="M7 14.17 2.83 10l-1.41 1.41L7 17 19 5l-1.41-1.42z"
+                            d="M18.154 3.837 8.034 16.62l-1.384.18-4.8-3.6 1.2-1.6 4.02 3.015 9.517-12.02z"
                           />
                         </g>
                       </svg>
@@ -185,7 +188,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
                 <li
                   aria-disabled="false"
                   class="cdx-menu-item cdx-menu-item--enabled cdx-menu__group__item"
-                  id="v-2-3"
+                  id="v-3-3"
                   role="option"
                 >
                   
@@ -205,10 +208,10 @@ exports[`Lists renders with toolbar enabled 1`] = `
                         <!--v-if-->
                         <g>
                           <path
-                            d="M9 6v5h.06l2.48 2.47 1.41-1.41L11 10.11V6z"
+                            d="M10 1a9 9 0 011 17.945V16.93A7.001 7.001 0 0010 3a7 7 0 00-4 12.743V13h2.001L8 18l-1 1H2v-2l2.346-.001A8.97 8.97 0 011 10a9 9 0 019-9"
                           />
                           <path
-                            d="M10 1a9 9 0 00-7.85 13.35L.5 16H6v-5.5l-2.38 2.38A7 7 0 1110 17v2a9 9 0 000-18"
+                            d="M11 10h3.5v2H9V6h2z"
                           />
                         </g>
                       </svg>
@@ -240,8 +243,8 @@ exports[`Lists renders with toolbar enabled 1`] = `
               class="cdx-menu__group-wrapper"
             >
               <ul
-                aria-describedby="v-2-4-description"
-                aria-labelledby="v-2-4-label"
+                aria-describedby="v-3-4-description"
+                aria-labelledby="v-3-4-label"
                 class="cdx-menu__group"
                 role="group"
               >
@@ -254,7 +257,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
                   >
                     <span
                       class="cdx-menu__group__label"
-                      id="v-2-4-label"
+                      id="v-3-4-label"
                     >
                       Direction
                     </span>
@@ -266,7 +269,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
                   aria-checked="true"
                   aria-disabled="false"
                   class="cdx-menu-item cdx-menu-item--selected cdx-menu-item--enabled cdx-menu__group__item"
-                  id="v-2-5"
+                  id="v-3-5"
                   role="option"
                 >
                   
@@ -286,7 +289,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
                         <!--v-if-->
                         <g>
                           <path
-                            d="m2 10 1.42 1.41L9 5.83V18h2V5.83l5.59 5.58L18 10l-8-8z"
+                            d="M16.414 7.71 15 9.124l-4-4V19H9V5.124l-4 4L3.586 7.71l5.707-5.707h1.414z"
                           />
                         </g>
                       </svg>
@@ -318,7 +321,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
                         <!--v-if-->
                         <g>
                           <path
-                            d="M7 14.17 2.83 10l-1.41 1.41L7 17 19 5l-1.41-1.42z"
+                            d="M18.154 3.837 8.034 16.62l-1.384.18-4.8-3.6 1.2-1.6 4.02 3.015 9.517-12.02z"
                           />
                         </g>
                       </svg>
@@ -329,7 +332,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
                 <li
                   aria-disabled="false"
                   class="cdx-menu-item cdx-menu-item--enabled cdx-menu__group__item"
-                  id="v-2-6"
+                  id="v-3-6"
                   role="option"
                 >
                   
@@ -349,7 +352,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
                         <!--v-if-->
                         <g>
                           <path
-                            d="m2 10 1.42-1.41L9 14.17V2h2v12.17l5.59-5.58L18 10l-8 8z"
+                            d="M11 1v13.876l4-4 1.414 1.414-5.707 5.707H9.293L3.586 12.29 5 10.876l4 4V1z"
                           />
                         </g>
                       </svg>
@@ -392,6 +395,7 @@ exports[`Lists renders with toolbar enabled 1`] = `
     
   </div>
   <!--v-if-->
+  
   <div
     aria-disabled="false"
     aria-label="Please wait..."
@@ -402,6 +406,8 @@ exports[`Lists renders with toolbar enabled 1`] = `
       class="cdx-progress-bar__bar"
     />
   </div>
+  <!--v-if-->
+  
   
 </div>
 `;
