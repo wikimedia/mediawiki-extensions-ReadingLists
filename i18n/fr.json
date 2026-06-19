@@ -43,8 +43,8 @@
 	"readinglists-db-error-entry-limit": "La liste $1 ne peut pas avoir plus de $2 entrée{{PLURAL:$2||s}}.",
 	"readinglists-db-error-too-long": "La valeur du champ $1 ne peut pas dépasser $2 octet{{PLURAL:$2||s}}.",
 	"readinglists-db-error-no-such-project": "« $1 » n’est pas un projet reconnu.",
-	"readinglists-browser-add-entry-success": "<b>$1</b> a été ajoutée à votre [[$2|$3]].",
-	"readinglists-browser-remove-entry-success": "<b>$1</b> a été supprimée de votre [[$2|$3]].",
+	"readinglists-browser-add-entry-success": "<b>$1</b> a été ajoutée à vos [[$2|$3]].",
+	"readinglists-browser-remove-entry-success": "<b>$1</b> a été supprimée de vos [[$2|$3]].",
 	"readinglists-browser-login-prompt": "Connectez-vous pour enregistrer des pages",
 	"readinglists-browser-error-intro": "Une erreur s’est produite : $1",
 	"readinglists-browser-enable-sync-prompt": "Activez la synchronisation dans votre application Wikipédia pour commencer à enregistrer des pages",
@@ -118,7 +118,7 @@
 	"readinglists-betafeature-quicksurvey-answer-negative": "Non",
 	"readinglists-betafeature-quicksurvey-question-feedback": "Qu'est-ce qui rendrait cela plus utile pour vous ?",
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Ajouter vos commentaires",
-	"readinglists-betafeature-quicksurvey-privacy-policy": "[Politique de confidentialité de https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement]",
+	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Politique de confidentialité]",
 	"readinglists-betafeature-quicksurvey-submit": "Soumettre",
 	"readinglists-betafeature-quicksurvey-thank-you": "Merci pour vos commentaires"
 }
