@@ -227,10 +227,7 @@ class ReadingListEntryTitleMigrationService {
 		if ( !$dryRun ) {
 			$this->dbw->newUpdateQueryBuilder()
 				->update( 'reading_list_entry' )
-				->set( [
-					'rle_title' => $normalized,
-					'rle_date_updated' => $this->dbw->timestamp(),
-				] )
+				->set( [ 'rle_title' => $normalized ] )
 				->where( [ 'rle_id' => $rleId ] )
 				->caller( __METHOD__ )->execute();
 		}

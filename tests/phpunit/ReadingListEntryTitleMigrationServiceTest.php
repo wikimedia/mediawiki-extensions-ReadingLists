@@ -58,11 +58,12 @@ class ReadingListEntryTitleMigrationServiceTest extends MediaWikiIntegrationTest
 		$this->assertSame( 0, $stats['blocked_by_soft_deleted'] );
 
 		$row = $this->getDb()->newSelectQueryBuilder()
-			->select( [ 'rle_title', 'rle_deleted' ] )
+			->select( [ 'rle_title', 'rle_date_updated', 'rle_deleted' ] )
 			->from( 'reading_list_entry' )
 			->where( [ 'rle_id' => $entryId ] )
 			->caller( __METHOD__ )->fetchRow();
 		$this->assertSame( 'Foo_Bar', $row->rle_title );
+		$this->assertSame( $this->getDb()->timestamp( '20150101000000' ), $row->rle_date_updated );
 		$this->assertSame( '0', $row->rle_deleted );
 
 		$rlSize = $this->getDb()->newSelectQueryBuilder()
