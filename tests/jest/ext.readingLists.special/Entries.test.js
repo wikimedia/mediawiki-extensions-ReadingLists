@@ -64,26 +64,6 @@ describe( 'Entries', () => {
 		const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
 		const wrapper = mount( Entries, { props: { listId: 12345 } } );
 
-		Object.defineProperty( wrapper.vm, 'enableToolbar', { value: false, writable: true } );
-
-		await wrapper.vm.$forceUpdate();
-		await wrapper.vm.$nextTick();
-
-		expect( wrapper.element ).toMatchSnapshot();
-	} );
-
-	test( 'renders with toolbar enabled', async () => {
-		setupEntriesApiStub();
-		mw.util = { getUrl: jest.fn( ( path ) => `/wiki/${ path }` ) };
-
-		const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
-		const wrapper = mount( Entries, { props: { listId: 12345 } } );
-
-		Object.defineProperty( wrapper.vm, 'enableToolbar', { value: true, writable: true } );
-
-		wrapper.vm.ready = true;
-		wrapper.vm.loadingEntries = true;
-
 		await wrapper.vm.$forceUpdate();
 		await wrapper.vm.$nextTick();
 
@@ -96,8 +76,6 @@ describe( 'Entries', () => {
 
 		const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
 		const wrapper = mount( Entries );
-
-		Object.defineProperty( wrapper.vm, 'enableToolbar', { value: false, writable: true } );
 
 		await flushPromises();
 

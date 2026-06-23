@@ -96,10 +96,6 @@
 			"value": 30,
 			"description": "Purge deleted lists and list entries after this many days."
 		},
-		"ReadingListsEnableSpecialPageToolbar": {
-			"value": false,
-			"description": "Enable sorting toolbar on reading lists special page. @unstable"
-		},
 		"ReadingListsBetaDefaultForNewAccountsAfter": {
 			"value": null,
 			"description": "MW timestamp in YYYYMMDDHHMMSS format (e.g. '20260301000000') after which new accounts get the ReadingLists beta feature enabled by default. Set to null to disable."
@@ -186,8 +182,6 @@
 				"CdxCard",
 				"CdxCheckbox",
 				"CdxDialog",
-				"CdxIcon",
-				"CdxMenuButton",
 				"CdxMessage",
 				"CdxProgressBar",
 				"CdxTextArea",
@@ -202,13 +196,6 @@
 				"readinglists-beta-tag",
 				"readinglists-browser-error-intro",
 				"readinglists-special-error-list-not-found",
-				"readinglists-display-direction",
-				"readinglists-display-direction-ascending",
-				"readinglists-display-direction-descending",
-				"readinglists-display-menu",
-				"readinglists-display-sort",
-				"readinglists-display-sort-name",
-				"readinglists-display-sort-updated",
 				"readinglists-empty-cta",
 				"readinglists-empty-title",
 				"readinglists-import-app",
@@ -233,7 +220,6 @@
 			],
 			"packageFiles": [
 				"resources/ext.readingLists.special/index.js",
-				"resources/ext.readingLists.special/components/DisplayButton.vue",
 				"resources/ext.readingLists.special/components/EmptyList.vue",
 				"resources/ext.readingLists.special/components/EntryItem.vue",
 				"resources/ext.readingLists.special/components/ImportDialog.vue",
@@ -244,23 +230,17 @@
 					"config": [
 						"ReadingListAndroidAppDownloadLink",
 						"ReadingListiOSAppDownloadLink",
-						"ReadingListsAnonymizedPreviews",
-						"ReadingListsEnableSpecialPageToolbar"
+						"ReadingListsAnonymizedPreviews"
 					]
 				},
 				{
 					"name": "icons.json",
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
 					"callbackParam": [
-						"cdxIconArrowDown",
-						"cdxIconArrowUp",
 						"cdxIconDie",
 						"cdxIconEdit",
-						"cdxIconHistory",
-						"cdxIconSortVertical",
 						"cdxIconViewCompact",
-						"cdxIconViewDetails",
-						"cdxIconLargerText"
+						"cdxIconViewDetails"
 					]
 				}
 			]

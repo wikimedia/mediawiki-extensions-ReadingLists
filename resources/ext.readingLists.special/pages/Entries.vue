@@ -18,21 +18,9 @@
 
 		<survey v-if="showSurvey" @survey-completed="onSurveyCompleted"></survey>
 
-		<p v-if="!enableToolbar" class="reading-lists-sorting">
+		<p class="reading-lists-sorting">
 			{{ sortingText }}
 		</p>
-
-		<div
-			v-if="enableToolbar"
-			v-show="ready && ( loadingEntries || entries.length !== 0 )"
-			class="reading-lists-toolbar">
-			<display-button
-				:disabled="loadingInfo || loadingEntries"
-				:imported="imported !== null"
-				@ready="onReady"
-				@changed="onDisplayOptionsChanged">
-			</display-button>
-		</div>
 
 		<template v-if="!loadingInfo">
 			<div
@@ -66,12 +54,10 @@
 const { ref } = require( 'vue' );
 const api = require( 'ext.readingLists.api' );
 const { CdxButton, CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
-const DisplayButton = require( '../components/DisplayButton.vue' );
 const EmptyList = require( '../components/EmptyList.vue' );
 const EntryItem = require( '../components/EntryItem.vue' );
 const ImportDialog = require( '../components/ImportDialog.vue' );
 const Survey = require( '../components/Survey.vue' );
-const { ReadingListsEnableSpecialPageToolbar } = require( '../../../config.json' );
 
 const surveyStorageKey = 'readinglists-beta-survey';
 
@@ -81,7 +67,6 @@ module.exports = exports = {
 		CdxButton,
 		CdxMessage,
 		CdxProgressBar,
-		DisplayButton,
 		EmptyList,
 		EntryItem,
 		ImportDialog,
@@ -114,25 +99,12 @@ module.exports = exports = {
 			infinite: ref( false ),
 			msgLoading: mw.msg( 'readinglists-loading' ),
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
-			enableToolbar: ReadingListsEnableSpecialPageToolbar,
 			showSurvey: ref( false )
 		};
 	},
 	computed: {
 		sortingText() {
-			if ( !this.enableToolbar ) {
-				return mw.msg( 'readinglists-sorted-by-recent' );
-			}
-			// message keys used:
-			// - readinglists-display-sort-name
-			// - readinglists-display-sort-updated
-			// - readinglists-display-direction-ascending
-			// - readinglists-display-direction-descending
-
-			const sortLabel = mw.msg( `readinglists-display-sort-${ this.sort }` );
-
-			const dirLabel = mw.msg( `readinglists-display-direction-${ this.direction }` );
-			return `${ sortLabel }, ${ dirLabel }`;
+			return mw.msg( 'readinglists-sorted-by-recent' );
 		}
 	},
 	methods: {
@@ -240,33 +212,6 @@ module.exports = exports = {
 			this.registerScrollHandler();
 			this.maybeShowSurvey();
 		},
-		async refreshEntries() {
-			this.entries = [];
-			this.next = null;
-			this.infinite = false;
-
-			await this.getEntries();
-		},
-		applySortOptions( options ) {
-			this.sort = options[ 0 ].replace( 's:', '' );
-			this.direction = options[ 1 ].replace( 'd:', '' );
-		},
-		async onReady( options ) {
-			this.applySortOptions( options );
-			await this.getList();
-			await this.initializePage();
-		},
-		async onDisplayOptionsChanged( options ) {
-			const prevSort = this.sort;
-			const prevDirection = this.direction;
-			this.applySortOptions( options );
-
-			if ( this.sort === prevSort && this.direction === prevDirection ) {
-				return;
-			}
-
-			await this.refreshEntries();
-		},
 		async onShowMore() {
 			this.infinite = true;
 			await this.getEntries();
@@ -300,10 +245,8 @@ module.exports = exports = {
 		}
 	},
 	async mounted() {
-		if ( !this.enableToolbar ) {
-			await this.getList();
-			await this.initializePage();
-		}
+		await this.getList();
+		await this.initializePage();
 	}
 };
 </script>
