@@ -163,6 +163,11 @@
 				"resources/ext.readingLists.special/styles.less"
 			]
 		},
+		"ext.readingLists.special.importDialog.styles": {
+			"styles": [
+				"resources/ext.readingLists.special.importDialog/styles.less"
+			]
+		},
 		"ext.readingLists.api": {
 			"dependencies": [
 				"mediawiki.api"
@@ -192,20 +197,15 @@
 				"vue"
 			],
 			"messages": [
-				"cancel",
 				"readinglists-beta-tag",
 				"readinglists-browser-error-intro",
 				"readinglists-special-error-list-not-found",
 				"readinglists-empty-cta",
 				"readinglists-empty-title",
-				"readinglists-import-app",
-				"readinglists-import-button-label",
-				"readinglists-import-disclaimer",
 				"readinglists-loading",
 				"readinglists-no-title",
 				"readinglists-show-more",
 				"readinglists-sorted-by-recent",
-				"readinglists-special-title-imported",
 				"readinglists-total-articles",
 				"readinglists-betafeature-quicksurvey-question",
 				"readinglists-betafeature-quicksurvey-answer-positive",
@@ -222,17 +222,8 @@
 				"resources/ext.readingLists.special/index.js",
 				"resources/ext.readingLists.special/components/EmptyList.vue",
 				"resources/ext.readingLists.special/components/EntryItem.vue",
-				"resources/ext.readingLists.special/components/ImportDialog.vue",
 				"resources/ext.readingLists.special/components/Survey.vue",
 				"resources/ext.readingLists.special/pages/Entries.vue",
-				{
-					"name": "config.json",
-					"config": [
-						"ReadingListAndroidAppDownloadLink",
-						"ReadingListiOSAppDownloadLink",
-						"ReadingListsAnonymizedPreviews"
-					]
-				},
 				{
 					"name": "icons.json",
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
@@ -241,6 +232,33 @@
 						"cdxIconEdit",
 						"cdxIconViewCompact",
 						"cdxIconViewDetails"
+					]
+				}
+			]
+		},
+		"ext.readingLists.special.importDialog": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexComponents": [
+				"CdxDialog"
+			],
+			"dependencies": [
+				"vue"
+			],
+			"messages": [
+				"cancel",
+				"readinglists-import-app",
+				"readinglists-import-button-label",
+				"readinglists-import-disclaimer",
+				"readinglists-special-title-imported"
+			],
+			"packageFiles": [
+				"resources/ext.readingLists.special.importDialog/components/ImportDialog.vue",
+				{
+					"name": "config.json",
+					"config": [
+						"ReadingListAndroidAppDownloadLink",
+						"ReadingListiOSAppDownloadLink",
+						"ReadingListsAnonymizedPreviews"
 					]
 				}
 			]

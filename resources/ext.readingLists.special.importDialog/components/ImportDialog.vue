@@ -33,6 +33,7 @@ const { ReadingListAndroidAppDownloadLink, ReadingListiOSAppDownloadLink, Readin
 
 // @vue/component
 module.exports = exports = {
+	name: 'ImportDialog',
 	components: { CdxDialog },
 	setup() {
 		return {

@@ -4,7 +4,7 @@
 	</cdx-message>
 
 	<template v-else>
-		<import-dialog v-if="imported !== null"></import-dialog>
+		<slot v-if="$slots[ 'import-dialog' ]" name="import-dialog"></slot>
 
 		<template v-if="!isDefaultList && !isAllListItems">
 			<h2 v-if="title" class="reading-lists-title">
@@ -56,7 +56,6 @@ const api = require( 'ext.readingLists.api' );
 const { CdxButton, CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
 const EmptyList = require( '../components/EmptyList.vue' );
 const EntryItem = require( '../components/EntryItem.vue' );
-const ImportDialog = require( '../components/ImportDialog.vue' );
 const Survey = require( '../components/Survey.vue' );
 
 const surveyStorageKey = 'readinglists-beta-survey';
@@ -69,7 +68,6 @@ module.exports = exports = {
 		CdxProgressBar,
 		EmptyList,
 		EntryItem,
-		ImportDialog,
 		Survey
 	},
 	props: {

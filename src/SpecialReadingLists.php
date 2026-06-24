@@ -82,6 +82,9 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 
 		$output->addHTML( $container );
 		$output->addModuleStyles( [ 'ext.readingLists.special.styles' ] );
+		if ( $exportFeature ) {
+			$output->addModuleStyles( [ 'ext.readingLists.special.importDialog.styles' ] );
+		}
 		$output->addModules( [ 'ext.readingLists.special' ] );
 	}
 

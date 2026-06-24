@@ -84,4 +84,28 @@ describe( 'Entries', () => {
 		expect( wrapper.vm.entries.length ).toBeGreaterThan( 0 );
 		expect( wrapper.element ).toMatchSnapshot();
 	} );
+
+	test( 'renders import dialog slot content', async () => {
+		mw.util = { getUrl: jest.fn( ( path ) => `/wiki/${ path }` ) };
+
+		const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+		const wrapper = mount( Entries, {
+			props: {
+				imported: {
+					name: 'Imported list',
+					description: '',
+					default: false,
+					list: []
+				}
+			},
+			slots: {
+				'import-dialog': '<div class="mock-import-dialog"></div>'
+			}
+		} );
+
+		await flushPromises();
+		await wrapper.vm.$nextTick();
+
+		expect( wrapper.find( '.mock-import-dialog' ).exists() ).toBe( true );
+	} );
 } );
