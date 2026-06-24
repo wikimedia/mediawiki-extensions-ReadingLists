@@ -220,7 +220,6 @@
 				"readinglists-sorted-by-recent",
 				"readinglists-special-title-imported",
 				"readinglists-total-articles",
-				"readinglists-total-lists",
 				"readinglists-betafeature-quicksurvey-question",
 				"readinglists-betafeature-quicksurvey-answer-positive",
 				"readinglists-betafeature-quicksurvey-answer-positive-cue",
@@ -238,10 +237,8 @@
 				"resources/ext.readingLists.special/components/EmptyList.vue",
 				"resources/ext.readingLists.special/components/EntryItem.vue",
 				"resources/ext.readingLists.special/components/ImportDialog.vue",
-				"resources/ext.readingLists.special/components/ListItem.vue",
 				"resources/ext.readingLists.special/components/Survey.vue",
 				"resources/ext.readingLists.special/pages/Entries.vue",
-				"resources/ext.readingLists.special/pages/Lists.vue",
 				{
 					"name": "config.json",
 					"config": [
