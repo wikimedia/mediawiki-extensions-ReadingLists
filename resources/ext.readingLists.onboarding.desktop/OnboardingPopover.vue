@@ -107,7 +107,7 @@ module.exports = exports = {
 
 .cdx-popover.readinglists-onboarding-popover {
 	padding: 0;
-	min-width: @size-2400;
+	min-width: @size-1600;
 	max-width: @size-2400;
 
 	.cdx-popover__header {
