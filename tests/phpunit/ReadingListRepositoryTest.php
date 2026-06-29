@@ -99,6 +99,16 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		];
 	}
 
+	public function testGetListsByPageCanSkipSetupValidation() {
+		$this->addProjects( [ 'dummy' ] );
+		$this->addDataForAnotherUser();
+		$repository = $this->getReadingListRepository( 1 );
+
+		$res = $repository->getListsByPage( 'dummy', 'bar', 1, null, false );
+
+		$this->assertSame( 0, $res->numRows() );
+	}
+
 	public function testSetupFailsWithoutProjects() {
 		$repository = $this->getReadingListRepository( 1 );
 		$this->assertFailsWith( 'readinglists-db-error-no-projects',

@@ -1142,11 +1142,18 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @param string $title Page title
 	 * @param int $limit
 	 * @param int|null $from List ID to continue from (or null to start at the beginning/end).
+	 * @param bool $validateSetup Whether to verify setup when no matching lists are found.
 	 *
 	 * @throws ReadingListRepositoryException
 	 * @return IResultWrapper<ReadingListRow>
 	 */
-	public function getListsByPage( $project, $title, $limit = 1000, $from = null ): IResultWrapper {
+	public function getListsByPage(
+		$project,
+		$title,
+		$limit = 1000,
+		$from = null,
+		bool $validateSetup = true
+	): IResultWrapper {
 		$this->assertUser();
 		$projectId = $this->getProjectId( $project );
 		if ( !$projectId ) {
@@ -1193,8 +1200,9 @@ class ReadingListRepository implements LoggerAwareInterface {
 
 		$res = $queryBuilder->orderBy( 'rl.rl_id', 'ASC' )->fetchResultSet();
 		if (
+			$validateSetup &&
 			$res->numRows() === 0 &&
-			!$this->getDefaultListIdForUser( IDBAccessObject::READ_LATEST )
+			!$this->getDefaultListIdForUser()
 		) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
 		}
@@ -1605,6 +1613,10 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * normalized, and normalized-space-form) so that lookups match both
 	 * newly normalized entries and legacy rows written before title
 	 * normalization was introduced.
+	 *
+	 * FIXME: The API historically did not normalize titles on write (T407936),
+	 * so stored rows may contain either spaces or underscores for the same title.
+	 * Keep generating both variants while legacy rows can exist.
 	 *
 	 * Once a migration script has normalized all existing rows (T422028),
 	 * and remove duplicates, then this method can be simplified to only use

@@ -195,15 +195,9 @@ class BookmarkEntryLookupService {
 	private function lookupBookmarkListInDb( Title $title, int $centralId ): StatusValue {
 		$repository = $this->readingListRepositoryFactory->create( $centralId );
 
-		// FIXME: The API does not normalize titles on write, so the DB may
-		// contain spaces or underscores for the same title (T407936). The
-		// bloom filter normalizes to underscores (see buildBookmarkedPagesBloomFilter),
-		// but the DB lookup must try both formats to find matching lists.
 		try {
-			$listRow = $repository->getListsByPage( '@local', $title->getPrefixedDBkey(), 1 )->fetchObject();
-			if ( !$listRow ) {
-				$listRow = $repository->getListsByPage( '@local', $title->getPrefixedText(), 1 )->fetchObject();
-			}
+			$listRow = $repository->getListsByPage( '@local', $title->getPrefixedDBkey(), 1, null, false )
+				->fetchObject();
 		} catch ( DBError $e ) {
 			$this->logger->warning( 'Failed to look up bookmark list match due to a database error', [
 				'exception' => $e,

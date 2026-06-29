@@ -161,7 +161,9 @@ class HookHandler implements
 				$listsByPage = $repository->getListsByPage(
 					'@local',
 					$title->getPrefixedDBkey(),
-					2
+					2,
+					null,
+					false
 				);
 				foreach ( $listsByPage as $pageList ) {
 					if ( $matchingList === null || $pageList->rl_is_default ) {

@@ -144,7 +144,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$repository->expects( $this->never() )->method( 'getSavedPagesCacheSetOptions' );
 		$repository->expects( $this->never() )->method( 'getSavedPageTitlesForProject' );
 		$repository->expects( $this->once() )->method( 'getListsByPage' )
-			->with( '@local', 'Cat', 1 )
+			->with( '@local', 'Cat', 1, null, false )
 			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
 
 		$jobQueueGroup = $this->createMock( JobQueueGroup::class );
@@ -172,15 +172,8 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 		$repository = $this->createMockRepository( [ 'United Arab Emirates' ] );
 		$repository->method( 'getListsByPage' )
-			->willReturnCallback( static function ( $project, $title ) use ( $matchingList ) {
-				if ( $title === 'United_Arab_Emirates' ) {
-					return new FakeResultWrapper( [] );
-				}
-				if ( $title === 'United Arab Emirates' ) {
-					return new FakeResultWrapper( [ $matchingList ] );
-				}
-				return new FakeResultWrapper( [] );
-			} );
+			->with( '@local', 'United_Arab_Emirates', 1, null, false )
+			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
 
 		$service = $this->createService( $repository );
 		$this->createBloomFilterCache( $repository )->rebuildBloomFilter( self::CENTRAL_ID );
@@ -245,7 +238,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$repository->expects( $this->never() )->method( 'getSavedPagesCacheSetOptions' );
 		$repository->expects( $this->never() )->method( 'getSavedPageTitlesForProject' );
 		$repository->expects( $this->once() )->method( 'getListsByPage' )
-			->with( '@local', 'Cat', 1 )
+			->with( '@local', 'Cat', 1, null, false )
 			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
 
 		$jobQueueGroup = $this->createMock( JobQueueGroup::class );
@@ -497,7 +490,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 	public function testGetBookmarkEntry_emitsFalsePositiveAndDbLookupMetrics() {
 		$statsHelper = $this->newStatsHelper();
 		$repository = $this->createMockRepository( [ 'Cat' ] );
-		$repository->expects( $this->exactly( 2 ) )
+		$repository->expects( $this->once() )
 			->method( 'getListsByPage' )
 			->willReturn( new FakeResultWrapper( [] ) );
 
@@ -648,7 +641,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 			->willThrowException( new DBError( null, 'temporary failure' ) );
 		$failingRepository->expects( $this->once() )
 			->method( 'getListsByPage' )
-			->with( '@local', 'Cat', 1 )
+			->with( '@local', 'Cat', 1, null, false )
 			->willThrowException( new DBError( null, 'temporary failure' ) );
 
 		$this->createBloomFilterCache( $failingRepository )->rebuildBloomFilter( self::CENTRAL_ID );
@@ -679,7 +672,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$failingRepository->expects( $this->never() )->method( 'getSavedPageTitlesForProject' );
 		$failingRepository->expects( $this->once() )
 			->method( 'getListsByPage' )
-			->with( '@local', 'Cat', 1 )
+			->with( '@local', 'Cat', 1, null, false )
 			->willThrowException( new DBError( null, 'temporary failure' ) );
 
 		$jobQueueGroup = $this->createMock( JobQueueGroup::class );
@@ -714,7 +707,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$failingRepository = $this->createMockRepository( $titles );
 		$failingRepository->expects( $this->once() )
 			->method( 'getListsByPage' )
-			->with( '@local', 'Page_1', 1 )
+			->with( '@local', 'Page_1', 1, null, false )
 			->willThrowException( new DBError( null, 'temporary failure' ) );
 
 		$service = $this->createService(
@@ -745,7 +738,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		);
 		$statsHelper = $this->newStatsHelper();
 		$repository = $this->createMockRepository( $titles );
-		$repository->expects( $this->exactly( 2 ) )->method( 'getListsByPage' )
+		$repository->expects( $this->once() )->method( 'getListsByPage' )
 			->willReturn( new FakeResultWrapper( [] ) );
 
 		$service = $this->createService(
@@ -769,10 +762,14 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 	public function testGetBookmarkEntry_emitsProbablePositiveDbLookupErrorMetric() {
 		$statsHelper = $this->newStatsHelper();
-		$failingRepository = $this->createMockRepository( [ 'Cat' ] );
+		$builderRepository = $this->createMockRepository( [ 'Cat' ] );
+		$this->createBloomFilterCache( $builderRepository )->rebuildBloomFilter( self::CENTRAL_ID );
+
+		$failingRepository = $this->createMockRepository();
+		$failingRepository->expects( $this->never() )->method( 'getSavedPageTitlesForProject' );
 		$failingRepository->expects( $this->once() )
 			->method( 'getListsByPage' )
-			->with( '@local', 'Cat', 1 )
+			->with( '@local', 'Cat', 1, null, false )
 			->willThrowException( new DBError( null, 'temporary failure' ) );
 
 		$service = $this->createService(
@@ -780,7 +777,6 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 			null,
 			$statsHelper->getStatsFactory()
 		);
-		$this->createBloomFilterCache( $failingRepository )->rebuildBloomFilter( self::CENTRAL_ID );
 
 		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
 
