@@ -188,7 +188,6 @@ class HookHandler implements
 			'data-mw-list-id' => $list ? $list->rl_id : null,
 			'data-mw-saved' => $matchingList !== null ? 1 : null,
 			'data-mw-in-custom-list' => $hasCustomListEntry ? 1 : null,
-			'data-mw-list-page-count' => $list ? $list->rl_size : 0,
 			'link-class' => 'reading-lists-bookmark',
 			'single-id' => $matchingList === null ? 'ca-bookmark-add' : 'ca-bookmark-remove',
 			'tooltiponly' => true,

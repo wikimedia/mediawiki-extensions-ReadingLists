@@ -1,10 +1,5 @@
 const api = require( 'ext.readingLists.api' );
 
-/**
- * @type {Object<string, number>}
- */
-const currentReadingListSize = {};
-
 function getErrorMessage( err ) {
 	if ( typeof err === 'string' ) {
 		return mw.msg( err );
@@ -28,13 +23,6 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	if ( !isMinerva ) {
 		iconSolid = [ 'mw-ui-icon-bookmark', 'mw-ui-icon-wikimedia-bookmark' ];
 		iconOutline = [ 'mw-ui-icon-bookmarkOutline', 'mw-ui-icon-wikimedia-bookmarkOutline' ];
-	}
-
-	const listCount = bookmark.dataset.mwListPageCount;
-	const bookmarkListId = bookmark.dataset.mwListId;
-	// Track initial size of list.
-	if ( listCount && bookmarkListId ) {
-		currentReadingListSize[ bookmarkListId ] = parseInt( bookmark.dataset.mwListPageCount, 10 );
 	}
 
 	/**
@@ -77,30 +65,11 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	}
 
 	/**
-	 * Updates the mw-list-page-count data attribute with the reading list page count
-	 *
-	 * @param {string} listId
-	 * @param {boolean} isSaved
-	 * @return {number} -1 if the reading list size is not known
-	 */
-	function updateListCount( listId, isSaved ) {
-		if ( currentReadingListSize[ listId ] === undefined ) {
-			return -1;
-		}
-
-		currentReadingListSize[ listId ] += ( isSaved ? 1 : -1 );
-		return currentReadingListSize[ listId ];
-	}
-
-	/**
 	 * Updates the bookmark button text and display an added/removed notification
 	 *
 	 * @param {boolean} isSaved
-	 * @param {string} listId
 	 */
-	function updateBookmarkStatus( isSaved, listId ) {
-		const listPageCount = updateListCount( listId, isSaved );
-
+	function updateBookmarkStatus( isSaved ) {
 		// The following messages are used here:
 		// * readinglists-browser-add-entry-success
 		// * readinglists-browser-remove-entry-success
@@ -128,15 +97,26 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 
 		/**
 		 * Fires when the page saved status has changed.
+		 * @deprecated Use readingLists.bookmark.change instead.
 		 *
 		 * @event readingLists.bookmark.edit
 		 * @memberof mw.Hooks
 		 * @param {boolean} isSaved
 		 * @param {null} entryId Deprecated, always null.
-		 * @param {number} newListSize
+		 * @param {null} listPageCount Deprecated, always null.
 		 * @param {string} eventSource
 		 */
-		mw.hook( 'readingLists.bookmark.edit' ).fire( isSaved, null, listPageCount, eventSource );
+		mw.hook( 'readingLists.bookmark.edit' ).fire( isSaved, null, null, eventSource );
+
+		/**
+		 * Fires when the page saved status has been updated.
+		 *
+		 * @event readingLists.bookmark.change
+		 * @memberof mw.Hooks
+		 * @param {boolean} isSaved
+		 * @param {string} eventSource
+		 */
+		mw.hook( 'readingLists.bookmark.change' ).fire( isSaved, eventSource );
 	}
 
 	function initSavedPagesOnboardingPopover() {
@@ -183,17 +163,16 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	async function addPageToReadingList( listId ) {
 		await api.createEntry( listId, mw.config.get( 'wgPageName' ) );
 
-		updateBookmarkStatus( true, listId );
+		updateBookmarkStatus( true );
 	}
 
 	/**
 	 * Handles frontend logic for removing a page from a reading list
 	 *
 	 * @param {string} pageTitle
-	 * @param {string} listId
 	 * @return {Promise<void>}
 	 */
-	async function removePageFromReadingList( pageTitle, listId ) {
+	async function removePageFromReadingList( pageTitle ) {
 		try {
 			await api.deleteEntryByPageTitle( pageTitle );
 		} catch ( err ) {
@@ -202,7 +181,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			}
 		}
 
-		updateBookmarkStatus( false, listId );
+		updateBookmarkStatus( false );
 	}
 
 	/**
@@ -261,7 +240,6 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 				try {
 					const { setup: { list: { id } } } = await api.setup();
 					currentListId = bookmark.dataset.mwListId = id;
-					currentReadingListSize[ currentListId ] = bookmark.dataset.mwListPageCount = 0;
 					updateBookmarkListMenuUrl( currentListId );
 				} catch ( err ) {
 					// The following messages are used here:
