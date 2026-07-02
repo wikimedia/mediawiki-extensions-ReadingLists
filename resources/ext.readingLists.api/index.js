@@ -288,6 +288,22 @@ function createEntry( listId, title ) {
 }
 
 /**
+ * Save entry to default reading list.
+ *
+ * @param {string} title
+ * @return {Promise<any>}
+ */
+function saveToDefaultList( title ) {
+	return api.postWithEditToken( {
+		action: 'readinglists',
+		command: 'createentry',
+		project: '@local',
+		title,
+		formatversion: 2
+	} );
+}
+
+/**
  * Delete an existing entry from a reading list.
  *
  * @param {number} entryId
@@ -381,6 +397,7 @@ module.exports = exports = {
 	getEntries,
 	getPagesFromManifest,
 	createEntry,
+	saveToDefaultList,
 	deleteEntry,
 	deleteEntryByPageTitle,
 	fromBase64,

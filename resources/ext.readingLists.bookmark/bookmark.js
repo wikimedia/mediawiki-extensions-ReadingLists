@@ -97,6 +97,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 
 		/**
 		 * Fires when the page saved status has changed.
+		 *
 		 * @deprecated Use readingLists.bookmark.change instead.
 		 *
 		 * @event readingLists.bookmark.edit
@@ -157,11 +158,10 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	/**
 	 * Handles frontend logic for the api.createEntry() function
 	 *
-	 * @param {string} listId
 	 * @return {Promise<void>}
 	 */
-	async function addPageToReadingList( listId ) {
-		await api.createEntry( listId, mw.config.get( 'wgPageName' ) );
+	async function addPageToReadingList() {
+		await api.saveToDefaultList( mw.config.get( 'wgPageName' ) );
 
 		updateBookmarkStatus( true );
 	}
@@ -209,57 +209,18 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	}
 
 	/**
-	 * Update the bookmarkList menu item URL to point to the user's default list,
-	 * to be called once the user has saved their first page. This will update the reading
-	 * list icon visible besides the user menu dropdown and the saved pages menu item that
-	 * is shown at lower resolutions.
-	 *
-	 * @param {string} listId
-	 */
-	function updateBookmarkListMenuUrl( listId ) {
-		const bookmarkUrl = mw.util.getUrl( `Special:ReadingLists/${ mw.user.getName() }/${ listId }` );
-		const links = document.querySelectorAll( '#pt-readinglists a, #pt-readinglists-2 a' );
-
-		for ( let i = 0; i < links.length; i++ ) {
-			links[ i ].href = bookmarkUrl;
-		}
-	}
-
-	/**
 	 * Binds a click listener to the bookmark element
 	 */
 	async function bindClickListener() {
 		bookmark.addEventListener( 'click', async ( event ) => {
 			event.preventDefault();
 
-			// Use the current listId from the bookmark dataset,
-			// or get it from setup if not available
-			let currentListId = bookmark.dataset.mwListId;
-
-			if ( !currentListId ) {
-				try {
-					const { setup: { list: { id } } } = await api.setup();
-					currentListId = bookmark.dataset.mwListId = id;
-					updateBookmarkListMenuUrl( currentListId );
-				} catch ( err ) {
-					// The following messages are used here:
-					// * readinglists-browser-error-intro
-					// * readinglists-db-error-list-entry-deleted
-					mw.notify(
-						mw.msg( 'readinglists-browser-error-intro', getErrorMessage( err ) ),
-						{ tag: 'saved', type: 'error' }
-					);
-
-					throw err;
-				}
-			}
-
 			const inCustomList = bookmark.dataset.mwInCustomList === '1';
 			const pageTitle = mw.config.get( 'wgPageName' );
 
 			try {
 				if ( bookmark.dataset.mwSaved !== '1' ) {
-					await addPageToReadingList( currentListId );
+					await addPageToReadingList();
 				} else {
 					if ( inCustomList ) {
 						const confirmed = await confirmUnsaveFromCustomList( bookmark );
@@ -267,7 +228,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 							return;
 						}
 					}
-					await removePageFromReadingList( pageTitle, currentListId );
+					await removePageFromReadingList( pageTitle );
 				}
 			} catch ( err ) {
 				// The following messages are used here:

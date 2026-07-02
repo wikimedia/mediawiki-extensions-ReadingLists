@@ -177,16 +177,12 @@ class HookHandler implements
 			}
 		}
 
-		// If the list id is null, then list setup occurs async in bookmark.js.
-		// When a user saves their first page, these attributes are updated accordingly
-		// after list setup.
 		$links['views']['bookmark'] = [
 			'text' => $sktemplate->msg(
 				'readinglists-' . ( $matchingList === null ? 'add' : 'remove' ) . '-bookmark'
 			)->text(),
 			'icon' => $matchingList === null ? 'bookmarkOutline' : 'bookmark',
 			'href' => '#',
-			'data-mw-list-id' => $list ? $list->rl_id : null,
 			'data-mw-saved' => $matchingList !== null ? 1 : null,
 			'data-mw-in-custom-list' => $hasCustomListEntry ? 1 : null,
 			'link-class' => 'reading-lists-bookmark',

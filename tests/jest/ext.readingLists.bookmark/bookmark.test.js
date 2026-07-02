@@ -1,6 +1,5 @@
 const CREATEENTRY = require( '../fixtures/createentry.json' );
 const DELETEENTRY = require( '../fixtures/deleteentry.json' );
-const SETUP = require( '../fixtures/setup.json' );
 
 let api;
 let confirmUnsaveFromCustomList;
@@ -52,14 +51,12 @@ function catchAsyncClicks( element ) {
  * @param {string} [options.iconClass]
  * @param {string} [options.saved]
  * @param {string} [options.inCustomList]
- * @param {number} [options.listId]
  * @return {HTMLAnchorElement}
  */
 function createBookmarkElement( {
 	iconClass = 'vector-icon',
 	saved,
-	inCustomList,
-	listId
+	inCustomList
 } = {} ) {
 	const bookmark = document.createElement( 'a' );
 	const icon = document.createElement( 'span' );
@@ -77,9 +74,6 @@ function createBookmarkElement( {
 	}
 	if ( inCustomList !== undefined ) {
 		bookmark.dataset.mwInCustomList = inCustomList;
-	}
-	if ( listId !== undefined ) {
-		bookmark.dataset.mwListId = listId;
 	}
 
 	catchAsyncClicks( bookmark );
@@ -193,7 +187,7 @@ describe( 'initBookmark', () => {
 	describe( 'initialization', () => {
 		describe( 'Vector skin initBookmark', () => {
 			test( 'sets outline icon and add bookmark label for unsaved page', () => {
-				const bookmark = createBookmarkElement( { listId: 1 } );
+				const bookmark = createBookmarkElement();
 				initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
 
 				const icon = bookmark.querySelector( '.vector-icon' );
@@ -205,8 +199,7 @@ describe( 'initBookmark', () => {
 
 			test( 'sets solid icon and remove bookmark label for saved page', () => {
 				const bookmark = createBookmarkElement( {
-					saved: '1',
-					listId: 1
+					saved: '1'
 				} );
 				initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
 
@@ -221,8 +214,7 @@ describe( 'initBookmark', () => {
 		describe( 'Minerva skin initBookmark', () => {
 			test( 'uses Minerva icon classes', () => {
 				const bookmark = createBookmarkElement( {
-					iconClass: 'minerva-icon',
-					listId: 1
+					iconClass: 'minerva-icon'
 				} );
 				initBookmark( bookmark, IS_MINERVA, MINERVA_EVENT_SOURCE );
 
@@ -234,8 +226,7 @@ describe( 'initBookmark', () => {
 			test( 'sets solid icon and remove bookmark label for saved page', () => {
 				const bookmark = createBookmarkElement( {
 					iconClass: 'minerva-icon',
-					saved: '1',
-					listId: 1
+					saved: '1'
 				} );
 				initBookmark( bookmark, IS_MINERVA, MINERVA_EVENT_SOURCE );
 
@@ -255,10 +246,11 @@ describe( 'initBookmark', () => {
 				const changeHookCallback = jest.fn();
 				mw.hook( 'readingLists.bookmark.edit' ).add( hookCallback );
 				mw.hook( 'readingLists.bookmark.change' ).add( changeHookCallback );
+				const postWithEditToken = jest.fn( () => CREATEENTRY );
 
-				const bookmark = createBookmarkElement( { listId: 12345 } );
+				const bookmark = createBookmarkElement();
 				api.stubApi( {
-					postWithEditToken: jest.fn( () => CREATEENTRY )
+					postWithEditToken
 				} );
 
 				mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
@@ -273,6 +265,9 @@ describe( 'initBookmark', () => {
 				expect( bookmark.dataset.mwSaved ).toBe( '1' );
 				expect( hookCallback ).toHaveBeenCalledWith( true, null, null, 'toolbar' );
 				expect( changeHookCallback ).toHaveBeenCalledWith( true, 'toolbar' );
+				expect( postWithEditToken ).toHaveBeenCalledWith( expect.not.objectContaining( {
+					list: expect.anything()
+				} ) );
 			} );
 
 			test( 'triggers onboarding popover on first save when not yet seen', async () => {
@@ -286,7 +281,7 @@ describe( 'initBookmark', () => {
 				anchor.id = 'pt-readinglists-2';
 				document.body.appendChild( anchor );
 
-				const bookmark = createBookmarkElement( { listId: 12345 } );
+				const bookmark = createBookmarkElement();
 				api.stubApi( {
 					postWithEditToken: jest.fn( () => CREATEENTRY )
 				} );
@@ -304,7 +299,7 @@ describe( 'initBookmark', () => {
 			} );
 
 			test( 'shows notify success when onboarding already seen', async () => {
-				const bookmark = createBookmarkElement( { listId: 12345 } );
+				const bookmark = createBookmarkElement();
 				api.stubApi( {
 					postWithEditToken: jest.fn( () => CREATEENTRY )
 				} );
@@ -327,13 +322,13 @@ describe( 'initBookmark', () => {
 				const changeHookCallback = jest.fn();
 				mw.hook( 'readingLists.bookmark.edit' ).add( hookCallback );
 				mw.hook( 'readingLists.bookmark.change' ).add( changeHookCallback );
+				const postWithEditToken = jest.fn( () => CREATEENTRY );
 
 				const bookmark = createBookmarkElement( {
-					iconClass: 'minerva-icon',
-					listId: 12345
+					iconClass: 'minerva-icon'
 				} );
 				api.stubApi( {
-					postWithEditToken: jest.fn( () => CREATEENTRY )
+					postWithEditToken
 				} );
 				mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
 
@@ -345,8 +340,13 @@ describe( 'initBookmark', () => {
 				expectIconClasses( icon, MINERVA_SOLID_BOOKMARK_CLASSES );
 				expectIconClassesAbsent( icon, MINERVA_OUTLINE_BOOKMARK_CLASSES );
 				expect( bookmark.dataset.mwSaved ).toBe( '1' );
-				expect( hookCallback ).toHaveBeenCalledWith( true, null, null, MINERVA_EVENT_SOURCE );
+				expect( hookCallback ).toHaveBeenCalledWith(
+					true, null, null, MINERVA_EVENT_SOURCE
+				);
 				expect( changeHookCallback ).toHaveBeenCalledWith( true, MINERVA_EVENT_SOURCE );
+				expect( postWithEditToken ).toHaveBeenCalledWith( expect.not.objectContaining( {
+					list: expect.anything()
+				} ) );
 			} );
 
 			test( 'triggers onboarding popover on first save when not yet seen', async () => {
@@ -361,8 +361,7 @@ describe( 'initBookmark', () => {
 				document.body.appendChild( anchor );
 
 				const bookmark = createBookmarkElement( {
-					iconClass: 'minerva-icon',
-					listId: 12345
+					iconClass: 'minerva-icon'
 				} );
 				api.stubApi( {
 					postWithEditToken: jest.fn( () => CREATEENTRY )
@@ -382,8 +381,7 @@ describe( 'initBookmark', () => {
 
 			test( 'shows notify success when onboarding already seen', async () => {
 				const bookmark = createBookmarkElement( {
-					iconClass: 'minerva-icon',
-					listId: 12345
+					iconClass: 'minerva-icon'
 				} );
 				api.stubApi( {
 					postWithEditToken: jest.fn( () => CREATEENTRY )
@@ -411,8 +409,7 @@ describe( 'initBookmark', () => {
 			const postWithEditToken = jest.fn( () => DELETEENTRY );
 
 			const bookmark = createBookmarkElement( {
-				saved: '1',
-				listId: 12345
+				saved: '1'
 			} );
 			api.stubApi( {
 				postWithEditToken
@@ -452,8 +449,7 @@ describe( 'initBookmark', () => {
 
 			const bookmark = createBookmarkElement( {
 				iconClass: 'minerva-icon',
-				saved: '1',
-				listId: 12345
+				saved: '1'
 			} );
 			api.stubApi( {
 				postWithEditToken
@@ -488,8 +484,7 @@ describe( 'initBookmark', () => {
 			const postWithEditToken = jest.fn( () => DELETEENTRY );
 			const bookmark = createBookmarkElement( {
 				saved: '1',
-				inCustomList: '1',
-				listId: 12345
+				inCustomList: '1'
 			} );
 			api.stubApi( {
 				postWithEditToken
@@ -515,8 +510,7 @@ describe( 'initBookmark', () => {
 			const postWithEditToken = jest.fn( () => DELETEENTRY );
 			const bookmark = createBookmarkElement( {
 				saved: '1',
-				inCustomList: '1',
-				listId: 12345
+				inCustomList: '1'
 			} );
 			api.stubApi( {
 				postWithEditToken
@@ -533,11 +527,8 @@ describe( 'initBookmark', () => {
 	} );
 
 	describe( 'ReadingLists list setup flow', () => {
-		test( 'calls api.setup() first when no listId, then calls createEntry on Vector skin', async () => {
+		test( 'saves to default list without calling setup on Vector skin', async () => {
 			const postWithEditToken = jest.fn( ( { command } ) => {
-				if ( command === 'setup' ) {
-					return SETUP;
-				}
 				if ( command === 'createentry' ) {
 					return CREATEENTRY;
 				}
@@ -551,21 +542,21 @@ describe( 'initBookmark', () => {
 			bookmark.click();
 			await flushPromises();
 
-			expect( postWithEditToken ).toHaveBeenNthCalledWith(
-				1,
-				expect.objectContaining( { command: 'setup' } )
-			);
-			expect( postWithEditToken ).toHaveBeenNthCalledWith(
-				2,
-				expect.objectContaining( { command: 'createentry' } )
-			);
-			expect( bookmark.dataset.mwListId ).toBe( '1' );
+			expect( postWithEditToken ).toHaveBeenCalledTimes( 1 );
+			expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( {
+				command: 'createentry',
+				project: '@local',
+				title: 'Test_Page'
+			} ) );
+			expect( postWithEditToken ).toHaveBeenCalledWith( expect.not.objectContaining( {
+				list: expect.anything()
+			} ) );
 		} );
 	} );
 
 	describe( 'error handling', () => {
 		test( 'shows error notification when createEntry rejects on Vector skin', async () => {
-			const bookmark = createBookmarkElement( { listId: 12345 } );
+			const bookmark = createBookmarkElement();
 			expectedUnhandledRejections = [ 'some-api-error' ];
 			const postWithEditToken = jest.fn( ( { command } ) => {
 				if ( command === 'createentry' ) {
@@ -592,8 +583,7 @@ describe( 'initBookmark', () => {
 
 		test( 'shows error notification when deleteEntryByPageTitle rejects with unexpected error on Vector skin', async () => {
 			const bookmark = createBookmarkElement( {
-				saved: '1',
-				listId: 12345
+				saved: '1'
 			} );
 			expectedUnhandledRejections = [ 'unexpected-error' ];
 			const postWithEditToken = jest.fn( ( { command } ) => {
