@@ -180,7 +180,10 @@ class ReadingListRepository implements LoggerAwareInterface {
 				'rl_deleted' => 1,
 				'rl_date_updated' => $this->dbw->timestamp(),
 			] )
-			->where( [ 'rl_user_id' => $this->userId ] )
+			->where( [
+				'rl_user_id' => $this->userId,
+				'rl_deleted' => 0
+			] )
 			->caller( __METHOD__ )->execute();
 		if ( !$this->dbw->affectedRows() ) {
 			$this->logger->error( 'teardownForUser failed for unknown reason', [

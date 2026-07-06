@@ -190,15 +190,20 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			'rl_size' => '0'
 		], $data, false, true );
 
-		// Add a non-default list to the table to ensure it gets
-		// torn down as well as the default one.
-		$this->addLists( 1, [
+		// Add a non-default list to the table to ensure it gets torn down,
+		// and teardown skips the already deleted list.
+		$listIds = $this->addLists( 1, [
 			[
 				'rl_name' => 'not-a-default-list',
 				'rl_date_created' => '20100101000000',
 				'rl_date_updated' => '20120101000000',
 			],
+			[
+				'rl_name' => 'deleted-my-list',
+				'rl_deleted' => 1,
+			],
 		] );
+		$deletedListId = $listIds[1];
 
 		$repository->teardownForUser();
 
@@ -214,6 +219,15 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( 0, $res->numRows(),
 			"teardownForUser failed to soft-delete all lists"
 		);
+
+		$deletedListName = $this->getDb()->newSelectQueryBuilder()
+			->select( 'rl_name' )
+			->from( 'reading_list' )
+			->where( [ 'rl_id' => $deletedListId ] )
+			->caller( __METHOD__ )
+			->fetchField();
+
+		$this->assertSame( 'deleted-my-list', $deletedListName );
 
 		$list = (array)$repository->setupForUser();
 		$this->assertNotEquals( $list['rl_id'], $oldDefaultListId,
