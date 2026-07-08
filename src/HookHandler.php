@@ -21,6 +21,7 @@ use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
 use MediaWiki\User\UserIdentityUtils;
 use MediaWiki\WikiMap\WikiMap;
+use Wikimedia\ArrayUtils\ArrayUtils;
 
 /**
  * Static entry points for hooks.
@@ -232,7 +233,7 @@ class HookHandler implements
 		$userName = $user->getName();
 		$specialPageUrl = SpecialPage::getTitleFor( 'ReadingLists', $userName )->getLinkURL();
 
-		$links['user-menu'] = wfArrayInsertAfter( $userMenu, [
+		$links['user-menu'] = ArrayUtils::insertAfter( $userMenu, [
 			'readinglists' => [
 				'text' => $sktemplate->msg( 'readinglists-menu-item' )->text(),
 				'href' => $specialPageUrl,
