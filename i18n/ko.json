@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Ellif",
+			"Suleiman the Magnificent Television",
 			"Tensama0415",
 			"YeBoy371",
 			"Ykhwong"
@@ -37,7 +38,7 @@
 	"readinglists-browser-extension-product-title": "위키백과 읽기 목록",
 	"readinglists-browser-page-not-supported": "$1은(는) 이 문서를 지원하지 않습니다",
 	"readinglists-special-title-imported": "읽기 목록: 다른 사용자로부터 가져오기",
-	"readinglists-special-subpage-title": "저장된 문서",
+	"readinglists-special-subpage-title": "저장됨",
 	"readinglists-description": "저장된 모든 목록을 한 곳에서 확인합니다.",
 	"readinglists-loading": "기다려 주세요...",
 	"reading-list-purpose": "비공개 읽기 목록을 보려면 로그인해주세요.",
@@ -80,7 +81,7 @@
 	"readinglists-import-app-launch-hint": "앱의 최신 버전이 설치되어 있는지 확인해 주세요.",
 	"readinglists-beta-feature-name": "저장된 문서",
 	"readinglists-beta-feature-description": "* 나중에 읽거나 참조할 수 있도록 문서를 저장할 수 있습니다.\n* 위키백과 앱과 웹사이트에서 저장한 문서는 모두 하나의 목록으로 동기화됩니다.\n\n참고:\n* 베타 기간 동안 새로운 기능이 추가될 수 있습니다.\n* 이 베타 기능은 2026년 7월까지 운영되며, 이후 위키백과에서 영구적으로 사용할 수 있는 기능이 될 것입니다. 위의 토론 링크를 통해 의견을 보내주세요.",
-	"readinglists-menu-item": "저장된 문서",
+	"readinglists-menu-item": "저장됨",
 	"tooltip-pt-readinglists": "저장된 항목",
 	"tooltip-ca-bookmark-add": "이 문서를 저장된 항목에 추가",
 	"tooltip-ca-bookmark-remove": "이 문서를 저장된 항목에서 제거",
@@ -95,9 +96,9 @@
 	"readinglists-onboarding-text": "흥미로운 것을 발견하셨나요? 이제 개인 목록에 저장할 수 있습니다.",
 	"readinglists-onboarding-close-button": "닫기",
 	"readinglists-onboarding-ok-button": "확인",
-	"readinglists-onboarding-saved-pages-title": "저장된 문서",
+	"readinglists-onboarding-saved-pages-title": "저장됨",
 	"readinglists-onboarding-saved-pages-text": "저장된 모든 문서를 여기에서 접근하세요.",
-	"readinglists-mobile-onboarding-saved-pages-title": "저장된 문서",
+	"readinglists-mobile-onboarding-saved-pages-title": "저장됨",
 	"readinglists-mobile-onboarding-saved-pages-text": "저장된 모든 문서를 이 메뉴에서 접근하세요.",
 	"readinglists-beta-tag": "베타",
 	"readinglists-betafeature-quicksurvey-question": "이 기능이 마음에 드시나요?",

@@ -22,7 +22,7 @@
 	"readinglists-browser-list-entry-limit-exceeded": "নিবন্ধ সংরক্ষণ করা যাবে না। আপনি তালিকা প্রতি $1টি সীমা অতিক্রম করেছেন",
 	"readinglists-browser-extension-product-title": "উইকিপিডিয়ার পড়ার তালিকা",
 	"readinglists-browser-page-not-supported": "$1 এই পৃষ্ঠাটি সমর্থন করে না",
-	"readinglists-special-subpage-title": "সংরক্ষিত পাতা",
+	"readinglists-special-subpage-title": "সংরক্ষিত",
 	"readinglists-loading": "অনুগ্রহ করে অপেক্ষা করুন...",
 	"reading-list-purpose-for-temp-user": "ব্যক্তিগত পঠন তালিকা তৈরি করতে দয়া করে একটি অ্যাকাউন্ট তৈরি করুন।",
 	"special-tab-readinglists-short": "আপনার তালিকা",
@@ -32,5 +32,6 @@
 	"readinglists-import-disclaimer": "এই সাইটের একজন ব্যবহারকারী (সম্ভবত আপনি) অন্যদের সাথে শেয়ার করার জন্য একটি পঠন তালিকা তৈরি করেছেন। এটি নিয়ন্ত্রিত নয়, এবং এর বিষয়বস্তু সাইটের সম্পাদকদের প্রতিফলিত করে না।",
 	"readinglists-import-button-label": "অ্যাপে খুলুন",
 	"readinglists-import-button-hint": "বোতামে ট্যাপ করুন:",
+	"readinglists-mobile-onboarding-saved-pages-title": "সংরক্ষিত",
 	"readinglists-betafeature-quicksurvey-submit": "জমা দিন"
 }

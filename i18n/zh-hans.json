@@ -110,5 +110,7 @@
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "添加您的反馈",
 	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement 隐私政策]",
 	"readinglists-betafeature-quicksurvey-submit": "提交",
-	"readinglists-betafeature-quicksurvey-thank-you": "感谢您的反馈"
+	"readinglists-betafeature-quicksurvey-thank-you": "感谢您的反馈",
+	"readinglists-cta-dialog-log-in": "登录",
+	"readinglists-cta-dialog-close": "关闭"
 }

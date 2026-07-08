@@ -1,11 +1,14 @@
 {
 	"@metadata": {
 		"authors": [
+			"Pratik11",
 			"बडा काजी"
 		]
 	},
+	"readinglists-special-subpage-title": "बचत गरिएको",
 	"readinglists-loading": "कृपया प्रतिक्षा गर्नुहोस्…",
 	"special-tab-readinglists-short": "तपाईंको सूचीहरू",
 	"readinglists-no-title": "शीर्षकविहीन सूची",
-	"readinglists-add-bookmark": "सङ्ग्रह गर्नुहोस्"
+	"readinglists-add-bookmark": "सङ्ग्रह गर्नुहोस्",
+	"readinglists-mobile-onboarding-saved-pages-title": "सुरक्षित गरिएको"
 }
