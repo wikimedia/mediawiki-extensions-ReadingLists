@@ -6,5 +6,15 @@
 		]
 	},
 	"readinglists-special-subpage-title": "Pajennoù enrollet",
-	"readinglists-watchlist": "Roll evezhiañ"
+	"readinglists-title": "Pajennoù enrollet",
+	"readinglists-export": "Rannañ roll",
+	"readinglists-watchlist": "Roll evezhiañ",
+	"readinglists-watchlist-description": "Pajennoù heuliet o c’hemmoù nevez ganeoc’h.",
+	"readinglists-watchlist-monitor": "Gallout a rit evezhiañ kemmoù pajennoù ar roll-mañ gant ar benveg [$1 roll evezhiañ].",
+	"readinglists-bookmark": "Merkañ",
+	"readinglists-add-bookmark": "Enrollañ",
+	"readinglists-remove-bookmark": "Dienrollañ",
+	"readinglists-onboarding-title": "Enrollañ pajennoù evit diwezhatoc'h",
+	"readinglists-onboarding-text": "Kavet hoc'h eus un dra bennak dedennus ? Bremañ e c'hallit enrollañ anezhañ en ho roll personel.",
+	"readinglists-onboarding-close-button": "Serriñ"
 }
