@@ -100,6 +100,7 @@
 	"readinglists-beta-tag": "ベータ版",
 	"readinglists-betafeature-quicksurvey-answer-positive": "はい",
 	"readinglists-betafeature-quicksurvey-answer-negative": "いいえ",
+	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement プライバシーポリシー]",
 	"readinglists-betafeature-quicksurvey-submit": "送信",
 	"readinglists-betafeature-quicksurvey-thank-you": "フィードバックをありがとうございます"
 }

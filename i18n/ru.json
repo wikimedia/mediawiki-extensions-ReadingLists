@@ -18,7 +18,7 @@
 			"LuckyBlock13fa"
 		]
 	},
-	"readinglists-desc": "Позволяет пользователям управлять приватными списками статей, такими как закладки или списки «читать потом».",
+	"readinglists-desc": "Позволяет участникам управлять приватными списками, такими как закладки или списки «Сохранённые страницы».",
 	"readinglists-db-error-no-such-list": "Список $1 не существует.",
 	"readinglists-db-error-no-such-list-entry": "Запись в списке $1 не существует.",
 	"readinglists-db-error-not-own-list": "Список $1 принадлежит другому участнику.",
@@ -31,7 +31,8 @@
 	"readinglists-db-error-list-limit": "Пользователи не могут иметь более $1 {{PLURAL:$1|списка|списков}}.",
 	"readinglists-db-error-entry-limit": "Список $1 не может содержать более $2 {{PLURAL:$2|записи|записей}}.",
 	"readinglists-db-error-too-long": "Значение для поля $1 не может быть длиннее $2 байт.",
-	"readinglists-browser-add-entry-success": "\"<b>$1</b>\" добавлено в ваш [[$2|$3]].",
+	"readinglists-browser-add-entry-success": "Статья «<b>$1</b>» добавлена в ваши [[$2|$3]].",
+	"readinglists-browser-remove-entry-success": "Статья «<b>$1</b>» удалена из вашего списка «[[$2|$3]]».",
 	"readinglists-browser-login-prompt": "Войдите, чтобы сохранять статьи",
 	"readinglists-browser-error-intro": "Произошла ошибка:$1",
 	"readinglists-browser-enable-sync-prompt": "Включите синхронизацию в приложении Википедии, чтобы начать сохранять статьи",
@@ -45,8 +46,13 @@
 	"readinglists-error": "Ваш браузер не может использовать функцию списков для чтения. Включите JavaScript или попробуйте в другом браузере.",
 	"readinglists-import-size-error": "Список слишком велик для отображения.",
 	"special-tab-readinglists-short": "Ваши списки",
+	"readinglists-title": "Сохранённые страницы",
+	"readinglists-total-lists": "$1 {{PLURAL:$1|список|списка|списков}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|статья|статьи|статей}}",
+	"readinglists-show-more": "Показать больше",
 	"readinglists-default-title": "сохранённые страницы",
+	"readinglists-default-description": "Стандартный список для ваших сохранённых страниц.",
+	"readinglists-empty-title": "Сохранённых страниц ещё нет",
 	"readinglists-display-sort": "Сортировать по",
 	"readinglists-sorted-by-recent": "Отсортировано по дате (от самых новых).",
 	"readinglists-display-direction-ascending": "По возрастанию",
@@ -59,5 +65,10 @@
 	"readinglists-menu-item": "Сохранённые страницы",
 	"readinglists-add-bookmark": "Сохранить",
 	"readinglists-onboarding-saved-pages-title": "Ваши сохранённые страницы",
-	"readinglists-onboarding-saved-pages-text": "Получите доступ ко всем вашим сохранённым страницам здесь."
+	"readinglists-onboarding-saved-pages-text": "Получите доступ ко всем вашим сохранённым страницам здесь.",
+	"readinglists-beta-tag": "Бета",
+	"readinglists-betafeature-quicksurvey-answer-positive": "Да",
+	"readinglists-betafeature-quicksurvey-answer-negative": "Нет",
+	"readinglists-betafeature-quicksurvey-question-feedback": "Что для вас сделало бы эту функцию более полезной?",
+	"readinglists-betafeature-quicksurvey-submit": "Отправить"
 }
