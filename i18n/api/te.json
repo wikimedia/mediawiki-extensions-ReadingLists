@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Chaduvari"
+		]
+	},
+	"apierror-readinglists-project-title-param": "<var>$1project</var>, <var>$1title</var> రెంటినీ కలిపి వాడాలి.",
+	"apierror-readinglists-too-old": "<var>$1changedsince</var> కి ఇచ్చిన టైమ్‌స్టాంపులు <kbd>$2</kbd> కంటే పాతవి కాకూడదు."
+}
