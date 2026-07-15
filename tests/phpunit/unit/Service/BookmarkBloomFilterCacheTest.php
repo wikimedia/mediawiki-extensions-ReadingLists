@@ -9,6 +9,7 @@ use MediaWiki\Extension\ReadingLists\Service\BookmarkBloomFilterCache;
 use MediaWikiUnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\NullLogger;
+use Wikimedia\LightweightObjectStore\ExpirationAwareness;
 use Wikimedia\ObjectCache\HashBagOStuff;
 use Wikimedia\ObjectCache\WANObjectCache;
 use Wikimedia\Rdbms\IDBAccessObject;
@@ -74,6 +75,21 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 
 		$cache = $this->createBloomFilterCache( $repository );
 		$cache->rebuildBloomFilter( self::CENTRAL_ID );
+	}
+
+	public function testRebuildBloomFilter_usesCorrectTTL() {
+		$mockTime = 1000000000.0;
+		$this->cache->setMockTime( $mockTime );
+		$service = $this->createBloomFilterCache( $this->createMockRepository( [ 'Cat' ] ), $this->cache );
+		$service->rebuildBloomFilter( self::CENTRAL_ID );
+
+		$curTTL = null;
+		$this->cache->get(
+			$this->cache->makeKey( 'readinglists', 'bloom', self::CENTRAL_ID ),
+			$curTTL
+		);
+
+		$this->assertSame( (float)ExpirationAwareness::TTL_MONTH, $curTTL );
 	}
 
 	public function testGetBloomFilterStatus_returnsFatalForInvalidProjectConfig() {

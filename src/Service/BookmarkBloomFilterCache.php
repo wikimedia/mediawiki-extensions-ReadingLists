@@ -22,7 +22,7 @@ class BookmarkBloomFilterCache {
 	public const BUILD_UNUSABLE = 'unusable';
 
 	private const BLOOM_FILTER_FALSE_POSITIVE_RATE = 0.01;
-	private const BLOOM_FILTER_CACHE_TTL = ExpirationAwareness::TTL_WEEK;
+	private const BLOOM_FILTER_CACHE_TTL = ExpirationAwareness::TTL_MONTH;
 	private const BLOOM_FILTER_FAILURE_TTL = ExpirationAwareness::TTL_MINUTE * 5;
 
 	public function __construct(
