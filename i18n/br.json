@@ -6,5 +6,9 @@
 		]
 	},
 	"readinglists-special-title": "Enrollet",
-	"readinglists-watchlist": "Roll evezhiañ"
+	"readinglists-export": "Rannañ roll",
+	"readinglists-watchlist": "Roll evezhiañ",
+	"readinglists-watchlist-description": "Pajennoù heuliet o c’hemmoù nevez ganeoc’h.",
+	"readinglists-watchlist-monitor": "Gallout a rit evezhiañ kemmoù pajennoù ar roll-mañ gant ar benveg [$1 roll evezhiañ].",
+	"readinglists-bookmark": "Merkañ"
 }
