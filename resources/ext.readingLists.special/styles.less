@@ -31,6 +31,18 @@
 	}
 }
 
+// Page title: on mobile, wrap to 2 lines and ellipsis when overflowed.
+@media screen and ( max-width: @max-width-breakpoint-mobile ) {
+	.mw-first-heading {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		overflow-wrap: anywhere;
+	}
+}
+
 .reading-lists-container {
 	.cdx-progress-bar {
 		width: @size-half;

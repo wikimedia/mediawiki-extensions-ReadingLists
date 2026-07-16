@@ -63,7 +63,8 @@
 		"ReadingLists": {
 			"class": "MediaWiki\\Extension\\ReadingLists\\SpecialReadingLists",
 			"services": [
-				"MainConfig"
+				"MainConfig",
+				"ReadingLists.ReadingListRepositoryFactory"
 			]
 		}
 	},
@@ -240,6 +241,12 @@
 				"resources/ext.readingLists.special/components/EntryItem.vue",
 				"resources/ext.readingLists.special/components/Survey.vue",
 				"resources/ext.readingLists.special/pages/Entries.vue",
+				{
+					"name": "resources/ext.readingLists.special/config.json",
+					"config": [
+						"ReadingListsCustomLists"
+					]
+				},
 				{
 					"name": "icons.json",
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",

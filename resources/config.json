@@ -1,4 +1,5 @@
 {
 	"ReadingListsAnonymizedPreviews": false,
-	"ReadingListsDeveloperMode": true
+	"ReadingListsDeveloperMode": true,
+	"ReadingListsCustomLists": false
 }

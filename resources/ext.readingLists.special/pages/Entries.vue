@@ -6,7 +6,7 @@
 	<template v-else>
 		<slot v-if="$slots[ 'import-dialog' ]" name="import-dialog"></slot>
 
-		<template v-if="!isDefaultList && !isAllListItems">
+		<template v-if="showInPageTitle">
 			<h2 v-if="title" class="reading-lists-title">
 				{{ title }}
 			</h2>
@@ -54,6 +54,7 @@
 const { ref } = require( 'vue' );
 const api = require( 'ext.readingLists.api' );
 const { CdxButton, CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
+const { ReadingListsCustomLists } = require( '../config.json' );
 const EmptyList = require( '../components/EmptyList.vue' );
 const EntryItem = require( '../components/EntryItem.vue' );
 const Survey = require( '../components/Survey.vue' );
@@ -103,6 +104,14 @@ module.exports = exports = {
 	computed: {
 		sortingText() {
 			return mw.msg( 'readinglists-sorted-by-recent' );
+		},
+		showInPageTitle() {
+			if ( this.imported ) {
+				return true;
+			}
+			return !ReadingListsCustomLists &&
+				!this.isDefaultList &&
+				!this.isAllListItems;
 		}
 	},
 	methods: {
