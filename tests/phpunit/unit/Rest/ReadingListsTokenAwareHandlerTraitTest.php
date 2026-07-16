@@ -9,6 +9,8 @@ use MediaWiki\Session\SessionProvider;
 use MediaWiki\Session\Token;
 use MediaWiki\User\User;
 use MediaWikiUnitTestCase;
+use Wikimedia\Message\MessageValue;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * @covers \MediaWiki\Extension\ReadingLists\Rest\ReadingListsTokenAwareHandlerTrait
@@ -87,6 +89,17 @@ class ReadingListsTokenAwareHandlerTraitTest extends MediaWikiUnitTestCase {
 				'expected' => null,
 			], $test );
 		}
+	}
+
+	public function testGetReadingListsTokenParamDefinition() {
+		$handler = $this->getHandler( [], [], null, false );
+		$def = $handler->getReadingListsTokenParamDefinition();
+		$this->assertArrayHasKey( 'csrf_token', $def );
+		$this->assertArrayHasKey( Handler::PARAM_DESCRIPTION, $def['csrf_token'] );
+		$this->assertInstanceOf( MessageValue::class, $def['csrf_token'][Handler::PARAM_DESCRIPTION] );
+		$this->assertSame( 'rest-csrf-token-description', $def['csrf_token'][Handler::PARAM_DESCRIPTION]->getKey() );
+		$this->assertArrayHasKey( ParamValidator::PARAM_DEFAULT, $def['csrf_token'] );
+		$this->assertSame( '', $def['csrf_token'][ParamValidator::PARAM_DEFAULT] );
 	}
 
 	private function getHandler(

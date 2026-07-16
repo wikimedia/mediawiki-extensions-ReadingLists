@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\ReadingLists\Rest;
 use LogicException;
 use MediaWiki\Rest\Handler;
 use MediaWiki\Rest\TokenAwareHandlerTrait;
+use Wikimedia\Message\MessageValue;
 use Wikimedia\ParamValidator\ParamValidator;
 
 /**
@@ -40,6 +41,8 @@ trait ReadingListsTokenAwareHandlerTrait {
 				Handler::PARAM_SOURCE => 'query',
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_REQUIRED => false,
+				ParamValidator::PARAM_DEFAULT => '',
+				Handler::PARAM_DESCRIPTION => new MessageValue( 'rest-csrf-token-description' ),
 			]
 		];
 	}
