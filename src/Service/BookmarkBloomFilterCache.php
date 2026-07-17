@@ -11,6 +11,7 @@ use Wikimedia\LightweightObjectStore\ExpirationAwareness;
 use Wikimedia\ObjectCache\WANObjectCache;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\IDBAccessObject;
+use Wikimedia\Stats\StatsFactory;
 
 class BookmarkBloomFilterCache {
 
@@ -24,11 +25,23 @@ class BookmarkBloomFilterCache {
 	private const BLOOM_FILTER_FALSE_POSITIVE_RATE = 0.01;
 	private const BLOOM_FILTER_CACHE_TTL = ExpirationAwareness::TTL_MONTH;
 	private const BLOOM_FILTER_FAILURE_TTL = ExpirationAwareness::TTL_MINUTE * 5;
+	private const CACHE_HIT_VALUE_AGE_BUCKETS = [
+		ExpirationAwareness::TTL_HOUR,
+		ExpirationAwareness::TTL_HOUR * 6,
+		ExpirationAwareness::TTL_DAY,
+		ExpirationAwareness::TTL_DAY * 2,
+		ExpirationAwareness::TTL_DAY * 4,
+		ExpirationAwareness::TTL_WEEK,
+		ExpirationAwareness::TTL_WEEK * 2,
+		ExpirationAwareness::TTL_WEEK * 3,
+		ExpirationAwareness::TTL_DAY * 30,
+	];
 
 	public function __construct(
 		private readonly ReadingListRepositoryFactory $readingListRepositoryFactory,
 		private readonly WANObjectCache $cache,
 		private readonly LoggerInterface $logger,
+		private readonly StatsFactory $statsFactory,
 		private readonly int $bloomFilterMaxItems,
 	) {
 		if ( $this->bloomFilterMaxItems < 1 ) {
@@ -48,12 +61,21 @@ class BookmarkBloomFilterCache {
 	 * @return StatusValue|false
 	 */
 	public function getCachedBloomFilterStatus( int $centralId ): StatusValue|false {
-		$cachedBloomFilter = $this->getRawCachedBloomFilter( $centralId );
-		if ( $cachedBloomFilter === false ) {
+		$cacheResult = $this->getRawCachedBloomFilter( $centralId );
+		if ( $cacheResult === false ) {
 			return false;
 		}
 
-		return $this->deserializeCachedBloomFilter( $cachedBloomFilter, $centralId );
+		$status = $this->deserializeCachedBloomFilter( $cacheResult['cachedBloomFilter'], $centralId );
+		// Only record age when the cached value contains a usable bloom filter.
+		if ( $status->isOK() && $status->getValue() instanceof BloomFilter ) {
+			$this->statsFactory->getHistogram(
+				'bloom_cache_hit_value_age_seconds',
+				self::CACHE_HIT_VALUE_AGE_BUCKETS
+			)->observe( $cacheResult['valueAgeSeconds'] );
+		}
+
+		return $status;
 	}
 
 	/**
@@ -112,28 +134,51 @@ class BookmarkBloomFilterCache {
 	 * incompatible cache version.
 	 *
 	 * @param int $centralId
-	 * @return array{state: string, filter?: array}|false
+	 * @return array{
+	 *   cachedBloomFilter: array{state: string, filter?: array},
+	 *   valueAgeSeconds: float
+	 * }|false
 	 */
 	private function getRawCachedBloomFilter( int $centralId ) {
+		$currentTtl = null;
 		$invalidationCheckKey = $this->getInvalidationCheckKey( $centralId );
 		$info = WANObjectCache::PASS_BY_REF;
+
 		$cachedBloomFilter = $this->cache->get(
 			$this->getBloomFilterKey( $centralId ),
-			$curTTL,
+			$currentTtl,
 			[ $invalidationCheckKey ],
 			$info
 		);
 
-		$hasExpectedCacheVersion =
-			( $info[WANObjectCache::KEY_VERSION] ?? null ) === self::CACHE_VERSION;
-		$hasTtlMetadata = ( $info[WANObjectCache::KEY_CUR_TTL] ?? null ) !== null;
-		$isFresh = $curTTL > 0;
-
-		if ( !$hasExpectedCacheVersion || !$hasTtlMetadata || !$isFresh ) {
+		$asOf = $info[WANObjectCache::KEY_AS_OF] ?? null;
+		if ( $cachedBloomFilter === false || $asOf === null ) {
+			$this->recordCacheMissMetric( 'absent' );
 			return false;
 		}
 
-		return $cachedBloomFilter;
+		// Report an old cache version as version_mismatch, even if the entry is also stale.
+		if ( ( $info[WANObjectCache::KEY_VERSION] ?? null ) !== self::CACHE_VERSION ) {
+			$this->recordCacheMissMetric( 'version_mismatch' );
+			return false;
+		}
+
+		$ttl = $info[WANObjectCache::KEY_TTL] ?? null;
+		if ( $ttl === null || $currentTtl === null || $currentTtl <= 0 ) {
+			$this->recordCacheMissMetric( 'stale' );
+			return false;
+		}
+
+		return [
+			'cachedBloomFilter' => $cachedBloomFilter,
+			'valueAgeSeconds' => max( 0.0, (float)$ttl - (float)$currentTtl ),
+		];
+	}
+
+	private function recordCacheMissMetric( string $reason ): void {
+		$this->statsFactory->getCounter( 'bloom_cache_miss_total' )
+			->setLabel( 'reason', $reason )
+			->increment();
 	}
 
 	/**

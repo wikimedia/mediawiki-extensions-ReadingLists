@@ -19,6 +19,7 @@ return [
 			$services->get( 'ReadingLists.ReadingListRepositoryFactory' ),
 			$services->getMainWANObjectCache(),
 			LoggerFactory::getInstance( 'readinglists' ),
+			$services->getStatsFactory()->withComponent( 'readinglists' ),
 			$config->get( 'ReadingListsBloomFilterMaxItems' )
 		);
 	},

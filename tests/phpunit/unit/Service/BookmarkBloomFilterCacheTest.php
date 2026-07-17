@@ -13,6 +13,8 @@ use Wikimedia\LightweightObjectStore\ExpirationAwareness;
 use Wikimedia\ObjectCache\HashBagOStuff;
 use Wikimedia\ObjectCache\WANObjectCache;
 use Wikimedia\Rdbms\IDBAccessObject;
+use Wikimedia\Stats\StatsFactory;
+use Wikimedia\Stats\UnitTestingHelper;
 
 /**
  * @covers \MediaWiki\Extension\ReadingLists\Service\BookmarkBloomFilterCache
@@ -23,10 +25,12 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 	private const MAX_ITEMS = 5;
 
 	private WANObjectCache $cache;
+	private UnitTestingHelper $statsHelper;
 
 	protected function setUp(): void {
 		parent::setUp();
 		$this->cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$this->statsHelper = StatsFactory::newUnitTestingHelper();
 	}
 
 	private function createBloomFilterCache(
@@ -42,6 +46,7 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 			$factory,
 			$cache ?? $this->cache,
 			new NullLogger(),
+			$this->statsHelper->getStatsFactory(),
 			$maxItems
 		);
 	}
@@ -62,6 +67,9 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 		$cache = $this->createBloomFilterCache( $this->createMockRepository() );
 
 		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+		$this->assertSame( 1, $this->statsHelper->count(
+			'bloom_cache_miss_total{reason="absent"}'
+		) );
 	}
 
 	public function testRebuildBloomFilter_usesPrimaryReadForCacheRebuild() {
@@ -120,6 +128,10 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 		$this->assertInstanceOf( \StatusValue::class, $status );
 		$this->assertTrue( $status->isOK() );
 		$this->assertSame( BookmarkBloomFilterCache::BUILD_TOO_LARGE, $status->getValue() );
+		$this->assertStringNotContainsString(
+			'bloom_cache_hit_value_age_seconds',
+			implode( "\n", $this->statsHelper->getAllFormatted() )
+		);
 	}
 
 	public function testGetBloomFilterStatus_returnsDbErrorStateWhenRebuildFails() {
@@ -165,6 +177,9 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 		$cache->invalidateBloomFilter( self::CENTRAL_ID );
 
 		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+		$this->assertSame( 1, $this->statsHelper->count(
+			'bloom_cache_miss_total{reason="stale"}'
+		) );
 	}
 
 	public function testGetCachedBloomFilterStatus_returnsFalseForVersionMismatch() {
@@ -182,6 +197,38 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 		);
 
 		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+		$this->assertSame( 1, $this->statsHelper->count(
+			'bloom_cache_miss_total{reason="version_mismatch"}'
+		) );
+	}
+
+	public function testGetCachedBloomFilterStatus_recordsUsableCacheValueAge() {
+		$mockTime = microtime( true );
+		$this->cache->setMockTime( $mockTime );
+		$cache = $this->createBloomFilterCache( $this->createMockRepository( [ 'Cat' ] ) );
+		// Match the production flow: a cache miss happens before the cache is rebuilt.
+		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+		$cache->rebuildBloomFilter( self::CENTRAL_ID );
+		$mockTime += 7200;
+
+		$status = $cache->getCachedBloomFilterStatus( self::CENTRAL_ID );
+
+		$this->assertInstanceOf( \StatusValue::class, $status );
+		$this->assertSame( 1.0, $this->statsHelper->sum(
+			'bloom_cache_hit_value_age_seconds_count'
+		) );
+		$this->assertEqualsWithDelta( 7200.0, $this->statsHelper->sum(
+			'bloom_cache_hit_value_age_seconds_sum'
+		), 0.001 );
+		$this->assertSame( 0.0, $this->statsHelper->sum(
+			'bloom_cache_hit_value_age_seconds_bucket{le="3600"}'
+		) );
+		$this->assertSame( 1.0, $this->statsHelper->sum(
+			'bloom_cache_hit_value_age_seconds_bucket{le="21600"}'
+		) );
+		$this->assertSame( 1.0, $this->statsHelper->sum(
+			'bloom_cache_hit_value_age_seconds_bucket{le="2592000"}'
+		) );
 	}
 
 	public function testRebuildBloomFilter_normalizesTitleSpacesToUnderscores() {
@@ -202,6 +249,7 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 			$this->createMock( ReadingListRepositoryFactory::class ),
 			$this->cache,
 			new NullLogger(),
+			StatsFactory::newNull(),
 			0
 		);
 	}

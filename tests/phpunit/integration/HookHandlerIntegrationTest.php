@@ -147,6 +147,7 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 				$mockFactory,
 				new WANObjectCache( [ 'cache' => new HashBagOStuff() ] ),
 				new NullLogger(),
+				StatsFactory::newNull(),
 				10000
 			),
 			StatsFactory::newNull(),

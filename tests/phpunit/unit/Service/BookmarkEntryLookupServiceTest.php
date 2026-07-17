@@ -72,6 +72,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 			$factory,
 			$cache ?? $this->cache,
 			new NullLogger(),
+			StatsFactory::newNull(),
 			$maxItems
 		);
 	}
