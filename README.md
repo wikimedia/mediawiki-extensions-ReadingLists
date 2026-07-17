@@ -17,6 +17,8 @@ $wgReadingListsEnableSpecialPageToolbar = true;
 $wgReadingListsWebAuthenticatedPreviews = true;
 $wgReadingListAndroidAppDownloadLink = "https://play.google.com/store/apps/details?id=org.wikipedia&referrer=utm_source%3DreadingListsShare";
 $wgReadingListiOSAppDownloadLink = "https://itunes.apple.com/app/apple-store/id324715238?pt=208305&ct=readingListsShare";
+# Enable custom lists
+$wgReadingListsCustomLists = true;
 ```
 * Navigate to your MediaWiki installation and login to your account.
 * Visit the "Beta" link in your user menu (or go to Preferences -> Beta features) and enable the "Reading lists" feature.

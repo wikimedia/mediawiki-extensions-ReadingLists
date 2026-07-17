@@ -119,6 +119,10 @@
 		"ReadingListsBloomFilterMaxItems": {
 			"value": 10000,
 			"description": "Maximum number of bookmarked pages to include in the bloom filter. Users exceeding this skip the filter and query the database directly."
+		},
+		"ReadingListsCustomLists": {
+			"value": false,
+			"description": "Whether to show custom lists experience for ReadingLists."
 		}
 	},
 	"DefaultUserOptions": {
