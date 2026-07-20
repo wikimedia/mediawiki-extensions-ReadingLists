@@ -1,0 +1,844 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavigationBar renders All items view on desktop 1`] = `
+<div
+  class="readinglists-nav-bar"
+>
+  <a
+    class="readinglists-special-nav-link readinglists-special-nav-link--active"
+    href="/wiki/Special:ReadingLists/testuser"
+  >
+    All items
+  </a>
+  <div
+    class="cdx-menu-button"
+  >
+    <button
+      aria-controls="v-1"
+      aria-expanded="false"
+      aria-haspopup="menu"
+      class="cdx-button cdx-button--action-progressive cdx-button--weight-quiet cdx-button--size-medium"
+      id="v-0"
+    >
+      
+      
+      Collections 
+      <span
+        class="cdx-icon cdx-icon--medium"
+      >
+        <svg
+          aria-hidden="true"
+          height="20"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!--v-if-->
+          <g>
+            <path
+              d="m16.7 8-6 6H9.3l-6-6 1.4-1.4 5.3 5.3 5.3-5.3z"
+            />
+          </g>
+        </svg>
+      </span>
+      
+      
+    </button>
+    <div
+      class="cdx-menu-button__menu-wrapper"
+    >
+      <!--teleport start-->
+      <div
+        class="cdx-menu cdx-menu-button__menu"
+        style="display: none;"
+      >
+        <ul
+          aria-labelledby="v-0"
+          class="cdx-menu__listbox"
+          id="v-1"
+          role="menu"
+          tabindex="-1"
+        >
+          <!--v-if-->
+          <!--v-if-->
+          
+          
+          <li
+            aria-disabled="true"
+            class="cdx-menu-item cdx-menu-item--disabled"
+            id="v-2-1"
+            role="option"
+          >
+            
+            <span
+              class="cdx-menu-item__content"
+            >
+              <!--v-if-->
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    You do not have any collections
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </span>
+            
+          </li>
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-2"
+            role="option"
+          >
+            
+            <span
+              class="cdx-menu-item__content"
+            >
+              <span
+                class="cdx-icon cdx-icon--medium cdx-menu-item__icon"
+              >
+                <svg
+                  aria-hidden="true"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <!--v-if-->
+                  <g>
+                    <path
+                      d="M11 9h7v2h-7v7H9v-7H2V9h7V2h2z"
+                    />
+                  </g>
+                </svg>
+              </span>
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    create new collection
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </span>
+            
+          </li>
+          
+          
+          <!--v-if-->
+        </ul>
+      </div>
+      <!--teleport end-->
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NavigationBar renders All items view on mobile 1`] = `
+<div
+  class="readinglists-nav-bar"
+>
+  <a
+    class="readinglists-special-nav-link readinglists-special-nav-link--active"
+    href="/wiki/Special:ReadingLists/testuser"
+  >
+    All items
+  </a>
+  <a
+    class="readinglists-special-nav-link"
+  >
+    Collections
+  </a>
+</div>
+`;
+
+exports[`NavigationBar renders Collections view on desktop 1`] = `
+<div
+  class="readinglists-nav-bar"
+>
+  <a
+    class="readinglists-special-nav-link"
+    href="/wiki/Special:ReadingLists/testuser"
+  >
+    All items
+  </a>
+  <div
+    class="cdx-menu-button"
+  >
+    <button
+      aria-controls="v-1"
+      aria-expanded="false"
+      aria-haspopup="menu"
+      class="cdx-button cdx-button--action-progressive cdx-button--weight-quiet cdx-button--size-medium"
+      id="v-0"
+    >
+      
+      
+      Collections 
+      <span
+        class="cdx-icon cdx-icon--medium"
+      >
+        <svg
+          aria-hidden="true"
+          height="20"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!--v-if-->
+          <g>
+            <path
+              d="m16.7 8-6 6H9.3l-6-6 1.4-1.4 5.3 5.3 5.3-5.3z"
+            />
+          </g>
+        </svg>
+      </span>
+      
+      
+    </button>
+    <div
+      class="cdx-menu-button__menu-wrapper"
+    >
+      <!--teleport start-->
+      <div
+        class="cdx-menu cdx-menu-button__menu"
+        style="display: none;"
+      >
+        <ul
+          aria-labelledby="v-0"
+          class="cdx-menu__listbox"
+          id="v-1"
+          role="menu"
+          tabindex="-1"
+        >
+          <!--v-if-->
+          <!--v-if-->
+          
+          
+          <li
+            aria-disabled="true"
+            class="cdx-menu-item cdx-menu-item--disabled"
+            id="v-2-1"
+            role="option"
+          >
+            
+            <span
+              class="cdx-menu-item__content"
+            >
+              <!--v-if-->
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    You do not have any collections
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </span>
+            
+          </li>
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-2"
+            role="option"
+          >
+            
+            <span
+              class="cdx-menu-item__content"
+            >
+              <span
+                class="cdx-icon cdx-icon--medium cdx-menu-item__icon"
+              >
+                <svg
+                  aria-hidden="true"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <!--v-if-->
+                  <g>
+                    <path
+                      d="M11 9h7v2h-7v7H9v-7H2V9h7V2h2z"
+                    />
+                  </g>
+                </svg>
+              </span>
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    create new collection
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </span>
+            
+          </li>
+          
+          
+          <!--v-if-->
+        </ul>
+      </div>
+      <!--teleport end-->
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NavigationBar renders Collections view on mobile 1`] = `
+<div
+  class="readinglists-nav-bar"
+>
+  <a
+    class="readinglists-special-nav-link"
+    href="/wiki/Special:ReadingLists/testuser"
+  >
+    All items
+  </a>
+  <a
+    class="readinglists-special-nav-link"
+  >
+    Collections
+  </a>
+</div>
+`;
+
+exports[`NavigationBar should populate the dropdown on click 1`] = `
+<div
+  class="readinglists-nav-bar"
+>
+  <a
+    class="readinglists-special-nav-link readinglists-special-nav-link--active"
+    href="/wiki/Special:ReadingLists/testuser"
+  >
+    All items
+  </a>
+  <div
+    class="cdx-menu-button"
+  >
+    <button
+      aria-controls="v-1"
+      aria-expanded="true"
+      aria-haspopup="menu"
+      class="cdx-button cdx-button--action-progressive cdx-button--weight-quiet cdx-button--size-medium"
+      id="v-0"
+    >
+      
+      
+      Collections 
+      <span
+        class="cdx-icon cdx-icon--medium"
+      >
+        <svg
+          aria-hidden="true"
+          height="20"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!--v-if-->
+          <g>
+            <path
+              d="m16.7 8-6 6H9.3l-6-6 1.4-1.4 5.3 5.3 5.3-5.3z"
+            />
+          </g>
+        </svg>
+      </span>
+      
+      
+    </button>
+    <div
+      class="cdx-menu-button__menu-wrapper"
+    >
+      <!--teleport start-->
+      <div
+        class="cdx-menu cdx-menu-button__menu"
+        style="visibility: hidden; position: absolute; top: 0px; left: 0px; transform: translate(0px, 4px); width: -32px; max-height: 128px;"
+      >
+        <ul
+          aria-labelledby="v-0"
+          class="cdx-menu__listbox"
+          id="v-1"
+          role="menu"
+          style="max-height: 2px;"
+          tabindex="-1"
+        >
+          <!--v-if-->
+          <!--v-if-->
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-2"
+            role="option"
+          >
+            
+            <span
+              class="cdx-menu-item__content"
+            >
+              <span
+                class="cdx-icon cdx-icon--medium cdx-menu-item__icon"
+              >
+                <svg
+                  aria-hidden="true"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <!--v-if-->
+                  <g>
+                    <path
+                      d="M11 9h7v2h-7v7H9v-7H2V9h7V2h2z"
+                    />
+                  </g>
+                </svg>
+              </span>
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    create new collection
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </span>
+            
+          </li>
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-3"
+            role="option"
+          >
+            
+            <a
+              class="cdx-menu-item__content"
+              href="/wiki/Special:ReadingLists/testuser/1"
+            >
+              <!--v-if-->
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    saved items
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </a>
+            
+          </li>
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-4"
+            role="option"
+          >
+            
+            <a
+              class="cdx-menu-item__content"
+              href="/wiki/Special:ReadingLists/testuser/2"
+            >
+              <!--v-if-->
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    A
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </a>
+            
+          </li>
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-5"
+            role="option"
+          >
+            
+            <a
+              class="cdx-menu-item__content"
+              href="/wiki/Special:ReadingLists/testuser/3"
+            >
+              <!--v-if-->
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    B
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </a>
+            
+          </li>
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-6"
+            role="option"
+          >
+            
+            <a
+              class="cdx-menu-item__content"
+              href="/wiki/Special:ReadingLists/testuser/4"
+            >
+              <!--v-if-->
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    C
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </a>
+            
+          </li>
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-7"
+            role="option"
+          >
+            
+            <a
+              class="cdx-menu-item__content"
+              href="/wiki/Special:ReadingLists/testuser/5"
+            >
+              <!--v-if-->
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    D
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </a>
+            
+          </li>
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-8"
+            role="option"
+          >
+            
+            <a
+              class="cdx-menu-item__content"
+              href="/wiki/Special:ReadingLists/testuser/6"
+            >
+              <!--v-if-->
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    E
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </a>
+            
+          </li>
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-9"
+            role="option"
+          >
+            
+            <a
+              class="cdx-menu-item__content"
+              href="/wiki/Special:ReadingLists/testuser/7"
+            >
+              <!--v-if-->
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    F
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </a>
+            
+          </li>
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-10"
+            role="option"
+          >
+            
+            <a
+              class="cdx-menu-item__content"
+              href="/wiki/Special:ReadingLists/testuser/8"
+            >
+              <!--v-if-->
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    G
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </a>
+            
+          </li>
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-11"
+            role="option"
+          >
+            
+            <a
+              class="cdx-menu-item__content"
+              href="/wiki/Special:ReadingLists/testuser/9"
+            >
+              <!--v-if-->
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    H
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </a>
+            
+          </li>
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-12"
+            role="option"
+          >
+            
+            <a
+              class="cdx-menu-item__content"
+              href="/wiki/Special:ReadingLists/testuser/10"
+            >
+              <!--v-if-->
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    I
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </a>
+            
+          </li>
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-13"
+            role="option"
+          >
+            
+            <a
+              class="cdx-menu-item__content"
+              href="/wiki/Special:ReadingLists/testuser/11"
+            >
+              <!--v-if-->
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    J
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </a>
+            
+          </li>
+          
+          
+          <li
+            aria-disabled="false"
+            class="cdx-menu-item cdx-menu-item--enabled"
+            id="v-2-14"
+            role="option"
+          >
+            
+            <a
+              class="cdx-menu-item__content"
+              href="/wiki/Special:ReadingLists/testuser/12"
+            >
+              <!--v-if-->
+              <span
+                class="cdx-menu-item__text"
+              >
+                <span
+                  class="cdx-menu-item__text__label"
+                >
+                  <bdi>
+                    K
+                  </bdi>
+                </span>
+                <!--v-if-->
+                <!--v-if-->
+                <!--v-if-->
+              </span>
+              <!--v-if-->
+            </a>
+            
+          </li>
+          
+          
+          <!--v-if-->
+        </ul>
+      </div>
+      <!--teleport end-->
+    </div>
+  </div>
+</div>
+`;

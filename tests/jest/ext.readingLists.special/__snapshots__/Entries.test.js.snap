@@ -1,10 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Entries renders all items from all lists on special page 1`] = `
+exports[`Entries with custom lists renders the nav bar when custom lists are enabled 1`] = `
 <div
   data-v-app=""
 >
   
+  <!--v-if-->
+  <navigation-bar
+    is-all-items="false"
+    show-dropdown="false"
+  />
+  <!--v-if-->
+  <!--v-if-->
+  <p
+    class="reading-lists-sorting"
+  >
+    Sorted by most recent.
+  </p>
+  <!--v-if-->
+  <cdx-progress-bar
+    aria-label="Please wait..."
+  />
+  
+</div>
+`;
+
+exports[`Entries without custom lists renders all items from all lists on special page 1`] = `
+<div
+  data-v-app=""
+>
+  
+  <!--v-if-->
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->
@@ -124,11 +150,12 @@ exports[`Entries renders all items from all lists on special page 1`] = `
 </div>
 `;
 
-exports[`Entries renders with toolbar disabled 1`] = `
+exports[`Entries without custom lists renders with toolbar disabled 1`] = `
 <div
   data-v-app=""
 >
   
+  <!--v-if-->
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->

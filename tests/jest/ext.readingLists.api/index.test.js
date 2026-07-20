@@ -103,7 +103,7 @@ describe( 'getLists', () => {
 			} )
 		} );
 
-		const response = await api.getLists( 'name', 'asc', 12, continueToken );
+		const response = await api.getLists( 'name', 'ascending', 12, continueToken );
 		expect( response ).toStrictEqual( {
 			lists: LISTS2.query.readinglists.map( translateList ),
 			next: null
@@ -251,7 +251,7 @@ describe( 'getEntries', () => {
 			} )
 		} );
 
-		const response = await api.getEntries( listId, 'name', 'asc', 4, null );
+		const response = await api.getEntries( listId, 'name', 'ascending', 4, null );
 		expect( response ).toStrictEqual( {
 			entries: ENTRIES.query.readinglistentries.map( entryToPage ),
 			next: ENTRIES.continue.rlecontinue
@@ -273,7 +273,7 @@ describe( 'getEntries', () => {
 			} )
 		} );
 
-		const response = await api.getEntries( listId, 'name', 'asc', 4, ENTRIES.continue.rlecontinue );
+		const response = await api.getEntries( listId, 'name', 'ascending', 4, ENTRIES.continue.rlecontinue );
 		expect( response ).toStrictEqual( {
 			entries: ENTRIES2.query.readinglistentries.map( entryToPage ),
 			next: null
@@ -307,7 +307,7 @@ describe( 'getEntries', () => {
 			} )
 		} );
 
-		const response = await api.getEntries( listId, 'name', 'asc', 4, null );
+		const response = await api.getEntries( listId, 'name', 'ascending', 4, null );
 		expect( response ).toStrictEqual( {
 			entries: ENTRIES.query.readinglistentries.map( entryToPage ),
 			next: ENTRIES.continue.rlecontinue

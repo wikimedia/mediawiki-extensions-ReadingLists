@@ -50,62 +50,81 @@ describe( 'Entries', () => {
 		mw.storage = {
 			get: jest.fn()
 		};
-
+		mw.util = { getUrl: jest.fn( ( path ) => `/wiki/${ path }` ) };
 	} );
 
 	afterEach( () => {
 		jest.restoreAllMocks();
 	} );
 
-	test( 'renders with toolbar disabled', async () => {
-		setupEntriesApiStub();
-		mw.util = { getUrl: jest.fn( ( path ) => `/wiki/${ path }` ) };
+	describe( 'without custom lists', () => {
+		test( 'renders with toolbar disabled', async () => {
+			setupEntriesApiStub();
 
-		const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
-		const wrapper = mount( Entries, { props: { listId: 12345 } } );
+			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const wrapper = mount( Entries, { props: { listId: 12345 } } );
 
-		await wrapper.vm.$forceUpdate();
-		await wrapper.vm.$nextTick();
+			await wrapper.vm.$forceUpdate();
+			await wrapper.vm.$nextTick();
 
-		expect( wrapper.element ).toMatchSnapshot();
-	} );
-
-	test( 'renders all items from all lists on special page', async () => {
-		setupAllItemsApiStub();
-		mw.util = { getUrl: jest.fn( ( path ) => `/wiki/${ path }` ) };
-
-		const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
-		const wrapper = mount( Entries );
-
-		await flushPromises();
-
-		expect( wrapper.vm.isAllListItems ).toBe( true );
-		expect( wrapper.vm.isDefaultList ).toBe( false );
-		expect( wrapper.vm.entries.length ).toBeGreaterThan( 0 );
-		expect( wrapper.element ).toMatchSnapshot();
-	} );
-
-	test( 'renders import dialog slot content', async () => {
-		mw.util = { getUrl: jest.fn( ( path ) => `/wiki/${ path }` ) };
-
-		const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
-		const wrapper = mount( Entries, {
-			props: {
-				imported: {
-					name: 'Imported list',
-					description: '',
-					default: false,
-					list: []
-				}
-			},
-			slots: {
-				'import-dialog': '<div class="mock-import-dialog"></div>'
-			}
+			expect( wrapper.element ).toMatchSnapshot();
 		} );
 
-		await flushPromises();
-		await wrapper.vm.$nextTick();
+		test( 'renders all items from all lists on special page', async () => {
+			setupAllItemsApiStub();
 
-		expect( wrapper.find( '.mock-import-dialog' ).exists() ).toBe( true );
+			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const wrapper = mount( Entries );
+
+			await flushPromises();
+
+			expect( wrapper.vm.isAllListItems ).toBe( true );
+			expect( wrapper.vm.isDefaultList ).toBe( false );
+			expect( wrapper.vm.entries.length ).toBeGreaterThan( 0 );
+			expect( wrapper.element ).toMatchSnapshot();
+		} );
+
+		test( 'renders import dialog slot content', async () => {
+			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const wrapper = mount( Entries, {
+				props: {
+					imported: {
+						name: 'Imported list',
+						description: '',
+						default: false,
+						list: []
+					}
+				},
+				slots: {
+					'import-dialog': '<div class="mock-import-dialog"></div>'
+				}
+			} );
+
+			await flushPromises();
+			await wrapper.vm.$nextTick();
+
+			expect( wrapper.find( '.mock-import-dialog' ).exists() ).toBe( true );
+		} );
+	} );
+
+	describe( 'with custom lists', () => {
+		beforeEach( () => {
+			jest.resetModules();
+
+			jest.mock(
+				'../../../resources/ext.readingLists.special/config.json',
+				() => ( {
+					ReadingListsCustomLists: true
+				} ),
+				{ virtual: true }
+			);
+		} );
+
+		test( 'renders the nav bar when custom lists are enabled', async () => {
+			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const wrapper = mount( Entries );
+
+			expect( wrapper.element ).toMatchSnapshot();
+		} );
 	} );
 } );

@@ -23,7 +23,7 @@ function setup() {
  * @param {string|null} next
  * @return {Promise<any>}
  */
-async function getLists( sort = 'name', direction = 'asc', limit = 12, next = null ) {
+async function getLists( sort = 'name', direction = 'ascending', limit = 12, next = null ) {
 	try {
 		const { query: { readinglists: lists }, continue: rlcontinue } = await api.get( {
 			action: 'query',

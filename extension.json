@@ -211,6 +211,8 @@
 				"CdxCard",
 				"CdxCheckbox",
 				"CdxDialog",
+				"CdxIcon",
+				"CdxMenuButton",
 				"CdxMessage",
 				"CdxProgressBar",
 				"CdxTextArea",
@@ -242,12 +244,17 @@
 				"readinglists-betafeature-quicksurvey-feedback-placeholder",
 				"readinglists-betafeature-quicksurvey-privacy-policy",
 				"readinglists-betafeature-quicksurvey-submit",
-				"readinglists-betafeature-quicksurvey-thank-you"
+				"readinglists-betafeature-quicksurvey-thank-you",
+				"readinglists-customlists-allitems",
+				"readinglists-customlists-collections",
+				"readinglists-customlists-no-collections",
+				"readinglists-customlists-create-collection"
 			],
 			"packageFiles": [
 				"resources/ext.readingLists.special/index.js",
 				"resources/ext.readingLists.special/components/EmptyList.vue",
 				"resources/ext.readingLists.special/components/EntryItem.vue",
+				"resources/ext.readingLists.special/components/NavigationBar.vue",
 				"resources/ext.readingLists.special/components/Survey.vue",
 				"resources/ext.readingLists.special/pages/Entries.vue",
 				{
@@ -260,8 +267,10 @@
 					"name": "icons.json",
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
 					"callbackParam": [
+						"cdxIconAdd",
 						"cdxIconDie",
 						"cdxIconEdit",
+						"cdxIconExpand",
 						"cdxIconViewCompact",
 						"cdxIconViewDetails"
 					]

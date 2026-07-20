@@ -131,5 +131,9 @@
 	"readinglists-cta-dialog-call-to-action": "Body text of the dialog shown to anonymous users when they click the bookmark button",
 	"readinglists-cta-dialog-create-account": "Label for the create account link in the dialog shown to anonymous users when they click the bookmark button",
 	"readinglists-cta-dialog-log-in": "Label for the log in link in the dialog shown to anonymous users when they click the bookmark button",
-	"readinglists-cta-dialog-close": "Label for the close button of the dialog shown to anonymous users when they click the bookmark button"
+	"readinglists-cta-dialog-close": "Label for the close button of the dialog shown to anonymous users when they click the bookmark button",
+	"readinglists-customlists-allitems": "Label for the link to view all saved items",
+	"readinglists-customlists-collections": "Label for the link (or button) to view collections (custom lists)",
+	"readinglists-customlists-no-collections": "Message that is displayed when the user has no collections",
+	"readinglists-customlists-create-collection": "Label for the link to create a new collection (custom list)"
 }

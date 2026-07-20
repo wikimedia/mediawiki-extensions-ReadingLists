@@ -121,5 +121,9 @@
 	"readinglists-cta-dialog-call-to-action": "Please log in or create an account to start saving.",
 	"readinglists-cta-dialog-create-account": "Create account",
 	"readinglists-cta-dialog-log-in": "Log in",
-	"readinglists-cta-dialog-close": "Close"
+	"readinglists-cta-dialog-close": "Close",
+	"readinglists-customlists-allitems": "All items",
+	"readinglists-customlists-collections": "Collections",
+	"readinglists-customlists-no-collections": "You do not have any collections",
+	"readinglists-customlists-create-collection": "create new collection"
 }

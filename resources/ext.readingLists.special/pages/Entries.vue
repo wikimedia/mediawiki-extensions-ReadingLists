@@ -6,6 +6,12 @@
 	<template v-else>
 		<slot v-if="$slots[ 'import-dialog' ]" name="import-dialog"></slot>
 
+		<navigation-bar
+			v-if="showNavBar"
+			:show-dropdown="showNavDropdown"
+			:is-all-items="isAllListItems">
+		</navigation-bar>
+
 		<template v-if="showInPageTitle">
 			<h2 v-if="title" class="reading-lists-title">
 				{{ title }}
@@ -60,6 +66,7 @@ const { CdxButton, CdxMessage, CdxProgressBar } = require( '../../../codex.js' )
 const { ReadingListsCustomLists } = require( '../config.json' );
 const EmptyList = require( '../components/EmptyList.vue' );
 const EntryItem = require( '../components/EntryItem.vue' );
+const NavigationBar = require( '../components/NavigationBar.vue' );
 const Survey = require( '../components/Survey.vue' );
 
 const surveyStorageKey = 'readinglists-beta-survey';
@@ -72,6 +79,7 @@ module.exports = exports = {
 		CdxProgressBar,
 		EmptyList,
 		EntryItem,
+		NavigationBar,
 		Survey
 	},
 	props: {
@@ -124,6 +132,13 @@ module.exports = exports = {
 				!this.imported &&
 				!this.isDefaultList &&
 				!this.isAllListItems;
+		},
+		showNavBar() {
+			// if custom lists are enabled, display the nav bar for traversing them
+			return ReadingListsCustomLists;
+		},
+		showNavDropdown() {
+			return mw.config.get( 'skin' ) === 'vector-2022';
 		}
 	},
 	methods: {
