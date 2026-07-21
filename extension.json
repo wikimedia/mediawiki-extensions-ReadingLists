@@ -23,6 +23,9 @@
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\ReadingLists\\": "src/"
 	},
+	"AutoloadClasses": {
+		"MediaWiki\\Extension\\ReadingLists\\Maintenance\\RestoreUserReadingLists": "maintenance/restoreUserReadingLists.php"
+	},
 	"TestAutoloadNamespaces": {
 		"MediaWiki\\Extension\\ReadingLists\\Tests\\": "tests/phpunit/"
 	},
