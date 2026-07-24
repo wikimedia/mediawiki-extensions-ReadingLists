@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Milicevic01"
+			"Milicevic01",
+			"Kizule"
 		]
 	},
 	"readinglists-browser-add-entry-success": "<b>$1</b> је додата у [[$2|$3]].",
