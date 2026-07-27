@@ -36,6 +36,7 @@
 	"readinglists-browser-page-not-supported": "$1 bu səhifəni dəstəkləmir",
 	"readinglists-special-title-imported": "Oxuma siyahıları: Başqa istifadəçidən idxal edin",
 	"readinglists-special-subpage-title": "Yadda saxlanılmış",
+	"readinglists-special-custom-list-title": "Yadda saxlanılmış / $1",
 	"readinglists-description": "Saxladığınız siyahıların hamısı bir yerdə.",
 	"readinglists-loading": "Zəhmət olmasa, gözləyin...",
 	"reading-list-purpose": "Məxfi oxuma siyahılarınızı görmək üçün, zəhmət olmasa, sistemə daxil olun.",

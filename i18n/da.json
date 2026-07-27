@@ -37,6 +37,7 @@
 	"readinglists-browser-page-not-supported": "$1 understøtter ikke denne side",
 	"readinglists-special-title-imported": "Læselister: Importer fra anden bruger",
 	"readinglists-special-subpage-title": "Gemt",
+	"readinglists-special-custom-list-title": "Gemt / $1",
 	"readinglists-description": "Alle dine gemte lister på ét sted.",
 	"readinglists-loading": "Vent venligst…",
 	"reading-list-purpose": "Log venligst ind for at se dine private læselister.",

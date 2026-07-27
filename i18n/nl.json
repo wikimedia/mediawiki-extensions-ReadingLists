@@ -40,6 +40,7 @@
 	"readinglists-browser-page-not-supported": "$1 ondersteunt deze pagina niet",
 	"readinglists-special-title-imported": "Leeslijsten: Importeren van andere gebruiker",
 	"readinglists-special-subpage-title": "Opgeslagen",
+	"readinglists-special-custom-list-title": "Opgeslagen / $1",
 	"readinglists-description": "Al uw opgeslagen lijsten op één plek.",
 	"readinglists-loading": "Een ogenblik geduld…",
 	"reading-list-purpose": "Meld u aan om uw privé-leeslijsten te bekijken.",

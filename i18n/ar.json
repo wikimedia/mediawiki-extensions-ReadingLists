@@ -42,6 +42,7 @@
 	"readinglists-browser-page-not-supported": "لا يدعم $1 هذه الصفحة",
 	"readinglists-special-title-imported": "قوائم القراءة: الاستيراد من مستخدم آخر",
 	"readinglists-special-subpage-title": "محفوظة",
+	"readinglists-special-custom-list-title": "تم التوفير / $1",
 	"readinglists-description": "جميع القوائم المحفوظة لديك في مكان واحد.",
 	"readinglists-loading": "انتظر من فضلك...",
 	"reading-list-purpose": "الرجاء تسجيل الدخول لرؤية قوائم القراءة الخاصة بك.",
