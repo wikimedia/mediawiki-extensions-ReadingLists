@@ -219,6 +219,8 @@
 				"readinglists-special-error-list-not-found",
 				"readinglists-empty-cta",
 				"readinglists-empty-title",
+				"readinglists-empty-collection-cta",
+				"readinglists-empty-collection-title",
 				"readinglists-loading",
 				"readinglists-no-title",
 				"readinglists-show-more",

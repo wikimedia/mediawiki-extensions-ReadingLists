@@ -35,7 +35,10 @@
 			</div>
 
 			<template v-if="!loadingEntries">
-				<empty-list v-if="entries.length === 0"></empty-list>
+				<empty-list
+					v-if="entries.length === 0"
+					:is-custom-list="isCustomList">
+				</empty-list>
 
 				<cdx-button v-else-if="!infinite && next !== null" @click="onShowMore">
 					{{ msgShowMore }}
@@ -110,6 +113,15 @@ module.exports = exports = {
 				return true;
 			}
 			return !ReadingListsCustomLists &&
+				!this.isDefaultList &&
+				!this.isAllListItems;
+		},
+		// A custom list (collection): the custom lists experience is enabled and
+		// we are viewing a specific, non-default list rather than the aggregate
+		// all-items view or an imported list.
+		isCustomList() {
+			return ReadingListsCustomLists &&
+				!this.imported &&
 				!this.isDefaultList &&
 				!this.isAllListItems;
 		}
