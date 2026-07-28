@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"شاه زمان پټان"
+		]
+	},
+	"apihelp-query+readinglists-param-list": "لړليک پېژند.",
+	"apihelp-readinglists+createentry-param-list": "لړليک پېژند.",
+	"apihelp-readinglists+deleteentry-example-1": "لړليک ننوتنه له <kbd>۸</kbd> پېژند سره ړنگه کړئ.",
+	"apihelp-readinglists+deleteentry-example-2": "د لړليک ډېری ننوتنې ړنگول."
+}
