@@ -241,6 +241,10 @@ class HookHandler implements
 			return false;
 		}
 
+		if ( $this->config->get( 'ReadingListsEnabled' ) ) {
+			return $user->isRegistered();
+		}
+
 		$betaFeatureIsAvailable = $this->config->get( 'ReadingListBetaFeature' ) &&
 			ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' );
 

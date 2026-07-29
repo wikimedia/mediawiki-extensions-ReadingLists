@@ -110,6 +110,17 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$userOptionsManager->saveOptions( $this->user );
 	}
 
+	private function setupWebEnabled(): void {
+		$this->overrideConfigValue( 'ReadingListsEnabled', true );
+		$this->overrideConfigValue( 'ReadingListBetaFeature', false );
+
+		$services = $this->getServiceContainer();
+		$userOptionsManager = $services->getUserOptionsManager();
+		$userOptionsManager->setOption( $this->user, Constants::PREF_KEY_BETA_FEATURES, '0' );
+		$userOptionsManager->setOption( $this->user, Constants::PREF_KEY_WEB_UI_ENABLED, '0' );
+		$userOptionsManager->saveOptions( $this->user );
+	}
+
 	private function createHookHandler( ?ReadingListRepository $mockRepository = null ): HookHandler {
 		$services = $this->getServiceContainer();
 
@@ -294,6 +305,20 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 	public function testBookmarkIconButtonAddedForMainNamespacePageWithBetaFeature() {
 		$this->setupBetaFeature();
+
+		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
+		$skin = $this->createSkinTemplate( $title );
+
+		$links = $this->getLinks();
+
+		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$this->assertArrayHasKey( 'readinglists', $links['user-menu'] );
+		$this->assertArrayHasKey( 'bookmark', $links['views'] );
+	}
+
+	public function testBookmarkIconButtonAddedForMainNamespacePageWithWebEnabled() {
+		$this->setupWebEnabled();
 
 		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
 		$skin = $this->createSkinTemplate( $title );

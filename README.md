@@ -23,3 +23,13 @@ $wgReadingListsCustomLists = true;
 * Navigate to your MediaWiki installation and login to your account.
 * Visit the "Beta" link in your user menu (or go to Preferences -> Beta features) and enable the "Reading lists" feature.
 * Navigate to any regular page in your MediaWiki installation, and you should now see a "Bookmark" option in the "More" menu. You should also see a "Reading lists" link under your user menu, which will take you to the Special:ReadingLists page that's used for managing your lists.
+
+# Rollout
+
+Reading Lists supports two ways to enable the web UI (bookmark button and user menu link):
+
+* **Beta rollout:** Set `$wgReadingListBetaFeature = true;` and have users opt in via Beta Features.
+* **General availability:** Set `$wgReadingListsEnabled = true;` to enable the web UI for all logged-in users on the wiki. When this is enabled, the beta feature preference is hidden and we must set .
+Note that when enabling GA via `$wgReadingListsEnabled = true;` we must set `$wgReadingListBetaFeature = false` to avoid runtime exception.
+
+For a phased rollout, enable wikis one at a time in mediawiki-config.

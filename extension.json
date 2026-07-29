@@ -76,6 +76,10 @@
 			"value": false,
 			"description": "Whether to expose reading lists as a beta feature."
 		},
+		"ReadingListsEnabled": {
+			"value": false,
+			"description": "Whether to enable the Reading Lists web UI for all logged-in users on this wiki."
+		},
 		"ReadingListAndroidAppDownloadLink": {
 			"value": "",
 			"description": "false or string representing an Android download link"

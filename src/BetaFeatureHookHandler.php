@@ -30,6 +30,7 @@ class BetaFeatureHookHandler implements GetBetaFeaturePreferencesHook {
 		if ( !HookHandler::isSkinSupported( RequestContext::getMain()->getSkinName() ) ) {
 			return;
 		}
+
 		if ( $this->config->get( 'ReadingListBetaFeature' ) ) {
 			$path = $this->config->get( MainConfigNames::ExtensionAssetsPath );
 			$prefs[Constants::PREF_KEY_BETA_FEATURES] = [
