@@ -144,12 +144,10 @@ class HookHandler implements
 			return;
 		}
 
-		$list = null;
 		$matchingList = null;
 		$hasCustomListEntry = false;
 
 		if ( $repository !== null && $defaultListId !== null ) {
-			$list = $repository->selectValidList( $defaultListId );
 			$status = $this->bookmarkEntryLookupService->getBookmarkEntryStatus(
 				$title,
 				$centralId

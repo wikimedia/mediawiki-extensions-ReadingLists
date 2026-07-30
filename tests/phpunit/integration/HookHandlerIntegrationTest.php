@@ -171,7 +171,6 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$mockRepository = $this->createMock( ReadingListRepository::class );
 		$mockRepository->method( 'setupForUser' )->willReturn( $mockList );
 		$mockRepository->method( 'getDefaultListIdForUser' )->willReturn( 1 );
-		$mockRepository->method( 'selectValidList' )->willReturn( $mockList );
 		$mockRepository->method( 'getListsByPage' )
 			->willReturnCallback( static fn () => new FakeResultWrapper( $pageLists ) );
 		$mockRepository->method( 'getSavedPageTitlesForProject' )->willReturn( [] );
