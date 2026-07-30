@@ -46,7 +46,7 @@
 	"readinglists-special-title-imported": "阅读列表：从其他用户导入",
 	"readinglists-special-subpage-title": "已保存的页面",
 	"readinglists-description": "您所有已保存的列表都放在同一处。",
-	"readinglists-loading": "请稍候……",
+	"readinglists-loading": "请稍候…",
 	"reading-list-purpose": "请登录以查看您的私人阅读列表。",
 	"reading-list-purpose-for-temp-user": "请创建一个账号来创建私人阅读列表。",
 	"readinglists-error": "您的浏览器无法使用阅读列表功能。请启用JavaScript或尝试使用其他浏览器。",
