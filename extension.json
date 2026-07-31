@@ -204,14 +204,12 @@
 			"codexComponents": [
 				"CdxButton",
 				"CdxCard",
-				"CdxCheckbox",
 				"CdxDialog",
 				"CdxIcon",
 				"CdxMenuButton",
 				"CdxMessage",
 				"CdxProgressBar",
-				"CdxTextArea",
-				"CdxToggleButton"
+				"CdxTextArea"
 			],
 			"dependencies": [
 				"ext.readingLists.api",
