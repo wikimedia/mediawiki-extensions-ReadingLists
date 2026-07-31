@@ -76,14 +76,18 @@
 	"apihelp-readinglists+createentry-summary": "添加新页面至与当前用户相关的列表中。",
 	"apihelp-readinglists+createentry-extended-description": "列表项必须唯一。页面不限于API访问的wiki。用户在列表中必须有少于$1个（未被删除的）{{PLURAL:$1|项}}。",
 	"apihelp-readinglists+createentry-param-list": "列表ID。",
-	"apihelp-readinglists+createentry-param-project": "存储页面的wiki的项目名称。（基本上这是wiki的域名。）除非进行批量创建否则必要。",
+	"apihelp-readinglists+createentry-param-project": "页面所在wiki的计划名称。通常是wiki的域名，使用<kbd>@local</kbd>代表本地wiki。除非进行批量创建，否则必须提供此参数。",
 	"apihelp-readinglists+createentry-param-title": "页面标题（包含本地化的命名空间名称）。除非进行批量创建否则必要。推荐使用人类可读格式（空格而不是下划线）。API将标题视作原始字符串；标准化（例如标题嵌套）则留给客户端。",
 	"apihelp-readinglists+createentry-param-batch": "用于在单一请求中创建多个列表项（在相同列表中）的批量数据，有一个或多个带<var>project</var>和<var>title</var> 字段对象的JSON数组形式。",
 	"apihelp-readinglists+createentry-example-1": "添加来自项目<kbd>en.wikipedia.org</kbd>的页面<kbd>Dog</kbd>至ID为<kbd>33</kbd>的列表。",
 	"apihelp-readinglists+createentry-example-2": "添加多个页面至某一列表。",
 	"apihelp-readinglists+deleteentry-summary": "删除来自与当前用户相关的列表中的页面。",
 	"apihelp-readinglists+deleteentry-param-entry": "项目ID。除非进行批量删除否则必要。",
+	"apihelp-readinglists+deleteentry-param-project": "页面所在wiki的计划名称。必须与<var>$1title</var>一起使用。会删除所有与给定计划和标题匹配的项目。",
+	"apihelp-readinglists+deleteentry-param-title": "要删除的页面标题。必须与<var>$1project</var>一起使用。",
 	"apihelp-readinglists+deleteentry-param-batch": "用于在单一请求中删除多个列表项的批量数据，有一个或多个带<var>entry</var>字段对象的JSON数组形式。",
 	"apihelp-readinglists+deleteentry-example-1": "删除ID为<kbd>8</kbd>的列表项。",
-	"apihelp-readinglists+deleteentry-example-2": "删除多个列表项。"
+	"apihelp-readinglists+deleteentry-example-2": "删除多个列表项。",
+	"apihelp-readinglists+deleteentry-example-3": "从计划<kbd>en.wikipedia.org</kbd>中删除页面<kbd>Dog</kbd>的所有项目。",
+	"apihelp-readinglists+deleteentry-example-4": "从计划<kbd>@local</kbd>中删除页面<kbd>Garfield the Cat</kbd>的所有项目。"
 }

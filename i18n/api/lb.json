@@ -6,6 +6,7 @@
 			"Volvox"
 		]
 	},
+	"apierror-readinglists-batch-invalid-json": "Ongültegen JSON fir de Parameter <var>batch</var>: $1",
 	"apihelp-query+readinglists-param-list": "ID vun der Lëscht.",
 	"apihelp-query+readinglists-example-1": "D'Lieslëschte vum aktuelle Benotzer kréien",
 	"apihelp-readinglists+teardown-summary": "Lëschte fir den aktuelle Benotzer desaktivéieren.",
