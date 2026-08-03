@@ -1,9 +1,14 @@
 {
 	"@metadata": {
 		"authors": [
+			"Geraki",
 			"KATRINE1992"
 		]
 	},
+	"apierror-readinglists-project-title-param": "Το <var>$1project</var> και το <var>$1title</var> πρέπει να χρησιμοποιούνται μαζί.",
+	"apihelp-query+readinglists-param-limit": "Αριθμός αποτελεσμάτων για επιστροφή",
+	"apihelp-query+readinglists-example-1": "Λήψη των λιστών ανάγνωσης του τρέχοντος χρήστη.",
+	"apihelp-query+readinglists-example-2": "Λάβετε τις λίστες ανάγνωσης του τρέχοντος χρήστη που έχουν αλλάξει από <kbd>2013-01-01T00:00:00Z</kbd> .",
 	"apihelp-readinglists+create-extended-description": "Ο χρήστης πρέπει να έχει λιγότερο από $1 (μη διαγραμμένα) {{PLURAL:$1|list|lists}}.",
 	"apihelp-readinglists+createentry-extended-description": "Οι εγγραφές στην λίστα πρέπει να είναι πρωτότυπες. Οι σελίδες δεν περιορίζονται στο wiki όπου υπάρχει πρόσβαση στο ΑΡΙ. Ο χρήστης πρέπει να έχει λιγότερο απ $1 (μη διαγραμμένο) {{PLURAL:$1|entry|entries}} στη λίστα."
 }

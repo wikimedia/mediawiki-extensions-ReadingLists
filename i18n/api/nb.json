@@ -1,10 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"EdoAug",
 			"Jon Harald Søby"
 		]
 	},
-	"apierror-readinglists-project-title-param": "<var>$1project</var> og <var>$1title</var> må ikke brukes sammen.",
+	"apierror-readinglists-project-title-param": "<var>$1project</var> og <var>$1title</var> må brukes sammen.",
 	"apierror-readinglists-too-old": "Tidsstempler som sendes til <var>$1changedsince</var> kan ikke være eldre enn <kbd>$2</kbd>.",
 	"apierror-readinglists-invalidsort-notbyname": "Sorteringsvalget <kbd>name</kbd> kan ikke brukes sammen med <var>$1changedsince</var>.",
 	"apierror-readinglists-batch-invalid-json": "Ugyldig JSON for <var>batch</var>-parameter: $1",
@@ -26,16 +27,20 @@
 	"apihelp-query+readinglists-example-2": "Hent leselister for den gjeldende brukere som har blitt endret siden <kbd>2013-01-01T00:00:00Z</kbd>.",
 	"apihelp-query+readinglists-example-3": "Hent leselistene til den gjeldende brukeren som inneholder siden <kbd>Dog</kbd> fra prosjektet <kbd>en.wikipedia.org</kbd>",
 	"apihelp-query+readinglistentries-summary": "List opp sideene i en viss liste.",
-	"apihelp-query+readinglistentries-extended-description": "Denne modulen har to operasjonsmoduser. Med parameteren <var>$1lists</var> returnerer den sider som er i den gitte lista/de gitte listene. Med parameteren <var>$1changedsince</var> returnerer den alle listeoppføringer fra alle listene til den gjeldende brukeren som har blitt endret siden den gitte datoen. (Dette er ment for synkronisering av enheter og inkluderer i motsetning til de andre modusene slettede oppføringer, men ikke oppføringene i slettede lister.)",
-	"apihelp-query+readinglistentries-param-lists": "Liste-ID-ene sider skal returneres for.",
+	"apihelp-query+readinglistentries-extended-description": "Denne modulen har tre operasjonsmoduser. Med parameteren <var>$1lists</var> returnerer den sider som er i den gitte lista/de gitte listene. Med parameteren <var>$1changedsince</var> returnerer den alle listeoppføringer fra alle listene til den gjeldende brukeren som har blitt endret siden den gitte datoen. (Dette er ment for synkronisering av enheter og inkluderer i motsetning til de andre modusene slettede oppføringer, men ikke oppføringene i slettede lister.) Uten parametre, returneres alle oppføringer fra alle listene til den gjeldende brukeren. Parameteren <var>$1projects</var> kan benyttes med enhver modus for å begrense resultater til bestemte prosjekter.",
+	"apihelp-query+readinglistentries-param-lists": "Liste-ID-ene sider skal returneres for. Valgfritt. Dersom ikke angitt, returneres oppføringer fra alle lister.",
+	"apihelp-query+readinglistentries-param-projects": "Prosjektidentifikatorer å filtrere etter. Verdier kan være <kbd>@local</kbd>, kanoniske prosjekt-URL-er som <kbd>https://en.wikipedia.org</kbd> eller wiki-ID-er som <kbd>enwiki</kbd>. Valgfritt. Dersom ikke angitt, returner oppføringer fra alle prosjekter.",
 	"apihelp-query+readinglistentries-param-changedsince": "Vis listeoppføringer som har blitt endret siden dette tidsstempelet. Må være etter <kbd>$1</kbd>.",
 	"apihelp-query+readinglistentries-param-sort": "Egenskap det skal sorteres etter. <kbd>name</kbd> kan ikke brukes sammen med <var>$1changedsince</var>. Standard er <kbd>updated</kbd> når <kbd>$1changedsince</kbd> er satt, og <kbd>name</kbd> ellers.",
 	"apihelp-query+readinglistentries-paramvalue-sort-name": "Artikkeltittel. (Sortering er en binær verdi; derfor vil store bokstaver sorteres før små bokstaver.)",
 	"apihelp-query+readinglistentries-paramvalue-sort-updated": "Tidsstempel for siste oppdatering.",
 	"apihelp-query+readinglistentries-param-dir": "Sorteringsrekkefølge: <kbd>ascending</kbd> (A til Z, eldst til nyest) eller <kbd>descending</kbd>.",
 	"apihelp-query+readinglistentries-param-limit": "Antall resultatelementer som skal returneres.",
-	"apihelp-query+readinglistentries-example-1": "Hent alle sider fra leselistene med ID <kbd>10</kbd>, <kbd>11</kbd> og <kbd>12</kbd>.",
-	"apihelp-query+readinglistentries-example-2": "Hent listeoppføringene til den gjeldende brukeren som har blitt endret siden <kbd>2013-01-01T00:00:00Z</kbd>.",
+	"apihelp-query+readinglistentries-example-1": "Hent alle sidene fra alle leselistene til den gjeldende brukeren.",
+	"apihelp-query+readinglistentries-example-2": "Hent sidene fra leselistene med ID <kbd>10</kbd>, <kbd>11</kbd> og <kbd>12</kbd>.",
+	"apihelp-query+readinglistentries-example-3": "Hent alle listeoppføringene til den gjeldende brukeren som har blitt endret siden <kbd>2013-01-01T00:00:00Z</kbd>.",
+	"apihelp-query+readinglistentries-example-4": "Hent alle sider fra alle leselistene til den gjeldende brukeren på det lokale prosjektet.",
+	"apihelp-query+readinglistentries-example-5": "Hent alle sider fra alle leselistene til den gjeldende brukeren på engelsk og tysk Wikipedia, med wiki-ID-er.",
 	"apihelp-readinglists-summary": "Skriveoperasjoner for leselister.",
 	"apihelp-readinglists-param-command": "Kommando (API-undermodul) for skriveoperasjoner for leselister.",
 	"apihelp-readinglists-extended-description": "Opprett/oppdater/slett/sorter leselister og oppføringer. Se dokumentasjonen for de forskjellige kommandoene og detaljene.",
@@ -68,14 +73,18 @@
 	"apihelp-readinglists+createentry-summary": "Legg til en ny side i en liste som tilhører den gjeldende brukeren.",
 	"apihelp-readinglists+createentry-extended-description": "Listeoppføringer må være unike. Sider er ikke begrenset til wikien der API-et ligger. Brukeren må ha mindre enn $1 {{PLURAL:$1|(ikke-slettet) oppføring|(ikke-slettede) oppføringer}} i lista.",
 	"apihelp-readinglists+createentry-param-list": "Liste-ID.",
-	"apihelp-readinglists+createentry-param-project": "Prosjektnavnet til wikien som inneholder siden. (Dette er typisk domenet til wikien.) Påkrevd med mindre man gjør batch-opprettelse.",
+	"apihelp-readinglists+createentry-param-project": "Prosjektnavnet til wikien som inneholder siden. Dette er typisk domenet til wikien eller <kbd>@local</kbd> for den lokale wikien. Påkrevd med mindre man gjør batch-opprettelse.",
 	"apihelp-readinglists+createentry-param-title": "Sidetittel (inkludert lokalisert navneromsnavn). Påkrevd med mindre man gjør batch-opprettelse. Menneskeleselig format (mellomrom og ikke understreker) anbefales. API-et behandler titler som rå strenger; normalisering (som stor første bokstav) er opp til klientene.",
 	"apihelp-readinglists+createentry-param-batch": "Batch-data for å opprette flere listeoppføringer (i samme liste) med én forespørsel, i form av en JSON-tabell med ett eller flere objekter med feltene <var>project</var> og <var>title</var>.",
 	"apihelp-readinglists+createentry-example-1": "Legg til sida <kbd>Dog</kbd> fra prosjektet <kbd>en.wikipedia.org</kbd> til lista med ID <kbd>33</kbd>.",
 	"apihelp-readinglists+createentry-example-2": "Legger til flere sider i ei liste.",
 	"apihelp-readinglists+deleteentry-summary": "Slett ei side fra ei liste som tilhører den gjeldende brukeren.",
 	"apihelp-readinglists+deleteentry-param-entry": "Oppførings-ID. Påkrevd med mindre man gjør en batch-sletting.",
+	"apihelp-readinglists+deleteentry-param-project": "Prosjektnavn til wikien som verter siden. Må brukes sammen med <var>$1title</var>. Sletter alle oppføringer som samsvarer med det gitt prosjekt og tittel.",
+	"apihelp-readinglists+deleteentry-param-title": "Sidetittel å slette. Må brukes sammen med <var>$1project</var>.",
 	"apihelp-readinglists+deleteentry-param-batch": "Batch-data for å slette flere listeoppføringer på én gang, i form av en JSON-tabell med ett eller flere objekter med feltet <var>entry</var>.",
 	"apihelp-readinglists+deleteentry-example-1": "Slett listeoppføringa med ID <kbd>8</kbd>.",
-	"apihelp-readinglists+deleteentry-example-2": "Slett flere listeoppføringer."
+	"apihelp-readinglists+deleteentry-example-2": "Slett flere listeoppføringer.",
+	"apihelp-readinglists+deleteentry-example-3": "Slette alle oppføringer for siden <kbd>Dog</kbd> på prosjektet <kbd>en.wikipedia.org</kbd>.",
+	"apihelp-readinglists+deleteentry-example-4": "Slett alle oppføringer for siden <kbd>Garfield the Cat</kbd> fra prosjektet <kbd>@local</kbd>."
 }
