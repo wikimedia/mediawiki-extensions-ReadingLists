@@ -9,6 +9,8 @@
 	"paths": {
 		"/lists/setup": {
 			"post": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-post-lists-setup",
+				"x-i18n-description": "readinglists-rest-endpoint-desc-post-lists-setup",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\SetupHandler",
 					"services": [
@@ -21,6 +23,8 @@
 		},
 		"/lists/teardown": {
 			"post": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-post-lists-teardown",
+				"x-i18n-description": "readinglists-rest-endpoint-desc-post-lists-teardown",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\TeardownHandler",
 					"services": [
@@ -33,6 +37,7 @@
 		},
 		"/lists": {
 			"get": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-get-lists",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsHandler",
 					"services": [
@@ -43,6 +48,7 @@
 				}
 			},
 			"post": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-post-lists",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsCreateHandler",
 					"services": [
@@ -55,6 +61,7 @@
 		},
 		"/lists/": {
 			"get": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-get-lists",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsHandler",
 					"services": [
@@ -65,6 +72,7 @@
 				}
 			},
 			"post": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-post-lists",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsCreateHandler",
 					"services": [
@@ -77,6 +85,7 @@
 		},
 		"/lists/{id}": {
 			"get": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-get-lists-id",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsIdHandler",
 					"services": [
@@ -87,6 +96,7 @@
 				}
 			},
 			"put": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-put-lists-id",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsUpdateHandler",
 					"services": [
@@ -97,6 +107,7 @@
 				}
 			},
 			"delete": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-delete-lists-id",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsDeleteHandler",
 					"services": [
@@ -109,6 +120,7 @@
 		},
 		"/lists/batch": {
 			"post": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-post-lists-batch",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsCreateBatchHandler",
 					"services": [
@@ -121,6 +133,7 @@
 		},
 		"/lists/pages/{project}/{title}": {
 			"get": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-get-lists-pages-project-title",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsPagesHandler",
 					"services": [
@@ -133,6 +146,7 @@
 		},
 		"/lists/changes/since/{date}": {
 			"get": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-get-lists-changes-since-date",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsChangesSinceHandler",
 					"services": [
@@ -145,6 +159,7 @@
 		},
 		"/lists/{id}/entries": {
 			"get": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-get-lists-id-entries",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesHandler",
 					"services": [
@@ -156,6 +171,7 @@
 				}
 			},
 			"post": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-post-lists-id-entries",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateHandler",
 					"services": [
@@ -168,6 +184,7 @@
 		},
 		"/lists/{id}/entries/": {
 			"get": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-get-lists-id-entries",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesHandler",
 					"services": [
@@ -179,6 +196,7 @@
 				}
 			},
 			"post": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-post-lists-id-entries",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateHandler",
 					"services": [
@@ -191,6 +209,7 @@
 		},
 		"/lists/{id}/entries/batch": {
 			"post": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-post-lists-id-entries-batch",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateBatchHandler",
 					"services": [
@@ -203,6 +222,7 @@
 		},
 		"/lists/{id}/entries/{entry_id}": {
 			"delete": {
+				"x-i18n-summary": "readinglists-rest-endpoint-summ-delete-lists-id-entries-entryid",
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesDeleteHandler",
 					"services": [

@@ -1,0 +1,23 @@
+{
+	"@metadata": {
+		"authors": [
+			"KBach"
+		]
+	},
+	"readinglists-rest-endpoint-summ-post-lists-setup": "{{Experimental}} Summary for an API operation: Enable reading lists",
+	"readinglists-rest-endpoint-desc-post-lists-setup": "{{Experimental}} Description for an API operation: Enable reading lists",
+	"readinglists-rest-endpoint-summ-post-lists-teardown": "{{Experimental}} Summary for an API operation: Remove all reading list data",
+	"readinglists-rest-endpoint-desc-post-lists-teardown": "{{Experimental}} Description for an API operation: Remove all reading list data",
+	"readinglists-rest-endpoint-summ-get-lists": "{{Experimental}} Summary for an API operation: Get reading lists",
+	"readinglists-rest-endpoint-summ-post-lists": "{{Experimental}} Summary for an API operation: Create reading list",
+	"readinglists-rest-endpoint-summ-get-lists-id": "{{Experimental}} Summary for an API operation: Get reading list",
+	"readinglists-rest-endpoint-summ-put-lists-id": "{{Experimental}} Summary for an API operation: Update reading list",
+	"readinglists-rest-endpoint-summ-delete-lists-id": "{{Experimental}} Summary for an API operation: Delete reading list",
+	"readinglists-rest-endpoint-summ-post-lists-batch": "{{Experimental}} Summary for an API operation: Create multiple reading lists",
+	"readinglists-rest-endpoint-summ-get-lists-pages-project-title": "{{Experimental}} Summary for an API operation: Get reading lists containing a page",
+	"readinglists-rest-endpoint-summ-get-lists-changes-since-date": "{{Experimental}} Summary for an API operation: Get reading lists and entries changed since date",
+	"readinglists-rest-endpoint-summ-get-lists-id-entries": "{{Experimental}} Summary for an API operation: Get reading list entries",
+	"readinglists-rest-endpoint-summ-post-lists-id-entries": "{{Experimental}} Summary for an API operation: Create reading list entry",
+	"readinglists-rest-endpoint-summ-post-lists-id-entries-batch": "{{Experimental}} Summary for an API operation: Create multiple reading list entries",
+	"readinglists-rest-endpoint-summ-delete-lists-id-entries-entryid": "{{Experimental}} Summary for an API operation: Delete reading list entry"
+}

@@ -1,0 +1,23 @@
+{
+	"@metadata": {
+		"authors": [
+			"KBach"
+		]
+	},
+	"readinglists-rest-endpoint-summ-post-lists-setup": "Enable reading lists",
+	"readinglists-rest-endpoint-desc-post-lists-setup": "Enables reading lists and creates a default list for the current user.",
+	"readinglists-rest-endpoint-summ-post-lists-teardown": "Remove all reading list data",
+	"readinglists-rest-endpoint-desc-post-lists-teardown": "Soft-deletes all reading lists for the current user. Deleted lists and their entries are permanently purged after the configured retention period, which defaults to 30 days.",
+	"readinglists-rest-endpoint-summ-get-lists": "Get reading lists",
+	"readinglists-rest-endpoint-summ-post-lists": "Create reading list",
+	"readinglists-rest-endpoint-summ-get-lists-id": "Get reading list",
+	"readinglists-rest-endpoint-summ-put-lists-id": "Update reading list",
+	"readinglists-rest-endpoint-summ-delete-lists-id": "Delete reading list",
+	"readinglists-rest-endpoint-summ-post-lists-batch": "Create multiple reading lists",
+	"readinglists-rest-endpoint-summ-get-lists-pages-project-title": "Get reading lists containing a page",
+	"readinglists-rest-endpoint-summ-get-lists-changes-since-date": "Get reading lists and entries changed since date",
+	"readinglists-rest-endpoint-summ-get-lists-id-entries": "Get reading list entries",
+	"readinglists-rest-endpoint-summ-post-lists-id-entries": "Create reading list entry",
+	"readinglists-rest-endpoint-summ-post-lists-id-entries-batch": "Create multiple reading list entries",
+	"readinglists-rest-endpoint-summ-delete-lists-id-entries-entryid": "Delete reading list entry"
+}
