@@ -39,6 +39,7 @@
 	"readinglists-browser-page-not-supported": "$1은(는) 이 문서를 지원하지 않습니다",
 	"readinglists-special-title-imported": "읽기 목록: 다른 사용자로부터 가져오기",
 	"readinglists-special-subpage-title": "저장됨",
+	"readinglists-special-custom-list-title": "저장됨 / $1",
 	"readinglists-description": "저장된 모든 목록을 한 곳에서 확인합니다.",
 	"readinglists-loading": "기다려 주세요...",
 	"reading-list-purpose": "비공개 읽기 목록을 보려면 로그인해주세요.",

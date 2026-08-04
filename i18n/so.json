@@ -53,6 +53,8 @@
 	"readinglists-default-description": "Liiska caadiga ah ee bogaggaaga la kaydiyay.",
 	"readinglists-empty-title": "Weli ma jiraan bogag la kaydiyay",
 	"readinglists-empty-cta": "Isticmaal astaanta kaydinta ee bog kasta si aad ugu darto waxyaabo halkan.",
+	"readinglists-empty-collection-title": "Ma jiraan maqaallo lagu daray ururintan",
+	"readinglists-empty-collection-cta": "Isticmaal astaanta calaamadaynta ee maqaal kasta si aad halkan ugu kaydiso mar dambe.",
 	"readinglists-display-menu": "Qaabka soo bandhigista",
 	"readinglists-display-sort": "U kala saar",
 	"readinglists-display-sort-name": "Magaca",

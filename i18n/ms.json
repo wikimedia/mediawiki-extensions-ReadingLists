@@ -53,6 +53,8 @@
 	"readinglists-default-description": "Senarai lalai untuk laman yang anda simpan.",
 	"readinglists-empty-title": "Tiada laman yang disimpan lagi",
 	"readinglists-empty-cta": "Gunakan ikon simpan pada mana-mana laman untuk menambah item di sini.",
+	"readinglists-empty-collection-title": "Tiada rencana ditambah ke dalam koleksi ini",
+	"readinglists-empty-collection-cta": "Gunakan ikon penanda buku pada mana-mana rencana untuk menyimpannya di sini untuk kegunaan kemudian.",
 	"readinglists-display-menu": "Paparkan menu",
 	"readinglists-display-sort": "Isih mengikut",
 	"readinglists-display-sort-name": "Nama",

@@ -57,6 +57,8 @@
 	"readinglists-default-description": "Standardliste für deine gespeicherten Seiten.",
 	"readinglists-empty-title": "Es sind noch keine Leselisten vorhanden.",
 	"readinglists-empty-cta": "Verwende das Speichersymbol in einer beliebigen Seite, um hier Elemente hinzuzufügen.",
+	"readinglists-empty-collection-title": "Es wurden keine Artikel hinzugefügt zu dieser Sammlung",
+	"readinglists-empty-collection-cta": "Klicke bei einem beliebigen Artikel auf das Lesezeichen-Symbol, um ihn hier für später zu speichern.",
 	"readinglists-display-menu": "Menü anzeigen",
 	"readinglists-display-sort": "Sortieren nach",
 	"readinglists-display-sort-name": "Name",
