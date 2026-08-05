@@ -2,9 +2,18 @@
 	"@metadata": {
 		"authors": [
 			"Beginneruser",
-			"Ladsgroup"
+			"Ladsgroup",
+			"Jeeputer"
 		]
 	},
+	"apierror-readinglists-project-title-param": "<var>$1project</var> و <var>$1title</var> باید همراه یکدیگر استفاده شوند.",
+	"apierror-readinglists-too-old": "برچسب زمان وارد شده در <var>$1changedsince</var> نمی‌تواند قدیمی‌تر از <kbd>$2</kbd> باشد.",
+	"apierror-readinglists-invalidsort-notbyname": "گزینهٔ مرتب‌سازی <kbd>name</kbd> نمی‌تواند به‌همراه <var>$1changedsince</var> استفاده شود.",
+	"apierror-readinglists-batch-invalid-json": "جی‌سان نامعتبر برای پارامتر <var>batch</var>: $1",
+	"apierror-readinglists-batch-invalid-structure": "ورودی نامعتبر برای پارامتر <var>batch</var>: باید حاوی یک آرایه از اشیاء باشد که دارای مقدارهای عددی هستند.",
+	"apierror-readinglists-batch-toomanyvalues": "ورودی نامعتبر برای پارامتر <var>batch</var>: ورودی‌های بیش از حد، بیشترین تعداد مجاز: $1",
+	"apierror-readinglists-batch-missingparam-at-least-one-of": "در تمام اشیاء موجود درون ورودی <var>batch</var>، {{PLURAL:$2|فیلد|دست کم یکی از فیلدهای}} $1 الزامی است.",
+	"apihelp-query+readinglists-summary": "فهرست کردن یا پالایش فهرست‌های مطالعهٔ کاربر و نمایش فراداده پیرامون آن‌ها.",
 	"apihelp-query+readinglists-param-list": "شناسه فهرست",
 	"apihelp-query+readinglists-param-limit": "تعداد آیتم‌های نتایج برای بازگردانی.",
 	"apihelp-query+readinglists-example-1": "گرفتن فهرست خواندن کاربر کنونی.",

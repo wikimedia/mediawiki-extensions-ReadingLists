@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Nguyenphutrong2",
-			"Bluetpp"
+			"Bluetpp",
+			"NgocAnMaster"
 		]
 	},
 	"readinglists-db-error-not-set-up": "Danh sách đọc chưa được thiết lập cho người dùng này.",
@@ -25,7 +26,7 @@
 	"readinglists-db-error-too-long": "Giá trị cho trường $1 không thể dài hơn $2 byte.",
 	"readinglists-db-error-no-such-project": "'$1' không phải là một dự án được công nhận.",
 	"readinglists-browser-login-prompt": "Đăng nhập để lưu bài viết",
-	"readinglists-browser-error-intro": "Đã xuất hiện lỗi: $1",
+	"readinglists-browser-error-intro": "Đã xảy ra lỗi: $1",
 	"readinglists-browser-enable-sync-prompt": "Bật đồng bộ trên ứng dụng Wikipedia của bạn để bắt đầu lưu bài viết",
 	"readinglists-browser-extension-info-link-text": "Tìm hiểu thêm",
 	"readinglists-browser-list-entry-limit-exceeded": "Không thể lưu bài viết. Bạn đã đạt đến giới hạn $1 bài viết cho mỗi danh sách.",

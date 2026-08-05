@@ -3,7 +3,8 @@
 		"authors": [
 			"Jon Harald Søby",
 			"Orf3us",
-			"Telaneo"
+			"Telaneo",
+			"EdoAug"
 		]
 	},
 	"readinglists-desc": "Lar brukere behandle private lister over artikler, som bokmerker eller «Les senere»-lister.",
@@ -60,5 +61,6 @@
 	"readinglists-import-button-label": "Vis liste",
 	"readinglists-import-button-hint": "Trykk på knappen:",
 	"readinglists-share-url-notify": "Informasjon om denne leselista har blitt kopiert til utklippstavla di.",
-	"readinglists-import-app-launch-hint": "Sørg for at den nyeste versjonen av appen er installert."
+	"readinglists-import-app-launch-hint": "Sørg for at den nyeste versjonen av appen er installert.",
+	"readinglists-bookmark": "Bokmerke"
 }
