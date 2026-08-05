@@ -53,6 +53,8 @@
 	"readinglists-default-description": "Oletuslista tallennetuille sivuillesi.",
 	"readinglists-empty-title": "Ei vielä tallennettuja sivua",
 	"readinglists-empty-cta": "Käytä tallennuskuvaketta millä tahansa sivulla tallentaaksesi sivuja tänne.",
+	"readinglists-empty-collection-title": "Tähän kokoelmaan ei ole lisätty artikkeleita",
+	"readinglists-empty-collection-cta": "Tallenna artikkeli tähän myöhempää lukemista varten käyttämällä kirjanmerkkikuvaketta.",
 	"readinglists-display-menu": "Näytä valikko",
 	"readinglists-display-sort": "Lajitteluperuste",
 	"readinglists-display-sort-name": "Nimi",

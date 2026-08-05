@@ -60,6 +60,8 @@
 	"readinglists-default-description": "Стандартний список для збережених сторінок.",
 	"readinglists-empty-title": "Ще немає збережених сторінок",
 	"readinglists-empty-cta": "Натисніть на іконку збереження, щоб додати сюди нові сторінки",
+	"readinglists-empty-collection-title": "До цієї колекції не додано жодної статті",
+	"readinglists-empty-collection-cta": "Використайте значок закладки у будь-якій статті, щоб зберегти її до цієї колекції на потім.",
 	"readinglists-display-menu": "Показати меню",
 	"readinglists-display-sort": "Сортувати за",
 	"readinglists-display-sort-name": "Назва",

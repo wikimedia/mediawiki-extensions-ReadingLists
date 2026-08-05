@@ -55,6 +55,8 @@
 	"readinglists-default-description": "Standardliste for dine gemte sider.",
 	"readinglists-empty-title": "Ingen gemte sider endnu",
 	"readinglists-empty-cta": "Brug gem-ikonet på en hvilken som helst side for at tilføje elementer her.",
+	"readinglists-empty-collection-title": "Ingen artikler tilføjet til denne samling",
+	"readinglists-empty-collection-cta": "Brug bogmærkeikonet på en hvilken som helst artikel for at gemme den her til senere.",
 	"readinglists-display-menu": "Vis menu",
 	"readinglists-display-sort": "Sortér efter",
 	"readinglists-display-sort-name": "Navn",

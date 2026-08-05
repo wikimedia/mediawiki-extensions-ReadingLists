@@ -54,6 +54,8 @@
 	"readinglists-default-description": "Saxladığınız səhifələr üçün defolt siyahınız.",
 	"readinglists-empty-title": "Hələ ki, heç bir səhifəni saxlamamısınız",
 	"readinglists-empty-cta": "Buraya əlavələr etmək üçün ixtiyari səhifədəki saxlama ikonasından istifadə edə bilərsiniz.",
+	"readinglists-empty-collection-title": "Bu kolleksiyaya heç bir məqalə əlavə edilməyib",
+	"readinglists-empty-collection-cta": "İstənilən məqaləni daha sonra istifadə etmək üçün burada saxlamaq üçün əlfəcin işarəsindən istifadə edin.",
 	"readinglists-display-menu": "Menyunu göstər",
 	"readinglists-display-sort": "Düzülüş",
 	"readinglists-display-sort-name": "Ada görə",

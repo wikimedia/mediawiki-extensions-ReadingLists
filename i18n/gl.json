@@ -56,6 +56,8 @@
 	"readinglists-default-description": "Lista por defecto para as túas páxinas gardadas.",
 	"readinglists-empty-title": "Aínda non hai páxinas gardadas",
 	"readinglists-empty-cta": "Usa a icona de gardar en calquera páxina para engadires elementos aquí.",
+	"readinglists-empty-collection-title": "Non se engadiu ningún artigo a esta colección",
+	"readinglists-empty-collection-cta": "Usa a icona do marcador en calquera artigo para gardalo aquí para máis tarde.",
 	"readinglists-display-menu": "Mostrar o menú",
 	"readinglists-display-sort": "Ordenar por",
 	"readinglists-display-sort-name": "Nome",
