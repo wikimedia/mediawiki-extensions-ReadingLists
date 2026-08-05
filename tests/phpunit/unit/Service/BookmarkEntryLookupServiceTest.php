@@ -235,6 +235,9 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$this->assertSame( 1, $statsHelper->count(
 			'bloom_db_lookup_total{reason="default_list_check"}'
 		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_rebuild_job_queued_total{reason="cache_miss"}'
+		) );
 	}
 
 	public function testGetBookmarkEntryLookup_storesAndReusesEmptyStateForUserWithoutDefaultList(): void {
@@ -317,6 +320,30 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 		$this->assertTrue( $status->isOK() );
 		$this->assertTrue( $this->getLookupResult( $status )->isSaved() );
+	}
+
+	public function testInvalidateBookmarkBloomFilter_emitsRebuildJobMetric() {
+		$statsHelper = $this->newStatsHelper();
+
+		$repository = $this->createMockRepository( [ 'Cat' ] );
+		$jobQueueGroup = $this->createMock( JobQueueGroup::class );
+		$jobQueueGroup->expects( $this->once() )->method( 'lazyPush' );
+
+		$service = $this->createService(
+			$repository,
+			$jobQueueGroup,
+			$statsHelper->getStatsFactory()
+		);
+
+		$service->invalidateBookmarkBloomFilter( $this->createMock( UserIdentity::class ) );
+
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_rebuild_job_queued_total{reason="invalidate_after_write"}'
+		) );
+		$this->expectException( \OutOfRangeException::class );
+		$statsHelper->count(
+			'bloom_rebuild_job_queued_total{reason="cache_miss"}'
+		);
 	}
 
 	public function testGetBookmarkEntryLookup_forTitleWithSpaces() {

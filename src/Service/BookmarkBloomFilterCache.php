@@ -102,6 +102,10 @@ class BookmarkBloomFilterCache {
 			$ttl
 		);
 
+		$this->statsFactory->getCounter( 'bloom_rebuild_total' )
+			->setLabel( 'result', $cachedBloomFilter['state'] )
+			->increment();
+
 		$this->storeCachedBloomFilter( $centralId, $cachedBloomFilter, $ttl );
 	}
 

@@ -31,6 +31,9 @@ class BookmarkEntryLookupService {
 	private const LOOKUP_RESULT_CACHE_UNUSABLE = 'cache_unusable';
 	private const LOOKUP_RESULT_ERROR = 'error';
 
+	private const REBUILD_REASON_CACHE_MISS = 'cache_miss';
+	private const REBUILD_REASON_INVALIDATE_AFTER_WRITE = 'invalidate_after_write';
+
 	private const DB_LOOKUP_REASON_CACHE_MISS = 'cache_miss';
 	private const DB_LOOKUP_REASON_DEFAULT_LIST_CHECK = 'default_list_check';
 	private const DB_LOOKUP_REASON_PROBABLE_POSITIVE = 'probable_positive';
@@ -148,7 +151,7 @@ class BookmarkEntryLookupService {
 			return StatusValue::newGood( new BookmarkEntryLookupResult( false, false ) );
 		}
 
-		$this->queueBloomFilterBuildJob( $centralId );
+		$this->queueBloomFilterBuildJob( $centralId, self::REBUILD_REASON_CACHE_MISS );
 		$this->recordDbLookupMetric( self::DB_LOOKUP_REASON_CACHE_MISS );
 		$status = $this->lookupBookmarkMembershipInDb( $title, $centralId, $repository );
 
@@ -290,16 +293,21 @@ class BookmarkEntryLookupService {
 			->getLookup()
 			->centralIdFromLocalUser( $user, CentralIdLookup::AUDIENCE_RAW );
 		$this->bookmarkBloomFilterCache->invalidateBloomFilter( $centralId );
-		$this->queueBloomFilterBuildJob( $centralId );
+		$this->queueBloomFilterBuildJob( $centralId, self::REBUILD_REASON_INVALIDATE_AFTER_WRITE );
 	}
 
 	/**
 	 * Queues a bloom filter build job for the user.
 	 *
 	 * @param int $centralId
+	 * @param string $reason Reason label for bloom_rebuild_job_queued_total
 	 * @return void
 	 */
-	private function queueBloomFilterBuildJob( int $centralId ): void {
+	private function queueBloomFilterBuildJob( int $centralId, string $reason ): void {
+		$this->statsFactory->getCounter( 'bloom_rebuild_job_queued_total' )
+			->setLabel( 'reason', $reason )
+			->increment();
+
 		$this->jobQueueGroup->lazyPush( new BuildBloomFilterJob( [
 			'centralId' => $centralId,
 		] ) );

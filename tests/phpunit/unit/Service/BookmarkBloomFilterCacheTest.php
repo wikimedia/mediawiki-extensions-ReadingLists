@@ -12,6 +12,7 @@ use Psr\Log\NullLogger;
 use Wikimedia\LightweightObjectStore\ExpirationAwareness;
 use Wikimedia\ObjectCache\HashBagOStuff;
 use Wikimedia\ObjectCache\WANObjectCache;
+use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\IDBAccessObject;
 use Wikimedia\Stats\StatsFactory;
 use Wikimedia\Stats\UnitTestingHelper;
@@ -188,7 +189,7 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 	public function testGetBloomFilterStatus_returnsDbErrorStateWhenRebuildFails() {
 		$repository = $this->createMock( ReadingListRepository::class );
 		$repository->expects( $this->once() )->method( 'getSavedPageTitlesForProject' )
-			->willThrowException( new \Wikimedia\Rdbms\DBError( null, 'temporary failure' ) );
+			->willThrowException( new DBError( null, 'temporary failure' ) );
 
 		$cache = $this->createBloomFilterCache( $repository );
 
@@ -204,6 +205,60 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 		$this->assertInstanceOf( \StatusValue::class, $status );
 		$this->assertTrue( $status->isOK() );
 		$this->assertSame( BookmarkBloomFilterCache::BUILD_DB_ERROR, $status->getValue() );
+	}
+
+	/**
+	 * @dataProvider provideRebuildOutcomes
+	 */
+	public function testRebuildBloomFilter_recordsOutcomeMetric(
+		string $buildResult,
+		string $expectedMetricResult
+	) {
+		$repository = $this->createMock( ReadingListRepository::class );
+
+		switch ( $buildResult ) {
+			case BookmarkBloomFilterCache::BUILD_SUCCESS:
+				$repository->method( 'getSavedPageTitlesForProject' )
+					->willReturn( [ 'Cat' ] );
+				break;
+			case BookmarkBloomFilterCache::BUILD_EMPTY:
+				$repository->method( 'getSavedPageTitlesForProject' )
+					->willReturn( [] );
+				break;
+			case BookmarkBloomFilterCache::BUILD_TOO_LARGE:
+				$repository->method( 'getSavedPageTitlesForProject' )->willReturn(
+					array_map(
+						static fn ( int $i ) => "Page_$i",
+						range( 1, self::MAX_ITEMS + 1 )
+					)
+				);
+				break;
+			case BookmarkBloomFilterCache::BUILD_DB_ERROR:
+				$repository->method( 'getSavedPageTitlesForProject' )
+					->willThrowException( new DBError( null, 'temporary failure' ) );
+				break;
+			case BookmarkBloomFilterCache::BUILD_CONFIG_ERROR:
+				$repository->method( 'getSavedPageTitlesForProject' )
+					->willThrowException( $this->createMock( ReadingListRepositoryException::class ) );
+				break;
+		}
+
+		$cache = $this->createBloomFilterCache( $repository );
+		$cache->rebuildBloomFilter( self::CENTRAL_ID );
+
+		$this->assertSame( 1, $this->statsHelper->count(
+			"bloom_rebuild_total{result=\"$expectedMetricResult\"}"
+		) );
+	}
+
+	public static function provideRebuildOutcomes(): array {
+		return [
+			'successful build' => [ BookmarkBloomFilterCache::BUILD_SUCCESS, 'success' ],
+			'user with no saved pages' => [ BookmarkBloomFilterCache::BUILD_EMPTY, 'empty' ],
+			'user over the item limit' => [ BookmarkBloomFilterCache::BUILD_TOO_LARGE, 'too_large' ],
+			'database error' => [ BookmarkBloomFilterCache::BUILD_DB_ERROR, 'db_error' ],
+			'invalid project configuration' => [ BookmarkBloomFilterCache::BUILD_CONFIG_ERROR, 'config_error' ],
+		];
 	}
 
 	public function testGetBloomFilterStatus_returnsUnusableStateWhenCachedPayloadHasNoState() {
