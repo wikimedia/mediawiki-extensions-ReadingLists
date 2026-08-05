@@ -100,8 +100,6 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 	 */
 	private function createMockRepository( array $savedTitles = [] ): ReadingListRepository&MockObject {
 		$repository = $this->createMock( ReadingListRepository::class );
-		$repository->method( 'getSavedPagesCacheSetOptions' )
-			->willReturn( [] );
 		$repository->method( 'getSavedPageTitlesForProject' )
 			->willReturn( $savedTitles );
 		return $repository;
@@ -142,7 +140,6 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$statsHelper = $this->newStatsHelper();
 
 		$repository = $this->createMock( ReadingListRepository::class );
-		$repository->expects( $this->never() )->method( 'getSavedPagesCacheSetOptions' );
 		$repository->expects( $this->never() )->method( 'getSavedPageTitlesForProject' );
 		$repository->expects( $this->once() )->method( 'getListsByPage' )
 			->with( '@local', 'Cat', 1, null, false )
@@ -236,7 +233,6 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$matchingList = (object)[ 'rl_id' => 1, 'rl_name' => 'Saved pages' ];
 
 		$repository = $this->createMock( ReadingListRepository::class );
-		$repository->expects( $this->never() )->method( 'getSavedPagesCacheSetOptions' );
 		$repository->expects( $this->never() )->method( 'getSavedPageTitlesForProject' );
 		$repository->expects( $this->once() )->method( 'getListsByPage' )
 			->with( '@local', 'Cat', 1, null, false )
@@ -669,7 +665,6 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 	public function testGetBookmarkEntry_emitsDbLookupErrorMetric() {
 		$statsHelper = $this->newStatsHelper();
 		$failingRepository = $this->createMock( ReadingListRepository::class );
-		$failingRepository->expects( $this->never() )->method( 'getSavedPagesCacheSetOptions' );
 		$failingRepository->expects( $this->never() )->method( 'getSavedPageTitlesForProject' );
 		$failingRepository->expects( $this->once() )
 			->method( 'getListsByPage' )

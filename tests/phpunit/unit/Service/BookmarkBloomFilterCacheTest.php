@@ -56,8 +56,6 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 	 */
 	private function createMockRepository( array $savedTitles = [] ): ReadingListRepository&MockObject {
 		$repository = $this->createMock( ReadingListRepository::class );
-		$repository->method( 'getSavedPagesCacheSetOptions' )
-			->willReturn( [] );
 		$repository->method( 'getSavedPageTitlesForProject' )
 			->willReturn( $savedTitles );
 		return $repository;
@@ -74,9 +72,6 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 
 	public function testRebuildBloomFilter_usesPrimaryReadForCacheRebuild() {
 		$repository = $this->createMock( ReadingListRepository::class );
-		$repository->expects( $this->once() )->method( 'getSavedPagesCacheSetOptions' )
-			->with( IDBAccessObject::READ_LATEST )
-			->willReturn( [] );
 		$repository->expects( $this->once() )->method( 'getSavedPageTitlesForProject' )
 			->with( '@local', self::MAX_ITEMS + 1, IDBAccessObject::READ_LATEST )
 			->willReturn( [ 'Cat' ] );

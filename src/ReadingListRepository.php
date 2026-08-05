@@ -11,7 +11,6 @@ use MediaWiki\WikiMap\WikiMap;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Wikimedia\Rdbms\Database;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IDBAccessObject;
@@ -825,20 +824,6 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->limit( $limit )
 			->caller( __METHOD__ )
 			->fetchFieldValues();
-	}
-
-	/**
-	 * Returns WANObjectCache set options for the DB connection used to build
-	 * the bookmark bloom filter.
-	 *
-	 * This lets WANObjectCache record freshness metadata based on whether the
-	 * source query used a replica or READ_LATEST.
-	 *
-	 * @param int $flags IDBAccessObject read flags
-	 * @return array
-	 */
-	public function getSavedPagesCacheSetOptions( int $flags = 0 ): array {
-		return Database::getCacheSetOptions( $this->getReadConnection( $flags ) );
 	}
 
 	/**

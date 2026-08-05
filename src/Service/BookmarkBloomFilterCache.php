@@ -91,26 +91,16 @@ class BookmarkBloomFilterCache {
 	public function rebuildBloomFilter( int $centralId ): void {
 		$ttl = self::BLOOM_FILTER_CACHE_TTL;
 
-		$cacheSetOpts = [];
 		$cachedBloomFilter = $this->buildBookmarkedPagesBloomFilter(
 			$centralId,
-			$ttl,
-			$cacheSetOpts
+			$ttl
 		);
 
-		/**
-		 * buildBookmarkedPagesBloomFilter adds DB freshness metadata
-		 * to $cacheSetOpts. buildBookmarkedPagesBloomFilter queries
-		 * from the primary DB, but the freshness metadata is still needed.
-		 * Pass this metadata here to WANObjectCache so it
-		 * treats the cached value as only as current as the
-		 * DB read it was built from.
-		 */
 		$this->cache->set(
 			$this->getBloomFilterKey( $centralId ),
 			$cachedBloomFilter,
 			$ttl,
-			$cacheSetOpts + [ 'version' => self::CACHE_VERSION ]
+			[ 'version' => self::CACHE_VERSION ]
 		);
 	}
 
@@ -228,20 +218,15 @@ class BookmarkBloomFilterCache {
 	/**
 	 * @param int $centralId
 	 * @param int &$ttl Cache TTL, adjusted on failure to avoid retrying too often
-	 * @param array &$cacheSetOpts WANObjectCache set options for the primary DB read
 	 * @return array{state: string, filter?: array}
 	 */
 	private function buildBookmarkedPagesBloomFilter(
 		int $centralId,
-		int &$ttl,
-		array &$cacheSetOpts = []
+		int &$ttl
 	) {
 		$repository = $this->readingListRepositoryFactory->create( $centralId );
 
 		try {
-			$cacheSetOpts += $repository->getSavedPagesCacheSetOptions(
-				IDBAccessObject::READ_LATEST
-			);
 			$titles = $repository->getSavedPageTitlesForProject(
 				'@local',
 				$this->bloomFilterMaxItems + 1,
