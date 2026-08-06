@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Bluetpp"
+			"Bluetpp",
+			"NgocAnMaster"
 		]
 	},
 	"readinglists-desc": "Cho phép người dùng quản lý danh sách bài viết cá nhân, chẳng hạn như danh sách dấu trang hoặc danh sách \"Trang đã lưu\".",
@@ -27,7 +28,7 @@
 	"readinglists-browser-add-entry-success": "<b>$1</b> đã được thêm vào [[$2|$3]] của bạn.",
 	"readinglists-browser-remove-entry-success": "<b>$1</b> đã bị xóa khỏi [[$2|$3]] của bạn.",
 	"readinglists-browser-login-prompt": "Đăng nhập để lưu bài viết",
-	"readinglists-browser-error-intro": "Đã xuất hiện lỗi: $1",
+	"readinglists-browser-error-intro": "Đã xảy ra lỗi: $1",
 	"readinglists-browser-enable-sync-prompt": "Bật đồng bộ trên ứng dụng Wikipedia của bạn để bắt đầu lưu bài viết",
 	"readinglists-browser-extension-info-link-text": "Tìm hiểu thêm",
 	"readinglists-browser-list-entry-limit-exceeded": "Không thể lưu bài viết. Bạn đã đạt đến giới hạn $1 bài viết cho mỗi danh sách.",

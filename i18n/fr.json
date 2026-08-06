@@ -20,7 +20,8 @@
 			"Wladek92",
 			"Raveloaritiana Mamisoa",
 			"Geugeor-WMF",
-			"Jérémy-Günther-Heinz Jähnick"
+			"Jérémy-Günther-Heinz Jähnick",
+			"Ourytima"
 		]
 	},
 	"readinglists-desc": "Permet aux utilisateurs de gérer des listes privées d'articles, tels que des favoris ou des listes de \"Pages enregistrées\".",
@@ -96,7 +97,7 @@
 	"readinglists-beta-feature-name": "Listes de lecture",
 	"readinglists-beta-feature-description": "Collectez des listes privées d'articles à lire plus tard.",
 	"readinglists-menu-item": "Pages enregistrées",
-	"readinglists-bookmark": "Marque-page",
+	"readinglists-bookmark": "Favori",
 	"readinglists-add-bookmark": "Enregistrer",
 	"readinglists-remove-bookmark": "Annuler l'enregistrement",
 	"readinglists-onboarding-title": "Enregistrer les pages pour plus tard",

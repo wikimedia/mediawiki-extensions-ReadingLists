@@ -1,10 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Jon Harald Søby"
+			"Jon Harald Søby",
+			"EdoAug"
 		]
 	},
-	"apierror-readinglists-project-title-param": "<var>$1project</var> og <var>$1title</var> må ikke brukes sammen.",
+	"apierror-readinglists-project-title-param": "<var>$1project</var> og <var>$1title</var> må brukes sammen.",
 	"apierror-readinglists-too-old": "Tidsstempler som sendes til <var>$1changedsince</var> kan ikke være eldre enn <kbd>$2</kbd>.",
 	"apierror-readinglists-invalidsort-notbyname": "Sorteringsvalget <kbd>name</kbd> kan ikke brukes sammen med <var>$1changedsince</var>.",
 	"apierror-readinglists-batch-invalid-json": "Ugyldig JSON for <var>batch</var>-parameter: $1",

@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Anzx"
+		]
+	},
+	"apierror-readinglists-project-title-param": "<var>$1project</var> ಮತ್ತು <var>$1title</var> ಒಟ್ಟಿಗೆ ಬಳಸಬೇಕು.",
+	"apierror-readinglists-too-old": "<var>$1changedsince</var>ಗೆ ರವಾನಿಸಲಾದ ಸಮಯಗಳನ್ನು ಬದಲಾಯಿಸಲಾಗಿದೆ ಏಕೆಂದರೆ ಅದು <kbd>$2</kbd> ಗಿಂತ ಹಳೆಯದಾಗಿರಬಾರದು.",
+	"apierror-readinglists-invalidsort-notbyname": "<kbd>name</kbd> ವಿಂಗಡಣೆ ಆಯ್ಕೆಯನ್ನು <var>$1changedsince</var> ಬಳಸಲಾಗುವುದಿಲ್ಲ."
+}
