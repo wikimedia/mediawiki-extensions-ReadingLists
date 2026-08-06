@@ -3,6 +3,7 @@
 namespace MediaWiki\Extension\ReadingLists\Service;
 
 use MediaWiki\Extension\ReadingLists\Job\BuildBloomFilterJob;
+use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
 use MediaWiki\JobQueue\JobQueueGroup;
@@ -20,6 +21,8 @@ class BookmarkEntryLookupService {
 
 	private const LOOKUP_RESULT_CACHE_MISS = 'cache_miss';
 	private const LOOKUP_RESULT_DEFINITE_NEGATIVE = 'definite_negative';
+	private const LOOKUP_RESULT_EMPTY_CACHE_FILL = 'empty_cache_fill';
+	private const LOOKUP_RESULT_EMPTY_CACHE_HIT = 'empty_cache_hit';
 	private const LOOKUP_RESULT_TRUE_POSITIVE = 'true_positive';
 	private const LOOKUP_RESULT_FALSE_POSITIVE = 'false_positive';
 	private const LOOKUP_RESULT_TOO_LARGE_BYPASS_FOUND = 'too_large_bypass_found';
@@ -29,6 +32,7 @@ class BookmarkEntryLookupService {
 	private const LOOKUP_RESULT_ERROR = 'error';
 
 	private const DB_LOOKUP_REASON_CACHE_MISS = 'cache_miss';
+	private const DB_LOOKUP_REASON_DEFAULT_LIST_CHECK = 'default_list_check';
 	private const DB_LOOKUP_REASON_PROBABLE_POSITIVE = 'probable_positive';
 	private const DB_LOOKUP_REASON_TOO_LARGE_BYPASS = 'too_large_bypass';
 	private const DB_LOOKUP_REASON_BUILD_DB_ERROR_BYPASS = 'build_db_error_bypass';
@@ -67,7 +71,6 @@ class BookmarkEntryLookupService {
 	public function getBookmarkEntryStatus( Title $title, int $centralId ): StatusValue {
 		$filterStatus = $this->bookmarkBloomFilterCache->getCachedBloomFilterStatus( $centralId );
 
-		// Bloom filter in not in the cache, queue a rebuild job and fallback to the DB lookup.
 		if ( $filterStatus === false ) {
 			return $this->handleCacheMiss( $title, $centralId );
 		}
@@ -79,6 +82,11 @@ class BookmarkEntryLookupService {
 		}
 
 		$filter = $filterStatus->getValue();
+
+		if ( $filter === BookmarkBloomFilterCache::BUILD_EMPTY ) {
+			$this->recordBloomFilterLookupMetric( self::LOOKUP_RESULT_EMPTY_CACHE_HIT );
+			return StatusValue::newGood( null );
+		}
 
 		// User has too many bookmarked pages, fallback to the DB lookup.
 		if ( $filter === BookmarkBloomFilterCache::BUILD_TOO_LARGE ) {
@@ -114,9 +122,36 @@ class BookmarkEntryLookupService {
 	}
 
 	private function handleCacheMiss( Title $title, int $centralId ): StatusValue {
+		$repository = $this->readingListRepositoryFactory->create( $centralId );
+		$this->recordDbLookupMetric( self::DB_LOOKUP_REASON_DEFAULT_LIST_CHECK );
+
+		try {
+			$defaultListId = $repository->getDefaultListIdForUser();
+		} catch ( DBError $e ) {
+			// Preserve the existing exact-lookup fallback if this optimization's
+			// preliminary query fails.
+			$this->logger->warning( 'Failed to check for a default reading list due to a database error', [
+				'exception' => $e,
+				'centralId' => $centralId,
+			] );
+			$defaultListId = null;
+		} catch ( ReadingListRepositoryException $e ) {
+			$this->logger->error( 'Failed to check for a default reading list: invalid configuration', [
+				'exception' => $e,
+				'centralId' => $centralId,
+			] );
+			$defaultListId = null;
+		}
+
+		if ( $defaultListId === false ) {
+			$this->bookmarkBloomFilterCache->storeEmptyBloomFilter( $centralId );
+			$this->recordBloomFilterLookupMetric( self::LOOKUP_RESULT_EMPTY_CACHE_FILL );
+			return StatusValue::newGood( null );
+		}
+
 		$this->queueBloomFilterBuildJob( $centralId );
 		$this->recordDbLookupMetric( self::DB_LOOKUP_REASON_CACHE_MISS );
-		$status = $this->lookupBookmarkListInDb( $title, $centralId );
+		$status = $this->lookupBookmarkListInDb( $title, $centralId, $repository );
 
 		if ( !$status->isOK() ) {
 			$this->recordLookupFailureMetrics( self::FAILURE_POINT_CACHE_MISS_DB_LOOKUP );
@@ -192,8 +227,12 @@ class BookmarkEntryLookupService {
 		return $status;
 	}
 
-	private function lookupBookmarkListInDb( Title $title, int $centralId ): StatusValue {
-		$repository = $this->readingListRepositoryFactory->create( $centralId );
+	private function lookupBookmarkListInDb(
+		Title $title,
+		int $centralId,
+		?ReadingListRepository $repository = null
+	): StatusValue {
+		$repository ??= $this->readingListRepositoryFactory->create( $centralId );
 
 		try {
 			$listRow = $repository->getListsByPage( '@local', $title->getPrefixedDBkey(), 1, null, false )
@@ -258,7 +297,7 @@ class BookmarkEntryLookupService {
 	}
 
 	/**
-	 * Records why an exact DB lookup was required.
+	 * Records why a DB lookup was required.
 	 *
 	 * @param string $reason Reason label for bloom_db_lookup_total
 	 * @return void

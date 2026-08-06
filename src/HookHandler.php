@@ -117,19 +117,6 @@ class HookHandler implements
 			$inAccountCreationCtaTreatment = true;
 		}
 
-		$centralId = $this->centralIdLookupFactory->getLookup()
-			->centralIdFromLocalUser( $user );
-
-		$repository = null;
-		$defaultListId = null;
-		if ( $centralId ) {
-			$repository = $this->readingListRepositoryFactory->create( $centralId );
-			// The default list is created lazily when the user saves their first page
-			// (the client-side bookmark code calls the setup API if no list exists yet),
-			// so there is no need to eagerly create it here on page view. See T427944.
-			$defaultListId = $repository->getDefaultListIdForUser() ?: null;
-		}
-
 		$output = $sktemplate->getOutput();
 		$output->addModuleStyles( 'ext.readingLists.bookmark.icons' );
 
@@ -146,31 +133,38 @@ class HookHandler implements
 
 		$matchingList = null;
 		$hasCustomListEntry = false;
+		$centralId = 0;
 
-		if ( $repository !== null && $defaultListId !== null ) {
-			$status = $this->bookmarkEntryLookupService->getBookmarkEntryStatus(
-				$title,
-				$centralId
-			);
-			// On failure, fall through with no match so the button
-			// renders in its default "unsaved" state rather than disappearing.
-			$matchingList = $status->isOK() ? $status->getValue() : null;
+		if ( $readingListsEnabledForUser ) {
+			$centralId = $this->centralIdLookupFactory->getLookup()
+				->centralIdFromLocalUser( $user );
 
-			if ( $matchingList !== null ) {
-				$listsByPage = $repository->getListsByPage(
-					'@local',
-					$title->getPrefixedDBkey(),
-					2,
-					null,
-					false
+			if ( $centralId ) {
+				$status = $this->bookmarkEntryLookupService->getBookmarkEntryStatus(
+					$title,
+					$centralId
 				);
-				foreach ( $listsByPage as $pageList ) {
-					if ( $matchingList === null || $pageList->rl_is_default ) {
-						$matchingList = $pageList;
-					}
-					if ( !$pageList->rl_is_default ) {
-						$hasCustomListEntry = true;
-					}
+				// On failure, fall through with no match so the button
+				// renders in its default "unsaved" state rather than disappearing.
+				$matchingList = $status->isOK() ? $status->getValue() : null;
+			}
+		}
+
+		if ( $matchingList !== null ) {
+			$repository = $this->readingListRepositoryFactory->create( $centralId );
+			$listsByPage = $repository->getListsByPage(
+				'@local',
+				$title->getPrefixedDBkey(),
+				2,
+				null,
+				false
+			);
+			foreach ( $listsByPage as $pageList ) {
+				if ( $matchingList === null || $pageList->rl_is_default ) {
+					$matchingList = $pageList;
+				}
+				if ( !$pageList->rl_is_default ) {
+					$hasCustomListEntry = true;
 				}
 			}
 		}

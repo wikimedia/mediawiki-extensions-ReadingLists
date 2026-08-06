@@ -17,6 +17,7 @@ class BookmarkBloomFilterCache {
 
 	public const CACHE_VERSION = 1;
 	public const BUILD_SUCCESS = 'success';
+	public const BUILD_EMPTY = 'empty';
 	public const BUILD_DB_ERROR = 'db-error';
 	public const BUILD_CONFIG_ERROR = 'config-error';
 	public const BUILD_TOO_LARGE = 'too-large';
@@ -25,6 +26,7 @@ class BookmarkBloomFilterCache {
 	private const BLOOM_FILTER_FALSE_POSITIVE_RATE = 0.01;
 	private const BLOOM_FILTER_CACHE_TTL = ExpirationAwareness::TTL_MONTH;
 	private const BLOOM_FILTER_FAILURE_TTL = ExpirationAwareness::TTL_MINUTE * 5;
+
 	private const CACHE_HIT_VALUE_AGE_BUCKETS = [
 		ExpirationAwareness::TTL_HOUR,
 		ExpirationAwareness::TTL_HOUR * 6,
@@ -67,8 +69,12 @@ class BookmarkBloomFilterCache {
 		}
 
 		$status = $this->deserializeCachedBloomFilter( $cacheResult['cachedBloomFilter'], $centralId );
-		// Only record age when the cached value contains a usable bloom filter.
-		if ( $status->isOK() && $status->getValue() instanceof BloomFilter ) {
+		$cachedValue = $status->getValue();
+
+		if (
+			$status->isOK() &&
+			( $cachedValue instanceof BloomFilter || $cachedValue === self::BUILD_EMPTY )
+		) {
 			$this->statsFactory->getHistogram(
 				'bloom_cache_hit_value_age_seconds',
 				self::CACHE_HIT_VALUE_AGE_BUCKETS
@@ -96,11 +102,20 @@ class BookmarkBloomFilterCache {
 			$ttl
 		);
 
-		$this->cache->set(
-			$this->getBloomFilterKey( $centralId ),
-			$cachedBloomFilter,
-			$ttl,
-			[ 'version' => self::CACHE_VERSION ]
+		$this->storeCachedBloomFilter( $centralId, $cachedBloomFilter, $ttl );
+	}
+
+	/**
+	 * Stores a definite-negative state for a user with no saved pages.
+	 *
+	 * @param int $centralId
+	 * @return void
+	 */
+	public function storeEmptyBloomFilter( int $centralId ): void {
+		$this->storeCachedBloomFilter(
+			$centralId,
+			[ 'state' => self::BUILD_EMPTY ],
+			self::BLOOM_FILTER_CACHE_TTL
 		);
 	}
 
@@ -189,7 +204,11 @@ class BookmarkBloomFilterCache {
 			return StatusValue::newFatal( 'readinglists-bloom-filter-config-error' );
 		}
 
-		if ( $state === self::BUILD_TOO_LARGE || $state === self::BUILD_DB_ERROR ) {
+		if (
+			$state === self::BUILD_EMPTY ||
+			$state === self::BUILD_TOO_LARGE ||
+			$state === self::BUILD_DB_ERROR
+		) {
 			return StatusValue::newGood( $state );
 		}
 
@@ -250,14 +269,16 @@ class BookmarkBloomFilterCache {
 
 		$titleCount = count( $titles );
 
+		if ( $titleCount === 0 ) {
+			return [ 'state' => self::BUILD_EMPTY ];
+		}
+
 		if ( $titleCount > $this->bloomFilterMaxItems ) {
 			return [ 'state' => self::BUILD_TOO_LARGE ];
 		}
 
-		// bloom filter expects a positive integer for the number of items
-		// so set this to 1 if the user has no saved pages.
 		$filter = BloomFilter::init(
-			max( $titleCount, 1 ),
+			$titleCount,
 			self::BLOOM_FILTER_FALSE_POSITIVE_RATE
 		);
 		foreach ( $titles as $rawTitle ) {
@@ -268,6 +289,25 @@ class BookmarkBloomFilterCache {
 			'state' => self::BUILD_SUCCESS,
 			'filter' => json_decode( json_encode( $filter ), true ),
 		];
+	}
+
+	/**
+	 * @param int $centralId
+	 * @param array{state: string, filter?: array} $cachedBloomFilter
+	 * @param int $ttl
+	 * @return void
+	 */
+	private function storeCachedBloomFilter(
+		int $centralId,
+		array $cachedBloomFilter,
+		int $ttl
+	): void {
+		$this->cache->set(
+			$this->getBloomFilterKey( $centralId ),
+			$cachedBloomFilter,
+			$ttl,
+			[ 'version' => self::CACHE_VERSION ]
+		);
 	}
 
 	/**

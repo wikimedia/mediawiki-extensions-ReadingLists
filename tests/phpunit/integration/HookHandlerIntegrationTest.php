@@ -129,7 +129,8 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$mockFactory->method( 'create' )->willReturn( $mockRepository ?? $this->createMockRepository() );
 
 		$mockCentralIdLookup = $this->createMock( CentralIdLookup::class );
-		$mockCentralIdLookup->method( 'centralIdFromLocalUser' )->willReturn( 1 );
+		$mockCentralIdLookup->method( 'centralIdFromLocalUser' )
+			->willReturnCallback( static fn ( User $user ): int => $user->isRegistered() ? 1 : 0 );
 
 		/** @var CentralIdLookupFactory&MockObject $mockCentralIdLookupFactory */
 		$mockCentralIdLookupFactory = $this->createMock( CentralIdLookupFactory::class );
@@ -273,6 +274,7 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
 		$this->assertArrayHasKey( 'bookmark', $links['views'] );
+		$this->assertContains( 'ext.readingLists.bookmark.anonymous', $skin->getOutput()->getModules() );
 	}
 
 	public function testBookmarkIconButtonNotAddedForMainNamespacePageWithUserNotInCTAExperiment() {
@@ -359,6 +361,9 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 	}
 
 	public function testBookmarkIconButtonNotAddedForTalkPageWithExperiment() {
+		$repository = $this->createMock( ReadingListRepository::class );
+		$repository->expects( $this->never() )->method( 'getDefaultListIdForUser' );
+		$this->hookHandler = $this->createHookHandler( $repository );
 		$this->setupExperiment();
 
 		$title = Title::makeTitle( NS_TALK, 'TestPage' );

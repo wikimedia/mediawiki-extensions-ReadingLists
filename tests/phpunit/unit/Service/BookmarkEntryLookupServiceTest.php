@@ -169,6 +169,91 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$this->assertSame( 1, $statsHelper->count(
 			'bloom_db_lookup_total{reason="cache_miss"}'
 		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_db_lookup_total{reason="default_list_check"}'
+		) );
+	}
+
+	public function testGetBookmarkEntry_storesAndReusesEmptyStateForUserWithoutDefaultList(): void {
+		$statsHelper = $this->newStatsHelper();
+		$repository = $this->createMock( ReadingListRepository::class );
+		$repository->expects( $this->once() )
+			->method( 'getDefaultListIdForUser' )
+			->willReturn( false );
+		$repository->expects( $this->never() )->method( 'getListsByPage' );
+		$repository->expects( $this->never() )->method( 'getSavedPageTitlesForProject' );
+
+		$jobQueueGroup = $this->createMock( JobQueueGroup::class );
+		$jobQueueGroup->expects( $this->never() )->method( 'lazyPush' );
+		$service = $this->createService(
+			$repository,
+			$jobQueueGroup,
+			$statsHelper->getStatsFactory()
+		);
+
+		$firstStatus = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
+		$secondStatus = $service->getBookmarkEntryStatus( $this->createTitle( 'Dog' ), self::CENTRAL_ID );
+
+		$this->assertTrue( $firstStatus->isOK() );
+		$this->assertNull( $firstStatus->getValue() );
+		$this->assertTrue( $secondStatus->isOK() );
+		$this->assertNull( $secondStatus->getValue() );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="empty_cache_fill"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_lookup_total{result="empty_cache_hit"}'
+		) );
+		$this->assertSame( 1, $statsHelper->count(
+			'bloom_db_lookup_total{reason="default_list_check"}'
+		) );
+		$this->assertStringNotContainsString(
+			'reason:cache_miss',
+			implode( "\n", $statsHelper->getAllFormatted() )
+		);
+	}
+
+	public function testGetBookmarkEntry_doesNotServeEmptyStateAfterInvalidation(): void {
+		$matchingList = (object)[ 'rl_id' => 1, 'rl_name' => 'Saved pages' ];
+		$repository = $this->createMockRepository( [ 'Cat' ] );
+		$repository->expects( $this->once() )
+			->method( 'getDefaultListIdForUser' )
+			->willReturn( 1 );
+		$repository->expects( $this->once() )
+			->method( 'getListsByPage' )
+			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
+
+		$jobQueueGroup = $this->createMock( JobQueueGroup::class );
+		$jobQueueGroup->expects( $this->once() )->method( 'lazyPush' );
+		$service = $this->createService( $repository, $jobQueueGroup );
+		$cache = $this->createBloomFilterCache( $repository );
+		$cache->storeEmptyBloomFilter( self::CENTRAL_ID );
+		$cache->invalidateBloomFilter( self::CENTRAL_ID );
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
+
+		$this->assertTrue( $status->isOK() );
+		$this->assertSame( $matchingList, $status->getValue() );
+	}
+
+	public function testGetBookmarkEntry_fallsBackWhenDefaultListCheckFails(): void {
+		$matchingList = (object)[ 'rl_id' => 1, 'rl_name' => 'Saved pages' ];
+		$repository = $this->createMock( ReadingListRepository::class );
+		$repository->expects( $this->once() )
+			->method( 'getDefaultListIdForUser' )
+			->willThrowException( new DBError( null, 'temporary failure' ) );
+		$repository->expects( $this->once() )
+			->method( 'getListsByPage' )
+			->willReturn( new FakeResultWrapper( [ $matchingList ] ) );
+
+		$jobQueueGroup = $this->createMock( JobQueueGroup::class );
+		$jobQueueGroup->expects( $this->once() )->method( 'lazyPush' );
+		$service = $this->createService( $repository, $jobQueueGroup );
+
+		$status = $service->getBookmarkEntryStatus( $this->createTitle( 'Cat' ), self::CENTRAL_ID );
+
+		$this->assertTrue( $status->isOK() );
+		$this->assertSame( $matchingList, $status->getValue() );
 	}
 
 	public function testGetBookmarkEntry_forTitleWithSpaces() {

@@ -129,6 +129,53 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 		);
 	}
 
+	/**
+	 * A user with no reading lists gets the EMPTY state cached instead of a
+	 * real bloom filter, with the normal long TTL. The short failure TTL is
+	 * only for error states.
+	 */
+	public function testStoreEmptyBloomFilter_returnsEmptyStateWithNormalTtl(): void {
+		$mockTime = 1000000000.0;
+		$this->cache->setMockTime( $mockTime );
+		$cache = $this->createBloomFilterCache( $this->createMockRepository() );
+
+		// A cache miss creates the check key. Advance the clock so the stored
+		// value is newer than the check key.
+		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+		$mockTime++;
+		$cache->storeEmptyBloomFilter( self::CENTRAL_ID );
+
+		$currentTtl = null;
+		$this->cache->get(
+			$this->cache->makeKey( 'readinglists', 'bloom', self::CENTRAL_ID ),
+			$currentTtl
+		);
+		$status = $cache->getCachedBloomFilterStatus( self::CENTRAL_ID );
+
+		$this->assertInstanceOf( \StatusValue::class, $status );
+		$this->assertTrue( $status->isOK() );
+		$this->assertSame( BookmarkBloomFilterCache::BUILD_EMPTY, $status->getValue() );
+		$this->assertSame( (float)ExpirationAwareness::TTL_MONTH, $currentTtl );
+	}
+
+	public function testRebuildBloomFilter_storesEmptyStateWhenUserHasNoSavedPages(): void {
+		$mockTime = 1000000000.0;
+		$this->cache->setMockTime( $mockTime );
+		$cache = $this->createBloomFilterCache( $this->createMockRepository() );
+
+		// A cache miss creates the check key.
+		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+
+		// Advance the clock so the storedvalue is newer than the check key.
+		$mockTime++;
+		$cache->rebuildBloomFilter( self::CENTRAL_ID );
+		$status = $cache->getCachedBloomFilterStatus( self::CENTRAL_ID );
+
+		$this->assertInstanceOf( \StatusValue::class, $status );
+		$this->assertTrue( $status->isOK() );
+		$this->assertSame( BookmarkBloomFilterCache::BUILD_EMPTY, $status->getValue() );
+	}
+
 	public function testGetBloomFilterStatus_returnsDbErrorStateWhenRebuildFails() {
 		$repository = $this->createMock( ReadingListRepository::class );
 		$repository->expects( $this->once() )->method( 'getSavedPageTitlesForProject' )
@@ -175,6 +222,25 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 		$this->assertSame( 1, $this->statsHelper->count(
 			'bloom_cache_miss_total{reason="stale"}'
 		) );
+	}
+
+	public function testInvalidateBloomFilter_marksCachedEmptyStateStale(): void {
+		$mockTime = 1000000000.0;
+		$this->cache->setMockTime( $mockTime );
+		$cache = $this->createBloomFilterCache( $this->createMockRepository() );
+
+		// A cache miss creates the check key.
+		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+
+		// Advance the clock so the stored value is newer than the check key.
+		$mockTime++;
+		$cache->storeEmptyBloomFilter( self::CENTRAL_ID );
+
+		$this->assertInstanceOf( \StatusValue::class, $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+
+		$cache->invalidateBloomFilter( self::CENTRAL_ID );
+
+		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
 	}
 
 	public function testGetCachedBloomFilterStatus_returnsFalseForVersionMismatch() {
@@ -224,6 +290,27 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 		$this->assertSame( 1.0, $this->statsHelper->sum(
 			'bloom_cache_hit_value_age_seconds_bucket{le="2592000"}'
 		) );
+	}
+
+	public function testGetCachedBloomFilterStatus_recordsEmptyCacheValueAge(): void {
+		$mockTime = microtime( true );
+		$this->cache->setMockTime( $mockTime );
+		$cache = $this->createBloomFilterCache( $this->createMockRepository() );
+
+		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+		$cache->storeEmptyBloomFilter( self::CENTRAL_ID );
+		$mockTime += 7200;
+
+		$status = $cache->getCachedBloomFilterStatus( self::CENTRAL_ID );
+
+		$this->assertInstanceOf( \StatusValue::class, $status );
+		$this->assertSame( BookmarkBloomFilterCache::BUILD_EMPTY, $status->getValue() );
+		$this->assertSame( 1.0, $this->statsHelper->sum(
+			'bloom_cache_hit_value_age_seconds_count'
+		) );
+		$this->assertEqualsWithDelta( 7200.0, $this->statsHelper->sum(
+			'bloom_cache_hit_value_age_seconds_sum'
+		), 0.001 );
 	}
 
 	public function testRebuildBloomFilter_normalizesTitleSpacesToUnderscores() {
