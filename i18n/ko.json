@@ -57,6 +57,8 @@
 	"readinglists-default-description": "저장된 문서를 위한 기본 목록입니다.",
 	"readinglists-empty-title": "아직 저장된 문서가 없습니다",
 	"readinglists-empty-cta": "어떤 문서에서든 저장 아이콘을 사용하여 여기에 항목을 추가하세요.",
+	"readinglists-empty-collection-title": "이 컬렉션에 추가된 문서가 없습니다",
+	"readinglists-empty-collection-cta": "나중에 다시 볼 수 있도록 각 문서의 북마크 아이콘을 사용하여 저장하세요.",
 	"readinglists-display-menu": "메뉴 표시",
 	"readinglists-display-sort": "정렬 기준",
 	"readinglists-display-sort-name": "이름",
