@@ -33,11 +33,17 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 
 	private WANObjectCache $cache;
 	private HashBagOStuff $cacheBackend;
+	private float $mockWallClock;
 
 	protected function setUp(): void {
 		parent::setUp();
 		$this->cacheBackend = new HashBagOStuff();
 		$this->cache = new WANObjectCache( [ 'cache' => $this->cacheBackend ] );
+
+		// Freeze the cache clock so values seeded by tests are never treated
+		// as stale by check keys lazily created at read time.
+		$this->mockWallClock = 1549343521.5;
+		$this->cache->setMockTime( $this->mockWallClock );
 	}
 
 	private function createService(
@@ -300,6 +306,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$this->createBloomFilterCache( $builderRepository )->rebuildBloomFilter( self::CENTRAL_ID );
 
 		$freshCache = new WANObjectCache( [ 'cache' => $this->cacheBackend ] );
+		$freshCache->setMockTime( $this->mockWallClock );
 
 		/** @var ReadingListRepositoryFactory&MockObject $factory */
 		$factory = $this->createMock( ReadingListRepositoryFactory::class );
@@ -343,6 +350,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		);
 
 		$freshCache = new WANObjectCache( [ 'cache' => $this->cacheBackend ] );
+		$freshCache->setMockTime( $this->mockWallClock );
 
 		/** @var ReadingListRepositoryFactory&MockObject $factory */
 		$factory = $this->createMock( ReadingListRepositoryFactory::class );
@@ -401,6 +409,7 @@ class BookmarkEntryLookupServiceTest extends MediaWikiUnitTestCase {
 		$this->assertNotNull( $status->getValue() );
 
 		$freshCache = new WANObjectCache( [ 'cache' => $this->cacheBackend ] );
+		$freshCache->setMockTime( $this->mockWallClock );
 
 		/** @var ReadingListRepositoryFactory&MockObject $factory */
 		$factory = $this->createMock( ReadingListRepositoryFactory::class );
