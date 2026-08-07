@@ -20,7 +20,8 @@
 			"Urhixidur",
 			"Verdy p",
 			"Wladek92",
-			"Jérémy-Günther-Heinz Jähnick"
+			"Jérémy-Günther-Heinz Jähnick",
+			"Ourytima"
 		]
 	},
 	"readinglists-desc": "Permet aux utilisateurs de gérer des listes privées d'éléments, telles que des signets ou des listes de \"pages enregistrées\".",
@@ -97,7 +98,7 @@
 	"readinglists-beta-feature-name": "Pages enregistrées",
 	"readinglists-beta-feature-description": "Vous pouvez enregistrer des pages pour les lire ou les consulter ultérieurement. Les pages enregistrées depuis l'application et le site web Wikipédia seront toutes synchronisées dans une seule liste. Veuillez noter : de nouvelles fonctionnalités pourront être ajoutées pendant la phase bêta. Cette fonctionnalité bêta sera disponible jusqu'en juillet 2026, après quoi elle deviendra une fonctionnalité permanente de Wikipédia. Vos commentaires sont les bienvenus via le lien de discussion ci-dessus.",
 	"readinglists-menu-item": "Pages enregistrées",
-	"readinglists-bookmark": "Marque-page",
+	"readinglists-bookmark": "Favori",
 	"readinglists-add-bookmark": "Enregistrer",
 	"readinglists-remove-bookmark": "Annuler l'enregistrement",
 	"readinglists-unsave-from-custom-list-title": "Supprimer de toutes les listes de lecture ?",

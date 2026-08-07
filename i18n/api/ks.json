@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ayaat123"
+		]
+	},
+	"apierror-readinglists-project-title-param": "<var>$1 پرٛوجیکٹ</var> تہٕ <var>$1 ٹایٹل</var> گژھِ یَکوَٹَے اِستِمال کرنہٕ یُن۔",
+	"apierror-readinglists-too-old": "ٹایِم سٹیمپ <var>گٔیہِ $1 بدلاونہٕ آمُت تِکیازِ</var> $<kbd>$2</kbd> کھۄتہٕ پرٛون ہیٚکہِ نہٕ ٲسِتھ۔",
+	"apierror-readinglists-invalidsort-notbyname": "ناو ترتیٖب کرنُک اِختِیار ہیٚکو نہٕ <var>$1 تبدیٖلی</var> سٟتؠ مِلِتھ اِستِمال کٔرِتھ۔",
+	"apierror-readinglists-batch-invalid-json": "<var>بیچ</var> پیرامیٹر خٲطرٕ ناکارٕ JSON: $1",
+	"apierror-readinglists-batch-invalid-structure": "<var>بیچ</var> پیرامیٹرس خٲطرٕ چھُ غٲر قونوٗنی اِن پُٹَس مَنٛز ضوٚروٗری زِ اَتھ مَنٛز آسن تِمَن چیٖزن ہِنٛز اکھ صف یِمَن سکیلر ویلیٛوٗز آسَن۔",
+	"apihelp-query+readinglists-param-list": "فِہرِست اَے ڈی۔",
+	"apihelp-readinglists+create-param-description": "فِہرِست وَضاحتہٕ۔"
+}
