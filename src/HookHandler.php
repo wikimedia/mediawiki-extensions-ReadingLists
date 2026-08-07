@@ -227,13 +227,18 @@ class HookHandler implements
 		$userName = $user->getName();
 		$specialPageUrl = SpecialPage::getTitleFor( 'ReadingLists', $userName )->getLinkURL();
 
-		$links['user-menu'] = ArrayUtils::insertAfter( $userMenu, [
+		$readingListsArray = [
 			'readinglists' => [
 				'text' => $sktemplate->msg( 'readinglists-menu-item' )->text(),
 				'href' => $specialPageUrl,
 				'icon' => 'bookmarkList',
 			],
-		], $insertAfter );
+		];
+		if ( array_key_exists( $insertAfter, $links['user-menu'] ) ) {
+			$links['user-menu'] = ArrayUtils::insertAfter( $userMenu, $readingListsArray, $insertAfter );
+		} else {
+			$links['user-menu'] = $readingListsArray + $userMenu;
+		}
 	}
 
 	private function isReadingListsEnabledForUser( UserIdentity $user ): bool {
