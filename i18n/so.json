@@ -113,5 +113,9 @@
 	"readinglists-cta-dialog-call-to-action": "Fadlan soo gal ama samee akoon si aad u bilowdo kaydinta.",
 	"readinglists-cta-dialog-create-account": "Abuur akoon",
 	"readinglists-cta-dialog-log-in": "Soo gal",
-	"readinglists-cta-dialog-close": "Xir"
+	"readinglists-cta-dialog-close": "Xir",
+	"readinglists-customlists-allitems": "Dhammaan walxaha",
+	"readinglists-customlists-collections": "Uruurinno",
+	"readinglists-customlists-no-collections": "Ma lihid wax uruurinno ah",
+	"readinglists-customlists-create-collection": "Abuur uruurin cusub"
 }

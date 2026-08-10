@@ -116,5 +116,9 @@
 	"readinglists-cta-dialog-call-to-action": "Inicia sesión ou crea unha conta para gardar gáxinas.",
 	"readinglists-cta-dialog-create-account": "Crear unha conta",
 	"readinglists-cta-dialog-log-in": "Acceder ao sistema",
-	"readinglists-cta-dialog-close": "Pechar"
+	"readinglists-cta-dialog-close": "Pechar",
+	"readinglists-customlists-allitems": "Todos os elementos",
+	"readinglists-customlists-collections": "Coleccións",
+	"readinglists-customlists-no-collections": "Non tes ningunha colección",
+	"readinglists-customlists-create-collection": "crear unha colección nova"
 }

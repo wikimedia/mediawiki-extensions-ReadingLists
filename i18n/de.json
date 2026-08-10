@@ -117,5 +117,9 @@
 	"readinglists-cta-dialog-call-to-action": "Bitte melde dich an oder erstelle ein Konto, um mit dem Speichern zu beginnen.",
 	"readinglists-cta-dialog-create-account": "Benutzerkonto erstellen",
 	"readinglists-cta-dialog-log-in": "Anmelden",
-	"readinglists-cta-dialog-close": "Schließen"
+	"readinglists-cta-dialog-close": "Schließen",
+	"readinglists-customlists-allitems": "Alle Artikel",
+	"readinglists-customlists-collections": "Sammlungen",
+	"readinglists-customlists-no-collections": "Du hast keine Sammlungen",
+	"readinglists-customlists-create-collection": "neue Sammlung erstellen"
 }

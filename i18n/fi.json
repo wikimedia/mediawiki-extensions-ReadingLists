@@ -112,5 +112,9 @@
 	"readinglists-cta-dialog-call-to-action": "Kirjaudu sisään tai luo tunnus tallentaaksesi sivuja.",
 	"readinglists-cta-dialog-create-account": "Luo tunnus",
 	"readinglists-cta-dialog-log-in": "Kirjaudu sisään",
-	"readinglists-cta-dialog-close": "Sulje"
+	"readinglists-cta-dialog-close": "Sulje",
+	"readinglists-customlists-allitems": "Kaikki kohteet",
+	"readinglists-customlists-collections": "Kokoelmat",
+	"readinglists-customlists-no-collections": "Sinulla ei ole yhtään kokoelmaa",
+	"readinglists-customlists-create-collection": "luo uusi kokoelma"
 }

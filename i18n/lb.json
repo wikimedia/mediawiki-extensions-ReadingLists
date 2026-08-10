@@ -115,5 +115,9 @@
 	"readinglists-cta-dialog-call-to-action": "Loggt Iech wgl. an oder leet e Kont un, fir kënnen ze späicheren.",
 	"readinglists-cta-dialog-create-account": "Kont uleeën",
 	"readinglists-cta-dialog-log-in": "Aloggen",
-	"readinglists-cta-dialog-close": "Zoumaachen"
+	"readinglists-cta-dialog-close": "Zoumaachen",
+	"readinglists-customlists-allitems": "All Elementer",
+	"readinglists-customlists-collections": "Sammlungen",
+	"readinglists-customlists-no-collections": "Dir hutt keng Sammlungen",
+	"readinglists-customlists-create-collection": "eng nei Sammlung uleeën"
 }

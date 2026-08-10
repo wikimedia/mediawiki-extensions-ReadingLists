@@ -115,5 +115,9 @@
 	"readinglists-cta-dialog-call-to-action": "Yadda saxlamağa başlamaq üçün daxil olun və ya hesab yaradın.",
 	"readinglists-cta-dialog-create-account": "Hesab yarat",
 	"readinglists-cta-dialog-log-in": "Daxil ol",
-	"readinglists-cta-dialog-close": "Bağla"
+	"readinglists-cta-dialog-close": "Bağla",
+	"readinglists-customlists-allitems": "Bütün elementlər",
+	"readinglists-customlists-collections": "Kolleksiyalar",
+	"readinglists-customlists-no-collections": "Heç bir kolleksiyanız yoxdur",
+	"readinglists-customlists-create-collection": "yeni kolleksiya yarat"
 }

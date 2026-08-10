@@ -112,5 +112,8 @@
 	"readinglists-cta-dialog-call-to-action": "د خوندي کولو لپاره ننوځئ يا گڼون جوړ کړئ.",
 	"readinglists-cta-dialog-create-account": "گڼون جوړول",
 	"readinglists-cta-dialog-log-in": "ننوتل",
-	"readinglists-cta-dialog-close": "تړل"
+	"readinglists-cta-dialog-close": "تړل",
+	"readinglists-customlists-allitems": "ټول توکي",
+	"readinglists-customlists-collections": "ټولگې",
+	"readinglists-customlists-create-collection": "نوې ټولگه جوړول"
 }

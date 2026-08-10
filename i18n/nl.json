@@ -58,6 +58,8 @@
 	"readinglists-default-description": "De standaardlijst voor uw opgeslagen pagina's.",
 	"readinglists-empty-title": "Nog geen opgeslagen pagina’s",
 	"readinglists-empty-cta": "Gebruik het opslaan-icoon op elke pagina om hier items toe te voegen.",
+	"readinglists-empty-collection-title": "Er zijn geen pagina's aan deze verzameling toegevoegd",
+	"readinglists-empty-collection-cta": "Gebruik het bladwijzerpictogram bij een pagina om die hier op te slaan voor later.",
 	"readinglists-display-menu": "Menu weergeven",
 	"readinglists-display-sort": "Sorteren op",
 	"readinglists-display-sort-name": "Naam",
@@ -116,5 +118,9 @@
 	"readinglists-cta-dialog-call-to-action": "Meld u aan of maak een account aan om op te kunnen slaan.",
 	"readinglists-cta-dialog-create-account": "Account aanmaken",
 	"readinglists-cta-dialog-log-in": "Aanmelden",
-	"readinglists-cta-dialog-close": "Sluiten"
+	"readinglists-cta-dialog-close": "Sluiten",
+	"readinglists-customlists-allitems": "Alle items",
+	"readinglists-customlists-collections": "Verzamelingen",
+	"readinglists-customlists-no-collections": "U heeft geen verzamelingen",
+	"readinglists-customlists-create-collection": "nieuwe verzameling maken"
 }

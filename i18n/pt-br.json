@@ -55,6 +55,8 @@
 	"readinglists-default-description": "Lista padrão para as suas páginas salvas.",
 	"readinglists-empty-title": "Ainda não há páginas salvas",
 	"readinglists-empty-cta": "Use o ícone de salvar em qualquer página para adicionar itens aqui.",
+	"readinglists-empty-collection-title": "Nenhum artigo foi adicionado a esta coleção",
+	"readinglists-empty-collection-cta": "Use o ícone de marcador em qualquer artigo para salvá-lo aqui e ler mais tarde.",
 	"readinglists-display-menu": "Exibir menu",
 	"readinglists-display-sort": "Ordenar por",
 	"readinglists-display-sort-name": "Nome",
@@ -114,5 +116,9 @@
 	"readinglists-cta-dialog-call-to-action": "Entre ou crie uma conta para começar a salvar.",
 	"readinglists-cta-dialog-create-account": "Criar conta",
 	"readinglists-cta-dialog-log-in": "Entrar",
-	"readinglists-cta-dialog-close": "Fechar"
+	"readinglists-cta-dialog-close": "Fechar",
+	"readinglists-customlists-allitems": "Todos os itens",
+	"readinglists-customlists-collections": "Coleções",
+	"readinglists-customlists-no-collections": "Você não tem nenhuma coleção",
+	"readinglists-customlists-create-collection": "criar nova coleção"
 }

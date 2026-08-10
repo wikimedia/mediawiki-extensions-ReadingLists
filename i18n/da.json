@@ -115,5 +115,9 @@
 	"readinglists-cta-dialog-call-to-action": "Log venligst ind eller opret en konto for at begynde at gemme.",
 	"readinglists-cta-dialog-create-account": "Opret konto",
 	"readinglists-cta-dialog-log-in": "Log på",
-	"readinglists-cta-dialog-close": "Luk"
+	"readinglists-cta-dialog-close": "Luk",
+	"readinglists-customlists-allitems": "Alle emner",
+	"readinglists-customlists-collections": "Samlinger",
+	"readinglists-customlists-no-collections": "Du har ingen samlinger",
+	"readinglists-customlists-create-collection": "opret ny samling"
 }

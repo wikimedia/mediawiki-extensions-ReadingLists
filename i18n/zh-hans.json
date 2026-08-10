@@ -63,7 +63,7 @@
 	"readinglists-default-description": "用于您已保存页面的默认列表",
 	"readinglists-empty-title": "尚无保存的页面",
 	"readinglists-empty-cta": "使用页面上的保存图标即可在此处添加项目。",
-	"readinglists-empty-collection-title": "此合集暂未添加条目",
+	"readinglists-empty-collection-title": "此收藏暂未添加条目",
 	"readinglists-empty-collection-cta": "使用条目上的书签图标即可将其保存到此处，以供稍后查阅。",
 	"readinglists-display-menu": "显示菜单",
 	"readinglists-display-sort": "排序方式",
@@ -123,5 +123,9 @@
 	"readinglists-cta-dialog-call-to-action": "请登录或创建账号以开始保存。",
 	"readinglists-cta-dialog-create-account": "创建账号",
 	"readinglists-cta-dialog-log-in": "登录",
-	"readinglists-cta-dialog-close": "关闭"
+	"readinglists-cta-dialog-close": "关闭",
+	"readinglists-customlists-allitems": "所有项目",
+	"readinglists-customlists-collections": "收藏",
+	"readinglists-customlists-no-collections": "您没有任何收藏",
+	"readinglists-customlists-create-collection": "创建新收藏"
 }
