@@ -114,5 +114,9 @@
 	"readinglists-cta-dialog-call-to-action": "Sila log masuk atau buka akaun untuk mula menyimpan.",
 	"readinglists-cta-dialog-create-account": "Cipta akaun",
 	"readinglists-cta-dialog-log-in": "Log masuk",
-	"readinglists-cta-dialog-close": "Tutup"
+	"readinglists-cta-dialog-close": "Tutup",
+	"readinglists-customlists-allitems": "Semua butir",
+	"readinglists-customlists-collections": "Koleksi",
+	"readinglists-customlists-no-collections": "Anda tidak mempunyai sebarang koleksi",
+	"readinglists-customlists-create-collection": "cipta koleksi baharu"
 }
