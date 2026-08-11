@@ -16,5 +16,9 @@
 	"action-action-readinglist-private": "باقٕین صٲرفن ہِنٛز پٕریٚو پرنٕچ فہرست",
 	"readinglists-empty-message": "تۄٚہہِ چھو نہٕ کانٛہہ تہِ فہرستہٕ، کیازِ بنٲوو نا اکھا؟",
 	"readinglists-list-empty-message": "یَتھ فہرستہِ مٕنٛز چھُنہٕ کانٛہہ تہِ صَفہٕ. ڈاؤنلوڈ تہٕ اِستِمال کٕریٚو ایپ یَتھ پرنٕچہِ فہرستہِ منٛز چیٖز اِضافہٕ کرنہٕ خٲطرٕ.",
-	"readinglists-no-title": "ناوٕ رۄس فہرست"
+	"readinglists-no-title": "ناوٕ رۄس فہرست",
+	"readinglists-export": "شییَر فِہرِست",
+	"readinglists-watchlist": "واچلِسٹ",
+	"readinglists-watchlist-description": "تِم صَفہٕ یِم تُہؠ نٔوؠ اؠڈِٹ کَرنہٕ خٲطرٕ فالو چھُ کران۔",
+	"readinglists-import-button-hint": "بَٹُن دَبٲوِو:"
 }
