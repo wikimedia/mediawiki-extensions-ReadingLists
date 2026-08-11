@@ -109,14 +109,6 @@ class SpecialReadingListsTest extends SpecialPageTestBase {
 
 		$title = $page->getOutput()->getPageTitle();
 		$this->assertStringContainsString( 'Saved / Favorite Dogs', $title );
-		$this->assertStringNotContainsString( 'reading-lists-beta-tag', $title );
-	}
-
-	public function testPageTitleIncludesBetaChipWithFlagOff() {
-		$this->overrideConfigValue( 'ReadingListsCustomLists', false );
-
-		$title = $this->getSpecialPageTitle( $this->user->getName() );
-		$this->assertStringContainsString( 'reading-lists-beta-tag', $title );
 	}
 
 	public function testPageTitleForDefaultListWithFlagOn() {

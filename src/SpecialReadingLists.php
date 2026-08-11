@@ -6,7 +6,6 @@ use MediaWiki\Config\Config;
 use MediaWiki\Exception\UserNotLoggedIn;
 use MediaWiki\Html\Html;
 use MediaWiki\SpecialPage\UnlistedSpecialPage;
-use Wikimedia\Codex\Utility\Codex;
 
 class SpecialReadingLists extends UnlistedSpecialPage {
 	/**
@@ -74,19 +73,7 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 			}
 		}
 
-		$pageTitle = $titleMsg->escaped();
-		if ( !$customListsEnabled ) {
-			$chip = ( new Codex() )->infoChip()
-				->setText( $this->msg( 'readinglists-beta-tag' )->text() )
-				->setStatus( 'notice' )
-				->setAttributes( [ 'class' => 'reading-lists-beta-tag' ] )
-				->setIcon( 'cdx-icon--lab-flask' )
-				->build()
-				->getHtml();
-			$pageTitle .= $chip;
-		}
-
-		$output->setPageTitle( $pageTitle );
+		$output->setPageTitle( $titleMsg->escaped() );
 
 		$output->addHTML( Html::errorBox(
 			$this->msg( 'readinglists-error' )->parse(),

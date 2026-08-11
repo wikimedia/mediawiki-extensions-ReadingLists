@@ -178,11 +178,6 @@
 	},
 	"ResourceModules": {
 		"ext.readingLists.special.styles": {
-			"class": "MediaWiki\\ResourceLoader\\CodexModule",
-			"codexComponents": [
-				"CdxInfoChip"
-			],
-			"codexStyleOnly": true,
 			"styles": [
 				"resources/ext.readingLists.special/styles.less"
 			]
@@ -223,7 +218,6 @@
 				"vue"
 			],
 			"messages": [
-				"readinglists-beta-tag",
 				"readinglists-browser-error-intro",
 				"readinglists-special-error-list-not-found",
 				"readinglists-empty-cta",

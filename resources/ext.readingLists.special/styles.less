@@ -9,28 +9,6 @@
 	}
 }
 
-.reading-lists-beta-tag.cdx-info-chip {
-	// Use Codex InfoChip "subtle" variant before it's part of Codex PHP.
-	background-color: @background-color-transparent;
-	margin-bottom: @spacing-12;
-	margin-left: @spacing-50;
-	border-color: @border-color-base;
-	font-family: @font-family-base;
-	// Apply `font-weight`for MinervaNeue skin.
-	font-weight: @font-weight-normal;
-	vertical-align: middle;
-
-	.cdx-icon--lab-flask {
-		.cdx-mixin-css-icon( @cdx-icon-lab-flask, @param-fill-color: @color-icon-notice, @param-size-icon: @size-icon-small );
-	}
-
-	// TODO: Only temporary until Codex PHP release 0.8.0.
-	.cdx-info-chip--text {
-		color: @color-base;
-		font-size: @font-size-small;
-	}
-}
-
 // Page title: on mobile, wrap to 2 lines and ellipsis when overflowed.
 @media screen and ( max-width: @max-width-breakpoint-mobile ) {
 	.mw-first-heading {
