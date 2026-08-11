@@ -279,8 +279,11 @@ module.exports = exports = {
 		}
 	},
 	async mounted() {
-		await this.getList();
-		await this.initializePage();
+		// The list metadata (getList) and the entries request (initializePage → getEntries)
+		// do not depend on each other, so fetch them in parallel instead of waiting for the
+		// metadata round-trip before the entries request starts. Both methods handle their
+		// own errors, so Promise.all does not reject.
+		await Promise.all( [ this.getList(), this.initializePage() ] );
 	}
 };
 </script>
