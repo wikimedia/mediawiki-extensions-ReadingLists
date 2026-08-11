@@ -72,6 +72,14 @@ class ReadingListRepository implements LoggerAwareInterface {
 	/** @var int|null */
 	private ?int $userId;
 
+	/**
+	 * @var array<string,int> Per-instance memo of rlp_project => rlp_id lookups.
+	 * reading_list_project is tiny and effectively immutable within a request, and the
+	 * same project (typically '@local') is resolved repeatedly, e.g. once per addListEntry
+	 * in a batch. Only successful lookups are cached (see getProjectIdByProject()).
+	 */
+	private array $projectIdCache = [];
+
 	private readonly ReadingListEntryTitleNormalizer $readingListEntryTitleNormalizer;
 
 	/**
@@ -1561,16 +1569,27 @@ class ReadingListRepository implements LoggerAwareInterface {
 
 	/**
 	 * Look up the internal project ID for an exact rlp_project value.
+	 * Successful lookups are memoized for the lifetime of this instance.
 	 * @param string $project Canonical project URL as stored in rlp_project.
 	 * @return int|null
 	 */
 	private function getProjectIdByProject( string $project ): ?int {
+		if ( isset( $this->projectIdCache[$project] ) ) {
+			return $this->projectIdCache[$project];
+		}
 		$id = $this->dbr->newSelectQueryBuilder()
 			->select( 'rlp_id' )
 			->from( 'reading_list_project' )
 			->where( [ 'rlp_project' => $project ] )
 			->caller( __METHOD__ )->fetchField();
-		return $id === false ? null : (int)$id;
+		if ( $id === false ) {
+			// Do not memoize misses: a project can still be created later in the same
+			// request (e.g. via initializeProjectIfNeeded()).
+			return null;
+		}
+		$projectId = (int)$id;
+		$this->projectIdCache[$project] = $projectId;
+		return $projectId;
 	}
 
 	/**

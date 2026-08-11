@@ -243,6 +243,50 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		return new ReadingListRepository( $centralId, $this->lbFactory );
 	}
 
+	/**
+	 * The same project must be resolved against reading_list_project only once per
+	 * repository instance, even when several operations look it up.
+	 *
+	 * Deleting the project row between the two lookups makes the cache observable:
+	 * a second lookup that still hit the database would no longer find the project.
+	 */
+	public function testProjectIdIsMemoizedPerInstance() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$defaultList = $repository->setupForUser();
+		$listIds = [ $defaultList->rl_id ];
+
+		$getEntries = static function ( ReadingListRepository $repository ) use ( $listIds ) {
+			return $repository->getListEntries(
+				$listIds,
+				ReadingListRepository::SORT_BY_NAME,
+				ReadingListRepository::SORT_DIR_ASC,
+				1000,
+				null,
+				[ 'dummy' ]
+			);
+		};
+
+		// Warm the per-instance cache.
+		$getEntries( $repository );
+
+		$this->getDb()->newDeleteQueryBuilder()
+			->deleteFrom( 'reading_list_project' )
+			->where( [ 'rlp_project' => 'dummy' ] )
+			->caller( __METHOD__ )
+			->execute();
+
+		// Same instance: the memoized ID is reused, so this still resolves.
+		$this->assertSame( [], $this->resultWrapperToArray( $getEntries( $repository ) ) );
+
+		// A fresh instance has an empty cache, proving the row really is gone and the
+		// assertion above was not just passing because the lookup happens to succeed.
+		$this->assertFailsWith(
+			'readinglists-db-error-no-such-project',
+			fn () => $getEntries( $this->getReadingListRepository( 1 ) )
+		);
+	}
+
 	public function testAddList() {
 		$this->addProjects( [ 'dummy' ] );
 		$repository = $this->getReadingListRepository( 1 );
