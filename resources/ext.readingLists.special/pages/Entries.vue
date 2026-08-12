@@ -109,7 +109,10 @@ module.exports = exports = {
 			infinite: ref( false ),
 			msgLoading: mw.msg( 'readinglists-loading' ),
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
-			showSurvey: ref( false )
+			showSurvey: ref( false ),
+			// Throttled scroll listener. Deliberately not a ref: it only ever
+			// holds a handler reference for add/removeEventListener.
+			throttledScroll: null
 		};
 	},
 	computed: {
@@ -226,8 +229,21 @@ module.exports = exports = {
 				this.loadingEntries = false;
 			}
 		},
+		unregisterScrollHandler() {
+			if ( this.throttledScroll ) {
+				document.removeEventListener( 'scroll', this.throttledScroll );
+				this.throttledScroll = null;
+			}
+		},
 		registerScrollHandler() {
-			document.addEventListener( 'scroll', () => {
+			const handleScroll = () => {
+				// `mw.util.throttle` always defers via `setTimeout` and has no cancel.
+				// A pending call still fires after removal, when `$refs.container`
+				// is already null.
+				if ( !this.throttledScroll ) {
+					return;
+				}
+
 				if (
 					!this.error &&
 					!this.loadingInfo &&
@@ -237,8 +253,12 @@ module.exports = exports = {
 					this.$refs.container.getBoundingClientRect().bottom < window.innerHeight
 				) {
 					this.getEntries();
+				} else if ( this.next === null ) {
+					this.unregisterScrollHandler();
 				}
-			} );
+			};
+			this.throttledScroll = mw.util.throttle( handleScroll, 250 );
+			document.addEventListener( 'scroll', this.throttledScroll );
 		},
 		async initializePage() {
 			await this.getEntries();
@@ -277,6 +297,9 @@ module.exports = exports = {
 		onSurveyCompleted() {
 			mw.storage.set( surveyStorageKey, '~', 60 * 60 * 24 * 120 );
 		}
+	},
+	async beforeUnmount() {
+		this.unregisterScrollHandler();
 	},
 	async mounted() {
 		// The list metadata (getList) and the entries request (initializePage → getEntries)
