@@ -1,0 +1,30 @@
+{
+	"@metadata": {
+		"authors": [
+			"Aca"
+		]
+	},
+	"readinglists-db-error-no-such-list": "Lista $1 ne postoji.",
+	"readinglists-browser-add-entry-success": "Stranica <b>$1</b> dodana je na listu [[$2|$3]].",
+	"readinglists-browser-remove-entry-success": "Stranica <b>$1</b> uklonjena je s liste [[$2|$3]].",
+	"readinglists-special-subpage-title": "Sačuvane stranice",
+	"readinglists-loading": "Pričekajte...",
+	"readinglists-title": "Sačuvane stranice",
+	"readinglists-default-title": "Sačuvane stranice",
+	"readinglists-empty-title": "Još nema sačuvanih stranica",
+	"readinglists-empty-cta": "Pritisnite simbol za obilježavanje na željenoj stranici da biste je dodali ovdje.",
+	"readinglists-sorted-by-recent": "Sortirane po vremenu čitanja (prvo najnovije):",
+	"readinglists-no-title": "Nenaslovljena lista",
+	"readinglists-watchlist": "Lista praćenja",
+	"readinglists-import-button-label": "Otvori u aplikaciji",
+	"readinglists-menu-item": "Sačuvane stranice",
+	"tooltip-pt-readinglists": "Vaše sačuvane stranice",
+	"tooltip-ca-bookmark-add": "Dodajte ovu stranicu na listu sačuvanih stranica",
+	"tooltip-ca-bookmark-remove": "Uklonite ovu stranicu s liste sačuvanih stranica",
+	"readinglists-betafeature-quicksurvey-question": "Sviđa li vam se ova funkcija?",
+	"readinglists-betafeature-quicksurvey-answer-positive": "Sviđa mi se",
+	"readinglists-betafeature-quicksurvey-answer-negative": "Ne sviđa mi se",
+	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Pravila o privatnosti]",
+	"readinglists-betafeature-quicksurvey-thank-you": "Hvala na povratnim informacijama!",
+	"readinglists-customlists-allitems": "Sve stranice"
+}
