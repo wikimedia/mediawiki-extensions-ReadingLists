@@ -1162,7 +1162,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->where( [
 				'rle_user_id' => $this->userId,
 				'rle_rlp_id' => $projectId,
-				'rle_title' => $this->getEquivalentPageTitlesForLookup( $project, $title ),
+				'rle_title' => $this->getPageTitlesForLookup( $project, $title ),
 				'rle_deleted' => 0,
 				'rle_rl_id = rl.rl_id',
 			] )
@@ -1175,8 +1175,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 				'rl.rl_user_id' => $this->userId,
 				'rl.rl_deleted' => 0,
 			] )
-			// EXISTS avoids returning duplicate lists while still matching
-			// any equivalent stored title form for the page.
+			// EXISTS avoids returning duplicate lists.
 			->andWhere( new RawSQLExpression( 'EXISTS(' . $subquery->getSQL() . ')' ) )
 			->limit( (int)$limit )
 			->caller( __METHOD__ );
@@ -1613,45 +1612,34 @@ class ReadingListRepository implements LoggerAwareInterface {
 	}
 
 	/**
-	 * Account for title normalization differences in how pages are saved.
-	 * See T419466
+	 * Build the rle_title value for a database lookup.
 	 *
-	 * Generates multiple title variants (raw, space-form, underscore-form,
-	 * normalized, and normalized-space-form) so that lookups match both
-	 * newly normalized entries and legacy rows written before title
-	 * normalization was introduced.
-	 *
-	 * FIXME: The API historically did not normalize titles on write (T407936),
-	 * so stored rows may contain either spaces or underscores for the same title.
-	 * Keep generating both variants while legacy rows can exist.
-	 *
-	 * Once a migration script has normalized all existing rows (T422028),
-	 * and remove duplicates, then this method can be simplified to only use
-	 * the canonical normalized form.
+	 * New local entries use full Title normalization, but the legacy migration
+	 * only replaced spaces with underscores. When lookup occurs via the API,
+	 * $title such as "ice cream" must match either "Ice_cream" or "ice_cream".
 	 *
 	 * @param string $project
 	 * @param string $title
-	 * @return string[]
+	 * @return string|string[]
 	 */
-	private function getEquivalentPageTitlesForLookup( string $project, string $title ): array {
-		$titleVariants = [];
-
-		// raw title and space/underscore variants for legacy data
-		$titleVariants[] = $title;
-		$titleVariants[] = str_replace( '_', ' ', $title );
-		$titleVariants[] = str_replace( ' ', '_', $title );
-
-		// normalized title (canonical form for new writes)
-		$normalizedTitle = $this->readingListEntryTitleNormalizer->normalizeForStorage(
+	private function getPageTitlesForLookup( string $project, string $title ): string|array {
+		$localProject = $this->getLocalProject();
+		$canonicalTitle = $this->readingListEntryTitleNormalizer->normalizeForStorage(
 			$project,
 			$title,
-			$this->getLocalProject()
+			$localProject
 		);
+		if ( !LocalProjectHelper::isLocalProject( $project, $localProject ) ) {
+			return $canonicalTitle;
+		}
 
-		$titleVariants[] = $normalizedTitle;
-		$titleVariants[] = str_replace( '_', ' ', $normalizedTitle );
+		// check for legacy titles with different capitalization than the canonical form.
+		$spaceNormalizedTitle = strtr( $title, ' ', '_' );
+		if ( $spaceNormalizedTitle === $canonicalTitle ) {
+			return $canonicalTitle;
+		}
 
-		return array_unique( $titleVariants );
+		return [ $canonicalTitle, $spaceNormalizedTitle ];
 	}
 
 	/**
@@ -1659,7 +1647,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 *   the correct local vs cross-wiki title normalization rules.
 	 * @param int $projectId Database ID of the project row, used to filter
 	 *   reading_list_entry rows by rle_rlp_id.
-	 * @param string $title Page title to match against equivalent stored title variants.
+	 * @param string $title Page title to match against its canonical or legacy stored form.
 	 * @return array<int,int[]>
 	 */
 	private function getMatchingEntryIdsByListId( string $project, int $projectId, string $title ): array {
@@ -1669,7 +1657,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 			->where( [
 				'rle_user_id' => $this->userId,
 				'rle_rlp_id' => $projectId,
-				'rle_title' => $this->getEquivalentPageTitlesForLookup( $project, $title ),
+				'rle_title' => $this->getPageTitlesForLookup( $project, $title ),
 				'rle_deleted' => 0,
 			] )
 			->forUpdate()

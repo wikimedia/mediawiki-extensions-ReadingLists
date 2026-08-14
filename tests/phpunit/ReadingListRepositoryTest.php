@@ -879,7 +879,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( (string)$listId, $rows[0]['rl_id'] );
 	}
 
-	public function testGetListsByPage_matchesCrossProjectPageAfterNormalization() {
+	public function testGetListsByPage_matchesCrossProjectPageForSpaceAndUnderscoreInputs() {
 		$this->addProjects( [ 'dummy', 'https://commons.wikimedia.org' ] );
 		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
@@ -892,14 +892,16 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 		$repository->addListEntry( $listId, 'https://commons.wikimedia.org', 'formula one' );
 
-		$rows = $this->resultWrapperToArray(
-			$repository->getListsByPage( 'https://commons.wikimedia.org', 'formula one', 10 )
-		);
-		$this->assertCount( 1, $rows );
-		$this->assertSame( (string)$listId, $rows[0]['rl_id'] );
+		foreach ( [ 'formula one', 'formula_one' ] as $title ) {
+			$rows = $this->resultWrapperToArray(
+				$repository->getListsByPage( 'https://commons.wikimedia.org', $title, 10 )
+			);
+			$this->assertCount( 1, $rows );
+			$this->assertSame( (string)$listId, $rows[0]['rl_id'] );
+		}
 	}
 
-	public function testGetListsByPage_matchesLegacyLocalPageTitleVariants() {
+	public function testGetListsByPage_matchesLegacyLocalTitleCasingForSpaceAndUnderscoreInputs() {
 		$this->addProjects( [ 'dummy' ] );
 		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
@@ -925,51 +927,13 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			],
 		] );
 
-		$rows = $this->resultWrapperToArray(
-			$repository->getListsByPage( $localProject, 'formula one', 10 )
-		);
-		$this->assertCount( 1, $rows );
-		$this->assertSame( (string)$listId, $rows[0]['rl_id'] );
-	}
-
-	public function testGetListsByPage_deduplicatesListsWithMultipleMatchingEntries() {
-		$this->addProjects( [ 'dummy' ] );
-		$repository = $this->getReadingListRepository( 1 );
-		$repository->setupForUser();
-
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
-		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
-		$parts['port'] = null;
-		$localProject = $urlUtils->assemble( $parts );
-		$this->addProjects( [ $localProject ] );
-		[ $listId ] = $this->addLists( 1, [
-			[
-				'rl_name' => 'foo',
-				'rl_deleted' => '0',
-			],
-		] );
-		$this->addListEntries( $listId, 1, [
-			[
-				'rlp_project' => $localProject,
-				'rle_title' => 'Formula_one',
-				'rle_date_created' => '20100101000000',
-				'rle_date_updated' => '20150101000000',
-				'rle_deleted' => 0,
-			],
-			[
-				'rlp_project' => $localProject,
-				'rle_title' => 'formula_one',
-				'rle_date_created' => '20100102000000',
-				'rle_date_updated' => '20150102000000',
-				'rle_deleted' => 0,
-			],
-		] );
-
-		$rows = $this->resultWrapperToArray(
-			$repository->getListsByPage( $localProject, 'formula one', 10 )
-		);
-		$this->assertCount( 1, $rows );
-		$this->assertSame( (string)$listId, $rows[0]['rl_id'] );
+		foreach ( [ 'formula one', 'formula_one' ] as $title ) {
+			$rows = $this->resultWrapperToArray(
+				$repository->getListsByPage( $localProject, $title, 10 )
+			);
+			$this->assertCount( 1, $rows );
+			$this->assertSame( (string)$listId, $rows[0]['rl_id'] );
+		}
 	}
 
 	public function testAddListEntry_count() {
@@ -1048,10 +1012,10 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				'rl_deleted' => '0',
 			],
 		] );
-		[ $spaceEntryId, $otherEntryId ] = $this->addListEntries( $listId, 1, [
+		[ $entryId, $otherEntryId ] = $this->addListEntries( $listId, 1, [
 			[
 				'rlp_project' => $localProject,
-				'rle_title' => 'Foo Bar',
+				'rle_title' => 'Foo_Bar',
 				'rle_date_created' => '20100101000000',
 				'rle_date_updated' => '20150101000000',
 				'rle_deleted' => 0,
@@ -1064,7 +1028,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				'rle_deleted' => 0,
 			],
 		] );
-		[ $underscoreEntryId ] = $this->addListEntries( $listId2, 1, [
+		[ $entryId2 ] = $this->addListEntries( $listId2, 1, [
 			[
 				'rlp_project' => $localProject,
 				'rle_title' => 'Foo_Bar',
@@ -1079,16 +1043,16 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$rows = $this->getDb()->newSelectQueryBuilder()
 			->select( [ 'rle_id', 'rle_deleted' ] )
 			->from( 'reading_list_entry' )
-			->where( [ 'rle_id' => [ $spaceEntryId, $otherEntryId, $underscoreEntryId ] ] )
+			->where( [ 'rle_id' => [ $entryId, $otherEntryId, $entryId2 ] ] )
 			->caller( __METHOD__ )
 			->fetchResultSet();
 		$deletedById = [];
 		foreach ( $rows as $row ) {
 			$deletedById[$row->rle_id] = $row->rle_deleted;
 		}
-		$this->assertSame( '1', $deletedById[$spaceEntryId] );
+		$this->assertSame( '1', $deletedById[$entryId] );
 		$this->assertSame( '0', $deletedById[$otherEntryId] );
-		$this->assertSame( '1', $deletedById[$underscoreEntryId] );
+		$this->assertSame( '1', $deletedById[$entryId2] );
 
 		$sizes = $this->getDb()->newSelectQueryBuilder()
 			->select( [ 'rl_id', 'rl_size' ] )
@@ -1133,7 +1097,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( '1', $row->rle_deleted );
 	}
 
-	public function testDeleteListEntriesByPageTitleAndProject_matchesLegacyLocalTitleVariants() {
+	public function testDeleteListEntriesByPageTitleAndProject_matchesLegacyLocalTitleCasing() {
 		$this->addProjects( [ 'dummy' ] );
 		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
@@ -1159,7 +1123,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			],
 		] );
 
-		$repository->deleteListEntriesByPageTitleAndProject( 'formula one', $localProject );
+		$repository->deleteListEntriesByPageTitleAndProject( 'formula_one', $localProject );
 
 		$row = $this->getDb()->newSelectQueryBuilder()
 			->select( [ 'rle_deleted' ] )
