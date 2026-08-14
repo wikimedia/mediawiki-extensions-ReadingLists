@@ -151,7 +151,6 @@
 			"class": "MediaWiki\\Extension\\ReadingLists\\HookHandler",
 			"services": [
 				"MainConfig",
-				"ReadingLists.ReadingListRepositoryFactory",
 				"ReadingLists.BookmarkEntryLookupService",
 				"UserOptionsLookup",
 				"UserOptionsManager",

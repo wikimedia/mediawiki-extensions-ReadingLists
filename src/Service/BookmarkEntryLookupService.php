@@ -56,19 +56,18 @@ class BookmarkEntryLookupService {
 	}
 
 	/**
-	 * Look up whether a page is in the user's reading list.
+	 * Look up the information needed to render the bookmark UI for a page.
 	 *
-	 * On success, the StatusValue's value is a matching reading list row for a list
-	 * containing the page, or null if the page is not bookmarked.
-	 *
+	 * On success, the StatusValue's value is a BookmarkEntryLookupResult.
 	 * Known bloom-filter fallback states still return an OK StatusValue. Only real
 	 * failures, such as DB or configuration errors, return a non-OK status.
 	 *
+	 * @internal
 	 * @param Title $title
 	 * @param int $centralId
 	 * @return StatusValue
 	 */
-	public function getBookmarkEntryStatus( Title $title, int $centralId ): StatusValue {
+	public function getBookmarkEntryLookupStatus( Title $title, int $centralId ): StatusValue {
 		$filterStatus = $this->bookmarkBloomFilterCache->getCachedBloomFilterStatus( $centralId );
 
 		if ( $filterStatus === false ) {
@@ -85,7 +84,7 @@ class BookmarkEntryLookupService {
 
 		if ( $filter === BookmarkBloomFilterCache::BUILD_EMPTY ) {
 			$this->recordBloomFilterLookupMetric( self::LOOKUP_RESULT_EMPTY_CACHE_HIT );
-			return StatusValue::newGood( null );
+			return StatusValue::newGood( new BookmarkEntryLookupResult( false, false ) );
 		}
 
 		// User has too many bookmarked pages, fallback to the DB lookup.
@@ -146,12 +145,12 @@ class BookmarkEntryLookupService {
 		if ( $defaultListId === false ) {
 			$this->bookmarkBloomFilterCache->storeEmptyBloomFilter( $centralId );
 			$this->recordBloomFilterLookupMetric( self::LOOKUP_RESULT_EMPTY_CACHE_FILL );
-			return StatusValue::newGood( null );
+			return StatusValue::newGood( new BookmarkEntryLookupResult( false, false ) );
 		}
 
 		$this->queueBloomFilterBuildJob( $centralId );
 		$this->recordDbLookupMetric( self::DB_LOOKUP_REASON_CACHE_MISS );
-		$status = $this->lookupBookmarkListInDb( $title, $centralId, $repository );
+		$status = $this->lookupBookmarkMembershipInDb( $title, $centralId, $repository );
 
 		if ( !$status->isOK() ) {
 			$this->recordLookupFailureMetrics( self::FAILURE_POINT_CACHE_MISS_DB_LOOKUP );
@@ -164,13 +163,15 @@ class BookmarkEntryLookupService {
 
 	private function handleTooLargeBypass( Title $title, int $centralId ): StatusValue {
 		$this->recordDbLookupMetric( self::DB_LOOKUP_REASON_TOO_LARGE_BYPASS );
-		$status = $this->lookupBookmarkListInDb( $title, $centralId );
+		$status = $this->lookupBookmarkMembershipInDb( $title, $centralId );
 
 		if ( !$status->isOK() ) {
 			$this->recordLookupFailureMetrics( self::FAILURE_POINT_TOO_LARGE_BYPASS_DB_LOOKUP );
 		} else {
+			/** @var BookmarkEntryLookupResult $lookupResult */
+			$lookupResult = $status->getValue();
 			$this->recordBloomFilterLookupMetric(
-				$status->getValue() !== null
+				$lookupResult->isSaved()
 					? self::LOOKUP_RESULT_TOO_LARGE_BYPASS_FOUND
 					: self::LOOKUP_RESULT_TOO_LARGE_BYPASS_NOT_FOUND
 			);
@@ -181,7 +182,7 @@ class BookmarkEntryLookupService {
 
 	private function handleCachedBuildDbError( Title $title, int $centralId ): StatusValue {
 		$this->recordDbLookupMetric( self::DB_LOOKUP_REASON_BUILD_DB_ERROR_BYPASS );
-		$status = $this->lookupBookmarkListInDb( $title, $centralId );
+		$status = $this->lookupBookmarkMembershipInDb( $title, $centralId );
 
 		if ( !$status->isOK() ) {
 			$this->recordLookupFailureMetrics( self::FAILURE_POINT_BUILD_DB_ERROR_BYPASS_DB_LOOKUP );
@@ -194,7 +195,7 @@ class BookmarkEntryLookupService {
 
 	private function handleUnusableCachedFilter( Title $title, int $centralId ): StatusValue {
 		$this->recordDbLookupMetric( self::DB_LOOKUP_REASON_CACHE_UNUSABLE );
-		$status = $this->lookupBookmarkListInDb( $title, $centralId );
+		$status = $this->lookupBookmarkMembershipInDb( $title, $centralId );
 
 		if ( !$status->isOK() ) {
 			$this->recordLookupFailureMetrics( self::FAILURE_POINT_CACHE_UNUSABLE_DB_LOOKUP );
@@ -207,19 +208,21 @@ class BookmarkEntryLookupService {
 
 	private function handleDefiniteNegative(): StatusValue {
 		$this->recordBloomFilterLookupMetric( self::LOOKUP_RESULT_DEFINITE_NEGATIVE );
-		return StatusValue::newGood( null );
+		return StatusValue::newGood( new BookmarkEntryLookupResult( false, false ) );
 	}
 
 	private function handleProbablePositive( Title $title, int $centralId ): StatusValue {
 		$this->recordDbLookupMetric( self::DB_LOOKUP_REASON_PROBABLE_POSITIVE );
-		$status = $this->lookupBookmarkListInDb( $title, $centralId );
+		$status = $this->lookupBookmarkMembershipInDb( $title, $centralId );
 		if ( !$status->isOK() ) {
 			$this->recordLookupFailureMetrics( self::FAILURE_POINT_PROBABLE_POSITIVE_DB_LOOKUP );
 			return $status;
 		}
 
+		/** @var BookmarkEntryLookupResult $lookupResult */
+		$lookupResult = $status->getValue();
 		$this->recordBloomFilterLookupMetric(
-			$status->getValue() !== null
+			$lookupResult->isSaved()
 				? self::LOOKUP_RESULT_TRUE_POSITIVE
 				: self::LOOKUP_RESULT_FALSE_POSITIVE
 		);
@@ -227,7 +230,7 @@ class BookmarkEntryLookupService {
 		return $status;
 	}
 
-	private function lookupBookmarkListInDb(
+	private function lookupBookmarkMembershipInDb(
 		Title $title,
 		int $centralId,
 		?ReadingListRepository $repository = null
@@ -235,8 +238,15 @@ class BookmarkEntryLookupService {
 		$repository ??= $this->readingListRepositoryFactory->create( $centralId );
 
 		try {
-			$listRow = $repository->getListsByPage( '@local', $title->getPrefixedDBkey(), 1, null, false )
-				->fetchObject();
+			// Two rows distinguish a default-only membership from a default plus
+			// at least one custom-list membership.
+			$listRows = $repository->getListsByPage(
+				'@local',
+				$title->getPrefixedDBkey(),
+				2,
+				null,
+				false
+			);
 		} catch ( DBError $e ) {
 			$this->logger->warning( 'Failed to look up bookmark list match due to a database error', [
 				'exception' => $e,
@@ -251,7 +261,18 @@ class BookmarkEntryLookupService {
 			return StatusValue::newFatal( 'readinglists-bookmark-lookup-config-error' );
 		}
 
-		return StatusValue::newGood( $listRow ?: null );
+		$isSaved = false;
+		$hasCustomListEntry = false;
+		foreach ( $listRows as $listRow ) {
+			$isSaved = true;
+			if ( !$listRow->rl_is_default ) {
+				$hasCustomListEntry = true;
+			}
+		}
+
+		return StatusValue::newGood(
+			new BookmarkEntryLookupResult( $isSaved, $hasCustomListEntry )
+		);
 	}
 
 	/**

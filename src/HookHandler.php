@@ -7,6 +7,7 @@ use MediaWiki\Api\Hook\APIQuerySiteInfoGeneralInfoHook;
 use MediaWiki\Config\Config;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\BetaFeatures\BetaFeatures;
+use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupResult;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\Extension\TestKitchen\Sdk\ExperimentManager;
 use MediaWiki\Registration\ExtensionRegistry;
@@ -39,7 +40,6 @@ class HookHandler implements
 
 	public function __construct(
 		private readonly Config $config,
-		private readonly ReadingListRepositoryFactory $readingListRepositoryFactory,
 		private readonly BookmarkEntryLookupService $bookmarkEntryLookupService,
 		private readonly UserOptionsLookup $userOptionsLookup,
 		private readonly UserOptionsManager $userOptionsManager,
@@ -91,7 +91,6 @@ class HookHandler implements
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation::Universal
 	 * @param SkinTemplate $sktemplate
 	 * @param array &$links Array of URLs to append to.
-	 * @throws ReadingListRepositoryException
 	 */
 	public function onSkinTemplateNavigation__Universal( $sktemplate, &$links ): void {
 		if ( !self::isSkinSupported( $sktemplate->getSkinName() ) ) {
@@ -131,54 +130,38 @@ class HookHandler implements
 			return;
 		}
 
-		$matchingList = null;
+		$isSaved = false;
 		$hasCustomListEntry = false;
-		$centralId = 0;
 
 		if ( $readingListsEnabledForUser ) {
 			$centralId = $this->centralIdLookupFactory->getLookup()
 				->centralIdFromLocalUser( $user );
 
 			if ( $centralId ) {
-				$status = $this->bookmarkEntryLookupService->getBookmarkEntryStatus(
+				$status = $this->bookmarkEntryLookupService->getBookmarkEntryLookupStatus(
 					$title,
 					$centralId
 				);
-				// On failure, fall through with no match so the button
-				// renders in its default "unsaved" state rather than disappearing.
-				$matchingList = $status->isOK() ? $status->getValue() : null;
-			}
-		}
-
-		if ( $matchingList !== null ) {
-			$repository = $this->readingListRepositoryFactory->create( $centralId );
-			$listsByPage = $repository->getListsByPage(
-				'@local',
-				$title->getPrefixedDBkey(),
-				2,
-				null,
-				false
-			);
-			foreach ( $listsByPage as $pageList ) {
-				if ( $matchingList === null || $pageList->rl_is_default ) {
-					$matchingList = $pageList;
-				}
-				if ( !$pageList->rl_is_default ) {
-					$hasCustomListEntry = true;
+				// if there is a failure during lookup, then render page not saved
+				if ( $status->isOK() ) {
+					/** @var BookmarkEntryLookupResult $lookupResult */
+					$lookupResult = $status->getValue();
+					$isSaved = $lookupResult->isSaved();
+					$hasCustomListEntry = $lookupResult->hasCustomListEntry();
 				}
 			}
 		}
 
 		$links['views']['bookmark'] = [
 			'text' => $sktemplate->msg(
-				'readinglists-' . ( $matchingList === null ? 'add' : 'remove' ) . '-bookmark'
+				'readinglists-' . ( $isSaved ? 'remove' : 'add' ) . '-bookmark'
 			)->text(),
-			'icon' => $matchingList === null ? 'bookmarkOutline' : 'bookmark',
+			'icon' => $isSaved ? 'bookmark' : 'bookmarkOutline',
 			'href' => '#',
-			'data-mw-saved' => $matchingList !== null ? 1 : null,
+			'data-mw-saved' => $isSaved ? 1 : null,
 			'data-mw-in-custom-list' => $hasCustomListEntry ? 1 : null,
 			'link-class' => 'reading-lists-bookmark',
-			'single-id' => $matchingList === null ? 'ca-bookmark-add' : 'ca-bookmark-remove',
+			'single-id' => $isSaved ? 'ca-bookmark-remove' : 'ca-bookmark-add',
 			'tooltiponly' => true,
 		];
 

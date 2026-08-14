@@ -138,7 +138,6 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		return new HookHandler(
 			$services->getMainConfig(),
-			$mockFactory,
 			$this->createBookmarkEntryLookupService( $mockFactory, $mockCentralIdLookupFactory ),
 			$services->getUserOptionsLookup(),
 			$services->getUserOptionsManager(),
@@ -167,7 +166,10 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		);
 	}
 
-	private function createMockRepository( array $pageLists = [] ) {
+	private function createMockRepository(
+		array $pageLists = [],
+		bool $expectSinglePageLookup = false
+	) {
 		$mockList = (object)[
 			'rl_id' => 1,
 			'rl_is_default' => 1,
@@ -183,8 +185,14 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$mockRepository = $this->createMock( ReadingListRepository::class );
 		$mockRepository->method( 'setupForUser' )->willReturn( $mockList );
 		$mockRepository->method( 'getDefaultListIdForUser' )->willReturn( 1 );
-		$mockRepository->method( 'getListsByPage' )
-			->willReturnCallback( static fn () => new FakeResultWrapper( $pageLists ) );
+		if ( $expectSinglePageLookup ) {
+			$mockRepository->expects( $this->once() )->method( 'getListsByPage' )
+				->with( '@local', 'TestPage', 2, null, false )
+				->willReturn( new FakeResultWrapper( $pageLists ) );
+		} else {
+			$mockRepository->method( 'getListsByPage' )
+				->willReturnCallback( static fn () => new FakeResultWrapper( $pageLists ) );
+		}
 		$mockRepository->method( 'getSavedPageTitlesForProject' )->willReturn( [] );
 
 		return $mockRepository;
@@ -335,16 +343,19 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 	public function testBookmarkIncludesInCustomListDataAttribute() {
 		$this->hookHandler = $this->createHookHandler(
-			$this->createMockRepository( [
-				(object)[
-					'rl_id' => 1,
-					'rl_is_default' => 1,
+			$this->createMockRepository(
+				[
+					(object)[
+						'rl_id' => 1,
+						'rl_is_default' => 1,
+					],
+					(object)[
+						'rl_id' => 2,
+						'rl_is_default' => 0,
+					],
 				],
-				(object)[
-					'rl_id' => 2,
-					'rl_is_default' => 0,
-				],
-			] )
+				true
+			)
 		);
 		$this->setupExperiment();
 
