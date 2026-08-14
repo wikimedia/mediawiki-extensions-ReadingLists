@@ -24,7 +24,7 @@
 
 		<survey v-if="showSurvey" @survey-completed="onSurveyCompleted"></survey>
 
-		<p class="reading-lists-sorting">
+		<p v-if="entries.length" class="reading-lists-sorting">
 			{{ sortingText }}
 		</p>
 

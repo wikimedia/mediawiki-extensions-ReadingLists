@@ -67,8 +67,7 @@ describe( 'Entries', () => {
 			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
 			const wrapper = mount( Entries, { props: { listId: 12345 } } );
 
-			await wrapper.vm.$forceUpdate();
-			await wrapper.vm.$nextTick();
+			await flushPromises();
 
 			expect( wrapper.element ).toMatchSnapshot();
 		} );
