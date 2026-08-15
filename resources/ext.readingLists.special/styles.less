@@ -30,6 +30,15 @@
 	}
 }
 
+.client-nojs {
+	// Only show the server-rendered loading indicator when JavaScript, and by extension the
+	// Vue app, is available to eventually replace it. Without JS, the error box below already
+	// informs the user that the page requires JavaScript.
+	.reading-lists-container .cdx-progress-bar {
+		display: none;
+	}
+}
+
 .reading-lists-grid {
 	display: grid;
 	grid-auto-rows: 1fr;

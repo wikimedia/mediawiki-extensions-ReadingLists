@@ -81,9 +81,16 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 			'reading-lists__errorbox'
 		) );
 
-		$container = Html::element( 'div', [
+		// Render the loading indicator server-side, using Codex's CdxProgressBar markup and
+		// CSS-only styles, so it appears as soon as the page's styles are loaded, rather than
+		// waiting for the Vue app's JS bundle to be fetched, parsed and mounted.
+		$container = Html::rawElement( 'div', [
 			'class' => 'reading-lists-container'
-		] );
+		], Html::rawElement( 'div', [
+			'class' => 'cdx-progress-bar cdx-progress-bar--block cdx-progress-bar--enabled',
+			'role' => 'progressbar',
+			'aria-label' => $this->msg( 'readinglists-loading' )->text()
+		], Html::element( 'div', [ 'class' => 'cdx-progress-bar__bar' ] ) ) );
 
 		$output->addHTML( $container );
 		$output->addModuleStyles( [ 'ext.readingLists.special.styles' ] );

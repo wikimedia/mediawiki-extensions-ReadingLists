@@ -177,6 +177,11 @@
 	},
 	"ResourceModules": {
 		"ext.readingLists.special.styles": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexComponents": [
+				"CdxProgressBar"
+			],
+			"codexStyleOnly": true,
 			"styles": [
 				"resources/ext.readingLists.special/styles.less"
 			]
