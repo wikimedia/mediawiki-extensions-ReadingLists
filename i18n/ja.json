@@ -60,6 +60,8 @@
 	"readinglists-default-description": "保存済みページの既定リスト。",
 	"readinglists-empty-title": "保存したページはまだありません",
 	"readinglists-empty-cta": "ここに項目を追加するには任意のページで保存アイコンを使います。",
+	"readinglists-empty-collection-title": "このコレクションには記事が追加されていません",
+	"readinglists-empty-collection-cta": "任意の記事でブックマークアイコンを使って後で読むようにここに保存します。",
 	"readinglists-display-menu": "表示メニュー",
 	"readinglists-display-sort": "並び順",
 	"readinglists-display-sort-name": "名前",
@@ -117,5 +119,9 @@
 	"readinglists-cta-dialog-call-to-action": "保存を始めるにはログインするかアカウントを作成してください。",
 	"readinglists-cta-dialog-create-account": "アカウントを作成",
 	"readinglists-cta-dialog-log-in": "ログイン",
-	"readinglists-cta-dialog-close": "閉じる"
+	"readinglists-cta-dialog-close": "閉じる",
+	"readinglists-customlists-allitems": "すべての項目",
+	"readinglists-customlists-collections": "コレクション",
+	"readinglists-customlists-no-collections": "あなたはコレクションを持っていません",
+	"readinglists-customlists-create-collection": "新しいコレクションを作成"
 }
