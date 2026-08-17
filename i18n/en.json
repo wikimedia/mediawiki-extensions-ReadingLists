@@ -73,6 +73,7 @@
 	"readinglists-list-empty-message": "This list has no pages on it. Download and use the app to add items to this reading list.",
 	"readinglists-no-title": "Untitled list",
 	"readinglists-export": "Share list",
+	"readinglists-redirect-to": "The content of this page has been moved to <b>$1</b>",
 	"readinglists-watchlist": "Watchlist",
 	"readinglists-watchlist-description": "Pages that you follow for new edits.",
 	"readinglists-watchlist-monitor": "You can monitor edits to pages on this list using the [$1 watchlist] tool.",

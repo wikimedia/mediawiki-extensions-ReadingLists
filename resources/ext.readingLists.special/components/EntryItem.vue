@@ -7,18 +7,23 @@
 			{{ entry.title }}
 		</template>
 
-		<template v-if="entry.description" #description>
+		<template v-if="entry.redirectTitle" #description>
+			<cdx-icon :icon="cdxIconInfo"></cdx-icon>
+			<span v-i18n-html:readinglists-redirect-to="[ entry.redirectTitle ]"></span>
+		</template>
+		<template v-else-if="entry.description" #description>
 			{{ entry.description }}
 		</template>
 	</cdx-card>
 </template>
 
 <script>
-const { CdxCard } = require( '../../../codex.js' );
+const { cdxIconInfo } = require( '../../../icons.json' );
+const { CdxCard, CdxIcon } = require( '../../../codex.js' );
 
 // @vue/component
 module.exports = exports = {
-	components: { CdxCard },
+	components: { CdxCard, CdxIcon },
 	props: {
 		entry: {
 			type: Object,
@@ -28,6 +33,11 @@ module.exports = exports = {
 				description: 'Lorem ipsum dolor sit amet'
 			} )
 		}
+	},
+	setup() {
+		return {
+			cdxIconInfo
+		};
 	}
 };
 </script>

@@ -24,17 +24,33 @@ function translateList( list ) {
 
 function entryToPage( entry ) {
 	let meta;
+	let redirectTitle;
+	let displayTitle;
 
 	if ( Object.prototype.hasOwnProperty.call( entry, 'pageid' ) ) {
 		meta = PAGES.query.pages.find( ( page ) => page.pageid === entry.pageid );
 	} else {
-		let title = entry.title.replace( /_/g, ' ' );
-
-		if ( title === 'New York New York' ) {
-			title = 'New York City';
+		// Mirror the source's normalize-then-redirect resolution using the
+		// fixture's own normalized/redirects data rather than hardcoding titles.
+		let title = entry.title;
+		const normalized = ( PAGES.query.normalized || [] )
+			.find( ( normal ) => normal.from === title );
+		if ( normalized !== undefined ) {
+			title = normalized.to;
 		}
 
-		meta = PAGES.query.pages.find( ( page ) => page.title === title );
+		// The displayed title stays as the original (source) title.
+		displayTitle = title;
+
+		let lookupTitle = title;
+		const redirect = ( PAGES.query.redirects || [] )
+			.find( ( r ) => r.from === title );
+		if ( redirect !== undefined ) {
+			redirectTitle = redirect.to;
+			lookupTitle = redirect.to;
+		}
+
+		meta = PAGES.query.pages.find( ( page ) => page.title === lookupTitle );
 	}
 
 	if ( meta === undefined ) {
@@ -52,9 +68,12 @@ function entryToPage( entry ) {
 	return {
 		id: entry.id,
 		project: entry.project,
-		title: meta.title,
+		redirectTitle,
+		title: redirectTitle ? displayTitle : meta.title,
 		description: meta.description || null,
 		thumbnail: meta.thumbnail && meta.thumbnail.source || null,
+		// mw.util.getUrl is an unmocked jest.fn() in the bulk tests, so it
+		// returns undefined and the url falls back to the page's canonicalurl.
 		url: meta.canonicalurl,
 		missing: meta.pageid === null
 	};
@@ -464,7 +483,52 @@ describe( 'getPagesFromManifest', () => {
 		} );
 
 		const result = await api.getPagesFromManifest( project, entries );
-		expect( result[ 0 ] ).toMatchObject( { id: 1, title: 'New York City', missing: false } );
+		// The original (redirect source) title is displayed, the redirect
+		// target is surfaced separately, and the resolved page's metadata is
+		// preserved rather than treating the entry as missing.
+		expect( result[ 0 ] ).toMatchObject( {
+			id: 1,
+			title: 'New York New York',
+			redirectTitle: 'New York City',
+			url: `${ project }/wiki/New_York_City`,
+			missing: false
+		} );
+	} );
+
+	test( 'points a redirected entry\'s url back to the original page', async () => {
+		const entries = [ { id: 1, title: 'New_York_New_York' } ];
+		const redirectUrl = `${ project }/w/index.php?title=New_York_New_York&redirect=no`;
+
+		mw.util.getUrl.mockReturnValueOnce( redirectUrl );
+		api.stubApi( {
+			get: jest.fn( ( { action }, { url } ) => {
+				if ( action === 'query' && url === `${ project }/w/api.php` ) {
+					return {
+						batchcomplete: true,
+						query: {
+							normalized: [ { from: 'New_York_New_York', to: 'New York New York' } ],
+							redirects: [ { from: 'New York New York', to: 'New York City' } ],
+							pages: [ {
+								pageid: 645042,
+								ns: 0,
+								title: 'New York City',
+								canonicalurl: `${ project }/wiki/New_York_City`
+							} ]
+						}
+					};
+				}
+			} )
+		} );
+
+		const result = await api.getPagesFromManifest( project, entries );
+
+		// The url is built from the redirect source (the page the user bookmarked)
+		// with redirect=no, not from the resolved target's canonicalurl.
+		expect( mw.util.getUrl ).toHaveBeenCalledWith(
+			'New York New York',
+			{ redirect: 'no' }
+		);
+		expect( result[ 0 ].url ).toBe( redirectUrl );
 	} );
 
 	test( 'returns fallback on error', async () => {

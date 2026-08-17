@@ -240,6 +240,7 @@
 				"readinglists-betafeature-quicksurvey-submit",
 				"readinglists-betafeature-quicksurvey-thank-you",
 				"readinglists-customlists-allitems",
+				"readinglists-redirect-to",
 				"readinglists-customlists-collections",
 				"readinglists-customlists-no-collections",
 				"readinglists-customlists-create-collection"
@@ -262,6 +263,7 @@
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
 					"callbackParam": [
 						"cdxIconAdd",
+						"cdxIconInfo",
 						"cdxIconDie",
 						"cdxIconEdit",
 						"cdxIconExpand",

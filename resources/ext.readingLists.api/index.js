@@ -205,12 +205,14 @@ async function getPagesFromManifest( project, entries ) {
 
 		return entries.map( ( entry, i ) => {
 			let meta;
+			let redirectUrl;
+			let redirectTitle;
+			let displayTitle;
 
 			if ( isPageIds ) {
 				meta = pages.find( ( page ) => page.pageid === entry.pageid );
 			} else {
 				let title = entry.title;
-
 				if ( normalized !== undefined ) {
 					const match = normalized.find( ( normal ) => normal.from === title );
 
@@ -219,15 +221,32 @@ async function getPagesFromManifest( project, entries ) {
 					}
 				}
 
+				// The title the entry should display. For a redirect this stays
+				// as the original (source) page's title.
+				displayTitle = title;
+
+				// The title used to find the page in the API response. The API
+				// resolves redirects and returns the target page, so look the
+				// page up by the redirect target when the entry is a redirect.
+				let lookupTitle = title;
+
 				if ( redirects !== undefined ) {
 					const match = redirects.find( ( redirect ) => redirect.from === title );
 
 					if ( match !== undefined ) {
-						title = match.to;
+						// Note where the entry redirects to, and point the URL back
+						// to the original (redirect) page so a bookmarked redirect
+						// can be navigated to and removed, e.g. when it duplicates
+						// its redirect target.
+						redirectTitle = match.to;
+						redirectUrl = mw.util.getUrl( match.from, {
+							redirect: 'no'
+						} );
+						lookupTitle = match.to;
 					}
 				}
 
-				meta = pages.find( ( page ) => page.title === title );
+				meta = pages.find( ( page ) => page.title === lookupTitle );
 			}
 
 			if ( meta === undefined ) {
@@ -237,7 +256,7 @@ async function getPagesFromManifest( project, entries ) {
 					title: entry.title || `#${ entry.pageid }`,
 					description: null,
 					thumbnail: null,
-					url: null,
+					url: redirectUrl || null,
 					missing: true
 				};
 			}
@@ -245,10 +264,11 @@ async function getPagesFromManifest( project, entries ) {
 			return {
 				id: entry.id || -1 - i,
 				project,
-				title: meta.title,
+				redirectTitle,
+				title: redirectTitle ? displayTitle : meta.title,
 				description: meta.description || null,
 				thumbnail: meta.thumbnail && meta.thumbnail.source || null,
-				url: meta.canonicalurl || null,
+				url: redirectUrl || meta.canonicalurl || null,
 				missing: meta.missing === true
 			};
 		} );

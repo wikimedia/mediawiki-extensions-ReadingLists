@@ -83,6 +83,7 @@
 	"readinglists-list-empty-message": "Message that shows on a list with no pages in it.",
 	"readinglists-no-title": "Name of a list without a name",
 	"readinglists-export": "Share button label",
+	"readinglists-redirect-to": "Shows on cards that are redirects. Parameters:\n* $1 - The title of the page that it will redirect to.",
 	"readinglists-watchlist": "An item in the list of reading lists.",
 	"readinglists-watchlist-description": "Description of watchlist",
 	"readinglists-watchlist-monitor": "Wikitext that contains a link to the watchlist tool.",
