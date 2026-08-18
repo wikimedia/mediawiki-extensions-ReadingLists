@@ -1,7 +1,5 @@
 <template>
-	<div
-		class="reading-lists-empty"
-		:class="{ 'reading-lists-empty--collection': isCustomList }">
+	<div class="reading-lists-empty">
 		<h2 class="reading-lists-empty__title">
 			{{ msgEmptyTitle }}
 		</h2>
@@ -61,13 +59,9 @@ module.exports = exports = {
 
 			&::before {
 				display: block;
-				content: url( ../../assets/list-empty-state.svg );
+				content: url( ../../assets/collection-empty-state.svg );
 				margin: 0 auto;
 			}
-		}
-
-		&--collection &__title::before {
-			content: url( ../../assets/collection-empty-state.svg );
 		}
 
 		&__description {
