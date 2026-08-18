@@ -1,10 +1,14 @@
 {
 	"@metadata": {
 		"authors": [
-			"Winston Sung"
+			"Winston Sung",
+			"Aca"
 		]
 	},
+	"readinglists-db-error-no-such-list": "Lista $1 ne postoji.",
 	"readinglists-special-title": "Liste za čitanje",
 	"readinglists-loading": "Sačekajte…",
+	"readinglists-no-title": "Nenaslovljena lista",
+	"readinglists-watchlist": "Lista praćenja",
 	"readinglists-import-button-label": "Uvezi"
 }
