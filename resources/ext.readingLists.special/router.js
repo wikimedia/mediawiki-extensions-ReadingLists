@@ -15,6 +15,16 @@ const routes = [
 			isCustomListsEnabled
 		} )
 	},
+	// The lists view: /${user}/collections
+	{
+		path: '/:user/collections',
+		name: 'collections',
+		component: Entries,
+		props: () => ( {
+			isCollections: true,
+			isCustomListsEnabled
+		} )
+	},
 	// The all-items view: /{user}
 	{
 		path: '/:user',

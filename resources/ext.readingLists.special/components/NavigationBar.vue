@@ -8,8 +8,7 @@
 		</create-collection-dialog>
 		<router-link
 			class="readinglists-special-nav-link"
-			:to="allItemsTo"
-			:class="{ 'readinglists-special-nav-link--active': isAllItems }">
+			:to="allItemsTo">
 			{{ allItemsText }}
 		</router-link>
 
@@ -44,12 +43,12 @@
 			</template>
 		</cdx-menu-button>
 
-		<a
+		<router-link
 			v-else
 			class="readinglists-special-nav-link"
-			:class="{ 'readinglists-special-nav-link--active': isCollections }">
+			:to="collectionsUrl">
 			{{ collectionsText }}
-		</a>
+		</router-link>
 
 		<div
 			v-if="isCustomList"
@@ -103,6 +102,9 @@ const api = require( 'ext.readingLists.api' );
 // how many collections to initially load, as well as how many to show at once
 const collectionsPageSize = 8;
 
+// string to be appended to URL on the mobile collections view - same for all languages
+const collectionsPath = '/collections';
+
 // codex menu item to be inserted in both default state and when list is populated
 const createCollectionEntry = {
 	label: mw.msg( 'readinglists-customlists-create-collection' ),
@@ -144,30 +146,20 @@ module.exports = exports = {
 		RouterLink
 	},
 	props: {
-		isAllItems: {
-			type: Boolean,
-			required: true
-		},
-		isCollections: {
-			type: Boolean
-			// not required for now as this will be added in a follow up
-			// required: true
-		},
 		isCustomList: {
 			type: Boolean,
-			default: false
+			required: true
 		}
 	},
 	setup: ( props ) => {
 		const router = useRouter();
-		// @todo: Temporarily enable to true to support testing in mobile.
-		// Revisit as part of https://phabricator.wikimedia.org/T438404
-		const showDropdown = ref( true );
+		const showDropdown = ref( mw.config.get( 'skin' ) === 'vector-2022' );
 
 		// Router target (relative to the special page base) for the all-items
 		// view, derived from the canonical URL so it matches the router's routes.
 		const allItemsTo = getCollectionUrl( undefined, undefined, true );
 		const allItemsText = mw.msg( 'readinglists-customlists-allitems' );
+		const collectionsUrl = allItemsTo.concat( collectionsPath );
 		const collectionsText = mw.msg( 'readinglists-customlists-collections' );
 		const menuConfig = { visibleItemLimit: collectionsPageSize };
 
@@ -280,6 +272,7 @@ module.exports = exports = {
 			cdxIconExpand,
 			allItemsTo,
 			allItemsText,
+			collectionsUrl,
 			collectionsText,
 			menuConfig,
 			collections,
@@ -315,7 +308,7 @@ module.exports = exports = {
 			color: @color-progressive;
 		}
 
-		&--active {
+		&.router-link-active {
 			color: @color-base;
 			font-weight: bold;
 

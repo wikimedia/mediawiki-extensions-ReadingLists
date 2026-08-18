@@ -8,7 +8,6 @@
 
 		<navigation-bar
 			v-if="showNavBar"
-			:is-all-items="isAllListItems"
 			:is-custom-list="isCustomList">
 		</navigation-bar>
 
@@ -69,14 +68,13 @@
 
 <script>
 const { ref } = require( 'vue' );
-const { useIsMobileResolution } = require( 'ext.readingLists.common' );
+const { useIsMobileResolution, getCollectionUrl } = require( 'ext.readingLists.common' );
 const api = require( 'ext.readingLists.api' );
 const { CdxButton, CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
 const EmptyList = require( '../components/EmptyList.vue' );
 const EntryItem = require( '../components/EntryItem.vue' );
 const NavigationBar = require( '../components/NavigationBar.vue' );
 const Survey = require( '../components/Survey.vue' );
-
 const surveyStorageKey = 'readinglists-beta-survey';
 const MIN_PAGE_SIZE = 12;
 
@@ -92,6 +90,10 @@ module.exports = exports = {
 		Survey
 	},
 	props: {
+		isCollections: {
+			type: Boolean,
+			default: false
+		},
 		listId: {
 			type: Number,
 			default: null
@@ -145,7 +147,8 @@ module.exports = exports = {
 			return this.isCustomListsEnabled &&
 				!this.imported &&
 				!this.isDefaultList &&
-				!this.isAllListItems;
+				!this.isAllListItems &&
+				!this.isCollections;
 		},
 		showNavBar() {
 			// if custom lists are enabled, display the nav bar for traversing them
@@ -196,6 +199,9 @@ module.exports = exports = {
 					this.title = list.name;
 					this.description = list.description;
 					this.isDefaultList = !!list.default;
+				} else if ( this.isCollections ) {
+					this.isDefaultList = false;
+					this.isAllListItems = false;
 				} else {
 					this.isDefaultList = false;
 					this.isAllListItems = true;
@@ -230,7 +236,18 @@ module.exports = exports = {
 				let entries;
 				let next = null;
 
-				if ( this.imported === null ) {
+				if ( this.isCollections ) {
+					const query = await api.getLists( 'name', 'ascending', 12, this.next );
+					entries = query.lists.map( ( { name, id, size } ) => (
+						{
+							id,
+							title: name,
+							description: mw.msg( 'readinglists-total-articles', size ),
+							url: mw.util.getUrl( getCollectionUrl( id, name ) )
+						}
+					) );
+					next = query.next;
+				} else if ( this.imported === null ) {
 					const query = await api.getEntries(
 						this.listId,
 						this.sort,

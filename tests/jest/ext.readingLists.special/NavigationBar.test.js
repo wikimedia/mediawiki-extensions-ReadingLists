@@ -29,13 +29,18 @@ describe( 'NavigationBar', () => {
 	} );
 
 	it.each( [
-		[ 'Collections view on mobile', false, false ],
-		[ 'Collections view on desktop', false, true ],
-		[ 'All items view on mobile', true, false ],
-		[ 'All items view on desktop', true, true ]
-	] )( 'renders %s', async ( _, isAllItems, showDropdown ) => {
+		[ 'Collection view on mobile', false, false, false ],
+		[ 'Collection view on desktop', false, false, true ],
+		[ 'Collections view on mobile', false, true, false ],
+		[ 'Collections view on desktop', false, true, true ],
+		[ 'All items view on mobile', true, false, false ],
+		[ 'All items view on desktop', true, false, true ]
+	] )( 'renders %s', async ( _, isAllItems, isCollections, showDropdown ) => {
 		const NavigationBar = require( '../../../resources/ext.readingLists.special/components/NavigationBar.vue' );
-		const wrapper = mount( NavigationBar, { props: { isAllItems, showDropdown } } );
+		const wrapper = mount(
+			NavigationBar,
+			{ props: { isAllItems, isCollections, showDropdown } }
+		);
 
 		expect( wrapper.element ).toMatchSnapshot();
 	} );
