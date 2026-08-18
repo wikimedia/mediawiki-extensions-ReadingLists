@@ -296,6 +296,11 @@
 				}
 			]
 		},
+		"ext.readingLists.bookmark.styles": {
+			"styles": [
+				"resources/ext.readingLists.bookmark/styles.less"
+			]
+		},
 		"ext.readingLists.bookmark": {
 			"packageFiles": [
 				"resources/ext.readingLists.bookmark/index.js",

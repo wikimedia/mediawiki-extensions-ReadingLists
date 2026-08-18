@@ -182,6 +182,8 @@ class HookHandler implements
 			'tooltiponly' => true,
 		];
 
+		$output->addModuleStyles( 'ext.readingLists.bookmark.styles' );
+
 		if ( $readingListsEnabledForUser ) {
 			$output->addModules( 'ext.readingLists.bookmark' );
 
