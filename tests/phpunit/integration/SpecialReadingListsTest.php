@@ -3,6 +3,9 @@
 namespace MediaWiki\Extension\ReadingLists\Tests\Integration;
 
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Request\FauxRequest;
+use MediaWiki\Request\WebRequest;
 use MediaWiki\Tests\Specials\SpecialPageExecutor;
 use MediaWiki\Tests\Specials\SpecialPageTestBase;
 use MediaWiki\User\User;
@@ -63,26 +66,49 @@ class SpecialReadingListsTest extends SpecialPageTestBase {
 
 	/**
 	 * @param string $subPage
-	 * @return string Page title HTML set by the special page
+	 * @param WebRequest|null $request
+	 * @return OutputPage
 	 */
-	private function getSpecialPageTitle( string $subPage ): string {
+	private function getSpecialPageOutput(
+		string $subPage,
+		?WebRequest $request = null
+	): OutputPage {
 		$page = $this->newSpecialPage();
 		( new SpecialPageExecutor() )->executeSpecialPage(
 			$page,
 			$subPage,
-			null,
+			$request,
 			'en',
 			$this->user
 		);
-		return $page->getOutput()->getPageTitle();
+		return $page->getOutput();
+	}
+
+	/**
+	 * @param string $subPage
+	 * @return string Page title HTML set by the special page
+	 */
+	private function getSpecialPageTitle( string $subPage ): string {
+		return $this->getSpecialPageOutput( $subPage )->getPageTitle();
 	}
 
 	public function testPageTitleForUserSubpageWithoutCustomLists() {
 		$this->overrideConfigValue( 'ReadingListsCustomLists', false );
 
-		$title = $this->getSpecialPageTitle( $this->user->getName() );
+		$output = $this->getSpecialPageOutput( $this->user->getName() );
+		$title = $output->getPageTitle();
 		$this->assertStringContainsString( 'Saved', $title );
 		$this->assertStringNotContainsString( 'Favorite Dogs', $title );
+		$this->assertStringContainsString( 'reading-lists-privacy-indicator__trigger', $title );
+		$this->assertStringContainsString( 'cdx-tooltip', $title );
+		$this->assertStringContainsString(
+			'Your saved items and collections are private and visible only to you',
+			$title
+		);
+		$this->assertStringNotContainsString(
+			'Your saved items and collections are private and visible only to you',
+			$output->getHTMLTitle()
+		);
 	}
 
 	public function testPageTitleForCustomListWithFlagOff() {
@@ -93,6 +119,7 @@ class SpecialReadingListsTest extends SpecialPageTestBase {
 		);
 		$this->assertStringContainsString( 'Saved', $title );
 		$this->assertStringNotContainsString( 'Favorite Dogs', $title );
+		$this->assertStringContainsString( 'reading-lists-privacy-indicator', $title );
 	}
 
 	public function testPageTitleForCustomListWithFlagOn() {
@@ -109,6 +136,7 @@ class SpecialReadingListsTest extends SpecialPageTestBase {
 
 		$title = $page->getOutput()->getPageTitle();
 		$this->assertStringContainsString( 'Saved / Favorite Dogs', $title );
+		$this->assertStringContainsString( 'reading-lists-privacy-indicator', $title );
 	}
 
 	public function testPageTitleForDefaultListWithFlagOn() {
@@ -119,6 +147,7 @@ class SpecialReadingListsTest extends SpecialPageTestBase {
 		);
 		$this->assertStringContainsString( 'Saved', $title );
 		$this->assertStringNotContainsString( 'Saved /', $title );
+		$this->assertStringContainsString( 'reading-lists-privacy-indicator', $title );
 	}
 
 	public function testPageTitleForUserSubpageWithFlagOn() {
@@ -127,5 +156,19 @@ class SpecialReadingListsTest extends SpecialPageTestBase {
 		$title = $this->getSpecialPageTitle( $this->user->getName() );
 		$this->assertStringContainsString( 'Saved', $title );
 		$this->assertStringNotContainsString( 'Favorite Dogs', $title );
+		$this->assertStringContainsString( 'reading-lists-privacy-indicator', $title );
+	}
+
+	public function testPrivacyIndicatorIsNotRenderedForImportOrExport() {
+		foreach ( [ 'limport', 'lexport' ] as $parameter ) {
+			$output = $this->getSpecialPageOutput(
+				'',
+				new FauxRequest( [ $parameter => 'serialized-list' ] )
+			);
+			$this->assertStringNotContainsString(
+				'reading-lists-privacy-indicator',
+				$output->getPageTitle()
+			);
+		}
 	}
 }

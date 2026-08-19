@@ -38,6 +38,8 @@
 	"readinglists-special-title-imported": "Reading lists: Import from other user",
 	"readinglists-special-subpage-title": "Saved",
 	"readinglists-special-custom-list-title": "Saved / $1",
+	"readinglists-privacy-indicator-label": "Private",
+	"readinglists-privacy-tooltip": "Your saved items and collections are private and visible only to you.",
 	"readinglists-description": "All your saved lists in one place.",
 	"readinglists-loading": "Please wait...",
 	"reading-list-purpose": "Please login to see your private reading lists.",

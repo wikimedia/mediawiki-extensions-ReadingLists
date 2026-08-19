@@ -9,9 +9,88 @@
 	}
 }
 
-// Page title: on mobile, wrap to 2 lines and ellipsis when overflowed.
-@media screen and ( max-width: @max-width-breakpoint-mobile ) {
+// Keep the privacy indicator visible when a long page title is clamped.
+.mw-first-heading {
+	display: flex;
+	align-items: center;
+}
+
+// Minerva uses overflow to prevent margin collapsing around special-page headings.
+// Preserve that formatting context without clipping the title Tooltip.
+body.skin-minerva .heading-holder {
+	display: flow-root;
+	overflow: visible;
+}
+
+.reading-lists-title-text {
+	min-width: 0;
+}
+
+.reading-lists-privacy-indicator {
+	position: relative;
+	display: inline-flex;
+	flex: none;
+
+	&__trigger {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: @min-size-interactive-pointer;
+		min-height: @min-size-interactive-pointer;
+		border-radius: @border-radius-base;
+
+		@media ( any-pointer: coarse ) {
+			min-width: @min-size-interactive-touch;
+			min-height: @min-size-interactive-touch;
+		}
+
+		&::before {
+			content: '';
+			.cdx-mixin-css-icon( @cdx-icon-lock, @color-subtle, @size-icon-small );
+		}
+
+		&:focus {
+			outline: @border-width-thick solid @outline-color-progressive--focus;
+			outline-offset: calc( -1 * @border-width-thick );
+		}
+
+		&:focus:not( :focus-visible ) {
+			outline: 0;
+		}
+	}
+
+	&__tooltip {
+		inset-block-start: 100%;
+		inset-inline-start: @spacing-50;
+		text-align: start;
+		white-space: normal;
+	}
+
+	&:hover &__tooltip,
+	&__trigger:focus + &__tooltip {
+		display: block;
+	}
+}
+
+@media screen and ( max-width: @max-width-breakpoint-tablet ) {
 	.mw-first-heading {
+		position: relative;
+	}
+
+	.reading-lists-privacy-indicator {
+		position: static;
+	}
+
+	.reading-lists-privacy-indicator__tooltip {
+		inset-inline: 20%;
+		width: auto;
+		max-width: 80%;
+	}
+}
+
+// Page title text: on mobile, wrap to 2 lines and ellipsis when overflowed.
+@media screen and ( max-width: @max-width-breakpoint-mobile ) {
+	.reading-lists-title-text {
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;

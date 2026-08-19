@@ -175,7 +175,8 @@
 		"ext.readingLists.special.styles": {
 			"class": "MediaWiki\\ResourceLoader\\CodexModule",
 			"codexComponents": [
-				"CdxProgressBar"
+				"CdxProgressBar",
+				"CdxTooltip"
 			],
 			"codexStyleOnly": true,
 			"styles": [

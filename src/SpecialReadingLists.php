@@ -73,7 +73,22 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 			}
 		}
 
-		$output->setPageTitle( $titleMsg->escaped() );
+		if ( $exportFeature ) {
+			$output->setPageTitle( $titleMsg->escaped() );
+		} else {
+			$output->setPageTitle(
+				Html::rawElement(
+					'span',
+					[ 'class' => 'reading-lists-title-text' ],
+					$titleMsg->escaped()
+				) . $this->getPrivacyIndicatorHtml()
+			);
+			$output->setHTMLTitle(
+				$this->msg( 'pagetitle' )
+					->plaintextParams( $titleMsg->text() )
+					->inContentLanguage()
+			);
+		}
 
 		$output->addHTML( Html::errorBox(
 			$this->msg( 'readinglists-error' )->parse(),
@@ -98,6 +113,33 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 			$output->addModuleStyles( [ 'ext.readingLists.special.importDialog.styles' ] );
 		}
 		$output->addModules( [ 'ext.readingLists.special' ] );
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getPrivacyIndicatorHtml(): string {
+		$tooltipId = 'reading-lists-privacy-tooltip';
+
+		return Html::rawElement(
+			'span',
+			[ 'class' => 'reading-lists-privacy-indicator' ],
+			Html::element( 'span', [
+				'class' => 'reading-lists-privacy-indicator__trigger',
+				'tabindex' => 0,
+				'role' => 'img',
+				'aria-label' => $this->msg( 'readinglists-privacy-indicator-label' )->text(),
+				'aria-describedby' => $tooltipId,
+			] ) . Html::element(
+				'span',
+				[
+					'id' => $tooltipId,
+					'class' => 'cdx-tooltip reading-lists-privacy-indicator__tooltip',
+					'role' => 'tooltip',
+				],
+				$this->msg( 'readinglists-privacy-tooltip' )->text()
+			)
+		);
 	}
 
 	/**

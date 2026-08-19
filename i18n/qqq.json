@@ -48,6 +48,8 @@
 	"readinglists-special-title-imported": "Shown for users importing a list",
 	"readinglists-special-subpage-title": "Used as page title for subpages of [[Special:ReadingLists]] (e.g., Special:ReadingLists/ExampleUser), which show pages saved to a specific reading list. Shown in the top-level reading lists view. Keep this identical to the leading text in {{msg-mw|readinglists-special-custom-list-title}}.",
 	"readinglists-special-custom-list-title": "Used as page title for a specific custom (non-default) reading list on [[Special:ReadingLists]] when custom lists are enabled (e.g., Special:ReadingLists/ExampleUser/1). The leading text must be identical to {{msg-mw|readinglists-special-subpage-title}}\n\nParameters:\n* $1 - The custom reading list name.",
+	"readinglists-privacy-indicator-label": "Accessible label for the lock icon beside the title on [[Special:ReadingLists]].",
+	"readinglists-privacy-tooltip": "Tooltip explaining that a user's saved items and collections are visible only to that user.",
 	"readinglists-description": "Summary of page that shows all your reading lists",
 	"readinglists-loading": "Message while reading lists load",
 	"reading-list-purpose": "Prompt telling user why they should login.",
