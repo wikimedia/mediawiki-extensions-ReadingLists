@@ -1,11 +1,11 @@
 <template>
 	<div class="readinglists-nav-bar">
-		<a
+		<router-link
 			class="readinglists-special-nav-link"
-			:href="allItemsUrl"
+			:to="allItemsTo"
 			:class="{ 'readinglists-special-nav-link--active': isAllItems }">
 			{{ allItemsText }}
-		</a>
+		</router-link>
 
 		<cdx-menu-button
 			v-if="showDropdown"
@@ -18,6 +18,23 @@
 			@load-more="maybeGetNextCollections">
 			{{ collectionsText }}
 			<cdx-icon size="medium" :icon="cdxIconExpand"></cdx-icon>
+			<template #menu-item="{ menuItem }">
+				<router-link
+					v-if="menuItem.url"
+					class="cdx-menu-item__content"
+					:to="menuItem.url">
+					<span class="cdx-menu-item__text"><bdi>{{ menuItem.label }}</bdi></span>
+				</router-link>
+				<span
+					v-else
+					class="cdx-menu-item__content">
+					<cdx-icon
+						v-if="menuItem.icon"
+						:icon="menuItem.icon"
+						class="cdx-menu-item__icon"></cdx-icon>
+					<span class="cdx-menu-item__text"><bdi>{{ menuItem.label }}</bdi></span>
+				</span>
+			</template>
 		</cdx-menu-button>
 
 		<a
@@ -31,11 +48,13 @@
 
 <script>
 const { ref } = require( 'vue' );
+const { RouterLink } = require( 'vue-router' );
 
 const { CdxMenuButton, CdxIcon } = require( '../../../codex.js' );
 const { cdxIconAdd, cdxIconExpand } = require( '../../../icons.json' );
 
 const api = require( 'ext.readingLists.api' );
+const base = require( '../base.js' );
 
 // how many collections to initially load, as well as how many to show at once
 const collectionsPageSize = 8;
@@ -59,14 +78,16 @@ const makeListEntries = ( lists ) => (
 	lists.map( ( list ) => ( {
 		label: list.name,
 		value: list.id,
-		// T432633 - with url as opposed to @update:selected handler click target is smaller
-		url: mw.util.getUrl( `Special:ReadingLists/${ mw.user.getName() }/${ list.id }` )
+		// T432633 - route via vue-router (see #menu-item slot in the template) rather than
+		// an @update:selected handler, so the whole row stays a full-size click target.
+		// Relative to the special page base, matching the router's routes (see allItemsTo below).
+		url: mw.util.getUrl( `Special:ReadingLists/${ mw.user.getName() }/${ list.id }` ).slice( base.length )
 	} ) )
 );
 
 // @vue/component
 module.exports = exports = {
-	components: { CdxMenuButton, CdxIcon },
+	components: { CdxMenuButton, CdxIcon, RouterLink },
 	props: {
 		showDropdown: {
 			type: Boolean,
@@ -83,7 +104,10 @@ module.exports = exports = {
 		}
 	},
 	setup: () => {
+		// Router target (relative to the special page base) for the all-items
+		// view, derived from the canonical URL so it matches the router's routes.
 		const allItemsUrl = mw.util.getUrl( `Special:ReadingLists/${ mw.user.getName() }` );
+		const allItemsTo = allItemsUrl.slice( base.length ) || '/';
 		const allItemsText = mw.msg( 'readinglists-customlists-allitems' );
 		const collectionsText = mw.msg( 'readinglists-customlists-collections' );
 		const menuConfig = { visibleItemLimit: collectionsPageSize };
@@ -137,7 +161,7 @@ module.exports = exports = {
 
 		return {
 			cdxIconExpand,
-			allItemsUrl,
+			allItemsTo,
 			allItemsText,
 			collectionsText,
 			menuConfig,

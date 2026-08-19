@@ -72,6 +72,7 @@ module.exports = {
 		'^ext\\.readingLists\\.(.+)$': '<rootDir>/resources/ext.readingLists.$1/index.js',
 		'config\\.json$': '<rootDir>/resources/config.json',
 		'codex\\.js$': '@wikimedia/codex',
-		'icons\\.json$': '@wikimedia/codex-icons'
+		'icons\\.json$': '@wikimedia/codex-icons',
+		'^vue-router$': '<rootDir>/tests/jest/vueRouterStub.js'
 	},
 };
