@@ -653,18 +653,12 @@ describe( 'initOnboardingPopover', () => {
 		expect( mw.loader.using ).not.toHaveBeenCalled();
 	} );
 
-	test( 'loads onboarding popover module after timer and idle callback', () => {
-		jest.useFakeTimers();
-
+	test( 'loads onboarding popover module immediately', () => {
 		const anchor = document.createElement( 'div' );
 		anchor.id = 'test-anchor';
 		document.body.appendChild( anchor );
 
 		mw.storage.get.mockReturnValue( null );
-
-		// Keep the idle callback synchronous in this test so that, after the
-		// 1000ms timer fires, the code proceeds to mw.loader.using().
-		mw.requestIdleCallback.mockImplementation( ( fn ) => fn() );
 
 		initOnboardingPopover(
 			'#test-anchor',
@@ -675,20 +669,10 @@ describe( 'initOnboardingPopover', () => {
 			'ext.readingLists.onboarding.desktop'
 		);
 
-		expect( mw.loader.using ).not.toHaveBeenCalled();
-
-		jest.advanceTimersByTime( 1000 );
-
-		expect( mw.requestIdleCallback ).toHaveBeenCalledWith(
-			expect.any( Function ),
-			{ timeout: 2000 }
-		);
 		expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
 	} );
 
-	test( 'defers loading onboarding popover if the homepage tour hasn\'t been seen yet', () => {
-		jest.useFakeTimers();
-
+	test( 'does not load onboarding popover if the homepage tour hasn\'t been seen yet', () => {
 		mw.user.options.get.mockRestore();
 
 		const anchor = document.createElement( 'div' );
@@ -703,8 +687,6 @@ describe( 'initOnboardingPopover', () => {
 			null,
 			'ext.readingLists.onboarding.mobile'
 		);
-
-		jest.advanceTimersByTime( 1000 );
 
 		expect( mw.user.options.get ).toHaveBeenCalledWith( 'growthexperiments-tour-homepage-discovery' );
 		expect( mw.loader.using ).not.toHaveBeenCalled();

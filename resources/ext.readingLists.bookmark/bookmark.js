@@ -295,26 +295,22 @@ function initOnboardingPopover(
 		return;
 	}
 
-	setTimeout( () => {
-		mw.requestIdleCallback( () => {
-			mw.loader.using( moduleName ).then( () => {
-				const mountAppFn = mw.loader.require( moduleName );
-				try {
-					mountAppFn( {
-						target: targetElement,
-						storageKey,
-						titleMsgKey,
-						bodyMsgKey,
-						bannerImagePath
-					} ).catch( ( error ) => {
-						mw.log.error( 'Failed to mount onboarding popover:', error );
-					} );
-				} catch ( error ) {
-					mw.log.error( 'Failed to mount onboarding popover:', error );
-				}
+	mw.loader.using( moduleName ).then( () => {
+		const mountAppFn = mw.loader.require( moduleName );
+		try {
+			mountAppFn( {
+				target: targetElement,
+				storageKey,
+				titleMsgKey,
+				bodyMsgKey,
+				bannerImagePath
+			} ).catch( ( error ) => {
+				mw.log.error( 'Failed to mount onboarding popover:', error );
 			} );
-		}, { timeout: 2000 } );
-	}, 1000 );
+		} catch ( error ) {
+			mw.log.error( 'Failed to mount onboarding popover:', error );
+		}
+	} );
 }
 
 module.exports = { initBookmark, initOnboardingPopover };
