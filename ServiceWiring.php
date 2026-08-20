@@ -4,8 +4,6 @@ namespace MediaWiki\Extension\ReadingLists;
 
 use MediaWiki\Extension\ReadingLists\Service\BookmarkBloomFilterCache;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
-use MediaWiki\Extension\ReadingLists\Service\UserPreferenceBatchUpdater;
-use MediaWiki\Extension\ReadingLists\Validator\ReadingListPreferenceEligibilityValidator;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 
@@ -35,15 +33,6 @@ return [
 			LoggerFactory::getInstance( 'readinglists' )
 		);
 	},
-	'ReadingLists.ReadingListEligibilityValidator' => static function (
-		MediaWikiServices $services
-	): ReadingListPreferenceEligibilityValidator {
-		return new ReadingListPreferenceEligibilityValidator(
-			$services->getUserEditTracker(),
-			$services->getWatchedItemStore(),
-			$services->get( 'ReadingLists.ReadingListRepositoryFactory' )
-		);
-	},
 	'ReadingLists.ReadingListRepositoryFactory' => static function (
 		MediaWikiServices $services
 	): ReadingListRepositoryFactory {
@@ -67,15 +56,6 @@ return [
 			$services->getLanguageNameUtils(),
 			$urlUtils,
 			$ownDomain
-		);
-	},
-	'ReadingLists.UserPreferenceBatchUpdater' => static function (
-		MediaWikiServices $services
-	): UserPreferenceBatchUpdater {
-		return new UserPreferenceBatchUpdater(
-			$services->getDBLoadBalancerFactory(),
-			$services->getUserFactory(),
-			$services->getUserOptionsManager()
 		);
 	},
 ];
