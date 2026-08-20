@@ -11,7 +11,7 @@ exports[`MobileOnboardingPopover rendering behavior matches the snapshot 1`] = `
     <span
       class="cdx-popover__header__title"
     >
-      readinglists-mobile-onboarding-popover-title
+      readinglists-mobile-onboarding-saved-pages-title
     </span>
   </header>
   <div
@@ -19,7 +19,7 @@ exports[`MobileOnboardingPopover rendering behavior matches the snapshot 1`] = `
   >
     
     <p>
-      readinglists-mobile-onboarding-popover-body
+      readinglists-mobile-onboarding-saved-pages-text
     </p>
     
   </div>

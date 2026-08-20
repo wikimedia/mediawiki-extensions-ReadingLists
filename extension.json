@@ -404,8 +404,6 @@
 				"ext.readingLists.onboarding"
 			],
 			"messages": [
-				"readinglists-onboarding-title",
-				"readinglists-onboarding-text",
 				"readinglists-onboarding-close-button",
 				"readinglists-onboarding-saved-pages-title",
 				"readinglists-onboarding-saved-pages-text"
@@ -431,8 +429,6 @@
 				"ext.readingLists.onboarding"
 			],
 			"messages": [
-				"readinglists-onboarding-title",
-				"readinglists-onboarding-text",
 				"readinglists-onboarding-ok-button",
 				"readinglists-mobile-onboarding-saved-pages-title",
 				"readinglists-mobile-onboarding-saved-pages-text"

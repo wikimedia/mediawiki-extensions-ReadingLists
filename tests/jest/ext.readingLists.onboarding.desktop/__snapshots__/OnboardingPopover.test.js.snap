@@ -55,13 +55,13 @@ exports[`OnboardingPopover rendering behavior matches the snapshot 1`] = `
         class="readinglists-onboarding-title"
         id="readinglists-onboarding-title"
       >
-        readinglists-onboarding-title
+        readinglists-onboarding-saved-pages-title
       </h4>
       <p
         class="readinglists-onboarding-text"
         id="readinglists-onboarding-text"
       >
-        readinglists-onboarding-text
+        readinglists-onboarding-saved-pages-text
       </p>
     </div>
     

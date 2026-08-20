@@ -49,8 +49,8 @@ describe( 'mountApp', () => {
 		component: mockComponent,
 		target: mockTarget,
 		storageKey: 'test-storage-key',
-		titleMsgKey: 'readinglists-onboarding-title',
-		bodyMsgKey: 'readinglists-onboarding-text'
+		titleMsgKey: 'readinglists-onboarding-saved-pages-title',
+		bodyMsgKey: 'readinglists-onboarding-saved-pages-text'
 	} );
 
 	describe( 'onboarding popover mounting', () => {
@@ -61,8 +61,8 @@ describe( 'mountApp', () => {
 				mockComponent,
 				expect.objectContaining( {
 					bookmarkElement: mockTarget,
-					titleMsgKey: 'readinglists-onboarding-title',
-					bodyMsgKey: 'readinglists-onboarding-text'
+					titleMsgKey: 'readinglists-onboarding-saved-pages-title',
+					bodyMsgKey: 'readinglists-onboarding-saved-pages-text'
 				} )
 			);
 			expect( mockApp.mount ).toHaveBeenCalled();

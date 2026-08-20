@@ -109,8 +109,6 @@
 	"readinglists-unsave-from-custom-list-body": "Body text of the confirmation dialog shown when a user tries to unsave a page that is also present in at least one custom saved list.",
 	"readinglists-unsave-from-custom-list-confirm": "Label for the destructive confirmation button in the custom-list unsave dialog.",
 	"readinglists-unsave-from-custom-list-cancel": "Label for the non-destructive button in the custom-list unsave dialog, to cancel the unsave action. Keeps the current page saved.",
-	"readinglists-onboarding-title": "Title of the onboarding popover for the saved pages feature, displayed the first time a user sees the bookmark icon button.",
-	"readinglists-onboarding-text": "Text of the onboarding popover for the saved pages feature, displayed the first time a user sees the bookmark icon button.",
 	"readinglists-onboarding-close-button": "Label for the close button in the onboarding popover for the saved pages feature.\n{{Identical|Close}}",
 	"readinglists-onboarding-ok-button": "Label for the dismiss button in the mobile onboarding popover for the saved pages feature in the Minerva skin. This button dismisses the popover.",
 	"readinglists-onboarding-saved-pages-title": "Title of the saved pages onboarding popover, displayed the first time a user saves a page to their reading list.",

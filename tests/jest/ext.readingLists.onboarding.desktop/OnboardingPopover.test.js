@@ -25,8 +25,8 @@ describe( 'OnboardingPopover', () => {
 
 	const defaultProps = () => ( {
 		bookmarkElement: mockBookmarkElement,
-		titleMsgKey: 'readinglists-onboarding-title',
-		bodyMsgKey: 'readinglists-onboarding-text',
+		titleMsgKey: 'readinglists-onboarding-saved-pages-title',
+		bodyMsgKey: 'readinglists-onboarding-saved-pages-text',
 		bannerImagePath: '/path/to/banner.svg',
 		onDismiss: mockOnDismiss
 	} );

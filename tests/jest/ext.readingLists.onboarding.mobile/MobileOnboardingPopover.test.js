@@ -31,8 +31,8 @@ describe( 'MobileOnboardingPopover', () => {
 
 	const defaultProps = () => ( {
 		bookmarkElement: mockBookmarkElement,
-		titleMsgKey: 'readinglists-mobile-onboarding-popover-title',
-		bodyMsgKey: 'readinglists-mobile-onboarding-popover-body',
+		titleMsgKey: 'readinglists-mobile-onboarding-saved-pages-title',
+		bodyMsgKey: 'readinglists-mobile-onboarding-saved-pages-text',
 		onDismiss: mockOnDismiss
 	} );
 

@@ -1,4 +1,4 @@
-const { initBookmark, initOnboardingPopover } = require( './bookmark.js' );
+const { initBookmark } = require( './bookmark.js' );
 const skinName = mw.config.get( 'skin' );
 const isMinerva = skinName === 'minerva';
 const bookmarkSelector = isMinerva ? '#ca-bookmark' : '.reading-lists-bookmark';
@@ -20,35 +20,3 @@ bookmarks.forEach( ( bookmarkElement ) => {
 
 	initBookmark( bookmarkElement, isMinerva, eventSource );
 } );
-
-if ( !( skinName === 'vector-2022' || skinName === 'minerva' ) ) {
-	return;
-}
-
-const moduleName = isMinerva ?
-	'ext.readingLists.onboarding.mobile' :
-	'ext.readingLists.onboarding.desktop';
-
-const bookmarkForOnboarding = document.querySelector( bookmarkSelector );
-const isMainPage = mw.config.get( 'wgIsMainPage' );
-const url = new URL( window.location.href );
-const isCurrentPageView = mw.config.get( 'wgAction' ) === 'view' &&
-	!url.searchParams.has( 'veaction' ) &&
-	!url.searchParams.has( 'diff' ) &&
-	!url.searchParams.has( 'oldid' );
-
-if (
-	bookmarkForOnboarding &&
-	!bookmarkForOnboarding.dataset.mwSaved &&
-	!isMainPage &&
-	isCurrentPageView
-) {
-	initOnboardingPopover(
-		'#ca-bookmark',
-		'readinglists-bookmark-dialog-seen',
-		'readinglists-onboarding-title',
-		'readinglists-onboarding-text',
-		mw.config.get( 'wgExtensionAssetsPath' ) + '/ReadingLists/resources/assets/onboarding-save.svg',
-		moduleName
-	);
-}
