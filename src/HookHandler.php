@@ -73,6 +73,7 @@ class HookHandler implements
 
 		$output = $sktemplate->getOutput();
 		$output->addModuleStyles( 'ext.readingLists.bookmark.icons' );
+		$output->addModuleStyles( 'ext.readingLists.bookmark.styles' );
 
 		if ( !$output->isArticle() ) {
 			return;
@@ -119,8 +120,6 @@ class HookHandler implements
 			'single-id' => $isSaved ? 'ca-bookmark-remove' : 'ca-bookmark-add',
 			'tooltiponly' => true,
 		];
-
-		$output->addModuleStyles( 'ext.readingLists.bookmark.styles' );
 
 		if ( $readingListsEnabledForUser ) {
 			$output->addModules( 'ext.readingLists.bookmark' );

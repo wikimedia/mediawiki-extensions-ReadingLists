@@ -353,6 +353,10 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		$userMenu = $links['user-menu'];
 		$this->assertArrayHasKey( 'readinglists', $userMenu, 'Reading Lists link not found in user menu' );
+		$this->assertContains(
+			'ext.readingLists.bookmark.styles',
+			$skin->getOutput()->getModuleStyles()
+		);
 
 		// assert that the reading lists link is after the sandbox link
 		$sandboxIndex = array_search( 'sandbox', array_keys( $userMenu ) );
@@ -373,6 +377,24 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 			'Special:ReadingLists/' . strtr( $this->user->getName(), ' ', '_' ),
 			$readingListsLink['href'],
 			'URL should be like Special:ReadingLists/{user_name}'
+		);
+	}
+
+	public function testReadingListsSpecialPageLinkAddedToUserMenuOnNonArticlePage() {
+		$this->setupWebEnabled();
+
+		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
+		$skin = $this->createSkinTemplate( $title, false );
+
+		$links = $this->getLinks();
+
+		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$this->assertArrayHasKey( 'readinglists', $links['user-menu'] );
+		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
+		$this->assertContains(
+			'ext.readingLists.bookmark.styles',
+			$skin->getOutput()->getModuleStyles()
 		);
 	}
 
