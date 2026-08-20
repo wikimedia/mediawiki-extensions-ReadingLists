@@ -1,0 +1,17 @@
+{
+	"@metadata": {
+		"authors": [
+			"Aca"
+		]
+	},
+	"readinglists-db-error-no-such-list": "Lista $1 ne postoji.",
+	"readinglists-browser-add-entry-success": "Stranica <b>$1</b> dodana je na listu [[$2|$3]].",
+	"readinglists-browser-remove-entry-success": "Stranica <b>$1</b> uklonjena je s liste [[$2|$3]].",
+	"readinglists-loading": "Pričekajte...",
+	"readinglists-title": "Sačuvane stranice",
+	"readinglists-default-title": "Sačuvane stranice",
+	"readinglists-sorted-by-recent": "Sortirane po vremenu čitanja (prvo najnovije):",
+	"readinglists-no-title": "Nenaslovljena lista",
+	"readinglists-watchlist": "Lista praćenja",
+	"readinglists-import-button-label": "Otvori u aplikaciji"
+}
