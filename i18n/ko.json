@@ -40,6 +40,8 @@
 	"readinglists-special-title-imported": "읽기 목록: 다른 사용자로부터 가져오기",
 	"readinglists-special-subpage-title": "저장됨",
 	"readinglists-special-custom-list-title": "저장됨 / $1",
+	"readinglists-privacy-indicator-label": "비공개",
+	"readinglists-privacy-tooltip": "저장된 항목과 모음집은 비공개이며 본인만 볼 수 있습니다.",
 	"readinglists-description": "저장된 모든 목록을 한 곳에서 확인합니다.",
 	"readinglists-loading": "기다려 주세요...",
 	"reading-list-purpose": "비공개 읽기 목록을 보려면 로그인해주세요.",
@@ -55,10 +57,10 @@
 	"readinglists-show-more": "더 보기",
 	"readinglists-default-title": "저장된 항목",
 	"readinglists-default-description": "저장된 문서를 위한 기본 목록입니다.",
-	"readinglists-empty-title": "아직 저장된 문서가 없습니다",
-	"readinglists-empty-cta": "어떤 문서에서든 저장 아이콘을 사용하여 여기에 항목을 추가하세요.",
+	"readinglists-empty-title": "저장된 문서가 없습니다",
+	"readinglists-empty-cta": "나중에 다시 볼 수 있도록 각 문서의 북마크 아이콘을 사용하여 저장하세요.",
 	"readinglists-empty-collection-title": "이 컬렉션에 추가된 문서가 없습니다",
-	"readinglists-empty-collection-cta": "나중에 다시 볼 수 있도록 각 문서의 북마크 아이콘을 사용하여 저장하세요.",
+	"readinglists-empty-collection-cta": "각 문서의 북마크 아이콘을 사용하여 모음집에 추가하세요.",
 	"readinglists-display-menu": "메뉴 표시",
 	"readinglists-display-sort": "정렬 기준",
 	"readinglists-display-sort-name": "이름",
@@ -116,5 +118,9 @@
 	"readinglists-cta-dialog-call-to-action": "저장을 시작하려면 로그인하거나 계정을 만드세요.",
 	"readinglists-cta-dialog-create-account": "계정 만들기",
 	"readinglists-cta-dialog-log-in": "로그인",
-	"readinglists-cta-dialog-close": "닫기"
+	"readinglists-cta-dialog-close": "닫기",
+	"readinglists-customlists-allitems": "모든 항목",
+	"readinglists-customlists-collections": "모음집",
+	"readinglists-customlists-no-collections": "모음집이 없습니다",
+	"readinglists-customlists-create-collection": "새 모음집 만들기"
 }
