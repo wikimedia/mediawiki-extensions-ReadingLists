@@ -37,8 +37,11 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 		] );
 
 		$this->user = $this->getTestSysop()->getUser();
+	}
+
+	private function addQueryTestData(): void {
 		$this->addProjects( [ 'foo' ] );
-		$listIds = $this->addLists( $this->user->mId, [
+		$this->addLists( $this->user->mId, [
 			[
 				'rl_is_default' => 1,
 				'rl_name' => 'default',
@@ -118,6 +121,8 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 	 * @dataProvider apiQueryProvider
 	 */
 	public function testApiQuery( $apiParams, $expected, $message ) {
+		$this->addQueryTestData();
+
 		ConvertibleTimestamp::setFakeTime( '2018-09-13T20:59:36Z' );
 
 		$this->apiParams = array_merge( $this->apiParams, $apiParams );
