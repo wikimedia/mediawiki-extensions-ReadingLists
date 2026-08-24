@@ -3,7 +3,6 @@
 namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
 use MediaWiki\Api\ApiUsageException;
-use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
 
@@ -16,7 +15,7 @@ use MediaWiki\User\User;
  */
 class ApiReadingListsCreateEntryTest extends ApiTestCase {
 
-	use ReadingListsTestHelperTrait;
+	use ReadingListsApiTestHelperTrait;
 
 	/** @var array */
 	private $apiParams = [
@@ -37,7 +36,7 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 	 * @dataProvider createEntryProvider
 	 */
 	public function testCreateEntry( $projects, $apiParams, $expected ) {
-		$this->readingListsSetup();
+		$this->readingListsSetup( $this->user );
 
 		$this->addProjects( $projects );
 		$listIds = $this->addLists( $this->user->mId, [
@@ -67,7 +66,7 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 	}
 
 	public function testCreateEntry_omittingListParamAddToExistingDefaultList() {
-		$defaultListId = $this->readingListsSetup();
+		$defaultListId = $this->readingListsSetup( $this->user );
 		$this->addProjects( [ 'https://en.wikipedia.org' ] );
 
 		$this->apiParams['project'] = 'https://en.wikipedia.org';
@@ -114,7 +113,7 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 	 * @dataProvider createEntryBatchProvider
 	 */
 	public function testCreateEntryBatch( $projects, $apiParams, $expected ) {
-		$this->readingListsSetup();
+		$this->readingListsSetup( $this->user );
 		$this->addProjects( $projects );
 		$listIds = $this->addLists( $this->user->mId, [
 			[
@@ -154,7 +153,7 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 	}
 
 	public function testCreateEntryBatch_withoutListParamFails() {
-		$this->readingListsSetup();
+		$this->readingListsSetup( $this->user );
 		$this->addProjects( [ 'https://en.wikipedia.org' ] );
 
 		$this->apiParams['batch'] = json_encode( [
@@ -171,7 +170,7 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 	 * @dataProvider createEntryUnrecognizedProjectProvider
 	 */
 	public function testCreateEntryUnrecognizedProject( $projects, $apiParams, $expected ) {
-		$this->readingListsSetup();
+		$this->readingListsSetup( $this->user );
 		$this->addProjects( $projects );
 		$listIds = $this->addLists( $this->user->mId, [
 			[

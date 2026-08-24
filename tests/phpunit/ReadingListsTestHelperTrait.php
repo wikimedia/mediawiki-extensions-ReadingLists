@@ -130,26 +130,6 @@ trait ReadingListsTestHelperTrait {
 		return $ids;
 	}
 
-	private function readingListsSetup(): int {
-		$this->setMwGlobals( [
-			'wgCentralIdLookupProvider' => 'local',
-		] );
-
-		$apiParams['command'] = 'setup';
-		$apiParams['action']  = 'readinglists';
-		$apiParams['format']  = 'json';
-		$this->addProjects( [ 'test' ] );
-		$result = $this->doApiRequestWithToken( $apiParams, null, $this->user );
-		return $result[0]['setup']['list']['id'];
-	}
-
-	private function readingListsTeardown() {
-		$apiParams['command'] = 'teardown';
-		$apiParams['action']  = 'readinglists';
-		$apiParams['format']  = 'json';
-		$this->doApiRequestWithToken( $apiParams, null, $this->user );
-	}
-
 	/**
 	 * If $expectedErrorMessage is null, verify that the callback does not throw a usage error.
 	 * If it isn't, verify that it throws that error.

@@ -3,7 +3,6 @@
 namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
 use MediaWiki\Api\ApiUsageException;
-use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
 
@@ -16,7 +15,7 @@ use MediaWiki\User\User;
  */
 class ApiReadingListsUpdateTest extends ApiTestCase {
 
-	use ReadingListsTestHelperTrait;
+	use ReadingListsApiTestHelperTrait;
 
 	/** @var array */
 	private $apiParams = [
@@ -31,7 +30,7 @@ class ApiReadingListsUpdateTest extends ApiTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		$this->user = parent::getTestSysop()->getUser();
-		$this->readingListsSetup();
+		$this->readingListsSetup( $this->user );
 	}
 
 	/**

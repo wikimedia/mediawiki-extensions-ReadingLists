@@ -2,7 +2,6 @@
 
 namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
-use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
@@ -18,7 +17,7 @@ use MediaWiki\User\User;
  */
 class ApiReadingListsDeleteEntryTest extends ApiTestCase {
 
-	use ReadingListsTestHelperTrait;
+	use ReadingListsApiTestHelperTrait;
 
 	/** @var array */
 	private $apiParams = [
@@ -33,7 +32,7 @@ class ApiReadingListsDeleteEntryTest extends ApiTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		$this->user = parent::getTestSysop()->getUser();
-		$this->readingListsSetup();
+		$this->readingListsSetup( $this->user );
 	}
 
 	public function testDeleteEntry() {

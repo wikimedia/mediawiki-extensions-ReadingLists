@@ -2,7 +2,6 @@
 
 namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
-use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
 use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
 
@@ -16,7 +15,7 @@ use MediaWiki\User\User;
  */
 class ApiReadingListsSetupAndTeardownTest extends ApiTestCase {
 
-	use ReadingListsTestHelperTrait;
+	use ReadingListsApiTestHelperTrait;
 
 	/** @var array */
 	private $apiParams = [
@@ -43,14 +42,14 @@ class ApiReadingListsSetupAndTeardownTest extends ApiTestCase {
 		$this->apiParams['command'] = 'setup';
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
 		$this->assertEquals( 'Success', $result[0]['setup']['result'] );
-		$this->readingListsTeardown();
+		$this->readingListsTeardown( $this->user );
 	}
 
 	/**
 	 * @depends testSetup
 	 */
 	public function testTeardown() {
-		$this->readingListsSetup();
+		$this->readingListsSetup( $this->user );
 		$this->apiParams['command'] = 'teardown';
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
 		$this->assertEquals( "Success", $result[0]['teardown']['result'] );
