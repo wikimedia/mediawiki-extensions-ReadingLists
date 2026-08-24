@@ -215,9 +215,4 @@ class ListsHandlerTest extends \MediaWikiIntegrationTestCase {
 		$request = new RequestData();
 		$this->executeReadingListsHandler( $handler, $request, false );
 	}
-
-	protected function tearDown(): void {
-		$this->readingListsTeardown();
-		parent::tearDown();
-	}
 }

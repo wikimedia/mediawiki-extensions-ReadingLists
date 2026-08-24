@@ -237,11 +237,6 @@ class ApiReadingListsDeleteEntryTest extends ApiTestCase {
 		$this->assertSame( '1', $deleted );
 	}
 
-	protected function tearDown(): void {
-		$this->readingListsTeardown();
-		parent::tearDown();
-	}
-
 	private function getLocalProject(): string {
 		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );

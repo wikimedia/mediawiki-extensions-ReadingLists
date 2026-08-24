@@ -84,7 +84,6 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 	}
 
 	public function testCreateEntry_omittingListParamSetupAndAddToDefaultList() {
-		$this->needsTeardown = true;
 		$this->setMwGlobals( [
 			'wgCentralIdLookupProvider' => 'local',
 		] );
@@ -199,12 +198,5 @@ class ApiReadingListsCreateEntryTest extends ApiTestCase {
 				'Success',
 			],
 		];
-	}
-
-	protected function tearDown(): void {
-		if ( $this->needsTeardown ) {
-			$this->readingListsTeardown();
-		}
-		parent::tearDown();
 	}
 }

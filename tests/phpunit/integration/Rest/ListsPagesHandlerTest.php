@@ -246,9 +246,4 @@ class ListsPagesHandlerTest extends \MediaWikiIntegrationTestCase {
 		$request = new RequestData( [ 'pathParams' => [ 'project' => 'foo', 'title' => 'Dog' ] ] );
 		$this->executeReadingListsHandler( $handler, $request, false );
 	}
-
-	protected function tearDown(): void {
-		$this->readingListsTeardown();
-		parent::tearDown();
-	}
 }

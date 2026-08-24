@@ -97,9 +97,4 @@ class ApiReadingListsDeleteTest extends ApiTestCase {
 		$this->expectExceptionMessage( 'The default list cannot be deleted' );
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
 	}
-
-	protected function tearDown(): void {
-		$this->readingListsTeardown();
-		parent::tearDown();
-	}
 }

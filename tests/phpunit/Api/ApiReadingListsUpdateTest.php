@@ -128,9 +128,4 @@ class ApiReadingListsUpdateTest extends ApiTestCase {
 		$this->expectExceptionMessage( 'The default list cannot be updated.' );
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
 	}
-
-	protected function tearDown(): void {
-		$this->readingListsTeardown();
-		parent::tearDown();
-	}
 }

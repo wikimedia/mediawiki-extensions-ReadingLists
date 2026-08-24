@@ -349,9 +349,4 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 		$request = new RequestData( [ 'pathParams' => [ 'date' => $changedSince ] ] );
 		$this->executeReadingListsHandler( $handler, $request, false );
 	}
-
-	protected function tearDown(): void {
-		$this->readingListsTeardown();
-		parent::tearDown();
-	}
 }

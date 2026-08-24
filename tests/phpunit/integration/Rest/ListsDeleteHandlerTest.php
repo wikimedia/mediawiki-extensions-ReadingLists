@@ -90,9 +90,4 @@ class ListsDeleteHandlerTest extends \MediaWikiIntegrationTestCase {
 		$request = new RequestData( [ 'pathParams' => [ 'id' => $listId ] ] );
 		$this->executeReadingListsHandler( $handler, $request, false );
 	}
-
-	protected function tearDown(): void {
-		$this->readingListsTeardown();
-		parent::tearDown();
-	}
 }

@@ -104,9 +104,4 @@ class ApiReadingListsCreateTest extends ApiTestCase {
 		$this->expectException( 'MediaWiki\Api\ApiUsageException' );
 		$this->doApiRequestWithToken( $this->apiParams, null, $this->user );
 	}
-
-	protected function tearDown(): void {
-		$this->readingListsTeardown();
-		parent::tearDown();
-	}
 }

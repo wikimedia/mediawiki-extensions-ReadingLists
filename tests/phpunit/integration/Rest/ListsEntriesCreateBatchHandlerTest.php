@@ -213,9 +213,4 @@ class ListsEntriesCreateBatchHandlerTest extends \MediaWikiIntegrationTestCase {
 		] );
 		$this->executeReadingListsHandler( $handler, $request, true, false );
 	}
-
-	protected function tearDown(): void {
-		$this->readingListsTeardown();
-		parent::tearDown();
-	}
 }

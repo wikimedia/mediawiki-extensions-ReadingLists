@@ -8,9 +8,6 @@ trait ReadingListsTestHelperTrait {
 	/** @var array<string,int> */
 	private array $projectIdCache = [];
 
-	/** @var bool Whether readingListsTeardown() is needed */
-	private $needsTeardown = false;
-
 	/**
 	 * Creates reading_list rows from the given data, with some magic fields:
 	 * - missing user ids will be added automatically
@@ -130,7 +127,6 @@ trait ReadingListsTestHelperTrait {
 	}
 
 	private function readingListsSetup(): int {
-		$this->needsTeardown = true;
 		$this->setMwGlobals( [
 			'wgCentralIdLookupProvider' => 'local',
 		] );
