@@ -7,8 +7,6 @@ use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
 
 /**
- * TODO: Create a test provide that pass the apiParams
- *
  * @covers \MediaWiki\Extension\ReadingLists\Api\ApiReadingListsCreate
  * @covers \MediaWiki\Extension\ReadingLists\Api\ApiReadingLists
  * @group medium
@@ -35,42 +33,76 @@ class ApiReadingListsCreateTest extends ApiTestCase {
 		$this->readingListsSetup();
 	}
 
-	/**
-	 * @dataProvider createProvider
-	 */
-	public function testCreate( $apiParams, $expected ) {
-		$this->apiParams['name'] = $apiParams['name'];
-		$this->apiParams['description'] = $apiParams['description'];
+	public function testCreate() {
+		$apiParams = [ 'name' => 'dogs', 'description' => 'Woof!' ];
+		$this->apiParams = array_merge( $this->apiParams, $apiParams );
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
-		$this->assertEquals( $expected, $result[0]['create']['result'] );
+
+		$this->assertEquals( 'Success', $result[0]['create']['result'] );
 	}
 
-	public static function createProvider() {
-		return [
-			[ [ 'name' => 'dogs', 'description' => 'Woof!' ], 'Success'
-			]
-		];
+	public function testCreateWithoutDescription() {
+		$apiParams = [ 'name' => 'cats' ];
+		$this->apiParams = array_merge( $this->apiParams, $apiParams );
+		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
+
+		$this->assertEquals( 'Success', $result[0]['create']['result'] );
+		$this->assertEquals( 'cats', $result[0]['create']['list']['name'] );
+		$this->assertSame( '', $result[0]['create']['list']['description'] );
 	}
 
 	/**
 	 * @dataProvider createBatchProvider
 	 */
-	public function testCreateBatch( $apiParams, $expected ) {
-		$this->apiParams['batch'] = json_encode( [
-			(object)[ "name" => $apiParams[0]['name'], "description" => $apiParams[0]['description'] ],
-			(object)[ "name" => $apiParams[1]['name'], "description" => $apiParams[1]['description'] ],
-		] );
+	public function testCreateBatch( $batch, $expectedDescriptions ) {
+		$this->apiParams['batch'] = json_encode( $batch );
 		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
-		$this->assertEquals( $expected, $result[0]['create']['result'] );
+
+		$this->assertSame( 'Success', $result[0]['create']['result'] );
+		$this->assertSame( $expectedDescriptions, array_column( $result[0]['create']['lists'], 'description' ) );
 	}
 
 	public static function createBatchProvider() {
 		return [
-			[ [ [ 'name' => 'dogs', 'description' => 'Woof!' ],
+			[
+				[
+					[ 'name' => 'dogs' ],
 					[ 'name' => 'cats', 'description' => 'Meow!' ],
-				], 'Success'
-			]
+				],
+				[
+					'',
+					'Meow!'
+				],
+			],
 		];
+	}
+
+	public function testCreateWithNameAndBatchNotAllowed() {
+		$this->apiParams['name'] = 'dogs';
+		$this->apiParams['batch'] = json_encode( [
+			[ 'name' => 'cats' ],
+		] );
+		$this->expectException( 'MediaWiki\Api\ApiUsageException' );
+		$this->doApiRequestWithToken( $this->apiParams, null, $this->user );
+	}
+
+	public function testCreateWithDescriptionAndBatchNotAllowed() {
+		$this->apiParams['description'] = 'meowy!';
+		$this->apiParams['batch'] = json_encode( [
+			[ 'name' => 'cats' ],
+		] );
+		$this->expectException( 'MediaWiki\Api\ApiUsageException' );
+		$this->doApiRequestWithToken( $this->apiParams, null, $this->user );
+	}
+
+	public function testCreateWithNameDescriptionAndBatchNotAllowed() {
+		$this->apiParams['name'] = 'favorite cats';
+		$this->apiParams['description'] = 'meowy!';
+		$this->apiParams['batch'] = json_encode( [
+			[ 'name' => 'cats' ],
+		] );
+		$this->expectException( 'MediaWiki\Api\ApiUsageException' );
+		$this->doApiRequestWithToken( $this->apiParams, null, $this->user );
 	}
 
 	protected function tearDown(): void {

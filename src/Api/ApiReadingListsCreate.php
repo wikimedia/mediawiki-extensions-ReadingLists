@@ -24,7 +24,7 @@ class ApiReadingListsCreate extends ApiBase {
 	public function execute() {
 		$params = $this->extractRequestParams();
 		$this->requireOnlyOneParameter( $params, 'name', 'batch' );
-		$this->requireOnlyOneParameter( $params, 'description', 'batch' );
+		$this->requireMaxOneParameter( $params, 'description', 'batch' );
 
 		$repository = $this->getReadingListRepository( $this->getUser() );
 		if ( isset( $params['name'] ) ) {
