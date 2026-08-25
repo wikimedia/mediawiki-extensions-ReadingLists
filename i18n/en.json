@@ -52,7 +52,7 @@
 	"readinglists-title": "Saved pages",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|list|lists}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|page|pages}}",
-	"readinglists-show-more": "Show more",
+	"readinglists-show-more": "Show more items",
 	"readinglists-default-title": "saved items",
 	"readinglists-default-description": "Default list for your saved pages.",
 	"readinglists-empty-title": "No saved articles",

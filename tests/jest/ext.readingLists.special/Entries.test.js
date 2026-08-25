@@ -72,6 +72,19 @@ describe( 'Entries', () => {
 			expect( wrapper.element ).toMatchSnapshot();
 		} );
 
+		test( 'renders "Show more items" button', async () => {
+			setupEntriesApiStub();
+
+			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const wrapper = mount( Entries, { props: { listId: 12345 } } );
+
+			await flushPromises();
+
+			const showMoreButton = wrapper.find( '.cdx-button' );
+			expect( showMoreButton.exists() ).toBe( true );
+			expect( showMoreButton.text() ).toBe( 'Show more items' );
+		} );
+
 		test( 'renders all items from all lists on special page', async () => {
 			setupAllItemsApiStub();
 

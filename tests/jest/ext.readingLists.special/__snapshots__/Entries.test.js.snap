@@ -343,7 +343,7 @@ exports[`Entries without custom lists renders with toolbar disabled 1`] = `
     class="cdx-button cdx-button--action-default cdx-button--weight-normal cdx-button--size-medium cdx-button--framed"
   >
     
-    Show more
+    Show more items
     
   </button>
   
