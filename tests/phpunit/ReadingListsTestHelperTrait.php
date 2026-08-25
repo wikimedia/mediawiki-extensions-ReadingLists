@@ -26,6 +26,7 @@ trait ReadingListsTestHelperTrait {
 			if ( isset( $list['entries'] ) ) {
 				$entries = $list['entries'];
 				unset( $list['entries'] );
+				$list['rl_size'] = count( $entries );
 			}
 			if ( isset( $list['rl_date_created'] ) ) {
 				$list['rl_date_created'] = $this->getDb()->timestamp( $list['rl_date_created'] );
@@ -40,7 +41,7 @@ trait ReadingListsTestHelperTrait {
 				->execute();
 			$listId = $this->getDb()->insertId();
 			if ( $entries !== null ) {
-				$this->addListEntries( $listId, $list['rl_user_id'], $entries );
+				$this->addListEntries( $listId, $list['rl_user_id'], $entries, false );
 			}
 			$listIds[] = $listId;
 		}
@@ -54,9 +55,10 @@ trait ReadingListsTestHelperTrait {
 	 * @param int $listId The list to add entries to
 	 * @param int $userId Th central ID of the list owner
 	 * @param array[] $entries Array of rows for reading_list_entry, with some magic fields
+	 * @param bool $updateListSize Whether to update the list size after inserting the entries
 	 * @return array The list entry IDs
 	 */
-	private function addListEntries( $listId, $userId, array $entries ) {
+	private function addListEntries( $listId, $userId, array $entries, bool $updateListSize = true ) {
 		$entryIds = [];
 		foreach ( $entries as $entry ) {
 			if ( !isset( $entry['rle_rl_id'] ) ) {
@@ -84,16 +86,18 @@ trait ReadingListsTestHelperTrait {
 			$entryId = $this->getDb()->insertId();
 			$entryIds[] = $entryId;
 		}
-		$entryCount = $this->getDb()->newSelectQueryBuilder()
-			->select( '*' )
-			->from( 'reading_list_entry' )
-			->where( [ 'rle_rl_id' => $listId ] )
-			->caller( __METHOD__ )->fetchRowCount();
-		$this->getDb()->newUpdateQueryBuilder()
-			->update( 'reading_list' )
-			->set( [ 'rl_size' => $entryCount ] )
-			->where( [ 'rl_id' => $listId ] )
-			->execute();
+		if ( $updateListSize ) {
+			$entryCount = $this->getDb()->newSelectQueryBuilder()
+				->select( '*' )
+				->from( 'reading_list_entry' )
+				->where( [ 'rle_rl_id' => $listId ] )
+				->caller( __METHOD__ )->fetchRowCount();
+			$this->getDb()->newUpdateQueryBuilder()
+				->update( 'reading_list' )
+				->set( [ 'rl_size' => $entryCount ] )
+				->where( [ 'rl_id' => $listId ] )
+				->execute();
+		}
 		return $entryIds;
 	}
 
