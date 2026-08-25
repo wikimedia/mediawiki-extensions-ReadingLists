@@ -5,6 +5,8 @@ namespace MediaWiki\Extension\ReadingLists\Tests;
 use MediaWiki\Api\ApiUsageException;
 
 trait ReadingListsTestHelperTrait {
+	/** @var array<string,int> */
+	private array $projectIdCache = [];
 
 	/** @var bool Whether readingListsTeardown() is needed */
 	private $needsTeardown = false;
@@ -106,20 +108,23 @@ trait ReadingListsTestHelperTrait {
 	private function addProjects( array $projects ) {
 		$ids = [];
 		foreach ( $projects as $project ) {
-			$this->getDb()->newInsertQueryBuilder()
-				->insertInto( 'reading_list_project' )
-				->ignore()
-				->row( [ 'rlp_project' => $project ] )
-				->caller( __METHOD__ )
-				->execute();
-			$projectId = $this->getDb()->affectedRows()
-				? $this->getDb()->insertId()
-				: $this->getDb()->newSelectQueryBuilder()
-					->select( 'rlp_id' )
-					->from( 'reading_list_project' )
-					->where( [ 'rlp_project' => $project ] )
-					->caller( __METHOD__ )->fetchField();
-			$ids[] = $projectId;
+			if ( !isset( $this->projectIdCache[$project] ) ) {
+				$this->getDb()->newInsertQueryBuilder()
+					->insertInto( 'reading_list_project' )
+					->ignore()
+					->row( [ 'rlp_project' => $project ] )
+					->caller( __METHOD__ )
+					->execute();
+				$projectId = $this->getDb()->affectedRows()
+					? $this->getDb()->insertId()
+					: $this->getDb()->newSelectQueryBuilder()
+						->select( 'rlp_id' )
+						->from( 'reading_list_project' )
+						->where( [ 'rlp_project' => $project ] )
+						->caller( __METHOD__ )->fetchField();
+				$this->projectIdCache[$project] = (int)$projectId;
+			}
+			$ids[] = $this->projectIdCache[$project];
 		}
 		return $ids;
 	}
