@@ -7,7 +7,6 @@ use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 
 /**
- * @group Database
  * @covers \MediaWiki\Extension\ReadingLists\LocalProjectHelper
  */
 class LocalProjectHelperTest extends MediaWikiIntegrationTestCase {

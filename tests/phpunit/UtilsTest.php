@@ -4,21 +4,16 @@ namespace MediaWiki\Extension\ReadingLists\Tests;
 
 use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWikiIntegrationTestCase;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
-/**
- * @group Database
- */
 class UtilsTest extends MediaWikiIntegrationTestCase {
 	/**
 	 * @covers \MediaWiki\Extension\ReadingLists\Utils::getDeletedExpiry
 	 */
 	public function testGetDeletedExpiry() {
 		$this->overrideConfigValue( 'ReadingListsDeletedRetentionDays', 15 );
-		$actualTimestamp = Utils::getDeletedExpiry();
-		$expectedTimestamp = wfTimestamp( TS_MW, strtotime( "-15 days" ) );
-		$delta = abs( $expectedTimestamp - $actualTimestamp );
-		$this->assertLessThanOrEqual( 10, $delta,
-			"Difference between expected timestamp ($expectedTimestamp) "
-			. "and actual timetamp ($actualTimestamp) is too large" );
+		ConvertibleTimestamp::setFakeTime( '20200116000000' );
+
+		$this->assertSame( '20200101000000', Utils::getDeletedExpiry() );
 	}
 }
