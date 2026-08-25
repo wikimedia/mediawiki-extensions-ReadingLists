@@ -8,6 +8,7 @@ use MediaWiki\Extension\ReadingLists\LocalProjectHelper;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Utils\MWTimestamp;
 use MediaWikiIntegrationTestCase;
 use PHPUnit\Framework\Constraint\Exception;
 use Wikimedia\Rdbms\IResultWrapper;
@@ -22,12 +23,23 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	use ReadingListsTestHelperTrait;
 
+	/**
+	 * Fake "now" timestamp for use with MWTimestamp::setFakeTime()
+	 */
+	private const FAKE_TIME = '20240101120000';
+
 	/** @var LBFactory */
 	private $lbFactory;
 
 	public function setUp(): void {
 		parent::setUp();
+		MWTimestamp::setFakeTime( self::FAKE_TIME );
 		$this->lbFactory = $this->getServiceContainer()->getDBLoadBalancerFactory();
+	}
+
+	public function tearDown(): void {
+		MWTimestamp::setFakeTime( false );
+		parent::tearDown();
 	}
 
 	/**
@@ -63,7 +75,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			[ 'getListEntries', [ 1 ], ReadingListRepository::SORT_BY_NAME,
 				ReadingListRepository::SORT_DIR_ASC ],
 			[ 'deleteListEntry', 1 ],
-			[ 'getListsByDateUpdated', wfTimestampNow() ],
+			[ 'getListsByDateUpdated', self::FAKE_TIME ],
 			[ 'getListsByPage', 'foo', 'bar' ],
 		];
 	}
@@ -94,7 +106,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			[ 'addList', 'foo' ],
 			[ 'getAllLists', ReadingListRepository::SORT_BY_NAME,
 				ReadingListRepository::SORT_DIR_ASC ],
-			[ 'getListsByDateUpdated', wfTimestampNow() ],
+			[ 'getListsByDateUpdated', self::FAKE_TIME ],
 			[ 'getListsByPage', 'foo', 'bar' ],
 		];
 	}
@@ -293,8 +305,8 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$repository->setupForUser();
 
 		$list = $repository->addList( 'foo' );
-		$this->assertTimestampEquals( wfTimestampNow(), $list->rl_date_created );
-		$this->assertTimestampEquals( wfTimestampNow(), $list->rl_date_updated );
+		$this->assertTimestampEquals( self::FAKE_TIME, $list->rl_date_created );
+		$this->assertTimestampEquals( self::FAKE_TIME, $list->rl_date_updated );
 		$data = (array)$list;
 		unset( $data['rl_id'], $data['rl_date_created'], $data['rl_date_updated'] );
 		$this->assertArrayEquals( [
@@ -312,8 +324,8 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			->from( 'reading_list' )
 			->where( [ 'rl_id' => $list->rl_id ] )
 			->caller( __METHOD__ )->fetchRow();
-		$this->assertTimestampEquals( wfTimestampNow(), $row->rl_date_created );
-		$this->assertTimestampEquals( wfTimestampNow(), $row->rl_date_updated );
+		$this->assertTimestampEquals( self::FAKE_TIME, $row->rl_date_created );
+		$this->assertTimestampEquals( self::FAKE_TIME, $row->rl_date_updated );
 		$data2 = (array)$row;
 		unset( $data['merged'], $data2['rl_id'], $data2['rl_date_created'], $data2['rl_date_updated'] );
 		$this->assertArrayEquals( $data + [
@@ -321,8 +333,8 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		], $data2, false, true );
 
 		$list = $repository->addList( 'bar', 'here is some bar' );
-		$this->assertTimestampEquals( wfTimestampNow(), $list->rl_date_created );
-		$this->assertTimestampEquals( wfTimestampNow(), $list->rl_date_updated );
+		$this->assertTimestampEquals( self::FAKE_TIME, $list->rl_date_created );
+		$this->assertTimestampEquals( self::FAKE_TIME, $list->rl_date_updated );
 		$data = (array)$list;
 		unset( $data['rl_id'], $data['rl_date_created'], $data['rl_date_updated'] );
 		$this->assertArrayEquals( [
@@ -431,8 +443,8 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				'rl_name' => 'default',
 				'rl_description' => '',
 				'rl_is_default' => '1',
-				'rl_date_created' => wfTimestampNow(),
-				'rl_date_updated' => wfTimestampNow(),
+				'rl_date_created' => self::FAKE_TIME,
+				'rl_date_updated' => self::FAKE_TIME,
 				'rl_deleted' => '0',
 				'rl_size' => '0'
 			],
@@ -541,7 +553,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertEquals( 'bar', $list->rl_name );
 		$this->assertEquals( 'xxx', $list->rl_description );
 		$this->assertTimestampEquals( '20100101000000', $list->rl_date_created );
-		$this->assertTimestampEquals( wfTimestampNow(), $list->rl_date_updated );
+		$this->assertTimestampEquals( self::FAKE_TIME, $list->rl_date_updated );
 		/** @var ReadingListRow $row */
 		$row = $this->getDb()->newSelectQueryBuilder()
 			->select( '*' )
@@ -616,7 +628,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				->fetchRowCount()
 		);
 		$this->assertTimestampEquals(
-			wfTimestampNow(),
+			self::FAKE_TIME,
 			$this->getDb()->newSelectQueryBuilder()
 				->select( 'rl_date_updated' )
 				->from( 'reading_list' )
@@ -689,8 +701,8 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 
 		$entry = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
 		$this->assertEquals( 'Foo', $entry->rle_title );
-		$this->assertTimestampEquals( wfTimestampNow(), $entry->rle_date_created );
-		$this->assertTimestampEquals( wfTimestampNow(), $entry->rle_date_updated );
+		$this->assertTimestampEquals( self::FAKE_TIME, $entry->rle_date_created );
+		$this->assertTimestampEquals( self::FAKE_TIME, $entry->rle_date_updated );
 		$this->assertSame( '0', $entry->rle_deleted );
 		$this->assertFalse( $entry->merged );
 		/** @var ReadingListEntryRow $row */
@@ -712,8 +724,8 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$entry2 = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
 		$this->assertEquals( $entry->rle_id, $entry2->rle_id );
 		$this->assertEquals( 'Foo', $entry2->rle_title );
-		$this->assertTimestampEquals( wfTimestampNow(), $entry2->rle_date_created );
-		$this->assertTimestampEquals( wfTimestampNow(), $entry2->rle_date_updated );
+		$this->assertTimestampEquals( self::FAKE_TIME, $entry2->rle_date_created );
+		$this->assertTimestampEquals( self::FAKE_TIME, $entry2->rle_date_updated );
 		$this->assertSame( '0', $entry2->rle_deleted );
 		$this->assertFalse( $entry->merged );
 
@@ -1147,8 +1159,8 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				'rle_user_id' => 1,
 				'rlp_project' => 'foo',
 				'rle_title' => 'Foo',
-				'rle_date_created' => wfTimestampNow(),
-				'rle_date_updated' => wfTimestampNow(),
+				'rle_date_created' => self::FAKE_TIME,
+				'rle_date_updated' => self::FAKE_TIME,
 				'rle_deleted' => 0,
 			],
 		] );
@@ -1218,8 +1230,8 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				'rle_rl_id' => $defaultId,
 				'rlp_project' => 'foo',
 				'rle_title' => 'Foo',
-				'rle_date_created' => wfTimestampNow(),
-				'rle_date_updated' => wfTimestampNow(),
+				'rle_date_created' => self::FAKE_TIME,
+				'rle_date_updated' => self::FAKE_TIME,
 				'rle_deleted' => 0,
 			],
 			'list-foo' => [
@@ -1792,8 +1804,8 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			[
 				'rl_is_default' => 0,
 				'rl_name' => 'test',
-				'rl_date_created' => wfTimestampNow(),
-				'rl_date_updated' => wfTimestampNow(),
+				'rl_date_created' => self::FAKE_TIME,
+				'rl_date_updated' => self::FAKE_TIME,
 				'rl_deleted' => 0,
 			],
 			[
@@ -1804,8 +1816,8 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			[
 				'rl_is_default' => 0,
 				'rl_name' => 'outOfSync',
-				'rl_date_created' => wfTimestampNow(),
-				'rl_date_updated' => wfTimestampNow(),
+				'rl_date_created' => self::FAKE_TIME,
+				'rl_date_updated' => self::FAKE_TIME,
 				'rl_deleted' => 0,
 			],
 		] );
@@ -1813,22 +1825,22 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			[
 				'rlp_project' => 'foo',
 				'rle_title' => 'bar',
-				'rle_date_created' => wfTimestampNow(),
-				'rle_date_updated' => wfTimestampNow(),
+				'rle_date_created' => self::FAKE_TIME,
+				'rle_date_updated' => self::FAKE_TIME,
 				'rle_deleted' => 0,
 			],
 			[
 				'rlp_project' => 'foo2',
 				'rle_title' => 'bar2',
-				'rle_date_created' => wfTimestampNow(),
-				'rle_date_updated' => wfTimestampNow(),
+				'rle_date_created' => self::FAKE_TIME,
+				'rle_date_updated' => self::FAKE_TIME,
 				'rle_deleted' => 0,
 			],
 			[
 				'rlp_project' => 'foo3',
 				'rle_title' => 'bar3',
-				'rle_date_created' => wfTimestampNow(),
-				'rle_date_updated' => wfTimestampNow(),
+				'rle_date_created' => self::FAKE_TIME,
+				'rle_date_updated' => self::FAKE_TIME,
 				'rle_deleted' => 0,
 			],
 		] );
@@ -1836,8 +1848,8 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			[
 				'rlp_project' => 'foo4',
 				'rle_title' => 'bar4',
-				'rle_date_created' => wfTimestampNow(),
-				'rle_date_updated' => wfTimestampNow(),
+				'rle_date_created' => self::FAKE_TIME,
+				'rle_date_updated' => self::FAKE_TIME,
 				'rle_deleted' => 0,
 			],
 		] );
@@ -1845,8 +1857,8 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			[
 				'rlp_project' => 'foo5',
 				'rle_title' => 'bar5',
-				'rle_date_created' => wfTimestampNow(),
-				'rle_date_updated' => wfTimestampNow(),
+				'rle_date_created' => self::FAKE_TIME,
+				'rle_date_updated' => self::FAKE_TIME,
 				'rle_deleted' => 0,
 			]
 		] );
@@ -1867,7 +1879,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			->where( [ 'rle_rl_id' => $listId, 'rle_deleted' => 1 ] )
 			->caller( __METHOD__ )->fetchRow();
 		$this->assertEquals( $fooProjectId, $row->rle_rlp_id );
-		$this->assertTimestampEquals( wfTimestampNow(), $row->rle_date_updated );
+		$this->assertTimestampEquals( self::FAKE_TIME, $row->rle_date_updated );
 		$newListSize = $this->getDb()->newSelectQueryBuilder()
 			->select( 'rl_size' )
 			->from( 'reading_list' )
@@ -2377,22 +2389,22 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			[
 				'rl_is_default' => 1,
 				'rl_name' => 'default',
-				'rl_date_created' => wfTimestampNow(),
-				'rl_date_updated' => wfTimestampNow(),
+				'rl_date_created' => self::FAKE_TIME,
+				'rl_date_updated' => self::FAKE_TIME,
 				'rl_deleted' => 0,
 				'entries' => [
 					[
 						'rlp_project' => 'foo',
 						'rle_title' => 'bar',
-						'rle_date_created' => wfTimestampNow(),
-						'rle_date_updated' => wfTimestampNow(),
+						'rle_date_created' => self::FAKE_TIME,
+						'rle_date_updated' => self::FAKE_TIME,
 						'rle_deleted' => 0,
 					],
 					[
 						'rlp_project' => 'foo2',
 						'rle_title' => 'bar2',
-						'rle_date_created' => wfTimestampNow(),
-						'rle_date_updated' => wfTimestampNow(),
+						'rle_date_created' => self::FAKE_TIME,
+						'rle_date_updated' => self::FAKE_TIME,
 						'rle_deleted' => 0,
 					],
 				],
