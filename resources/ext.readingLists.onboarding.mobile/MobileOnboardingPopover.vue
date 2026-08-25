@@ -76,6 +76,7 @@ module.exports = exports = {
 
 .cdx-popover.readinglists-mobile-onboarding-popover {
 	background-color: @background-color-progressive-subtle;
+	width: @size-1600;
 
 	.cdx-popover__arrow {
 		background-color: @background-color-progressive-subtle;
