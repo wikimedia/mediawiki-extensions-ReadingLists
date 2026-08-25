@@ -26,8 +26,14 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 		'list'    => 'readinglistentries',
 	];
 
+	/** @var int */
+	private static $user2Id;
+
+	/** @var int */
+	private static $user2ListId;
+
 	/** @var User */
-	private $user;
+	private $user2;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -36,12 +42,22 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 			'wgCentralIdLookupProvider' => 'local',
 		] );
 
-		$this->user = $this->getTestSysop()->getUser();
+		$this->user2 = $this->getServiceContainer()
+			->getUserFactory()
+			->newFromId( self::$user2Id );
 	}
 
-	private function addQueryTestData(): void {
+	public function addDBDataOnce(): void {
+		$this->addQueryTestData( $this->getTestSysop()->getUser()->mId );
+
+		$user2 = $this->getTestUser()->getUser();
+		self::$user2Id = $user2->getId();
+		$this->addAdditionalQueryTestData( self::$user2Id );
+	}
+
+	private function addQueryTestData( int $userId ): void {
 		$this->addProjects( [ 'foo' ] );
-		$this->addLists( $this->user->mId, [
+		$this->addLists( $userId, [
 			[
 				'rl_is_default' => 1,
 				'rl_name' => 'default',
@@ -117,18 +133,118 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 		] );
 	}
 
-	/**
-	 * @dataProvider apiQueryProvider
-	 */
-	public function testApiQuery( $apiParams, $expected, $message ) {
-		$this->addQueryTestData();
+	private function addAdditionalQueryTestData( int $userId ): void {
+		$localProject = LocalProjectHelper::getLocalProject();
+		$listIds = $this->addLists( $userId, [
+			[
+				'rl_is_default' => 0,
+				'rl_name' => 'pagination',
+				'rl_description' => '',
+				'rl_date_created' => '20170913205936',
+				'rl_date_updated' => '20170913205936',
+				'rl_deleted' => 0,
+				'entries' => [
+					[
+						'rlp_project' => 'foo',
+						'rle_title' => 'Apple_pie',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180816000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'foo',
+						'rle_title' => 'Banana_split',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180817000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'foo',
+						'rle_title' => 'Cherry_cake',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180818000000',
+						'rle_deleted' => 0,
+					],
+				],
+			],
+			[
+				'rl_is_default' => 0,
+				'rl_name' => 'local project',
+				'rl_description' => '',
+				'rl_date_created' => '20170913205936',
+				'rl_date_updated' => '20170913205936',
+				'rl_deleted' => 0,
+				'entries' => [
+					[
+						'rlp_project' => $localProject,
+						'rle_title' => 'Zebra',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180817000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'https://example.org',
+						'rle_title' => 'Moose',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180818000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => $localProject,
+						'rle_title' => 'Ant',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180819000000',
+						'rle_deleted' => 0,
+					],
+				],
+			],
+			[
+				'rl_is_default' => 0,
+				'rl_name' => 'wiki ids',
+				'rl_description' => '',
+				'rl_date_created' => '20170913205936',
+				'rl_date_updated' => '20170913205936',
+				'rl_deleted' => 0,
+				'entries' => [
+					[
+						'rlp_project' => 'https://en.example.org',
+						'rle_title' => 'Eagle',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180817000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'https://de.example.org',
+						'rle_title' => 'Bear',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180818000000',
+						'rle_deleted' => 0,
+					],
+					[
+						'rlp_project' => 'https://fr.example.org',
+						'rle_title' => 'Wolf',
+						'rle_date_created' => '20100101000000',
+						'rle_date_updated' => '20180819000000',
+						'rle_deleted' => 0,
+					],
+				],
+			],
+		] );
 
+		self::$user2ListId = $listIds[0];
+	}
+
+	public function testApiQuery(): void {
 		ConvertibleTimestamp::setFakeTime( '2018-09-13T20:59:36Z' );
 
-		$this->apiParams = array_merge( $this->apiParams, $apiParams );
+		foreach ( self::apiQueryCases() as [ $apiParams, $expected, $message ] ) {
+			$this->assertApiQuery( $apiParams, $expected, $message );
+		}
+	}
 
+	private function assertApiQuery( array $apiParams, array $expected, string $message ): void {
 		$result = $this->doApiRequest(
-			$this->apiParams,
+			array_merge( $this->apiParams, $apiParams ),
 			null,
 			false,
 			$this->getTestSysop()->getAuthority()
@@ -138,7 +254,7 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 		$this->assertEquals( $expected, $result[0], $message );
 	}
 
-	public static function apiQueryProvider() {
+	private static function apiQueryCases(): array {
 		return [
 			[
 				[
@@ -376,88 +492,19 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 		];
 	}
 
-	public function testTitleWithUnderscoresIsFormattedWithSpaces(): void {
-		ConvertibleTimestamp::setFakeTime( '2018-09-13T20:59:36Z' );
-
-		$listIds = $this->addLists( $this->user->mId, [
-			[
-				'rl_is_default' => 0,
-				'rl_name' => 'test',
-				'rl_description' => '',
-				'rl_date_created' => '20170913205936',
-				'rl_date_updated' => '20170913205936',
-				'rl_deleted' => 0,
-				'entries' => [
-					[
-						'rlp_project' => 'foo',
-						'rle_title' => 'Title_With_Underscores',
-						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20180817000000',
-						'rle_deleted' => 0,
-					],
-				],
-			],
-		] );
-
-		$result = $this->doApiRequest(
-			array_merge( $this->apiParams, [ 'rlelists' => (string)$listIds[0] ] ),
-			null,
-			false,
-			$this->getTestSysop()->getAuthority()
-		);
-
-		$entries = $result[0]['query']['readinglistentries'];
-		$this->assertCount( 1, $entries );
-		$this->assertSame( 'Title With Underscores', $entries[0]['title'] );
-	}
-
 	public function testTitleWithUnderscoresPaginationUsesRawContinueToken(): void {
 		ConvertibleTimestamp::setFakeTime( '2018-09-13T20:59:36Z' );
 
-		$listIds = $this->addLists( $this->user->mId, [
-			[
-				'rl_is_default' => 0,
-				'rl_name' => 'test',
-				'rl_description' => '',
-				'rl_date_created' => '20170913205936',
-				'rl_date_updated' => '20170913205936',
-				'rl_deleted' => 0,
-				'entries' => [
-					[
-						'rlp_project' => 'foo',
-						'rle_title' => 'Apple_pie',
-						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20180816000000',
-						'rle_deleted' => 0,
-					],
-					[
-						'rlp_project' => 'foo',
-						'rle_title' => 'Banana_split',
-						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20180817000000',
-						'rle_deleted' => 0,
-					],
-					[
-						'rlp_project' => 'foo',
-						'rle_title' => 'Cherry_cake',
-						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20180818000000',
-						'rle_deleted' => 0,
-					],
-				],
-			],
-		] );
-
 		$firstPage = $this->doApiRequest(
 			array_merge( $this->apiParams, [
-				'rlelists' => (string)$listIds[0],
+				'rlelists' => (string)self::$user2ListId,
 				'rlesort' => 'name',
 				'rledir' => 'ascending',
 				'rlelimit' => 1,
 			] ),
 			null,
 			false,
-			$this->getTestSysop()->getAuthority()
+			$this->user2
 		);
 
 		$firstPageEntries = $firstPage[0]['query']['readinglistentries'];
@@ -466,7 +513,7 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 
 		$secondPage = $this->doApiRequest(
 			array_merge( $this->apiParams, [
-				'rlelists' => (string)$listIds[0],
+				'rlelists' => (string)self::$user2ListId,
 				'rlesort' => 'name',
 				'rledir' => 'ascending',
 				'rlelimit' => 1,
@@ -474,7 +521,7 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 			] ),
 			null,
 			false,
-			$this->getTestSysop()->getAuthority()
+			$this->user2
 		);
 
 		$secondPageEntries = $secondPage[0]['query']['readinglistentries'];
@@ -489,40 +536,6 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 	public function testApiQueryProjectsFilterAcceptsLocalProject(): void {
 		$localProject = LocalProjectHelper::getLocalProject();
 
-		$this->addLists( $this->user->mId, [
-			[
-				'rl_is_default' => 0,
-				'rl_name' => 'local project',
-				'rl_description' => '',
-				'rl_date_created' => '20170913205936',
-				'rl_date_updated' => '20170913205936',
-				'rl_deleted' => 0,
-				'entries' => [
-					[
-						'rlp_project' => $localProject,
-						'rle_title' => 'Zebra',
-						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20180817000000',
-						'rle_deleted' => 0,
-					],
-					[
-						'rlp_project' => 'https://example.org',
-						'rle_title' => 'Moose',
-						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20180818000000',
-						'rle_deleted' => 0,
-					],
-					[
-						'rlp_project' => $localProject,
-						'rle_title' => 'Ant',
-						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20180819000000',
-						'rle_deleted' => 0,
-					],
-				],
-			],
-		] );
-
 		$result = $this->doApiRequest(
 			array_merge( $this->apiParams, [
 				'rlesort' => 'name',
@@ -531,7 +544,7 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 			] ),
 			null,
 			false,
-			$this->getTestSysop()->getAuthority()
+			$this->user2
 		);
 
 		$entries = $result[0]['query']['readinglistentries'];
@@ -565,40 +578,6 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 		];
 		$this->setMwGlobals( 'wgConf', $conf );
 
-		$this->addLists( $this->user->mId, [
-			[
-				'rl_is_default' => 0,
-				'rl_name' => 'wiki ids',
-				'rl_description' => '',
-				'rl_date_created' => '20170913205936',
-				'rl_date_updated' => '20170913205936',
-				'rl_deleted' => 0,
-				'entries' => [
-					[
-						'rlp_project' => 'https://en.example.org',
-						'rle_title' => 'Eagle',
-						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20180817000000',
-						'rle_deleted' => 0,
-					],
-					[
-						'rlp_project' => 'https://de.example.org',
-						'rle_title' => 'Bear',
-						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20180818000000',
-						'rle_deleted' => 0,
-					],
-					[
-						'rlp_project' => 'https://fr.example.org',
-						'rle_title' => 'Wolf',
-						'rle_date_created' => '20100101000000',
-						'rle_date_updated' => '20180819000000',
-						'rle_deleted' => 0,
-					],
-				],
-			],
-		] );
-
 		$result = $this->doApiRequest(
 			array_merge( $this->apiParams, [
 				'rlesort' => 'name',
@@ -607,7 +586,7 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 			] ),
 			null,
 			false,
-			$this->getTestSysop()->getAuthority()
+			$this->user2
 		);
 
 		$entries = $result[0]['query']['readinglistentries'];
@@ -622,14 +601,15 @@ class ApiQueryReadingListEntriesTest extends ApiTestCase {
 		);
 	}
 
-	/**
-	 * @dataProvider apiQueryEntriesFromAllListsProvider
-	 */
-	public function testApiQueryEntriesFromAllLists( $apiParams, $expected, $message ) {
-		$this->testApiQuery( $apiParams, $expected, $message );
+	public function testApiQueryEntriesFromAllLists(): void {
+		ConvertibleTimestamp::setFakeTime( '2018-09-13T20:59:36Z' );
+
+		foreach ( self::apiQueryEntriesFromAllListsCases() as [ $apiParams, $expected, $message ] ) {
+			$this->assertApiQuery( $apiParams, $expected, $message );
+		}
 	}
 
-	public static function apiQueryEntriesFromAllListsProvider() {
+	private static function apiQueryEntriesFromAllListsCases(): array {
 		return [
 			[
 				[
