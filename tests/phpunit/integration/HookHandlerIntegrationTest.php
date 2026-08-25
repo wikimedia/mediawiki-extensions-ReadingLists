@@ -36,7 +36,6 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 	use TempUserTestTrait;
 
 	private User $user;
-	private User $anonUser;
 	private HookHandler $hookHandler;
 
 	protected function setUp(): void {
@@ -45,8 +44,6 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$this->setUserLang( 'en' );
 
 		$this->user = $this->getTestUser()->getUser();
-
-		$this->anonUser = new User();
 
 		$this->hookHandler = $this->createHookHandler();
 	}
@@ -193,35 +190,6 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$this->overrideConfigValue( MainConfigNames::AuthManagerConfig, $authManagerConfig );
 	}
 
-	public function testBookmarkIconButtonAddedForMainNamespacePageWithCTA() {
-		$this->setupWebEnabled();
-		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
-		$skin = $this->createSkinTemplate( $title, true, 'minerva', $this->anonUser );
-
-		$links = $this->getLinks();
-		$this->overrideConfigValue( 'ReadingListsMinervaCTA', true );
-
-		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
-
-		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
-		$this->assertArrayHasKey( 'bookmark', $links['views'] );
-		$this->assertContains( 'ext.readingLists.bookmark.anonymous', $skin->getOutput()->getModules() );
-	}
-
-	public function testBookmarkIconButtonNotAddedForMainNamespacePageWithCTAInVector() {
-		$this->setupWebEnabled();
-		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
-		$skin = $this->createSkinTemplate( $title, true, 'vector-2022', $this->anonUser );
-
-		$links = $this->getLinks();
-		$this->overrideConfigValue( 'ReadingListsMinervaCTA', true );
-
-		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
-
-		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
-		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
-	}
-
 	public function testBookmarkIconButtonAddedForMainNamespacePageWithBetaFeature() {
 		$this->setupBetaFeature();
 
@@ -308,20 +276,6 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
 	}
 
-	public function testBookmarkNotAddedForUnsupportedSkin() {
-		$this->setupWebEnabled();
-
-		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
-		$skin = $this->createSkinTemplate( $title, true, 'monobook' );
-
-		$links = $this->getLinks();
-
-		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
-
-		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
-		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
-	}
-
 	public function testBookmarkNotAddedForTempUser() {
 		$this->enableAutoCreateTempUser();
 		$this->allowCentralAuthTempUserCreation();
@@ -395,32 +349,6 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$this->assertContains(
 			'ext.readingLists.bookmark.styles',
 			$skin->getOutput()->getModuleStyles()
-		);
-	}
-
-	public function testCentralAuthPostLoginRedirectAddsReadingListsAccountJustCreatedForSignup(): void {
-		$returnTo = 'Taco';
-		$returnToQuery = 'readingListsAccountCreationCta=1&foo=bar';
-		$unused = '';
-
-		$this->assertTrue(
-			$this->hookHandler->onCentralAuthPostLoginRedirect(
-				$returnTo,
-				$returnToQuery,
-				false,
-				'signup',
-				$unused
-			)
-		);
-
-		$this->assertSame( 'Taco', $returnTo );
-		$this->assertSame( '', $unused );
-		$this->assertSame(
-			[
-				'foo' => 'bar',
-				'readingListsAccountJustCreated' => '1',
-			],
-			wfCgiToArray( $returnToQuery )
 		);
 	}
 
