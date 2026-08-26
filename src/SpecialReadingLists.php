@@ -24,6 +24,14 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 	}
 
 	/**
+	 * disables default behaviour since ReadingLists uses addHelpLink
+	 * @inheritDoc
+	 */
+	protected function outputHeader( $summaryMessageKey = '' ) {
+		// Note: intentionally does not call parent to avoid [[phab:T436103]]
+	}
+
+	/**
 	 * Render SpecialPage:ReadingLists
 	 *
 	 * @param string $subPage Parameter submitted as subpage
@@ -32,6 +40,8 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 	public function execute( $subPage ) {
 		$this->setHeaders();
 		$this->outputHeader();
+		// [[phab:T436103]]
+		$this->addHelpLink( 'Help:Reading_lists' );
 
 		$req = $this->getRequest();
 		$exportFeature = $req->getText( 'limport' ) !== '' || $req->getText( 'lexport' ) !== '';
