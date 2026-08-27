@@ -126,18 +126,15 @@ module.exports = exports = {
 // Use color.blue100 for the background
 .readinglists-onboarding-banner {
 	position: relative;
+	display: flex;
+	justify-content: center;
 	background-color: @background-color-progressive-subtle--hover;
-	padding: @spacing-50;
-	text-align: center;
+	padding: @spacing-125 0;
 	width: @size-full;
 
 	&::before {
 		content: var( --banner-image );
 		display: block;
-		margin: 0 auto;
-		// 9.75rem = 156px  (assuming 1rem = 16px) to match SVG width
-		// and account for padding.
-		height: calc( 9.75rem + ( @spacing-50 * 2 ) );
 	}
 }
 
