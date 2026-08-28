@@ -597,6 +597,22 @@ describe( 'fromBase64', () => {
 		) } );
 	} );
 
+	test( 'rejects project URLs before making requests', async () => {
+		const get = jest.fn();
+		api.stubApi( { get } );
+
+		const encoded = btoa( JSON.stringify( {
+			list: {
+				en: [ 1 ],
+				'https://example.test': [ 2 ]
+			}
+		} ) );
+		const response = await api.fromBase64( encoded );
+
+		expect( response ).toStrictEqual( { error: 'readinglists-import-error' } );
+		expect( get ).not.toHaveBeenCalled();
+	} );
+
 	test( 'preserves name when already present in encoded data', async () => {
 		api.stubApi( {
 			get: jest.fn( ( { action }, { url } ) => {
