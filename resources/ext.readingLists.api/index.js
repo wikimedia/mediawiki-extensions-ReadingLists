@@ -371,9 +371,16 @@ async function fromBase64( data ) {
 		output.name = mw.msg( 'readinglists-no-title' );
 	}
 
+	const projectGroups = Object.entries( output.list );
+
+	// Shared-list imports currently support Wikipedia language codes, not project URLs.
+	if ( projectGroups.some( ( [ project ] ) => !languageCodePattern.test( project ) ) ) {
+		return { error: 'readinglists-import-error' };
+	}
+
 	const promises = [];
 
-	for ( const [ project, entries ] of Object.entries( output.list ) ) {
+	for ( const [ project, entries ] of projectGroups ) {
 		promises.push( getPagesFromManifest(
 			project,
 			entries.map( ( entry ) => ( { pageid: entry } ) )
