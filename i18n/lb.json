@@ -6,7 +6,7 @@
 			"Les Meloures"
 		]
 	},
-	"readinglists-desc": "Erlaabt et de Benotzer, fir privat Lëschte vun Elementer ze geréieren, wéi z. B. Lieszeechelëschten oder Lëschte vu „Gespäicherte Säiten“.",
+	"readinglists-desc": "Erlaabt et de Benotzer, fir privat Lëschte vun Anträg ze geréieren, wéi z. B. Lieszeechelëschten oder Lëschte vu „Gespäicherte Säiten“.",
 	"readinglists-db-error-not-set-up": "Lieslëschte goufe fir dëse Benotzer nach net ageriicht.",
 	"readinglists-db-error-no-projects": "Et goufe keng Projete fir de Gebrauch mat ReadingLists registréiert. Benotzt de populateProjectsFromSiteMatrix-Skript fir Projeten ze registréieren.",
 	"readinglists-db-error-already-set-up": "Lieslëschte goufe fir dëse Benotzer schonn ageriicht.",
@@ -50,7 +50,7 @@
 	"readinglists-total-lists": "$1 {{PLURAL:$1|Lëscht|Lëschten}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|Säit|Säiten}}",
 	"readinglists-show-more": "Méi weisen",
-	"readinglists-default-title": "Lëscht vu gespäicherten Elementer",
+	"readinglists-default-title": "gespäichert Anträg",
 	"readinglists-default-description": "Standardlëscht fir Är gespäichert Säiten.",
 	"readinglists-empty-title": "Nach keng gespäichert Säiten",
 	"readinglists-empty-cta": "Benotzt d'Späichersymbol op enger belibeger Säit, fir Anträg hei derbäizesetzen.",
