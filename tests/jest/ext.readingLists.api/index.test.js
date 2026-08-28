@@ -521,6 +521,22 @@ describe( 'fromBase64', () => {
 			'InvalidCharacterError'
 		) } );
 	} );
+
+	test( 'rejects project URLs before making requests', async () => {
+		const get = jest.fn();
+		api.stubApi( { get } );
+
+		const encoded = btoa( JSON.stringify( {
+			list: {
+				en: [ 1 ],
+				'https://example.test': [ 2 ]
+			}
+		} ) );
+		const response = await api.fromBase64( encoded );
+
+		expect( response ).toStrictEqual( { error: 'readinglists-import-error' } );
+		expect( get ).not.toHaveBeenCalled();
+	} );
 } );
 
 describe( 'toBase64', () => {
