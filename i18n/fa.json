@@ -40,6 +40,8 @@
 	"readinglists-special-title-imported": "فهرست‌های مطالعه: درون‌ریزی از کاربر دیگر",
 	"readinglists-special-subpage-title": "ذخیره‌ها",
 	"readinglists-special-custom-list-title": "ذخیره‌ها / $1",
+	"readinglists-privacy-indicator-label": "خصوصی",
+	"readinglists-privacy-tooltip": "موارد و مجموعه‌های ذخیره‌شده شما خصوصی هستند و فقط برای شما قابل مشاهده می‌باشند.",
 	"readinglists-description": "تمام فهرست‌های ذخیره‌شده شما در یک مکان.",
 	"readinglists-loading": "لطفاً صبر کنید...",
 	"reading-list-purpose": "برای مشاهدهٔ فهرست‌های مطالعه خصوصی خود، لطفاً وارد شوید.",
@@ -56,7 +58,9 @@
 	"readinglists-default-title": "موارد ذخیره‌شده",
 	"readinglists-default-description": "فهرست پیش‌فرض برای صفحات ذخیره‌شده شما.",
 	"readinglists-empty-title": "مقاله‌ای ذخیره نشده",
-	"readinglists-empty-cta": "برای افزودن موارد به اینجا، از نماد ذخیره در هر صفحه استفاده کنید.",
+	"readinglists-empty-cta": "برای افزودن موارد به اینجا، از نماد نشانک در هر صفحه استفاده کنید.",
+	"readinglists-empty-collection-title": "هیچ مقاله‌ای به این مجموعه اضافه نشده است",
+	"readinglists-empty-collection-cta": "برای افزودن هر مقاله به یک مجموعه، از نماد نشانک در هر صفحه استفاده کنید.",
 	"readinglists-display-menu": "نمایش منو",
 	"readinglists-display-sort": "مرتب‌سازی بر اساس",
 	"readinglists-display-sort-name": "نام",
@@ -113,5 +117,9 @@
 	"readinglists-cta-dialog-call-to-action": "برای ذخیره‌سازی، لطفاً وارد شوید یا یک حساب کاربری ایجاد کنید.",
 	"readinglists-cta-dialog-create-account": "ایجاد حساب",
 	"readinglists-cta-dialog-log-in": "ورود",
-	"readinglists-cta-dialog-close": "بستن"
+	"readinglists-cta-dialog-close": "بستن",
+	"readinglists-customlists-allitems": "همه موارد",
+	"readinglists-customlists-collections": "مجموعه‌ها",
+	"readinglists-customlists-no-collections": "شما هیچ مجموعه‌ای ندارید",
+	"readinglists-customlists-create-collection": "ایجاد مجموعهٔ جدید"
 }
