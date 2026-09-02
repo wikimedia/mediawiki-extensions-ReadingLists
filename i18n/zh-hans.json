@@ -10,6 +10,7 @@
 			"Peterxy12",
 			"SaoMikoto",
 			"Saoutax",
+			"Shizhao",
 			"沈澄心",
 			"范"
 		]
@@ -60,7 +61,7 @@
 	"readinglists-title": "已保存的页面",
 	"readinglists-total-lists": "$1{{PLURAL:$1|个列表}}",
 	"readinglists-total-articles": "$1个{{PLURAL:$1|页面}}",
-	"readinglists-show-more": "显示更多",
+	"readinglists-show-more": "显示更多项目",
 	"readinglists-default-title": "已保存项目",
 	"readinglists-default-description": "用于您已保存页面的默认列表",
 	"readinglists-empty-title": "没有已保存的条目",
