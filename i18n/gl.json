@@ -53,7 +53,7 @@
 	"readinglists-title": "Páxinas gardadas",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|lista|listas}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|páxina|páxinas}}",
-	"readinglists-show-more": "Mostrar máis",
+	"readinglists-show-more": "Mostrar máis elementos",
 	"readinglists-default-title": "elementos gardados",
 	"readinglists-default-description": "Lista por defecto para as túas páxinas gardadas.",
 	"readinglists-empty-title": "Non hai artigos gardados",

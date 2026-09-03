@@ -57,7 +57,7 @@
 	"readinglists-title": "保存済みページ",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|リスト}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|ページ}}",
-	"readinglists-show-more": "さらに表示する",
+	"readinglists-show-more": "項目をさらに表示",
 	"readinglists-default-title": "保存済み項目",
 	"readinglists-default-description": "保存済みページの既定リスト。",
 	"readinglists-empty-title": "保存済みの記事はありません",
