@@ -15,7 +15,9 @@
 	},
 	"overrides": [
 		{
-			"files": [ "**/*.vue" ],
+			"files": [
+				"**/*.vue"
+			],
 			"extends": [
 				"wikimedia/vue3/common"
 			],

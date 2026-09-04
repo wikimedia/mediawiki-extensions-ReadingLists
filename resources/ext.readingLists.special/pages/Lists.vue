@@ -76,7 +76,6 @@ module.exports = exports = {
 			console.error( err );
 
 			if ( typeof err === 'string' ) {
-				// eslint-disable-next-line mediawiki/msg-doc
 				this.error = mw.msg( err );
 			} else {
 				this.error = err.toString();

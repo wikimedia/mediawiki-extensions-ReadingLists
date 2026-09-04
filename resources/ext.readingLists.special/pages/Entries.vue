@@ -119,7 +119,6 @@ module.exports = exports = {
 				const key = err === 'badinteger' ? 'readinglists-db-error-no-such-list' : err;
 				const args = key === 'readinglists-db-error-no-such-list' ? this.listId : undefined;
 
-				// eslint-disable-next-line mediawiki/msg-doc
 				this.error = mw.msg( key, args );
 			} else {
 				this.error = err.toString();
