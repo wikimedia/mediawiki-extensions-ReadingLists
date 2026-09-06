@@ -3,7 +3,6 @@
 namespace MediaWiki\Extension\ReadingLists\Tests;
 
 use MediaWiki\Extension\ReadingLists\LocalProjectHelper;
-use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 
 /**
@@ -12,7 +11,7 @@ use MediaWikiIntegrationTestCase;
 class LocalProjectHelperTest extends MediaWikiIntegrationTestCase {
 
 	public function testGetLocalProject(): void {
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 

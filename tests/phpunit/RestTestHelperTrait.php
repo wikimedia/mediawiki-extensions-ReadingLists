@@ -6,7 +6,6 @@ use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\Rest\SetupHandler;
 use MediaWiki\Extension\ReadingLists\Rest\TeardownHandler;
 use MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Permissions\Authority;
 use MediaWiki\Rest\Handler;
 use MediaWiki\Rest\RequestData;
@@ -311,7 +310,7 @@ trait RestTestHelperTrait {
 		$request = new RequestData();
 		$services = $this->getServiceContainer();
 		$handler = new SetupHandler(
-			MediaWikiServices::getInstance()->getDBLoadBalancerFactory(),
+			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup()
 		);

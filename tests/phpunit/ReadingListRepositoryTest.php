@@ -7,7 +7,6 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListRow;
 use MediaWiki\Extension\ReadingLists\LocalProjectHelper;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Utils\MWTimestamp;
 use MediaWikiIntegrationTestCase;
 use PHPUnit\Framework\Constraint\Exception;
@@ -765,7 +764,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 		$localProject = $urlUtils->assemble( $parts );
@@ -790,7 +789,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 		$localProject = $urlUtils->assemble( $parts );
@@ -819,7 +818,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 		$localProject = $urlUtils->assemble( $parts );
@@ -870,7 +869,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 		$localProject = $urlUtils->assemble( $parts );
@@ -918,7 +917,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 		$localProject = $urlUtils->assemble( $parts );
@@ -1009,7 +1008,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 		$localProject = $urlUtils->assemble( $parts );
@@ -1085,7 +1084,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 		$localProject = $urlUtils->assemble( $parts );
@@ -1114,7 +1113,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 		$localProject = $urlUtils->assemble( $parts );

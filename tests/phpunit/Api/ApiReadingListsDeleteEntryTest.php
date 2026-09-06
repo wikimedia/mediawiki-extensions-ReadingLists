@@ -2,7 +2,6 @@
 
 namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
 
@@ -237,7 +236,7 @@ class ApiReadingListsDeleteEntryTest extends ApiTestCase {
 	}
 
 	private function getLocalProject(): string {
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 		return $urlUtils->assemble( $parts );

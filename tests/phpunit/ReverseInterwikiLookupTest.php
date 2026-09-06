@@ -4,12 +4,12 @@ namespace MediaWiki\Extension\ReadingLists\Tests;
 
 use MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup;
 use MediaWiki\Interwiki\InterwikiLookup;
-use MediaWiki\MediaWikiServices;
+use MediaWikiIntegrationTestCase;
 
 /**
  * @covers \MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup
  */
-class ReverseInterwikiLookupTest extends \PHPUnit\Framework\TestCase {
+class ReverseInterwikiLookupTest extends MediaWikiIntegrationTestCase {
 
 	/**
 	 * @dataProvider provideLookup
@@ -20,8 +20,9 @@ class ReverseInterwikiLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testLookup( $expectedPrefix, $domain, $iwTable ) {
 		$iwLookup = $this->getMockForAbstractClass( InterwikiLookup::class );
 		$iwLookup->method( 'getAllPrefixes' )->willReturn( $iwTable );
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
-		$languageNameUtils = MediaWikiServices::getInstance()->getLanguageNameUtils();
+		$services = $this->getServiceContainer();
+		$urlUtils = $services->getUrlUtils();
+		$languageNameUtils = $services->getLanguageNameUtils();
 
 		$lookup = new ReverseInterwikiLookup( $iwLookup, $languageNameUtils, $urlUtils, 'en.wikipedia.org' );
 		$actualPrefix = $lookup->lookup( $domain );

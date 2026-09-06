@@ -3,7 +3,6 @@
 namespace MediaWiki\Extension\ReadingLists\Tests;
 
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
-use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use Wikimedia\Rdbms\LBFactory;
 
@@ -29,7 +28,7 @@ class ReadingListEntryTitleMigrationServiceTest extends MediaWikiIntegrationTest
 
 	public function testMigrateNormalizeEntryTitles_spaceOnlyUpdatesTitle() {
 		$this->addProjects( [ 'dummy' ] );
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 		$localProject = $urlUtils->assemble( $parts );
@@ -76,7 +75,7 @@ class ReadingListEntryTitleMigrationServiceTest extends MediaWikiIntegrationTest
 
 	public function testMigrateNormalizeEntryTitles_softDeletesSpaceDuplicate() {
 		$this->addProjects( [ 'dummy' ] );
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 		$localProject = $urlUtils->assemble( $parts );
@@ -135,7 +134,7 @@ class ReadingListEntryTitleMigrationServiceTest extends MediaWikiIntegrationTest
 
 	public function testMigrateNormalizeEntryTitles_skipsSoftDeletedBlocker() {
 		$this->addProjects( [ 'dummy' ] );
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 		$localProject = $urlUtils->assemble( $parts );
@@ -202,7 +201,7 @@ class ReadingListEntryTitleMigrationServiceTest extends MediaWikiIntegrationTest
 
 	public function testMigrateNormalizeEntryTitles_dryRunDoesNotWrite() {
 		$this->addProjects( [ 'dummy' ] );
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 		$localProject = $urlUtils->assemble( $parts );
@@ -238,7 +237,7 @@ class ReadingListEntryTitleMigrationServiceTest extends MediaWikiIntegrationTest
 
 	public function testMigrateNormalizeEntryTitles_limitProcessesFirstRowsOnly() {
 		$this->addProjects( [ 'dummy' ] );
-		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
 		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
 		$parts['port'] = null;
 		$localProject = $urlUtils->assemble( $parts );
