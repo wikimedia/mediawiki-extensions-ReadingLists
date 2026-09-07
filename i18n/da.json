@@ -52,7 +52,7 @@
 	"readinglists-title": "Gemte sider",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|liste|lister}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|side|sider}}",
-	"readinglists-show-more": "Vis flere",
+	"readinglists-show-more": "Vis flere emner",
 	"readinglists-default-title": "gemte elementer",
 	"readinglists-default-description": "Standardliste for dine gemte sider.",
 	"readinglists-empty-title": "Ingen gemte artikler",

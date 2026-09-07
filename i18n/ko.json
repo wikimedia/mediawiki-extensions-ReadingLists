@@ -54,7 +54,7 @@
 	"readinglists-title": "저장된 문서",
 	"readinglists-total-lists": "{{PLURAL:$1|목록}} $1개",
 	"readinglists-total-articles": "{{PLURAL:$1|문서}} $1개",
-	"readinglists-show-more": "더 보기",
+	"readinglists-show-more": "항목 더 보기",
 	"readinglists-default-title": "저장된 항목",
 	"readinglists-default-description": "저장된 문서를 위한 기본 목록입니다.",
 	"readinglists-empty-title": "저장된 문서가 없습니다",

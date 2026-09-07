@@ -56,7 +56,7 @@
 	"readinglists-title": "已儲存的頁面",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|個清單}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|篇頁面}}",
-	"readinglists-show-more": "顯示更多",
+	"readinglists-show-more": "顯示更多項目",
 	"readinglists-default-title": "已儲存的項目",
 	"readinglists-default-description": "您的已儲存頁面之預設清單。",
 	"readinglists-empty-title": "尚無儲存的條目",
