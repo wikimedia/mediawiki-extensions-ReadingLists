@@ -36,107 +36,118 @@ exports[`Entries without custom lists renders all items from all lists on specia
     Sorted by most recent.
   </p>
   
-  <div
+  <ul
+    aria-label="All items"
     class="reading-lists-items reading-lists-items--view-cards"
   >
     
-    <a
-      class="cdx-card cdx-card--is-link cdx-card--title-only"
-      href="https://en.wikipedia.org/wiki/Sleep"
-    >
-      <!--v-if-->
-      <span
-        class="cdx-card__text"
+    <li>
+      <a
+        class="cdx-card cdx-card--is-link cdx-card--title-only"
+        href="https://en.wikipedia.org/wiki/Sleep"
       >
+        <!--v-if-->
         <span
-          class="cdx-card__text__title"
+          class="cdx-card__text"
         >
-          
-          Sleep
-          
+          <span
+            class="cdx-card__text__title"
+          >
+            
+            Sleep
+            
+          </span>
+          <!--v-if-->
+          <!--v-if-->
         </span>
-        <!--v-if-->
-        <!--v-if-->
-      </span>
-    </a>
-    <a
-      class="cdx-card cdx-card--is-link cdx-card--title-only"
-      href="https://en.wikipedia.org/wiki/Birthday"
-    >
-      <!--v-if-->
-      <span
-        class="cdx-card__text"
+      </a>
+    </li>
+    <li>
+      <a
+        class="cdx-card cdx-card--is-link cdx-card--title-only"
+        href="https://en.wikipedia.org/wiki/Birthday"
       >
+        <!--v-if-->
         <span
-          class="cdx-card__text__title"
+          class="cdx-card__text"
         >
-          
-          Birthday
-          
+          <span
+            class="cdx-card__text__title"
+          >
+            
+            Birthday
+            
+          </span>
+          <!--v-if-->
+          <!--v-if-->
         </span>
-        <!--v-if-->
-        <!--v-if-->
-      </span>
-    </a>
-    <a
-      class="cdx-card cdx-card--is-link cdx-card--title-only"
-      href="https://en.wikipedia.org/wiki/Nap"
-    >
-      <!--v-if-->
-      <span
-        class="cdx-card__text"
+      </a>
+    </li>
+    <li>
+      <a
+        class="cdx-card cdx-card--is-link cdx-card--title-only"
+        href="https://en.wikipedia.org/wiki/Nap"
       >
+        <!--v-if-->
         <span
-          class="cdx-card__text__title"
+          class="cdx-card__text"
         >
-          
-          Nap
-          
+          <span
+            class="cdx-card__text__title"
+          >
+            
+            Nap
+            
+          </span>
+          <!--v-if-->
+          <!--v-if-->
         </span>
-        <!--v-if-->
-        <!--v-if-->
-      </span>
-    </a>
-    <a
-      class="cdx-card cdx-card--is-link cdx-card--title-only"
-      href="https://en.wikipedia.org/wiki/TestPage"
-    >
-      <!--v-if-->
-      <span
-        class="cdx-card__text"
+      </a>
+    </li>
+    <li>
+      <a
+        class="cdx-card cdx-card--is-link cdx-card--title-only"
+        href="https://en.wikipedia.org/wiki/TestPage"
       >
+        <!--v-if-->
         <span
-          class="cdx-card__text__title"
+          class="cdx-card__text"
         >
-          
-          TestPage
-          
+          <span
+            class="cdx-card__text__title"
+          >
+            
+            TestPage
+            
+          </span>
+          <!--v-if-->
+          <!--v-if-->
         </span>
-        <!--v-if-->
-        <!--v-if-->
-      </span>
-    </a>
-    <a
-      class="cdx-card cdx-card--is-link cdx-card--title-only"
-      href="https://en.wikipedia.org/wiki/Germany"
-    >
-      <!--v-if-->
-      <span
-        class="cdx-card__text"
+      </a>
+    </li>
+    <li>
+      <a
+        class="cdx-card cdx-card--is-link cdx-card--title-only"
+        href="https://en.wikipedia.org/wiki/Germany"
       >
+        <!--v-if-->
         <span
-          class="cdx-card__text__title"
+          class="cdx-card__text"
         >
-          
-          Germany
-          
+          <span
+            class="cdx-card__text__title"
+          >
+            
+            Germany
+            
+          </span>
+          <!--v-if-->
+          <!--v-if-->
         </span>
-        <!--v-if-->
-        <!--v-if-->
-      </span>
-    </a>
+      </a>
+    </li>
     
-  </div>
+  </ul>
   
   <!--v-if-->
   
@@ -172,172 +183,181 @@ exports[`Entries without custom lists renders with toolbar disabled 1`] = `
     Sorted by most recent.
   </p>
   
-  <div
+  <ul
+    aria-label="Example list"
     class="reading-lists-items reading-lists-items--view-cards"
   >
     
-    <a
-      class="cdx-card cdx-card--is-link cdx-card--title-only"
-      href="https://en.wikipedia.org/wiki/Citation_needed_example"
-    >
-      <!--v-if-->
-      <span
-        class="cdx-card__text"
+    <li>
+      <a
+        class="cdx-card cdx-card--is-link cdx-card--title-only"
+        href="https://en.wikipedia.org/wiki/Citation_needed_example"
       >
-        <span
-          class="cdx-card__text__title"
-        >
-          
-          Citation needed example
-          
-        </span>
         <!--v-if-->
-        <!--v-if-->
-      </span>
-    </a>
-    <a
-      class="cdx-card cdx-card--is-link"
-      href="https://en.wikipedia.org/wiki/New_York_Yankees"
-    >
-      <span
-        class="cdx-thumbnail cdx-card__thumbnail"
-      >
         <span
-          class="cdx-thumbnail__placeholder"
+          class="cdx-card__text"
         >
           <span
-            class="cdx-icon cdx-icon--medium cdx-thumbnail__placeholder__icon--vue"
+            class="cdx-card__text__title"
           >
-            <svg
-              aria-hidden="true"
-              height="20"
-              viewBox="0 0 20 20"
-              width="20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <!--v-if-->
-              <g>
-                <path
-                  d="M19 19H1V1h18zm-8.5-6-2-2L5 15h10V8zm-4-8a1.5 1.5 0 100 3 1.5 1.5 0 000-3"
-                />
-              </g>
-            </svg>
+            
+            Citation needed example
+            
           </span>
-        </span>
-        <transition-stub
-          appear="false"
-          css="true"
-          name="cdx-thumbnail__image"
-          persisted="false"
-        >
           <!--v-if-->
-        </transition-stub>
-      </span>
-      <span
-        class="cdx-card__text"
+          <!--v-if-->
+        </span>
+      </a>
+    </li>
+    <li>
+      <a
+        class="cdx-card cdx-card--is-link"
+        href="https://en.wikipedia.org/wiki/New_York_Yankees"
       >
         <span
-          class="cdx-card__text__title"
-        >
-          
-          New York Yankees
-          
-        </span>
-        <span
-          class="cdx-card__text__description"
-        >
-          
-          Major League Baseball franchise in New York City
-          
-        </span>
-        <!--v-if-->
-      </span>
-    </a>
-    <a
-      class="cdx-card cdx-card--is-link"
-      href="https://en.wikipedia.org/wiki/Main_Page"
-    >
-      <span
-        class="cdx-thumbnail cdx-card__thumbnail"
-      >
-        <span
-          class="cdx-thumbnail__placeholder"
+          class="cdx-thumbnail cdx-card__thumbnail"
         >
           <span
-            class="cdx-icon cdx-icon--medium cdx-thumbnail__placeholder__icon--vue"
+            class="cdx-thumbnail__placeholder"
           >
-            <svg
-              aria-hidden="true"
-              height="20"
-              viewBox="0 0 20 20"
-              width="20"
-              xmlns="http://www.w3.org/2000/svg"
+            <span
+              class="cdx-icon cdx-icon--medium cdx-thumbnail__placeholder__icon--vue"
             >
-              <!--v-if-->
-              <g>
-                <path
-                  d="M19 19H1V1h18zm-8.5-6-2-2L5 15h10V8zm-4-8a1.5 1.5 0 100 3 1.5 1.5 0 000-3"
-                />
-              </g>
-            </svg>
+              <svg
+                aria-hidden="true"
+                height="20"
+                viewBox="0 0 20 20"
+                width="20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <!--v-if-->
+                <g>
+                  <path
+                    d="M19 19H1V1h18zm-8.5-6-2-2L5 15h10V8zm-4-8a1.5 1.5 0 100 3 1.5 1.5 0 000-3"
+                  />
+                </g>
+              </svg>
+            </span>
           </span>
+          <transition-stub
+            appear="false"
+            css="true"
+            name="cdx-thumbnail__image"
+            persisted="false"
+          >
+            <!--v-if-->
+          </transition-stub>
         </span>
-        <transition-stub
-          appear="false"
-          css="true"
-          name="cdx-thumbnail__image"
-          persisted="false"
+        <span
+          class="cdx-card__text"
         >
+          <span
+            class="cdx-card__text__title"
+          >
+            
+            New York Yankees
+            
+          </span>
+          <span
+            class="cdx-card__text__description"
+          >
+            
+            Major League Baseball franchise in New York City
+            
+          </span>
           <!--v-if-->
-        </transition-stub>
-      </span>
-      <span
-        class="cdx-card__text"
+        </span>
+      </a>
+    </li>
+    <li>
+      <a
+        class="cdx-card cdx-card--is-link"
+        href="https://en.wikipedia.org/wiki/Main_Page"
       >
         <span
-          class="cdx-card__text__title"
+          class="cdx-thumbnail cdx-card__thumbnail"
         >
-          
-          Main Page
-          
+          <span
+            class="cdx-thumbnail__placeholder"
+          >
+            <span
+              class="cdx-icon cdx-icon--medium cdx-thumbnail__placeholder__icon--vue"
+            >
+              <svg
+                aria-hidden="true"
+                height="20"
+                viewBox="0 0 20 20"
+                width="20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <!--v-if-->
+                <g>
+                  <path
+                    d="M19 19H1V1h18zm-8.5-6-2-2L5 15h10V8zm-4-8a1.5 1.5 0 100 3 1.5 1.5 0 000-3"
+                  />
+                </g>
+              </svg>
+            </span>
+          </span>
+          <transition-stub
+            appear="false"
+            css="true"
+            name="cdx-thumbnail__image"
+            persisted="false"
+          >
+            <!--v-if-->
+          </transition-stub>
         </span>
         <span
-          class="cdx-card__text__description"
+          class="cdx-card__text"
         >
-          
-          Main page of the English Wikipedia
-          
+          <span
+            class="cdx-card__text__title"
+          >
+            
+            Main Page
+            
+          </span>
+          <span
+            class="cdx-card__text__description"
+          >
+            
+            Main page of the English Wikipedia
+            
+          </span>
+          <!--v-if-->
         </span>
-        <!--v-if-->
-      </span>
-    </a>
-    <a
-      class="cdx-card cdx-card--is-link"
-      href="https://en.wikipedia.org/wiki/New_York"
-    >
-      <!--v-if-->
-      <span
-        class="cdx-card__text"
+      </a>
+    </li>
+    <li>
+      <a
+        class="cdx-card cdx-card--is-link"
+        href="https://en.wikipedia.org/wiki/New_York"
       >
-        <span
-          class="cdx-card__text__title"
-        >
-          
-          New York
-          
-        </span>
-        <span
-          class="cdx-card__text__description"
-        >
-          
-          Topics referred to by the same term
-          
-        </span>
         <!--v-if-->
-      </span>
-    </a>
+        <span
+          class="cdx-card__text"
+        >
+          <span
+            class="cdx-card__text__title"
+          >
+            
+            New York
+            
+          </span>
+          <span
+            class="cdx-card__text__description"
+          >
+            
+            Topics referred to by the same term
+            
+          </span>
+          <!--v-if-->
+        </span>
+      </a>
+    </li>
     
-  </div>
+  </ul>
   
   <button
     class="cdx-button cdx-button--action-default cdx-button--weight-normal cdx-button--size-medium cdx-button--framed"

@@ -96,6 +96,8 @@ describe( 'Entries', () => {
 			expect( wrapper.vm.isAllListItems ).toBe( true );
 			expect( wrapper.vm.isDefaultList ).toBe( false );
 			expect( wrapper.vm.entries.length ).toBeGreaterThan( 0 );
+			expect( wrapper.find( 'ul.reading-lists-items' ).attributes( 'aria-label' ) )
+				.toBe( 'All items' );
 			expect( wrapper.element ).toMatchSnapshot();
 		} );
 

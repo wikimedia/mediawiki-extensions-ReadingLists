@@ -29,16 +29,17 @@
 		</p>
 
 		<template v-if="!loadingInfo">
-			<div
+			<ul
 				v-if="entries.length !== 0"
 				ref="container"
-				class="reading-lists-items reading-lists-items--view-cards">
-				<entry-item
+				class="reading-lists-items reading-lists-items--view-cards"
+				:aria-label="title || msgAllItems">
+				<li
 					v-for="entry in entries"
-					:key="entry.id"
-					:entry="entry">
-				</entry-item>
-			</div>
+					:key="entry.id">
+					<entry-item :entry="entry"></entry-item>
+				</li>
+			</ul>
 
 			<template v-if="!loadingEntries">
 				<empty-list
@@ -107,6 +108,7 @@ module.exports = exports = {
 			entries: ref( [] ),
 			next: ref( null ),
 			infinite: ref( false ),
+			msgAllItems: mw.msg( 'readinglists-customlists-allitems' ),
 			msgLoading: mw.msg( 'readinglists-loading' ),
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
 			showSurvey: ref( false ),
