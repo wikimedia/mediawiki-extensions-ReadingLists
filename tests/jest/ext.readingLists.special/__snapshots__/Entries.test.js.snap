@@ -39,6 +39,7 @@ exports[`Entries without custom lists renders all items from all lists on specia
   <ul
     aria-label="All items"
     class="reading-lists-items reading-lists-items--view-cards"
+    role="list"
   >
     
     <li>
@@ -186,6 +187,7 @@ exports[`Entries without custom lists renders with toolbar disabled 1`] = `
   <ul
     aria-label="Example list"
     class="reading-lists-items reading-lists-items--view-cards"
+    role="list"
   >
     
     <li>

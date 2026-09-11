@@ -31,7 +31,7 @@
 		<template v-if="!loadingInfo">
 			<ul
 				v-if="entries.length !== 0"
-				ref="container"
+				role="list"
 				class="reading-lists-items reading-lists-items--view-cards"
 				:aria-label="title || msgAllItems">
 				<li
@@ -47,7 +47,7 @@
 					:is-custom-list="isCustomList">
 				</empty-list>
 
-				<cdx-button v-else-if="!infinite && next !== null" @click="onShowMore">
+				<cdx-button v-else-if="next !== null" @click="onShowMore">
 					{{ msgShowMore }}
 				</cdx-button>
 			</template>
@@ -107,14 +107,10 @@ module.exports = exports = {
 			direction: ref( 'descending' ),
 			entries: ref( [] ),
 			next: ref( null ),
-			infinite: ref( false ),
 			msgAllItems: mw.msg( 'readinglists-customlists-allitems' ),
-			msgLoading: mw.msg( 'readinglists-loading' ),
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
-			showSurvey: ref( false ),
-			// Throttled scroll listener. Deliberately not a ref: it only ever
-			// holds a handler reference for add/removeEventListener.
-			throttledScroll: null
+			msgLoading: mw.msg( 'readinglists-loading' ),
+			showSurvey: ref( false )
 		};
 	},
 	computed: {
@@ -221,56 +217,28 @@ module.exports = exports = {
 
 				this.entries.push( ...entries );
 				this.next = next;
-
-				if ( next === null ) {
-					this.infinite = false;
-				}
 			} catch ( err ) {
 				this.handleError( err );
 			} finally {
 				this.loadingEntries = false;
 			}
 		},
-		unregisterScrollHandler() {
-			if ( this.throttledScroll ) {
-				document.removeEventListener( 'scroll', this.throttledScroll );
-				this.throttledScroll = null;
-			}
-		},
-		registerScrollHandler() {
-			const handleScroll = () => {
-				// `mw.util.throttle` always defers via `setTimeout` and has no cancel.
-				// A pending call still fires after removal, when `$refs.container`
-				// is already null.
-				if ( !this.throttledScroll ) {
-					return;
-				}
-
-				if (
-					!this.error &&
-					!this.loadingInfo &&
-					!this.loadingEntries &&
-					this.infinite &&
-					this.next !== null &&
-					this.$refs.container.getBoundingClientRect().bottom < window.innerHeight
-				) {
-					this.getEntries();
-				} else if ( this.next === null ) {
-					this.unregisterScrollHandler();
-				}
-			};
-			this.throttledScroll = mw.util.throttle( handleScroll, 250 );
-			document.addEventListener( 'scroll', this.throttledScroll );
-		},
 		async initializePage() {
 			await this.getEntries();
 			this.ready = true;
-			this.registerScrollHandler();
 			this.maybeShowSurvey();
 		},
 		async onShowMore() {
-			this.infinite = true;
+			const list = document.querySelector( '.reading-lists-items' );
+			// eslint-disable-next-line es-x/no-optional-chaining
+			const lastEntry = list?.lastElementChild;
 			await this.getEntries();
+			await this.$nextTick();
+			// eslint-disable-next-line es-x/no-optional-chaining
+			const nextEntry = lastEntry?.nextElementSibling?.firstElementChild;
+			if ( nextEntry ) {
+				nextEntry.focus();
+			}
 		},
 		maybeShowSurvey() {
 			// Don't show if the survey is not enabled or there are no saved pages.
@@ -299,9 +267,6 @@ module.exports = exports = {
 		onSurveyCompleted() {
 			mw.storage.set( surveyStorageKey, '~', 60 * 60 * 24 * 120 );
 		}
-	},
-	async beforeUnmount() {
-		this.unregisterScrollHandler();
 	},
 	async mounted() {
 		// The list metadata (getList) and the entries request (initializePage → getEntries)
@@ -341,7 +306,7 @@ module.exports = exports = {
 	// Default: Limit to 4 items maximum per row.
 	// Note: Desktop and Desktop wide gets 4 items per row as well.
 	max-width: calc( 4 * @max-width-card + 3 * @spacing-100 );
-	margin-top: @spacing-75;
+	margin: 0;
 
 	// Mobile: Limit to 1 item maximum per row, but with higher grid container max width.
 	@media screen and ( max-width: @max-width-breakpoint-mobile ) {
