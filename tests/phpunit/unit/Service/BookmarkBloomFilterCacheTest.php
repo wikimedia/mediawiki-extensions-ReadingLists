@@ -26,10 +26,13 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 
 	private WANObjectCache $cache;
 	private UnitTestingHelper $statsHelper;
+	private float $mockTime;
 
 	protected function setUp(): void {
 		parent::setUp();
+		$this->mockTime = 1000000000.0;
 		$this->cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$this->cache->setMockTime( $this->mockTime );
 		$this->statsHelper = StatsFactory::newUnitTestingHelper();
 	}
 
@@ -81,8 +84,6 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 	}
 
 	public function testRebuildBloomFilter_usesCorrectTTL() {
-		$mockTime = 1000000000.0;
-		$this->cache->setMockTime( $mockTime );
 		$service = $this->createBloomFilterCache( $this->createMockRepository( [ 'Cat' ] ), $this->cache );
 		$service->rebuildBloomFilter( self::CENTRAL_ID );
 
@@ -101,6 +102,12 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 			->willThrowException( $this->createMock( ReadingListRepositoryException::class ) );
 
 		$cache = $this->createBloomFilterCache( $repository );
+
+		// A cache miss creates the check key.
+		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+
+		// Advance the clock so the stored value is newer than the check key.
+		$this->mockTime++;
 		$cache->rebuildBloomFilter( self::CENTRAL_ID );
 
 		$status = $cache->getCachedBloomFilterStatus( self::CENTRAL_ID );
@@ -116,6 +123,12 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 		);
 
 		$cache = $this->createBloomFilterCache( $this->createMockRepository( $titles ) );
+
+		// A cache miss creates the check key.
+		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+
+		// Advance the clock so the stored value is newer than the check key.
+		$this->mockTime++;
 		$cache->rebuildBloomFilter( self::CENTRAL_ID );
 
 		$status = $cache->getCachedBloomFilterStatus( self::CENTRAL_ID );
@@ -135,14 +148,12 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 	 * only for error states.
 	 */
 	public function testStoreEmptyBloomFilter_returnsEmptyStateWithNormalTtl(): void {
-		$mockTime = 1000000000.0;
-		$this->cache->setMockTime( $mockTime );
 		$cache = $this->createBloomFilterCache( $this->createMockRepository() );
 
 		// A cache miss creates the check key. Advance the clock so the stored
 		// value is newer than the check key.
 		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
-		$mockTime++;
+		$this->mockTime++;
 		$cache->storeEmptyBloomFilter( self::CENTRAL_ID );
 
 		$currentTtl = null;
@@ -159,15 +170,13 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 	}
 
 	public function testRebuildBloomFilter_storesEmptyStateWhenUserHasNoSavedPages(): void {
-		$mockTime = 1000000000.0;
-		$this->cache->setMockTime( $mockTime );
 		$cache = $this->createBloomFilterCache( $this->createMockRepository() );
 
 		// A cache miss creates the check key.
 		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
 
 		// Advance the clock so the storedvalue is newer than the check key.
-		$mockTime++;
+		$this->mockTime++;
 		$cache->rebuildBloomFilter( self::CENTRAL_ID );
 		$status = $cache->getCachedBloomFilterStatus( self::CENTRAL_ID );
 
@@ -182,6 +191,12 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 			->willThrowException( new \Wikimedia\Rdbms\DBError( null, 'temporary failure' ) );
 
 		$cache = $this->createBloomFilterCache( $repository );
+
+		// A cache miss creates the check key.
+		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+
+		// Advance the clock so the stored value is newer than the check key.
+		$this->mockTime++;
 		$cache->rebuildBloomFilter( self::CENTRAL_ID );
 
 		$status = $cache->getCachedBloomFilterStatus( self::CENTRAL_ID );
@@ -194,6 +209,11 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 	public function testGetBloomFilterStatus_returnsUnusableStateWhenCachedPayloadHasNoState() {
 		$cache = $this->createBloomFilterCache( $this->createMockRepository() );
 
+		// A cache miss creates the check key.
+		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+
+		// Advance the clock so the stored value is newer than the check key.
+		$this->mockTime++;
 		$this->cache->set(
 			$this->cache->makeKey( 'readinglists', 'bloom', self::CENTRAL_ID ),
 			[
@@ -212,6 +232,12 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 
 	public function testInvalidateBloomFilter_marksCachedFilterStale() {
 		$cache = $this->createBloomFilterCache( $this->createMockRepository( [ 'Cat' ] ) );
+
+		// A cache miss creates the check key.
+		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+
+		// Advance the clock so the stored value is newer than the check key.
+		$this->mockTime++;
 		$cache->rebuildBloomFilter( self::CENTRAL_ID );
 
 		$this->assertInstanceOf( \StatusValue::class, $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
@@ -225,15 +251,13 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 	}
 
 	public function testInvalidateBloomFilter_marksCachedEmptyStateStale(): void {
-		$mockTime = 1000000000.0;
-		$this->cache->setMockTime( $mockTime );
 		$cache = $this->createBloomFilterCache( $this->createMockRepository() );
 
 		// A cache miss creates the check key.
 		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
 
 		// Advance the clock so the stored value is newer than the check key.
-		$mockTime++;
+		$this->mockTime++;
 		$cache->storeEmptyBloomFilter( self::CENTRAL_ID );
 
 		$this->assertInstanceOf( \StatusValue::class, $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
@@ -264,13 +288,14 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 	}
 
 	public function testGetCachedBloomFilterStatus_recordsUsableCacheValueAge() {
-		$mockTime = microtime( true );
-		$this->cache->setMockTime( $mockTime );
 		$cache = $this->createBloomFilterCache( $this->createMockRepository( [ 'Cat' ] ) );
 		// Match the production flow: a cache miss happens before the cache is rebuilt.
 		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+
+		// Advance the clock so the stored value is newer than the check key.
+		$this->mockTime++;
 		$cache->rebuildBloomFilter( self::CENTRAL_ID );
-		$mockTime += 7200;
+		$this->mockTime += 7200;
 
 		$status = $cache->getCachedBloomFilterStatus( self::CENTRAL_ID );
 
@@ -293,13 +318,15 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 	}
 
 	public function testGetCachedBloomFilterStatus_recordsEmptyCacheValueAge(): void {
-		$mockTime = microtime( true );
-		$this->cache->setMockTime( $mockTime );
 		$cache = $this->createBloomFilterCache( $this->createMockRepository() );
 
+		// A cache miss creates the check key.
 		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+
+		// Advance the clock so the stored value is newer than the check key.
+		$this->mockTime++;
 		$cache->storeEmptyBloomFilter( self::CENTRAL_ID );
-		$mockTime += 7200;
+		$this->mockTime += 7200;
 
 		$status = $cache->getCachedBloomFilterStatus( self::CENTRAL_ID );
 
@@ -315,6 +342,12 @@ class BookmarkBloomFilterCacheTest extends MediaWikiUnitTestCase {
 
 	public function testRebuildBloomFilter_normalizesTitleSpacesToUnderscores() {
 		$cache = $this->createBloomFilterCache( $this->createMockRepository( [ 'Main Page' ] ) );
+
+		// A cache miss creates the check key.
+		$this->assertFalse( $cache->getCachedBloomFilterStatus( self::CENTRAL_ID ) );
+
+		// Advance the clock so the stored value is newer than the check key.
+		$this->mockTime++;
 		$cache->rebuildBloomFilter( self::CENTRAL_ID );
 
 		$status = $cache->getCachedBloomFilterStatus( self::CENTRAL_ID );
