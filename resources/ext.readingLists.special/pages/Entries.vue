@@ -29,16 +29,19 @@
 		</p>
 
 		<template v-if="!loadingInfo">
+			<!-- role="list" needed for Safari support, refer to T435864. -->
 			<ul
 				v-if="entries.length !== 0"
 				role="list"
-				class="reading-lists-items reading-lists-items--view-cards"
+				class="reading-lists-items"
+				:class="cardListClasses"
 				:aria-label="title || msgAllItems">
-				<li
+				<entry-item
 					v-for="entry in entries"
-					:key="entry.id">
-					<entry-item :entry="entry"></entry-item>
-				</li>
+					:key="entry.id"
+					:entry="entry"
+					:is-list-view="isListView"
+				></entry-item>
 			</ul>
 
 			<template v-if="!loadingEntries">
@@ -71,6 +74,7 @@ const NavigationBar = require( '../components/NavigationBar.vue' );
 const Survey = require( '../components/Survey.vue' );
 
 const surveyStorageKey = 'readinglists-beta-survey';
+const MAX_WIDTH_MOBILE = 639;
 
 // @vue/component
 module.exports = exports = {
@@ -110,7 +114,8 @@ module.exports = exports = {
 			msgAllItems: mw.msg( 'readinglists-customlists-allitems' ),
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
 			msgLoading: mw.msg( 'readinglists-loading' ),
-			showSurvey: ref( false )
+			showSurvey: ref( false ),
+			isListView: ref( false )
 		};
 	},
 	computed: {
@@ -140,6 +145,9 @@ module.exports = exports = {
 		},
 		showNavDropdown() {
 			return mw.config.get( 'skin' ) === 'vector-2022';
+		},
+		cardListClasses() {
+			return { 'reading-lists-items--grid-view': !this.isListView };
 		}
 	},
 	methods: {
@@ -266,9 +274,24 @@ module.exports = exports = {
 		},
 		onSurveyCompleted() {
 			mw.storage.set( surveyStorageKey, '~', 60 * 60 * 24 * 120 );
+		},
+		setCurrentView() {
+			// In the future, this could also return early if the user has explicitly selected
+			// list view.
+			if ( typeof window !== 'object' ) {
+				return;
+			}
+			this.isListView = window.innerWidth <= MAX_WIDTH_MOBILE;
+
 		}
 	},
+	async beforeUnmount() {
+		window.removeEventListener( 'resize', this.setCurrentView );
+	},
 	async mounted() {
+		this.setCurrentView();
+		window.addEventListener( 'resize', this.setCurrentView );
+
 		// The list metadata (getList) and the entries request (initializePage → getEntries)
 		// do not depend on each other, so fetch them in parallel instead of waiting for the
 		// metadata round-trip before the entries request starts. Both methods handle their
@@ -281,75 +304,21 @@ module.exports = exports = {
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
 
-@min-width-card: 20rem; // equal to 320px.
-@max-width-card: 28rem; // equal to 448px. Note: alternatively up to `1fr`.
-@max-width-card--mobile: 34rem; // equal to 544px.
+@min-width-card: @size-1200;
 
-.content ul.reading-lists-items,
 .reading-lists-items {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-.reading-lists-items--view-cards {
-	display: grid;
-	grid-auto-rows: 1fr;
-	// Auto-fit to fit as many columns as possible in the row.
-	// Minimum width of a column is 22rem equal to 352px.
-	// Only for browsers which do _not_ support `:has()` below.
-	// Support: Chrome ≤ 105, Edge ≤ 105, Firefox ≤ 120, Safari ≤ 15.3
-	grid-template-columns: repeat( auto-fit, minmax( @min-width-card, @max-width-card ) );
-	// Align all items to the start of the row.
-	justify-content: start;
-	gap: @spacing-100;
-	// Default: Limit to 4 items maximum per row.
-	// Note: Desktop and Desktop wide gets 4 items per row as well.
-	max-width: calc( 4 * @max-width-card + 3 * @spacing-100 );
-	margin: 0;
-
-	// Mobile: Limit to 1 item maximum per row, but with higher grid container max width.
-	@media screen and ( max-width: @max-width-breakpoint-mobile ) {
-		grid-template-columns: repeat( auto-fit, minmax( @min-width-card, @max-width-card--mobile ) );
-		max-width: calc( 2 * @max-width-card--mobile + 1 * @spacing-100 );
+	.content ul&,
+	& {
+		list-style: none;
+		margin: 0;
+		padding: 0;
 	}
 
-	// Tablet: Limit to 2 items maximum per row.
-	// Note: As of current `@max-width-breakpoint-tablet` is 1119px.
-	@media screen and ( max-width: @max-width-breakpoint-tablet ) {
-		max-width: calc( 2 * @max-width-card--mobile + 1 * @spacing-100 );
-	}
-
-	// More modern browsers supporting `:has()`.
-	// Default: All items, no matter which number, get equal space via `1fr`.
-	// Support: Chrome ≥ 105, Edge ≥ 105, Safari ≥ 15.4 , Firefox ≥ 121
-	&:has( * ) {
-		grid-template-columns: repeat( auto-fit, minmax( @min-width-card, 1fr ) );
-	}
-
-	// Match container with only 1 item `:has( > :nth-child( 1 ) )` and not more.
-	&:has( :nth-child( 1 ) ):not( :has( :nth-child( 2 ) ) ) {
-		max-width: @max-width-card--mobile;
-	}
-
-	// Match container with only 2 items and not more.
-	&:has( :nth-child( 2 ) ):not( :has( :nth-child( 3 ) ) ) {
-		max-width: calc( 2 * @max-width-card--mobile + 1 * @spacing-100 );
-
-		@media screen and ( max-width: @max-width-breakpoint-mobile ) {
-			grid-template-columns: repeat( auto-fit, minmax( @min-width-card, @max-width-card--mobile ) );
-		}
-	}
-
-	// Match container with 3 items and not more.
-	&:has( :nth-child( 3 ) ):not( :has( :nth-child( 4 ) ) ) {
-		grid-template-columns: repeat( auto-fit, minmax( @min-width-card, 1fr ) );
-	}
-
-	// Match container with 4 items and more.
-	/* stylelint-disable-next-line no-descending-specificity */
-	&:has( :nth-child( 4 ) ) {
-		max-width: calc( 4 * @max-width-card--mobile + 3 * @spacing-100 );
+	&--grid-view {
+		display: grid;
+		// Add as many cards to a row as possible & ensure cards don't shrink below their min-width.
+		grid-template-columns: repeat( auto-fill, minmax( @min-width-card, 1fr ) );
+		gap: @spacing-100;
 	}
 
 	// "Show more" button.
@@ -360,5 +329,4 @@ module.exports = exports = {
 		margin-right: auto;
 	}
 }
-
 </style>

@@ -36,15 +36,18 @@ exports[`Entries without custom lists renders all items from all lists on specia
     Sorted by most recent.
   </p>
   
+  <!-- role="list" needed for Safari support, refer to T435864. -->
   <ul
     aria-label="All items"
-    class="reading-lists-items reading-lists-items--view-cards"
+    class="reading-lists-items reading-lists-items--grid-view"
     role="list"
   >
     
-    <li>
+    <li
+      class="reading-lists-item"
+    >
       <a
-        class="cdx-card cdx-card--is-link cdx-card--title-only"
+        class="cdx-card cdx-card--is-link reading-lists-item__card"
         href="https://en.wikipedia.org/wiki/Sleep"
       >
         <!--v-if-->
@@ -63,9 +66,11 @@ exports[`Entries without custom lists renders all items from all lists on specia
         </span>
       </a>
     </li>
-    <li>
+    <li
+      class="reading-lists-item"
+    >
       <a
-        class="cdx-card cdx-card--is-link cdx-card--title-only"
+        class="cdx-card cdx-card--is-link reading-lists-item__card"
         href="https://en.wikipedia.org/wiki/Birthday"
       >
         <!--v-if-->
@@ -84,9 +89,11 @@ exports[`Entries without custom lists renders all items from all lists on specia
         </span>
       </a>
     </li>
-    <li>
+    <li
+      class="reading-lists-item"
+    >
       <a
-        class="cdx-card cdx-card--is-link cdx-card--title-only"
+        class="cdx-card cdx-card--is-link reading-lists-item__card"
         href="https://en.wikipedia.org/wiki/Nap"
       >
         <!--v-if-->
@@ -105,9 +112,11 @@ exports[`Entries without custom lists renders all items from all lists on specia
         </span>
       </a>
     </li>
-    <li>
+    <li
+      class="reading-lists-item"
+    >
       <a
-        class="cdx-card cdx-card--is-link cdx-card--title-only"
+        class="cdx-card cdx-card--is-link reading-lists-item__card"
         href="https://en.wikipedia.org/wiki/TestPage"
       >
         <!--v-if-->
@@ -126,9 +135,11 @@ exports[`Entries without custom lists renders all items from all lists on specia
         </span>
       </a>
     </li>
-    <li>
+    <li
+      class="reading-lists-item"
+    >
       <a
-        class="cdx-card cdx-card--is-link cdx-card--title-only"
+        class="cdx-card cdx-card--is-link reading-lists-item__card"
         href="https://en.wikipedia.org/wiki/Germany"
       >
         <!--v-if-->
@@ -184,15 +195,18 @@ exports[`Entries without custom lists renders with toolbar disabled 1`] = `
     Sorted by most recent.
   </p>
   
+  <!-- role="list" needed for Safari support, refer to T435864. -->
   <ul
     aria-label="Example list"
-    class="reading-lists-items reading-lists-items--view-cards"
+    class="reading-lists-items reading-lists-items--grid-view"
     role="list"
   >
     
-    <li>
+    <li
+      class="reading-lists-item"
+    >
       <a
-        class="cdx-card cdx-card--is-link cdx-card--title-only"
+        class="cdx-card cdx-card--is-link reading-lists-item__card"
         href="https://en.wikipedia.org/wiki/Citation_needed_example"
       >
         <!--v-if-->
@@ -211,9 +225,11 @@ exports[`Entries without custom lists renders with toolbar disabled 1`] = `
         </span>
       </a>
     </li>
-    <li>
+    <li
+      class="reading-lists-item reading-lists-item--has-thumbnail"
+    >
       <a
-        class="cdx-card cdx-card--is-link"
+        class="cdx-card cdx-card--is-link cdx-card--thumbnail-position-block-start reading-lists-item__card"
         href="https://en.wikipedia.org/wiki/New_York_Yankees"
       >
         <span
@@ -273,9 +289,11 @@ exports[`Entries without custom lists renders with toolbar disabled 1`] = `
         </span>
       </a>
     </li>
-    <li>
+    <li
+      class="reading-lists-item reading-lists-item--has-thumbnail"
+    >
       <a
-        class="cdx-card cdx-card--is-link"
+        class="cdx-card cdx-card--is-link cdx-card--thumbnail-position-block-start reading-lists-item__card"
         href="https://en.wikipedia.org/wiki/Main_Page"
       >
         <span
@@ -335,9 +353,11 @@ exports[`Entries without custom lists renders with toolbar disabled 1`] = `
         </span>
       </a>
     </li>
-    <li>
+    <li
+      class="reading-lists-item"
+    >
       <a
-        class="cdx-card cdx-card--is-link"
+        class="cdx-card cdx-card--is-link reading-lists-item__card"
         href="https://en.wikipedia.org/wiki/New_York"
       >
         <!--v-if-->

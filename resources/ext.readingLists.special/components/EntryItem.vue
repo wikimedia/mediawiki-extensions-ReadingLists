@@ -1,24 +1,32 @@
 <template>
-	<cdx-card
-		:url="entry.url"
-		:thumbnail="entry.thumbnail ? { url: entry.thumbnail } : undefined"
-		:force-thumbnail="false">
-		<template #title>
-			{{ entry.title }}
-		</template>
-		<template v-if="entry.redirectTitle || entry.description" #description>
-			<template v-if="entry.redirectTitle">
-				<cdx-icon :icon="cdxIconInfo"></cdx-icon>
-				<span v-i18n-html:readinglists-redirect-to="[ entry.redirectTitle ]"></span>
+	<li class="reading-lists-item" :class="rootClasses">
+		<cdx-card
+			class="reading-lists-item__card"
+			:url="entry.url"
+			:thumbnail="entry.thumbnail ? { url: entry.thumbnail } : undefined"
+			thumbnail-size="large"
+			:thumbnail-position="isListView ? 'inline-start' : 'block-start'"
+			:force-thumbnail="isListView"
+			:separation="isListView ? 'divider' : 'outline'"
+		>
+			<template #title>
+				{{ entry.title }}
 			</template>
-			<template v-else>
-				{{ entry.description }}
+			<template v-if="entry.redirectTitle || entry.description" #description>
+				<template v-if="entry.redirectTitle">
+					<cdx-icon :icon="cdxIconInfo"></cdx-icon>
+					<span v-i18n-html:readinglists-redirect-to="[ entry.redirectTitle ]"></span>
+				</template>
+				<template v-else>
+					{{ entry.description }}
+				</template>
 			</template>
-		</template>
-	</cdx-card>
+		</cdx-card>
+	</li>
 </template>
 
 <script>
+const { computed } = require( 'vue' );
 const { cdxIconInfo } = require( '../../../icons.json' );
 const { CdxCard, CdxIcon } = require( '../../../codex.js' );
 
@@ -28,15 +36,28 @@ module.exports = exports = {
 	props: {
 		entry: {
 			type: Object,
+			// FIXME: This prop should be required instead of having a default.
 			default: () => ( {
 				id: 1,
 				title: 'Example',
 				description: 'Lorem ipsum dolor sit amet'
 			} )
+		},
+		/**
+		 * Whether to display the cards as a list with simple dividers (as opposed to a grid).
+		 */
+		isListView: {
+			type: Boolean,
+			default: false
 		}
 	},
-	setup() {
+	setup( props ) {
+		const rootClasses = computed( () => ( {
+			'reading-lists-item--has-thumbnail': !!props.entry.thumbnail
+		} ) );
+
 		return {
+			rootClasses,
 			cdxIconInfo
 		};
 	}
@@ -46,92 +67,53 @@ module.exports = exports = {
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
 
-@min-width-card: 20rem; // equal to 320px.
-@max-width-card: 28rem; // equal to 448px. Note: alternatively up to `1fr`.
-@max-width-card--mobile: 34rem; // equal to 544px.
+.reading-lists-item {
+	// This element is a grid item. We need to make the internal card full-height.
+	display: flex;
+	margin: 0;
 
-.cdx-card {
-	flex-direction: row;
-	// Allow thumbnail and text container to stretch to the same height.
-	align-items: stretch;
-	min-width: @min-width-card;
-	max-width: @max-width-card--mobile;
-	// Use same minimum height as thumbnail to avoid non-thumbnail lists to jump in height.
-	min-height: @size-800;
-	// Set 0 padding to flush thumbnails and instead use padding on text container.
-	padding: 0;
-	overflow: hidden;
-
-	// Mobile only: Max it out at `34rem` (544px), specifically important on landscape mode.
-	@media screen and ( max-width: @max-width-breakpoint-mobile ) {
-		max-width: @max-width-card--mobile;
+	.reading-lists-item__card {
+		// Make the card full-width too.
+		width: 100%;
 	}
-}
 
-// Specify higher equally to Codex component in component precedence.
-.cdx-card__thumbnail.cdx-thumbnail {
-	// Provide a subtle background color, in case there is any text box expanding glitch.
-	background-color: @background-color-neutral-subtle;
-	min-width: @size-800;
-	width: @size-800;
-	min-height: @size-800;
-	margin-right: 0;
-
-	// Apply necessary specificity to set thumbnail size.
-	.cdx-thumbnail__image {
-		// Center vertically and top align thumbnail image.
-		background-position: center 0;
-		width: @size-full;
-		height: @size-full;
-		aspect-ratio: 1;
-		// Remove Codex default border on thumbnails. Rely on background color of thumbnail
-		// container instead.
-		border-width: 0;
+	.cdx-card__thumbnail.cdx-thumbnail {
+		.cdx-thumbnail__image {
+			aspect-ratio: 1;
+			// Center vertically and top align thumbnail image.
+			background-position: center 0;
+		}
 	}
-}
 
-.cdx-card__text {
-	// Let text container take all remaining space.
-	flex: 1 1 auto;
-	box-sizing: @box-sizing-base;
-	height: @size-full;
-	padding: @spacing-50 @spacing-75;
-}
+	// When there's a thumbnail), clamp title and description to 2 lines.
+	&--has-thumbnail {
+		.cdx-card__text__title,
+		.cdx-card__text__description {
+			// Contradictory to its name, non standards conforming `-webkit-box` value is supported
+			// across all major browsers.
+			// Must be used in combination with `-webkit-box-orient` to make `-webkit-line-clamp`
+			// below work.
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			// Contain text to a given amount of lines when used in combination with
+			// `display: -webkit-box` and ` `-webkit-box-orient`. It will end with ellipsis when
+			// `text-overflow: ellipsis` is included.
+			-webkit-line-clamp: 2;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+	}
 
-.cdx-card__text__title,
-.cdx-card__text__description {
-	// Contradictory to its name, non standards conforming `-webkit-box` value is supported
-	// across all major browsers.
-	// Must be used in combination with `-webkit-box-orient` to make `-webkit-line-clamp`
-	// below work.
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	// Contain text to a given amount of lines when used in combination with
-	// `display: -webkit-box` and ` `-webkit-box-orient`. It will end with ellipsis when
-	// `text-overflow: ellipsis` is included.
-	-webkit-line-clamp: 2;
-	text-overflow: ellipsis;
-	overflow: hidden;
-}
+	.cdx-card__text__supporting-text {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 
-.cdx-card__text__title {
-	font-family: @font-family-serif;
-	font-size: @font-size-x-large;
-	font-weight: @font-weight-normal;
-	line-height: @line-height-x-large;
-}
-
-.cdx-card__text__description {
-	color: @color-subtle;
-	font-size: @font-size-small;
-	line-height: @line-height-small;
-}
-
-.cdx-card__text__supporting-text {
-	color: @color-subtle;
-	font-size: @font-size-x-small;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	// Simulate divider separation styles from Codex. We have to copy this style because the one in
+	// Codex expects `.cdx-card` elements to be direct siblings, while we wrap ours in `<li>`s.
+	& + & > .cdx-card--separation-divider {
+		border-top: @border-base;
+	}
 }
 </style>
