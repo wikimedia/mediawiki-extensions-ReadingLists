@@ -312,3 +312,88 @@ module.exports = exports = {
 	}
 };
 </script>
+
+<style lang="less">
+@import 'mediawiki.skin.variables.less';
+
+@min-width-card: 20rem; // equal to 320px.
+@max-width-card: 28rem; // equal to 448px. Note: alternatively up to `1fr`.
+@max-width-card--mobile: 34rem; // equal to 544px.
+
+.content ul.reading-lists-items,
+.reading-lists-items {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.reading-lists-items--view-cards {
+	display: grid;
+	grid-auto-rows: 1fr;
+	// Auto-fit to fit as many columns as possible in the row.
+	// Minimum width of a column is 22rem equal to 352px.
+	// Only for browsers which do _not_ support `:has()` below.
+	// Support: Chrome ≤ 105, Edge ≤ 105, Firefox ≤ 120, Safari ≤ 15.3
+	grid-template-columns: repeat( auto-fit, minmax( @min-width-card, @max-width-card ) );
+	// Align all items to the start of the row.
+	justify-content: start;
+	gap: @spacing-100;
+	// Default: Limit to 4 items maximum per row.
+	// Note: Desktop and Desktop wide gets 4 items per row as well.
+	max-width: calc( 4 * @max-width-card + 3 * @spacing-100 );
+	margin-top: @spacing-75;
+
+	// Mobile: Limit to 1 item maximum per row, but with higher grid container max width.
+	@media screen and ( max-width: @max-width-breakpoint-mobile ) {
+		grid-template-columns: repeat( auto-fit, minmax( @min-width-card, @max-width-card--mobile ) );
+		max-width: calc( 2 * @max-width-card--mobile + 1 * @spacing-100 );
+	}
+
+	// Tablet: Limit to 2 items maximum per row.
+	// Note: As of current `@max-width-breakpoint-tablet` is 1119px.
+	@media screen and ( max-width: @max-width-breakpoint-tablet ) {
+		max-width: calc( 2 * @max-width-card--mobile + 1 * @spacing-100 );
+	}
+
+	// More modern browsers supporting `:has()`.
+	// Default: All items, no matter which number, get equal space via `1fr`.
+	// Support: Chrome ≥ 105, Edge ≥ 105, Safari ≥ 15.4 , Firefox ≥ 121
+	&:has( * ) {
+		grid-template-columns: repeat( auto-fit, minmax( @min-width-card, 1fr ) );
+	}
+
+	// Match container with only 1 item `:has( > :nth-child( 1 ) )` and not more.
+	&:has( :nth-child( 1 ) ):not( :has( :nth-child( 2 ) ) ) {
+		max-width: @max-width-card--mobile;
+	}
+
+	// Match container with only 2 items and not more.
+	&:has( :nth-child( 2 ) ):not( :has( :nth-child( 3 ) ) ) {
+		max-width: calc( 2 * @max-width-card--mobile + 1 * @spacing-100 );
+
+		@media screen and ( max-width: @max-width-breakpoint-mobile ) {
+			grid-template-columns: repeat( auto-fit, minmax( @min-width-card, @max-width-card--mobile ) );
+		}
+	}
+
+	// Match container with 3 items and not more.
+	&:has( :nth-child( 3 ) ):not( :has( :nth-child( 4 ) ) ) {
+		grid-template-columns: repeat( auto-fit, minmax( @min-width-card, 1fr ) );
+	}
+
+	// Match container with 4 items and more.
+	/* stylelint-disable-next-line no-descending-specificity */
+	&:has( :nth-child( 4 ) ) {
+		max-width: calc( 4 * @max-width-card--mobile + 3 * @spacing-100 );
+	}
+
+	// "Show more" button.
+	+ .cdx-button {
+		display: block;
+		margin-top: @spacing-200;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+</style>
