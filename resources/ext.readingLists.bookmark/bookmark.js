@@ -81,7 +81,15 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			mw.msg( 'readinglists-default-title' )
 		);
 
-		if ( isSaved && !mw.storage.get( ONBOARDING_STORAGE_KEY ) ) {
+		// Show the onboarding popover only if the user has saved an article, if they haven't seen
+		// the popover before, and if they have seen and dismissed the homepage discovery popover
+		// to ensure the popovers don't overlap (T421942).
+		// If the onboarding popover is not displayed, show a confirmation notification.
+		if (
+			isSaved &&
+			!mw.storage.get( ONBOARDING_STORAGE_KEY ) &&
+			mw.user.options.get( 'growthexperiments-tour-homepage-discovery' )
+		) {
 			initSavedPagesOnboardingPopover();
 		} else {
 			// The following CSS classes are used here:
@@ -282,11 +290,6 @@ function initOnboardingPopover(
 	const targetElement = document.querySelector( anchorSelector );
 
 	if ( !targetElement ) {
-		return;
-	}
-
-	// T421942 - we don't want these dialogues to overlap, so give precedence to the user homepage
-	if ( !mw.user.options.get( 'growthexperiments-tour-homepage-discovery' ) ) {
 		return;
 	}
 

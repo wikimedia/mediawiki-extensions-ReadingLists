@@ -270,49 +270,87 @@ describe( 'initBookmark', () => {
 				} ) );
 			} );
 
-			test( 'triggers onboarding popover on first save when not yet seen', async () => {
-				mw.user.options.get.mockImplementation( ( name ) => (
-					name === 'growthexperiments-tour-homepage-discovery' ? 1 : 0
-				) );
+			describe( 'when onboarding popover has not been seen', () => {
+				describe( 'and homepage discovery tour is active', () => {
+					test( 'shows notify success', async () => {
+						mw.user.options.get.mockRestore();
+						jest.useFakeTimers();
 
-				jest.useFakeTimers();
+						const anchor = document.createElement( 'div' );
+						anchor.id = 'pt-readinglists-2';
+						document.body.appendChild( anchor );
 
-				const anchor = document.createElement( 'div' );
-				anchor.id = 'pt-readinglists-2';
-				document.body.appendChild( anchor );
+						const bookmark = createBookmarkElement();
+						api.stubApi( {
+							postWithEditToken: jest.fn( () => CREATEENTRY )
+						} );
 
-				const bookmark = createBookmarkElement();
-				api.stubApi( {
-					postWithEditToken: jest.fn( () => CREATEENTRY )
+						mw.storage.get.mockReturnValue( null );
+						mw.requestIdleCallback.mockImplementation( ( fn ) => fn() );
+
+						initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+						bookmark.click();
+						await flushPromises();
+
+						jest.advanceTimersByTime( 1000 );
+
+						expect( mw.loader.using ).not.toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
+
+						expect( mw.notify ).toHaveBeenCalledWith(
+							expect.anything(),
+							expect.objectContaining( { tag: 'saved', type: 'success' } )
+						);
+					} );
 				} );
 
-				mw.storage.get.mockReturnValue( null );
-				mw.requestIdleCallback.mockImplementation( ( fn ) => fn() );
+				describe( 'and homepage discovery tour is not active', () => {
+					test( 'triggers onboarding popover', async () => {
+						mw.user.options.get.mockImplementation( ( name ) => (
+							name === 'growthexperiments-tour-homepage-discovery' ? 1 : 0
+						) );
 
-				initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
-				bookmark.click();
-				await flushPromises();
+						jest.useFakeTimers();
 
-				jest.advanceTimersByTime( 1000 );
+						const anchor = document.createElement( 'div' );
+						anchor.id = 'pt-readinglists-2';
+						document.body.appendChild( anchor );
 
-				expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
+						const bookmark = createBookmarkElement();
+						api.stubApi( {
+							postWithEditToken: jest.fn( () => CREATEENTRY )
+						} );
+
+						mw.storage.get.mockReturnValue( null );
+						mw.requestIdleCallback.mockImplementation( ( fn ) => fn() );
+
+						initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+						bookmark.click();
+						await flushPromises();
+
+						jest.advanceTimersByTime( 1000 );
+
+						expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
+					} );
+				} );
 			} );
 
-			test( 'shows notify success when onboarding already seen', async () => {
-				const bookmark = createBookmarkElement();
-				api.stubApi( {
-					postWithEditToken: jest.fn( () => CREATEENTRY )
+			describe( 'when onboarding popover has been seen', () => {
+				test( 'shows notify success', async () => {
+					const bookmark = createBookmarkElement();
+					api.stubApi( {
+						postWithEditToken: jest.fn( () => CREATEENTRY )
+					} );
+					mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+
+					initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+					bookmark.click();
+					await flushPromises();
+
+					expect( mw.notify ).toHaveBeenCalledWith(
+						expect.anything(),
+						expect.objectContaining( { tag: 'saved', type: 'success' } )
+					);
 				} );
-				mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
-
-				initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
-				bookmark.click();
-				await flushPromises();
-
-				expect( mw.notify ).toHaveBeenCalledWith(
-					expect.anything(),
-					expect.objectContaining( { tag: 'saved', type: 'success' } )
-				);
 			} );
 		} );
 
@@ -650,25 +688,5 @@ describe( 'initOnboardingPopover', () => {
 		);
 
 		expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
-	} );
-
-	test( 'does not load onboarding popover if the homepage tour hasn\'t been seen yet', () => {
-		mw.user.options.get.mockRestore();
-
-		const anchor = document.createElement( 'div' );
-		anchor.id = 'test-anchor';
-		document.body.appendChild( anchor );
-
-		initOnboardingPopover(
-			'#test-anchor',
-			'test-storage-key',
-			'title-key',
-			'body-key',
-			null,
-			'ext.readingLists.onboarding.mobile'
-		);
-
-		expect( mw.user.options.get ).toHaveBeenCalledWith( 'growthexperiments-tour-homepage-discovery' );
-		expect( mw.loader.using ).not.toHaveBeenCalled();
 	} );
 } );
