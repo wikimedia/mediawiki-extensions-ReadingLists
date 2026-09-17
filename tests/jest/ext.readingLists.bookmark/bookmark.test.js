@@ -633,26 +633,6 @@ describe( 'initOnboardingPopover', () => {
 		expect( mw.loader.using ).not.toHaveBeenCalled();
 	} );
 
-	test( 'returns early if storage key already set', () => {
-		const anchor = document.createElement( 'div' );
-		anchor.id = 'test-anchor';
-		document.body.appendChild( anchor );
-
-		mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
-
-		initOnboardingPopover(
-			'#test-anchor',
-			'test-storage-key',
-			'title-key',
-			'body-key',
-			null,
-			'ext.readingLists.onboarding.mobile'
-		);
-
-		expect( mw.storage.get ).toHaveBeenCalledWith( 'test-storage-key' );
-		expect( mw.loader.using ).not.toHaveBeenCalled();
-	} );
-
 	test( 'loads onboarding popover module immediately', () => {
 		const anchor = document.createElement( 'div' );
 		anchor.id = 'test-anchor';

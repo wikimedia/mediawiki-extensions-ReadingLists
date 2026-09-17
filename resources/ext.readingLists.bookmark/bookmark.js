@@ -1,4 +1,5 @@
 const api = require( 'ext.readingLists.api' );
+const ONBOARDING_STORAGE_KEY = 'readinglists-saved-pages-dialog-seen';
 
 function getErrorMessage( err ) {
 	if ( typeof err === 'string' ) {
@@ -80,9 +81,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			mw.msg( 'readinglists-default-title' )
 		);
 
-		const popoverStorageKey = 'readinglists-saved-pages-dialog-seen';
-
-		if ( isSaved && !mw.storage.get( popoverStorageKey ) ) {
+		if ( isSaved && !mw.storage.get( ONBOARDING_STORAGE_KEY ) ) {
 			initSavedPagesOnboardingPopover();
 		} else {
 			// The following CSS classes are used here:
@@ -147,7 +146,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 
 		initOnboardingPopover(
 			config.anchorSelector,
-			'readinglists-saved-pages-dialog-seen',
+			ONBOARDING_STORAGE_KEY,
 			config.titleMsgKey,
 			config.bodyMsgKey,
 			config.bannerImagePath,
@@ -283,10 +282,6 @@ function initOnboardingPopover(
 	const targetElement = document.querySelector( anchorSelector );
 
 	if ( !targetElement ) {
-		return;
-	}
-
-	if ( mw.storage.get( storageKey ) ) {
 		return;
 	}
 
