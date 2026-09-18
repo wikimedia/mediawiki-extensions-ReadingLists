@@ -9,5 +9,11 @@
 	"readinglists-sorted-by-recent": "Ordená pa mas resien.",
 	"readinglists-beta-feature-name": "Página ifail",
 	"readinglists-menu-item": "Página ifail",
-	"readinglists-mobile-onboarding-saved-pages-title": "Página ifail"
+	"readinglists-add-bookmark": "Fail",
+	"readinglists-remove-bookmark": "Kita",
+	"readinglists-unsave-from-custom-list-cancel": "Kanselá",
+	"readinglists-mobile-onboarding-saved-pages-title": "Página ifail",
+	"readinglists-betafeature-quicksurvey-question": "Bo gusta e funshonalidat aki?",
+	"readinglists-betafeature-quicksurvey-answer-positive": "Sí",
+	"readinglists-betafeature-quicksurvey-answer-negative": "Nò"
 }
