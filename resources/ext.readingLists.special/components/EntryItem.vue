@@ -6,13 +6,14 @@
 		<template #title>
 			{{ entry.title }}
 		</template>
-
-		<template v-if="entry.redirectTitle" #description>
-			<cdx-icon :icon="cdxIconInfo"></cdx-icon>
-			<span v-i18n-html:readinglists-redirect-to="[ entry.redirectTitle ]"></span>
-		</template>
-		<template v-else-if="entry.description" #description>
-			{{ entry.description }}
+		<template v-if="entry.redirectTitle || entry.description" #description>
+			<template v-if="entry.redirectTitle">
+				<cdx-icon :icon="cdxIconInfo"></cdx-icon>
+				<span v-i18n-html:readinglists-redirect-to="[ entry.redirectTitle ]"></span>
+			</template>
+			<template v-else>
+				{{ entry.description }}
+			</template>
 		</template>
 	</cdx-card>
 </template>

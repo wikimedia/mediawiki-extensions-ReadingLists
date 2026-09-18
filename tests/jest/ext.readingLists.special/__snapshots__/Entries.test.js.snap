@@ -264,7 +264,9 @@ exports[`Entries without custom lists renders with toolbar disabled 1`] = `
             class="cdx-card__text__description"
           >
             
+            
             Major League Baseball franchise in New York City
+            
             
           </span>
           <!--v-if-->
@@ -324,7 +326,9 @@ exports[`Entries without custom lists renders with toolbar disabled 1`] = `
             class="cdx-card__text__description"
           >
             
+            
             Main page of the English Wikipedia
+            
             
           </span>
           <!--v-if-->
@@ -351,7 +355,9 @@ exports[`Entries without custom lists renders with toolbar disabled 1`] = `
             class="cdx-card__text__description"
           >
             
+            
             Topics referred to by the same term
+            
             
           </span>
           <!--v-if-->
