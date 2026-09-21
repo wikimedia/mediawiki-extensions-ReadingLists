@@ -78,6 +78,7 @@
 	"readinglists-list-empty-message": "このリストにはページがありません。このあとで読むリストに項目を追加するには、アプリをダウンロードして使用してください。",
 	"readinglists-no-title": "無題のリスト",
 	"readinglists-export": "リストを共有",
+	"readinglists-redirect-to": "このページのコンテンツは<b>$1</b>に移動されました",
 	"readinglists-watchlist": "ウォッチリスト",
 	"readinglists-watchlist-description": "新しい編集をフォローするページ。",
 	"readinglists-watchlist-monitor": "[$1 ウォッチリスト]ツールを使用して、このリストにあるページの編集を監視できます。",

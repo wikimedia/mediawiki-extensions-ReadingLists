@@ -82,6 +82,7 @@
 	"readinglists-list-empty-message": "此列表尚无页面。请下载并使用应用程序来将项目添加到此阅读列表。",
 	"readinglists-no-title": "无标题列表",
 	"readinglists-export": "分享列表",
+	"readinglists-redirect-to": "本页面内容已移至<b>$1</b>",
 	"readinglists-watchlist": "监视列表",
 	"readinglists-watchlist-description": "您关注这些页面的新的编辑。",
 	"readinglists-watchlist-monitor": "您可以使用[$1 监视列表]工具监视此列表上的页面的编辑。",

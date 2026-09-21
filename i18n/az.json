@@ -72,6 +72,7 @@
 	"readinglists-list-empty-message": "Bu siyahıda səhifə yoxdur. Bu oxuma siyahısına elementlər əlavə etmək üçün tətbiqi yükləyin və istifadə edin.",
 	"readinglists-no-title": "Adsız siyahı",
 	"readinglists-export": "Siyahını paylaş",
+	"readinglists-redirect-to": "Bu səhifənin məzmunu <b>$1</b> ünvanına köçürülüb",
 	"readinglists-watchlist": "İzləmə siyahısı",
 	"readinglists-watchlist-description": "Yeni redaktələr üçün izlədiyiniz səhifələr.",
 	"readinglists-watchlist-monitor": "Bu siyahıdakı səhifələrdəki redaktələri [$1 izləmə siyahısı] alətindən istifadə edərək izləyə bilərsiniz.",

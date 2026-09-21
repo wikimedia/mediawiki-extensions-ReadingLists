@@ -74,6 +74,7 @@
 	"readinglists-list-empty-message": "Esta lista non ten páxinas. Descarga e utiliza a aplicación para engadir elementos a esta lista de lectura.",
 	"readinglists-no-title": "Lista sen título",
 	"readinglists-export": "Compartir a lista",
+	"readinglists-redirect-to": "O contido desta páxina trasladouse a «<b>$1</b>»",
 	"readinglists-watchlist": "Lista de vixilancia",
 	"readinglists-watchlist-description": "Páxinas cuxas edicións supervisas.",
 	"readinglists-watchlist-monitor": "Podes supervisar as edicións das páxinas desta lista mediante a ferramenta de [$1 lista de vixilancia].",

@@ -71,6 +71,7 @@
 	"readinglists-list-empty-message": "Liiskan kuma jiraan bogag. Soo deji oo isticmaal app-ka si aad ugu darto waxyaabo liiskan akhriska.",
 	"readinglists-no-title": "Liis aan cinwaan lahayn",
 	"readinglists-export": "La wadaag liiska",
+	"readinglists-redirect-to": "Nuxurka boggan waxaa loo raray <b>$1</b>",
 	"readinglists-watchlist": "Liiska la socodka",
 	"readinglists-watchlist-description": "Bogag aad raacdo si aad u aragto wax ka beddel cusub.",
 	"readinglists-watchlist-monitor": "Waxaad la socon kartaa wax ka beddelka bogagga ku jira liiskan adigoo adeegsanaya qalabka [$1 liiska la socodka].",

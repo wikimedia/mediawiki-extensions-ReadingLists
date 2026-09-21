@@ -73,6 +73,7 @@
 	"readinglists-list-empty-message": "Op dëser Lëscht sti keng Säiten. Luet d'App erof a benotzt se, fir Anträg op dës Lieslëscht ze setzen.",
 	"readinglists-no-title": "Lëscht ouni Titel",
 	"readinglists-export": "Lëscht deelen",
+	"readinglists-redirect-to": "Den Inhalt vun dëser Säit gouf op <b>$1</b> geréckelt",
 	"readinglists-watchlist": "Iwwerwaachungslëscht",
 	"readinglists-watchlist-description": "Säiten, déi Dir op nei Ännerungen iwwerwaacht.",
 	"readinglists-watchlist-monitor": "Dir kënnt Ännerungen op Säite vun dëser Lëscht mam [$1 Iwwerwaachungslëschten]-Tool iwwerwaachen.",

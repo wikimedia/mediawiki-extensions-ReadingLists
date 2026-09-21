@@ -75,6 +75,7 @@
 	"readinglists-list-empty-message": "Diese Liste enthält keine Seiten. Lade die App herunter und verwende sie, um Artikel zu dieser Leseliste hinzuzufügen.",
 	"readinglists-no-title": "Liste ohne Titel",
 	"readinglists-export": "Liste teilen",
+	"readinglists-redirect-to": "Der Inhalt dieser Seite wurde nach <b>$1</b> verschoben.",
 	"readinglists-watchlist": "Beobachtungsliste",
 	"readinglists-watchlist-description": "Seiten, denen du für neue Bearbeitungen folgst.",
 	"readinglists-watchlist-monitor": "Du kannst Änderungen an Seiten dieser Liste mit der [$1 Beobachtungsliste] überwachen.",

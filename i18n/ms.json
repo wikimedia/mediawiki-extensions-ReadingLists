@@ -71,6 +71,7 @@
 	"readinglists-list-empty-message": "Senarai ini tidak mempunyai sebarang laman. Muat turun dan gunakan aplikasi untuk menambah butir pada senarai bacaan ini.",
 	"readinglists-no-title": "Senarai tanpa tajuk",
 	"readinglists-export": "Kongsi senarai",
+	"readinglists-redirect-to": "Kandungan laman ini telah dipindahkan ke <b>$1</b>",
 	"readinglists-watchlist": "Senarai pantau",
 	"readinglists-watchlist-description": "Laman yang anda ikuti untuk suntingan baharu.",
 	"readinglists-watchlist-monitor": "Anda boleh memantau suntingan pada laman yang ada dalam senarai ini menggunakan alat [$1 senarai pantau].",
