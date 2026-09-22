@@ -73,6 +73,7 @@
 	"readinglists-list-empty-message": "Denne liste har ingen sider. Download og brug appen til at tilføje elementer til denne læseliste.",
 	"readinglists-no-title": "Unavngiven liste",
 	"readinglists-export": "Del liste",
+	"readinglists-redirect-to": "Indholdet på denne side er blevet flyttet til <b>$1</b>",
 	"readinglists-watchlist": "Overvågningsliste",
 	"readinglists-watchlist-description": "Sider, du følger for seneste redigeringer.",
 	"readinglists-watchlist-monitor": "Du kan overvåge ændringer på sider på denne liste ved hjælp af værktøjet [ $1 overvågningsliste].",

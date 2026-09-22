@@ -4,6 +4,7 @@
 			"Beta16",
 			"FL2226",
 			"Greis",
+			"Matroz",
 			"Neonsn0w",
 			"ZandDev"
 		]
@@ -47,6 +48,7 @@
 	"readinglists-import-empty-message": "Non è possibile importare elenchi di elenchi.",
 	"readinglists-no-title": "Elenco senza titolo",
 	"readinglists-export": "Condividi elenco",
+	"readinglists-redirect-to": "Il contenuto di questa pagina è stato spostato su <b>$1</b>",
 	"readinglists-watchlist": "Osservati speciali",
 	"readinglists-watchlist-description": "Pagine che segui per nuove modifiche.",
 	"readinglists-import-button-label": "Apri nell'app",
