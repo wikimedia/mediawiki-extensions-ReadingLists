@@ -424,31 +424,6 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		);
 	}
 
-	public function testCentralAuthPostLoginRedirectDoesNotAddAccountCreationCTAFlagForUserLogin(): void {
-		$returnTo = 'Taco';
-		$returnToQuery = 'readingListsAccountCreationCta=1&foo=bar';
-		$unused = '';
-
-		$this->assertTrue(
-			$this->hookHandler->onCentralAuthPostLoginRedirect(
-				$returnTo,
-				$returnToQuery,
-				false,
-				'',
-				$unused
-			)
-		);
-
-		$this->assertSame( 'Taco', $returnTo );
-		$this->assertSame( '', $unused );
-		$this->assertSame(
-			[
-				'foo' => 'bar',
-			],
-			wfCgiToArray( $returnToQuery )
-		);
-	}
-
 	private function getLinks() {
 		return [
 			'user-menu' => [

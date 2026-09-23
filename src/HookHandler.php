@@ -247,7 +247,7 @@ class HookHandler implements
 		unset( $returnToQueryArray['readingListsAccountCreationCta'] );
 
 		// If the URL parameter is present, the user came from the account creation CTA.
-		if ( $type === 'signup' && $isFromReadingListsAccountCreationCta ) {
+		if ( $isFromReadingListsAccountCreationCta ) {
 			// For the account creation reading list cta, add a URL parameter that will
 			// be used to send an account_created event.
 			$returnToQueryArray['readingListsAccountJustCreated'] = '1';
