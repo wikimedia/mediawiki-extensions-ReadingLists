@@ -439,6 +439,22 @@
 				"resources/ext.readingLists.onboarding.mobile/index.js",
 				"resources/ext.readingLists.onboarding.mobile/MobileOnboardingPopover.vue"
 			]
+		},
+		"ext.readingLists.configPopover": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexComponents": [
+				"CdxPopover",
+				"useModelWrapper",
+				"useResizeObserver"
+			],
+			"dependencies": [
+				"vue",
+				"mediawiki.util"
+			],
+			"packageFiles": [
+				"resources/ext.readingLists.configPopover/index.js",
+				"resources/ext.readingLists.configPopover/ConfigPopover.vue"
+			]
 		}
 	},
 	"RestModuleFiles": [

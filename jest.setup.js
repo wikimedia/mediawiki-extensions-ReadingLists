@@ -25,7 +25,8 @@ const mw = {
 		getName: jest.fn()
 	},
 	util: {
-		getUrl: jest.fn()
+		getUrl: jest.fn(),
+		debounce: jest.fn( ( fn ) => fn )
 	},
 	storage: {
 		get: jest.fn(),
