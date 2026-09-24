@@ -55,7 +55,7 @@
 	"readinglists-title": "Opgeslagen pagina’s",
 	"readinglists-total-lists": "$1 lijst{{PLURAL:$1||en}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|pagina|pagina's}}",
-	"readinglists-show-more": "Meer weergeven",
+	"readinglists-show-more": "Meer items weergeven",
 	"readinglists-default-title": "opgeslagen items",
 	"readinglists-default-description": "De standaardlijst voor uw opgeslagen pagina's.",
 	"readinglists-empty-title": "Geen opgeslagen pagina's",
