@@ -135,6 +135,10 @@
 		"ReadingListsMinervaCTA": {
 			"value": false,
 			"description": "Enable reading list CTA for logged out users in Minerva."
+		},
+		"ReadingListsMinervaCTAShowDot": {
+			"value": false,
+			"description": "Whether to show a pulsating blue dot on the anonymous bookmark button."
 		}
 	},
 	"Hooks": {
@@ -350,7 +354,13 @@
 			"packageFiles": [
 				"resources/ext.readingLists.bookmark.anonymous/index.js",
 				"resources/ext.readingLists.bookmark.anonymous/pulsatingDot.js",
-				"resources/ext.readingLists.bookmark.anonymous/CtaDialog.vue"
+				"resources/ext.readingLists.bookmark.anonymous/CtaDialog.vue",
+				{
+					"name": "resources/ext.readingLists.bookmark.anonymous/config.json",
+					"config": [
+						"ReadingListsMinervaCTAShowDot"
+					]
+				}
 			]
 		},
 		"ext.readingLists.bookmark.confirmPopover": {
