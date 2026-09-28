@@ -76,6 +76,7 @@
 	"readinglists-list-empty-message": "Er staan geen pagina’s op deze lijst. Download en gebruik de app om vermeldingen aan deze leeslijst toe te voegen.",
 	"readinglists-no-title": "Naamloze lijst",
 	"readinglists-export": "Lijst delen",
+	"readinglists-redirect-to": "De inhoud van deze pagina is verplaatst naar <b>$1</b>",
 	"readinglists-watchlist": "Volglijst",
 	"readinglists-watchlist-description": "Pagina’s die u volgt voor nieuwe bewerkingen.",
 	"readinglists-watchlist-monitor": "U kunt bewerkingen op pagina’s op deze lijst volgen met behulp van het hulpmiddel [$1 Volglijst].",
