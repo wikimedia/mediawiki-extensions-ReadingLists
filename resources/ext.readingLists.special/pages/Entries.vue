@@ -67,7 +67,6 @@
 const { ref } = require( 'vue' );
 const api = require( 'ext.readingLists.api' );
 const { CdxButton, CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
-const { ReadingListsCustomLists } = require( '../config.json' );
 const EmptyList = require( '../components/EmptyList.vue' );
 const EntryItem = require( '../components/EntryItem.vue' );
 const NavigationBar = require( '../components/NavigationBar.vue' );
@@ -95,6 +94,10 @@ module.exports = exports = {
 		imported: {
 			type: Object,
 			default: null
+		},
+		isCustomListsEnabled: {
+			type: Boolean,
+			default: false
 		}
 	},
 	setup() {
@@ -127,7 +130,7 @@ module.exports = exports = {
 			if ( this.imported ) {
 				return true;
 			}
-			return !ReadingListsCustomLists &&
+			return !this.isCustomListsEnabled &&
 				!this.isDefaultList &&
 				!this.isAllListItems;
 		},
@@ -135,14 +138,24 @@ module.exports = exports = {
 		// we are viewing a specific, non-default list rather than the aggregate
 		// all-items view or an imported list.
 		isCustomList() {
-			return ReadingListsCustomLists &&
+			return this.isCustomListsEnabled &&
 				!this.imported &&
 				!this.isDefaultList &&
 				!this.isAllListItems;
 		},
 		showNavBar() {
 			// if custom lists are enabled, display the nav bar for traversing them
-			return ReadingListsCustomLists;
+			if ( !this.isCustomListsEnabled ) {
+				return false;
+			}
+
+			// we only want to show the nav bar once the interface (incl. entries) have loaded, but
+			// don't want it to disappear if we load more entries
+			if ( this.loadingEntries && this.entries.length === 0 ) {
+				return false;
+			}
+
+			return true;
 		},
 		showNavDropdown() {
 			return mw.config.get( 'skin' ) === 'vector-2022';

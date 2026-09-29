@@ -4,6 +4,8 @@ const Entries = require( './pages/Entries.vue' );
 const App = require( './App.vue' );
 const router = require( './router.js' );
 
+const { ReadingListsCustomLists } = require( './config.json' );
+
 /**
  * Mounts the import/export view. This is only reachable on initial load: it
  * async-loads a separate module and decodes the shared list, so it is kept out
@@ -24,10 +26,10 @@ async function mountImportApp( imported ) {
 			ImportDialog
 		},
 		data() {
-			return { importedList };
+			return { importedList, ReadingListsCustomLists };
 		},
 		template: `
-			<entries :imported="importedList">
+			<entries :imported="importedList" :isCustomListsEnabled="ReadingListsCustomLists">
 				<template #import-dialog>
 					<import-dialog></import-dialog>
 				</template>

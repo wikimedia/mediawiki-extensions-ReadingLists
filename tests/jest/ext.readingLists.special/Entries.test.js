@@ -3,18 +3,21 @@ const api = require( '../../../resources/ext.readingLists.api/index.js' );
 
 const LIST = require( '../fixtures/list.json' );
 const ENTRIES = require( '../fixtures/entries.json' );
+const ENTRIES2 = require( '../fixtures/entries2.json' );
 const PAGES = require( '../fixtures/pages.json' );
 const ALL_ENTRIES = require( '../fixtures/allentries.json' );
 const ALL_PAGES = require( '../fixtures/allpages.json' );
 
 function setupEntriesApiStub() {
 	return api.stubApi( {
-		get: jest.fn( ( { action, meta, rllist, list, rlelists, prop } ) => {
+		get: jest.fn( ( { action, meta, rllist, list, rlelists, prop, rlecontinue } ) => {
 			if ( action === 'query' ) {
 				if ( meta === 'readinglists' && rllist === 12345 ) {
 					return LIST;
-				} else if ( list === 'readinglistentries' && rlelists === 12345 ) {
+				} else if ( list === 'readinglistentries' && rlelists === 12345 && !rlecontinue ) {
 					return ENTRIES;
+				} else if ( list === 'readinglistentries' && rlelists === 12345 && rlecontinue ) {
+					return ENTRIES2;
 				} else if ( prop !== undefined ) {
 					return PAGES;
 				}
@@ -126,21 +129,43 @@ describe( 'Entries', () => {
 	} );
 
 	describe( 'with custom lists', () => {
-		beforeEach( () => {
-			jest.resetModules();
+		test( 'renders the nav bar when custom lists are enabled', async () => {
+			setupAllItemsApiStub();
 
-			jest.mock(
-				'../../../resources/ext.readingLists.special/config.json',
-				() => ( {
-					ReadingListsCustomLists: true
-				} ),
-				{ virtual: true }
-			);
+			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const wrapper = mount( Entries, { props: { isCustomListsEnabled: true } } );
+
+			await flushPromises();
+
+			expect( wrapper.vm.loadingEntries ).toBe( false );
+			expect( wrapper.vm.entries.length ).toBeGreaterThan( 0 );
+			expect( wrapper.vm.showNavBar ).toBe( true );
+			expect( wrapper.element ).toMatchSnapshot();
 		} );
 
-		test( 'renders the nav bar when custom lists are enabled', async () => {
+		test( 'nav bar only renders after content has finished loading', async () => {
 			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
-			const wrapper = mount( Entries );
+			const wrapper = mount( Entries, { props: { isCustomListsEnabled: true } } );
+
+			expect( wrapper.vm.loadingEntries ).toBe( true );
+			expect( wrapper.vm.entries.length ).toBe( 0 );
+			expect( wrapper.vm.showNavBar ).toBe( false );
+			expect( wrapper.element ).toMatchSnapshot();
+		} );
+
+		test( 'nav bar does not disappear when show more is clicked', async () => {
+			setupEntriesApiStub();
+
+			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const wrapper = mount(
+				Entries,
+				{ props: { listId: 12345, isCustomListsEnabled: true } }
+			);
+
+			await flushPromises();
+
+			const showMoreButton = wrapper.find( '.cdx-button' );
+			await showMoreButton.trigger( 'click' );
 
 			expect( wrapper.element ).toMatchSnapshot();
 		} );
