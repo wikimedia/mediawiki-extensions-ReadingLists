@@ -1,0 +1,27 @@
+{
+	"@metadata": {
+		"authors": [
+			"Vellion Eagle"
+		]
+	},
+	"readinglists-desc": "Permite utilizatorilor să gestioneze liste private de elemente, cum ar fi marcaje sau liste de „Pagini salvate”.",
+	"readinglists-browser-list-entry-limit-exceeded": "Pagina nu poate fi salvată. Ați atins limita de $1 elemente per listă.",
+	"readinglists-special-subpage-title": "Salvate",
+	"readinglists-special-custom-list-title": "Salvate / $1",
+	"readinglists-privacy-tooltip": "Elementele și colecțiile salvate sunt private și vizibile numai pentru dvs.",
+	"readinglists-description": "Toate listele dvs. salvate, într-un singur loc.",
+	"readinglists-title": "Pagini salvate",
+	"readinglists-default-title": "elemente salvate",
+	"readinglists-default-description": "Listă implicită pentru paginile dvs. salvate.",
+	"readinglists-empty-title": "Fără articole salvate",
+	"readinglists-beta-feature-name": "Pagini salvate",
+	"readinglists-beta-feature-description": "* Puteți salva pagini pentru citire sau consultare ulterioară.\n* Paginile salvate din aplicația Wikipedia și de pe site vor fi sincronizate într-o singură listă.\n\nVă rugăm să rețineți:\n* Este posibil să adăugăm noi funcționalități cât timp suntem în versiunea beta.\n* Această funcție beta va funcționa până în iulie 2026, după care va deveni o funcție accesibilă permanent pe Wikipedia. Așteptăm cu nerăbdare feedback-ul dumneavoastră prin linkul de discuție de mai sus.",
+	"readinglists-menu-item": "Salvate",
+	"tooltip-pt-readinglists": "Paginile dvs. salvate",
+	"tooltip-ca-bookmark-add": "Adăugați această pagină la paginile dvs. salvate",
+	"tooltip-ca-bookmark-remove": "Eliminați această pagină din lista dvs de pagini salvate",
+	"readinglists-onboarding-saved-pages-title": "Salvate",
+	"readinglists-onboarding-saved-pages-text": "Accesați toate paginile dvs. salvate aici.",
+	"readinglists-mobile-onboarding-saved-pages-title": "Salvate",
+	"readinglists-mobile-onboarding-saved-pages-text": "Accesați toate paginile dvs. salvate din acest meniu."
+}
