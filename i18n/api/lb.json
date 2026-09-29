@@ -6,7 +6,12 @@
 			"Volvox"
 		]
 	},
+	"apierror-readinglists-project-title-param": "<var>$1project</var> a(n) <var>$1title</var> mussen zesumme benotzt ginn.",
+	"apierror-readinglists-too-old": "Zäitstempelen, déi u(n) <var>$1changedsince</var> weidergi ginn, däerfen net méi al si wéi <kbd>$2</kbd>.",
+	"apierror-readinglists-invalidsort-notbyname": "D'Sortéieroptioun <kbd>name</kbd> kann net zesumme mat <var>$1changedsince</var> benotzt ginn.",
 	"apierror-readinglists-batch-invalid-json": "Ongültegen JSON fir de Parameter <var>batch</var>: $1",
+	"apierror-readinglists-batch-invalid-structure": "Ongültegen Input fir de Parameter <var>batch</var>: E muss en Array vun Objeten, déi skalar Wäerter hunn, enthalen.",
+	"apierror-readinglists-batch-toomanyvalues": "Ongültegen Input fir de Parameter <var>batch</var>: ze vill Anträg, maximal $1 erlaabt",
 	"apihelp-query+readinglists-param-list": "ID vun der Lëscht.",
 	"apihelp-query+readinglists-example-1": "D'Lieslëschte vum aktuelle Benotzer kréien",
 	"apihelp-readinglists+teardown-summary": "Lëschte fir den aktuelle Benotzer desaktivéieren.",
@@ -20,6 +25,7 @@
 	"apihelp-readinglists+update-example-2": "Méi Lëschten aktualiséieren.",
 	"apihelp-readinglists+delete-summary": "Eng Lëscht läschen déi dem aktuelle Benotzer gehéiert.",
 	"apihelp-readinglists+delete-param-list": "ID vun der Lëscht.",
+	"apihelp-readinglists+delete-example-1": "Läscht d'Lieslëscht mat der ID <kbd>11</kbd>.",
 	"apihelp-readinglists+delete-example-2": "Méi Lëschte läschen.",
 	"apihelp-readinglists+createentry-param-list": "ID vun der Lëscht.",
 	"apihelp-readinglists+createentry-param-title": "Säitentitel.",
