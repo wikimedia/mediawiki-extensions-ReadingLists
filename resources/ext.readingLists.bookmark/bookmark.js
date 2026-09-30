@@ -1,5 +1,6 @@
 const api = require( 'ext.readingLists.api' );
 const ONBOARDING_STORAGE_KEY = 'readinglists-saved-pages-dialog-seen';
+const { ReadingListsCustomLists } = require( './config.json' );
 
 function getErrorMessage( err ) {
 	if ( typeof err === 'string' ) {
@@ -66,21 +67,13 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	}
 
 	/**
-	 * Updates the bookmark button text and display an added/removed notification
+	 * Updates the bookmark button text via a hook and may display an added/removed notification or
+	 * the onboarding dialog.
 	 *
-	 * @param {boolean} isSaved
+	 * @param {boolean} isSaved Whether the article is now saved to a reading list
+	 * @param {boolean} showNotification Whether to show an mw.notification
 	 */
-	function updateBookmarkStatus( isSaved ) {
-		// The following messages are used here:
-		// * readinglists-browser-add-entry-success
-		// * readinglists-browser-remove-entry-success
-		const msg = mw.message(
-			`readinglists-browser-${ ( isSaved ? 'add' : 'remove' ) }-entry-success`,
-			mw.config.get( 'wgTitle' ),
-			`Special:ReadingLists/${ mw.user.getName() }`,
-			mw.msg( 'readinglists-default-title' )
-		);
-
+	function updateBookmarkStatus( isSaved, showNotification ) {
 		// Show the onboarding popover only if the user has saved an article, if they haven't seen
 		// the popover before, and if they have seen and dismissed the homepage discovery popover
 		// to ensure the popovers don't overlap (T421942).
@@ -91,7 +84,17 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			mw.user.options.get( 'growthexperiments-tour-homepage-discovery' )
 		) {
 			initSavedPagesOnboardingPopover();
-		} else {
+		} else if ( showNotification ) {
+			// The following messages are used here:
+			// * readinglists-browser-add-entry-success
+			// * readinglists-browser-remove-entry-success
+			const msg = mw.message(
+				`readinglists-browser-${ ( isSaved ? 'add' : 'remove' ) }-entry-success`,
+				mw.config.get( 'wgTitle' ),
+				`Special:ReadingLists/${ mw.user.getName() }`,
+				mw.msg( 'readinglists-default-title' )
+			);
+
 			// The following CSS classes are used here:
 			// * mw-notification-tag-saved
 			// * mw-notification-type-success
@@ -170,16 +173,30 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	async function addPageToReadingList() {
 		await api.saveToDefaultList( mw.config.get( 'wgPageName' ) );
 
-		updateBookmarkStatus( true );
+		if ( ReadingListsCustomLists ) {
+			const showNotification = await launchBookmarkPopover( false );
+			updateBookmarkStatus( true, showNotification );
+		} else {
+			updateBookmarkStatus( true, true );
+		}
 	}
 
 	/**
 	 * Handles frontend logic for removing a page from a reading list
 	 *
-	 * @param {string} pageTitle
 	 * @return {Promise<void>}
 	 */
-	async function removePageFromReadingList( pageTitle ) {
+	async function removePageFromReadingList() {
+		const inCustomList = bookmark.dataset.mwInCustomList === '1';
+		const pageTitle = mw.config.get( 'wgPageName' );
+
+		if ( inCustomList ) {
+			const confirmed = await confirmUnsaveFromCustomList( bookmark );
+			if ( !confirmed ) {
+				return;
+			}
+		}
+
 		try {
 			await api.deleteEntryByPageTitle( pageTitle );
 		} catch ( err ) {
@@ -188,7 +205,26 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			}
 		}
 
-		updateBookmarkStatus( false );
+		updateBookmarkStatus( false, true );
+	}
+
+	/**
+	 * Shows the save/un-save popover.
+	 *
+	 * @param {boolean} isCurrentlySaved
+	 * @return {Promise<boolean>} Returns whether an mw.notification should display on dismiss.
+	 */
+	async function launchBookmarkPopover( isCurrentlySaved ) {
+		return await mw.loader.using( [ 'ext.readingLists.bookmark.bookmarkPopover' ] )
+			.then( () => {
+				const bookmarkPopoverModule = require( 'ext.readingLists.bookmark.bookmarkPopover' );
+				return bookmarkPopoverModule.initBookmarkPopover( isCurrentlySaved );
+			} )
+			.catch( ( error ) => {
+				mw.log.error( 'Error loading ext.readingLists.bookmark.bookmarkPopover module:', error );
+				// Fall back to the mw.notification.
+				return true;
+			} );
 	}
 
 	/**
@@ -219,23 +255,20 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	 * Binds a click listener to the bookmark element
 	 */
 	async function bindClickListener() {
+		let isProcessing = false;
 		bookmark.addEventListener( 'click', async ( event ) => {
 			event.preventDefault();
 
-			const inCustomList = bookmark.dataset.mwInCustomList === '1';
-			const pageTitle = mw.config.get( 'wgPageName' );
+			if ( isProcessing ) {
+				return;
+			}
+			isProcessing = true;
 
 			try {
 				if ( bookmark.dataset.mwSaved !== '1' ) {
 					await addPageToReadingList();
 				} else {
-					if ( inCustomList ) {
-						const confirmed = await confirmUnsaveFromCustomList( bookmark );
-						if ( !confirmed ) {
-							return;
-						}
-					}
-					await removePageFromReadingList( pageTitle );
+					await removePageFromReadingList();
 				}
 			} catch ( err ) {
 				// The following messages are used here:
@@ -247,6 +280,8 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 				);
 
 				throw err;
+			} finally {
+				isProcessing = false;
 			}
 		} );
 	}

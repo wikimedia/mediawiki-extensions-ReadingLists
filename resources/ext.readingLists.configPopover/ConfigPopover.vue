@@ -9,7 +9,13 @@
 		v-bind="attrs"
 		@update:open="onUpdateOpen"
 	>
+		<template v-if="$slots.header" #header>
+			<slot name="header"></slot>
+		</template>
 		<slot></slot>
+		<template v-if="$slots.footer" #footer>
+			<slot name="footer"></slot>
+		</template>
 	</cdx-popover>
 </template>
 
@@ -27,7 +33,8 @@ const MAX_WIDTH_MOBILE = 639;
  * The popover version displays in the top right corner of the page, ideal on article pages to
  * avoid covering up content. mw.notifications are pushed down below the popover.
  *
- * You can bind CdxPopover props to the component and they'll get passed to the CdxPopover.
+ * You can bind CdxPopover props to the component or use CdxPopover slots and they'll get passed to
+ * the CdxPopover.
  *
  * Too many instances of this component could cause collisions, so carefully consider whether this
  * is the right component for your use case.

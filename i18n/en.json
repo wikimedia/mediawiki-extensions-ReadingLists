@@ -125,5 +125,6 @@
 	"readinglists-customlists-allitems": "All items",
 	"readinglists-customlists-collections": "Collections",
 	"readinglists-customlists-no-collections": "You do not have any collections",
-	"readinglists-customlists-create-collection": "create new collection"
+	"readinglists-customlists-create-collection": "create new collection",
+	"readinglists-customlists-add-entry-success": "$1 added to [[$2|$3]]."
 }

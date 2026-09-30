@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BookmarkPopover renders correctly when article is already saved 1`] = `
+"<div class="readinglists-bookmark-popover">
+  <div class="cdx-popover__header">
+    <!--v-if-->
+    <!-- eslint-disable vue/no-v-html -->
+    <!-- eslint-enable vue/no-v-html -->
+    <div class="cdx-popover__header__title">Test Page</div>
+    <div class="cdx-popover__header__button-wrapper"><button class="cdx-popover__header__close-button" weight="quiet" type="button" aria-label="cdx-popover-close-button-label"><span></span></button></div>
+  </div>
+</div>"
+`;
+
+exports[`BookmarkPopover renders correctly when article is not yet saved 1`] = `
+"<div class="readinglists-bookmark-popover">
+  <div class="cdx-popover__header"><span class="cdx-popover__header__icon"></span><!-- eslint-disable vue/no-v-html -->
+    <div class="cdx-popover__header__title">Save success title</div>
+    <div class="cdx-popover__header__button-wrapper"><button class="cdx-popover__header__close-button" weight="quiet" type="button" aria-label="cdx-popover-close-button-label"><span></span></button></div>
+  </div>
+</div>"
+`;

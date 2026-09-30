@@ -135,5 +135,6 @@
 	"readinglists-customlists-allitems": "Label for the link to view all saved items",
 	"readinglists-customlists-collections": "Label for the link (or button) to view collections (custom lists)",
 	"readinglists-customlists-no-collections": "Message that is displayed when the user has no collections",
-	"readinglists-customlists-create-collection": "Label for the link to create a new collection (custom list)"
+	"readinglists-customlists-create-collection": "Label for the link to create a new collection (custom list)",
+	"readinglists-customlists-add-entry-success": "Title of the popover that displays when you save an article"
 }

@@ -312,7 +312,13 @@
 		"ext.readingLists.bookmark": {
 			"packageFiles": [
 				"resources/ext.readingLists.bookmark/index.js",
-				"resources/ext.readingLists.bookmark/bookmark.js"
+				"resources/ext.readingLists.bookmark/bookmark.js",
+				{
+					"name": "resources/ext.readingLists.bookmark/config.json",
+					"config": [
+						"ReadingListsCustomLists"
+					]
+				}
 			],
 			"messages": [
 				"readinglists-add-bookmark",
@@ -359,6 +365,33 @@
 					"name": "resources/ext.readingLists.bookmark.anonymous/config.json",
 					"config": [
 						"ReadingListsMinervaCTAShowDot"
+					]
+				}
+			]
+		},
+		"ext.readingLists.bookmark.bookmarkPopover": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexComponents": [
+				"CdxButton",
+				"CdxIcon"
+			],
+			"dependencies": [
+				"vue",
+				"ext.readingLists.configPopover"
+			],
+			"messages": [
+				"readinglists-customlists-add-entry-success",
+				"cdx-popover-close-button-label"
+			],
+			"packageFiles": [
+				"resources/ext.readingLists.bookmark.bookmarkPopover/index.js",
+				"resources/ext.readingLists.bookmark.bookmarkPopover/BookmarkPopover.vue",
+				{
+					"name": "icons.json",
+					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
+					"callbackParam": [
+						"cdxIconClose",
+						"cdxIconSuccess"
 					]
 				}
 			]

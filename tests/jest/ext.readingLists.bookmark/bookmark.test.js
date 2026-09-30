@@ -3,6 +3,7 @@ const DELETEENTRY = require( '../fixtures/deleteentry.json' );
 
 let api;
 let confirmUnsaveFromCustomList;
+let initBookmarkPopover;
 let initBookmark;
 let initOnboardingPopover;
 let unhandledRejections;
@@ -142,6 +143,9 @@ function applyMwOverrides( { hookFn } ) {
 	} );
 	Object.assign( mw.storage, {
 		get: jest.fn( () => null )
+	} );
+	Object.assign( mw.log, {
+		error: jest.fn()
 	} );
 	Object.assign( mw, {
 		msg: jest.fn( ( key ) => key ),
@@ -438,6 +442,23 @@ describe( 'initBookmark', () => {
 		} );
 	} );
 
+	describe( 'when the user rapidly clicks the bookmark button twice', () => {
+		test( 'ignores the second click while the first is still processing', async () => {
+			const postWithEditToken = jest.fn( () => CREATEENTRY );
+			const bookmark = createBookmarkElement();
+			api.stubApi( { postWithEditToken } );
+			mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+
+			initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+			bookmark.click();
+			bookmark.click();
+
+			await flushPromises();
+
+			expect( postWithEditToken ).toHaveBeenCalledTimes( 1 );
+		} );
+	} );
+
 	describe( 'click bookmark button to unsave page', () => {
 		test( 'calls deleteEntryByPageTitle, updates icon, fires hook on Vector skin', async () => {
 			const hookCallback = jest.fn();
@@ -589,6 +610,168 @@ describe( 'initBookmark', () => {
 			expect( postWithEditToken ).toHaveBeenCalledWith( expect.not.objectContaining( {
 				list: expect.anything()
 			} ) );
+		} );
+	} );
+
+	describe( 'when ReadingListsCustomLists is enabled', () => {
+		beforeEach( () => {
+			jest.resetModules();
+			jest.doMock( '../../../resources/config.json', () => ( {
+				ReadingListsCustomLists: true
+			} ) );
+			initBookmarkPopover = jest.fn( () => false );
+			jest.doMock(
+				'ext.readingLists.bookmark.bookmarkPopover',
+				() => ( { initBookmarkPopover } ),
+				{ virtual: true }
+			);
+			api = require( '../../../resources/ext.readingLists.api/index.js' );
+			( { initBookmark } =
+				require( '../../../resources/ext.readingLists.bookmark/bookmark.js' ) );
+		} );
+
+		test( 'launches bookmark popover on save instead of mw.notify', async () => {
+			const bookmark = createBookmarkElement();
+			api.stubApi( {
+				postWithEditToken: jest.fn( () => CREATEENTRY )
+			} );
+			mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+
+			initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+			bookmark.click();
+
+			// We need 3 flushes for the save workflow now:
+			// - API call to save to list
+			// - Launch bookmark popover and wait to see if user saves to a custom list
+			// - Propagate resolved promises through addPageToReadingList()
+			await flushPromises();
+			await flushPromises();
+			await flushPromises();
+
+			expect( initBookmarkPopover ).toHaveBeenCalledWith( false );
+			expect( mw.notify ).not.toHaveBeenCalledWith(
+				expect.anything(),
+				expect.objectContaining( { tag: 'saved', type: 'success' } )
+			);
+		} );
+
+		test( 'shows mw.notify success when bookmarkPopover module fails to load', async () => {
+			const bookmark = createBookmarkElement();
+			api.stubApi( {
+				postWithEditToken: jest.fn( () => CREATEENTRY )
+			} );
+			mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+			mw.loader.using.mockRejectedValueOnce( new Error( 'module load failed' ) );
+
+			initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+			bookmark.click();
+			await flushPromises();
+			await flushPromises();
+			await flushPromises();
+
+			expect( mw.notify ).toHaveBeenCalledWith(
+				expect.anything(),
+				expect.objectContaining( { tag: 'saved', type: 'success' } )
+			);
+		} );
+
+		describe( 'when onboarding popover has not been seen', () => {
+			describe( 'and homepage discovery tour is active', () => {
+				test( 'launches bookmark popover without triggering onboarding', async () => {
+					mw.user.options.get.mockRestore();
+					jest.useFakeTimers();
+
+					const anchor = document.createElement( 'div' );
+					anchor.id = 'pt-readinglists-2';
+					document.body.appendChild( anchor );
+
+					const bookmark = createBookmarkElement();
+					api.stubApi( {
+						postWithEditToken: jest.fn( () => CREATEENTRY )
+					} );
+
+					mw.storage.get.mockReturnValue( null );
+					mw.requestIdleCallback.mockImplementation( ( fn ) => fn() );
+
+					initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+					bookmark.click();
+					await flushPromises();
+					await flushPromises();
+					await flushPromises();
+
+					jest.advanceTimersByTime( 1000 );
+
+					expect( initBookmarkPopover ).toHaveBeenCalledWith( false );
+					expect( mw.notify ).not.toHaveBeenCalledWith(
+						expect.anything(),
+						expect.objectContaining( { tag: 'saved', type: 'success' } )
+					);
+					expect( mw.loader.using ).not.toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
+				} );
+			} );
+
+			describe( 'and homepage discovery tour is not active', () => {
+				test( 'triggers onboarding popover', async () => {
+					mw.user.options.get.mockImplementation( ( name ) => (
+						name === 'growthexperiments-tour-homepage-discovery' ? 1 : 0
+					) );
+
+					jest.useFakeTimers();
+
+					const anchor = document.createElement( 'div' );
+					anchor.id = 'pt-readinglists-2';
+					document.body.appendChild( anchor );
+
+					const bookmark = createBookmarkElement();
+					api.stubApi( {
+						postWithEditToken: jest.fn( () => CREATEENTRY )
+					} );
+
+					mw.storage.get.mockReturnValue( null );
+					mw.requestIdleCallback.mockImplementation( ( fn ) => fn() );
+
+					initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+					bookmark.click();
+					await flushPromises();
+					await flushPromises();
+					await flushPromises();
+
+					jest.advanceTimersByTime( 1000 );
+
+					expect( initBookmarkPopover ).toHaveBeenCalledWith( false );
+					expect( mw.notify ).not.toHaveBeenCalledWith(
+						expect.anything(),
+						expect.objectContaining( { tag: 'saved', type: 'success' } )
+					);
+					expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
+				} );
+			} );
+		} );
+
+		describe( 'when onboarding popover has been seen', () => {
+			test( 'launches the bookmark popover without triggering onboarding', async () => {
+				jest.useFakeTimers();
+				const bookmark = createBookmarkElement();
+				api.stubApi( {
+					postWithEditToken: jest.fn( () => CREATEENTRY )
+				} );
+				mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+
+				initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+				bookmark.click();
+				await flushPromises();
+				await flushPromises();
+				await flushPromises();
+
+				jest.advanceTimersByTime( 1000 );
+
+				expect( initBookmarkPopover ).toHaveBeenCalledWith( false );
+				expect( mw.notify ).not.toHaveBeenCalledWith(
+					expect.anything(),
+					expect.objectContaining( { tag: 'saved', type: 'success' } )
+				);
+				expect( mw.loader.using ).not.toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
+			} );
 		} );
 	} );
 
