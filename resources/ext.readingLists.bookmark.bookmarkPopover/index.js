@@ -13,6 +13,7 @@ function initBookmarkPopover( isCurrentlySaved ) {
 
 	return new Promise( ( resolve ) => {
 		const app = createMwApp( BookmarkPopover, {
+			title: mw.config.get( 'wgPageName' ),
 			isCurrentlySaved,
 			onDismiss: ( showNotification ) => cleanup( showNotification )
 		} );

@@ -15,8 +15,6 @@ describe( 'BookmarkPopover', () => {
 
 	beforeEach( () => {
 		onDismiss = jest.fn();
-		mw.config.get.mockReturnValue( 'Test Page' );
-		mw.user.getName.mockReturnValue( 'TestUser' );
 		mw.message.mockReturnValue( { parse: jest.fn( () => 'Save success title' ) } );
 	} );
 
@@ -30,6 +28,7 @@ describe( 'BookmarkPopover', () => {
 	function mountPopover( props = {} ) {
 		wrapper = mount( BookmarkPopover, {
 			props: {
+				title: 'Test Page',
 				isCurrentlySaved: false,
 				onDismiss,
 				...props

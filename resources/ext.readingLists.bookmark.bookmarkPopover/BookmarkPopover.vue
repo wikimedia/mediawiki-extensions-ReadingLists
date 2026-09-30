@@ -19,7 +19,7 @@
 			></div>
 			<!-- eslint-enable vue/no-v-html -->
 			<div v-else class="cdx-popover__header__title">
-				{{ unsaveTitle }}
+				{{ title }}
 			</div>
 			<div class="cdx-popover__header__button-wrapper">
 				<cdx-button
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-const { ref, computed } = require( 'vue' );
+const { ref, computed, toRef } = require( 'vue' );
 const { CdxButton, CdxIcon } = require( '../../codex.js' );
 const { cdxIconSuccess, cdxIconClose } = require( '../../icons.json' );
 const { ConfigPopover } = require( 'ext.readingLists.configPopover' );
@@ -50,6 +50,11 @@ module.exports = exports = {
 	name: 'BookmarkPopover',
 	components: { CdxButton, CdxIcon, ConfigPopover },
 	props: {
+		// eslint-disable-next-line vue/no-unused-properties
+		title: {
+			type: String,
+			required: true
+		},
 		/**
 		 * Whether this article is currently saved to a reading list. The popover content changes
 		 * depending on this.
@@ -65,15 +70,15 @@ module.exports = exports = {
 	},
 	setup( props ) {
 		const isOpen = ref( true );
+		const title = toRef( props, 'title' );
 
 		// Different popover title depending on whether the user is saving or un-saving the article.
 		const saveTitle = computed( () => mw.message(
 			'readinglists-customlists-add-entry-success',
-			mw.config.get( 'wgTitle' ),
-			`Special:ReadingLists/${ mw.user.getName() }`,
+			title.value.replace( /_/g, ' ' ),
+			'Special:ReadingLists',
 			mw.msg( 'readinglists-default-title' )
 		).parse() );
-		const unsaveTitle = computed( () => mw.config.get( 'wgTitle' ) );
 
 		const popoverIcon = computed( () => props.isCurrentlySaved ? null : cdxIconSuccess );
 		const closeButtonLabel = computed( () => mw.msg( 'cdx-popover-close-button-label' ) );
@@ -95,7 +100,6 @@ module.exports = exports = {
 		return {
 			isOpen,
 			saveTitle,
-			unsaveTitle,
 			popoverIcon,
 			closeButtonLabel,
 			handleOpenChange,
