@@ -32,7 +32,7 @@ const mw = {
 		get: jest.fn(),
 		set: jest.fn()
 	},
-	notify: jest.fn(),
+	notify: jest.fn( () => Promise.resolve() ),
 	hook: jest.fn().mockReturnValue( {
 		add: jest.fn(),
 		fire: jest.fn()

@@ -66,6 +66,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		bookmark.title = mw.msg( `tooltip-ca-bookmark-${ ( !isSaved ? 'add' : 'remove' ) }` );
 	}
 
+	let activeNotification;
 	/**
 	 * Updates the bookmark button text via a hook and may display an added/removed notification or
 	 * the onboarding dialog.
@@ -102,6 +103,8 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			mw.notify( msg, {
 				tag: 'saved',
 				type: isSaved ? 'success' : 'notice'
+			} ).then( ( notification ) => {
+				activeNotification = notification;
 			} );
 		}
 
@@ -171,6 +174,10 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	 * @return {Promise<void>}
 	 */
 	async function addPageToReadingList() {
+		// close any existing notifications
+		if ( activeNotification ) {
+			activeNotification.close();
+		}
 		await api.saveToDefaultList( mw.config.get( 'wgPageName' ) );
 
 		if ( ReadingListsCustomLists ) {
