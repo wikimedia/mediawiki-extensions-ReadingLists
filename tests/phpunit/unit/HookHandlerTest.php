@@ -100,6 +100,7 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 
 		$title = $this->createMock( Title::class );
 		$title->method( 'getNamespace' )->willReturn( NS_MAIN );
+		$title->method( 'isContentPage' )->willReturn( true );
 		$output = $this->createMock( OutputPage::class );
 		$output->method( 'isArticle' )->willReturn( true );
 		$output->method( 'getTitle' )->willReturn( $title );
