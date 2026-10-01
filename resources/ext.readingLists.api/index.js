@@ -417,8 +417,19 @@ function stubApi( stub ) {
 	api = stub;
 }
 
+/**
+ * @param {string} name
+ * @return {Promise<any>}
+ */
+const createList = ( name ) => api.postWithEditToken( {
+	action: 'readinglists',
+	command: 'create',
+	name
+} );
+
 module.exports = exports = {
 	setup,
+	createList,
 	getLists,
 	getList,
 	getEntries,
