@@ -112,23 +112,30 @@ module.exports = exports = {
 		const collectionsText = mw.msg( 'readinglists-customlists-collections' );
 		const menuConfig = { visibleItemLimit: collectionsPageSize };
 
-		const collections = ref( [ noCollectionsEntry, createCollectionEntry ] );
+		const collections = ref( [] );
 		const selectedCollection = ref( null );
 		const collectionsNext = ref( null );
 
 		const maybeGetCollections = async () => {
 			// if the list of collections has already been updated, no need to make another api call
-			if ( collections.value[ 0 ].value !== -1 ) {
+			if ( collections.value.length > 0 ) {
 				return;
 			}
 
 			try {
-				const result = await api.getLists( 'name', 'ascending', collectionsPageSize - 1 );
+				const result = await api.getLists(
+					'name', 'ascending', collectionsPageSize - 1
+				);
+				const listsMinusDefault = result.lists ?
+					result.lists.filter( ( list ) => !list.default ) : [];
 
-				collections.value = makeListEntries( result.lists );
-
-				// put create collections CTA in first position
-				collections.value.unshift( createCollectionEntry );
+				collections.value = [
+					// put create collections CTA in first position
+					createCollectionEntry
+				].concat(
+					listsMinusDefault.length ? makeListEntries( listsMinusDefault ) :
+						[ noCollectionsEntry ]
+				);
 
 				// if the user has more lists, store the next value so we can load them on scroll
 				if ( result.next ) {
