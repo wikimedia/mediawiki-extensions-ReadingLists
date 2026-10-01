@@ -7,7 +7,8 @@
 			"Sakblue",
 			"SaldırganSincap",
 			"Leo",
-			"HakanIST"
+			"HakanIST",
+			"Cobija"
 		]
 	},
 	"readinglists-desc": "Kullanıcıların yer imleri veya \"Kaydedilen sayfalar\" listeleri gibi özel madde listelerini yönetmelerine izin verir.",
@@ -38,9 +39,14 @@
 	"readinglists-browser-extension-product-title": "Vikipedi Okuma Listeleri",
 	"readinglists-browser-page-not-supported": "$1, bu sayfayı desteklemiyor",
 	"readinglists-loading": "Lütfen bekleyin...",
-	"readinglists-default-title": "kaydedilen öğeler",
+	"readinglists-title": "Kaydedilmiş sayfalar",
+	"readinglists-total-lists": "$1 {{PLURAL:$1|liste|listeler}}",
+	"readinglists-default-title": "kaydedilen ögeler",
 	"readinglists-display-sort-name": "Ad",
+	"readinglists-sorted-by-recent": "Yeniden eskiye doğru sıralanmıştır.",
 	"action-action-readinglist-private": "diğer kullanıcıların okuma listelerini okuma",
+	"readinglists-import-disclaimer": "Bu sitedeki bir kullanıcı, başkalarıyla (muhtemelen sizinle) paylaşmak üzere bir okuma listesi oluşturdu. Liste denetimden geçmemiştir ve içeriği sitenin editörlerinin görüşlerini yansıtmamaktadır.",
 	"readinglists-add-bookmark": "Kaydet",
+	"readinglists-remove-bookmark": "Kaydetmeyi geri al",
 	"readinglists-onboarding-close-button": "Kapat"
 }
