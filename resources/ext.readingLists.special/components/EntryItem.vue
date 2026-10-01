@@ -86,7 +86,8 @@ module.exports = exports = {
 		}
 	}
 
-	.cdx-card__thumbnail.cdx-thumbnail {
+	/** Increase specificity so loading @wikimedia/codex doesnt override aspect-ratio (T439897) */
+	.cdx-card .cdx-card__thumbnail.cdx-thumbnail {
 		.cdx-thumbnail__image {
 			aspect-ratio: 1;
 			// Center vertically and top align thumbnail image.
