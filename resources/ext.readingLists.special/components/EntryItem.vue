@@ -70,7 +70,12 @@ module.exports = exports = {
 .reading-lists-item {
 	// This element is a grid item. We need to make the internal card full-height.
 	display: flex;
-	margin: 0;
+
+	// Minerva sets a bottom margin on every content li element except the last.
+	.content li&,
+	& {
+		margin: 0;
+	}
 
 	.reading-lists-item__card {
 		// Make the card full-width too.
