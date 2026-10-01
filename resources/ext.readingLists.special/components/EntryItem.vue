@@ -80,6 +80,12 @@ module.exports = exports = {
 	.reading-lists-item__card {
 		// Make the card full-width too.
 		width: 100%;
+
+		&.cdx-card--title-only {
+			// Override CdxCard styles to make cards with no description align title text to top.
+			// This only applies for the block-start thumbnail position (on small screens).
+			align-items: flex-start;
+		}
 	}
 
 	.cdx-card__thumbnail.cdx-thumbnail {
