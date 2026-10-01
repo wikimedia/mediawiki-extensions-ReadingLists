@@ -6,33 +6,31 @@
 	>
 		<!-- Custom header so we can render HTML in the title. -->
 		<template #header>
-			<div class="cdx-popover__header">
-				<cdx-icon
-					v-if="popoverIcon"
-					class="cdx-popover__header__icon"
-					:icon="popoverIcon"
-				></cdx-icon>
-				<!-- eslint-disable vue/no-v-html -->
-				<div
-					v-if="!isCurrentlySaved"
-					class="cdx-popover__header__title"
-					v-html="saveTitle"
-				></div>
-				<!-- eslint-enable vue/no-v-html -->
-				<div v-else class="cdx-popover__header__title">
-					{{ unsaveTitle }}
-				</div>
-				<div class="cdx-popover__header__button-wrapper">
-					<cdx-button
-						class="cdx-popover__header__close-button"
-						weight="quiet"
-						type="button"
-						:aria-label="closeButtonLabel"
-						@click="handleOpenChange( false )"
-					>
-						<cdx-icon :icon="cdxIconClose"></cdx-icon>
-					</cdx-button>
-				</div>
+			<cdx-icon
+				v-if="popoverIcon"
+				class="cdx-popover__header__icon"
+				:icon="popoverIcon"
+			></cdx-icon>
+			<!-- eslint-disable vue/no-v-html -->
+			<div
+				v-if="!isCurrentlySaved"
+				class="cdx-popover__header__title"
+				v-html="saveTitle"
+			></div>
+			<!-- eslint-enable vue/no-v-html -->
+			<div v-else class="cdx-popover__header__title">
+				{{ unsaveTitle }}
+			</div>
+			<div class="cdx-popover__header__button-wrapper">
+				<cdx-button
+					class="cdx-popover__header__close-button"
+					weight="quiet"
+					type="button"
+					:aria-label="closeButtonLabel"
+					@click="handleOpenChange( false )"
+				>
+					<cdx-icon :icon="cdxIconClose"></cdx-icon>
+				</cdx-button>
 			</div>
 		</template>
 	</config-popover>
@@ -111,6 +109,17 @@ module.exports = exports = {
 @import 'mediawiki.skin.variables.less';
 
 .readinglists-bookmark-popover {
+	&.cdx-popover--bottom-sheet {
+		// Set the width to the max-width of the CdxPopover's bottom sheet version.
+		width: @size-5600;
+		max-width: @size-full;
+	}
+
+	&.cdx-popover:not( .cdx-popover--bottom-sheet ) {
+		// Match the width of mw.notifications in Vector 2022 (20em at 0.8em font size).
+		width: @size-1600;
+	}
+
 	.cdx-popover__header__icon {
 		color: @color-success;
 	}
