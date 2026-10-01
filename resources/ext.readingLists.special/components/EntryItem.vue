@@ -85,7 +85,7 @@ module.exports = exports = {
 		}
 	}
 
-	// When there's a thumbnail), clamp title and description to 2 lines.
+	// When there's a thumbnail, clamp title and description to 2 lines.
 	&--has-thumbnail {
 		.cdx-card__text__title,
 		.cdx-card__text__description {

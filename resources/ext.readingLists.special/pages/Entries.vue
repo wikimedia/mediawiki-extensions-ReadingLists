@@ -115,7 +115,8 @@ module.exports = exports = {
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
 			msgLoading: mw.msg( 'readinglists-loading' ),
 			showSurvey: ref( false ),
-			isListView: ref( false )
+			isListView: ref( false ),
+			debouncedSetCurrentView: null
 		};
 	},
 	computed: {
@@ -282,15 +283,15 @@ module.exports = exports = {
 				return;
 			}
 			this.isListView = window.innerWidth <= MAX_WIDTH_MOBILE;
-
 		}
 	},
-	async beforeUnmount() {
-		window.removeEventListener( 'resize', this.setCurrentView );
+	beforeUnmount() {
+		window.removeEventListener( 'resize', this.debouncedSetCurrentView );
 	},
 	async mounted() {
 		this.setCurrentView();
-		window.addEventListener( 'resize', this.setCurrentView );
+		this.debouncedSetCurrentView = mw.util.debounce( this.setCurrentView, 100 );
+		window.addEventListener( 'resize', this.debouncedSetCurrentView );
 
 		// The list metadata (getList) and the entries request (initializePage → getEntries)
 		// do not depend on each other, so fetch them in parallel instead of waiting for the

@@ -52,6 +52,7 @@ describe( 'Entries', () => {
 		};
 		mw.util = {
 			throttle: ( fn ) => fn,
+			debounce: ( fn ) => fn,
 			getUrl: jest.fn( ( path ) => `/wiki/${ path }` )
 		};
 	} );
