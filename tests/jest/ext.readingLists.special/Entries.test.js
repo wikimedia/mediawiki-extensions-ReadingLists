@@ -42,22 +42,13 @@ function setupAllItemsApiStub() {
 
 describe( 'Entries', () => {
 	beforeEach( () => {
-		mw.config = {
-			get: jest.fn( ( key ) => {
-				// Disable the beta survey.
-				if ( key === 'wgReadingListsEnableBetaQuickSurvey' ) {
-					return false;
-				}
-			} )
-		};
-		mw.storage = {
-			get: jest.fn()
-		};
-		mw.util = {
-			throttle: ( fn ) => fn,
-			debounce: ( fn ) => fn,
-			getUrl: jest.fn( ( path ) => `/wiki/${ path }` )
-		};
+		mw.config.get = jest.fn( ( key ) => {
+			// Disable the beta survey.
+			if ( key === 'wgReadingListsEnableBetaQuickSurvey' ) {
+				return false;
+			}
+		} );
+		mw.util.getUrl = jest.fn( ( path ) => `/wiki/${ path }` );
 	} );
 
 	afterEach( () => {

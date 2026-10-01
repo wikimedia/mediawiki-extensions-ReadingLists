@@ -18,13 +18,16 @@ const RouterView = {
 	template: '<div></div>'
 };
 
+const routerStub = {
+	install() {},
+	isReady: () => Promise.resolve(),
+	push() {}
+};
+
 module.exports = {
 	RouterLink,
+	useRouter: () => routerStub,
 	RouterView,
-	createRouter: () => ( {
-		install() {},
-		isReady: () => Promise.resolve(),
-		push() {}
-	} ),
+	createRouter: () => routerStub,
 	createWebHistory: () => ( {} )
 };

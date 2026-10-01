@@ -104,6 +104,8 @@
 	"tooltip-ca-bookmark-add": "Tooltip for the Save page to reading list button in the views menu when the page is not yet saved.",
 	"tooltip-ca-bookmark-remove": "Tooltip for the remove page from reading list button in the views menu when the page is already saved.",
 	"readinglists-bookmark": "Bookmark action",
+	"readinglists-cancel-add-collection": "Cancel button label for creating new collection",
+	"readinglists-add-collection": "Save button label for creating new collection",
 	"readinglists-add-bookmark": "Button label for adding a page bookmark",
 	"readinglists-remove-bookmark": "Button label for removing a page bookmark",
 	"readinglists-unsave-from-custom-list-title": "Title of the confirmation dialog shown when a user tries to unsave a page that is also present in at least one custom saved list.",
@@ -136,5 +138,8 @@
 	"readinglists-customlists-collections": "Label for the link (or button) to view collections (custom lists)",
 	"readinglists-customlists-no-collections": "Message that is displayed when the user has no collections",
 	"readinglists-customlists-create-collection": "Label for the link to create a new collection (custom list)",
+	"readinglists-customlists-create-collection-short": "Label for the short version of the link to create a new collection (custom list)",
+	"readinglists-customlists-create-collection-dialog-name": "Dialog heading for creating a collection.",
+	"readinglists-customlists-create-collection-dialog-placeholder": "Placeholder for creating a collection",
 	"readinglists-customlists-add-entry-success": "Title of the popover that displays when you save an article"
 }

@@ -8,7 +8,6 @@
 
 		<navigation-bar
 			v-if="showNavBar"
-			:show-dropdown="showNavDropdown"
 			:is-all-items="isAllListItems">
 		</navigation-bar>
 
@@ -65,6 +64,7 @@
 
 <script>
 const { ref } = require( 'vue' );
+const { useIsMobileResolution } = require( 'ext.readingLists.common' );
 const api = require( 'ext.readingLists.api' );
 const { CdxButton, CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
 const EmptyList = require( '../components/EmptyList.vue' );
@@ -73,7 +73,6 @@ const NavigationBar = require( '../components/NavigationBar.vue' );
 const Survey = require( '../components/Survey.vue' );
 
 const surveyStorageKey = 'readinglists-beta-survey';
-const MAX_WIDTH_MOBILE = 639;
 
 // @vue/component
 module.exports = exports = {
@@ -118,8 +117,7 @@ module.exports = exports = {
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
 			msgLoading: mw.msg( 'readinglists-loading' ),
 			showSurvey: ref( false ),
-			isListView: ref( false ),
-			debouncedSetCurrentView: null
+			isListView: useIsMobileResolution()
 		};
 	},
 	computed: {
@@ -156,9 +154,6 @@ module.exports = exports = {
 			}
 
 			return true;
-		},
-		showNavDropdown() {
-			return mw.config.get( 'skin' ) === 'vector-2022';
 		},
 		cardListClasses() {
 			return { 'reading-lists-items--grid-view': !this.isListView };
@@ -288,24 +283,9 @@ module.exports = exports = {
 		},
 		onSurveyCompleted() {
 			mw.storage.set( surveyStorageKey, '~', 60 * 60 * 24 * 120 );
-		},
-		setCurrentView() {
-			// In the future, this could also return early if the user has explicitly selected
-			// list view.
-			if ( typeof window !== 'object' ) {
-				return;
-			}
-			this.isListView = window.innerWidth <= MAX_WIDTH_MOBILE;
 		}
 	},
-	beforeUnmount() {
-		window.removeEventListener( 'resize', this.debouncedSetCurrentView );
-	},
 	async mounted() {
-		this.setCurrentView();
-		this.debouncedSetCurrentView = mw.util.debounce( this.setCurrentView, 100 );
-		window.addEventListener( 'resize', this.debouncedSetCurrentView );
-
 		// The list metadata (getList) and the entries request (initializePage → getEntries)
 		// do not depend on each other, so fetch them in parallel instead of waiting for the
 		// metadata round-trip before the entries request starts. Both methods handle their

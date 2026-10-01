@@ -33,6 +33,14 @@
 				</cdx-button>
 			</div>
 		</template>
+		<a @click="launchCreateCollection">
+			{{ $i18n( 'readinglists-customlists-create-collection-short' ).text() }}
+		</a>
+		<create-collection-dialog
+			v-if="isCreateCollectionDialogOpen"
+			@success="onCreateNewCollection"
+		>
+		</create-collection-dialog>
 	</config-popover>
 </template>
 
@@ -40,7 +48,8 @@
 const { ref, computed, toRef } = require( 'vue' );
 const { CdxButton, CdxIcon } = require( '../../codex.js' );
 const { cdxIconSuccess, cdxIconClose } = require( '../../icons.json' );
-const { ConfigPopover } = require( 'ext.readingLists.configPopover' );
+const { ConfigPopover, CreateCollectionDialog } = require( 'ext.readingLists.common' );
+const { createEntry } = require( 'ext.readingLists.api' );
 
 /**
  * Popover for saving or un-saving an article to a reading list.
@@ -48,9 +57,14 @@ const { ConfigPopover } = require( 'ext.readingLists.configPopover' );
 // @vue/component
 module.exports = exports = {
 	name: 'BookmarkPopover',
-	components: { CdxButton, CdxIcon, ConfigPopover },
+	components: {
+		CdxButton,
+		CdxIcon,
+		ConfigPopover,
+		CreateCollectionDialog
+	},
 	props: {
-		// eslint-disable-next-line vue/no-unused-properties
+
 		title: {
 			type: String,
 			required: true
@@ -70,6 +84,7 @@ module.exports = exports = {
 	},
 	setup( props ) {
 		const isOpen = ref( true );
+		const isCreateCollectionDialogOpen = ref( false );
 		const title = toRef( props, 'title' );
 
 		// Different popover title depending on whether the user is saving or un-saving the article.
@@ -97,13 +112,24 @@ module.exports = exports = {
 			}
 		}
 
+		function launchCreateCollection() {
+			isCreateCollectionDialogOpen.value = true;
+		}
+
+		function onCreateNewCollection( listId ) {
+			createEntry( listId, title.value );
+		}
+
 		return {
 			isOpen,
 			saveTitle,
 			popoverIcon,
 			closeButtonLabel,
 			handleOpenChange,
-			cdxIconClose
+			cdxIconClose,
+			onCreateNewCollection,
+			isCreateCollectionDialogOpen,
+			launchCreateCollection
 		};
 	}
 };

@@ -25,6 +25,7 @@ const mw = {
 		getName: jest.fn()
 	},
 	util: {
+		throttle: ( fn ) => fn,
 		getUrl: jest.fn(),
 		debounce: jest.fn( ( fn ) => fn )
 	},

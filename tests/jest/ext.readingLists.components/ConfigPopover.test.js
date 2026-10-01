@@ -10,7 +10,7 @@ jest.mock( '@wikimedia/codex', () => {
 	};
 } );
 
-const ConfigPopover = require( '../../../resources/ext.readingLists.configPopover/ConfigPopover.vue' );
+const ConfigPopover = require( '../../../resources/ext.readingLists.common/ConfigPopover.vue' );
 
 // Stub that exposes a `panel` element so ConfigPopover's onMounted can set
 // popoverEl = popover.value.panel without throwing.

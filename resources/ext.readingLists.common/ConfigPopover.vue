@@ -20,9 +20,9 @@
 </template>
 
 <script>
+const { useIsAboveMobileResolution } = require( './composables.js' );
 const { toRef, ref, computed, watch, onMounted, onUnmounted } = require( 'vue' );
 const { CdxPopover, useModelWrapper, useResizeObserver } = require( '../../codex.js' );
-const MAX_WIDTH_MOBILE = 639;
 
 /**
  * Opinionated implementation of CdxPopover for a (potentially multi-step) configuration form.
@@ -77,7 +77,7 @@ module.exports = exports = {
 		const skinName = computed( () => mw.config.get( 'skin' ) );
 		const isMinerva = computed( () => skinName.value === 'minerva' );
 		const useBottomSheet = computed( () => isMinerva.value ? 'always' : 'responsive' );
-
+		const isDesktop = isMinerva.value ? ref( false ) : useIsAboveMobileResolution();
 		const popover = ref(); // Ref for the CdxPopover component.
 		const popoverEl = ref(); // Ref for the internal `.cdx-popover` element; gets set on mount.
 		const notificationsElement = ref();
@@ -145,17 +145,17 @@ module.exports = exports = {
 		mutationObserver.observe( document.body, { childList: true } );
 
 		/**
-		 * Handle window resize.
+		 * Handle window resize crossing the mobile breakpoint.
 		 */
-		function onResize() {
-			if ( window.innerWidth > MAX_WIDTH_MOBILE ) {
+		watch( isDesktop, ( desktop ) => {
+			if ( desktop ) {
 				// Above the mobile breakpoint, maybe set a `top` style on the notifications area.
 				setNotificationsStyles();
 			} else {
 				// Below it, remove that `top` style.
 				restoreNotificationsStyles();
 			}
-		}
+		} );
 
 		/**
 		 * Handle open change based on user interaction.
@@ -186,25 +186,15 @@ module.exports = exports = {
 			}
 		} );
 
-		const debouncedOnResize = !isMinerva.value ? mw.util.debounce( onResize, 100 ) : null;
-
 		onMounted( () => {
 			popoverEl.value = popover.value.panel;
 			// Handle case of the popover mounting when notifications are visible.
 			setNotificationsStyles();
-
-			if ( debouncedOnResize ) {
-				window.addEventListener( 'resize', debouncedOnResize );
-			}
 		} );
 
 		onUnmounted( () => {
 			mutationObserver.disconnect();
 			restoreNotificationsStyles();
-
-			if ( debouncedOnResize ) {
-				window.removeEventListener( 'resize', debouncedOnResize );
-			}
 		} );
 
 		return {

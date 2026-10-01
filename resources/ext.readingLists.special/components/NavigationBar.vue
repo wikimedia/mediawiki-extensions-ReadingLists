@@ -1,5 +1,11 @@
 <template>
 	<div class="readinglists-nav-bar">
+		<create-collection-dialog
+			v-if="showCreateCollection"
+			@update:open="onUpdateOpen"
+			@success="refresh"
+		>
+		</create-collection-dialog>
 		<router-link
 			class="readinglists-special-nav-link"
 			:to="allItemsTo"
@@ -27,7 +33,8 @@
 				</router-link>
 				<span
 					v-else
-					class="cdx-menu-item__content">
+					class="cdx-menu-item__content"
+					@click="createCollection">
 					<cdx-icon
 						v-if="menuItem.icon"
 						:icon="menuItem.icon"
@@ -47,9 +54,9 @@
 </template>
 
 <script>
-const { ref } = require( 'vue' );
-const { RouterLink } = require( 'vue-router' );
-
+const { ref, onUpdated, onMounted } = require( 'vue' );
+const { RouterLink, useRouter } = require( 'vue-router' );
+const { CreateCollectionDialog } = require( 'ext.readingLists.common' );
 const { CdxMenuButton, CdxIcon } = require( '../../../codex.js' );
 const { cdxIconAdd, cdxIconExpand } = require( '../../../icons.json' );
 
@@ -81,18 +88,16 @@ const makeListEntries = ( lists ) => (
 		// T432633 - route via vue-router (see #menu-item slot in the template) rather than
 		// an @update:selected handler, so the whole row stays a full-size click target.
 		// Relative to the special page base, matching the router's routes (see allItemsTo below).
-		url: mw.util.getUrl( `Special:ReadingLists/${ mw.user.getName() }/${ list.id }` ).slice( base.length )
+		url: mw.util.getUrl( `Special:ReadingLists/${ mw.user.getName() }/${ list.id }/${ list.name }` ).slice( base.length )
 	} ) )
 );
 
 // @vue/component
 module.exports = exports = {
-	components: { CdxMenuButton, CdxIcon, RouterLink },
+	components: { CdxMenuButton, CdxIcon,
+		CreateCollectionDialog,
+		RouterLink },
 	props: {
-		showDropdown: {
-			type: Boolean,
-			required: true
-		},
 		isAllItems: {
 			type: Boolean,
 			required: true
@@ -104,6 +109,11 @@ module.exports = exports = {
 		}
 	},
 	setup: () => {
+		const router = useRouter();
+		// @todo: Temporarily enable to true to support testing in mobile.
+		// Revisit as part of https://phabricator.wikimedia.org/T438404
+		const showDropdown = ref( true );
+
 		// Router target (relative to the special page base) for the all-items
 		// view, derived from the canonical URL so it matches the router's routes.
 		const allItemsUrl = mw.util.getUrl( `Special:ReadingLists/${ mw.user.getName() }` );
@@ -115,6 +125,16 @@ module.exports = exports = {
 		const collections = ref( [] );
 		const selectedCollection = ref( null );
 		const collectionsNext = ref( null );
+
+		const showCreateCollection = ref( false );
+
+		const createCollection = () => {
+			showCreateCollection.value = true;
+		};
+
+		const onUpdateOpen = ( value ) => {
+			showCreateCollection.value = value;
+		};
 
 		const maybeGetCollections = async () => {
 			// if the list of collections has already been updated, no need to make another api call
@@ -166,7 +186,32 @@ module.exports = exports = {
 			}
 		};
 
+		const refresh = ( id, name ) => {
+			const collectionUrl = mw.util.getUrl( `Special:ReadingLists/${ mw.user.getName() }/${ id }/${ name }` );
+			router.push( collectionUrl.slice( base.length ) );
+			showCreateCollection.value = false;
+			collections.value = [];
+			collectionsNext.value = null;
+		};
+
+		// Populate on startup if desktop detected
+		onUpdated( () => {
+			if ( showDropdown.value ) {
+				maybeGetCollections();
+			}
+		} );
+
+		onMounted( () => {
+			if ( showDropdown.value ) {
+				maybeGetCollections();
+			}
+		} );
 		return {
+			showDropdown,
+			refresh,
+			onUpdateOpen,
+			showCreateCollection,
+			createCollection,
 			cdxIconExpand,
 			allItemsTo,
 			allItemsText,
@@ -206,6 +251,11 @@ module.exports = exports = {
 				color: @color-base;
 			}
 		}
+	}
+
+	ul {
+		padding-left: 0;
+		padding-inline: 0;
 	}
 }
 </style>

@@ -1,4 +1,4 @@
-const { mount, flushPromises } = require( '@vue/test-utils' );
+const { mount } = require( '@vue/test-utils' );
 
 const api = require( '../../../resources/ext.readingLists.api/index.js' );
 
@@ -18,8 +18,9 @@ function setupApiStub() {
 
 describe( 'NavigationBar', () => {
 	beforeEach( () => {
-		mw.util = { getUrl: jest.fn( ( path ) => `/wiki/${ path }` ) };
-		mw.user = { getName: jest.fn( () => 'testuser' ) };
+		mw.util.getUrl = jest.fn( ( path ) => `/wiki/${ path }` );
+		mw.user.getName = jest.fn( () => 'testuser' );
+		setupApiStub();
 	} );
 
 	afterEach( () => {
@@ -34,20 +35,6 @@ describe( 'NavigationBar', () => {
 	] )( 'renders %s', async ( _, isAllItems, showDropdown ) => {
 		const NavigationBar = require( '../../../resources/ext.readingLists.special/components/NavigationBar.vue' );
 		const wrapper = mount( NavigationBar, { props: { isAllItems, showDropdown } } );
-
-		expect( wrapper.element ).toMatchSnapshot();
-	} );
-
-	it( 'should populate the dropdown on click', async () => {
-		setupApiStub();
-
-		const NavigationBar = require( '../../../resources/ext.readingLists.special/components/NavigationBar.vue' );
-		const wrapper = mount( NavigationBar, { props: { isAllItems: true, showDropdown: true } } );
-
-		const dropdown = wrapper.find( 'button' );
-		dropdown.trigger( 'click' );
-
-		await flushPromises();
 
 		expect( wrapper.element ).toMatchSnapshot();
 	} );

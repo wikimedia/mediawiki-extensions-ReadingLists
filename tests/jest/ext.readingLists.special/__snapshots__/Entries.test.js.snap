@@ -9,6 +9,7 @@ exports[`Entries with custom lists nav bar does not disappear when show more is 
   <div
     class="readinglists-nav-bar"
   >
+    <!--v-if-->
     <a
       class="readinglists-special-nav-link"
     >
@@ -16,11 +17,65 @@ exports[`Entries with custom lists nav bar does not disappear when show more is 
       All items
       
     </a>
-    <a
-      class="readinglists-special-nav-link"
+    <div
+      class="cdx-menu-button"
     >
-      Collections
-    </a>
+      <button
+        aria-controls="v-2"
+        aria-expanded="false"
+        aria-haspopup="menu"
+        class="cdx-button cdx-button--action-progressive cdx-button--weight-quiet cdx-button--size-medium"
+        id="v-1"
+      >
+        
+        
+        Collections 
+        <span
+          class="cdx-icon cdx-icon--medium"
+        >
+          <svg
+            aria-hidden="true"
+            height="20"
+            viewBox="0 0 20 20"
+            width="20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!--v-if-->
+            <g>
+              <path
+                d="m16.7 8-6 6H9.3l-6-6 1.4-1.4 5.3 5.3 5.3-5.3z"
+              />
+            </g>
+          </svg>
+        </span>
+        
+        
+      </button>
+      <div
+        class="cdx-menu-button__menu-wrapper"
+      >
+        <!--teleport start-->
+        <div
+          class="cdx-menu cdx-menu-button__menu"
+          style="display: none; visibility: hidden; position: absolute; top: 0px; left: 0px; transform: translate(0px, 4px); width: -32px; max-height: 128px;"
+        >
+          <ul
+            aria-labelledby="v-1"
+            class="cdx-menu__listbox"
+            id="v-2"
+            role="menu"
+            tabindex="-1"
+          >
+            <!--v-if-->
+            <!--v-if-->
+            
+            
+            <!--v-if-->
+          </ul>
+        </div>
+        <!--teleport end-->
+      </div>
+    </div>
   </div>
   <!--v-if-->
   <!--v-if-->
@@ -271,6 +326,7 @@ exports[`Entries with custom lists renders the nav bar when custom lists are ena
   <div
     class="readinglists-nav-bar"
   >
+    <!--v-if-->
     <a
       class="readinglists-special-nav-link readinglists-special-nav-link--active"
     >
@@ -278,11 +334,65 @@ exports[`Entries with custom lists renders the nav bar when custom lists are ena
       All items
       
     </a>
-    <a
-      class="readinglists-special-nav-link"
+    <div
+      class="cdx-menu-button"
     >
-      Collections
-    </a>
+      <button
+        aria-controls="v-2"
+        aria-expanded="false"
+        aria-haspopup="menu"
+        class="cdx-button cdx-button--action-progressive cdx-button--weight-quiet cdx-button--size-medium"
+        id="v-1"
+      >
+        
+        
+        Collections 
+        <span
+          class="cdx-icon cdx-icon--medium"
+        >
+          <svg
+            aria-hidden="true"
+            height="20"
+            viewBox="0 0 20 20"
+            width="20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!--v-if-->
+            <g>
+              <path
+                d="m16.7 8-6 6H9.3l-6-6 1.4-1.4 5.3 5.3 5.3-5.3z"
+              />
+            </g>
+          </svg>
+        </span>
+        
+        
+      </button>
+      <div
+        class="cdx-menu-button__menu-wrapper"
+      >
+        <!--teleport start-->
+        <div
+          class="cdx-menu cdx-menu-button__menu"
+          style="display: none; visibility: hidden; position: absolute; top: 0px; left: 0px; transform: translate(0px, 4px); width: -32px; max-height: 128px;"
+        >
+          <ul
+            aria-labelledby="v-1"
+            class="cdx-menu__listbox"
+            id="v-2"
+            role="menu"
+            tabindex="-1"
+          >
+            <!--v-if-->
+            <!--v-if-->
+            
+            
+            <!--v-if-->
+          </ul>
+        </div>
+        <!--teleport end-->
+      </div>
+    </div>
   </div>
   <!--v-if-->
   <!--v-if-->
