@@ -1,10 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"Sabelöga",
 			"WikiPhoenix"
 		]
 	},
-	"readinglists-desc": "Låter användare hantera privata artikellistor, som bokmärken eller \"Sparade sidor\"-listor.",
+	"readinglists-desc": "Låter användare hantera privata listor över objekt, som listor över bokmärken eller \"Sparade sidor\".",
 	"readinglists-db-error-not-set-up": "Läslistor har inte aktiverats för denna användare.",
 	"readinglists-db-error-no-projects": "Inga projekt har registrerats för att använda med ReadingLists. Använd skriptet populateProjectsFromSiteMatrix för att registrera projekt.",
 	"readinglists-db-error-already-set-up": "Läslistor har redan aktiverats för denna användare.",
@@ -26,7 +27,7 @@
 	"readinglists-db-error-no-such-project": "\"$1\" är inte ett igenkänt projekt.",
 	"readinglists-browser-add-entry-success": "<b>$1</b> lades till i din [[$2|$3]].",
 	"readinglists-browser-remove-entry-success": "<b>$1</b> togs bort från din [[$2|$3]].",
-	"readinglists-browser-login-prompt": "Logga in för att spara artiklar",
+	"readinglists-browser-login-prompt": "Logga in för att spara sidor",
 	"readinglists-browser-error-intro": "Ett fel har uppstått: $1",
 	"readinglists-browser-enable-sync-prompt": "Aktivera synkronisering på din Wikipedia-app för att börja spara artiklar",
 	"readinglists-browser-extension-info-link-text": "Läs mer",
@@ -34,7 +35,10 @@
 	"readinglists-browser-extension-product-title": "Wikipedia-läslistor",
 	"readinglists-browser-page-not-supported": "$1 stöder inte denna sida",
 	"readinglists-special-title-imported": "Läslistor: Importera från en annan användare",
-	"readinglists-special-subpage-title": "Sparade sidor",
+	"readinglists-special-subpage-title": "Sparat",
+	"readinglists-special-custom-list-title": "Sparades / $1",
+	"readinglists-privacy-indicator-label": "Privat",
+	"readinglists-privacy-tooltip": "Dina sparade objekt och samlingar är privata och bara du kan se dem.",
 	"readinglists-description": "Alla dina sparade listor på ett ställe.",
 	"readinglists-loading": "Var god vänta...",
 	"reading-list-purpose": "Var god logga in för att se dina privata läslistor.",
@@ -80,7 +84,13 @@
 	"readinglists-bookmark": "Bokmärk",
 	"readinglists-add-bookmark": "Spara",
 	"readinglists-remove-bookmark": "Ta bort",
+	"readinglists-unsave-from-custom-list-confirm": "Ta bort",
+	"readinglists-unsave-from-custom-list-cancel": "Avbryt",
 	"readinglists-onboarding-close-button": "Stäng",
-	"readinglists-onboarding-saved-pages-title": "Dina sparade sidor",
-	"readinglists-onboarding-saved-pages-text": "Få tillgång till alla dina sparade sidor här."
+	"readinglists-onboarding-ok-button": "OK",
+	"readinglists-onboarding-saved-pages-title": "Sparat",
+	"readinglists-onboarding-saved-pages-text": "Få tillgång till alla dina sparade sidor här.",
+	"readinglists-mobile-onboarding-saved-pages-title": "Sparat",
+	"readinglists-betafeature-quicksurvey-answer-positive": "Ja",
+	"readinglists-betafeature-quicksurvey-answer-negative": "Nej"
 }
