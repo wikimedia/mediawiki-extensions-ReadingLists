@@ -432,7 +432,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			array_map( $compareResultItems, $expected, $data );
 		};
 
-		$res = call_user_func_array( [ $repository, 'getAllLists' ], $args );
+		$res = call_user_func_array( $repository->getAllLists( ... ), $args );
 		$compare( $expected, $res );
 	}
 
@@ -1217,7 +1217,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			array_map( $compareResultItems, $expected, $data, range( 1, count( $expected ) ) );
 		};
 
-		$res = call_user_func_array( [ $repository, 'getListEntries' ], $args );
+		$res = call_user_func_array( $repository->getListEntries( ... ), $args );
 		$compare( $expected, $res );
 	}
 
@@ -1964,7 +1964,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			],
 		] );
 
-		$res = call_user_func_array( [ $repository, 'getListsByDateUpdated' ], $args );
+		$res = call_user_func_array( $repository->getListsByDateUpdated( ... ), $args );
 		$data = $this->resultWrapperToArray( $res, 'rl_description' );
 		$this->assertArrayEquals( $expected, $data );
 	}
@@ -2049,7 +2049,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				],
 			],
 		] );
-		$res = call_user_func_array( [ $repository, 'getListEntriesByDateUpdated' ], $args );
+		$res = call_user_func_array( $repository->getListEntriesByDateUpdated( ... ), $args );
 		$data = $this->resultWrapperToArray( $res, 'rlp_project' );
 		$this->assertArrayEquals( $expected, $data );
 	}
@@ -2325,7 +2325,7 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 			],
 		] );
 
-		$res = call_user_func_array( [ $repository, 'getListsByPage' ], $args );
+		$res = call_user_func_array( $repository->getListsByPage( ... ), $args );
 		$data = $this->resultWrapperToArray( $res, 'rl_name' );
 		$this->assertArrayEquals( $expected, $data );
 	}

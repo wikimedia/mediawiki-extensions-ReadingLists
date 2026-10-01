@@ -58,7 +58,7 @@ trait RestUtilTrait {
 	 */
 	protected function requireMaxOneParameter( array $params, ...$required ) {
 		$intersection = array_intersect( array_keys( array_filter( $params,
-			[ $this, 'parameterNotEmpty' ] ) ), $required );
+			$this->parameterNotEmpty( ... ) ) ), $required );
 
 		if ( count( $intersection ) > 1 ) {
 			$lp = new ListParam(
@@ -86,7 +86,7 @@ trait RestUtilTrait {
 	 */
 	protected function requireAtLeastOneParameter( $params, ...$required ) {
 		$intersection = array_intersect(
-			array_keys( array_filter( $params, [ $this, 'parameterNotEmpty' ] ) ),
+			array_keys( array_filter( $params, $this->parameterNotEmpty( ... ) ) ),
 			$required
 		);
 
@@ -116,7 +116,7 @@ trait RestUtilTrait {
 	 */
 	protected function requireOnlyOneParameter( $params, ...$required ) {
 		$intersection = array_intersect( array_keys( array_filter( $params,
-			[ $this, 'parameterNotEmpty' ] ) ), $required );
+			$this->parameterNotEmpty( ... ) ) ), $required );
 
 		if ( count( $intersection ) > 1 ) {
 			$lp = new ListParam(
