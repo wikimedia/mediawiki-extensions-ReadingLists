@@ -12,14 +12,12 @@
 			<template #title>
 				{{ entry.title }}
 			</template>
-			<template v-if="entry.redirectTitle || entry.description" #description>
-				<template v-if="entry.redirectTitle">
-					<cdx-icon :icon="cdxIconInfo"></cdx-icon>
-					<span v-i18n-html:readinglists-redirect-to="[ entry.redirectTitle ]"></span>
-				</template>
-				<template v-else>
-					{{ entry.description }}
-				</template>
+			<template v-if="entry.redirectTitle" #supporting-text>
+				<cdx-icon :icon="cdxIconInfo"></cdx-icon>
+				<span v-i18n-html:readinglists-redirect-to="[ entry.redirectTitle ]"></span>
+			</template>
+			<template v-if="!entry.redirectTitle && entry.description" #description>
+				{{ entry.description }}
 			</template>
 		</cdx-card>
 	</li>
@@ -113,12 +111,6 @@ module.exports = exports = {
 			text-overflow: ellipsis;
 			overflow: hidden;
 		}
-	}
-
-	.cdx-card__text__supporting-text {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
 	}
 
 	// Simulate divider separation styles from Codex. We have to copy this style because the one in
