@@ -41,6 +41,7 @@
 			"factory": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiQueryReadingListEntries::factory",
 			"services": [
 				"ReadingLists.ReadingListRepositoryFactory",
+				"ReadingLists.ReverseInterwikiLookup",
 				"ReadingLists.BookmarkEntryLookupService",
 				"CentralIdLookupFactory",
 				"MainConfig"
@@ -53,6 +54,7 @@
 			"factory": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiQueryReadingLists::factory",
 			"services": [
 				"ReadingLists.ReadingListRepositoryFactory",
+				"ReadingLists.ReverseInterwikiLookup",
 				"ReadingLists.BookmarkEntryLookupService",
 				"CentralIdLookupFactory",
 				"MainConfig"

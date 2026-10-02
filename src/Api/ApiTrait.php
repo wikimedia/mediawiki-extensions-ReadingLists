@@ -12,6 +12,7 @@ use MediaWiki\Extension\ReadingLists\Doc\ReadingListRowWithMergeFlag;
 use MediaWiki\Extension\ReadingLists\LocalProjectHelper;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryFactory;
+use MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Message\Message;
@@ -38,6 +39,9 @@ trait ApiTrait {
 	/** @var ReadingListRepositoryFactory */
 	private $readingListRepositoryFactory;
 
+	/** @var ReverseInterwikiLookup */
+	private $reverseInterwikiLookup;
+
 	/** @var BookmarkEntryLookupService */
 	private $bookmarkEntryLookupService;
 
@@ -56,6 +60,7 @@ trait ApiTrait {
 	 * @param ApiBase $parent Parent module
 	 * @param string $name Module name
 	 * @param ReadingListRepositoryFactory $readingListRepositoryFactory
+	 * @param ReverseInterwikiLookup $reverseInterwikiLookup
 	 * @param BookmarkEntryLookupService $bookmarkEntryLookupService
 	 * @param CentralIdLookupFactory $centralIdLookupFactory
 	 * @param Config $mainConfig
@@ -66,6 +71,7 @@ trait ApiTrait {
 		ApiBase $parent,
 		string $name,
 		ReadingListRepositoryFactory $readingListRepositoryFactory,
+		ReverseInterwikiLookup $reverseInterwikiLookup,
 		BookmarkEntryLookupService $bookmarkEntryLookupService,
 		CentralIdLookupFactory $centralIdLookupFactory,
 		Config $mainConfig
@@ -81,6 +87,7 @@ trait ApiTrait {
 		}
 		$module->parent = $parent;
 		$module->readingListRepositoryFactory = $readingListRepositoryFactory;
+		$module->reverseInterwikiLookup = $reverseInterwikiLookup;
 		$module->bookmarkEntryLookupService = $bookmarkEntryLookupService;
 		$module->centralIdLookupFactory = $centralIdLookupFactory;
 		$module->mainConfig = $mainConfig;
@@ -95,6 +102,13 @@ trait ApiTrait {
 	 */
 	public function getParent() {
 		return $this->parent;
+	}
+
+	/**
+	 * @return ReverseInterwikiLookup
+	 */
+	private function getReverseInterwikiLookup() {
+		return $this->reverseInterwikiLookup;
 	}
 
 	/**

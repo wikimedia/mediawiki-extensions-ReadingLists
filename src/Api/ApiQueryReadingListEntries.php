@@ -8,9 +8,7 @@ use MediaWiki\Api\ApiQueryGeneratorBase;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
-use MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup;
 use MediaWiki\Extension\ReadingLists\Utils;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use Wikimedia\ParamValidator\ParamValidator;
 
@@ -228,14 +226,6 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	public function isInternal() {
 		// ReadingLists API is still experimental
 		return true;
-	}
-
-	/**
-	 * Initialize a reverse interwiki lookup helper.
-	 * @return ReverseInterwikiLookup
-	 */
-	private function getReverseInterwikiLookup() {
-		return MediaWikiServices::getInstance()->getService( 'ReadingLists.ReverseInterwikiLookup' );
 	}
 
 	/**

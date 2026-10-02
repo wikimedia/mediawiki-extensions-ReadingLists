@@ -63,6 +63,7 @@ class ApiReadingLists extends ApiBase {
 					'factory' => "$class::factory",
 					'services' => [
 						'ReadingLists.ReadingListRepositoryFactory',
+						'ReadingLists.ReverseInterwikiLookup',
 						'ReadingLists.BookmarkEntryLookupService',
 						'CentralIdLookupFactory',
 						'MainConfig',
