@@ -7,7 +7,8 @@
 			"SaldırganSincap",
 			"ToprakM",
 			"Leo",
-			"HakanIST"
+			"HakanIST",
+			"Cobija"
 		]
 	},
 	"readinglists-desc": "Kullanıcıların yer imleri veya \"Kaydedilen sayfalar\" listeleri gibi özel madde listelerini yönetmelerine izin verir.",
@@ -38,16 +39,26 @@
 	"readinglists-browser-extension-product-title": "Vikipedi Okuma Listeleri",
 	"readinglists-browser-page-not-supported": "$1, bu sayfayı desteklemiyor",
 	"readinglists-loading": "Lütfen bekleyin...",
-	"readinglists-default-title": "kaydedilen öğeler",
+	"readinglists-title": "Kaydedilmiş sayfalar",
+	"readinglists-total-lists": "$1 {{PLURAL:$1|liste|listeler}}",
+	"readinglists-total-articles": "$1 {{PLURAL:$1|sayfa|sayfalar}}",
+	"readinglists-default-title": "kaydedilen ögeler",
 	"readinglists-display-sort-name": "Ad",
+	"readinglists-sorted-by-recent": "Yeniden eskiye doğru sıralanmıştır.",
 	"action-action-readinglist-private": "diğer kullanıcıların okuma listelerini okuma",
+	"readinglists-import-disclaimer": "Bu sitedeki bir kullanıcı, başkalarıyla (muhtemelen sizinle) paylaşmak üzere bir okuma listesi oluşturdu. Liste denetimden geçmemiştir ve içeriği sitenin editörlerinin görüşlerini yansıtmamaktadır.",
 	"readinglists-add-bookmark": "Kaydet",
+	"readinglists-remove-bookmark": "Kaydetmeyi geri al",
 	"readinglists-unsave-from-custom-list-confirm": "Kaldır",
 	"readinglists-unsave-from-custom-list-cancel": "İptal",
 	"readinglists-onboarding-close-button": "Kapat",
 	"readinglists-onboarding-saved-pages-title": "Kaydedilen sayfalarınız",
 	"readinglists-onboarding-saved-pages-text": "Kaydettiğiniz tüm sayfalara buradan erişin.",
+	"readinglists-mobile-onboarding-saved-pages-text": "Kaydettiğiniz tüm sayfalara bu menüden erişin.",
+	"readinglists-betafeature-quicksurvey-question": "Bu özellik hoşunuza gidiyor mu?",
 	"readinglists-betafeature-quicksurvey-answer-positive": "Evet",
 	"readinglists-betafeature-quicksurvey-answer-negative": "Hayır",
+	"readinglists-betafeature-quicksurvey-question-feedback": "Bunu sizin için daha yararlı hâle ne getirirdi?",
+	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Gizlilik politikası]",
 	"readinglists-betafeature-quicksurvey-submit": "Gönder"
 }
