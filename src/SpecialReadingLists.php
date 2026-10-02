@@ -8,19 +8,11 @@ use MediaWiki\Html\Html;
 use MediaWiki\SpecialPage\UnlistedSpecialPage;
 
 class SpecialReadingLists extends UnlistedSpecialPage {
-	/**
-	 * Construct function
-	 */
-	private readonly Config $config;
-	private readonly ReadingListRepositoryFactory $readingListRepositoryFactory;
-
 	public function __construct(
-		Config $config,
-		ReadingListRepositoryFactory $readingListRepositoryFactory
+		private readonly Config $config,
+		private readonly ReadingListRepositoryFactory $readingListRepositoryFactory,
 	) {
 		parent::__construct( 'ReadingLists' );
-		$this->config = $config;
-		$this->readingListRepositoryFactory = $readingListRepositoryFactory;
 	}
 
 	/**

@@ -125,14 +125,11 @@ class ReadingListsTokenAwareHandlerTraitTest extends MediaWikiUnitTestCase {
 				ReadingListsTokenAwareHandlerTrait::getToken as public;
 			}
 
-			private Session $session;
-			private array $validatedParams;
-			private array $validatedBody;
-
-			public function __construct( Session $session, array $validatedParams, array $validatedBody ) {
-				$this->session = $session;
-				$this->validatedParams = $validatedParams;
-				$this->validatedBody = $validatedBody;
+			public function __construct(
+				private readonly Session $session,
+				private readonly array $validatedParams,
+				private readonly array $validatedBody,
+			) {
 			}
 
 			public function execute() {

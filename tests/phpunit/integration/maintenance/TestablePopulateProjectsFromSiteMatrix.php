@@ -9,10 +9,9 @@ class TestablePopulateProjectsFromSiteMatrix extends PopulateProjectsFromSiteMat
 
 	public bool $isTesting = false;
 
-	private SiteMatrix $siteMatrix;
-
-	public function __construct( SiteMatrix $siteMatrix ) {
-		$this->siteMatrix = $siteMatrix;
+	public function __construct(
+		private readonly SiteMatrix $siteMatrix,
+	) {
 		parent::__construct();
 	}
 

@@ -42,10 +42,9 @@ class RestUtilTraitTest extends MediaWikiUnitTestCase {
 				RestUtilTrait::dieIf as public publicDieIf;
 			}
 
-			private ResponseFactory $testResponseFactory;
-
-			public function __construct( ResponseFactory $rf ) {
-				$this->testResponseFactory = $rf;
+			public function __construct(
+				private readonly ResponseFactory $testResponseFactory,
+			) {
 			}
 
 			/**

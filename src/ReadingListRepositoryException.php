@@ -13,8 +13,7 @@ use MediaWiki\Message\Message;
  */
 class ReadingListRepositoryException extends Exception implements ILocalizedException {
 
-	/** @var Message */
-	private $messageObject;
+	private readonly Message $messageObject;
 
 	/**
 	 * @param string $messageKey MediaWiki message key for describing the error.
@@ -26,10 +25,7 @@ class ReadingListRepositoryException extends Exception implements ILocalizedExce
 		parent::__construct( "$messageText ($messageKey)" );
 	}
 
-	/**
-	 * @return Message
-	 */
-	public function getMessageObject() {
+	public function getMessageObject(): Message {
 		return $this->messageObject;
 	}
 

@@ -12,23 +12,16 @@ use MediaWiki\Utils\UrlUtils;
  */
 class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 
-	/** @var string */
-	private $ownDomain;
+	private readonly string $ownDomain;
 
 	/** @var string[] domain name => iw prefix */
 	private $prefixTable;
 
-	/**
-	 * @param InterwikiLookup $interwikiLookup
-	 * @param LanguageNameUtils $languageNameUtils
-	 * @param UrlUtils $urlUtils
-	 * @param string $ownDomain
-	 */
 	public function __construct(
 		private readonly InterwikiLookup $interwikiLookup,
 		private readonly LanguageNameUtils $languageNameUtils,
 		private readonly UrlUtils $urlUtils,
-		$ownDomain
+		string $ownDomain,
 	) {
 		$this->ownDomain = $this->getDomain( $ownDomain );
 	}
@@ -85,10 +78,8 @@ class ReverseInterwikiLookup implements ReverseInterwikiLookupInterface {
 
 	/**
 	 * Get the domain part of a domain or URL.
-	 * @param string $domainOrUrl
-	 * @return string
 	 */
-	protected function getDomain( $domainOrUrl ) {
+	protected function getDomain( string $domainOrUrl ): string {
 		$parts = $this->urlUtils->parse( $domainOrUrl );
 		if ( empty( $parts['host'] ) ) {
 			// assume it's just a bare domain name
