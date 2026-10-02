@@ -118,5 +118,6 @@
 	"readinglists-customlists-allitems": "Semua butir",
 	"readinglists-customlists-collections": "Koleksi",
 	"readinglists-customlists-no-collections": "Anda tidak mempunyai sebarang koleksi",
-	"readinglists-customlists-create-collection": "cipta koleksi baharu"
+	"readinglists-customlists-create-collection": "cipta koleksi baharu",
+	"readinglists-customlists-add-entry-success": "$1 ditambah ke [[$2|$3]]."
 }
