@@ -20,12 +20,14 @@
 				<div class="readinglists-cta-dialog__actions">
 					<a
 						:class="getFakeButtonClasses( 'primary' )"
-						:href="createAccountUrl">
+						:href="createAccountUrl"
+						@click="rememberPageToSave">
 						{{ primaryActionLabel }}
 					</a>
 					<a
 						:class="getFakeButtonClasses( 'default' )"
-						:href="loginUrl">
+						:href="loginUrl"
+						@click="rememberPageToSave">
 						{{ defaultActionLabel }}
 					</a>
 				</div>
@@ -37,6 +39,10 @@
 <script>
 const { computed, ref } = require( 'vue' );
 const { CdxDialog } = require( '../../codex.js' );
+
+// this needs to match AUTOSAVE_STORAGE_KEY in bookmark.js
+const AUTOSAVE_STORAGE_KEY = 'readinglists-cta-autosave';
+const AUTOSAVE_EXPIRY_SECONDS = 3600;
 
 /**
  * Dialog shown to anonymous users when they click the bookmark button, prompting sign-in.
@@ -82,6 +88,10 @@ module.exports = exports = {
 		} ) );
 		const loginUrl = computed( () => mw.util.getUrl( 'Special:UserLogin', urlParams ) );
 
+		function rememberPageToSave() {
+			mw.storage.session.set( AUTOSAVE_STORAGE_KEY, returnTo, AUTOSAVE_EXPIRY_SECONDS );
+		}
+
 		function getFakeButtonClasses( action ) {
 			return {
 				'cdx-button cdx-button--fake-button cdx-button--fake-button--enabled': true,
@@ -105,6 +115,7 @@ module.exports = exports = {
 			createAccountUrl,
 			defaultActionLabel,
 			loginUrl,
+			rememberPageToSave,
 			getFakeButtonClasses,
 			onUpdateOpen
 		};

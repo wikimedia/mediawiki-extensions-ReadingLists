@@ -142,7 +142,11 @@ function applyMwOverrides( { hookFn } ) {
 		getUrl: jest.fn( ( title ) => `/wiki/${ title }` )
 	} );
 	Object.assign( mw.storage, {
-		get: jest.fn( () => null )
+		get: jest.fn( () => null ),
+		session: {
+			get: jest.fn( () => null ),
+			remove: jest.fn()
+		}
 	} );
 	Object.assign( mw.log, {
 		error: jest.fn()
@@ -457,6 +461,94 @@ describe( 'initBookmark', () => {
 
 			expect( postWithEditToken ).toHaveBeenCalledTimes( 1 );
 		} );
+	} );
+
+	describe( 'after log in or account creation from the anonymous bookmark dialog', () => {
+		const AUTOSAVE_STORAGE_KEY = 'readinglists-cta-autosave';
+
+		function createMinervaBookmark( options ) {
+			setConfigValues( { skin: 'minerva' } );
+
+			const anchor = document.createElement( 'div' );
+			anchor.className = 'minerva-user-menu';
+			document.body.appendChild( anchor );
+
+			return createBookmarkElement( { iconClass: 'minerva-icon', ...options } );
+		}
+
+		test( 'saves the page and clears the stored page name', async () => {
+			const postWithEditToken = jest.fn( () => CREATEENTRY );
+			const bookmark = createMinervaBookmark();
+			api.stubApi( { postWithEditToken } );
+			mw.storage.session.get.mockReturnValue( 'Test_Page' );
+
+			initBookmark( bookmark, IS_MINERVA, MINERVA_EVENT_SOURCE );
+			await flushPromises();
+
+			expect( mw.storage.session.remove ).toHaveBeenCalledWith( AUTOSAVE_STORAGE_KEY );
+			expect( postWithEditToken ).toHaveBeenCalledTimes( 1 );
+			expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( {
+				command: 'createentry',
+				title: 'Test_Page'
+			} ) );
+			expect( bookmark.dataset.mwSaved ).toBe( '1' );
+		} );
+
+		test( 'does not save when the page is already saved', async () => {
+			const postWithEditToken = jest.fn( () => CREATEENTRY );
+			const bookmark = createMinervaBookmark( { saved: '1' } );
+			api.stubApi( { postWithEditToken } );
+			mw.storage.session.get.mockReturnValue( 'Test_Page' );
+
+			initBookmark( bookmark, IS_MINERVA, MINERVA_EVENT_SOURCE );
+			await flushPromises();
+
+			expect( mw.storage.session.remove ).toHaveBeenCalledWith( AUTOSAVE_STORAGE_KEY );
+			expect( postWithEditToken ).not.toHaveBeenCalled();
+			expect( mw.notify ).not.toHaveBeenCalled();
+		} );
+
+		test( 'does not save when the stored page name is for another page', async () => {
+			const postWithEditToken = jest.fn( () => CREATEENTRY );
+			const bookmark = createMinervaBookmark();
+			api.stubApi( { postWithEditToken } );
+			mw.storage.session.get.mockReturnValue( 'Other_Page' );
+
+			initBookmark( bookmark, IS_MINERVA, MINERVA_EVENT_SOURCE );
+			await flushPromises();
+
+			expect( mw.storage.session.remove ).toHaveBeenCalledWith( AUTOSAVE_STORAGE_KEY );
+			expect( postWithEditToken ).not.toHaveBeenCalled();
+		} );
+
+		test( 'does not save when there is no stored page name', async () => {
+			const postWithEditToken = jest.fn( () => CREATEENTRY );
+			const bookmark = createMinervaBookmark();
+			api.stubApi( { postWithEditToken } );
+
+			initBookmark( bookmark, IS_MINERVA, MINERVA_EVENT_SOURCE );
+			await flushPromises();
+
+			expect( mw.storage.session.remove ).not.toHaveBeenCalled();
+			expect( postWithEditToken ).not.toHaveBeenCalled();
+		} );
+
+		test( 'logs the error and shows no notification when the save fails', async () => {
+			const bookmark = createMinervaBookmark();
+			api.stubApi( {
+				postWithEditToken: jest.fn( () => Promise.reject( 'some-api-error' ) )
+			} );
+			mw.storage.session.get.mockReturnValue( 'Test_Page' );
+
+			initBookmark( bookmark, IS_MINERVA, MINERVA_EVENT_SOURCE );
+			await flushPromises();
+			await flushPromises();
+
+			expect( mw.log.error ).toHaveBeenCalledWith( expect.any( String ), 'some-api-error' );
+			expect( mw.notify ).not.toHaveBeenCalled();
+			expect( bookmark.dataset.mwSaved ).toBeUndefined();
+		} );
+
 	} );
 
 	describe( 'click bookmark button to unsave page', () => {

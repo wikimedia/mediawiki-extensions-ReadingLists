@@ -1,5 +1,9 @@
 const api = require( 'ext.readingLists.api' );
 const ONBOARDING_STORAGE_KEY = 'readinglists-saved-pages-dialog-seen';
+
+// this needs to match AUTOSAVE_STORAGE_KEY in CtaDialog.vue
+const AUTOSAVE_STORAGE_KEY = 'readinglists-cta-autosave';
+
 const { ReadingListsCustomLists } = require( './config.json' );
 
 function getErrorMessage( err ) {
@@ -189,6 +193,27 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	}
 
 	/**
+	 * Saves the page if the user is returning from login or create account
+	 * via the logged-out bookmark CTA button.
+	 *
+	 * @param {string} pageName
+	 * @return {Promise<void>}
+	 */
+	async function saveAfterCta( pageName ) {
+		mw.storage.session.remove( AUTOSAVE_STORAGE_KEY );
+
+		if ( pageName !== mw.config.get( 'wgPageName' ) || bookmark.dataset.mwSaved === '1' ) {
+			return;
+		}
+
+		try {
+			await addPageToReadingList();
+		} catch ( err ) {
+			mw.log.error( 'Failed to save page after log in or account creation:', err );
+		}
+	}
+
+	/**
 	 * Handles frontend logic for removing a page from a reading list
 	 *
 	 * @return {Promise<void>}
@@ -306,6 +331,13 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		mw.hook( 'readingLists.bookmark.edit' ).add( ( newSaved ) => {
 			setBookmarkStatus( newSaved );
 		} );
+
+		const pageName = mw.storage.session.get( AUTOSAVE_STORAGE_KEY );
+		if ( !pageName ) {
+			return;
+		}
+
+		saveAfterCta( pageName );
 	}
 
 	init();
