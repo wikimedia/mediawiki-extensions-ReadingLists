@@ -116,14 +116,19 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	 * @param {string|null} listName The name of the collection the article was added to
 	 */
 	function showPostChangeMessaging( isSaved, showNotification, listId = null, listName = null ) {
+		const homepageDiscoveryPreference = isMinerva ?
+			'homepage_mobile_discovery_notice_seen' :
+			'growthexperiments-tour-homepage-discovery';
+
 		// Show the onboarding popover only if the user has saved an article, if they haven't seen
-		// the popover before, and if they have seen and dismissed the homepage discovery popover
+		// the popover before, and if the homepage discovery popover has been dismissed
 		// to ensure the popovers don't overlap (T421942).
-		// If the onboarding popover is not displayed, show a confirmation notification.
+		// If GrowthExperiments is unavailable, set a fallback for the preference.
+		// If the onboarding popover is not displayed, show a confirmation toast notification.
 		if (
 			isSaved &&
 			!mw.storage.get( ONBOARDING_STORAGE_KEY ) &&
-			mw.user.options.get( 'growthexperiments-tour-homepage-discovery' )
+			mw.user.options.get( homepageDiscoveryPreference, 1 )
 		) {
 			initSavedPagesOnboardingPopover();
 		} else if ( showNotification ) {

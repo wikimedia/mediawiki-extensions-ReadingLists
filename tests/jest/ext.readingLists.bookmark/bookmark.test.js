@@ -397,7 +397,7 @@ describe( 'initBookmark', () => {
 
 			test( 'triggers onboarding popover on first save when not yet seen', async () => {
 				mw.user.options.get.mockImplementation( ( name ) => (
-					name === 'growthexperiments-tour-homepage-discovery' ? 1 : 0
+					name === 'homepage_mobile_discovery_notice_seen' ? 1 : 0
 				) );
 
 				jest.useFakeTimers();
@@ -476,11 +476,14 @@ describe( 'initBookmark', () => {
 			return createBookmarkElement( { iconClass: 'minerva-icon', ...options } );
 		}
 
-		test( 'saves the page and clears the stored page name', async () => {
+		test( 'saves the page and shows onboarding', async () => {
 			const postWithEditToken = jest.fn( () => CREATEENTRY );
 			const bookmark = createMinervaBookmark();
 			api.stubApi( { postWithEditToken } );
 			mw.storage.session.get.mockReturnValue( 'Test_Page' );
+			mw.user.options.get.mockImplementation( ( name ) => (
+				name === 'homepage_mobile_discovery_notice_seen' ? 1 : 0
+			) );
 
 			initBookmark( bookmark, IS_MINERVA, MINERVA_EVENT_SOURCE );
 			await flushPromises();
@@ -492,6 +495,21 @@ describe( 'initBookmark', () => {
 				title: 'Test_Page'
 			} ) );
 			expect( bookmark.dataset.mwSaved ).toBe( '1' );
+			expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.mobile' );
+			expect( mw.notify ).not.toHaveBeenCalled();
+		} );
+
+		test( 'shows onboarding when the Growth discovery preference is missing', async () => {
+			const bookmark = createMinervaBookmark();
+			api.stubApi( { postWithEditToken: jest.fn( () => CREATEENTRY ) } );
+			mw.storage.session.get.mockReturnValue( 'Test_Page' );
+			mw.user.options.get.mockImplementation( ( _name, fallback = null ) => fallback );
+
+			initBookmark( bookmark, IS_MINERVA, MINERVA_EVENT_SOURCE );
+			await flushPromises();
+
+			expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.mobile' );
+			expect( mw.notify ).not.toHaveBeenCalled();
 		} );
 
 		test( 'does not save when the page is already saved', async () => {
