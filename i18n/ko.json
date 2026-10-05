@@ -121,5 +121,6 @@
 	"readinglists-customlists-allitems": "모든 항목",
 	"readinglists-customlists-collections": "모음집",
 	"readinglists-customlists-no-collections": "모음집이 없습니다",
-	"readinglists-customlists-create-collection": "새 모음집 만들기"
+	"readinglists-customlists-create-collection": "새 모음집 만들기",
+	"readinglists-customlists-add-entry-success": "$1이(가) [[$2|$3]]에 추가되었습니다."
 }

@@ -119,5 +119,6 @@
 	"readinglists-customlists-allitems": "Alle emner",
 	"readinglists-customlists-collections": "Samlinger",
 	"readinglists-customlists-no-collections": "Du har ingen samlinger",
-	"readinglists-customlists-create-collection": "opret ny samling"
+	"readinglists-customlists-create-collection": "opret ny samling",
+	"readinglists-customlists-add-entry-success": "$1 tilføjet til [[$2|$3]]."
 }

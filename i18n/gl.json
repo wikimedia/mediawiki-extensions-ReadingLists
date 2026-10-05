@@ -120,5 +120,6 @@
 	"readinglists-customlists-allitems": "Todos os elementos",
 	"readinglists-customlists-collections": "Coleccións",
 	"readinglists-customlists-no-collections": "Non tes ningunha colección",
-	"readinglists-customlists-create-collection": "crear unha colección nova"
+	"readinglists-customlists-create-collection": "crear unha colección nova",
+	"readinglists-customlists-add-entry-success": "«$1» engadiuse a «[[$2|$3]]»."
 }

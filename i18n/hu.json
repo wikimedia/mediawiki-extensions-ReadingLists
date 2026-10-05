@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Bean49",
 			"Tacsipacsi"
 		]
 	},
@@ -40,7 +41,7 @@
 	"readinglists-import-error": "A megadott adatokból nem lehet megjeleníteni a listát.",
 	"readinglists-import-size-error": "A lista túl nagy a megjelenítéshez.",
 	"special-tab-readinglists-short": "A listáid",
-	"readinglists-default-title": "Elmentett lapok",
+	"readinglists-default-title": "mentett elemek",
 	"readinglists-default-description": "Alapértelmezett lista a mentett lapjaidnak.",
 	"action-action-readinglist-private": "más felhasználók olvasólistáinak olvasása",
 	"readinglists-empty-message": "Nincsenek listáid, miért nem készítesz egyet?",
@@ -49,7 +50,11 @@
 	"readinglists-export": "Lista megosztása",
 	"readinglists-import-app-misconfigured": "Ez a wiki jelenleg nem támogatja listák importálását.",
 	"readinglists-import-disclaimer": "Ennek a wikinek egy felhasználója készített egy olvasólistát, hogy megossza másokkal (valószínűleg veled). A lista nincs moderálva, és a tartalma nem tükrözi a wiki szerkesztőinek álláspontját.",
-	"readinglists-import-button-label": "Importálás",
-	"readinglists-import-button-hint": "A mobilalkalmazás telepítése után nyomd meg az alábbi gombot a lista importálásához:",
-	"readinglists-import-app-launch-hint": "Győződj meg róla, hogy telepítetted a mobilalkalmazás legújabb verzióját."
+	"readinglists-import-button-label": "Megnyitás appban",
+	"readinglists-import-button-hint": "Koppintson a gombra:",
+	"readinglists-import-app-launch-hint": "Győződj meg róla, hogy telepítetted a mobilalkalmazás legújabb verzióját.",
+	"readinglists-menu-item": "Elmentve",
+	"tooltip-pt-readinglists": "Mentett elemek",
+	"tooltip-ca-bookmark-add": "Lap hozzáadása a mentett elemekhez",
+	"tooltip-ca-bookmark-remove": "Lap eltávolítása a mentett elemek közül"
 }

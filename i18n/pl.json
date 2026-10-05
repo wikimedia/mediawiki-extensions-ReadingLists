@@ -103,5 +103,6 @@
 	"readinglists-customlists-allitems": "Wszystkie pozycje",
 	"readinglists-customlists-collections": "Kolekcje",
 	"readinglists-customlists-no-collections": "Nie masz żadnych kolekcji",
-	"readinglists-customlists-create-collection": "utwórz nową kolekcję"
+	"readinglists-customlists-create-collection": "utwórz nową kolekcję",
+	"readinglists-customlists-add-entry-success": "Zapisano „$1” w „[[$2|$3]]”"
 }

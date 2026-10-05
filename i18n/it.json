@@ -74,5 +74,6 @@
 	"readinglists-cta-dialog-title": "Salva pagine",
 	"readinglists-cta-dialog-create-account": "Registrati",
 	"readinglists-cta-dialog-log-in": "Entra",
-	"readinglists-cta-dialog-close": "Chiudi"
+	"readinglists-cta-dialog-close": "Chiudi",
+	"readinglists-customlists-add-entry-success": "$1 aggiunto a [[$2|$3]]."
 }

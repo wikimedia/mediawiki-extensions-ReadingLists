@@ -128,5 +128,6 @@
 	"readinglists-customlists-allitems": "所有项目",
 	"readinglists-customlists-collections": "收藏",
 	"readinglists-customlists-no-collections": "您没有任何收藏",
-	"readinglists-customlists-create-collection": "创建新收藏"
+	"readinglists-customlists-create-collection": "创建新收藏",
+	"readinglists-customlists-add-entry-success": "$1已添加到[[$2|$3]]。"
 }

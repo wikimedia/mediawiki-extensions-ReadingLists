@@ -119,5 +119,6 @@
 	"readinglists-customlists-allitems": "Bütün elementlər",
 	"readinglists-customlists-collections": "Kolleksiyalar",
 	"readinglists-customlists-no-collections": "Heç bir kolleksiyanız yoxdur",
-	"readinglists-customlists-create-collection": "yeni kolleksiya yarat"
+	"readinglists-customlists-create-collection": "yeni kolleksiya yarat",
+	"readinglists-customlists-add-entry-success": "[[$2|$3]]-ə $1 əlavə edildi."
 }
