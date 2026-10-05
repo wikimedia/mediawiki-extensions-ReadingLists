@@ -7,6 +7,11 @@
 
 @import 'mediawiki.skin.variables.less';
 
+// Keep the available grid width stable when loaded cards make the page scroll.
+html {
+	scrollbar-gutter: stable;
+}
+
 .client-js {
 	.reading-lists__errorbox {
 		display: none;

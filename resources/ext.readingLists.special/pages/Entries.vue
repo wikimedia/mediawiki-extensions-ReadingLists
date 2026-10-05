@@ -28,10 +28,14 @@
 			{{ sortingText }}
 		</p>
 
-		<template v-if="!loadingInfo">
+		<div
+			ref="entryListWrapper"
+			class="reading-lists-items-wrapper"
+			:class="{ 'reading-lists-items-wrapper--grid-view': !isListView }">
 			<!-- role="list" needed for Safari support, refer to T435864. -->
 			<ul
-				v-if="entries.length !== 0"
+				v-if="!loadingInfo && entries.length !== 0"
+				ref="entryList"
 				role="list"
 				class="reading-lists-items"
 				:class="cardListClasses"
@@ -43,17 +47,17 @@
 					:is-list-view="isListView"
 				></entry-item>
 			</ul>
+		</div>
 
-			<template v-if="!loadingEntries">
-				<empty-list
-					v-if="entries.length === 0"
-					:is-custom-list="isCustomList">
-				</empty-list>
+		<template v-if="!loadingInfo && !loadingEntries">
+			<empty-list
+				v-if="entries.length === 0"
+				:is-custom-list="isCustomList">
+			</empty-list>
 
-				<cdx-button v-else-if="next !== null" @click="onShowMore">
-					{{ msgShowMore }}
-				</cdx-button>
-			</template>
+			<cdx-button v-else-if="next !== null" @click="onShowMore">
+				{{ msgShowMore }}
+			</cdx-button>
 		</template>
 
 		<cdx-progress-bar
@@ -74,6 +78,7 @@ const NavigationBar = require( '../components/NavigationBar.vue' );
 const Survey = require( '../components/Survey.vue' );
 
 const surveyStorageKey = 'readinglists-beta-survey';
+const MIN_PAGE_SIZE = 12;
 
 // @vue/component
 module.exports = exports = {
@@ -201,6 +206,23 @@ module.exports = exports = {
 				this.loadingInfo = false;
 			}
 		},
+		getColumnCount() {
+			if ( this.isListView ) {
+				return 1;
+			}
+
+			// Measure the wrapper before the list is rendered; the list inherits its grid.
+			const tracks = getComputedStyle( this.$refs.entryListWrapper ).gridTemplateColumns;
+
+			return tracks ? tracks.split( ' ' ).length : 1;
+		},
+		getPageSize() {
+			// Load at least MIN_PAGE_SIZE entries, plus enough to fill the last row.
+			const columns = this.getColumnCount();
+			const total = this.entries.length + MIN_PAGE_SIZE;
+
+			return Math.ceil( total / columns ) * columns - this.entries.length;
+		},
 		async getEntries() {
 			this.loadingEntries = true;
 
@@ -213,7 +235,7 @@ module.exports = exports = {
 						this.listId,
 						this.sort,
 						this.direction,
-						12,
+						this.getPageSize(),
 						this.next,
 						[ '@local' ]
 					);
@@ -247,7 +269,7 @@ module.exports = exports = {
 			this.maybeShowSurvey();
 		},
 		async onShowMore() {
-			const list = document.querySelector( '.reading-lists-items' );
+			const list = this.$refs.entryList;
 			// eslint-disable-next-line es-x/no-optional-chaining
 			const lastEntry = list?.lastElementChild;
 			await this.getEntries();
@@ -301,14 +323,7 @@ module.exports = exports = {
 
 @min-width-card: @size-1200;
 
-.reading-lists-items {
-	.content ul&,
-	& {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-
+.reading-lists-items-wrapper {
 	&--grid-view {
 		display: grid;
 		// Add as many cards to a row as possible & ensure cards don't shrink below their min-width.
@@ -322,6 +337,23 @@ module.exports = exports = {
 		margin-top: @spacing-200;
 		margin-left: auto;
 		margin-right: auto;
+	}
+}
+
+.reading-lists-items {
+	grid-column: 1 / -1;
+
+	.content ul&,
+	& {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	&--grid-view {
+		display: grid;
+		grid-template-columns: inherit;
+		gap: inherit;
 	}
 }
 </style>

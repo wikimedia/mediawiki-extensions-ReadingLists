@@ -80,6 +80,102 @@ describe( 'Entries', () => {
 			expect( showMoreButton.text() ).toBe( 'Show more items' );
 		} );
 
+		test( 'measures the mounted wrapper before rendering the list to load complete rows', async () => {
+			setupEntriesApiStub();
+			const getEntries = jest.spyOn( api, 'getEntries' );
+			// A grid with 5 columns.
+			const getComputedStyle = jest.spyOn( window, 'getComputedStyle' ).mockReturnValue( {
+				gridTemplateColumns: '200px 200px 200px 200px 200px'
+			} );
+
+			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const wrapper = mount( Entries, { props: { listId: 12345 } } );
+			const grid = wrapper.get( '.reading-lists-items-wrapper' );
+
+			expect( wrapper.vm.loadingInfo ).toBe( true );
+			expect( grid.element.children ).toHaveLength( 0 );
+			expect( wrapper.find( '.reading-lists-items' ).exists() ).toBe( false );
+			expect( getComputedStyle ).toHaveBeenCalledWith( grid.element );
+
+			await flushPromises();
+
+			const limit = getEntries.mock.calls[ 0 ][ 3 ];
+			expect( limit ).toBe( 15 );
+			expect( wrapper.get( '.reading-lists-items-wrapper' ).element ).toBe( grid.element );
+			expect( grid.get( '.reading-lists-items' ).attributes( 'aria-hidden' ) ).toBeUndefined();
+			wrapper.unmount();
+		} );
+
+		test( 'renders the empty state without an empty list element', async () => {
+			setupEntriesApiStub();
+			jest.spyOn( api, 'getEntries' ).mockResolvedValue( { entries: [], next: null } );
+
+			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const wrapper = mount( Entries, { props: { listId: 12345 } } );
+			await flushPromises();
+
+			expect( wrapper.get( '.reading-lists-items-wrapper' ).element.children ).toHaveLength( 0 );
+			expect( wrapper.find( '.reading-lists-items' ).exists() ).toBe( false );
+			expect( wrapper.find( '.reading-lists-empty' ).exists() ).toBe( true );
+			wrapper.unmount();
+		} );
+
+		test( 'loads 12 entries in mobile list view without measuring columns', async () => {
+			jest.replaceProperty( window, 'innerWidth', 375 );
+			setupEntriesApiStub();
+			const getEntries = jest.spyOn( api, 'getEntries' );
+			const getComputedStyle = jest.spyOn( window, 'getComputedStyle' );
+
+			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const wrapper = mount( Entries, { props: { listId: 12345 } } );
+
+			await flushPromises();
+
+			expect( getEntries.mock.calls[ 0 ][ 3 ] ).toBe( 12 );
+			expect( getComputedStyle ).not.toHaveBeenCalledWith(
+				wrapper.get( '.reading-lists-items-wrapper' ).element
+			);
+			expect( wrapper.get( '.reading-lists-items-wrapper' ).classes() )
+				.not.toContain( 'reading-lists-items-wrapper--grid-view' );
+			expect( wrapper.get( '.reading-lists-items' ).classes() )
+				.not.toContain( 'reading-lists-items--grid-view' );
+			wrapper.unmount();
+		} );
+
+		test( 'remeasures the grid when loading more entries after a column change', async () => {
+			setupEntriesApiStub();
+			const entries = Array.from( { length: 28 }, ( _, i ) => ( {
+				id: i + 1,
+				title: `Page ${ i + 1 }`,
+				url: `/wiki/Page_${ i + 1 }`
+			} ) );
+			const getEntries = jest.spyOn( api, 'getEntries' )
+				.mockResolvedValueOnce( { entries: entries.slice( 0, 15 ), next: 'next-page' } )
+				.mockResolvedValueOnce( { entries: entries.slice( 15 ), next: null } );
+			const getComputedStyle = jest.spyOn( window, 'getComputedStyle' ).mockReturnValue( {
+				gridTemplateColumns: '200px 200px 200px 200px 200px'
+			} );
+
+			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const wrapper = mount( Entries, { props: { listId: 12345 } } );
+			await flushPromises();
+
+			getComputedStyle.mockClear().mockReturnValue( {
+				gridTemplateColumns: '250px 250px 250px 250px'
+			} );
+			await wrapper.get( '.cdx-button' ).trigger( 'click' );
+			await flushPromises();
+
+			expect( getComputedStyle ).toHaveBeenCalledWith(
+				wrapper.get( '.reading-lists-items-wrapper' ).element
+			);
+			expect( getEntries ).toHaveBeenNthCalledWith(
+				2, 12345, 'updated', 'descending', 13, 'next-page', [ '@local' ]
+			);
+			expect( wrapper.findAll( '.reading-lists-item' ) ).toHaveLength( 28 );
+			wrapper.unmount();
+		} );
+
 		test( 'renders all items from all lists on special page', async () => {
 			setupAllItemsApiStub();
 
