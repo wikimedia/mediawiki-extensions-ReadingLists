@@ -9,7 +9,8 @@
 			"Macofe",
 			"MarcoAurelio",
 			"McDutchie",
-			"Scblr"
+			"Scblr",
+			"ZebaX2010"
 		]
 	},
 	"readinglists-desc": "Permite a los usuarios gestionar listas privadas de ítems, como marcadores o listas de \"páginas guardadas\".",
@@ -115,7 +116,7 @@
 	"readinglists-betafeature-quicksurvey-thank-you": "Gracias por tu comentario",
 	"readinglists-cta-dialog-title": "Guardar páginas",
 	"readinglists-cta-dialog-subtitle": "Ahora puedes guardar páginas de Wikipedia en tu lista personal.",
-	"readinglists-cta-dialog-call-to-action": "Por favor, inicia sesión para crear una cuenta y empezar a guardar.",
+	"readinglists-cta-dialog-call-to-action": "Por favor, inicia sesión o crea una cuenta para comenzar a guardar.",
 	"readinglists-cta-dialog-create-account": "Crear cuenta",
 	"readinglists-cta-dialog-log-in": "Iniciar sesión",
 	"readinglists-cta-dialog-close": "Cerrar",

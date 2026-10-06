@@ -69,6 +69,7 @@
 	"readinglists-list-empty-message": "Tällä listalla ei ole sivuja. Lataa sovellus ja käytä sitä lisätäksesi sivuja tälle lukulistalle.",
 	"readinglists-no-title": "Nimetön lista",
 	"readinglists-export": "Jaa lista",
+	"readinglists-redirect-to": "Tämän sivun sisältö on siirretty sivulle <b>$1</b>",
 	"readinglists-watchlist": "Tarkkailulista",
 	"readinglists-watchlist-description": "Sivut, joiden uusia muokkauksia tarkkailet.",
 	"readinglists-watchlist-monitor": "Voit tarkkailla tähän listaan kuuluvien sivujen muokkauksia käyttämällä [$1 tarkkailulista]-työkalua.",
@@ -114,5 +115,6 @@
 	"readinglists-customlists-allitems": "Kaikki kohteet",
 	"readinglists-customlists-collections": "Kokoelmat",
 	"readinglists-customlists-no-collections": "Sinulla ei ole yhtään kokoelmaa",
-	"readinglists-customlists-create-collection": "luo uusi kokoelma"
+	"readinglists-customlists-create-collection": "luo uusi kokoelma",
+	"readinglists-customlists-add-entry-success": "$1 lisätty listalle [[$2|$3]]."
 }

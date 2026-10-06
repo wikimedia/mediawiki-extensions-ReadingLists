@@ -121,5 +121,6 @@
 	"readinglists-customlists-allitems": "همه موارد",
 	"readinglists-customlists-collections": "مجموعه‌ها",
 	"readinglists-customlists-no-collections": "شما هیچ مجموعه‌ای ندارید",
-	"readinglists-customlists-create-collection": "ایجاد مجموعهٔ جدید"
+	"readinglists-customlists-create-collection": "ایجاد مجموعهٔ جدید",
+	"readinglists-customlists-add-entry-success": "$1 به [[$2|$3]] افزوده شد."
 }

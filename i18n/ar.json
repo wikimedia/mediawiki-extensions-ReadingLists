@@ -57,7 +57,7 @@
 	"readinglists-title": "الصفحات المحفوظة",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|قائمة|قوائم}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|صفحة|صفحات}}",
-	"readinglists-show-more": "إظهار المزيد",
+	"readinglists-show-more": "عرض المزيد من العناصر",
 	"readinglists-default-title": "المواد المحفوظة",
 	"readinglists-default-description": "القائمة الافتراضية للصفحات المحفوظة.",
 	"readinglists-empty-title": "لا توجد مقالات محفوظة",
