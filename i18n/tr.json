@@ -7,7 +7,9 @@
 			"Sakblue",
 			"SaldırganSincap",
 			"Leo",
-			"HakanIST"
+			"HakanIST",
+			"Cobija",
+			"Gadir"
 		]
 	},
 	"readinglists-desc": "Kullanıcıların yer imleri veya \"Daha Sonra Oku\" listeleri gibi özel madde listelerini yönetmesine olanak tanır.",
@@ -37,5 +39,6 @@
 	"readinglists-browser-list-entry-limit-exceeded": "Madde kaydedilemez. Liste başına $1 madde sınırına ulaştınız",
 	"readinglists-browser-extension-product-title": "Vikipedi Okuma Listeleri",
 	"readinglists-browser-page-not-supported": "$1, bu sayfayı desteklemiyor",
-	"action-action-readinglist-private": "diğer kullanıcıların okuma listelerini okuma"
+	"action-action-readinglist-private": "diğer kullanıcıların okuma listelerini okuma",
+	"readinglists-import-disclaimer": "Bu sitedeki bir kullanıcı, başkalarıyla (muhtemelen sizinle) paylaşmak üzere bir okuma listesi oluşturdu. Liste denetimden geçmemiştir ve içeriği sitenin editörlerinin görüşlerini yansıtmamaktadır."
 }

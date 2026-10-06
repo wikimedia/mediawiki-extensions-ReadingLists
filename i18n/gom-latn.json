@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"The Discoverer"
+		]
+	},
+	"readinglists-db-error-no-such-list": "Volleri $1 ostitvant na.",
+	"readinglists-browser-extension-info-link-text": "Odik xikun ghe",
+	"readinglists-browser-extension-product-title": "Wikipedia Vachpachim Vollerim",
+	"special-tab-readinglists-short": "Tujim vollerim",
+	"action-action-readinglist-private": "dusrea vaporpeanchim vachpachim vollerim polloi",
+	"readinglists-export": "Volleri vant",
+	"readinglists-watchlist": "Sadurvolleri"
+}

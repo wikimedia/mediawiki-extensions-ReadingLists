@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Tacsipacsi"
+			"Tacsipacsi",
+			"Bean49"
 		]
 	},
 	"readinglists-desc": "Lehetővé teszi a felhasználóknak privát szócikklisták, például könyvjelzők vagy „elolvasandó” listák létrehozását.",
@@ -49,6 +50,6 @@
 	"readinglists-import-app-misconfigured": "Ez a wiki jelenleg nem támogatja listák importálását.",
 	"readinglists-import-disclaimer": "Ennek a wikinek egy felhasználója készített egy olvasólistát, hogy megossza másokkal (valószínűleg veled). A lista nincs moderálva, és a tartalma nem tükrözi a wiki szerkesztőinek álláspontját.",
 	"readinglists-import-button-label": "Importálás",
-	"readinglists-import-button-hint": "A mobilalkalmazás telepítése után nyomd meg az alábbi gombot a lista importálásához:",
+	"readinglists-import-button-hint": "Koppintson a gombra:",
 	"readinglists-import-app-launch-hint": "Győződj meg róla, hogy telepítetted a mobilalkalmazás legújabb verzióját."
 }
