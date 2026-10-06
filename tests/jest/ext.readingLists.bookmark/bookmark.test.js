@@ -865,6 +865,70 @@ describe( 'initBookmark', () => {
 				expect( mw.loader.using ).not.toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
 			} );
 		} );
+
+		test( 'shows custom list notification when popover resolves with a listId', async () => {
+			initBookmarkPopover = jest.fn( () => ( { showNotification: true, listId: 42, listName: 'My List' } ) );
+			jest.doMock(
+				'ext.readingLists.bookmark.bookmarkPopover',
+				() => ( { initBookmarkPopover } ),
+				{ virtual: true }
+			);
+
+			const bookmark = createBookmarkElement();
+			api.stubApi( {
+				postWithEditToken: jest.fn( () => CREATEENTRY )
+			} );
+			mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+
+			initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+			bookmark.click();
+			await flushPromises();
+			await flushPromises();
+			await flushPromises();
+
+			expect( mw.message ).toHaveBeenCalledWith(
+				'readinglists-customlists-add-entry-success',
+				expect.anything(),
+				expect.anything(),
+				expect.anything()
+			);
+			expect( mw.notify ).toHaveBeenCalledWith(
+				expect.anything(),
+				expect.objectContaining( { tag: 'saved', type: 'success' } )
+			);
+		} );
+
+		test( 'shows default list notification when popover resolves without a listId', async () => {
+			initBookmarkPopover = jest.fn( () => ( { showNotification: true, listId: null, listName: null } ) );
+			jest.doMock(
+				'ext.readingLists.bookmark.bookmarkPopover',
+				() => ( { initBookmarkPopover } ),
+				{ virtual: true }
+			);
+
+			const bookmark = createBookmarkElement();
+			api.stubApi( {
+				postWithEditToken: jest.fn( () => CREATEENTRY )
+			} );
+			mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+
+			initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+			bookmark.click();
+			await flushPromises();
+			await flushPromises();
+			await flushPromises();
+
+			expect( mw.message ).toHaveBeenCalledWith(
+				'readinglists-browser-add-entry-success',
+				expect.anything(),
+				expect.anything(),
+				expect.anything()
+			);
+			expect( mw.notify ).toHaveBeenCalledWith(
+				expect.anything(),
+				expect.objectContaining( { tag: 'saved', type: 'success' } )
+			);
+		} );
 	} );
 
 	describe( 'error handling', () => {

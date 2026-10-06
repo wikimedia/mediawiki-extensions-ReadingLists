@@ -1,6 +1,6 @@
 <template>
 	<config-popover
-		v-model:open="isOpen"
+		v-model:open="isConfigPopoverOpen"
 		class="readinglists-bookmark-popover"
 		@update:open="handleOpenChange"
 	>
@@ -33,14 +33,17 @@
 				</cdx-button>
 			</div>
 		</template>
-		<a @click="launchCreateCollection">
-			{{ $i18n( 'readinglists-customlists-create-collection-short' ).text() }}
-		</a>
+
+		<collection-picker
+			:title="title"
+			@create-collection="launchCreateCollection"
+			@add-to-collection="addToCollection"
+		></collection-picker>
+
 		<create-collection-dialog
 			v-if="isCreateCollectionDialogOpen"
-			@success="onCreateNewCollection"
-		>
-		</create-collection-dialog>
+			@success="addToCollection"
+		></create-collection-dialog>
 	</config-popover>
 </template>
 
@@ -49,7 +52,8 @@ const { ref, computed, toRef } = require( 'vue' );
 const { CdxButton, CdxIcon } = require( '../../codex.js' );
 const { cdxIconSuccess, cdxIconClose } = require( '../../icons.json' );
 const { ConfigPopover, CreateCollectionDialog } = require( 'ext.readingLists.common' );
-const { createEntry } = require( 'ext.readingLists.api' );
+const { createEntry, deleteEntryByPageTitle } = require( 'ext.readingLists.api' );
+const CollectionPicker = require( './CollectionPicker.vue' );
 
 /**
  * Popover for saving or un-saving an article to a reading list.
@@ -61,7 +65,8 @@ module.exports = exports = {
 		CdxButton,
 		CdxIcon,
 		ConfigPopover,
-		CreateCollectionDialog
+		CreateCollectionDialog,
+		CollectionPicker
 	},
 	props: {
 
@@ -77,13 +82,17 @@ module.exports = exports = {
 			type: Boolean,
 			default: false
 		},
+		/**
+		 * Callback when the popover closes. The argument is whether to show an mw.notification
+		 * (handled in bookmark.js).
+		 */
 		onDismiss: {
 			type: Function,
 			required: true
 		}
 	},
 	setup( props ) {
-		const isOpen = ref( true );
+		const isConfigPopoverOpen = ref( true );
 		const isCreateCollectionDialogOpen = ref( false );
 		const title = toRef( props, 'title' );
 
@@ -105,9 +114,8 @@ module.exports = exports = {
 		 */
 		function handleOpenChange( newValue ) {
 			if ( !newValue ) {
-				// Run onDismiss with showNotification argument set to `false` all the time for now.
-				// TODO (T438393): Once we enable saving to a custom list, in that case
-				// showNotification should be `true`.
+				// When the user closes the popover without adding to a custom list, don't show
+				// a notification.
 				props.onDismiss( false );
 			}
 		}
@@ -116,18 +124,24 @@ module.exports = exports = {
 			isCreateCollectionDialogOpen.value = true;
 		}
 
-		function onCreateNewCollection( listId ) {
+		function addToCollection( listId, listName ) {
+			// Remove from default list.
+			deleteEntryByPageTitle( title.value );
+			// Add to custom list.
 			createEntry( listId, title.value );
+			// Close the popover and show a notification that the page was added to a custom list.
+			isConfigPopoverOpen.value = false;
+			props.onDismiss( true, listId, listName );
 		}
 
 		return {
-			isOpen,
+			isConfigPopoverOpen,
 			saveTitle,
 			popoverIcon,
 			closeButtonLabel,
 			handleOpenChange,
 			cdxIconClose,
-			onCreateNewCollection,
+			addToCollection,
 			isCreateCollectionDialogOpen,
 			launchCreateCollection
 		};

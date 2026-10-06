@@ -142,6 +142,8 @@
 	"readinglists-customlists-create-collection-dialog-name": "Dialog heading for creating a collection.",
 	"readinglists-customlists-create-collection-dialog-placeholder": "Placeholder for creating a collection",
 	"readinglists-customlists-add-entry-success": "Title of the popover that displays when you save an article",
+	"readinglists-customlists-collection-picker-create-prompt": "Message shown in the bookmark popover when there are no collections yet",
+	"readinglists-customlists-collection-picker-add-button-label": "Label for button to add a page to a collection in the bookmark popover. Parameters:\n* $1 - Page title\n* $2 - Collection name",
 	"readinglists-customlists-collection-settings": "Accessible name for the collection settings button. Shown only when viewing a custom collection.",
 	"readinglists-customlists-rename-collection": "Label for the action that will rename the current custom collection.",
 	"readinglists-customlists-delete-collection": "Label for the action that will delete the current custom collection."

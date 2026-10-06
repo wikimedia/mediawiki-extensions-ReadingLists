@@ -52,7 +52,7 @@ describe( 'initBookmarkPopover', () => {
 
 		capturedProps.onDismiss( false );
 
-		await expect( promise ).resolves.toBe( false );
+		await expect( promise ).resolves.toMatchObject( { showNotification: false } );
 		expect( mockApp.unmount ).toHaveBeenCalled();
 	} );
 

@@ -397,15 +397,19 @@
 			"messages": [
 				"readinglists-customlists-create-collection-short",
 				"readinglists-customlists-add-entry-success",
+				"readinglists-customlists-collection-picker-create-prompt",
+				"readinglists-customlists-collection-picker-add-button-label",
 				"cdx-popover-close-button-label"
 			],
 			"packageFiles": [
 				"resources/ext.readingLists.bookmark.bookmarkPopover/index.js",
 				"resources/ext.readingLists.bookmark.bookmarkPopover/BookmarkPopover.vue",
+				"resources/ext.readingLists.bookmark.bookmarkPopover/CollectionPicker.vue",
 				{
 					"name": "icons.json",
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
 					"callbackParam": [
+						"cdxIconAdd",
 						"cdxIconClose",
 						"cdxIconSuccess"
 					]

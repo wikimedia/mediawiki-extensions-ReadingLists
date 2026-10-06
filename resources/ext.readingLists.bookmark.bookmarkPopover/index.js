@@ -15,13 +15,13 @@ function initBookmarkPopover( isCurrentlySaved ) {
 		const app = createMwApp( BookmarkPopover, {
 			title: mw.config.get( 'wgPageName' ),
 			isCurrentlySaved,
-			onDismiss: ( showNotification ) => cleanup( showNotification )
+			onDismiss: ( showNotification, listId = null, listName = null ) => cleanup( showNotification, listId, listName )
 		} );
 
-		function cleanup( showNotification ) {
+		function cleanup( showNotification, listId, listName ) {
 			app.unmount();
 			container.remove();
-			resolve( showNotification );
+			resolve( { showNotification, listId, listName } );
 		}
 
 		app.mount( container );

@@ -77,8 +77,10 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	 *
 	 * @param {boolean} isSaved Whether the article is now saved to a reading list
 	 * @param {boolean} showNotification Whether to show an mw.notification
+	 * @param {number|null} listId The ID of the collection the article was added to
+	 * @param {string|null} listName The name of the collection the article was added to
 	 */
-	function updateBookmarkStatus( isSaved, showNotification ) {
+	function updateBookmarkStatus( isSaved, showNotification, listId = null, listName = null ) {
 		// Show the onboarding popover only if the user has saved an article, if they haven't seen
 		// the popover before, and if they have seen and dismissed the homepage discovery popover
 		// to ensure the popovers don't overlap (T421942).
@@ -90,14 +92,19 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		) {
 			initSavedPagesOnboardingPopover();
 		} else if ( showNotification ) {
+			let route = `Special:ReadingLists/${ mw.user.getName() }`;
+			route += listId || '';
+			const listNameParam = listName || mw.msg( 'readinglists-default-title' );
+
 			// The following messages are used here:
 			// * readinglists-browser-add-entry-success
 			// * readinglists-browser-remove-entry-success
+			// * readinglists-customlists-add-entry-success
 			const msg = mw.message(
-				`readinglists-browser-${ ( isSaved ? 'add' : 'remove' ) }-entry-success`,
+				`readinglists-${ ( listId ? 'customlists' : 'browser' ) }-${ ( isSaved ? 'add' : 'remove' ) }-entry-success`,
 				mw.config.get( 'wgTitle' ),
-				`Special:ReadingLists/${ mw.user.getName() }`,
-				mw.msg( 'readinglists-default-title' )
+				route,
+				listNameParam
 			);
 
 			// The following CSS classes are used here:
@@ -185,8 +192,8 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		await api.saveToDefaultList( mw.config.get( 'wgPageName' ) );
 
 		if ( ReadingListsCustomLists ) {
-			const showNotification = await launchBookmarkPopover( false );
-			updateBookmarkStatus( true, showNotification );
+			const { showNotification, listId, listName } = await launchBookmarkPopover( false );
+			updateBookmarkStatus( true, showNotification, listId, listName );
 		} else {
 			updateBookmarkStatus( true, true );
 		}
@@ -255,7 +262,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			.catch( ( error ) => {
 				mw.log.error( 'Error loading ext.readingLists.bookmark.bookmarkPopover module:', error );
 				// Fall back to the mw.notification.
-				return true;
+				return { showNotification: true };
 			} );
 	}
 

@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CollectionPicker renders correctly after fetch error 1`] = `
+"<div class="readinglists-collection-picker">
+  <!--v-if--><button class="readinglists-collection-picker__create-button">Create collection</button>
+  <ul class="readinglists-collection-picker__collections"></ul>
+</div>"
+`;
+
+exports[`CollectionPicker renders correctly after fetch with custom collections 1`] = `
+"<div class="readinglists-collection-picker">
+  <!--v-if--><button class="readinglists-collection-picker__create-button">Create collection</button>
+  <ul class="readinglists-collection-picker__collections">
+    <li class="readinglists-collection-picker__collection">A <button weight="quiet" aria-label="Add $1 to $2"><span></span></button></li>
+    <li class="readinglists-collection-picker__collection">B <button weight="quiet" aria-label="Add $1 to $2"><span></span></button></li>
+  </ul>
+</div>"
+`;
+
+exports[`CollectionPicker renders correctly after fetch with no collections 1`] = `
+"<div class="readinglists-collection-picker">
+  <div class="readinglists-collection-picker__prompt">
+    <p>Organize your saved item into a collection</p>
+  </div><button class="readinglists-collection-picker__create-button">Create collection</button>
+  <ul class="readinglists-collection-picker__collections"></ul>
+</div>"
+`;
+
+exports[`CollectionPicker renders correctly while fetch is pending 1`] = `
+"<div class="readinglists-collection-picker">
+  <!--v-if--><button class="readinglists-collection-picker__create-button">Create collection</button>
+  <ul class="readinglists-collection-picker__collections"></ul>
+</div>"
+`;
