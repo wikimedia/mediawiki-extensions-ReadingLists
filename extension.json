@@ -80,7 +80,7 @@
 			"description": "Whether to expose reading lists as a beta feature."
 		},
 		"ReadingListsEnabled": {
-			"value": false,
+			"value": true,
 			"description": "Whether to enable the Reading Lists web UI for all logged-in users on this wiki."
 		},
 		"ReadingListAndroidAppDownloadLink": {
@@ -132,15 +132,15 @@
 			"description": "Maximum number of bookmarked pages to include in the bloom filter. Users exceeding this skip the filter and query the database directly."
 		},
 		"ReadingListsCustomLists": {
-			"value": false,
+			"value": true,
 			"description": "Whether to show custom lists experience for ReadingLists."
 		},
 		"ReadingListsMinervaCTA": {
-			"value": false,
+			"value": true,
 			"description": "Enable reading list CTA for logged out users in Minerva."
 		},
 		"ReadingListsMinervaCTAShowDot": {
-			"value": false,
+			"value": true,
 			"description": "Whether to show a pulsating blue dot on the anonymous bookmark button."
 		}
 	},
