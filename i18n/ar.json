@@ -78,6 +78,7 @@
 	"readinglists-list-empty-message": "هذه القائمة لا تحتوي على صفحات. قم بتنزيل التطبيق واستخدامه لإضافة عناصر إلى قائمة القراءة هذه.",
 	"readinglists-no-title": "قائمة بلا عنوان",
 	"readinglists-export": "قائمة المشاركة",
+	"readinglists-redirect-to": "تم نقل محتوى هذه الصفحة إلى <b>$1</b>",
 	"readinglists-watchlist": "قائمة المراقبة",
 	"readinglists-watchlist-description": "الصفحات التي تتابعها للحصول على التعديلات الجديدة.",
 	"readinglists-watchlist-monitor": "بإمكانك مراقبة التعديلات التي تطرأ على الصفحات الموجودة في هذه القائمة باستخدام أداة [ $1 watchlist]",

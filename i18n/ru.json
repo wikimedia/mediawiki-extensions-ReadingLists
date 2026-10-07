@@ -9,6 +9,7 @@
 			"Happy13241",
 			"Kareyac",
 			"LuckyBlock13fa",
+			"Mitte27",
 			"Movses",
 			"Okras",
 			"Ole Yves",
@@ -49,6 +50,7 @@
 	"readinglists-browser-page-not-supported": "$1 не поддерживает эту страницу",
 	"readinglists-special-title-imported": "Чтение списков: Импорт от другого пользователя",
 	"readinglists-special-subpage-title": "Сохранённые страницы",
+	"readinglists-privacy-tooltip": "Сохранённые страницы видны только вам.",
 	"readinglists-description": "Все ваши сохранённые списки в одном месте.",
 	"readinglists-loading": "Пожалуйста, подождите…",
 	"reading-list-purpose": "Для просмотра ваших личных списков чтения войдите в систему.",
@@ -80,6 +82,7 @@
 	"readinglists-list-empty-message": "В этом списке нет страниц. Скачайте и воспользуйтесь приложением, чтобы пополнить этот список чтения.",
 	"readinglists-no-title": "Список без названия",
 	"readinglists-export": "Поделиться списком",
+	"readinglists-redirect-to": "Содержимое этой страницы перемещено в <b>$1</b>",
 	"readinglists-watchlist": "Список наблюдения",
 	"readinglists-watchlist-description": "Страницы, на которые вы подписаны для уведомлений о новых правках.",
 	"readinglists-watchlist-monitor": "Вы можете отслеживать изменения страниц в этом списке с помощью инструмента [список наблюдения за $1 ].",
@@ -122,5 +125,7 @@
 	"readinglists-cta-dialog-call-to-action": "Пожалуйста, войдите в систему или создайте учётную запись, чтобы начать сохранять страницы.",
 	"readinglists-cta-dialog-create-account": "Создать аккаунт",
 	"readinglists-cta-dialog-log-in": "Войти",
-	"readinglists-cta-dialog-close": "Закрыть"
+	"readinglists-cta-dialog-close": "Закрыть",
+	"readinglists-customlists-collections": "Коллекции",
+	"readinglists-customlists-create-collection": "создать новую коллекцию"
 }
