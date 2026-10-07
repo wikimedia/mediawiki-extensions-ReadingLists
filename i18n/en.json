@@ -131,5 +131,8 @@
 	"readinglists-customlists-create-collection-short": "Create collection",
 	"readinglists-customlists-create-collection-dialog-name": "Name of the collection",
 	"readinglists-customlists-create-collection-dialog-placeholder": "Enter name",
-	"readinglists-customlists-add-entry-success": "$1 added to [[$2|$3]]."
+	"readinglists-customlists-add-entry-success": "$1 added to [[$2|$3]].",
+	"readinglists-customlists-collection-settings": "Collection settings",
+	"readinglists-customlists-rename-collection": "Rename collection",
+	"readinglists-customlists-delete-collection": "Delete collection"
 }

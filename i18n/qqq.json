@@ -141,5 +141,8 @@
 	"readinglists-customlists-create-collection-short": "Label for the short version of the link to create a new collection (custom list)",
 	"readinglists-customlists-create-collection-dialog-name": "Dialog heading for creating a collection.",
 	"readinglists-customlists-create-collection-dialog-placeholder": "Placeholder for creating a collection",
-	"readinglists-customlists-add-entry-success": "Title of the popover that displays when you save an article"
+	"readinglists-customlists-add-entry-success": "Title of the popover that displays when you save an article",
+	"readinglists-customlists-collection-settings": "Accessible name for the collection settings button. Shown only when viewing a custom collection.",
+	"readinglists-customlists-rename-collection": "Label for the action that will rename the current custom collection.",
+	"readinglists-customlists-delete-collection": "Label for the action that will delete the current custom collection."
 }

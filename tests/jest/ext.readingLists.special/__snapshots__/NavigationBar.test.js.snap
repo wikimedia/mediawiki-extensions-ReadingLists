@@ -72,6 +72,7 @@ exports[`NavigationBar renders All items view on desktop 1`] = `
       <!--teleport end-->
     </div>
   </div>
+  <!--v-if-->
 </div>
 `;
 
@@ -147,6 +148,7 @@ exports[`NavigationBar renders All items view on mobile 1`] = `
       <!--teleport end-->
     </div>
   </div>
+  <!--v-if-->
 </div>
 `;
 
@@ -222,6 +224,7 @@ exports[`NavigationBar renders Collections view on desktop 1`] = `
       <!--teleport end-->
     </div>
   </div>
+  <!--v-if-->
 </div>
 `;
 
@@ -297,5 +300,6 @@ exports[`NavigationBar renders Collections view on mobile 1`] = `
       <!--teleport end-->
     </div>
   </div>
+  <!--v-if-->
 </div>
 `;

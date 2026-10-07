@@ -50,15 +50,53 @@
 			:class="{ 'readinglists-special-nav-link--active': isCollections }">
 			{{ collectionsText }}
 		</a>
+
+		<div
+			v-if="isCustomList"
+			class="readinglists-nav-bar-settings">
+			<cdx-button
+				ref="settingsButton"
+				class="readinglists-nav-bar-settings-button"
+				weight="quiet"
+				:aria-label="collectionSettingsLabel"
+				aria-haspopup="true"
+				aria-controls="readinglists-collection-settings-actions"
+				:aria-expanded="showCollectionSettings"
+				@click="toggleCollectionSettings">
+				<cdx-icon :icon="cdxIconSettings" size="large"></cdx-icon>
+			</cdx-button>
+			<cdx-popover
+				v-if="showCollectionSettings"
+				class="readinglists-collection-settings-popover"
+				open
+				:anchor="settingsButton"
+				placement="bottom-end"
+				:hide-arrow="true"
+				:render-in-place="true"
+				@update:open="onCollectionSettingsOpen">
+				<div
+					id="readinglists-collection-settings-actions"
+					class="readinglists-collection-settings-actions">
+					<cdx-button weight="quiet">
+						{{ renameCollectionLabel }}
+					</cdx-button>
+					<cdx-button
+						weight="quiet"
+						action="destructive">
+						{{ deleteCollectionLabel }}
+					</cdx-button>
+				</div>
+			</cdx-popover>
+		</div>
 	</div>
 </template>
 
 <script>
-const { ref, onUpdated, onMounted } = require( 'vue' );
+const { ref, watch, onUpdated, onMounted } = require( 'vue' );
 const { RouterLink, useRouter } = require( 'vue-router' );
 const { CreateCollectionDialog } = require( 'ext.readingLists.common' );
-const { CdxMenuButton, CdxIcon } = require( '../../../codex.js' );
-const { cdxIconAdd, cdxIconExpand } = require( '../../../icons.json' );
+const { CdxButton, CdxIcon, CdxMenuButton, CdxPopover } = require( '../../../codex.js' );
+const { cdxIconAdd, cdxIconExpand, cdxIconSettings } = require( '../../../icons.json' );
 
 const api = require( 'ext.readingLists.api' );
 const base = require( '../base.js' );
@@ -92,11 +130,20 @@ const makeListEntries = ( lists ) => (
 	} ) )
 );
 
+const collectionSettingsLabel = mw.msg( 'readinglists-customlists-collection-settings' );
+const renameCollectionLabel = mw.msg( 'readinglists-customlists-rename-collection' );
+const deleteCollectionLabel = mw.msg( 'readinglists-customlists-delete-collection' );
+
 // @vue/component
 module.exports = exports = {
-	components: { CdxMenuButton, CdxIcon,
+	components: {
+		CdxButton,
+		CdxIcon,
+		CdxMenuButton,
+		CdxPopover,
 		CreateCollectionDialog,
-		RouterLink },
+		RouterLink
+	},
 	props: {
 		isAllItems: {
 			type: Boolean,
@@ -106,9 +153,13 @@ module.exports = exports = {
 			type: Boolean
 			// not required for now as this will be added in a follow up
 			// required: true
+		},
+		isCustomList: {
+			type: Boolean,
+			default: false
 		}
 	},
-	setup: () => {
+	setup: ( props ) => {
 		const router = useRouter();
 		// @todo: Temporarily enable to true to support testing in mobile.
 		// Revisit as part of https://phabricator.wikimedia.org/T438404
@@ -127,6 +178,22 @@ module.exports = exports = {
 		const collectionsNext = ref( null );
 
 		const showCreateCollection = ref( false );
+		const showCollectionSettings = ref( false );
+		const settingsButton = ref( null );
+
+		const toggleCollectionSettings = () => {
+			showCollectionSettings.value = !showCollectionSettings.value;
+		};
+
+		const onCollectionSettingsOpen = ( value ) => {
+			showCollectionSettings.value = value;
+		};
+
+		watch( () => props.isCustomList, ( customList ) => {
+			if ( !customList ) {
+				showCollectionSettings.value = false;
+			}
+		} );
 
 		const createCollection = () => {
 			showCreateCollection.value = true;
@@ -220,7 +287,15 @@ module.exports = exports = {
 			collections,
 			selectedCollection,
 			maybeGetCollections,
-			maybeGetNextCollections
+			maybeGetNextCollections,
+			cdxIconSettings,
+			collectionSettingsLabel,
+			renameCollectionLabel,
+			deleteCollectionLabel,
+			showCollectionSettings,
+			settingsButton,
+			toggleCollectionSettings,
+			onCollectionSettingsOpen
 		};
 	}
 };
@@ -258,4 +333,29 @@ module.exports = exports = {
 		padding-inline: 0;
 	}
 }
+
+.readinglists-collection-settings-popover.cdx-popover {
+	padding: 0 0 @spacing-75 0;
+	width: @size-1200;
+}
+
+.readinglists-nav-bar-settings {
+	position: relative;
+	margin-inline-start: auto;
+}
+
+.readinglists-nav-bar-settings-button.cdx-button {
+	@media ( any-pointer: coarse ) {
+		min-width: @min-size-interactive-touch;
+		min-height: @min-size-interactive-touch;
+	}
+}
+
+.readinglists-collection-settings-actions .cdx-button {
+	width: 100%;
+	justify-content: flex-start;
+	padding: @spacing-50 @spacing-75;
+	font-weight: @font-weight-normal;
+}
+
 </style>

@@ -215,6 +215,7 @@
 				"CdxIcon",
 				"CdxMenuButton",
 				"CdxMessage",
+				"CdxPopover",
 				"CdxProgressBar",
 				"CdxTextArea"
 			],
@@ -252,7 +253,11 @@
 				"readinglists-redirect-to",
 				"readinglists-customlists-collections",
 				"readinglists-customlists-no-collections",
-				"readinglists-customlists-create-collection"
+				"readinglists-customlists-create-collection",
+				"readinglists-customlists-collection-settings",
+				"readinglists-customlists-rename-collection",
+				"readinglists-customlists-delete-collection",
+				"cdx-popover-close-button-label"
 			],
 			"packageFiles": [
 				"resources/ext.readingLists.special/index.js",
@@ -279,6 +284,7 @@
 						"cdxIconDie",
 						"cdxIconEdit",
 						"cdxIconExpand",
+						"cdxIconSettings",
 						"cdxIconViewCompact",
 						"cdxIconViewDetails"
 					]

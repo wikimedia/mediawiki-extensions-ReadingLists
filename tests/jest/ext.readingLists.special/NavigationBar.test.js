@@ -1,4 +1,4 @@
-const { mount } = require( '@vue/test-utils' );
+const { mount, flushPromises } = require( '@vue/test-utils' );
 
 const api = require( '../../../resources/ext.readingLists.api/index.js' );
 
@@ -37,5 +37,23 @@ describe( 'NavigationBar', () => {
 		const wrapper = mount( NavigationBar, { props: { isAllItems, showDropdown } } );
 
 		expect( wrapper.element ).toMatchSnapshot();
+	} );
+
+	it( 'shows the settings button only on a custom collection', async () => {
+		const NavigationBar = require( '../../../resources/ext.readingLists.special/components/NavigationBar.vue' );
+
+		const allItems = mount( NavigationBar, {
+			props: { isAllItems: true, isCustomList: false }
+		} );
+		await flushPromises();
+		expect( allItems.find( '.readinglists-nav-bar-settings-button' ).exists() ).toBe( false );
+
+		const customList = mount( NavigationBar, {
+			props: { isAllItems: false, isCustomList: true }
+		} );
+		await flushPromises();
+		const button = customList.find( '.readinglists-nav-bar-settings-button' );
+		expect( button.exists() ).toBe( true );
+		expect( button.attributes( 'aria-label' ) ).toBe( 'Collection settings' );
 	} );
 } );

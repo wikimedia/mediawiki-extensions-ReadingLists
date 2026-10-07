@@ -8,7 +8,8 @@
 
 		<navigation-bar
 			v-if="showNavBar"
-			:is-all-items="isAllListItems">
+			:is-all-items="isAllListItems"
+			:is-custom-list="isCustomList">
 		</navigation-bar>
 
 		<template v-if="showInPageTitle">
