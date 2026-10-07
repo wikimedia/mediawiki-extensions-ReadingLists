@@ -73,6 +73,7 @@ module.exports = {
 		'config\\.json$': '<rootDir>/resources/config.json',
 		'codex\\.js$': '@wikimedia/codex',
 		'icons\\.json$': '@wikimedia/codex-icons',
+		'^mediawiki\\.storage$': '<rootDir>/tests/jest/mediawiki.storage.mock.js',
 		'^vue-router$': '<rootDir>/tests/jest/vueRouterStub.js'
 	},
 };

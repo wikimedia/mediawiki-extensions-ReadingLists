@@ -1,5 +1,7 @@
 let api = new mw.Api();
+const { session } = require( 'mediawiki.storage' );
 const origin = window.location.protocol + '//' + window.location.hostname;
+const CACHE_LIFETIME_SECONDS = 60 * 20; // 20 minutes
 
 /**
  * Enroll the current user in the reading list feature.
@@ -91,6 +93,52 @@ async function getList( listId ) {
 
 		throw err;
 	}
+}
+
+/**
+ * Get a cache key for a specific reading list resource for use with session storage.
+ *
+ * @param {string} resourceKey
+ * @return {string}
+ */
+const getCacheKey = ( resourceKey ) => `USER-READING-LISTS-${ resourceKey }`;
+
+/**
+ * Get all reading lists created by the current user sorted by
+ * updated without the default list. Cached to session storage.
+ *
+ * @return {Promise<any>}
+ */
+async function getListsAll() {
+	const cacheKey = getCacheKey( 'all' );
+	const all = session.get( cacheKey );
+
+	if ( all ) {
+		return JSON.parse( all ).filter( ( list ) => !list.default );
+	}
+	const LIMIT_PER_QUERY = 5;
+	const getListsFromApi = async ( next = null ) => {
+		const result = await getLists( 'updated', 'descending', LIMIT_PER_QUERY, next );
+		if ( result.next ) {
+			const moreLists = await getListsFromApi( result.next );
+			return result.lists.concat( moreLists );
+		} else {
+			return result.lists || [];
+		}
+	};
+	const lists = await getListsFromApi();
+	// store for 20 minutes until invalidated.
+	session.set( cacheKey, JSON.stringify( lists ), CACHE_LIFETIME_SECONDS );
+	return lists.filter( ( list ) => !list.default );
+}
+
+/**
+ * Internal method for APIs to invalidate the local cache.
+ *
+ * @param {string} cacheKey
+ */
+function invalidateSessionCache( cacheKey ) {
+	session.remove( getCacheKey( cacheKey ) );
 }
 
 /**
@@ -421,15 +469,57 @@ function stubApi( stub ) {
  * @param {string} name
  * @return {Promise<any>}
  */
-const createList = ( name ) => api.postWithEditToken( {
-	action: 'readinglists',
-	command: 'create',
-	name
-} );
+const createList = async ( name ) => {
+	const response = await api.postWithEditToken( {
+		action: 'readinglists',
+		command: 'create',
+		name
+	} );
+	// Clear cache for all lists
+	exports.invalidateSessionCache( 'all' );
+	return response;
+};
+
+/**
+ * @param {string} id
+ * @param {string} name
+ * @param {string} description
+ * @return {Promise<any>}
+ */
+const updateList = async ( id, name, description ) => {
+	const response = await api.postWithEditToken( {
+		action: 'readinglists',
+		command: 'update',
+		list: id,
+		name,
+		description
+	} );
+	// Clear cache for all lists
+	exports.invalidateSessionCache( 'all' );
+	return response;
+};
+
+/**
+ * @param {string} id
+ * @return {Promise<any>}
+ */
+const deleteList = async ( id ) => {
+	const response = await api.postWithEditToken( {
+		action: 'readinglists',
+		command: 'delete',
+		list: id
+	} );
+	// Clear cache for all lists
+	exports.invalidateSessionCache( 'all' );
+	return response;
+};
 
 module.exports = exports = {
 	setup,
 	createList,
+	updateList,
+	deleteList,
+	getListsAll,
 	getLists,
 	getList,
 	getEntries,
@@ -440,5 +530,6 @@ module.exports = exports = {
 	deleteEntryByPageTitle,
 	fromBase64,
 	toBase64,
-	stubApi
+	stubApi,
+	invalidateSessionCache
 };

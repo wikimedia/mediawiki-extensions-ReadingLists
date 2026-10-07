@@ -196,6 +196,7 @@
 		},
 		"ext.readingLists.api": {
 			"dependencies": [
+				"mediawiki.storage",
 				"mediawiki.api"
 			],
 			"messages": [

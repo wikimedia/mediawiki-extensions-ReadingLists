@@ -9,6 +9,7 @@ const ENTRIES2 = require( '../fixtures/entries2.json' );
 const PAGES = require( '../fixtures/pages.json' );
 const CREATEENTRY = require( '../fixtures/createentry.json' );
 const DELETEENTRY = require( '../fixtures/deleteentry.json' );
+const { resetMockSession } = require( 'mediawiki.storage' );
 
 function translateList( list ) {
 	if ( list.default ) {
@@ -735,5 +736,66 @@ describe( 'toBase64', () => {
 			} ) )
 		);
 		expect( result.size ).toBe( PAGES.query.pages.length );
+	} );
+} );
+
+describe( 'getListsAll', () => {
+	it( 'caches', async () => {
+		const get = jest.fn( ( { rlcontinue } ) => {
+			if ( rlcontinue ) {
+				return LISTS2;
+			} else {
+				return LISTS;
+			}
+		} );
+		api.stubApi( { get } );
+		await api.getListsAll();
+		// check that both lists were returned
+		expect( get ).toHaveBeenCalledTimes( 2 );
+
+		// now call again..
+		await api.getListsAll();
+		// check that the cache was used and get was not called again
+		expect( get ).toHaveBeenCalledTimes( 2 );
+
+		// reset the mock session to clear the cache and run again
+		resetMockSession();
+		await api.getListsAll();
+
+		// check that 2 new calls were made after resetting the cache
+		expect( get ).toHaveBeenCalledTimes( 4 );
+	} );
+} );
+
+describe( 'createList', () => {
+	it( 'calls postWithEditToken when creating a list', async () => {
+		const spy = jest.spyOn( api, 'invalidateSessionCache' );
+		const postWithEditToken = jest.fn();
+		api.stubApi( { postWithEditToken } );
+		await api.createList( 'My list' );
+		expect( postWithEditToken ).toHaveBeenCalled();
+		expect( spy ).toHaveBeenCalledWith( 'all' );
+	} );
+} );
+
+describe( 'updateList', () => {
+	it( 'calls postWithEditToken when updating a list', async () => {
+		const spy = jest.spyOn( api, 'invalidateSessionCache' );
+		const postWithEditToken = jest.fn();
+		api.stubApi( { postWithEditToken } );
+		await api.updateList( 1, 'My list', 'My list description' );
+		expect( postWithEditToken ).toHaveBeenCalled();
+		expect( spy ).toHaveBeenCalledWith( 'all' );
+	} );
+} );
+
+describe( 'deleteList', () => {
+	it( 'calls postWithEditToken when deleting a list', async () => {
+		const spy = jest.spyOn( api, 'invalidateSessionCache' );
+		const postWithEditToken = jest.fn();
+		api.stubApi( { postWithEditToken } );
+		await api.deleteList( 1 );
+		expect( postWithEditToken ).toHaveBeenCalled();
+		expect( spy ).toHaveBeenCalledWith( 'all' );
 	} );
 } );
