@@ -3,7 +3,7 @@
 		<create-collection-dialog
 			v-if="showCreateCollection"
 			@update:open="onUpdateOpen"
-			@success="routeToNewCollection"
+			@success="refresh"
 		>
 		</create-collection-dialog>
 		<router-link
@@ -94,11 +94,12 @@
 <script>
 const { ref, watch, onUpdated, onMounted } = require( 'vue' );
 const { RouterLink, useRouter } = require( 'vue-router' );
-const { CreateCollectionDialog, getCollectionUrl } = require( 'ext.readingLists.common' );
+const { CreateCollectionDialog } = require( 'ext.readingLists.common' );
 const { CdxButton, CdxIcon, CdxMenuButton, CdxPopover } = require( '../../../codex.js' );
 const { cdxIconAdd, cdxIconExpand, cdxIconSettings } = require( '../../../icons.json' );
 
 const api = require( 'ext.readingLists.api' );
+const base = require( '../base.js' );
 
 // how many collections to initially load, as well as how many to show at once
 const collectionsPageSize = 8;
@@ -125,7 +126,7 @@ const makeListEntries = ( lists ) => (
 		// T432633 - route via vue-router (see #menu-item slot in the template) rather than
 		// an @update:selected handler, so the whole row stays a full-size click target.
 		// Relative to the special page base, matching the router's routes (see allItemsTo below).
-		url: getCollectionUrl( list.id, list.name, true )
+		url: mw.util.getUrl( `Special:ReadingLists/${ mw.user.getName() }/${ list.id }/${ list.name }` ).slice( base.length )
 	} ) )
 );
 
@@ -166,7 +167,8 @@ module.exports = exports = {
 
 		// Router target (relative to the special page base) for the all-items
 		// view, derived from the canonical URL so it matches the router's routes.
-		const allItemsTo = getCollectionUrl( undefined, undefined, true );
+		const allItemsUrl = mw.util.getUrl( `Special:ReadingLists/${ mw.user.getName() }` );
+		const allItemsTo = allItemsUrl.slice( base.length ) || '/';
 		const allItemsText = mw.msg( 'readinglists-customlists-allitems' );
 		const collectionsText = mw.msg( 'readinglists-customlists-collections' );
 		const menuConfig = { visibleItemLimit: collectionsPageSize };
@@ -251,9 +253,9 @@ module.exports = exports = {
 			}
 		};
 
-		const routeToNewCollection = ( id, name ) => {
-			const collectionUrl = getCollectionUrl( id, name, true );
-			router.push( collectionUrl );
+		const refresh = ( id, name ) => {
+			const collectionUrl = mw.util.getUrl( `Special:ReadingLists/${ mw.user.getName() }/${ id }/${ name }` );
+			router.push( collectionUrl.slice( base.length ) );
 			showCreateCollection.value = false;
 			collections.value = [];
 			collectionsNext.value = null;
@@ -273,7 +275,7 @@ module.exports = exports = {
 		} );
 		return {
 			showDropdown,
-			routeToNewCollection,
+			refresh,
 			onUpdateOpen,
 			showCreateCollection,
 			createCollection,
