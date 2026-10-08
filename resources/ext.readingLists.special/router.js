@@ -42,11 +42,14 @@ const router = createRouter( {
 const titleElement = document.querySelector( '.reading-lists-title-text' );
 
 router.beforeEach( ( to ) => {
-	if ( to.params.title && titleElement ) {
-		titleElement.textContent = mw.msg(
+	if ( titleElement ) {
+		const title = to.params.title ? mw.msg(
 			'readinglists-special-custom-list-title',
 			to.params.title.replace( /_/g, ' ' )
-		);
+		) : mw.msg( 'readinglists-special-subpage-title' );
+
+		titleElement.textContent = title;
+		document.title = mw.msg( 'pagetitle', title );
 	}
 } );
 
