@@ -138,11 +138,14 @@ describe( 'BookmarkPopover', () => {
 			} ) );
 		} );
 
-		test( 'calls onDismiss with true, listId and listName after add-to-collection', () => {
+		test( 'calls onDismiss with true, listId and listName after add-to-collection', async () => {
 			apiModule.stubApi( { postWithEditToken: jest.fn( () => Promise.resolve( {} ) ) } );
 
 			mountPopoverWithCollectionPickerStub();
 			wrapper.vm.addToCollection( 42, 'My List' );
+			// One tick for deleteEntryByPageTitle to resolve, one for createEntry to resolve.
+			await Promise.resolve();
+			await Promise.resolve();
 
 			expect( onDismiss ).toHaveBeenCalledWith( true, 42, 'My List' );
 		} );
@@ -155,8 +158,35 @@ describe( 'BookmarkPopover', () => {
 			expect( wrapper.vm.isConfigPopoverOpen ).toBe( true );
 
 			wrapper.vm.addToCollection( 42, 'My List' );
+			// One tick for deleteEntryByPageTitle to resolve, one for createEntry to resolve.
+			await Promise.resolve();
+			await Promise.resolve();
 
 			expect( wrapper.vm.isConfigPopoverOpen ).toBe( false );
+		} );
+
+		test( 'calls createEntry only after deleteEntryByPageTitle resolves', async () => {
+			let resolveDelete;
+			const postWithEditToken = jest.fn( ( { command } ) => {
+				if ( command === 'deleteentry' ) {
+					return new Promise( ( resolve ) => {
+						resolveDelete = resolve;
+					} );
+				}
+				return Promise.resolve( {} );
+			} );
+			apiModule.stubApi( { postWithEditToken } );
+
+			mountPopoverWithCollectionPickerStub();
+			wrapper.vm.addToCollection( 42, 'My List' );
+
+			expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( { command: 'deleteentry' } ) );
+			expect( postWithEditToken ).not.toHaveBeenCalledWith( expect.objectContaining( { command: 'createentry' } ) );
+
+			resolveDelete( {} );
+			await Promise.resolve();
+
+			expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( { command: 'createentry' } ) );
 		} );
 	} );
 } );
