@@ -124,5 +124,6 @@
 	"readinglists-customlists-allitems": "جميع المنتجات",
 	"readinglists-customlists-collections": "المجموعات",
 	"readinglists-customlists-no-collections": "ليس لديك أي مجموعات",
-	"readinglists-customlists-create-collection": "إنشاء مجموعة جديدة"
+	"readinglists-customlists-create-collection": "إنشاء مجموعة جديدة",
+	"readinglists-customlists-add-entry-success": "تمت إضافة $1 إلى [[$2|$3]]."
 }

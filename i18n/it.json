@@ -53,6 +53,8 @@
 	"readinglists-watchlist-description": "Pagine che segui per nuove modifiche.",
 	"readinglists-import-button-label": "Apri nell'app",
 	"readinglists-menu-item": "Salvato",
+	"readinglists-cancel-add-collection": "Annulla",
+	"readinglists-add-collection": "Salva",
 	"readinglists-add-bookmark": "Salva",
 	"readinglists-remove-bookmark": "Annulla salvataggio",
 	"readinglists-unsave-from-custom-list-title": "Rimuovi da tutti gli elenchi di lettura?",
@@ -75,5 +77,8 @@
 	"readinglists-cta-dialog-create-account": "Registrati",
 	"readinglists-cta-dialog-log-in": "Entra",
 	"readinglists-cta-dialog-close": "Chiudi",
+	"readinglists-customlists-create-collection-short": "Crea raccolta",
+	"readinglists-customlists-create-collection-dialog-name": "Nome della raccolta",
+	"readinglists-customlists-create-collection-dialog-placeholder": "Inserisci il nome",
 	"readinglists-customlists-add-entry-success": "$1 aggiunto a [[$2|$3]]."
 }

@@ -93,6 +93,8 @@
 	"tooltip-ca-bookmark-add": "Füge diese Seite zu deinen gespeicherten Elementen hinzu",
 	"tooltip-ca-bookmark-remove": "Entferne diese Seite von deinen gespeicherten Elementen",
 	"readinglists-bookmark": "Lesezeichen",
+	"readinglists-cancel-add-collection": "Abbrechen",
+	"readinglists-add-collection": "Speichern",
 	"readinglists-add-bookmark": "Speichern",
 	"readinglists-remove-bookmark": "Löschen",
 	"readinglists-unsave-from-custom-list-title": "Aus allen Leselisten entfernen?",
@@ -123,5 +125,8 @@
 	"readinglists-customlists-collections": "Sammlungen",
 	"readinglists-customlists-no-collections": "Du hast keine Sammlungen",
 	"readinglists-customlists-create-collection": "neue Sammlung erstellen",
+	"readinglists-customlists-create-collection-short": "Sammlung erstellen",
+	"readinglists-customlists-create-collection-dialog-name": "Name der Sammlung",
+	"readinglists-customlists-create-collection-dialog-placeholder": "Name eingeben",
 	"readinglists-customlists-add-entry-success": "$1 wurde zu [[$2|$3]] hinzugefügt."
 }
