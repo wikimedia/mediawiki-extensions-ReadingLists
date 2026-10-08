@@ -43,6 +43,7 @@
 		<create-collection-dialog
 			v-if="isCreateCollectionDialogOpen"
 			@success="addToCollection"
+			@update:open="isCreateCollectionDialogOpen = $event"
 		></create-collection-dialog>
 	</config-popover>
 </template>
@@ -51,7 +52,7 @@
 const { ref, computed, toRef } = require( 'vue' );
 const { CdxButton, CdxIcon } = require( '../../codex.js' );
 const { cdxIconSuccess, cdxIconClose } = require( '../../icons.json' );
-const { ConfigPopover, CreateCollectionDialog } = require( 'ext.readingLists.common' );
+const { ConfigPopover, CreateCollectionDialog, collectionsBaseUrl } = require( 'ext.readingLists.common' );
 const { createEntry, deleteEntryByPageTitle } = require( 'ext.readingLists.api' );
 const CollectionPicker = require( './CollectionPicker.vue' );
 
@@ -100,7 +101,7 @@ module.exports = exports = {
 		const saveTitle = computed( () => mw.message(
 			'readinglists-customlists-add-entry-success',
 			title.value.replace( /_/g, ' ' ),
-			'Special:ReadingLists',
+			collectionsBaseUrl,
 			mw.msg( 'readinglists-default-title' )
 		).parse() );
 
