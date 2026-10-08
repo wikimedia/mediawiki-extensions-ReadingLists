@@ -70,17 +70,52 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		bookmark.title = mw.msg( `tooltip-ca-bookmark-${ ( !isSaved ? 'add' : 'remove' ) }` );
 	}
 
-	let activeNotification;
 	/**
 	 * Updates the bookmark button text via a hook and may display an added/removed notification or
 	 * the onboarding dialog.
+	 *
+	 * @param {boolean} isSaved Whether the article is now saved to a reading list
+	 */
+	function updateBookmarkStatus( isSaved ) {
+		/**
+		 * Fires when the page saved status has changed.
+		 *
+		 * @deprecated Use readingLists.bookmark.change instead.
+		 *
+		 * @event readingLists.bookmark.edit
+		 * @memberof mw.Hooks
+		 * @param {boolean} isSaved
+		 * @param {null} entryId Deprecated, always null.
+		 * @param {null} listPageCount Deprecated, always null.
+		 * @param {string} eventSource
+		 */
+		mw.hook( 'readingLists.bookmark.edit' ).fire( isSaved, null, null, eventSource );
+
+		/**
+		 * Fires when the page saved status has been updated.
+		 *
+		 * @event readingLists.bookmark.change
+		 * @memberof mw.Hooks
+		 * @param {boolean} isSaved
+		 * @param {string} eventSource
+		 */
+		mw.hook( 'readingLists.bookmark.change' ).fire( isSaved, eventSource );
+	}
+
+	let activeNotification;
+	/**
+	 * Maybe show an mw.notification or the onboarding dialog after a user has saved or unsaved
+	 * a page.
+	 *
+	 * An mw.notification is not needed in some cases, like when the user just saves a page to
+	 * their default list, because they already see a success message in the bookmark popover.
 	 *
 	 * @param {boolean} isSaved Whether the article is now saved to a reading list
 	 * @param {boolean} showNotification Whether to show an mw.notification
 	 * @param {number|null} listId The ID of the collection the article was added to
 	 * @param {string|null} listName The name of the collection the article was added to
 	 */
-	function updateBookmarkStatus( isSaved, showNotification, listId = null, listName = null ) {
+	function showPostChangeMessaging( isSaved, showNotification, listId = null, listName = null ) {
 		// Show the onboarding popover only if the user has saved an article, if they haven't seen
 		// the popover before, and if they have seen and dismissed the homepage discovery popover
 		// to ensure the popovers don't overlap (T421942).
@@ -118,30 +153,6 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 				activeNotification = notification;
 			} );
 		}
-
-		/**
-		 * Fires when the page saved status has changed.
-		 *
-		 * @deprecated Use readingLists.bookmark.change instead.
-		 *
-		 * @event readingLists.bookmark.edit
-		 * @memberof mw.Hooks
-		 * @param {boolean} isSaved
-		 * @param {null} entryId Deprecated, always null.
-		 * @param {null} listPageCount Deprecated, always null.
-		 * @param {string} eventSource
-		 */
-		mw.hook( 'readingLists.bookmark.edit' ).fire( isSaved, null, null, eventSource );
-
-		/**
-		 * Fires when the page saved status has been updated.
-		 *
-		 * @event readingLists.bookmark.change
-		 * @memberof mw.Hooks
-		 * @param {boolean} isSaved
-		 * @param {string} eventSource
-		 */
-		mw.hook( 'readingLists.bookmark.change' ).fire( isSaved, eventSource );
 	}
 
 	function initSavedPagesOnboardingPopover() {
@@ -190,12 +201,13 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			activeNotification.close();
 		}
 		await api.saveToDefaultList( mw.config.get( 'wgPageName' ) );
+		updateBookmarkStatus( true );
 
 		if ( ReadingListsCustomLists ) {
 			const { showNotification, listId, listName } = await launchBookmarkPopover( false );
-			updateBookmarkStatus( true, showNotification, listId, listName );
+			showPostChangeMessaging( true, showNotification, listId, listName );
 		} else {
-			updateBookmarkStatus( true, true );
+			showPostChangeMessaging( true, true );
 		}
 	}
 
@@ -244,7 +256,8 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			}
 		}
 
-		updateBookmarkStatus( false, true );
+		updateBookmarkStatus( false );
+		showPostChangeMessaging( false, true );
 	}
 
 	/**

@@ -767,6 +767,46 @@ describe( 'initBookmark', () => {
 			);
 		} );
 
+		test( 'fires bookmark change hooks after save, before the bookmark popover resolves', async () => {
+			const hookCallback = jest.fn();
+			const changeHookCallback = jest.fn();
+			mw.hook( 'readingLists.bookmark.edit' ).add( hookCallback );
+			mw.hook( 'readingLists.bookmark.change' ).add( changeHookCallback );
+
+			let resolvePopover;
+			initBookmarkPopover = jest.fn( () => new Promise( ( resolve ) => {
+				resolvePopover = resolve;
+			} ) );
+			jest.doMock(
+				'ext.readingLists.bookmark.bookmarkPopover',
+				() => ( { initBookmarkPopover } ),
+				{ virtual: true }
+			);
+
+			const bookmark = createBookmarkElement();
+			api.stubApi( {
+				postWithEditToken: jest.fn( () => CREATEENTRY )
+			} );
+			mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+
+			initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+			bookmark.click();
+
+			// One flush for the save API call, one for mw.loader.using() to resolve.
+			await flushPromises();
+			await flushPromises();
+
+			// Hooks should have fired even though the popover has not yet resolved.
+			expect( hookCallback ).toHaveBeenCalledWith( true, null, null, VECTOR_EVENT_SOURCE );
+			expect( changeHookCallback ).toHaveBeenCalledWith( true, VECTOR_EVENT_SOURCE );
+			expect( initBookmarkPopover ).toHaveBeenCalledWith( false );
+
+			// Resolve the popover so addPageToReadingList() completes cleanly.
+			resolvePopover( { showNotification: false } );
+			await flushPromises();
+			await flushPromises();
+		} );
+
 		describe( 'when onboarding popover has not been seen', () => {
 			describe( 'and homepage discovery tour is active', () => {
 				test( 'launches bookmark popover without triggering onboarding', async () => {
