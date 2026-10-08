@@ -1,0 +1,24 @@
+{
+	"@metadata": {
+		"authors": [
+			"The Discoverer"
+		]
+	},
+	"readinglists-db-error-no-such-list": "Volleri $1 ostitvant na.",
+	"readinglists-browser-add-entry-success": "<b>$1</b> tujea [[$2|$3]] haka zoddla.",
+	"readinglists-browser-remove-entry-success": "<b>$1</b> tujea [[$2|$3]] savn kaddla.",
+	"readinglists-browser-extension-info-link-text": "Odik xikun ghe",
+	"readinglists-browser-extension-product-title": "Wikipedia Vachpachim Vollerim",
+	"readinglists-loading": "Matxem rau...",
+	"special-tab-readinglists-short": "Tujim vollerim",
+	"readinglists-title": "Samball'llelim panam",
+	"readinglists-total-lists": "$1 {{PLURAL:$1|volleri|vollerim}}",
+	"readinglists-default-title": "samball'lleleo nog",
+	"readinglists-display-sort-name": "Nanv",
+	"readinglists-display-sort-updated": "Odyoton kel'le",
+	"action-action-readinglist-private": "dusrea vaporpeanchim vachpachim vollerim polloi",
+	"readinglists-export": "Volleri vant",
+	"readinglists-watchlist": "Sadurvolleri",
+	"readinglists-add-bookmark": "Samball",
+	"readinglists-onboarding-close-button": "Bond"
+}
