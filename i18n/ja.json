@@ -95,6 +95,8 @@
 	"tooltip-ca-bookmark-add": "このページを保存済み項目に追加する",
 	"tooltip-ca-bookmark-remove": "このページを保存済み項目から除去する",
 	"readinglists-bookmark": "ブックマーク",
+	"readinglists-cancel-add-collection": "キャンセル",
+	"readinglists-add-collection": "保存",
 	"readinglists-add-bookmark": "保存",
 	"readinglists-remove-bookmark": "保存解除",
 	"readinglists-unsave-from-custom-list-title": "すべてのあとで読むリストから除去しますか？",
@@ -124,5 +126,9 @@
 	"readinglists-customlists-allitems": "すべての項目",
 	"readinglists-customlists-collections": "コレクション",
 	"readinglists-customlists-no-collections": "あなたはコレクションを持っていません",
-	"readinglists-customlists-create-collection": "新しいコレクションを作成"
+	"readinglists-customlists-create-collection": "新しいコレクションを作成",
+	"readinglists-customlists-create-collection-short": "コレクションを作成",
+	"readinglists-customlists-create-collection-dialog-name": "コレクションの名前",
+	"readinglists-customlists-create-collection-dialog-placeholder": "名前を入力",
+	"readinglists-customlists-add-entry-success": "$1を[[$2|$3]]へ追加しました。"
 }

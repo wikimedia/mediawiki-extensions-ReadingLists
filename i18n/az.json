@@ -90,6 +90,8 @@
 	"tooltip-ca-bookmark-add": "Bu səhifəni yadda saxlanılmış elementlərinizə əlavə edin",
 	"tooltip-ca-bookmark-remove": "Bu səhifəni yadda saxlanılmış elementlərdən sil",
 	"readinglists-bookmark": "Əlfəcin qoy",
+	"readinglists-cancel-add-collection": "İmtina",
+	"readinglists-add-collection": "Yadda saxla",
 	"readinglists-add-bookmark": "Yadda saxla",
 	"readinglists-remove-bookmark": "Yadda saxlama",
 	"readinglists-unsave-from-custom-list-title": "Bütün oxu siyahılarından çıxarılsın?",
@@ -120,5 +122,8 @@
 	"readinglists-customlists-collections": "Kolleksiyalar",
 	"readinglists-customlists-no-collections": "Heç bir kolleksiyanız yoxdur",
 	"readinglists-customlists-create-collection": "yeni kolleksiya yarat",
+	"readinglists-customlists-create-collection-short": "Kolleksiya yarat",
+	"readinglists-customlists-create-collection-dialog-name": "Kolleksiyanın adı",
+	"readinglists-customlists-create-collection-dialog-placeholder": "Adı daxil et",
 	"readinglists-customlists-add-entry-success": "[[$2|$3]]-ə $1 əlavə edildi."
 }

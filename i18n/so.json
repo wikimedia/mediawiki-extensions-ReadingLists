@@ -88,6 +88,8 @@
 	"tooltip-ca-bookmark-add": "Ku dar boggan waxyaabahaaga la kaydiyay",
 	"tooltip-ca-bookmark-remove": "Ka saar boggan waxyaabahaaga la kaydiyay",
 	"readinglists-bookmark": "Calaamadee",
+	"readinglists-cancel-add-collection": "Jooji",
+	"readinglists-add-collection": "Kaydi",
 	"readinglists-add-bookmark": "Kaydi",
 	"readinglists-remove-bookmark": "Ka saar kaydinta",
 	"readinglists-unsave-from-custom-list-title": "Ka saar dhammaan liisaska akhriska?",
@@ -118,5 +120,8 @@
 	"readinglists-customlists-collections": "Uruurinno",
 	"readinglists-customlists-no-collections": "Ma lihid wax uruurinno ah",
 	"readinglists-customlists-create-collection": "Abuur uruurin cusub",
+	"readinglists-customlists-create-collection-short": "Abuur ururin",
+	"readinglists-customlists-create-collection-dialog-name": "Magaca ururinta",
+	"readinglists-customlists-create-collection-dialog-placeholder": "Geli magaca",
 	"readinglists-customlists-add-entry-success": "$1 ayaa lagu daray [[$2|$3]]."
 }

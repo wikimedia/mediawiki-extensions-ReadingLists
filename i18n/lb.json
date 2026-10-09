@@ -90,6 +90,8 @@
 	"tooltip-ca-bookmark-add": "Setzt dës Säit bei Är gespäichert Anträg derbäi",
 	"tooltip-ca-bookmark-remove": "Huelt dës Säit aus Äre gespäicherten Anträg eraus",
 	"readinglists-bookmark": "Lieszeechen",
+	"readinglists-cancel-add-collection": "Ofbriechen",
+	"readinglists-add-collection": "Späicheren",
 	"readinglists-add-bookmark": "Späicheren",
 	"readinglists-remove-bookmark": "Läschen",
 	"readinglists-unsave-from-custom-list-title": "Vun alle Lieslëschten erofhuelen?",
@@ -120,5 +122,8 @@
 	"readinglists-customlists-collections": "Sammlungen",
 	"readinglists-customlists-no-collections": "Dir hutt keng Sammlungen",
 	"readinglists-customlists-create-collection": "eng nei Sammlung uleeën",
+	"readinglists-customlists-create-collection-short": "Sammlung uleeën",
+	"readinglists-customlists-create-collection-dialog-name": "Numm vun der Sammlung",
+	"readinglists-customlists-create-collection-dialog-placeholder": "Numm aginn",
 	"readinglists-customlists-add-entry-success": "$1 op [[$2|$3]] derbäigesat."
 }

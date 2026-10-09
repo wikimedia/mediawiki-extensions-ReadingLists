@@ -91,6 +91,8 @@
 	"tooltip-ca-bookmark-add": "Engadir esta páxina aos teus elementos gardados",
 	"tooltip-ca-bookmark-remove": "Eliminar esta páxina dos teus elementos gardados",
 	"readinglists-bookmark": "Marcador",
+	"readinglists-cancel-add-collection": "Cancelar",
+	"readinglists-add-collection": "Gardar",
 	"readinglists-add-bookmark": "Gardar",
 	"readinglists-remove-bookmark": "Non gardar",
 	"readinglists-unsave-from-custom-list-title": "Queres eliminala de todas as listas de lectura?",
@@ -121,5 +123,8 @@
 	"readinglists-customlists-collections": "Coleccións",
 	"readinglists-customlists-no-collections": "Non tes ningunha colección",
 	"readinglists-customlists-create-collection": "crear unha colección nova",
+	"readinglists-customlists-create-collection-short": "Crear unha colección",
+	"readinglists-customlists-create-collection-dialog-name": "Nome da colección",
+	"readinglists-customlists-create-collection-dialog-placeholder": "Escribe o nome",
 	"readinglists-customlists-add-entry-success": "«$1» engadiuse a «[[$2|$3]]»."
 }

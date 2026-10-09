@@ -92,6 +92,8 @@
 	"tooltip-ca-bookmark-add": "이 문서를 저장된 항목에 추가",
 	"tooltip-ca-bookmark-remove": "이 문서를 저장된 항목에서 제거",
 	"readinglists-bookmark": "북마크",
+	"readinglists-cancel-add-collection": "취소",
+	"readinglists-add-collection": "저장",
 	"readinglists-add-bookmark": "저장",
 	"readinglists-remove-bookmark": "저장하지 않음",
 	"readinglists-unsave-from-custom-list-title": "모든 읽기 목록에서 제거할까요?",
@@ -122,5 +124,8 @@
 	"readinglists-customlists-collections": "모음집",
 	"readinglists-customlists-no-collections": "모음집이 없습니다",
 	"readinglists-customlists-create-collection": "새 모음집 만들기",
+	"readinglists-customlists-create-collection-short": "모음집 만들기",
+	"readinglists-customlists-create-collection-dialog-name": "모음집의 이름",
+	"readinglists-customlists-create-collection-dialog-placeholder": "이름 입력",
 	"readinglists-customlists-add-entry-success": "$1이(가) [[$2|$3]]에 추가되었습니다."
 }

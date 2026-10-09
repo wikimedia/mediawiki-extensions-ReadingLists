@@ -4,7 +4,8 @@
 			"MITO",
 			"Pyscowicz",
 			"SMAUG",
-			"Samoasambia"
+			"Samoasambia",
+			"Wikipeedikko"
 		]
 	},
 	"readinglists-desc": "Mahdollistaa käyttäjien hallita yksityisiä sivulistoja, kuten kirjanmerkki- tai ”Tallennetut sivut” -listoja.",
@@ -86,6 +87,8 @@
 	"tooltip-ca-bookmark-add": "Lisää tämä sivu tallennettuihin sivuihisi",
 	"tooltip-ca-bookmark-remove": "Poista tämä sivu tallennetuista sivuistasi",
 	"readinglists-bookmark": "Kirjanmerkki",
+	"readinglists-cancel-add-collection": "Peruuta",
+	"readinglists-add-collection": "Tallenna",
 	"readinglists-add-bookmark": "Tallenna",
 	"readinglists-remove-bookmark": "Poista",
 	"readinglists-unsave-from-custom-list-title": "Poista kaikilta lukulistoilta?",
@@ -116,5 +119,8 @@
 	"readinglists-customlists-collections": "Kokoelmat",
 	"readinglists-customlists-no-collections": "Sinulla ei ole yhtään kokoelmaa",
 	"readinglists-customlists-create-collection": "luo uusi kokoelma",
+	"readinglists-customlists-create-collection-short": "Luo kokoelma",
+	"readinglists-customlists-create-collection-dialog-name": "Kokoelman nimi",
+	"readinglists-customlists-create-collection-dialog-placeholder": "Lisää nimi",
 	"readinglists-customlists-add-entry-success": "$1 lisätty listalle [[$2|$3]]."
 }

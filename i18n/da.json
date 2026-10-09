@@ -90,6 +90,8 @@
 	"tooltip-ca-bookmark-add": "Føj denne side til dine gemte elementer",
 	"tooltip-ca-bookmark-remove": "Fjern denne side fra dine gemte elementer",
 	"readinglists-bookmark": "Bogmærke",
+	"readinglists-cancel-add-collection": "Annullér",
+	"readinglists-add-collection": "Gem",
 	"readinglists-add-bookmark": "Gem",
 	"readinglists-remove-bookmark": "Fjern element",
 	"readinglists-unsave-from-custom-list-title": "Fjern fra alle læselister?",
@@ -120,5 +122,8 @@
 	"readinglists-customlists-collections": "Samlinger",
 	"readinglists-customlists-no-collections": "Du har ingen samlinger",
 	"readinglists-customlists-create-collection": "opret ny samling",
+	"readinglists-customlists-create-collection-short": "Opret samling",
+	"readinglists-customlists-create-collection-dialog-name": "Samlingens navn",
+	"readinglists-customlists-create-collection-dialog-placeholder": "Indtast navn",
 	"readinglists-customlists-add-entry-success": "$1 tilføjet til [[$2|$3]]."
 }

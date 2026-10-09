@@ -95,6 +95,8 @@
 	"tooltip-ca-bookmark-add": "أضف هذه الصفحة إلى عناصرك المحفوظة",
 	"tooltip-ca-bookmark-remove": "قم بإزالة هذه الصفحة من العناصر المحفوظة",
 	"readinglists-bookmark": "علامة مرجعية",
+	"readinglists-cancel-add-collection": "إلغاء",
+	"readinglists-add-collection": "حفظ",
 	"readinglists-add-bookmark": "حفظ",
 	"readinglists-remove-bookmark": "إلغاء الحفظ",
 	"readinglists-unsave-from-custom-list-title": "هل يجب حذفها من جميع قوائم القراءة؟",
@@ -125,5 +127,8 @@
 	"readinglists-customlists-collections": "المجموعات",
 	"readinglists-customlists-no-collections": "ليس لديك أي مجموعات",
 	"readinglists-customlists-create-collection": "إنشاء مجموعة جديدة",
+	"readinglists-customlists-create-collection-short": "إنشاء مجموعة",
+	"readinglists-customlists-create-collection-dialog-name": "اسم المجموعة",
+	"readinglists-customlists-create-collection-dialog-placeholder": "أدخل الاسم",
 	"readinglists-customlists-add-entry-success": "تمت إضافة $1 إلى [[$2|$3]]."
 }
