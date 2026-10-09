@@ -115,6 +115,9 @@ module.exports = exports = {
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
 
+@collection-height: 42px;
+@max-collections: 6;
+
 .readinglists-collection-picker {
 	// Override skin list styles. `.content` class needed for Minerva.
 	&__collections {
@@ -123,6 +126,7 @@ module.exports = exports = {
 			list-style: none;
 			margin: 0;
 			padding: 0;
+			max-height: @collection-height * @max-collections;
 		}
 	}
 
@@ -171,7 +175,5 @@ module.exports = exports = {
 			padding: @spacing-25 0;
 		}
 	}
-
-	// TODO: Scroll styles.
 }
 </style>
