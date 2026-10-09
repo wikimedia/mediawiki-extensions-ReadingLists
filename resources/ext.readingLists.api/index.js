@@ -101,7 +101,10 @@ async function getList( listId ) {
  * @param {string} resourceKey
  * @return {string}
  */
-const getCacheKey = ( resourceKey ) => `USER-READING-LISTS-${ resourceKey }`;
+// Include username in the key in case a user has multiple accounts
+// they switch between - to avoid showing the user's cached data from
+// their other account.
+const getCacheKey = ( resourceKey ) => `USER-READING-LISTS-${ mw.user.getName() }-${ resourceKey }`;
 
 /**
  * Get all reading lists created by the current user sorted by
