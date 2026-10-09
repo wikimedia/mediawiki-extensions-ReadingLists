@@ -5,6 +5,7 @@ const ONBOARDING_STORAGE_KEY = 'readinglists-saved-pages-dialog-seen';
 const AUTOSAVE_STORAGE_KEY = 'readinglists-cta-autosave';
 
 const { ReadingListsCustomLists } = require( './config.json' );
+const { getCollectionUrl } = require( 'ext.readingLists.common' );
 
 function getErrorMessage( err ) {
 	if ( typeof err === 'string' ) {
@@ -132,8 +133,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		) {
 			initSavedPagesOnboardingPopover();
 		} else if ( showNotification ) {
-			let route = `Special:ReadingLists/${ mw.user.getName() }`;
-			route += listId || '';
+			const route = getCollectionUrl( listId, listName );
 			const listNameParam = listName || mw.msg( 'readinglists-default-title' );
 
 			// The following messages are used here:

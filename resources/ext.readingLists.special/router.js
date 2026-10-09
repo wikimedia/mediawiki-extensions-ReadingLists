@@ -1,7 +1,6 @@
 const { createRouter, createWebHistory } = require( 'vue-router' );
 const Entries = require( './pages/Entries.vue' );
-const base = require( './base.js' );
-
+const { collectionsBaseUrl } = require( 'ext.readingLists.common' );
 const { ReadingListsCustomLists } = require( './config.json' );
 const isCustomListsEnabled = ReadingListsCustomLists;
 
@@ -33,7 +32,7 @@ const routes = [
 ];
 
 const router = createRouter( {
-	history: createWebHistory( base ),
+	history: createWebHistory( mw.util.getUrl( collectionsBaseUrl ) ),
 	routes,
 	// Land at the top of the newly rendered view, like a real navigation.
 	scrollBehavior: () => ( { top: 0 } )

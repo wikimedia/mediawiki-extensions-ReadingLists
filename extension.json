@@ -266,7 +266,6 @@
 				"resources/ext.readingLists.special/index.js",
 				"resources/ext.readingLists.special/App.vue",
 				"resources/ext.readingLists.special/router.js",
-				"resources/ext.readingLists.special/base.js",
 				"resources/ext.readingLists.special/components/EmptyList.vue",
 				"resources/ext.readingLists.special/components/EntryItem.vue",
 				"resources/ext.readingLists.special/components/NavigationBar.vue",
@@ -351,6 +350,7 @@
 			"dependencies": [
 				"ext.readingLists.api",
 				"ext.readingLists.bookmark.icons",
+				"ext.readingLists.common",
 				"mediawiki.storage"
 			]
 		},
