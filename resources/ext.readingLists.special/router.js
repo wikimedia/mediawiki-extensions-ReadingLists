@@ -41,8 +41,9 @@ const router = createRouter( {
 
 const titleElement = document.querySelector( '.reading-lists-title-text' );
 
+let loaded;
 router.beforeEach( ( to ) => {
-	if ( titleElement ) {
+	if ( titleElement && loaded ) {
 		const title = to.params.title ? mw.msg(
 			'readinglists-special-custom-list-title',
 			to.params.title.replace( /_/g, ' ' )
@@ -51,6 +52,7 @@ router.beforeEach( ( to ) => {
 		titleElement.textContent = title;
 		document.title = mw.msg( 'pagetitle', title );
 	}
+	loaded = true;
 } );
 
 module.exports = router;
