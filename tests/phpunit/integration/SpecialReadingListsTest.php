@@ -92,6 +92,64 @@ class SpecialReadingListsTest extends SpecialPageTestBase {
 		return $this->getSpecialPageOutput( $subPage )->getPageTitle();
 	}
 
+	/**
+	 * @dataProvider provideCustomListsEnabled
+	 */
+	public function testDifferentUserSubpageIsRejected( bool $customListsEnabled ) {
+		$this->overrideConfigValue( 'ReadingListsCustomLists', $customListsEnabled );
+		$differentUserName = $this->getTestSysop()->getUser()->getName();
+		$nonexistentUserName = 'Nonexistent user';
+		$subPages = [
+			$differentUserName,
+			$differentUserName . '/' . $this->customListId,
+			$nonexistentUserName,
+			$nonexistentUserName . '/' . $this->customListId,
+		];
+
+		foreach ( $subPages as $subPage ) {
+			$output = $this->getSpecialPageOutput( $subPage );
+			$this->assertStringContainsString(
+				wfMessage( 'readinglists-special-error-list-not-found' )->inLanguage( 'en' )->escaped(),
+				$output->getHTML()
+			);
+			$this->assertStringNotContainsString( 'reading-lists-container', $output->getHTML() );
+			$this->assertNotContains( 'ext.readingLists.special', $output->getModules() );
+			$this->assertStringNotContainsString( 'Favorite Dogs', $output->getPageTitle() );
+		}
+	}
+
+	public static function provideCustomListsEnabled() {
+		yield 'custom lists disabled' => [ false ];
+		yield 'custom lists enabled' => [ true ];
+	}
+
+	public function testOwnUserSubpageAcceptsNormalizedUserName() {
+		$this->user = $this->getMutableTestUser( [], 'Reading list owner!' )->getUser();
+		$userName = $this->user->getName();
+		$subPages = [
+			$userName,
+			str_replace( ' ', '_', $userName ),
+			lcfirst( $userName ),
+		];
+
+		foreach ( $subPages as $subPage ) {
+			$output = $this->getSpecialPageOutput( $subPage );
+			$this->assertContains( 'ext.readingLists.special', $output->getModules() );
+			$this->assertStringContainsString( 'reading-lists-container', $output->getHTML() );
+		}
+	}
+
+	public function testImportAndExportDoNotRequireMatchingUserName() {
+		foreach ( [ 'limport', 'lexport' ] as $parameter ) {
+			$output = $this->getSpecialPageOutput(
+				'Different user',
+				new FauxRequest( [ $parameter => 'serialized-list' ] )
+			);
+			$this->assertContains( 'ext.readingLists.special', $output->getModules() );
+			$this->assertStringContainsString( 'reading-lists-container', $output->getHTML() );
+		}
+	}
+
 	public function testPageTitleForUserSubpageWithoutCustomLists() {
 		$this->overrideConfigValue( 'ReadingListsCustomLists', false );
 

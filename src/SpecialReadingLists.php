@@ -6,11 +6,13 @@ use MediaWiki\Config\Config;
 use MediaWiki\Exception\UserNotLoggedIn;
 use MediaWiki\Html\Html;
 use MediaWiki\SpecialPage\UnlistedSpecialPage;
+use MediaWiki\User\UserNameUtils;
 
 class SpecialReadingLists extends UnlistedSpecialPage {
 	public function __construct(
 		private readonly Config $config,
 		private readonly ReadingListRepositoryFactory $readingListRepositoryFactory,
+		private readonly UserNameUtils $userNameUtils,
 	) {
 		parent::__construct( 'ReadingLists' );
 	}
@@ -62,10 +64,21 @@ class SpecialReadingLists extends UnlistedSpecialPage {
 		// Special:ReadingLists/ExampleUser shows all list items from all lists for the user.
 		// Special:ReadingLists redirects to Special:ReadingLists/ExampleUser
 		// if the request is not for viewing an exported list.
-		$parts = $subPage ? explode( '/', $subPage ) : [];
+		$parts = $subPage !== '' && $subPage !== null ? explode( '/', $subPage ) : [];
 		$titleMsg = count( $parts ) >= 1
 			? $this->msg( 'readinglists-special-subpage-title' )
 			: $this->msg( 'readinglists-title' );
+
+		if (
+			!$exportFeature &&
+			$this->userNameUtils->getCanonical( $parts[0] ?? '' ) !== $this->getUser()->getName()
+		) {
+			$output->setPageTitle( $titleMsg->escaped() );
+			$output->addHTML( Html::errorBox(
+				$this->msg( 'readinglists-special-error-list-not-found' )->escaped()
+			) );
+			return;
+		}
 
 		if ( $customListsEnabled && isset( $parts[1] ) && ctype_digit( $parts[1] ) ) {
 			$listName = $this->getCustomListName( (int)$parts[1] );

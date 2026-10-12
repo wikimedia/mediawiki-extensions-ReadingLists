@@ -69,7 +69,8 @@
 			"class": "MediaWiki\\Extension\\ReadingLists\\SpecialReadingLists",
 			"services": [
 				"MainConfig",
-				"ReadingLists.ReadingListRepositoryFactory"
+				"ReadingLists.ReadingListRepositoryFactory",
+				"UserNameUtils"
 			]
 		}
 	},
