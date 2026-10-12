@@ -130,5 +130,10 @@
 	"readinglists-customlists-create-collection-short": "إنشاء مجموعة",
 	"readinglists-customlists-create-collection-dialog-name": "اسم المجموعة",
 	"readinglists-customlists-create-collection-dialog-placeholder": "أدخل الاسم",
-	"readinglists-customlists-add-entry-success": "تمت إضافة $1 إلى [[$2|$3]]."
+	"readinglists-customlists-add-entry-success": "تمت إضافة $1 إلى [[$2|$3]].",
+	"readinglists-customlists-collection-picker-create-prompt": "قم بتنظيم العناصر المحفوظة في مجموعة",
+	"readinglists-customlists-collection-picker-add-button-label": "أضف من $1 إلى $2",
+	"readinglists-customlists-collection-settings": "إعدادات المجموعة",
+	"readinglists-customlists-rename-collection": "إعادة تسمية المجموعة",
+	"readinglists-customlists-delete-collection": "حذف المجموعة"
 }

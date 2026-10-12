@@ -130,5 +130,10 @@
 	"readinglists-customlists-create-collection-short": "コレクションを作成",
 	"readinglists-customlists-create-collection-dialog-name": "コレクションの名前",
 	"readinglists-customlists-create-collection-dialog-placeholder": "名前を入力",
-	"readinglists-customlists-add-entry-success": "$1を[[$2|$3]]へ追加しました。"
+	"readinglists-customlists-add-entry-success": "$1を[[$2|$3]]へ追加しました。",
+	"readinglists-customlists-collection-picker-create-prompt": "コレクションに保存済み項目を整理する",
+	"readinglists-customlists-collection-picker-add-button-label": "$1を$2に追加",
+	"readinglists-customlists-collection-settings": "コレクション設定",
+	"readinglists-customlists-rename-collection": "コレクションを改名",
+	"readinglists-customlists-delete-collection": "コレクションを削除"
 }

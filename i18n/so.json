@@ -123,5 +123,10 @@
 	"readinglists-customlists-create-collection-short": "Abuur ururin",
 	"readinglists-customlists-create-collection-dialog-name": "Magaca ururinta",
 	"readinglists-customlists-create-collection-dialog-placeholder": "Geli magaca",
-	"readinglists-customlists-add-entry-success": "$1 ayaa lagu daray [[$2|$3]]."
+	"readinglists-customlists-add-entry-success": "$1 ayaa lagu daray [[$2|$3]].",
+	"readinglists-customlists-collection-picker-create-prompt": "Ku abaabul shaygaaga kaydsan ururin",
+	"readinglists-customlists-collection-picker-add-button-label": "Ku dar $1 ilaa $2",
+	"readinglists-customlists-collection-settings": "Dejinta ururinta",
+	"readinglists-customlists-rename-collection": "Dib u magacow ururinta",
+	"readinglists-customlists-delete-collection": "Tirtir ururinta"
 }

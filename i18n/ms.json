@@ -89,6 +89,8 @@
 	"tooltip-ca-bookmark-add": "Tambahkan laman ini ke butir simpanan anda",
 	"tooltip-ca-bookmark-remove": "Buang laman ini daripada butir simpanan anda",
 	"readinglists-bookmark": "Penanda",
+	"readinglists-cancel-add-collection": "Batalkan",
+	"readinglists-add-collection": "Simpan",
 	"readinglists-add-bookmark": "Simpan",
 	"readinglists-remove-bookmark": "Nyahsimpan",
 	"readinglists-unsave-from-custom-list-title": "Padamkan dari semua senarai bacaan?",
@@ -119,5 +121,13 @@
 	"readinglists-customlists-collections": "Koleksi",
 	"readinglists-customlists-no-collections": "Anda tidak mempunyai sebarang koleksi",
 	"readinglists-customlists-create-collection": "cipta koleksi baharu",
-	"readinglists-customlists-add-entry-success": "$1 ditambah ke [[$2|$3]]."
+	"readinglists-customlists-create-collection-short": "Cipta koleksi",
+	"readinglists-customlists-create-collection-dialog-name": "Nama koleksi",
+	"readinglists-customlists-create-collection-dialog-placeholder": "Masukkan nama",
+	"readinglists-customlists-add-entry-success": "$1 ditambah ke [[$2|$3]].",
+	"readinglists-customlists-collection-picker-create-prompt": "Susun item yang disimpan ke dalam sebuah koleksi",
+	"readinglists-customlists-collection-picker-add-button-label": "Tambah $1 ke dalam $2",
+	"readinglists-customlists-collection-settings": "Tetapan koleksi",
+	"readinglists-customlists-rename-collection": "Namakan semula koleksi",
+	"readinglists-customlists-delete-collection": "Hapuskan koleksi"
 }

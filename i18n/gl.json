@@ -126,5 +126,10 @@
 	"readinglists-customlists-create-collection-short": "Crear unha colección",
 	"readinglists-customlists-create-collection-dialog-name": "Nome da colección",
 	"readinglists-customlists-create-collection-dialog-placeholder": "Escribe o nome",
-	"readinglists-customlists-add-entry-success": "«$1» engadiuse a «[[$2|$3]]»."
+	"readinglists-customlists-add-entry-success": "«$1» engadiuse a «[[$2|$3]]».",
+	"readinglists-customlists-collection-picker-create-prompt": "Organiza o teu elemento gardado nunha colección",
+	"readinglists-customlists-collection-picker-add-button-label": "Engadir «$1» a «$2»",
+	"readinglists-customlists-collection-settings": "Configuración da colección",
+	"readinglists-customlists-rename-collection": "Renomear a colección",
+	"readinglists-customlists-delete-collection": "Eliminar a colección"
 }

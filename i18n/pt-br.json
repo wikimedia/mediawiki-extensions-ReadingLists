@@ -10,7 +10,7 @@
 	"readinglists-db-error-not-set-up": "Não foram configuradas listas de leitura para este usuário.",
 	"readinglists-db-error-no-projects": "Nenhum projeto foi registrado para uso com o ReadingLists. Use o script populateProjectsFromSiteMatrix para registrar projetos.",
 	"readinglists-db-error-already-set-up": "As listas de leitura já foram configuradas para este usuário.",
-	"readinglists-db-error-cannot-delete-default-list": "A lista padrão não pode ser excluída.",
+	"readinglists-db-error-cannot-delete-default-list": "A lista padrão não pode ser eliminada.",
 	"readinglists-db-error-cannot-update-default-list": "A lista padrão não pode ser atualizada.",
 	"readinglists-db-error-no-such-list": "A lista $1 não existe.",
 	"readinglists-db-error-no-such-list-entry": "Não existe uma entrada $1 na lista.",
@@ -126,5 +126,10 @@
 	"readinglists-customlists-create-collection-short": "Criar coleção",
 	"readinglists-customlists-create-collection-dialog-name": "Nome da coleção",
 	"readinglists-customlists-create-collection-dialog-placeholder": "Digite o nome",
-	"readinglists-customlists-add-entry-success": "$1 adicionado a [[$2|$3]]."
+	"readinglists-customlists-add-entry-success": "$1 adicionado a [[$2|$3]].",
+	"readinglists-customlists-collection-picker-create-prompt": "Organize seus itens salvos em uma coleção",
+	"readinglists-customlists-collection-picker-add-button-label": "Adicionar $1 à $2",
+	"readinglists-customlists-collection-settings": "Configurações da coleção",
+	"readinglists-customlists-rename-collection": "Renomear coleção",
+	"readinglists-customlists-delete-collection": "Eliminar coleção"
 }

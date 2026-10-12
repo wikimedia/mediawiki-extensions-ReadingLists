@@ -81,6 +81,8 @@
 	"readinglists-beta-feature-description": "* ניתן לשמור דפים לקריאה או לעיון מאוחר יותר.\n* דפים שנשמרו מיישום ויקיפדיה ואתר האינטרנט יסונכרנו כולם ברשימה אחת.\n\nלתשומת ליבך:\n* ייתכן שנוסיף אפשרויות חדשות כשאנחנו בשלב בטא.\n* אפשרות הבטא הזאת תפעל עד יולי 2026, ולאחר מכן היא תהפוך לתכונה נגישה באופן קבוע בוויקיפדיה. נשמח לקבל את המשוב שלך בקישור הדיון למעלה.",
 	"readinglists-menu-item": "שמורים",
 	"readinglists-bookmark": "הוספת סימנייה",
+	"readinglists-cancel-add-collection": "ביטול",
+	"readinglists-add-collection": "שמירה",
 	"readinglists-add-bookmark": "שמירה",
 	"readinglists-remove-bookmark": "ביטול שמירה",
 	"readinglists-onboarding-close-button": "סגירה",
@@ -90,5 +92,6 @@
 	"readinglists-cta-dialog-title": "שמירת דפים",
 	"readinglists-cta-dialog-create-account": "יצירת חשבון",
 	"readinglists-cta-dialog-log-in": "כניסה לחשבון",
-	"readinglists-cta-dialog-close": "סגירה"
+	"readinglists-cta-dialog-close": "סגירה",
+	"readinglists-customlists-create-collection-dialog-placeholder": "נא להזין שם"
 }
