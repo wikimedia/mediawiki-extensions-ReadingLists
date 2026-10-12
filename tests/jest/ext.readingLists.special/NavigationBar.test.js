@@ -19,6 +19,7 @@ function setupApiStub() {
 describe( 'NavigationBar', () => {
 	beforeEach( () => {
 		mw.util.getUrl = jest.fn( ( path ) => `/wiki/${ path }` );
+		mw.util.wikiUrlencode = jest.fn( ( path ) => path );
 		mw.user.getName = jest.fn( () => 'testuser' );
 		setupApiStub();
 	} );

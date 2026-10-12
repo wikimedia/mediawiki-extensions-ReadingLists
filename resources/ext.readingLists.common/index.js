@@ -14,8 +14,8 @@ function getCollectionUrl( listId, listName, isRelative = false ) {
 	const allCollectionsUrl = `${ collectionsBaseUrl }/${ mw.user.getName() }`;
 	let url = isAllCollectionsPage ? allCollectionsUrl : `${ allCollectionsUrl }/${ listId }/${ listName }`;
 	if ( isRelative ) {
-		// Remove the base URL prefix to make it relative
-		url = url.slice( collectionsBaseUrl.length ) || '/';
+		// Remove the base URL prefix and encode the path to match MediaWiki's URLs.
+		url = mw.util.wikiUrlencode( url.slice( collectionsBaseUrl.length ) ) || '/';
 	}
 	return url;
 }
