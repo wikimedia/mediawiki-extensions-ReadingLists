@@ -41,8 +41,15 @@
 	"action-action-readinglist-private": "lenn rolloù-lenn implijerien all",
 	"readinglists-empty-message": "N'hoc'h eus roll ebet, perak ne groufec'h ket unan ?",
 	"readinglists-import-empty-message": "Ne c'hallit ket enporzhiañ rolladoù rolloù.",
+	"readinglists-list-empty-message": "N'eus pajenn ebet er roll-mañ. Enkargit an arload ha grit gantañ evit ouzhpennañ elfennoù d'ar roll-mañ.",
+	"readinglists-no-title": "Roll hep titl",
 	"readinglists-export": "Rannañ roll",
 	"readinglists-watchlist": "Roll evezhiañ",
 	"readinglists-watchlist-description": "Pajennoù heuliet o c’hemmoù nevez ganeoc’h.",
-	"readinglists-watchlist-monitor": "Gallout a rit evezhiañ kemmoù pajennoù ar roll-mañ gant ar benveg [$1 roll evezhiañ]."
+	"readinglists-watchlist-monitor": "Gallout a rit evezhiañ kemmoù pajennoù ar roll-mañ gant ar benveg [$1 roll evezhiañ].",
+	"readinglists-import-app-misconfigured": "Al lec'hienn-mañ ne embreg ket an enporzhiañ rolloù evit bremañ.",
+	"readinglists-import-disclaimer": "Ur roll-lenn da lodañ gant tud all (ganeoc'h-c'hwi moarvat) zo bet krouet gant un implijer el lec'hienn-mañ. N'eo ket lusket, ha ne ziskouez ket e endalc'had savboent aozerien al lec'hienn.",
+	"readinglists-import-button-hint": "Stokit ar bouton :",
+	"readinglists-share-url-notify": "Titouroù a-zivout ar roll-lenn-mañ zo bet eilet d'ho kolver.",
+	"readinglists-import-app-launch-hint": "Gwiriit ez eo bet staliet stumm nevesañ an arload."
 }
