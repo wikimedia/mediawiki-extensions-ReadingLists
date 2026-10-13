@@ -16,13 +16,13 @@
 				v-for="collection in collections"
 				:key="collection.id"
 				class="readinglists-collection-picker__collection"
-				@click="onAddToCollection( collection )"
+				@click="( e ) => onAddToCollection( e, collection )"
 			>
 				{{ collection.name }}
 				<cdx-button
 					weight="quiet"
 					:aria-label="getAddButtonLabel( collection.name )"
-					@click="onAddToCollection( collection )"
+					@click="( e ) => onAddToCollection( e, collection )"
 				>
 					<cdx-icon :icon="cdxIconAdd"></cdx-icon>
 				</cdx-button>
@@ -90,7 +90,10 @@ module.exports = exports = {
 			emit( 'create-collection' );
 		}
 
-		function onAddToCollection( collection ) {
+		function onAddToCollection( event, collection ) {
+			if ( event ) {
+				event.stopPropagation();
+			}
 			emit( 'add-to-collection', collection.id, collection.name );
 		}
 
