@@ -179,6 +179,127 @@ class ApiReadingListsDeleteEntryTest extends ApiTestCase {
 		$this->assertSame( '1', $rows[$entryIds[3]], 'Snowball II should be deleted' );
 	}
 
+	public function testDeleteEntryByProjectTitleAndList() {
+		$localProject = $this->getLocalProject();
+		$this->addProjects( [ $localProject ] );
+		$listIds = $this->addLists( $this->user->mId, [
+			[
+				'rl_is_default' => 1,
+				'rl_name' => 'default',
+				'rl_date_created' => '20200101000000',
+				'rl_date_updated' => '20250101000000',
+				'rl_deleted' => 0,
+			],
+			[
+				'rl_is_default' => 0,
+				'rl_name' => 'Favorite Dogs',
+				'rl_date_created' => '20200101000000',
+				'rl_date_updated' => '20250101000000',
+				'rl_deleted' => 0,
+			],
+		] );
+
+		$entryIds = $this->addListEntries( $listIds[0], $this->user->mId, [
+			[
+				'rlp_project' => $localProject,
+				'rle_title' => 'Snoopy',
+				'rle_date_created' => '20200102000000',
+				'rle_date_updated' => '20250102000000',
+				'rle_deleted' => 0,
+			],
+		] );
+		$entryIds = array_merge( $entryIds, $this->addListEntries( $listIds[1], $this->user->mId, [
+			[
+				'rlp_project' => $localProject,
+				'rle_title' => 'Snoopy',
+				'rle_date_created' => '20200103000000',
+				'rle_date_updated' => '20250103000000',
+				'rle_deleted' => 0,
+			],
+		] ) );
+
+		$this->apiParams['project'] = $localProject;
+		$this->apiParams['title'] = 'Snoopy';
+		$this->apiParams['list'] = $listIds[1];
+		$result = $this->doApiRequestWithToken( $this->apiParams, null, $this->user );
+		$this->assertEquals( "Success", $result[0]['deleteentry']['result'] );
+
+		$deletedById = $this->getDb()->newSelectQueryBuilder()
+			->select( [ 'rle_id', 'rle_deleted' ] )
+			->from( 'reading_list_entry' )
+			->where( [ 'rle_id' => $entryIds ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
+		$rows = [];
+		foreach ( $deletedById as $row ) {
+			$rows[$row->rle_id] = $row->rle_deleted;
+		}
+
+		$this->assertSame( '0', $rows[$entryIds[0]], 'Snoopy should stay in the default list' );
+		$this->assertSame( '1', $rows[$entryIds[1]], 'Snoopy should be deleted from Favorite Dogs' );
+	}
+
+	/**
+	 * @dataProvider provideOutOfRangeListIds
+	 */
+	public function testDeleteEntryRejectsOutOfRangeList( int $listId ) {
+		$localProject = $this->getLocalProject();
+		$this->addProjects( [ $localProject ] );
+		$listIds = $this->addLists( $this->user->mId, [
+			[
+				'rl_is_default' => 1,
+				'rl_name' => 'default',
+				'rl_date_created' => '20200101000000',
+				'rl_date_updated' => '20250101000000',
+				'rl_deleted' => 0,
+			],
+		] );
+		$entryIds = $this->addListEntries( $listIds[0], $this->user->mId, [
+			[
+				'rlp_project' => $localProject,
+				'rle_title' => 'Snoopy',
+				'rle_date_created' => '20200102000000',
+				'rle_date_updated' => '20250102000000',
+				'rle_deleted' => 0,
+			],
+		] );
+
+		$this->apiParams['project'] = $localProject;
+		$this->apiParams['title'] = 'Snoopy';
+		$this->apiParams['list'] = $listId;
+		$this->assertApiUsage(
+			'paramvalidator-outofrange-min',
+			function () {
+				$this->doApiRequestWithToken( $this->apiParams, null, $this->user );
+			}
+		);
+
+		$deleted = $this->getDb()->newSelectQueryBuilder()
+			->select( 'rle_deleted' )
+			->from( 'reading_list_entry' )
+			->where( [ 'rle_id' => $entryIds[0] ] )
+			->caller( __METHOD__ )
+			->fetchField();
+		$this->assertSame( '0', $deleted, 'Nothing should be deleted for an out-of-range list ID' );
+	}
+
+	public static function provideOutOfRangeListIds(): array {
+		return [
+			'zero' => [ 0 ],
+			'negative' => [ -1 ],
+		];
+	}
+
+	public function testDeleteEntryRequiresProjectWithList() {
+		$this->apiParams['list'] = 1;
+		$this->assertApiUsage(
+			'apierror-missingparam',
+			function () {
+				$this->doApiRequestWithToken( $this->apiParams, null, $this->user );
+			}
+		);
+	}
+
 	public function testDeleteEntryRequiresProjectAndTitleTogether() {
 		$this->apiParams['project'] = $this->getLocalProject();
 		$this->assertApiUsage(

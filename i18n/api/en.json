@@ -79,11 +79,13 @@
 	"apihelp-readinglists+createentry-example-2": "Add multiple pages to a list.",
 	"apihelp-readinglists+deleteentry-summary": "Delete a page from a list belonging to the current user.",
 	"apihelp-readinglists+deleteentry-param-entry": "Entry ID. Required unless doing batch deletion.",
-	"apihelp-readinglists+deleteentry-param-project": "Project name of the wiki hosting the page. Must be used together with <var>$1title</var>. Deletes all entries matching the given project and title.",
+	"apihelp-readinglists+deleteentry-param-project": "Project name of the wiki hosting the page. Must be used together with <var>$1title</var>. Deletes all entries matching the given project and title, unless <var>$1list</var> is also given.",
 	"apihelp-readinglists+deleteentry-param-title": "Page title to delete. Must be used together with <var>$1project</var>.",
+	"apihelp-readinglists+deleteentry-param-list": "List ID. Delete the page only from this list. Must be used together with <var>$1project</var> and <var>$1title</var>.",
 	"apihelp-readinglists+deleteentry-param-batch": "Batch data for deleting multiple list entries in a single request, in the form of a JSON array with one or more objects with an <var>entry</var> field.",
 	"apihelp-readinglists+deleteentry-example-1": "Delete the list entry with ID <kbd>8</kbd>.",
 	"apihelp-readinglists+deleteentry-example-2": "Delete multiple list entries.",
 	"apihelp-readinglists+deleteentry-example-3": "Delete all entries for the page <kbd>Dog</kbd> from project <kbd>en.wikipedia.org</kbd>.",
-	"apihelp-readinglists+deleteentry-example-4": "Delete all entries for the page <kbd>Garfield the Cat</kbd> from project <kbd>@local</kbd>."
+	"apihelp-readinglists+deleteentry-example-4": "Delete all entries for the page <kbd>Garfield the Cat</kbd> from project <kbd>@local</kbd>.",
+	"apihelp-readinglists+deleteentry-example-5": "Delete the page <kbd>Cat</kbd> from the <kbd>@local</kbd> project only from the list with ID <kbd>42</kbd>."
 }

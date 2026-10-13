@@ -896,13 +896,19 @@ class ReadingListRepository implements LoggerAwareInterface {
 
 	/**
 	 * Delete all list entries for a given page title and project.
+	 * When a list ID is given, only entries in that list are deleted.
 	 * @param string $title
 	 * @param string $project
+	 * @param int|null $listId Restrict deletion to this list. The list must exist,
+	 *   belong to the current user and not be deleted (consistent with other list operations).
 	 * @return void
 	 * @throws ReadingListRepositoryException
 	 */
-	public function deleteListEntriesByPageTitleAndProject( $title, $project ) {
+	public function deleteListEntriesByPageTitleAndProject( $title, $project, ?int $listId = null ) {
 		$this->assertUser();
+		if ( $listId !== null ) {
+			$this->selectValidList( $listId, IDBAccessObject::READ_LATEST );
+		}
 		$projectId = $this->getProjectId( $project );
 		if ( !$projectId ) {
 			return;
@@ -912,7 +918,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 		try {
 			// $projectId is used to filter the database rows, while $project is used
 			// in determining whether to normalize the title for local vs cross-wiki entries.
-			$listEntryIds = $this->getMatchingEntryIdsByListId( $project, $projectId, $title );
+			$listEntryIds = $this->getMatchingEntryIdsGroupedByList( $project, $projectId, $title, $listId );
 
 			// Flatten entry IDs across matching lists,
 			// with taking into account no matching entries.
@@ -929,13 +935,13 @@ class ReadingListRepository implements LoggerAwareInterface {
 					->caller( __METHOD__ )
 					->execute();
 
-				foreach ( $listEntryIds as $listId => $entryIdsForList ) {
+				foreach ( $listEntryIds as $matchedListId => $entryIdsForList ) {
 					$deletedCount = count( $entryIdsForList );
 					$this->dbw->newUpdateQueryBuilder()
 						->update( 'reading_list' )
 						->set( [ 'rl_size' => new RawSQLValue( 'rl_size - ' . $deletedCount ) ] )
 						->where( [
-							'rl_id' => $listId,
+							'rl_id' => $matchedListId,
 							// Match deleteListEntry(), avoid decrementing to negative.
 							$this->dbw->expr( 'rl_size', '>', 0 ),
 						] )
@@ -1648,18 +1654,29 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 * @param int $projectId Database ID of the project row, used to filter
 	 *   reading_list_entry rows by rle_rlp_id.
 	 * @param string $title Page title to match against its canonical or legacy stored form.
+	 * @param int|null $listId Only match entries in this list.
 	 * @return array<int,int[]>
 	 */
-	private function getMatchingEntryIdsByListId( string $project, int $projectId, string $title ): array {
+	private function getMatchingEntryIdsGroupedByList(
+		string $project,
+		int $projectId,
+		string $title,
+		?int $listId = null
+	): array {
+		$conditions = [
+			'rle_user_id' => $this->userId,
+			'rle_rlp_id' => $projectId,
+			'rle_title' => $this->getPageTitlesForLookup( $project, $title ),
+			'rle_deleted' => 0,
+		];
+		if ( $listId !== null ) {
+			$conditions['rle_rl_id'] = $listId;
+		}
+
 		$rows = $this->dbw->newSelectQueryBuilder()
 			->select( [ 'rle_id', 'rle_rl_id' ] )
 			->from( 'reading_list_entry' )
-			->where( [
-				'rle_user_id' => $this->userId,
-				'rle_rlp_id' => $projectId,
-				'rle_title' => $this->getPageTitlesForLookup( $project, $title ),
-				'rle_deleted' => 0,
-			] )
+			->where( $conditions )
 			->forUpdate()
 			->caller( __METHOD__ )
 			->fetchResultSet();

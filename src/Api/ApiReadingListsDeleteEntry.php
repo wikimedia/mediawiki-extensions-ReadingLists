@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\ReadingLists\Api;
 use MediaWiki\Api\ApiBase;
 use MediaWiki\Extension\ReadingLists\ReadingListRepository;
 use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\NumericDef;
 use Wikimedia\ParamValidator\TypeDef\StringDef;
 
 /**
@@ -28,6 +29,8 @@ class ApiReadingListsDeleteEntry extends ApiBase {
 			$this->dieWithError( [ 'apierror-missingparam', 'title' ], 'missingparam' );
 		} elseif ( isset( $params['title'] ) && !isset( $params['project'] ) ) {
 			$this->dieWithError( [ 'apierror-missingparam', 'project' ], 'missingparam' );
+		} elseif ( isset( $params['list'] ) && !isset( $params['project'] ) ) {
+			$this->dieWithError( [ 'apierror-missingparam', 'project' ], 'missingparam' );
 		}
 		$this->requireOnlyOneParameter( $params, 'entry', 'project', 'batch' );
 
@@ -39,7 +42,11 @@ class ApiReadingListsDeleteEntry extends ApiBase {
 			if ( $this->isLocalProject( $params['project'] ) ) {
 				$this->validateTitle( $params['title'] );
 			}
-			$repository->deleteListEntriesByPageTitleAndProject( $params['title'], $params['project'] );
+			$repository->deleteListEntriesByPageTitleAndProject(
+				$params['title'],
+				$params['project'],
+				$params['list'] ?? null
+			);
 		} else {
 			foreach ( $this->getBatchOps( $params['batch'] ) as $op ) {
 				$this->requireAtLeastOneBatchParameter( $op, 'entry' );
@@ -64,6 +71,12 @@ class ApiReadingListsDeleteEntry extends ApiBase {
 			'title' => [
 				ParamValidator::PARAM_TYPE => 'string',
 				StringDef::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rle_title'],
+			],
+			'list' => [
+				ParamValidator::PARAM_TYPE => 'integer',
+				NumericDef::PARAM_MIN => 1,
+				// Reject values with an ID less than 1.
+				NumericDef::PARAM_IGNORE_RANGE => false,
 			],
 			'batch' => [
 				ParamValidator::PARAM_TYPE => 'string',
@@ -97,6 +110,8 @@ class ApiReadingListsDeleteEntry extends ApiBase {
 				=> 'apihelp-readinglists+deleteentry-example-3',
 			'action=readinglists&command=deleteentry&project=@local&title=Garfield%20the%20Cat&token=123ABC'
 				=> 'apihelp-readinglists+deleteentry-example-4',
+			'action=readinglists&command=deleteentry&project=@local&title=Cat&list=42&token=123ABC'
+				=> 'apihelp-readinglists+deleteentry-example-5',
 		];
 	}
 

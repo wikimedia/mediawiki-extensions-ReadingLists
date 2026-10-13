@@ -1145,6 +1145,164 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( '1', $row->rle_deleted );
 	}
 
+	public function testDeleteListEntriesByPageTitleAndProject_withListId() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
+		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
+		$parts['port'] = null;
+		$localProject = $urlUtils->assemble( $parts );
+		$this->addProjects( [ $localProject ] );
+		[ $listId, $listId2 ] = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+			],
+			[
+				'rl_name' => 'bar',
+				'rl_deleted' => '0',
+			],
+		] );
+		[ $entryId ] = $this->addListEntries( $listId, 1, [
+			[
+				'rlp_project' => $localProject,
+				'rle_title' => 'Foo_Bar',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20150101000000',
+				'rle_deleted' => 0,
+			],
+		] );
+		[ $entryId2 ] = $this->addListEntries( $listId2, 1, [
+			[
+				'rlp_project' => $localProject,
+				'rle_title' => 'Foo_Bar',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20150101000000',
+				'rle_deleted' => 0,
+			],
+		] );
+
+		$repository->deleteListEntriesByPageTitleAndProject( 'Foo_Bar', $localProject, $listId2 );
+
+		$rows = $this->getDb()->newSelectQueryBuilder()
+			->select( [ 'rle_id', 'rle_deleted' ] )
+			->from( 'reading_list_entry' )
+			->where( [ 'rle_id' => [ $entryId, $entryId2 ] ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
+		$deletedById = [];
+		foreach ( $rows as $row ) {
+			$deletedById[$row->rle_id] = $row->rle_deleted;
+		}
+		$this->assertSame( '0', $deletedById[$entryId] );
+		$this->assertSame( '1', $deletedById[$entryId2] );
+
+		$sizes = $this->getDb()->newSelectQueryBuilder()
+			->select( [ 'rl_id', 'rl_size' ] )
+			->from( 'reading_list' )
+			->where( [ 'rl_id' => [ $listId, $listId2 ] ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
+		$sizesById = [];
+		foreach ( $sizes as $row ) {
+			$sizesById[$row->rl_id] = $row->rl_size;
+		}
+		$this->assertSame( '1', $sizesById[$listId] );
+		$this->assertSame( '0', $sizesById[$listId2] );
+	}
+
+	public function testDeleteListEntriesByPageTitleAndProject_withListIdMatchesBothSpellings() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
+		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
+		$parts['port'] = null;
+		$localProject = $urlUtils->assemble( $parts );
+		$this->addProjects( [ $localProject ] );
+		[ $listId ] = $this->addLists( 1, [
+			[
+				'rl_name' => 'foo',
+				'rl_deleted' => '0',
+			],
+		] );
+		// One canonical entry and one legacy lowercase entry for the same page.
+		[ $canonicalEntryId, $legacyEntryId ] = $this->addListEntries( $listId, 1, [
+			[
+				'rlp_project' => $localProject,
+				'rle_title' => 'Formula_one',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20150101000000',
+				'rle_deleted' => 0,
+			],
+			[
+				'rlp_project' => $localProject,
+				'rle_title' => 'formula_one',
+				'rle_date_created' => '20100101000000',
+				'rle_date_updated' => '20150101000000',
+				'rle_deleted' => 0,
+			],
+		] );
+
+		$repository->deleteListEntriesByPageTitleAndProject( 'formula_one', $localProject, $listId );
+
+		$rows = $this->getDb()->newSelectQueryBuilder()
+			->select( [ 'rle_id', 'rle_deleted' ] )
+			->from( 'reading_list_entry' )
+			->where( [ 'rle_id' => [ $canonicalEntryId, $legacyEntryId ] ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
+		$deletedById = [];
+		foreach ( $rows as $row ) {
+			$deletedById[$row->rle_id] = $row->rle_deleted;
+		}
+		$this->assertSame( '1', $deletedById[$canonicalEntryId] );
+		$this->assertSame( '1', $deletedById[$legacyEntryId] );
+	}
+
+	public function testDeleteListEntriesByPageTitleAndProject_rejectsInvalidListId() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$urlUtils = $this->getServiceContainer()->getUrlUtils();
+		$parts = $urlUtils->parse( $urlUtils->getCanonicalServer() );
+		$parts['port'] = null;
+		$localProject = $urlUtils->assemble( $parts );
+		$this->addProjects( [ $localProject ] );
+		[ $deletedListId ] = $this->addLists( 1, [
+			[
+				'rl_name' => 'gone',
+				'rl_deleted' => '1',
+			],
+		] );
+		[ $otherUserListId ] = $this->addLists( 10, [
+			[
+				'rl_name' => 'not mine',
+				'rl_deleted' => '0',
+			],
+		] );
+
+		$this->assertFailsWith( 'readinglists-db-error-no-such-list',
+			static function () use ( $repository, $localProject ) {
+				$repository->deleteListEntriesByPageTitleAndProject( 'Foo_Bar', $localProject, 9999 );
+			}
+		);
+		$this->assertFailsWith( 'readinglists-db-error-list-deleted',
+			static function () use ( $repository, $localProject, $deletedListId ) {
+				$repository->deleteListEntriesByPageTitleAndProject( 'Foo_Bar', $localProject, $deletedListId );
+			}
+		);
+		$this->assertFailsWith( 'readinglists-db-error-not-own-list',
+			static function () use ( $repository, $localProject, $otherUserListId ) {
+				$repository->deleteListEntriesByPageTitleAndProject( 'Foo_Bar', $localProject, $otherUserListId );
+			}
+		);
+	}
+
 	/**
 	 * @dataProvider provideGetListEntries
 	 */
