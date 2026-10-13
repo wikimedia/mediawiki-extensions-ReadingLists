@@ -237,8 +237,8 @@ module.exports = exports = {
 				let next = null;
 
 				if ( this.isCollections ) {
-					const query = await api.getLists( 'name', 'ascending', 12, this.next );
-					entries = query.lists.map( ( { name, id, size } ) => (
+					const lists = await api.getListsAll();
+					entries = lists.map( ( { name, id, size } ) => (
 						{
 							id,
 							title: name,
@@ -246,7 +246,6 @@ module.exports = exports = {
 							url: mw.util.getUrl( getCollectionUrl( id, name ) )
 						}
 					) );
-					next = query.next;
 				} else if ( this.imported === null ) {
 					const query = await api.getEntries(
 						this.listId,
