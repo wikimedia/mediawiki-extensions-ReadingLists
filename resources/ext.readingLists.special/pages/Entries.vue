@@ -246,8 +246,8 @@ module.exports = exports = {
 				let newNext = null;
 
 				if ( props.isCollections ) {
-					const query = await api.getLists( 'name', 'ascending', 12, next );
-					newEntries = query.lists.map( ( { name, id, size } ) => (
+					const lists = await api.getListsAll();
+					newEntries = lists.map( ( { name, id, size } ) => (
 						{
 							id,
 							title: name,
@@ -255,7 +255,6 @@ module.exports = exports = {
 							url: mw.util.getUrl( getCollectionUrl( id, name ) )
 						}
 					) );
-					newNext = query.next;
 				} else if ( props.imported === null ) {
 					const query = await api.getEntries(
 						props.listId,
