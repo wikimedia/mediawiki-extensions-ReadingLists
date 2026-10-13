@@ -8,20 +8,28 @@ exports[`NavigationBar renders All items view on desktop 1`] = `
   showdropdown="true"
 >
   <!--v-if-->
-  <a
-    class="readinglists-special-nav-link"
+  <ul
+    class="readinglists-nav-bar-links"
   >
-    
-    All items
-    
-  </a>
-  <a
-    class="readinglists-special-nav-link"
-  >
-    
-    Collections
-    
-  </a>
+    <li>
+      <a
+        class="readinglists-special-nav-link"
+      >
+        
+        All items
+        
+      </a>
+    </li>
+    <li>
+      <a
+        class="readinglists-special-nav-link"
+      >
+        
+        Collections
+        
+      </a>
+    </li>
+  </ul>
   <!--v-if-->
 </div>
 `;
@@ -34,20 +42,28 @@ exports[`NavigationBar renders All items view on mobile 1`] = `
   showdropdown="false"
 >
   <!--v-if-->
-  <a
-    class="readinglists-special-nav-link"
+  <ul
+    class="readinglists-nav-bar-links"
   >
-    
-    All items
-    
-  </a>
-  <a
-    class="readinglists-special-nav-link"
-  >
-    
-    Collections
-    
-  </a>
+    <li>
+      <a
+        class="readinglists-special-nav-link"
+      >
+        
+        All items
+        
+      </a>
+    </li>
+    <li>
+      <a
+        class="readinglists-special-nav-link"
+      >
+        
+        Collections
+        
+      </a>
+    </li>
+  </ul>
   <!--v-if-->
 </div>
 `;
@@ -60,20 +76,28 @@ exports[`NavigationBar renders Collection view on desktop 1`] = `
   showdropdown="true"
 >
   <!--v-if-->
-  <a
-    class="readinglists-special-nav-link"
+  <ul
+    class="readinglists-nav-bar-links"
   >
-    
-    All items
-    
-  </a>
-  <a
-    class="readinglists-special-nav-link"
-  >
-    
-    Collections
-    
-  </a>
+    <li>
+      <a
+        class="readinglists-special-nav-link"
+      >
+        
+        All items
+        
+      </a>
+    </li>
+    <li>
+      <a
+        class="readinglists-special-nav-link"
+      >
+        
+        Collections
+        
+      </a>
+    </li>
+  </ul>
   <!--v-if-->
 </div>
 `;
@@ -86,20 +110,28 @@ exports[`NavigationBar renders Collection view on mobile 1`] = `
   showdropdown="false"
 >
   <!--v-if-->
-  <a
-    class="readinglists-special-nav-link"
+  <ul
+    class="readinglists-nav-bar-links"
   >
-    
-    All items
-    
-  </a>
-  <a
-    class="readinglists-special-nav-link"
-  >
-    
-    Collections
-    
-  </a>
+    <li>
+      <a
+        class="readinglists-special-nav-link"
+      >
+        
+        All items
+        
+      </a>
+    </li>
+    <li>
+      <a
+        class="readinglists-special-nav-link"
+      >
+        
+        Collections
+        
+      </a>
+    </li>
+  </ul>
   <!--v-if-->
 </div>
 `;
@@ -112,20 +144,28 @@ exports[`NavigationBar renders Collections view on desktop 1`] = `
   showdropdown="true"
 >
   <!--v-if-->
-  <a
-    class="readinglists-special-nav-link"
+  <ul
+    class="readinglists-nav-bar-links"
   >
-    
-    All items
-    
-  </a>
-  <a
-    class="readinglists-special-nav-link"
-  >
-    
-    Collections
-    
-  </a>
+    <li>
+      <a
+        class="readinglists-special-nav-link"
+      >
+        
+        All items
+        
+      </a>
+    </li>
+    <li>
+      <a
+        class="readinglists-special-nav-link"
+      >
+        
+        Collections
+        
+      </a>
+    </li>
+  </ul>
   <!--v-if-->
 </div>
 `;
@@ -138,20 +178,28 @@ exports[`NavigationBar renders Collections view on mobile 1`] = `
   showdropdown="false"
 >
   <!--v-if-->
-  <a
-    class="readinglists-special-nav-link"
+  <ul
+    class="readinglists-nav-bar-links"
   >
-    
-    All items
-    
-  </a>
-  <a
-    class="readinglists-special-nav-link"
-  >
-    
-    Collections
-    
-  </a>
+    <li>
+      <a
+        class="readinglists-special-nav-link"
+      >
+        
+        All items
+        
+      </a>
+    </li>
+    <li>
+      <a
+        class="readinglists-special-nav-link"
+      >
+        
+        Collections
+        
+      </a>
+    </li>
+  </ul>
   <!--v-if-->
 </div>
 `;

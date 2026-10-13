@@ -6,49 +6,54 @@
 			@success="routeToNewCollection"
 		>
 		</create-collection-dialog>
-		<router-link
-			class="readinglists-special-nav-link"
-			:to="allItemsTo">
-			{{ allItemsText }}
-		</router-link>
 
-		<cdx-menu-button
-			v-if="showDropdown"
-			v-model:selected="selectedCollection"
-			action="progressive"
-			weight="quiet"
-			:menu-items="collections"
-			:menu-config="menuConfig"
-			@click="maybeGetCollections"
-			@load-more="maybeGetNextCollections">
-			{{ collectionsText }}
-			<cdx-icon size="medium" :icon="cdxIconExpand"></cdx-icon>
-			<template #menu-item="{ menuItem }">
+		<ul class="readinglists-nav-bar-links">
+			<li>
 				<router-link
-					v-if="menuItem.url"
-					class="cdx-menu-item__content"
-					:to="menuItem.url">
-					<span class="cdx-menu-item__text"><bdi>{{ menuItem.label }}</bdi></span>
+					class="readinglists-special-nav-link"
+					:to="allItemsTo">
+					{{ allItemsText }}
 				</router-link>
-				<span
+			</li>
+			<li>
+				<cdx-menu-button
+					v-if="showDropdown"
+					v-model:selected="selectedCollection"
+					action="progressive"
+					weight="quiet"
+					:menu-items="collections"
+					:menu-config="menuConfig"
+					@click="maybeGetCollections"
+					@load-more="maybeGetNextCollections">
+					{{ collectionsText }}
+					<cdx-icon size="medium" :icon="cdxIconExpand"></cdx-icon>
+					<template #menu-item="{ menuItem }">
+						<router-link
+							v-if="menuItem.url"
+							class="cdx-menu-item__content"
+							:to="menuItem.url">
+							<span class="cdx-menu-item__text"><bdi>{{ menuItem.label }}</bdi></span>
+						</router-link>
+						<span
+							v-else
+							class="cdx-menu-item__content"
+							@click="createCollection">
+							<cdx-icon
+								v-if="menuItem.icon"
+								:icon="menuItem.icon"
+								class="cdx-menu-item__icon"></cdx-icon>
+							<span class="cdx-menu-item__text"><bdi>{{ menuItem.label }}</bdi></span>
+						</span>
+					</template>
+				</cdx-menu-button>
+				<router-link
 					v-else
-					class="cdx-menu-item__content"
-					@click="createCollection">
-					<cdx-icon
-						v-if="menuItem.icon"
-						:icon="menuItem.icon"
-						class="cdx-menu-item__icon"></cdx-icon>
-					<span class="cdx-menu-item__text"><bdi>{{ menuItem.label }}</bdi></span>
-				</span>
-			</template>
-		</cdx-menu-button>
-
-		<router-link
-			v-else
-			class="readinglists-special-nav-link"
-			:to="collectionsUrl">
-			{{ collectionsText }}
-		</router-link>
+					class="readinglists-special-nav-link"
+					:to="collectionsUrl">
+					{{ collectionsText }}
+				</router-link>
+			</li>
+		</ul>
 
 		<div
 			v-if="isCustomList"
@@ -296,10 +301,25 @@ module.exports = exports = {
 @import 'mediawiki.skin.variables.less';
 
 .readinglists-nav-bar {
+	margin-bottom: @spacing-100;
 	display: flex;
 	gap: @spacing-50;
 	align-items: center;
-	margin-bottom: @spacing-100;
+	justify-content: space-between;
+
+	&-links {
+		margin: 0;
+		display: flex;
+		gap: @spacing-50;
+		align-items: center;
+		// Needed to override content styles in Minerva
+		/* stylelint-disable-next-line declaration-no-important */
+		list-style: none !important;
+
+		li {
+			margin: 0;
+		}
+	}
 
 	a.readinglists-special-nav-link {
 		// needed to explicitly specify no visited styles - I welcome a better way to do this
@@ -328,11 +348,6 @@ module.exports = exports = {
 .readinglists-collection-settings-popover.cdx-popover {
 	padding: 0 0 @spacing-75 0;
 	width: @size-1200;
-}
-
-.readinglists-nav-bar-settings {
-	position: relative;
-	margin-inline-start: auto;
 }
 
 .readinglists-nav-bar-settings-button.cdx-button {

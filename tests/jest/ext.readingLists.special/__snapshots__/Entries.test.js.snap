@@ -10,20 +10,28 @@ exports[`Entries with custom lists nav bar does not disappear when show more is 
     class="readinglists-nav-bar"
   >
     <!--v-if-->
-    <a
-      class="readinglists-special-nav-link"
+    <ul
+      class="readinglists-nav-bar-links"
     >
-      
-      All items
-      
-    </a>
-    <a
-      class="readinglists-special-nav-link"
-    >
-      
-      Collections
-      
-    </a>
+      <li>
+        <a
+          class="readinglists-special-nav-link"
+        >
+          
+          All items
+          
+        </a>
+      </li>
+      <li>
+        <a
+          class="readinglists-special-nav-link"
+        >
+          
+          Collections
+          
+        </a>
+      </li>
+    </ul>
     <div
       class="readinglists-nav-bar-settings"
     >
@@ -316,20 +324,28 @@ exports[`Entries with custom lists renders the nav bar when custom lists are ena
     class="readinglists-nav-bar"
   >
     <!--v-if-->
-    <a
-      class="readinglists-special-nav-link"
+    <ul
+      class="readinglists-nav-bar-links"
     >
-      
-      All items
-      
-    </a>
-    <a
-      class="readinglists-special-nav-link"
-    >
-      
-      Collections
-      
-    </a>
+      <li>
+        <a
+          class="readinglists-special-nav-link"
+        >
+          
+          All items
+          
+        </a>
+      </li>
+      <li>
+        <a
+          class="readinglists-special-nav-link"
+        >
+          
+          Collections
+          
+        </a>
+      </li>
+    </ul>
     <!--v-if-->
   </div>
   <!--v-if-->
