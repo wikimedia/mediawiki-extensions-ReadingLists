@@ -68,15 +68,15 @@ exports[`Entries with custom lists nav bar does not disappear when show more is 
   </div>
   <!--v-if-->
   <!--v-if-->
-  <p
-    class="reading-lists-sorting"
-  >
-    Sorted by most recent.
-  </p>
   <div
     class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
   >
     <!-- role="list" needed for Safari support, refer to T435864. -->
+    <p
+      class="reading-lists-sorting"
+    >
+      {}
+    </p>
     <ul
       aria-label="Example list"
       class="reading-lists-items reading-lists-items--grid-view"
@@ -290,11 +290,11 @@ exports[`Entries with custom lists nav bar only renders after content has finish
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->
-  <!--v-if-->
   <div
     class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
   >
     <!-- role="list" needed for Safari support, refer to T435864. -->
+    <!--v-if-->
     <!--v-if-->
   </div>
   <!--v-if-->
@@ -351,15 +351,15 @@ exports[`Entries with custom lists renders the nav bar when custom lists are ena
   </div>
   <!--v-if-->
   <!--v-if-->
-  <p
-    class="reading-lists-sorting"
-  >
-    Sorted by most recent.
-  </p>
   <div
     class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
   >
     <!-- role="list" needed for Safari support, refer to T435864. -->
+    <p
+      class="reading-lists-sorting"
+    >
+      {}
+    </p>
     <ul
       aria-label="All items"
       class="reading-lists-items reading-lists-items--grid-view"
@@ -502,15 +502,15 @@ exports[`Entries without custom lists renders all items from all lists on specia
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->
-  <p
-    class="reading-lists-sorting"
-  >
-    Sorted by most recent.
-  </p>
   <div
     class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
   >
     <!-- role="list" needed for Safari support, refer to T435864. -->
+    <p
+      class="reading-lists-sorting"
+    >
+      {}
+    </p>
     <ul
       aria-label="All items"
       class="reading-lists-items reading-lists-items--grid-view"
@@ -664,15 +664,15 @@ exports[`Entries without custom lists renders with toolbar disabled 1`] = `
   </p>
   
   <!--v-if-->
-  <p
-    class="reading-lists-sorting"
-  >
-    Sorted by most recent.
-  </p>
   <div
     class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
   >
     <!-- role="list" needed for Safari support, refer to T435864. -->
+    <p
+      class="reading-lists-sorting"
+    >
+      {}
+    </p>
     <ul
       aria-label="Example list"
       class="reading-lists-items reading-lists-items--grid-view"

@@ -3,6 +3,9 @@
 		class="reading-lists-items-wrapper"
 		:class="{ 'reading-lists-items-wrapper--grid-view': !isListView }">
 		<!-- role="list" needed for Safari support, refer to T435864. -->
+		<p v-if="collectionItems.length" class="reading-lists-sorting">
+			{{ $i18n( 'readinglists-sorted-by-recent' ) }}
+		</p>
 		<ul
 			v-if="!loadingInfo && collectionItems.length !== 0"
 			ref="listRef"
@@ -86,6 +89,10 @@ module.exports = exports = {
 		margin-top: @spacing-200;
 		margin-left: auto;
 		margin-right: auto;
+	}
+
+	p.reading-lists-sorting {
+		margin: 0;
 	}
 }
 

@@ -58,3 +58,10 @@ config.global.directives = {
 		el.innerHTML = mw.msg( binding.arg, binding.value );
 	}
 };
+
+config.global.mocks = {
+	$i18n: ( str ) => ( {
+		text: () => str,
+		parse: () => str
+	} )
+};

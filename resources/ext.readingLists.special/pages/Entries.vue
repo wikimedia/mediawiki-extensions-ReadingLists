@@ -31,11 +31,6 @@
 		</template>
 
 		<survey v-if="showSurvey" @survey-completed="onSurveyCompleted"></survey>
-
-		<p v-if="entries.length" class="reading-lists-sorting">
-			{{ sortingText }}
-		</p>
-
 		<all-collections
 			v-if="isCollections"
 			:collections="entries"
@@ -136,8 +131,6 @@ module.exports = exports = {
 		const isListView = useIsMobileResolution();
 		const collectionRef = ref();
 		const showCreateCollection = ref( false );
-
-		const sortingText = computed( () => mw.msg( 'readinglists-sorted-by-recent' ) );
 
 		const showInPageTitle = computed( () => {
 			if ( props.imported ) {
@@ -365,7 +358,6 @@ module.exports = exports = {
 			showSurvey,
 			isListView,
 			collectionRef,
-			sortingText,
 			showInPageTitle,
 			isCustomList,
 			showNavBar,
