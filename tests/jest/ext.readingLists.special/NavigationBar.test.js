@@ -2,26 +2,14 @@ const { mount, flushPromises } = require( '@vue/test-utils' );
 
 const api = require( '../../../resources/ext.readingLists.api/index.js' );
 
-const LISTS = require( '../fixtures/lists.json' );
-
-function setupApiStub() {
-	return api.stubApi( {
-		get: jest.fn( ( { action, meta } ) => {
-			if ( action === 'query' ) {
-				if ( meta === 'readinglists' ) {
-					return LISTS;
-				}
-			}
-		} )
-	} );
-}
-
 describe( 'NavigationBar', () => {
 	beforeEach( () => {
 		mw.util.getUrl = jest.fn( ( path ) => `/wiki/${ path }` );
 		mw.util.wikiUrlencode = jest.fn( ( path ) => path );
 		mw.user.getName = jest.fn( () => 'testuser' );
-		setupApiStub();
+		jest.spyOn( api, 'getListsAll' ).mockResolvedValue( [
+			{ id: 42, name: 'My Collection', default: false }
+		] );
 	} );
 
 	afterEach( () => {

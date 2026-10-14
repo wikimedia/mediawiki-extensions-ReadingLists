@@ -23,8 +23,7 @@
 					weight="quiet"
 					:menu-items="collections"
 					:menu-config="menuConfig"
-					@click="maybeGetCollections"
-					@load-more="maybeGetNextCollections">
+					@click="maybeGetCollections">
 					{{ collectionsText }}
 					<cdx-icon size="medium" :icon="cdxIconExpand"></cdx-icon>
 					<template #menu-item="{ menuItem }">
@@ -205,46 +204,16 @@ module.exports = exports = {
 			}
 
 			try {
-				const result = await api.getLists(
-					'name', 'ascending', collectionsPageSize - 1
-				);
-				const listsMinusDefault = result.lists ?
-					result.lists.filter( ( list ) => !list.default ) : [];
-
+				const lists = await api.getListsAll();
 				collections.value = [
 					// put create collections CTA in first position
 					createCollectionEntry
 				].concat(
-					listsMinusDefault.length ? makeListEntries( listsMinusDefault ) :
+					lists.length ? makeListEntries( lists ) :
 						[ noCollectionsEntry ]
 				);
-
-				// if the user has more lists, store the next value so we can load them on scroll
-				if ( result.next ) {
-					collectionsNext.value = result.next;
-				}
 			} catch ( err ) {
 				// T434119 - unclear what we should do in this case besides fail silently
-			}
-		};
-
-		// there's a world in which we refactor this and the above to be the same function, but for
-		// now it's probably not worth being that clever
-		const maybeGetNextCollections = async () => {
-			if ( !collectionsNext.value ) {
-				return;
-			}
-
-			try {
-				const result = await api.getLists( 'name', 'ascending', collectionsPageSize, collectionsNext.value );
-
-				collections.value = collections.value.concat( makeListEntries( result.lists ) );
-
-				// overwrite collectionsNext regardless - either to the next value, or to null so we
-				// know we've reached the end
-				collectionsNext.value = result.next;
-			} catch ( err ) {
-				// T434119 as well
 			}
 		};
 
@@ -283,7 +252,6 @@ module.exports = exports = {
 			collections,
 			selectedCollection,
 			maybeGetCollections,
-			maybeGetNextCollections,
 			cdxIconSettings,
 			collectionSettingsLabel,
 			renameCollectionLabel,
