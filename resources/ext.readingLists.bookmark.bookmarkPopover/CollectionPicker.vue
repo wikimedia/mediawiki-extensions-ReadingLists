@@ -5,12 +5,10 @@
 			class="readinglists-collection-picker__prompt">
 			<p>{{ noCollectionsMessage }}</p>
 		</div>
-		<button
+		<create-collection-button
 			class="readinglists-collection-picker__create-button"
-			@click="onCreateButtonClick"
-		>
-			{{ createButtonLabel }}
-		</button>
+			@create-collection="onCreateButtonClick"
+		></create-collection-button>
 		<ul class="readinglists-collection-picker__collections">
 			<li
 				v-for="collection in collections"
@@ -36,6 +34,7 @@ const { ref, computed, onMounted } = require( 'vue' );
 const { CdxButton, CdxIcon } = require( '../../codex.js' );
 const { cdxIconAdd } = require( '../../icons.json' );
 const api = require( 'ext.readingLists.api' );
+const { CreateCollectionButton } = require( 'ext.readingLists.common' );
 
 /**
  * UI for creating or choosing a collection to add an article to.
@@ -43,7 +42,7 @@ const api = require( 'ext.readingLists.api' );
 // @vue/component
 module.exports = exports = {
 	name: 'CollectionPicker',
-	components: { CdxButton, CdxIcon },
+	components: { CdxButton, CdxIcon, CreateCollectionButton },
 	props: {
 		/**
 		 * Title of the article being saved.
@@ -68,7 +67,6 @@ module.exports = exports = {
 	],
 	setup( props, { emit } ) {
 		const noCollectionsMessage = computed( () => mw.msg( 'readinglists-customlists-collection-picker-create-prompt' ) );
-		const createButtonLabel = computed( () => mw.msg( 'readinglists-customlists-create-collection-short' ) );
 		function getAddButtonLabel( collectionTitle ) {
 			return mw.msg( 'readinglists-customlists-collection-picker-add-button-label', props.title, collectionTitle );
 		}
@@ -103,7 +101,6 @@ module.exports = exports = {
 
 		return {
 			noCollectionsMessage,
-			createButtonLabel,
 			getAddButtonLabel,
 			collections,
 			collectionsFetched,
@@ -143,27 +140,8 @@ module.exports = exports = {
 	}
 
 	&__create-button {
-		.cdx-mixin-link();
-		width: @size-full;
 		// To match the list items, make height min button height + list item padding + top border.
 		min-height: @min-size-interactive-pointer + ( @spacing-25 * 2 ) + @border-width-base;
-
-		// Normalize button styles.
-		background: 0;
-		margin: 0;
-		padding: 0;
-		border: 0;
-		font-family: inherit;
-		font-size: @font-size-medium;
-		font-weight: @font-weight-normal;
-		text-align: left;
-		text-transform: none;
-
-		// The outline from the link mixin looks awful, use text decoration instead.
-		&:focus-visible {
-			outline: @outline-base--focus;
-			text-decoration: @text-decoration-underline;
-		}
 	}
 
 	&__collection {

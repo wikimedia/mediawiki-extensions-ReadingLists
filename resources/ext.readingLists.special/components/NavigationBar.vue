@@ -1,12 +1,5 @@
 <template>
 	<div class="readinglists-nav-bar">
-		<create-collection-dialog
-			v-if="showCreateCollection"
-			@update:open="onUpdateOpen"
-			@success="routeToNewCollection"
-		>
-		</create-collection-dialog>
-
 		<ul class="readinglists-nav-bar-links">
 			<li>
 				<router-link
@@ -96,8 +89,8 @@
 
 <script>
 const { ref, watch, onUpdated, onMounted } = require( 'vue' );
-const { RouterLink, useRouter } = require( 'vue-router' );
-const { CreateCollectionDialog, getCollectionUrl } = require( 'ext.readingLists.common' );
+const { RouterLink } = require( 'vue-router' );
+const { getCollectionUrl } = require( 'ext.readingLists.common' );
 const { CdxButton, CdxIcon, CdxMenuButton, CdxPopover } = require( '../../../codex.js' );
 const { cdxIconAdd, cdxIconExpand, cdxIconSettings } = require( '../../../icons.json' );
 
@@ -146,7 +139,6 @@ module.exports = exports = {
 		CdxIcon,
 		CdxMenuButton,
 		CdxPopover,
-		CreateCollectionDialog,
 		RouterLink
 	},
 	props: {
@@ -155,8 +147,10 @@ module.exports = exports = {
 			required: true
 		}
 	},
-	setup: ( props ) => {
-		const router = useRouter();
+	emits: [
+		'create-collection'
+	],
+	setup: ( props, { emit } ) => {
 		const showDropdown = ref( mw.config.get( 'skin' ) === 'vector-2022' );
 
 		// Router target (relative to the special page base) for the all-items
@@ -169,9 +163,7 @@ module.exports = exports = {
 
 		const collections = ref( [] );
 		const selectedCollection = ref( null );
-		const collectionsNext = ref( null );
 
-		const showCreateCollection = ref( false );
 		const showCollectionSettings = ref( false );
 		const settingsButton = ref( null );
 
@@ -190,11 +182,7 @@ module.exports = exports = {
 		} );
 
 		const createCollection = () => {
-			showCreateCollection.value = true;
-		};
-
-		const onUpdateOpen = ( value ) => {
-			showCreateCollection.value = value;
+			emit( 'create-collection' );
 		};
 
 		const maybeGetCollections = async () => {
@@ -217,14 +205,6 @@ module.exports = exports = {
 			}
 		};
 
-		const routeToNewCollection = ( id, name ) => {
-			const collectionUrl = getCollectionUrl( id, name, true );
-			router.push( collectionUrl );
-			showCreateCollection.value = false;
-			collections.value = [];
-			collectionsNext.value = null;
-		};
-
 		// Populate on startup if desktop detected
 		onUpdated( () => {
 			if ( showDropdown.value ) {
@@ -239,9 +219,6 @@ module.exports = exports = {
 		} );
 		return {
 			showDropdown,
-			routeToNewCollection,
-			onUpdateOpen,
-			showCreateCollection,
 			createCollection,
 			cdxIconExpand,
 			allItemsTo,

@@ -6,9 +6,18 @@
 	<template v-else>
 		<slot v-if="$slots[ 'import-dialog' ]" name="import-dialog"></slot>
 
+		<create-collection-dialog
+			v-if="showCreateCollection"
+			@update:open="( newVal ) => showCreateCollection = newVal"
+			@success="routeToNewCollection"
+		>
+		</create-collection-dialog>
+
 		<navigation-bar
 			v-if="showNavBar"
-			:is-custom-list="isCustomList">
+			:is-custom-list="isCustomList"
+			@create-collection="showCreateCollection = true"
+		>
 		</navigation-bar>
 
 		<template v-if="showInPageTitle">
@@ -27,7 +36,15 @@
 			{{ sortingText }}
 		</p>
 
+		<all-collections
+			v-if="isCollections"
+			:collections="entries"
+			:loading-info="loadingInfo"
+			@create-collection="showCreateCollection = true"
+		></all-collections>
+
 		<collection
+			v-else
 			ref="collectionRef"
 			:collection-items="entries"
 			:loading-info="loadingInfo"
@@ -55,10 +72,12 @@
 
 <script>
 const { ref } = require( 'vue' );
-const { useIsMobileResolution, getCollectionUrl } = require( 'ext.readingLists.common' );
+const { useRouter } = require( 'vue-router' );
+const { useIsMobileResolution, getCollectionUrl, CreateCollectionDialog } = require( 'ext.readingLists.common' );
 const api = require( 'ext.readingLists.api' );
 const { CdxButton, CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
 const EmptyList = require( '../components/EmptyList.vue' );
+const AllCollections = require( '../components/AllCollections.vue' );
 const Collection = require( '../components/Collection.vue' );
 const NavigationBar = require( '../components/NavigationBar.vue' );
 const Survey = require( '../components/Survey.vue' );
@@ -71,7 +90,9 @@ module.exports = exports = {
 		CdxButton,
 		CdxMessage,
 		CdxProgressBar,
+		CreateCollectionDialog,
 		EmptyList,
+		AllCollections,
 		Collection,
 		NavigationBar,
 		Survey
@@ -95,6 +116,16 @@ module.exports = exports = {
 		}
 	},
 	setup() {
+		const router = useRouter();
+
+		const showCreateCollection = ref( false );
+
+		function routeToNewCollection( id, name ) {
+			const collectionUrl = getCollectionUrl( id, name, true );
+			router.push( collectionUrl );
+			showCreateCollection.value = false;
+		}
+
 		return {
 			loadingInfo: ref( true ),
 			loadingEntries: ref( true ),
@@ -111,7 +142,9 @@ module.exports = exports = {
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
 			msgLoading: mw.msg( 'readinglists-loading' ),
 			showSurvey: ref( false ),
-			isListView: useIsMobileResolution()
+			isListView: useIsMobileResolution(),
+			showCreateCollection,
+			routeToNewCollection
 		};
 	},
 	computed: {

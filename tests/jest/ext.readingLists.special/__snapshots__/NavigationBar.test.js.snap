@@ -7,7 +7,6 @@ exports[`NavigationBar renders All items view on desktop 1`] = `
   iscollections="false"
   showdropdown="true"
 >
-  <!--v-if-->
   <ul
     class="readinglists-nav-bar-links"
   >
@@ -41,7 +40,6 @@ exports[`NavigationBar renders All items view on mobile 1`] = `
   iscollections="false"
   showdropdown="false"
 >
-  <!--v-if-->
   <ul
     class="readinglists-nav-bar-links"
   >
@@ -75,7 +73,6 @@ exports[`NavigationBar renders Collection view on desktop 1`] = `
   iscollections="false"
   showdropdown="true"
 >
-  <!--v-if-->
   <ul
     class="readinglists-nav-bar-links"
   >
@@ -109,7 +106,6 @@ exports[`NavigationBar renders Collection view on mobile 1`] = `
   iscollections="false"
   showdropdown="false"
 >
-  <!--v-if-->
   <ul
     class="readinglists-nav-bar-links"
   >
@@ -143,7 +139,6 @@ exports[`NavigationBar renders Collections view on desktop 1`] = `
   iscollections="true"
   showdropdown="true"
 >
-  <!--v-if-->
   <ul
     class="readinglists-nav-bar-links"
   >
@@ -177,7 +172,6 @@ exports[`NavigationBar renders Collections view on mobile 1`] = `
   iscollections="true"
   showdropdown="false"
 >
-  <!--v-if-->
   <ul
     class="readinglists-nav-bar-links"
   >

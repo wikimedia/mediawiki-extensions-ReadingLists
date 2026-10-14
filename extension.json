@@ -269,6 +269,7 @@
 				"resources/ext.readingLists.special/App.vue",
 				"resources/ext.readingLists.special/router.js",
 				"resources/ext.readingLists.special/components/EmptyList.vue",
+				"resources/ext.readingLists.special/components/AllCollections.vue",
 				"resources/ext.readingLists.special/components/Collection.vue",
 				"resources/ext.readingLists.special/components/CollectionItem.vue",
 				"resources/ext.readingLists.special/components/NavigationBar.vue",
@@ -400,7 +401,6 @@
 				"ext.readingLists.common"
 			],
 			"messages": [
-				"readinglists-customlists-create-collection-short",
 				"readinglists-customlists-add-entry-success",
 				"readinglists-customlists-collection-picker-create-prompt",
 				"readinglists-customlists-collection-picker-add-button-label",
@@ -525,6 +525,7 @@
 			"messages": [
 				"readinglists-customlists-create-collection-dialog-name",
 				"readinglists-customlists-create-collection-dialog-placeholder",
+				"readinglists-customlists-create-collection-short",
 				"readinglists-cancel-add-collection",
 				"readinglists-add-collection"
 			],
@@ -533,6 +534,7 @@
 				"resources/ext.readingLists.common/composables.js",
 				"resources/ext.readingLists.common/ConfigPopover.vue",
 				"resources/ext.readingLists.common/DialogPopover.vue",
+				"resources/ext.readingLists.common/CreateCollectionButton.vue",
 				"resources/ext.readingLists.common/CreateCollectionDialog.vue"
 			]
 		}

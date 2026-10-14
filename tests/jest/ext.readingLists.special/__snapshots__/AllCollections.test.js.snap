@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AllCollections renders loading with collections (list hidden) 1`] = `
+<div
+  class="reading-lists-all-collections"
+>
+  <button
+    class="readinglists-create-collection-button reading-lists-all-collections__create-button"
+  >
+    Create collection
+  </button>
+  <!-- role="list" needed for Safari support, refer to T435864. -->
+  <!--v-if-->
+</div>
+`;
+
+exports[`AllCollections renders loading with no collections 1`] = `
+<div
+  class="reading-lists-all-collections"
+>
+  <button
+    class="readinglists-create-collection-button reading-lists-all-collections__create-button"
+  >
+    Create collection
+  </button>
+  <!-- role="list" needed for Safari support, refer to T435864. -->
+  <!--v-if-->
+</div>
+`;
+
+exports[`AllCollections renders not loading with collections 1`] = `
+<div
+  class="reading-lists-all-collections"
+>
+  <button
+    class="readinglists-create-collection-button reading-lists-all-collections__create-button"
+  >
+    Create collection
+  </button>
+  <!-- role="list" needed for Safari support, refer to T435864. -->
+  <ul
+    aria-label="Collections"
+    class="reading-lists-all-collections__list"
+    role="list"
+  >
+    
+    <li
+      class="reading-lists-all-collections__list-item"
+    >
+      <a
+        class="reading-lists-all-collections__list-item__link"
+      >
+        
+        <span
+          class="reading-lists-all-collections__list-item__title"
+        >
+          My Collection
+        </span>
+        <span
+          class="reading-lists-all-collections__list-item__description"
+        >
+          A great collection of articles
+        </span>
+        
+      </a>
+    </li>
+    <li
+      class="reading-lists-all-collections__list-item"
+    >
+      <a
+        class="reading-lists-all-collections__list-item__link"
+      >
+        
+        <span
+          class="reading-lists-all-collections__list-item__title"
+        >
+          Science Articles
+        </span>
+        <span
+          class="reading-lists-all-collections__list-item__description"
+        />
+        
+      </a>
+    </li>
+    
+  </ul>
+</div>
+`;
+
+exports[`AllCollections renders not loading with no collections 1`] = `
+<div
+  class="reading-lists-all-collections"
+>
+  <button
+    class="readinglists-create-collection-button reading-lists-all-collections__create-button"
+  >
+    Create collection
+  </button>
+  <!-- role="list" needed for Safari support, refer to T435864. -->
+  <!--v-if-->
+</div>
+`;
