@@ -71,7 +71,7 @@
 </template>
 
 <script>
-const { ref } = require( 'vue' );
+const { ref, computed, nextTick, onMounted } = require( 'vue' );
 const { useRouter } = require( 'vue-router' );
 const { useIsMobileResolution, getCollectionUrl, CreateCollectionDialog } = require( 'ext.readingLists.common' );
 const api = require( 'ext.readingLists.api' );
@@ -115,77 +115,65 @@ module.exports = exports = {
 			default: false
 		}
 	},
-	setup() {
+	setup( props ) {
 		const router = useRouter();
 
+		const loadingInfo = ref( true );
+		const loadingEntries = ref( true );
+		const title = ref( '' );
+		const isDefaultList = ref( true );
+		const isAllListItems = ref( false );
+		const description = ref( '' );
+		const error = ref( '' );
+		const ready = ref( false );
+		const sort = ref( 'updated' );
+		const direction = ref( 'descending' );
+		const entries = ref( [] );
+		const next = ref( null );
+		const msgShowMore = mw.msg( 'readinglists-show-more' );
+		const msgLoading = mw.msg( 'readinglists-loading' );
+		const showSurvey = ref( false );
+		const isListView = useIsMobileResolution();
+		const collectionRef = ref();
 		const showCreateCollection = ref( false );
 
-		function routeToNewCollection( id, name ) {
-			const collectionUrl = getCollectionUrl( id, name, true );
-			router.push( collectionUrl );
-			showCreateCollection.value = false;
-		}
+		const sortingText = computed( () => mw.msg( 'readinglists-sorted-by-recent' ) );
 
-		return {
-			loadingInfo: ref( true ),
-			loadingEntries: ref( true ),
-			title: ref( '' ),
-			isDefaultList: ref( true ),
-			isAllListItems: ref( false ),
-			description: ref( '' ),
-			error: ref( '' ),
-			ready: ref( false ),
-			sort: ref( 'updated' ),
-			direction: ref( 'descending' ),
-			entries: ref( [] ),
-			next: ref( null ),
-			msgShowMore: mw.msg( 'readinglists-show-more' ),
-			msgLoading: mw.msg( 'readinglists-loading' ),
-			showSurvey: ref( false ),
-			isListView: useIsMobileResolution(),
-			showCreateCollection,
-			routeToNewCollection
-		};
-	},
-	computed: {
-		sortingText() {
-			return mw.msg( 'readinglists-sorted-by-recent' );
-		},
-		showInPageTitle() {
-			if ( this.imported ) {
+		const showInPageTitle = computed( () => {
+			if ( props.imported ) {
 				return true;
 			}
-			return !this.isCustomListsEnabled &&
-				!this.isDefaultList &&
-				!this.isAllListItems;
-		},
+			return !props.isCustomListsEnabled &&
+				!isDefaultList.value &&
+				!isAllListItems.value;
+		} );
+
 		// A custom list (collection): the custom lists experience is enabled and
 		// we are viewing a specific, non-default list rather than the aggregate
 		// all-items view or an imported list.
-		isCustomList() {
-			return this.isCustomListsEnabled &&
-				!this.imported &&
-				!this.isDefaultList &&
-				!this.isAllListItems &&
-				!this.isCollections;
-		},
-		showNavBar() {
+		const isCustomList = computed( () => props.isCustomListsEnabled &&
+				!props.imported &&
+				!isDefaultList.value &&
+				!isAllListItems.value &&
+				!props.isCollections
+		);
+
+		const showNavBar = computed( () => {
 			// if custom lists are enabled, display the nav bar for traversing them
-			if ( !this.isCustomListsEnabled ) {
+			if ( !props.isCustomListsEnabled ) {
 				return false;
 			}
 
 			// we only want to show the nav bar once the interface (incl. entries) have loaded, but
 			// don't want it to disappear if we load more entries
-			if ( this.loadingEntries && this.entries.length === 0 ) {
+			if ( loadingEntries.value && entries.value.length === 0 ) {
 				return false;
 			}
 
 			return true;
-		}
-	},
-	methods: {
-		handleError( err ) {
+		} );
+
+		function handleError( err ) {
 			if ( typeof err === 'string' ) {
 				const listNotFoundErrors = [
 					'badinteger',
@@ -196,65 +184,70 @@ module.exports = exports = {
 				const key = listNotFoundErrors.includes( err ) ?
 					'readinglists-special-error-list-not-found' : err;
 
-				this.error = mw.msg( key );
+				error.value = mw.msg( key );
 			} else {
-				this.error = err.toString();
+				error.value = err.toString();
 			}
-		},
-		async getList() {
-			this.loadingInfo = true;
+		}
+
+		async function getList() {
+			loadingInfo.value = true;
 
 			try {
-				if ( this.imported || this.listId ) {
-					const list = this.imported || await api.getList( this.listId );
+				if ( props.imported || props.listId ) {
+					const list = props.imported || await api.getList( props.listId );
 
 					if ( list.error !== undefined ) {
 						throw list.error;
 					}
 
-					this.title = list.name;
-					this.description = list.description;
-					this.isDefaultList = !!list.default;
-				} else if ( this.isCollections ) {
-					this.isDefaultList = false;
-					this.isAllListItems = false;
+					title.value = list.name;
+					description.value = list.description;
+					isDefaultList.value = !!list.default;
+				} else if ( props.isCollections ) {
+					isDefaultList.value = false;
+					isAllListItems.value = false;
 				} else {
-					this.isDefaultList = false;
-					this.isAllListItems = true;
+					isDefaultList.value = false;
+					isAllListItems.value = true;
 				}
 			} catch ( err ) {
-				this.handleError( err );
+				handleError( err );
 			} finally {
-				this.loadingInfo = false;
+				loadingInfo.value = false;
 			}
-		},
-		getColumnCount() {
-			if ( this.isListView ) {
+		}
+
+		function getColumnCount() {
+			// eslint-disable-next-line es-x/no-optional-chaining
+			if ( isListView.value || !collectionRef.value?.$el ) {
 				return 1;
 			}
 
 			// Measure the wrapper before the list is rendered; the list inherits its grid.
-			const tracks = getComputedStyle( this.$refs.collectionRef.$el ).gridTemplateColumns;
+			const tracks = getComputedStyle( collectionRef.value.$el ).gridTemplateColumns;
 
 			return tracks ? tracks.split( ' ' ).length : 1;
-		},
-		getPageSize() {
-			// Load at least MIN_PAGE_SIZE entries, plus enough to fill the last row.
-			const columns = this.getColumnCount();
-			const total = this.entries.length + MIN_PAGE_SIZE;
+		}
 
-			return Math.ceil( total / columns ) * columns - this.entries.length;
-		},
-		async getEntries() {
-			this.loadingEntries = true;
+		function getPageSize() {
+			// Load at least MIN_PAGE_SIZE entries, plus enough to fill the last row.
+			const columns = getColumnCount();
+			const total = entries.value.length + MIN_PAGE_SIZE;
+
+			return Math.ceil( total / columns ) * columns - entries.value.length;
+		}
+
+		async function getEntries() {
+			loadingEntries.value = true;
 
 			try {
-				let entries;
-				let next = null;
+				let newEntries;
+				let newNext = null;
 
-				if ( this.isCollections ) {
-					const lists = await api.getListsAll();
-					entries = lists.map( ( { name, id, size } ) => (
+				if ( props.isCollections ) {
+					const query = await api.getLists( 'name', 'ascending', 12, next );
+					newEntries = query.lists.map( ( { name, id, size } ) => (
 						{
 							id,
 							title: name,
@@ -262,60 +255,65 @@ module.exports = exports = {
 							url: mw.util.getUrl( getCollectionUrl( id, name ) )
 						}
 					) );
-				} else if ( this.imported === null ) {
+					newNext = query.next;
+				} else if ( props.imported === null ) {
 					const query = await api.getEntries(
-						this.listId,
-						this.sort,
-						this.direction,
-						this.getPageSize(),
-						this.next,
+						props.listId,
+						sort.value,
+						direction.value,
+						getPageSize(),
+						next.value,
 						[ '@local' ]
 					);
-					entries = query.entries;
-					next = query.next;
-				} else if ( this.imported.error !== undefined ) {
+					newEntries = query.entries;
+					newNext = query.next;
+				} else if ( props.imported.error !== undefined ) {
 					return;
 				} else {
-					entries = this.imported.list.slice();
+					newEntries = props.imported.list.slice();
 
-					if ( this.sort === 'name' ) {
-						entries.sort( ( a, b ) => a.title.localeCompare( b.title ) );
+					if ( sort.value === 'name' ) {
+						newEntries.sort( ( a, b ) => a.title.localeCompare( b.title ) );
 					}
 
-					if ( this.direction === 'descending' ) {
-						entries.reverse();
+					if ( direction.value === 'descending' ) {
+						newEntries.reverse();
 					}
 				}
 
-				this.entries.push( ...entries );
-				this.next = next;
+				entries.value.push( ...newEntries );
+				next.value = newNext;
 			} catch ( err ) {
-				this.handleError( err );
+				handleError( err );
 			} finally {
-				this.loadingEntries = false;
+				loadingEntries.value = false;
 			}
-		},
-		async initializePage() {
-			await this.getEntries();
-			this.ready = true;
-			this.maybeShowSurvey();
-		},
-		async onShowMore() {
-			const list = this.$refs.collectionRef.$refs.listRef;
+		}
+
+		async function initializePage() {
+			await getEntries();
+			ready.value = true;
+			maybeShowSurvey();
+		}
+
+		async function onShowMore() {
+			// eslint-disable-next-line es-x/no-optional-chaining
+			const list = collectionRef.value?.listRef;
 			// eslint-disable-next-line es-x/no-optional-chaining
 			const lastEntry = list?.lastElementChild;
-			await this.getEntries();
-			await this.$nextTick();
+			await getEntries();
+			await nextTick();
 			// eslint-disable-next-line es-x/no-optional-chaining
 			const nextEntry = lastEntry?.nextElementSibling?.firstElementChild;
 			if ( nextEntry ) {
 				nextEntry.focus();
 			}
-		},
-		maybeShowSurvey() {
+		}
+
+		function maybeShowSurvey() {
 			// Don't show if the survey is not enabled or there are no saved pages.
 			const enabled = mw.config.get( 'wgReadingListsEnableBetaQuickSurvey' );
-			if ( !enabled || this.entries.length < 1 ) {
+			if ( !enabled || entries.value.length < 1 ) {
 				return;
 			}
 
@@ -334,18 +332,49 @@ module.exports = exports = {
 
 			// Store key for ~4 months, slightly longer than the beta feature period.
 			mw.storage.set( surveyStorageKey, betaSurveyTokenAsNumber + 1, 60 * 60 * 24 * 120 );
-			this.showSurvey = true;
-		},
-		onSurveyCompleted() {
+			showSurvey.value = true;
+		}
+
+		function onSurveyCompleted() {
 			mw.storage.set( surveyStorageKey, '~', 60 * 60 * 24 * 120 );
 		}
-	},
-	async mounted() {
-		// The list metadata (getList) and the entries request (initializePage → getEntries)
-		// do not depend on each other, so fetch them in parallel instead of waiting for the
-		// metadata round-trip before the entries request starts. Both methods handle their
-		// own errors, so Promise.all does not reject.
-		await Promise.all( [ this.getList(), this.initializePage() ] );
+
+		function routeToNewCollection( id, name ) {
+			const collectionUrl = getCollectionUrl( id, name, true );
+			router.push( collectionUrl );
+			showCreateCollection.value = false;
+		}
+
+		onMounted( async () => {
+			// The list metadata (getList) and the entries request (initializePage → getEntries)
+			// do not depend on each other, so fetch them in parallel instead of waiting for the
+			// metadata round-trip before the entries request starts. Both methods handle their
+			// own errors, so Promise.all does not reject.
+			await Promise.all( [ getList(), initializePage() ] );
+		} );
+
+		return {
+			loadingInfo,
+			loadingEntries,
+			title,
+			description,
+			error,
+			entries,
+			next,
+			msgShowMore,
+			msgLoading,
+			showSurvey,
+			isListView,
+			collectionRef,
+			sortingText,
+			showInPageTitle,
+			isCustomList,
+			showNavBar,
+			onShowMore,
+			onSurveyCompleted,
+			showCreateCollection,
+			routeToNewCollection
+		};
 	}
 };
 </script>
