@@ -27,26 +27,13 @@
 			{{ sortingText }}
 		</p>
 
-		<div
-			ref="entryListWrapper"
-			class="reading-lists-items-wrapper"
-			:class="{ 'reading-lists-items-wrapper--grid-view': !isListView }">
-			<!-- role="list" needed for Safari support, refer to T435864. -->
-			<ul
-				v-if="!loadingInfo && entries.length !== 0"
-				ref="entryList"
-				role="list"
-				class="reading-lists-items"
-				:class="cardListClasses"
-				:aria-label="title || msgAllItems">
-				<entry-item
-					v-for="entry in entries"
-					:key="entry.id"
-					:entry="entry"
-					:is-list-view="isListView"
-				></entry-item>
-			</ul>
-		</div>
+		<collection
+			ref="collectionRef"
+			:collection-items="entries"
+			:loading-info="loadingInfo"
+			:collection-title="title"
+			:is-list-view="isListView">
+		</collection>
 
 		<template v-if="!loadingInfo && !loadingEntries">
 			<empty-list
@@ -72,7 +59,7 @@ const { useIsMobileResolution, getCollectionUrl } = require( 'ext.readingLists.c
 const api = require( 'ext.readingLists.api' );
 const { CdxButton, CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
 const EmptyList = require( '../components/EmptyList.vue' );
-const EntryItem = require( '../components/EntryItem.vue' );
+const Collection = require( '../components/Collection.vue' );
 const NavigationBar = require( '../components/NavigationBar.vue' );
 const Survey = require( '../components/Survey.vue' );
 const surveyStorageKey = 'readinglists-beta-survey';
@@ -85,7 +72,7 @@ module.exports = exports = {
 		CdxMessage,
 		CdxProgressBar,
 		EmptyList,
-		EntryItem,
+		Collection,
 		NavigationBar,
 		Survey
 	},
@@ -121,7 +108,6 @@ module.exports = exports = {
 			direction: ref( 'descending' ),
 			entries: ref( [] ),
 			next: ref( null ),
-			msgAllItems: mw.msg( 'readinglists-customlists-allitems' ),
 			msgShowMore: mw.msg( 'readinglists-show-more' ),
 			msgLoading: mw.msg( 'readinglists-loading' ),
 			showSurvey: ref( false ),
@@ -163,9 +149,6 @@ module.exports = exports = {
 			}
 
 			return true;
-		},
-		cardListClasses() {
-			return { 'reading-lists-items--grid-view': !this.isListView };
 		}
 	},
 	methods: {
@@ -218,7 +201,7 @@ module.exports = exports = {
 			}
 
 			// Measure the wrapper before the list is rendered; the list inherits its grid.
-			const tracks = getComputedStyle( this.$refs.entryListWrapper ).gridTemplateColumns;
+			const tracks = getComputedStyle( this.$refs.collectionRef.$el ).gridTemplateColumns;
 
 			return tracks ? tracks.split( ' ' ).length : 1;
 		},
@@ -285,7 +268,7 @@ module.exports = exports = {
 			this.maybeShowSurvey();
 		},
 		async onShowMore() {
-			const list = this.$refs.entryList;
+			const list = this.$refs.collectionRef.$refs.listRef;
 			// eslint-disable-next-line es-x/no-optional-chaining
 			const lastEntry = list?.lastElementChild;
 			await this.getEntries();
@@ -333,43 +316,3 @@ module.exports = exports = {
 	}
 };
 </script>
-
-<style lang="less">
-@import 'mediawiki.skin.variables.less';
-
-@min-width-card: @size-1200;
-
-.reading-lists-items-wrapper {
-	&--grid-view {
-		display: grid;
-		// Add as many cards to a row as possible & ensure cards don't shrink below their min-width.
-		grid-template-columns: repeat( auto-fill, minmax( @min-width-card, 1fr ) );
-		gap: @spacing-100;
-	}
-
-	// "Show more" button.
-	+ .cdx-button {
-		display: block;
-		margin-top: @spacing-200;
-		margin-left: auto;
-		margin-right: auto;
-	}
-}
-
-.reading-lists-items {
-	grid-column: 1 / -1;
-
-	.content ul&,
-	& {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-
-	&--grid-view {
-		display: grid;
-		grid-template-columns: inherit;
-		gap: inherit;
-	}
-}
-</style>

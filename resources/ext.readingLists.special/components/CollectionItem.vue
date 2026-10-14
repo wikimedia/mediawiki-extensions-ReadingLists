@@ -2,22 +2,26 @@
 	<li class="reading-lists-item" :class="rootClasses">
 		<cdx-card
 			class="reading-lists-item__card"
-			:url="entry.url"
-			:thumbnail="entry.thumbnail ? { url: entry.thumbnail } : undefined"
+			:url="collectionData.url"
+			:thumbnail="collectionData.thumbnail ? { url: collectionData.thumbnail } : undefined"
 			thumbnail-size="large"
 			:thumbnail-position="isListView ? 'inline-start' : 'block-start'"
 			:force-thumbnail="isListView"
 			:separation="isListView ? 'divider' : 'outline'"
 		>
 			<template #title>
-				{{ entry.title }}
+				{{ collectionData.title }}
 			</template>
-			<template v-if="entry.redirectTitle" #supporting-text>
+			<template v-if="collectionData.redirectTitle" #supporting-text>
 				<cdx-icon :icon="cdxIconInfo"></cdx-icon>
-				<span v-i18n-html:readinglists-redirect-to="[ entry.redirectTitle ]"></span>
+				<span v-i18n-html:readinglists-redirect-to="[ collectionData.redirectTitle ]">
+				</span>
 			</template>
-			<template v-if="!entry.redirectTitle && entry.description" #description>
-				{{ entry.description }}
+			<template
+				v-if="!collectionData.redirectTitle && collectionData.description"
+				#description
+			>
+				{{ collectionData.description }}
 			</template>
 		</cdx-card>
 	</li>
@@ -28,11 +32,15 @@ const { computed } = require( 'vue' );
 const { cdxIconInfo } = require( '../../../icons.json' );
 const { CdxCard, CdxIcon } = require( '../../../codex.js' );
 
+/**
+ * An item in a collection (reading list). Displayed as a Codex Card.
+ */
 // @vue/component
 module.exports = exports = {
+	name: 'CollectionItem',
 	components: { CdxCard, CdxIcon },
 	props: {
-		entry: {
+		collectionData: {
 			type: Object,
 			// FIXME: This prop should be required instead of having a default.
 			default: () => ( {
@@ -51,7 +59,7 @@ module.exports = exports = {
 	},
 	setup( props ) {
 		const rootClasses = computed( () => ( {
-			'reading-lists-item--has-thumbnail': !!props.entry.thumbnail
+			'reading-lists-item--has-thumbnail': !!props.collectionData.thumbnail
 		} ) );
 
 		return {
