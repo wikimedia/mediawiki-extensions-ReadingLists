@@ -17,17 +17,17 @@ describe( 'NavigationBar', () => {
 	} );
 
 	it.each( [
-		[ 'Collection view on mobile', false, false, false ],
-		[ 'Collection view on desktop', false, false, true ],
-		[ 'Collections view on mobile', false, true, false ],
-		[ 'Collections view on desktop', false, true, true ],
-		[ 'All items view on mobile', true, false, false ],
-		[ 'All items view on desktop', true, false, true ]
-	] )( 'renders %s', async ( _, isAllItems, isCollections, showDropdown ) => {
+		[ 'Collection view on mobile', true ],
+		[ 'Collection view on desktop', true ],
+		[ 'Collections view on mobile', true ],
+		[ 'Collections view on desktop', true ],
+		[ 'All items view on mobile', false ],
+		[ 'All items view on desktop', false ]
+	] )( 'renders %s', async ( _, isCustomList ) => {
 		const NavigationBar = require( '../../../resources/ext.readingLists.special/components/NavigationBar.vue' );
 		const wrapper = mount(
 			NavigationBar,
-			{ props: { isAllItems, isCollections, showDropdown } }
+			{ props: { isCustomList } }
 		);
 
 		expect( wrapper.element ).toMatchSnapshot();
@@ -37,13 +37,13 @@ describe( 'NavigationBar', () => {
 		const NavigationBar = require( '../../../resources/ext.readingLists.special/components/NavigationBar.vue' );
 
 		const allItems = mount( NavigationBar, {
-			props: { isAllItems: true, isCustomList: false }
+			props: { isCustomList: false }
 		} );
 		await flushPromises();
 		expect( allItems.find( '.readinglists-nav-bar-settings-button' ).exists() ).toBe( false );
 
 		const customList = mount( NavigationBar, {
-			props: { isAllItems: false, isCustomList: true }
+			props: { isCustomList: true }
 		} );
 		await flushPromises();
 		const button = customList.find( '.readinglists-nav-bar-settings-button' );

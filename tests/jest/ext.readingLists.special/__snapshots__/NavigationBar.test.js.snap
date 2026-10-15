@@ -3,9 +3,6 @@
 exports[`NavigationBar renders All items view on desktop 1`] = `
 <div
   class="readinglists-nav-bar"
-  isallitems="true"
-  iscollections="false"
-  showdropdown="true"
 >
   <ul
     class="readinglists-nav-bar-links"
@@ -36,9 +33,6 @@ exports[`NavigationBar renders All items view on desktop 1`] = `
 exports[`NavigationBar renders All items view on mobile 1`] = `
 <div
   class="readinglists-nav-bar"
-  isallitems="true"
-  iscollections="false"
-  showdropdown="false"
 >
   <ul
     class="readinglists-nav-bar-links"
@@ -69,9 +63,6 @@ exports[`NavigationBar renders All items view on mobile 1`] = `
 exports[`NavigationBar renders Collection view on desktop 1`] = `
 <div
   class="readinglists-nav-bar"
-  isallitems="false"
-  iscollections="false"
-  showdropdown="true"
 >
   <ul
     class="readinglists-nav-bar-links"
@@ -95,16 +86,45 @@ exports[`NavigationBar renders Collection view on desktop 1`] = `
       </a>
     </li>
   </ul>
-  <!--v-if-->
+  <div
+    class="readinglists-nav-bar-settings"
+  >
+    <button
+      aria-controls="readinglists-collection-settings-actions"
+      aria-expanded="false"
+      aria-haspopup="true"
+      aria-label="Collection settings"
+      class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only readinglists-nav-bar-settings-button"
+    >
+      
+      <span
+        class="cdx-icon cdx-icon--medium"
+      >
+        <svg
+          aria-hidden="true"
+          height="20"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!--v-if-->
+          <g>
+            <path
+              d="M11.835 3.505a6.7 6.7 0 011.46.603l2.362-1.18 1.414 1.415-1.18 2.361a6.7 6.7 0 01.603 1.46L19 9v2l-2.506.835a6.7 6.7 0 01-.603 1.46l1.18 2.362-1.414 1.414-2.362-1.18a6.7 6.7 0 01-1.46.603L11 19H9l-.836-2.506a6.7 6.7 0 01-1.46-.603l-2.361 1.18-1.414-1.414 1.18-2.362a6.7 6.7 0 01-.604-1.46L1 11V9l2.505-.836a6.7 6.7 0 01.603-1.46l-1.18-2.361 1.415-1.414 2.361 1.18a6.7 6.7 0 011.46-.604L9 1h2zM10 7a3 3 0 100 6 3 3 0 000-6"
+            />
+          </g>
+        </svg>
+      </span>
+      
+    </button>
+    <!--v-if-->
+  </div>
 </div>
 `;
 
 exports[`NavigationBar renders Collection view on mobile 1`] = `
 <div
   class="readinglists-nav-bar"
-  isallitems="false"
-  iscollections="false"
-  showdropdown="false"
 >
   <ul
     class="readinglists-nav-bar-links"
@@ -128,16 +148,45 @@ exports[`NavigationBar renders Collection view on mobile 1`] = `
       </a>
     </li>
   </ul>
-  <!--v-if-->
+  <div
+    class="readinglists-nav-bar-settings"
+  >
+    <button
+      aria-controls="readinglists-collection-settings-actions"
+      aria-expanded="false"
+      aria-haspopup="true"
+      aria-label="Collection settings"
+      class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only readinglists-nav-bar-settings-button"
+    >
+      
+      <span
+        class="cdx-icon cdx-icon--medium"
+      >
+        <svg
+          aria-hidden="true"
+          height="20"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!--v-if-->
+          <g>
+            <path
+              d="M11.835 3.505a6.7 6.7 0 011.46.603l2.362-1.18 1.414 1.415-1.18 2.361a6.7 6.7 0 01.603 1.46L19 9v2l-2.506.835a6.7 6.7 0 01-.603 1.46l1.18 2.362-1.414 1.414-2.362-1.18a6.7 6.7 0 01-1.46.603L11 19H9l-.836-2.506a6.7 6.7 0 01-1.46-.603l-2.361 1.18-1.414-1.414 1.18-2.362a6.7 6.7 0 01-.604-1.46L1 11V9l2.505-.836a6.7 6.7 0 01.603-1.46l-1.18-2.361 1.415-1.414 2.361 1.18a6.7 6.7 0 011.46-.604L9 1h2zM10 7a3 3 0 100 6 3 3 0 000-6"
+            />
+          </g>
+        </svg>
+      </span>
+      
+    </button>
+    <!--v-if-->
+  </div>
 </div>
 `;
 
 exports[`NavigationBar renders Collections view on desktop 1`] = `
 <div
   class="readinglists-nav-bar"
-  isallitems="false"
-  iscollections="true"
-  showdropdown="true"
 >
   <ul
     class="readinglists-nav-bar-links"
@@ -161,16 +210,45 @@ exports[`NavigationBar renders Collections view on desktop 1`] = `
       </a>
     </li>
   </ul>
-  <!--v-if-->
+  <div
+    class="readinglists-nav-bar-settings"
+  >
+    <button
+      aria-controls="readinglists-collection-settings-actions"
+      aria-expanded="false"
+      aria-haspopup="true"
+      aria-label="Collection settings"
+      class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only readinglists-nav-bar-settings-button"
+    >
+      
+      <span
+        class="cdx-icon cdx-icon--medium"
+      >
+        <svg
+          aria-hidden="true"
+          height="20"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!--v-if-->
+          <g>
+            <path
+              d="M11.835 3.505a6.7 6.7 0 011.46.603l2.362-1.18 1.414 1.415-1.18 2.361a6.7 6.7 0 01.603 1.46L19 9v2l-2.506.835a6.7 6.7 0 01-.603 1.46l1.18 2.362-1.414 1.414-2.362-1.18a6.7 6.7 0 01-1.46.603L11 19H9l-.836-2.506a6.7 6.7 0 01-1.46-.603l-2.361 1.18-1.414-1.414 1.18-2.362a6.7 6.7 0 01-.604-1.46L1 11V9l2.505-.836a6.7 6.7 0 01.603-1.46l-1.18-2.361 1.415-1.414 2.361 1.18a6.7 6.7 0 011.46-.604L9 1h2zM10 7a3 3 0 100 6 3 3 0 000-6"
+            />
+          </g>
+        </svg>
+      </span>
+      
+    </button>
+    <!--v-if-->
+  </div>
 </div>
 `;
 
 exports[`NavigationBar renders Collections view on mobile 1`] = `
 <div
   class="readinglists-nav-bar"
-  isallitems="false"
-  iscollections="true"
-  showdropdown="false"
 >
   <ul
     class="readinglists-nav-bar-links"
@@ -194,6 +272,38 @@ exports[`NavigationBar renders Collections view on mobile 1`] = `
       </a>
     </li>
   </ul>
-  <!--v-if-->
+  <div
+    class="readinglists-nav-bar-settings"
+  >
+    <button
+      aria-controls="readinglists-collection-settings-actions"
+      aria-expanded="false"
+      aria-haspopup="true"
+      aria-label="Collection settings"
+      class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only readinglists-nav-bar-settings-button"
+    >
+      
+      <span
+        class="cdx-icon cdx-icon--medium"
+      >
+        <svg
+          aria-hidden="true"
+          height="20"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!--v-if-->
+          <g>
+            <path
+              d="M11.835 3.505a6.7 6.7 0 011.46.603l2.362-1.18 1.414 1.415-1.18 2.361a6.7 6.7 0 01.603 1.46L19 9v2l-2.506.835a6.7 6.7 0 01-.603 1.46l1.18 2.362-1.414 1.414-2.362-1.18a6.7 6.7 0 01-1.46.603L11 19H9l-.836-2.506a6.7 6.7 0 01-1.46-.603l-2.361 1.18-1.414-1.414 1.18-2.362a6.7 6.7 0 01-.604-1.46L1 11V9l2.505-.836a6.7 6.7 0 01.603-1.46l-1.18-2.361 1.415-1.414 2.361 1.18a6.7 6.7 0 011.46-.604L9 1h2zM10 7a3 3 0 100 6 3 3 0 000-6"
+            />
+          </g>
+        </svg>
+      </span>
+      
+    </button>
+    <!--v-if-->
+  </div>
 </div>
 `;
