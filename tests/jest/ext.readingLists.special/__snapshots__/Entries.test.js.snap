@@ -37,7 +37,7 @@ exports[`Entries with custom lists nav bar does not disappear when show more is 
     >
       <button
         aria-controls="readinglists-collection-settings-actions"
-        aria-expanded="false"
+        aria-expanded="true"
         aria-haspopup="true"
         aria-label="Collection settings"
         class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only readinglists-nav-bar-settings-button"
@@ -63,219 +63,274 @@ exports[`Entries with custom lists nav bar does not disappear when show more is 
         </span>
         
       </button>
-      <!--v-if-->
+      <!--teleport start-->
+      <div
+        tabindex="0"
+      />
+      <transition-stub
+        appear="true"
+        css="true"
+        name="cdx-popover-floating"
+        persisted="false"
+      >
+        <div
+          class="cdx-popover__backdrop"
+        >
+          <div
+            class="cdx-popover readinglists-collection-settings-popover"
+            style="position: absolute; left: 0px; top: 0px; transform: translate(0px, 0px);"
+          >
+            <div
+              class="cdx-popover-focus-trap"
+              tabindex="-1"
+            />
+            <!--v-if-->
+            <div
+              class="cdx-popover__body cdx-popover__body--no-footer"
+            >
+              
+              <div
+                class="readinglists-collection-settings-actions"
+                id="readinglists-collection-settings-actions"
+              >
+                <button
+                  class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium"
+                >
+                  
+                  Rename collection
+                  
+                </button>
+                <button
+                  class="cdx-button cdx-button--action-destructive cdx-button--weight-quiet cdx-button--size-medium"
+                >
+                  
+                  Delete collection
+                  
+                </button>
+              </div>
+              
+            </div>
+            <!--v-if-->
+            <!--v-if-->
+          </div>
+        </div>
+      </transition-stub>
+      <div
+        tabindex="0"
+      />
+      <!--teleport end-->
     </div>
   </div>
   <!--v-if-->
   <!--v-if-->
   <div
-    class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
+    class="reading-lists-collection"
   >
-    <!-- role="list" needed for Safari support, refer to T435864. -->
     <p
       class="reading-lists-sorting"
     >
       {}
     </p>
-    <ul
-      aria-label="Example list"
-      class="reading-lists-items reading-lists-items--grid-view"
-      role="list"
+    <div
+      class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
+    >
+      <!-- role="list" needed for Safari support, refer to T435864. -->
+      <ul
+        aria-label="Example list"
+        class="reading-lists-items reading-lists-items--grid-view"
+        role="list"
+      >
+        
+        <li
+          class="reading-lists-item"
+        >
+          <a
+            class="cdx-card cdx-card--is-link reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/Citation_needed_example"
+          >
+            <!--v-if-->
+            <span
+              class="cdx-card__text"
+            >
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                Citation needed example
+                
+              </span>
+              <!--v-if-->
+              <!--v-if-->
+            </span>
+          </a>
+        </li>
+        <li
+          class="reading-lists-item reading-lists-item--has-thumbnail"
+        >
+          <a
+            class="cdx-card cdx-card--is-link cdx-card--thumbnail-position-block-start reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/New_York_Yankees"
+          >
+            <span
+              class="cdx-thumbnail cdx-card__thumbnail"
+            >
+              <span
+                class="cdx-thumbnail__placeholder"
+              >
+                <span
+                  class="cdx-icon cdx-icon--medium cdx-thumbnail__placeholder__icon--vue"
+                >
+                  <svg
+                    aria-hidden="true"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <!--v-if-->
+                    <g>
+                      <path
+                        d="M19 19H1V1h18zm-8.5-6-2-2L5 15h10V8zm-4-8a1.5 1.5 0 100 3 1.5 1.5 0 000-3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+              </span>
+              <transition-stub
+                appear="false"
+                css="true"
+                name="cdx-thumbnail__image"
+                persisted="false"
+              >
+                <!--v-if-->
+              </transition-stub>
+            </span>
+            <span
+              class="cdx-card__text"
+            >
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                New York Yankees
+                
+              </span>
+              <span
+                class="cdx-card__text__description"
+              >
+                
+                Major League Baseball franchise in New York City
+                
+              </span>
+              <!--v-if-->
+            </span>
+          </a>
+        </li>
+        <li
+          class="reading-lists-item reading-lists-item--has-thumbnail"
+        >
+          <a
+            class="cdx-card cdx-card--is-link cdx-card--thumbnail-position-block-start reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/Main_Page"
+          >
+            <span
+              class="cdx-thumbnail cdx-card__thumbnail"
+            >
+              <span
+                class="cdx-thumbnail__placeholder"
+              >
+                <span
+                  class="cdx-icon cdx-icon--medium cdx-thumbnail__placeholder__icon--vue"
+                >
+                  <svg
+                    aria-hidden="true"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <!--v-if-->
+                    <g>
+                      <path
+                        d="M19 19H1V1h18zm-8.5-6-2-2L5 15h10V8zm-4-8a1.5 1.5 0 100 3 1.5 1.5 0 000-3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+              </span>
+              <transition-stub
+                appear="false"
+                css="true"
+                name="cdx-thumbnail__image"
+                persisted="false"
+              >
+                <!--v-if-->
+              </transition-stub>
+            </span>
+            <span
+              class="cdx-card__text"
+            >
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                Main Page
+                
+              </span>
+              <span
+                class="cdx-card__text__description"
+              >
+                
+                Main page of the English Wikipedia
+                
+              </span>
+              <!--v-if-->
+            </span>
+          </a>
+        </li>
+        <li
+          class="reading-lists-item"
+        >
+          <a
+            class="cdx-card cdx-card--is-link reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/New_York"
+          >
+            <!--v-if-->
+            <span
+              class="cdx-card__text"
+            >
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                New York
+                
+              </span>
+              <span
+                class="cdx-card__text__description"
+              >
+                
+                Topics referred to by the same term
+                
+              </span>
+              <!--v-if-->
+            </span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+    
+    <button
+      class="cdx-button cdx-button--action-default cdx-button--weight-normal cdx-button--size-medium cdx-button--framed"
     >
       
-      <li
-        class="reading-lists-item"
-      >
-        <a
-          class="cdx-card cdx-card--is-link reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/Citation_needed_example"
-        >
-          <!--v-if-->
-          <span
-            class="cdx-card__text"
-          >
-            <span
-              class="cdx-card__text__title"
-            >
-              
-              Citation needed example
-              
-            </span>
-            <!--v-if-->
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      <li
-        class="reading-lists-item reading-lists-item--has-thumbnail"
-      >
-        <a
-          class="cdx-card cdx-card--is-link cdx-card--thumbnail-position-block-start reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/New_York_Yankees"
-        >
-          <span
-            class="cdx-thumbnail cdx-card__thumbnail"
-          >
-            <span
-              class="cdx-thumbnail__placeholder"
-            >
-              <span
-                class="cdx-icon cdx-icon--medium cdx-thumbnail__placeholder__icon--vue"
-              >
-                <svg
-                  aria-hidden="true"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <!--v-if-->
-                  <g>
-                    <path
-                      d="M19 19H1V1h18zm-8.5-6-2-2L5 15h10V8zm-4-8a1.5 1.5 0 100 3 1.5 1.5 0 000-3"
-                    />
-                  </g>
-                </svg>
-              </span>
-            </span>
-            <transition-stub
-              appear="false"
-              css="true"
-              name="cdx-thumbnail__image"
-              persisted="false"
-            >
-              <!--v-if-->
-            </transition-stub>
-          </span>
-          <span
-            class="cdx-card__text"
-          >
-            <span
-              class="cdx-card__text__title"
-            >
-              
-              New York Yankees
-              
-            </span>
-            <span
-              class="cdx-card__text__description"
-            >
-              
-              Major League Baseball franchise in New York City
-              
-            </span>
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      <li
-        class="reading-lists-item reading-lists-item--has-thumbnail"
-      >
-        <a
-          class="cdx-card cdx-card--is-link cdx-card--thumbnail-position-block-start reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/Main_Page"
-        >
-          <span
-            class="cdx-thumbnail cdx-card__thumbnail"
-          >
-            <span
-              class="cdx-thumbnail__placeholder"
-            >
-              <span
-                class="cdx-icon cdx-icon--medium cdx-thumbnail__placeholder__icon--vue"
-              >
-                <svg
-                  aria-hidden="true"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <!--v-if-->
-                  <g>
-                    <path
-                      d="M19 19H1V1h18zm-8.5-6-2-2L5 15h10V8zm-4-8a1.5 1.5 0 100 3 1.5 1.5 0 000-3"
-                    />
-                  </g>
-                </svg>
-              </span>
-            </span>
-            <transition-stub
-              appear="false"
-              css="true"
-              name="cdx-thumbnail__image"
-              persisted="false"
-            >
-              <!--v-if-->
-            </transition-stub>
-          </span>
-          <span
-            class="cdx-card__text"
-          >
-            <span
-              class="cdx-card__text__title"
-            >
-              
-              Main Page
-              
-            </span>
-            <span
-              class="cdx-card__text__description"
-            >
-              
-              Main page of the English Wikipedia
-              
-            </span>
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      <li
-        class="reading-lists-item"
-      >
-        <a
-          class="cdx-card cdx-card--is-link reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/New_York"
-        >
-          <!--v-if-->
-          <span
-            class="cdx-card__text"
-          >
-            <span
-              class="cdx-card__text__title"
-            >
-              
-              New York
-              
-            </span>
-            <span
-              class="cdx-card__text__description"
-            >
-              
-              Topics referred to by the same term
-              
-            </span>
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
+      Show more items
       
-    </ul>
+    </button>
+    
   </div>
   <!--v-if-->
-  
-  <div
-    aria-disabled="false"
-    aria-label="Please wait..."
-    class="cdx-progress-bar cdx-progress-bar--block cdx-progress-bar--enabled"
-    role="progressbar"
-  >
-    <div
-      class="cdx-progress-bar__bar"
-    />
-  </div>
-  <!--v-if-->
-  
   
 </div>
 `;
@@ -291,13 +346,17 @@ exports[`Entries with custom lists nav bar only renders after content has finish
   <!--v-if-->
   <!--v-if-->
   <div
-    class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
+    class="reading-lists-collection"
   >
-    <!-- role="list" needed for Safari support, refer to T435864. -->
     <!--v-if-->
+    <div
+      class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
+    >
+      <!-- role="list" needed for Safari support, refer to T435864. -->
+      <!--v-if-->
+    </div>
     <!--v-if-->
   </div>
-  <!--v-if-->
   
   <div
     aria-disabled="false"
@@ -352,141 +411,145 @@ exports[`Entries with custom lists renders the nav bar when custom lists are ena
   <!--v-if-->
   <!--v-if-->
   <div
-    class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
+    class="reading-lists-collection"
   >
-    <!-- role="list" needed for Safari support, refer to T435864. -->
     <p
       class="reading-lists-sorting"
     >
       {}
     </p>
-    <ul
-      aria-label="All items"
-      class="reading-lists-items reading-lists-items--grid-view"
-      role="list"
+    <div
+      class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
     >
-      
-      <li
-        class="reading-lists-item"
+      <!-- role="list" needed for Safari support, refer to T435864. -->
+      <ul
+        aria-label="All items"
+        class="reading-lists-items reading-lists-items--grid-view"
+        role="list"
       >
-        <a
-          class="cdx-card cdx-card--is-link reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/Sleep"
+        
+        <li
+          class="reading-lists-item"
         >
-          <!--v-if-->
-          <span
-            class="cdx-card__text"
+          <a
+            class="cdx-card cdx-card--is-link reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/Sleep"
           >
+            <!--v-if-->
             <span
-              class="cdx-card__text__title"
+              class="cdx-card__text"
             >
-              
-              Sleep
-              
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                Sleep
+                
+              </span>
+              <!--v-if-->
+              <!--v-if-->
             </span>
-            <!--v-if-->
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      <li
-        class="reading-lists-item"
-      >
-        <a
-          class="cdx-card cdx-card--is-link reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/Birthday"
+          </a>
+        </li>
+        <li
+          class="reading-lists-item"
         >
-          <!--v-if-->
-          <span
-            class="cdx-card__text"
+          <a
+            class="cdx-card cdx-card--is-link reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/Birthday"
           >
+            <!--v-if-->
             <span
-              class="cdx-card__text__title"
+              class="cdx-card__text"
             >
-              
-              Birthday
-              
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                Birthday
+                
+              </span>
+              <!--v-if-->
+              <!--v-if-->
             </span>
-            <!--v-if-->
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      <li
-        class="reading-lists-item"
-      >
-        <a
-          class="cdx-card cdx-card--is-link reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/Nap"
+          </a>
+        </li>
+        <li
+          class="reading-lists-item"
         >
-          <!--v-if-->
-          <span
-            class="cdx-card__text"
+          <a
+            class="cdx-card cdx-card--is-link reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/Nap"
           >
+            <!--v-if-->
             <span
-              class="cdx-card__text__title"
+              class="cdx-card__text"
             >
-              
-              Nap
-              
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                Nap
+                
+              </span>
+              <!--v-if-->
+              <!--v-if-->
             </span>
-            <!--v-if-->
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      <li
-        class="reading-lists-item"
-      >
-        <a
-          class="cdx-card cdx-card--is-link reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/TestPage"
+          </a>
+        </li>
+        <li
+          class="reading-lists-item"
         >
-          <!--v-if-->
-          <span
-            class="cdx-card__text"
+          <a
+            class="cdx-card cdx-card--is-link reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/TestPage"
           >
+            <!--v-if-->
             <span
-              class="cdx-card__text__title"
+              class="cdx-card__text"
             >
-              
-              TestPage
-              
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                TestPage
+                
+              </span>
+              <!--v-if-->
+              <!--v-if-->
             </span>
-            <!--v-if-->
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      <li
-        class="reading-lists-item"
-      >
-        <a
-          class="cdx-card cdx-card--is-link reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/Germany"
+          </a>
+        </li>
+        <li
+          class="reading-lists-item"
         >
-          <!--v-if-->
-          <span
-            class="cdx-card__text"
+          <a
+            class="cdx-card cdx-card--is-link reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/Germany"
           >
+            <!--v-if-->
             <span
-              class="cdx-card__text__title"
+              class="cdx-card__text"
             >
-              
-              Germany
-              
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                Germany
+                
+              </span>
+              <!--v-if-->
+              <!--v-if-->
             </span>
-            <!--v-if-->
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      
-    </ul>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+    
+    <!--v-if-->
+    
   </div>
-  
-  <!--v-if-->
-  
   <!--v-if-->
   
 </div>
@@ -503,141 +566,145 @@ exports[`Entries without custom lists renders all items from all lists on specia
   <!--v-if-->
   <!--v-if-->
   <div
-    class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
+    class="reading-lists-collection"
   >
-    <!-- role="list" needed for Safari support, refer to T435864. -->
     <p
       class="reading-lists-sorting"
     >
       {}
     </p>
-    <ul
-      aria-label="All items"
-      class="reading-lists-items reading-lists-items--grid-view"
-      role="list"
+    <div
+      class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
     >
-      
-      <li
-        class="reading-lists-item"
+      <!-- role="list" needed for Safari support, refer to T435864. -->
+      <ul
+        aria-label="All items"
+        class="reading-lists-items reading-lists-items--grid-view"
+        role="list"
       >
-        <a
-          class="cdx-card cdx-card--is-link reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/Sleep"
+        
+        <li
+          class="reading-lists-item"
         >
-          <!--v-if-->
-          <span
-            class="cdx-card__text"
+          <a
+            class="cdx-card cdx-card--is-link reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/Sleep"
           >
+            <!--v-if-->
             <span
-              class="cdx-card__text__title"
+              class="cdx-card__text"
             >
-              
-              Sleep
-              
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                Sleep
+                
+              </span>
+              <!--v-if-->
+              <!--v-if-->
             </span>
-            <!--v-if-->
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      <li
-        class="reading-lists-item"
-      >
-        <a
-          class="cdx-card cdx-card--is-link reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/Birthday"
+          </a>
+        </li>
+        <li
+          class="reading-lists-item"
         >
-          <!--v-if-->
-          <span
-            class="cdx-card__text"
+          <a
+            class="cdx-card cdx-card--is-link reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/Birthday"
           >
+            <!--v-if-->
             <span
-              class="cdx-card__text__title"
+              class="cdx-card__text"
             >
-              
-              Birthday
-              
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                Birthday
+                
+              </span>
+              <!--v-if-->
+              <!--v-if-->
             </span>
-            <!--v-if-->
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      <li
-        class="reading-lists-item"
-      >
-        <a
-          class="cdx-card cdx-card--is-link reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/Nap"
+          </a>
+        </li>
+        <li
+          class="reading-lists-item"
         >
-          <!--v-if-->
-          <span
-            class="cdx-card__text"
+          <a
+            class="cdx-card cdx-card--is-link reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/Nap"
           >
+            <!--v-if-->
             <span
-              class="cdx-card__text__title"
+              class="cdx-card__text"
             >
-              
-              Nap
-              
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                Nap
+                
+              </span>
+              <!--v-if-->
+              <!--v-if-->
             </span>
-            <!--v-if-->
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      <li
-        class="reading-lists-item"
-      >
-        <a
-          class="cdx-card cdx-card--is-link reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/TestPage"
+          </a>
+        </li>
+        <li
+          class="reading-lists-item"
         >
-          <!--v-if-->
-          <span
-            class="cdx-card__text"
+          <a
+            class="cdx-card cdx-card--is-link reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/TestPage"
           >
+            <!--v-if-->
             <span
-              class="cdx-card__text__title"
+              class="cdx-card__text"
             >
-              
-              TestPage
-              
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                TestPage
+                
+              </span>
+              <!--v-if-->
+              <!--v-if-->
             </span>
-            <!--v-if-->
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      <li
-        class="reading-lists-item"
-      >
-        <a
-          class="cdx-card cdx-card--is-link reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/Germany"
+          </a>
+        </li>
+        <li
+          class="reading-lists-item"
         >
-          <!--v-if-->
-          <span
-            class="cdx-card__text"
+          <a
+            class="cdx-card cdx-card--is-link reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/Germany"
           >
+            <!--v-if-->
             <span
-              class="cdx-card__text__title"
+              class="cdx-card__text"
             >
-              
-              Germany
-              
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                Germany
+                
+              </span>
+              <!--v-if-->
+              <!--v-if-->
             </span>
-            <!--v-if-->
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      
-    </ul>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+    
+    <!--v-if-->
+    
   </div>
-  
-  <!--v-if-->
-  
   <!--v-if-->
   
 </div>
@@ -665,208 +732,212 @@ exports[`Entries without custom lists renders with toolbar disabled 1`] = `
   
   <!--v-if-->
   <div
-    class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
+    class="reading-lists-collection"
   >
-    <!-- role="list" needed for Safari support, refer to T435864. -->
     <p
       class="reading-lists-sorting"
     >
       {}
     </p>
-    <ul
-      aria-label="Example list"
-      class="reading-lists-items reading-lists-items--grid-view"
-      role="list"
+    <div
+      class="reading-lists-items-wrapper reading-lists-items-wrapper--grid-view"
+    >
+      <!-- role="list" needed for Safari support, refer to T435864. -->
+      <ul
+        aria-label="Example list"
+        class="reading-lists-items reading-lists-items--grid-view"
+        role="list"
+      >
+        
+        <li
+          class="reading-lists-item"
+        >
+          <a
+            class="cdx-card cdx-card--is-link reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/Citation_needed_example"
+          >
+            <!--v-if-->
+            <span
+              class="cdx-card__text"
+            >
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                Citation needed example
+                
+              </span>
+              <!--v-if-->
+              <!--v-if-->
+            </span>
+          </a>
+        </li>
+        <li
+          class="reading-lists-item reading-lists-item--has-thumbnail"
+        >
+          <a
+            class="cdx-card cdx-card--is-link cdx-card--thumbnail-position-block-start reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/New_York_Yankees"
+          >
+            <span
+              class="cdx-thumbnail cdx-card__thumbnail"
+            >
+              <span
+                class="cdx-thumbnail__placeholder"
+              >
+                <span
+                  class="cdx-icon cdx-icon--medium cdx-thumbnail__placeholder__icon--vue"
+                >
+                  <svg
+                    aria-hidden="true"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <!--v-if-->
+                    <g>
+                      <path
+                        d="M19 19H1V1h18zm-8.5-6-2-2L5 15h10V8zm-4-8a1.5 1.5 0 100 3 1.5 1.5 0 000-3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+              </span>
+              <transition-stub
+                appear="false"
+                css="true"
+                name="cdx-thumbnail__image"
+                persisted="false"
+              >
+                <!--v-if-->
+              </transition-stub>
+            </span>
+            <span
+              class="cdx-card__text"
+            >
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                New York Yankees
+                
+              </span>
+              <span
+                class="cdx-card__text__description"
+              >
+                
+                Major League Baseball franchise in New York City
+                
+              </span>
+              <!--v-if-->
+            </span>
+          </a>
+        </li>
+        <li
+          class="reading-lists-item reading-lists-item--has-thumbnail"
+        >
+          <a
+            class="cdx-card cdx-card--is-link cdx-card--thumbnail-position-block-start reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/Main_Page"
+          >
+            <span
+              class="cdx-thumbnail cdx-card__thumbnail"
+            >
+              <span
+                class="cdx-thumbnail__placeholder"
+              >
+                <span
+                  class="cdx-icon cdx-icon--medium cdx-thumbnail__placeholder__icon--vue"
+                >
+                  <svg
+                    aria-hidden="true"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <!--v-if-->
+                    <g>
+                      <path
+                        d="M19 19H1V1h18zm-8.5-6-2-2L5 15h10V8zm-4-8a1.5 1.5 0 100 3 1.5 1.5 0 000-3"
+                      />
+                    </g>
+                  </svg>
+                </span>
+              </span>
+              <transition-stub
+                appear="false"
+                css="true"
+                name="cdx-thumbnail__image"
+                persisted="false"
+              >
+                <!--v-if-->
+              </transition-stub>
+            </span>
+            <span
+              class="cdx-card__text"
+            >
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                Main Page
+                
+              </span>
+              <span
+                class="cdx-card__text__description"
+              >
+                
+                Main page of the English Wikipedia
+                
+              </span>
+              <!--v-if-->
+            </span>
+          </a>
+        </li>
+        <li
+          class="reading-lists-item"
+        >
+          <a
+            class="cdx-card cdx-card--is-link reading-lists-item__card"
+            href="https://en.wikipedia.org/wiki/New_York"
+          >
+            <!--v-if-->
+            <span
+              class="cdx-card__text"
+            >
+              <span
+                class="cdx-card__text__title"
+              >
+                
+                New York
+                
+              </span>
+              <span
+                class="cdx-card__text__description"
+              >
+                
+                Topics referred to by the same term
+                
+              </span>
+              <!--v-if-->
+            </span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+    
+    <button
+      class="cdx-button cdx-button--action-default cdx-button--weight-normal cdx-button--size-medium cdx-button--framed"
     >
       
-      <li
-        class="reading-lists-item"
-      >
-        <a
-          class="cdx-card cdx-card--is-link reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/Citation_needed_example"
-        >
-          <!--v-if-->
-          <span
-            class="cdx-card__text"
-          >
-            <span
-              class="cdx-card__text__title"
-            >
-              
-              Citation needed example
-              
-            </span>
-            <!--v-if-->
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      <li
-        class="reading-lists-item reading-lists-item--has-thumbnail"
-      >
-        <a
-          class="cdx-card cdx-card--is-link cdx-card--thumbnail-position-block-start reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/New_York_Yankees"
-        >
-          <span
-            class="cdx-thumbnail cdx-card__thumbnail"
-          >
-            <span
-              class="cdx-thumbnail__placeholder"
-            >
-              <span
-                class="cdx-icon cdx-icon--medium cdx-thumbnail__placeholder__icon--vue"
-              >
-                <svg
-                  aria-hidden="true"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <!--v-if-->
-                  <g>
-                    <path
-                      d="M19 19H1V1h18zm-8.5-6-2-2L5 15h10V8zm-4-8a1.5 1.5 0 100 3 1.5 1.5 0 000-3"
-                    />
-                  </g>
-                </svg>
-              </span>
-            </span>
-            <transition-stub
-              appear="false"
-              css="true"
-              name="cdx-thumbnail__image"
-              persisted="false"
-            >
-              <!--v-if-->
-            </transition-stub>
-          </span>
-          <span
-            class="cdx-card__text"
-          >
-            <span
-              class="cdx-card__text__title"
-            >
-              
-              New York Yankees
-              
-            </span>
-            <span
-              class="cdx-card__text__description"
-            >
-              
-              Major League Baseball franchise in New York City
-              
-            </span>
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      <li
-        class="reading-lists-item reading-lists-item--has-thumbnail"
-      >
-        <a
-          class="cdx-card cdx-card--is-link cdx-card--thumbnail-position-block-start reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/Main_Page"
-        >
-          <span
-            class="cdx-thumbnail cdx-card__thumbnail"
-          >
-            <span
-              class="cdx-thumbnail__placeholder"
-            >
-              <span
-                class="cdx-icon cdx-icon--medium cdx-thumbnail__placeholder__icon--vue"
-              >
-                <svg
-                  aria-hidden="true"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <!--v-if-->
-                  <g>
-                    <path
-                      d="M19 19H1V1h18zm-8.5-6-2-2L5 15h10V8zm-4-8a1.5 1.5 0 100 3 1.5 1.5 0 000-3"
-                    />
-                  </g>
-                </svg>
-              </span>
-            </span>
-            <transition-stub
-              appear="false"
-              css="true"
-              name="cdx-thumbnail__image"
-              persisted="false"
-            >
-              <!--v-if-->
-            </transition-stub>
-          </span>
-          <span
-            class="cdx-card__text"
-          >
-            <span
-              class="cdx-card__text__title"
-            >
-              
-              Main Page
-              
-            </span>
-            <span
-              class="cdx-card__text__description"
-            >
-              
-              Main page of the English Wikipedia
-              
-            </span>
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
-      <li
-        class="reading-lists-item"
-      >
-        <a
-          class="cdx-card cdx-card--is-link reading-lists-item__card"
-          href="https://en.wikipedia.org/wiki/New_York"
-        >
-          <!--v-if-->
-          <span
-            class="cdx-card__text"
-          >
-            <span
-              class="cdx-card__text__title"
-            >
-              
-              New York
-              
-            </span>
-            <span
-              class="cdx-card__text__description"
-            >
-              
-              Topics referred to by the same term
-              
-            </span>
-            <!--v-if-->
-          </span>
-        </a>
-      </li>
+      Show more items
       
-    </ul>
+    </button>
+    
   </div>
-  
-  <button
-    class="cdx-button cdx-button--action-default cdx-button--weight-normal cdx-button--size-medium cdx-button--framed"
-  >
-    
-    Show more items
-    
-  </button>
-  
   <!--v-if-->
   
 </div>

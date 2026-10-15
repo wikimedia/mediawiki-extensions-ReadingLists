@@ -1,31 +1,49 @@
 <template>
-	<div
-		class="reading-lists-items-wrapper"
-		:class="{ 'reading-lists-items-wrapper--grid-view': !isListView }">
-		<!-- role="list" needed for Safari support, refer to T435864. -->
+	<div class="reading-lists-collection">
 		<p v-if="collectionItems.length" class="reading-lists-sorting">
 			{{ $i18n( 'readinglists-sorted-by-recent' ) }}
 		</p>
-		<ul
-			v-if="!loadingInfo && collectionItems.length !== 0"
-			ref="listRef"
-			role="list"
-			class="reading-lists-items"
-			:class="listClasses"
-			:aria-label="collectionTitle || allItemsAriaLabel">
-			<collection-item
-				v-for="item in collectionItems"
-				:key="item.id"
-				:collection-data="item"
-				:is-list-view="isListView"
-			></collection-item>
-		</ul>
+
+		<div
+			ref="listWrapperRef"
+			class="reading-lists-items-wrapper"
+			:class="listWrapperClasses"
+		>
+			<!-- role="list" needed for Safari support, refer to T435864. -->
+			<ul
+				v-if="!loadingInfo && collectionItems.length !== 0"
+				ref="listRef"
+				role="list"
+				class="reading-lists-items"
+				:class="listClasses"
+				:aria-label="collectionTitle || allItemsAriaLabel">
+				<collection-item
+					v-for="item in collectionItems"
+					:key="item.id"
+					:collection-data="item"
+					:is-list-view="isListView"
+				></collection-item>
+			</ul>
+		</div>
+
+		<template v-if="!loadingInfo && !loadingEntries">
+			<empty-list
+				v-if="collectionItems.length === 0"
+				:is-custom-list="isCustomList">
+			</empty-list>
+
+			<cdx-button v-else-if="hasMoreEntries" @click="$emit( 'show-more' )">
+				{{ msgShowMore }}
+			</cdx-button>
+		</template>
 	</div>
 </template>
 
 <script>
 const { ref, computed } = require( 'vue' );
+const { CdxButton } = require( '../../../codex.js' );
 const CollectionItem = require( './CollectionItem.vue' );
+const EmptyList = require( './EmptyList.vue' );
 
 /**
  * A single collection (reading list).
@@ -34,36 +52,61 @@ const CollectionItem = require( './CollectionItem.vue' );
 module.exports = exports = {
 	name: 'Collection',
 	components: {
-		CollectionItem
+		CdxButton,
+		CollectionItem,
+		EmptyList
 	},
 	props: {
 		collectionItems: {
 			type: Array,
 			required: true
 		},
-		loadingInfo: {
-			type: Boolean,
-			required: true
-		},
 		collectionTitle: {
 			type: String,
 			default: ''
 		},
+		loadingInfo: {
+			type: Boolean,
+			required: true
+		},
+		loadingEntries: {
+			type: Boolean,
+			required: true
+		},
 		isListView: {
+			type: Boolean,
+			default: false
+		},
+		isCustomList: {
+			type: Boolean,
+			default: false
+		},
+		hasMoreEntries: {
 			type: Boolean,
 			default: false
 		}
 	},
+	emits: [ 'show-more' ],
 	setup( props ) {
+		const listWrapperRef = ref();
+		const listWrapperClasses = computed( () => (
+			{ 'reading-lists-items-wrapper--grid-view': !props.isListView }
+		) );
+
 		const listRef = ref();
 		const listClasses = computed( () => (
 			{ 'reading-lists-items--grid-view': !props.isListView }
 		) );
+
+		const msgShowMore = computed( () => mw.msg( 'readinglists-show-more' ) );
 		const allItemsAriaLabel = computed( () => mw.msg( 'readinglists-customlists-allitems' ) );
 
 		return {
+			listWrapperRef,
+			listWrapperClasses,
 			listRef,
 			listClasses,
+			msgShowMore,
 			allItemsAriaLabel
 		};
 	}

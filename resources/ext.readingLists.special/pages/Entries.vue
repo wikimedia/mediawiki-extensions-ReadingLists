@@ -42,21 +42,14 @@
 			v-else
 			ref="collectionRef"
 			:collection-items="entries"
-			:loading-info="loadingInfo"
 			:collection-title="title"
-			:is-list-view="isListView">
-		</collection>
-
-		<template v-if="!loadingInfo && !loadingEntries">
-			<empty-list
-				v-if="entries.length === 0"
-				:is-custom-list="isCustomList">
-			</empty-list>
-
-			<cdx-button v-else-if="next !== null" @click="onShowMore">
-				{{ msgShowMore }}
-			</cdx-button>
-		</template>
+			:loading-info="loadingInfo"
+			:loading-entries="loadingEntries"
+			:is-list-view="isListView"
+			:is-custom-list="isCustomList"
+			:has-more-entries="next !== null"
+			@show-more="onShowMore"
+		></collection>
 
 		<cdx-progress-bar
 			v-if="loadingInfo || loadingEntries"
@@ -70,8 +63,7 @@ const { ref, computed, nextTick, onMounted } = require( 'vue' );
 const { useRouter } = require( 'vue-router' );
 const { useIsMobileResolution, getCollectionUrl, CreateCollectionDialog } = require( 'ext.readingLists.common' );
 const api = require( 'ext.readingLists.api' );
-const { CdxButton, CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
-const EmptyList = require( '../components/EmptyList.vue' );
+const { CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
 const AllCollections = require( '../components/AllCollections.vue' );
 const Collection = require( '../components/Collection.vue' );
 const NavigationBar = require( '../components/NavigationBar.vue' );
@@ -82,11 +74,9 @@ const MIN_PAGE_SIZE = 12;
 // @vue/component
 module.exports = exports = {
 	components: {
-		CdxButton,
 		CdxMessage,
 		CdxProgressBar,
 		CreateCollectionDialog,
-		EmptyList,
 		AllCollections,
 		Collection,
 		NavigationBar,
@@ -125,7 +115,6 @@ module.exports = exports = {
 		const direction = ref( 'descending' );
 		const entries = ref( [] );
 		const next = ref( null );
-		const msgShowMore = mw.msg( 'readinglists-show-more' );
 		const msgLoading = mw.msg( 'readinglists-loading' );
 		const showSurvey = ref( false );
 		const isListView = useIsMobileResolution();
@@ -213,12 +202,14 @@ module.exports = exports = {
 
 		function getColumnCount() {
 			// eslint-disable-next-line es-x/no-optional-chaining
-			if ( isListView.value || !collectionRef.value?.$el ) {
+			if ( isListView.value || !collectionRef.value?.listWrapperRef ) {
 				return 1;
 			}
 
 			// Measure the wrapper before the list is rendered; the list inherits its grid.
-			const tracks = getComputedStyle( collectionRef.value.$el ).gridTemplateColumns;
+			const tracks = getComputedStyle(
+				collectionRef.value.listWrapperRef
+			).gridTemplateColumns;
 
 			return tracks ? tracks.split( ' ' ).length : 1;
 		}
@@ -353,7 +344,6 @@ module.exports = exports = {
 			error,
 			entries,
 			next,
-			msgShowMore,
 			msgLoading,
 			showSurvey,
 			isListView,
