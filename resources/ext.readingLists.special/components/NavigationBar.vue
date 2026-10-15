@@ -59,7 +59,7 @@
 				aria-controls="readinglists-collection-settings-actions"
 				:aria-expanded="showCollectionSettings"
 				@click="toggleCollectionSettings">
-				<cdx-icon :icon="cdxIconSettings" size="large"></cdx-icon>
+				<cdx-icon :icon="cdxIconSettings" size="medium"></cdx-icon>
 			</cdx-button>
 			<cdx-popover
 				v-if="showCollectionSettings"

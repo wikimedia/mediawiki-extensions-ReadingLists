@@ -44,7 +44,7 @@ exports[`Entries with custom lists nav bar does not disappear when show more is 
       >
         
         <span
-          class="cdx-icon cdx-icon--large"
+          class="cdx-icon cdx-icon--medium"
         >
           <svg
             aria-hidden="true"
