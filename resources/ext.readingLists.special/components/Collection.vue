@@ -29,7 +29,10 @@
 		<template v-if="!loadingInfo && !loadingEntries">
 			<empty-list
 				v-if="collectionItems.length === 0"
-				:is-custom-list="isCustomList">
+				:heading="msgEmptyListHeading"
+				:call-to-action="msgEmptyListCTA"
+				:image-url="emptyStateImageUrl"
+			>
 			</empty-list>
 
 			<cdx-button v-else-if="hasMoreEntries" @click="$emit( 'show-more' )">
@@ -101,13 +104,31 @@ module.exports = exports = {
 		const msgShowMore = computed( () => mw.msg( 'readinglists-show-more' ) );
 		const allItemsAriaLabel = computed( () => mw.msg( 'readinglists-customlists-allitems' ) );
 
+		const msgEmptyListHeading = computed( () => mw.msg(
+			props.isCustomList ?
+				'readinglists-empty-collection-title' :
+				'readinglists-empty-title'
+		) );
+
+		const msgEmptyListCTA = computed( () => mw.msg(
+			props.isCustomList ?
+				'readinglists-empty-collection-cta' :
+				'readinglists-empty-cta'
+		) );
+
+		const emptyStateImageUrl = computed( () => mw.config.get( 'wgExtensionAssetsPath' ) +
+			'/ReadingLists/resources/assets/collection-empty-state.svg' );
+
 		return {
 			listWrapperRef,
 			listWrapperClasses,
 			listRef,
 			listClasses,
 			msgShowMore,
-			allItemsAriaLabel
+			allItemsAriaLabel,
+			msgEmptyListHeading,
+			msgEmptyListCTA,
+			emptyStateImageUrl
 		};
 	}
 };

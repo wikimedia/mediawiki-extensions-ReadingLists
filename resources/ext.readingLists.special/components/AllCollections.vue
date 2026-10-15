@@ -1,41 +1,60 @@
 <template>
-	<div class="reading-lists-all-collections">
-		<create-collection-button
-			class="reading-lists-all-collections__create-button"
-			@create-collection="onCreateButtonClick"
-		></create-collection-button>
+	<div v-if="!loadingInfo && !loadingEntries" class="reading-lists-all-collections">
+		<template v-if="collections.length !== 0">
+			<create-collection-button
+				class="reading-lists-all-collections__create-button"
+				@create-collection="onCreateButtonClick"
+			></create-collection-button>
 
-		<!-- role="list" needed for Safari support, refer to T435864. -->
-		<ul
-			v-if="!loadingInfo && collections.length !== 0"
-			role="list"
-			class="reading-lists-all-collections__list"
-			:aria-label="ariaLabel">
-			<li
-				v-for="collection in collections"
-				:key="collection.id"
-				class="reading-lists-all-collections__list-item"
-			>
-				<router-link
-					class="reading-lists-all-collections__list-item__link"
-					:to="getUrlSection( collection.url )"
+			<!-- role="list" needed for Safari support, refer to T435864. -->
+			<ul
+				role="list"
+				class="reading-lists-all-collections__list"
+				:aria-label="ariaLabel">
+				<li
+					v-for="collection in collections"
+					:key="collection.id"
+					class="reading-lists-all-collections__list-item"
 				>
-					<span class="reading-lists-all-collections__list-item__title">
-						{{ collection.title }}
-					</span>
-					<span class="reading-lists-all-collections__list-item__description">
-						{{ collection.description }}
-					</span>
-				</router-link>
-			</li>
-		</ul>
+					<router-link
+						class="reading-lists-all-collections__list-item__link"
+						:to="getUrlSection( collection.url )"
+					>
+						<span class="reading-lists-all-collections__list-item__title">
+							{{ collection.title }}
+						</span>
+						<span class="reading-lists-all-collections__list-item__description">
+							{{ collection.description }}
+						</span>
+					</router-link>
+				</li>
+			</ul>
+		</template>
+		<template v-else>
+			<empty-list
+				class="reading-lists-all-collections__empty-state"
+				:heading="msgEmptyListHeading"
+				:image-url="emptyStateImageUrl"
+			>
+				<cdx-button
+					class="reading-lists-all-collections__empty-state__create-button"
+					weight="quiet"
+					action="progressive"
+					@click="onCreateButtonClick"
+				>
+					{{ createButtonLabel }}
+				</cdx-button>
+			</empty-list>
+		</template>
 	</div>
 </template>
 
 <script>
 const { computed } = require( 'vue' );
 const { RouterLink } = require( 'vue-router' );
+const { CdxButton } = require( '../../../codex.js' );
 const { collectionsBaseUrl, CreateCollectionButton } = require( 'ext.readingLists.common' );
+const EmptyList = require( './EmptyList.vue' );
 
 /**
  * List of all collections on Special:ReadingLists.
@@ -43,13 +62,22 @@ const { collectionsBaseUrl, CreateCollectionButton } = require( 'ext.readingList
 // @vue/component
 module.exports = exports = {
 	name: 'AllCollections',
-	components: { RouterLink, CreateCollectionButton },
+	components: {
+		RouterLink,
+		CdxButton,
+		CreateCollectionButton,
+		EmptyList
+	},
 	props: {
 		collections: {
 			type: Array,
 			required: true
 		},
 		loadingInfo: {
+			type: Boolean,
+			required: true
+		},
+		loadingEntries: {
 			type: Boolean,
 			required: true
 		}
@@ -59,6 +87,11 @@ module.exports = exports = {
 	],
 	setup( _props, { emit } ) {
 		const ariaLabel = computed( () => mw.msg( 'readinglists-customlists-collections' ) );
+
+		const msgEmptyListHeading = computed( () => mw.msg( 'readinglists-customlists-no-collections' ) );
+		const emptyStateImageUrl = computed( () => mw.config.get( 'wgExtensionAssetsPath' ) +
+			'/ReadingLists/resources/assets/all-collections-empty-state.svg' );
+		const createButtonLabel = computed( () => mw.msg( 'readinglists-customlists-create-collection-short' ) );
 
 		function getUrlSection( url ) {
 			return url.slice(
@@ -72,6 +105,9 @@ module.exports = exports = {
 
 		return {
 			ariaLabel,
+			msgEmptyListHeading,
+			emptyStateImageUrl,
+			createButtonLabel,
 			getUrlSection,
 			onCreateButtonClick
 		};
@@ -127,6 +163,10 @@ module.exports = exports = {
 		&__description {
 			font-size: @font-size-small;
 		}
+	}
+
+	&__empty-state__create-button.cdx-button {
+		margin-top: @spacing-200;
 	}
 }
 

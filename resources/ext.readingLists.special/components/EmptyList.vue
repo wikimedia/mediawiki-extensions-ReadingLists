@@ -1,37 +1,53 @@
 <template>
 	<div class="reading-lists-empty">
+		<span
+			ref="imageRef"
+			class="reading-lists-empty__image"
+		></span>
+
 		<h2 class="reading-lists-empty__title">
-			{{ msgEmptyTitle }}
+			{{ heading }}
 		</h2>
 
-		<p class="reading-lists-empty__description">
-			{{ msgEmptyDescription }}
+		<p v-if="callToAction" class="reading-lists-empty__description">
+			{{ callToAction }}
 		</p>
+
+		<slot></slot>
 	</div>
 </template>
 
 <script>
+const { ref, onMounted } = require( 'vue' );
+
 // @vue/component
 module.exports = exports = {
 	props: {
-		// Whether the empty list is a custom list (collection) rather than the
-		// default "saved articles" list or the aggregate all-items view.
-		isCustomList: {
-			type: Boolean,
-			default: false
+		imageUrl: {
+			type: String,
+			required: true
+		},
+		heading: {
+			type: String,
+			required: true
+		},
+		callToAction: {
+			type: String,
+			default: ''
 		}
 	},
-	computed: {
-		msgEmptyTitle() {
-			return this.isCustomList ?
-				mw.msg( 'readinglists-empty-collection-title' ) :
-				mw.msg( 'readinglists-empty-title' );
-		},
-		msgEmptyDescription() {
-			return this.isCustomList ?
-				mw.msg( 'readinglists-empty-collection-cta' ) :
-				mw.msg( 'readinglists-empty-cta' );
-		}
+	setup( props ) {
+		const imageRef = ref();
+
+		onMounted( () => {
+			if ( imageRef.value ) {
+				imageRef.value.style.content = `url( ${ props.imageUrl } )`;
+			}
+		} );
+
+		return {
+			imageRef
+		};
 	}
 };
 </script>
@@ -41,27 +57,24 @@ module.exports = exports = {
 
 	.reading-lists-empty {
 		max-width: @size-2400;
-		margin-left: auto;
-		margin-right: auto;
+		margin: @spacing-200 auto 0;
 		text-align: center;
+
+		&__image {
+			display: block;
+			margin: 0 auto;
+		}
 
 		// `<h2>` element, for semantic structure, but styled differently from Vector.
 		// Overspecified to override Vector's `.mw-body-content h2` styles for setting
 		// sans-serif font.
 		& &__title {
-			margin-top: @spacing-200;
-			margin-bottom: 0;
+			margin: 0;
 			padding: 0;
 			border: 0;
 			font-family: @font-family-sans;
 			font-size: @font-size-medium;
 			font-weight: @font-weight-bold;
-
-			&::before {
-				display: block;
-				content: url( ../../assets/collection-empty-state.svg );
-				margin: 0 auto;
-			}
 		}
 
 		&__description {

@@ -31,34 +31,20 @@ describe( 'AllCollections', () => {
 	} );
 
 	it.each( [
-		[ 'loading with no collections', [], true ],
-		[ 'not loading with no collections', [], false ],
-		[ 'not loading with collections', COLLECTIONS, false ],
-		[ 'loading with collections (list hidden)', COLLECTIONS, true ]
-	] )( 'renders %s', ( _, collections, loadingInfo ) => {
+		[ 'loading info', [], true, false ],
+		[ 'loading entries', [], false, true ],
+		[ 'finished loading with no collections', [], false, false ],
+		[ 'finished loading with collections', COLLECTIONS, false, false ]
+	] )( 'renders %s', ( _, collections, loadingInfo, loadingEntries ) => {
 		const wrapper = mount( AllCollections, {
-			props: { collections, loadingInfo }
+			props: { collections, loadingInfo, loadingEntries }
 		} );
 		expect( wrapper.element ).toMatchSnapshot();
 	} );
 
-	it( 'hides the list when loadingInfo is true', () => {
+	it( 'shows one list item per collection', () => {
 		const wrapper = mount( AllCollections, {
-			props: { collections: COLLECTIONS, loadingInfo: true }
-		} );
-		expect( wrapper.find( 'ul' ).exists() ).toBe( false );
-	} );
-
-	it( 'hides the list when collections is empty', () => {
-		const wrapper = mount( AllCollections, {
-			props: { collections: [], loadingInfo: false }
-		} );
-		expect( wrapper.find( 'ul' ).exists() ).toBe( false );
-	} );
-
-	it( 'shows one list item per collection when not loading', () => {
-		const wrapper = mount( AllCollections, {
-			props: { collections: COLLECTIONS, loadingInfo: false }
+			props: { collections: COLLECTIONS, loadingInfo: false, loadingEntries: false }
 		} );
 		expect( wrapper.find( 'ul' ).exists() ).toBe( true );
 		expect( wrapper.findAll( 'li' ) ).toHaveLength( COLLECTIONS.length );
@@ -66,15 +52,23 @@ describe( 'AllCollections', () => {
 
 	it( 'emits create-collection when the create button is clicked', async () => {
 		const wrapper = mount( AllCollections, {
-			props: { collections: [], loadingInfo: false }
+			props: { collections: COLLECTIONS, loadingInfo: false, loadingEntries: false }
 		} );
 		await wrapper.find( '.readinglists-create-collection-button' ).trigger( 'click' );
 		expect( wrapper.emitted( 'create-collection' ) ).toHaveLength( 1 );
 	} );
 
+	it( 'emits create-collection when the empty-state create button is clicked', async () => {
+		const wrapper = mount( AllCollections, {
+			props: { collections: [], loadingInfo: false, loadingEntries: false }
+		} );
+		await wrapper.find( '.reading-lists-all-collections__empty-state__create-button' ).trigger( 'click' );
+		expect( wrapper.emitted( 'create-collection' ) ).toHaveLength( 1 );
+	} );
+
 	it( 'strips the base URL prefix from collection URLs passed to RouterLink', () => {
 		const wrapper = mount( AllCollections, {
-			props: { collections: COLLECTIONS, loadingInfo: false }
+			props: { collections: COLLECTIONS, loadingInfo: false, loadingEntries: false }
 		} );
 		const links = wrapper.findAllComponents( { name: 'RouterLink' } );
 		expect( links[ 0 ].props( 'to' ) ).toBe( '/testuser/1/My_Collection' );

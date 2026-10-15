@@ -35,6 +35,7 @@
 			v-if="isCollections"
 			:collections="entries"
 			:loading-info="loadingInfo"
+			:loading-entries="loadingEntries"
 			@create-collection="showCreateCollection = true"
 		></all-collections>
 

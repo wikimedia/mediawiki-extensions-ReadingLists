@@ -1,37 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AllCollections renders loading with collections (list hidden) 1`] = `
+exports[`AllCollections renders finished loading with collections 1`] = `
 <div
   class="reading-lists-all-collections"
 >
-  <button
-    class="readinglists-create-collection-button reading-lists-all-collections__create-button"
-  >
-    Create collection
-  </button>
-  <!-- role="list" needed for Safari support, refer to T435864. -->
-  <!--v-if-->
-</div>
-`;
-
-exports[`AllCollections renders loading with no collections 1`] = `
-<div
-  class="reading-lists-all-collections"
->
-  <button
-    class="readinglists-create-collection-button reading-lists-all-collections__create-button"
-  >
-    Create collection
-  </button>
-  <!-- role="list" needed for Safari support, refer to T435864. -->
-  <!--v-if-->
-</div>
-`;
-
-exports[`AllCollections renders not loading with collections 1`] = `
-<div
-  class="reading-lists-all-collections"
->
+  
   <button
     class="readinglists-create-collection-button reading-lists-all-collections__create-button"
   >
@@ -84,19 +57,40 @@ exports[`AllCollections renders not loading with collections 1`] = `
     </li>
     
   </ul>
+  
 </div>
 `;
 
-exports[`AllCollections renders not loading with no collections 1`] = `
+exports[`AllCollections renders finished loading with no collections 1`] = `
 <div
   class="reading-lists-all-collections"
 >
-  <button
-    class="readinglists-create-collection-button reading-lists-all-collections__create-button"
+  <div
+    class="reading-lists-empty reading-lists-all-collections__empty-state"
   >
-    Create collection
-  </button>
-  <!-- role="list" needed for Safari support, refer to T435864. -->
-  <!--v-if-->
+    <span
+      class="reading-lists-empty__image"
+      style="content: url( undefined/ReadingLists/resources/assets/all-collections-empty-state.svg );"
+    />
+    <h2
+      class="reading-lists-empty__title"
+    >
+      You don't have any collections
+    </h2>
+    <!--v-if-->
+    
+    <button
+      class="cdx-button cdx-button--action-progressive cdx-button--weight-quiet cdx-button--size-medium reading-lists-all-collections__empty-state__create-button"
+    >
+      
+      Create collection
+      
+    </button>
+    
+  </div>
 </div>
 `;
+
+exports[`AllCollections renders loading entries 1`] = `<!--v-if-->`;
+
+exports[`AllCollections renders loading info 1`] = `<!--v-if-->`;
