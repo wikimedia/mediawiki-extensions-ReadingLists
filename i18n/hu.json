@@ -50,6 +50,6 @@
 	"readinglists-import-app-misconfigured": "Ez a wiki jelenleg nem támogatja listák importálását.",
 	"readinglists-import-disclaimer": "Ennek a wikinek egy felhasználója készített egy olvasólistát, hogy megossza másokkal (valószínűleg veled). A lista nincs moderálva, és a tartalma nem tükrözi a wiki szerkesztőinek álláspontját.",
 	"readinglists-import-button-label": "Megnyitás appban",
-	"readinglists-import-button-hint": "Koppintson a gombra:",
+	"readinglists-import-button-hint": "Koppints az alábbi a gombra:",
 	"readinglists-import-app-launch-hint": "Győződj meg róla, hogy telepítetted a mobilalkalmazás legújabb verzióját."
 }

@@ -10,7 +10,7 @@
 	"readinglists-db-error-not-set-up": "Não foram configuradas listas de leitura para este usuário.",
 	"readinglists-db-error-no-projects": "Nenhum projeto foi registrado para uso com o ReadingLists. Use o script populateProjectsFromSiteMatrix para registrar projetos.",
 	"readinglists-db-error-already-set-up": "As listas de leitura já foram configuradas para este usuário.",
-	"readinglists-db-error-cannot-delete-default-list": "A lista padrão não pode ser excluída.",
+	"readinglists-db-error-cannot-delete-default-list": "A lista padrão não pode ser eliminada.",
 	"readinglists-db-error-cannot-update-default-list": "A lista padrão não pode ser atualizada.",
 	"readinglists-db-error-no-such-list": "A lista $1 não existe.",
 	"readinglists-db-error-no-such-list-entry": "Não existe uma entrada $1 na lista.",
