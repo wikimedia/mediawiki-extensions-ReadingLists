@@ -7,11 +7,11 @@ exports[`Entries with custom lists nav bar does not disappear when show more is 
   
   <!--v-if-->
   <!--v-if-->
-  <div
-    class="readinglists-nav-bar"
+  <nav
+    class="reading-lists-nav"
   >
     <ul
-      class="readinglists-nav-bar-links"
+      class="reading-lists-nav-links"
     >
       <li>
         <a
@@ -33,14 +33,14 @@ exports[`Entries with custom lists nav bar does not disappear when show more is 
       </li>
     </ul>
     <div
-      class="readinglists-nav-bar-settings"
+      class="reading-lists-nav-settings"
     >
       <button
         aria-controls="readinglists-collection-settings-actions"
         aria-expanded="true"
         aria-haspopup="true"
         aria-label="Collection settings"
-        class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only readinglists-nav-bar-settings-button"
+        class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only reading-lists-nav-settings-button"
       >
         
         <span
@@ -120,7 +120,7 @@ exports[`Entries with custom lists nav bar does not disappear when show more is 
       />
       <!--teleport end-->
     </div>
-  </div>
+  </nav>
   <!--v-if-->
   <!--v-if-->
   <div
@@ -381,11 +381,11 @@ exports[`Entries with custom lists renders the nav bar when custom lists are ena
   
   <!--v-if-->
   <!--v-if-->
-  <div
-    class="readinglists-nav-bar"
+  <nav
+    class="reading-lists-nav"
   >
     <ul
-      class="readinglists-nav-bar-links"
+      class="reading-lists-nav-links"
     >
       <li>
         <a
@@ -407,7 +407,7 @@ exports[`Entries with custom lists renders the nav bar when custom lists are ena
       </li>
     </ul>
     <!--v-if-->
-  </div>
+  </nav>
   <!--v-if-->
   <!--v-if-->
   <div

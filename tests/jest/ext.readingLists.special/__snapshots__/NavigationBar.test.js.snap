@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NavigationBar renders All items view on desktop 1`] = `
-<div
-  class="readinglists-nav-bar"
+<nav
+  class="reading-lists-nav"
 >
   <ul
-    class="readinglists-nav-bar-links"
+    class="reading-lists-nav-links"
   >
     <li>
       <a
@@ -27,15 +27,15 @@ exports[`NavigationBar renders All items view on desktop 1`] = `
     </li>
   </ul>
   <!--v-if-->
-</div>
+</nav>
 `;
 
 exports[`NavigationBar renders All items view on mobile 1`] = `
-<div
-  class="readinglists-nav-bar"
+<nav
+  class="reading-lists-nav"
 >
   <ul
-    class="readinglists-nav-bar-links"
+    class="reading-lists-nav-links"
   >
     <li>
       <a
@@ -57,15 +57,15 @@ exports[`NavigationBar renders All items view on mobile 1`] = `
     </li>
   </ul>
   <!--v-if-->
-</div>
+</nav>
 `;
 
 exports[`NavigationBar renders Collection view on desktop 1`] = `
-<div
-  class="readinglists-nav-bar"
+<nav
+  class="reading-lists-nav"
 >
   <ul
-    class="readinglists-nav-bar-links"
+    class="reading-lists-nav-links"
   >
     <li>
       <a
@@ -87,14 +87,14 @@ exports[`NavigationBar renders Collection view on desktop 1`] = `
     </li>
   </ul>
   <div
-    class="readinglists-nav-bar-settings"
+    class="reading-lists-nav-settings"
   >
     <button
       aria-controls="readinglists-collection-settings-actions"
       aria-expanded="false"
       aria-haspopup="true"
       aria-label="Collection settings"
-      class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only readinglists-nav-bar-settings-button"
+      class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only reading-lists-nav-settings-button"
     >
       
       <span
@@ -119,15 +119,15 @@ exports[`NavigationBar renders Collection view on desktop 1`] = `
     </button>
     <!--v-if-->
   </div>
-</div>
+</nav>
 `;
 
 exports[`NavigationBar renders Collection view on mobile 1`] = `
-<div
-  class="readinglists-nav-bar"
+<nav
+  class="reading-lists-nav"
 >
   <ul
-    class="readinglists-nav-bar-links"
+    class="reading-lists-nav-links"
   >
     <li>
       <a
@@ -149,14 +149,14 @@ exports[`NavigationBar renders Collection view on mobile 1`] = `
     </li>
   </ul>
   <div
-    class="readinglists-nav-bar-settings"
+    class="reading-lists-nav-settings"
   >
     <button
       aria-controls="readinglists-collection-settings-actions"
       aria-expanded="false"
       aria-haspopup="true"
       aria-label="Collection settings"
-      class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only readinglists-nav-bar-settings-button"
+      class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only reading-lists-nav-settings-button"
     >
       
       <span
@@ -181,15 +181,15 @@ exports[`NavigationBar renders Collection view on mobile 1`] = `
     </button>
     <!--v-if-->
   </div>
-</div>
+</nav>
 `;
 
 exports[`NavigationBar renders Collections view on desktop 1`] = `
-<div
-  class="readinglists-nav-bar"
+<nav
+  class="reading-lists-nav"
 >
   <ul
-    class="readinglists-nav-bar-links"
+    class="reading-lists-nav-links"
   >
     <li>
       <a
@@ -211,14 +211,14 @@ exports[`NavigationBar renders Collections view on desktop 1`] = `
     </li>
   </ul>
   <div
-    class="readinglists-nav-bar-settings"
+    class="reading-lists-nav-settings"
   >
     <button
       aria-controls="readinglists-collection-settings-actions"
       aria-expanded="false"
       aria-haspopup="true"
       aria-label="Collection settings"
-      class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only readinglists-nav-bar-settings-button"
+      class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only reading-lists-nav-settings-button"
     >
       
       <span
@@ -243,15 +243,15 @@ exports[`NavigationBar renders Collections view on desktop 1`] = `
     </button>
     <!--v-if-->
   </div>
-</div>
+</nav>
 `;
 
 exports[`NavigationBar renders Collections view on mobile 1`] = `
-<div
-  class="readinglists-nav-bar"
+<nav
+  class="reading-lists-nav"
 >
   <ul
-    class="readinglists-nav-bar-links"
+    class="reading-lists-nav-links"
   >
     <li>
       <a
@@ -273,14 +273,14 @@ exports[`NavigationBar renders Collections view on mobile 1`] = `
     </li>
   </ul>
   <div
-    class="readinglists-nav-bar-settings"
+    class="reading-lists-nav-settings"
   >
     <button
       aria-controls="readinglists-collection-settings-actions"
       aria-expanded="false"
       aria-haspopup="true"
       aria-label="Collection settings"
-      class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only readinglists-nav-bar-settings-button"
+      class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only reading-lists-nav-settings-button"
     >
       
       <span
@@ -305,5 +305,5 @@ exports[`NavigationBar renders Collections view on mobile 1`] = `
     </button>
     <!--v-if-->
   </div>
-</div>
+</nav>
 `;

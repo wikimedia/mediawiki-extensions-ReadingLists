@@ -40,13 +40,13 @@ describe( 'NavigationBar', () => {
 			props: { isCustomList: false }
 		} );
 		await flushPromises();
-		expect( allItems.find( '.readinglists-nav-bar-settings-button' ).exists() ).toBe( false );
+		expect( allItems.find( '.reading-lists-nav-settings-button' ).exists() ).toBe( false );
 
 		const customList = mount( NavigationBar, {
 			props: { isCustomList: true }
 		} );
 		await flushPromises();
-		const button = customList.find( '.readinglists-nav-bar-settings-button' );
+		const button = customList.find( '.reading-lists-nav-settings-button' );
 		expect( button.exists() ).toBe( true );
 		expect( button.attributes( 'aria-label' ) ).toBe( 'Collection settings' );
 	} );

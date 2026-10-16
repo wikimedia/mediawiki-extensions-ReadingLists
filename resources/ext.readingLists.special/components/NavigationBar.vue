@@ -1,6 +1,6 @@
 <template>
-	<div class="readinglists-nav-bar">
-		<ul class="readinglists-nav-bar-links">
+	<nav class="reading-lists-nav">
+		<ul class="reading-lists-nav-links">
 			<li>
 				<router-link
 					class="readinglists-special-nav-link"
@@ -49,10 +49,10 @@
 
 		<div
 			v-if="isCustomList"
-			class="readinglists-nav-bar-settings">
+			class="reading-lists-nav-settings">
 			<cdx-button
 				ref="settingsButton"
-				class="readinglists-nav-bar-settings-button"
+				class="reading-lists-nav-settings-button"
 				weight="quiet"
 				:aria-label="collectionSettingsLabel"
 				aria-haspopup="true"
@@ -84,7 +84,7 @@
 				</div>
 			</cdx-popover>
 		</div>
-	</div>
+	</nav>
 </template>
 
 <script>
@@ -245,7 +245,7 @@ module.exports = exports = {
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
 
-.readinglists-nav-bar {
+.reading-lists-nav {
 	margin-bottom: @spacing-100;
 	display: flex;
 	gap: @spacing-50;
@@ -266,7 +266,7 @@ module.exports = exports = {
 		}
 	}
 
-	a.readinglists-special-nav-link {
+	a.reading-lists-special-nav-link {
 		// needed to explicitly specify no visited styles - I welcome a better way to do this
 		&:visited,
 		&:visited:hover {
@@ -290,19 +290,19 @@ module.exports = exports = {
 	}
 }
 
-.readinglists-collection-settings-popover.cdx-popover {
+.reading-lists-collection-settings-popover.cdx-popover {
 	padding: 0 0 @spacing-75 0;
 	width: @size-1200;
 }
 
-.readinglists-nav-bar-settings-button.cdx-button {
+.reading-lists-nav-settings-button.cdx-button {
 	@media ( any-pointer: coarse ) {
 		min-width: @min-size-interactive-touch;
 		min-height: @min-size-interactive-touch;
 	}
 }
 
-.readinglists-collection-settings-actions .cdx-button {
+.reading-lists-collection-settings-actions .cdx-button {
 	width: 100%;
 	justify-content: flex-start;
 	padding: @spacing-50 @spacing-75;
