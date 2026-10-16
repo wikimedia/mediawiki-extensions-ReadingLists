@@ -65,7 +65,7 @@
 	"apihelp-readinglists+createentry-example-2": "Fügt mehrere Seiten zu einer Liste hinzu.",
 	"apihelp-readinglists+deleteentry-summary": "Löscht eine Seite aus einer Liste, die dem aktuellen Benutzer gehört.",
 	"apihelp-readinglists+deleteentry-param-entry": "Kennung des Eintrags. Nicht erforderlich bei Ausführung der Stapellöschung.",
-	"apihelp-readinglists+deleteentry-param-project": "Projektname des Wikis, in dem die Seite gehostet wird. Muss zusammen mit <var>$1title</var> verwendet werden. Löscht alle Einträge, die dem angegebenen Projekt und Titel entsprechen.",
+	"apihelp-readinglists+deleteentry-param-project": "Projektname des Wikis, in dem die Seite gehostet wird. Muss zusammen mit <var>$1title</var> verwendet werden. Löscht alle Einträge, die dem angegebenen Projekt und Titel entsprechen, es sei denn, <var>$1list</var> wird ebenfalls angegeben.",
 	"apihelp-readinglists+deleteentry-param-title": "Seitentitel zum Löschen. Muss zusammen mit <var>$1project</var> verwendet werden.",
 	"apihelp-readinglists+deleteentry-example-1": "Löscht den Listeneintrag mit der Kennung <kbd>8</kbd>.",
 	"apihelp-readinglists+deleteentry-example-2": "Löscht mehrere Listeneinträge.",

@@ -79,11 +79,13 @@
 	"apihelp-readinglists+createentry-example-2": "Ku dar bogag badan liis.",
 	"apihelp-readinglists+deleteentry-summary": "Ka tirtir bog liis uu leeyahay isticmaalaha hadda.",
 	"apihelp-readinglists+deleteentry-param-entry": "Aqoonsiga gelinta. Waa loo baahan yahay haddii aan la samaynayn tirtirid dufcad ah.",
-	"apihelp-readinglists+deleteentry-param-project": "Magaca mashruuca wiki-ga martigelinaya bogga. Waa in lala isticmaalaa <var>$1title</var>. Wuxuu tirtirayaa dhammaan gelinnada u dhigma mashruuca iyo cinwaanka la bixiyey.",
+	"apihelp-readinglists+deleteentry-param-project": "Magaca mashruuca wiki-ga martigelinaya bogga. Waa in lala isticmaalaa <var>$1title</var>. Wuxuu tirtirayaa dhammaan gelinnada u dhigma mashruuca iyo cinwaanka la bixiyey, haddii aan sidoo kale la bixin <var>$1list</var>.",
 	"apihelp-readinglists+deleteentry-param-title": "Cinwaanka bogga la tirtirayo. Waa in lala isticmaalaa <var>$1project</var>.",
+	"apihelp-readinglists+deleteentry-param-list": "Aqoonsiga liiska. Bogga ka tirtir liiskan oo keliya. Waa in lala adeegsadaa <var>$1project</var> iyo <var>$1title</var>.",
 	"apihelp-readinglists+deleteentry-param-batch": "Xogta dufcadda ee lagu tirtirayo gelinno badan oo liis ah hal codsi gudaheed, oo ah qaab taxane JSON ah oo leh hal ama ka badan oo walxo ah oo leh goobta <var>entry</var>.",
 	"apihelp-readinglists+deleteentry-example-1": "Tirtir gelinta liiska leh aqoonsiga <kbd>8</kbd>.",
 	"apihelp-readinglists+deleteentry-example-2": "Tirtir gelinno badan oo liis ah.",
 	"apihelp-readinglists+deleteentry-example-3": "Tirtir dhammaan gelinnada bogga <kbd>Dog</kbd> ee mashruuca <kbd>en.wikipedia.org</kbd>.",
-	"apihelp-readinglists+deleteentry-example-4": "Tirtir dhammaan gelinnada bogga <kbd>Garfield the Cat</kbd> ee mashruuca <kbd>@local</kbd>."
+	"apihelp-readinglists+deleteentry-example-4": "Tirtir dhammaan gelinnada bogga <kbd>Garfield the Cat</kbd> ee mashruuca <kbd>@local</kbd>.",
+	"apihelp-readinglists+deleteentry-example-5": "Ka tirtir bogga <kbd>Cat</kbd> mashruuca <kbd>@local</kbd> oo keliya liiska leh aqoonsiga <kbd>42</kbd>."
 }

@@ -82,11 +82,13 @@
 	"apihelp-readinglists+createentry-example-2": "Engadir varias páxinas a unha lista.",
 	"apihelp-readinglists+deleteentry-summary": "Eliminar unha páxina dunha lista pertencente ó usuario actual.",
 	"apihelp-readinglists+deleteentry-param-entry": "Identificador da entrada. Obrigatorio a menos que esteas a facer unha eliminación por lotes.",
-	"apihelp-readinglists+deleteentry-param-project": "Nome do proxecto do wiki que aloxa a páxina. Debe usarse xunto con <var>$1title</var>. Elimina todas as entradas que coincidan co proxecto e o título dados.",
+	"apihelp-readinglists+deleteentry-param-project": "Nome do proxecto do wiki que aloxa a páxina. Debe usarse xunto con <var>$1title</var>. Elimina todas as entradas que coincidan co proxecto e o título dados, agás que se especifique tamén <var>$1list</var>.",
 	"apihelp-readinglists+deleteentry-param-title": "Título da páxina a eliminar. Debe usarse xunto con <var>$1project</var>.",
+	"apihelp-readinglists+deleteentry-param-list": "Identificador da lista. Elimina só a páxina desta lista. Debe usarse xunto a <var>$1project</var> e <var>$1title</var>.",
 	"apihelp-readinglists+deleteentry-param-batch": "Datos por lotes para borrar varias entradas de listas nunha única solicitude, en forma de matriz JSON cun ou máis obxectos co campo <var>entry</var>.",
 	"apihelp-readinglists+deleteentry-example-1": "Eliminar a entrada de lista que ten o identificador <kbd>8</kbd>.",
 	"apihelp-readinglists+deleteentry-example-2": "Eliminar varias entradas de lista.",
 	"apihelp-readinglists+deleteentry-example-3": "Eliminar todas as entradas da páxina <kbd>Dog</kbd> no proxecto <kbd>en.wikipedia.org</kbd>.",
-	"apihelp-readinglists+deleteentry-example-4": "Eliminar todas as entradas da páxina <kbd>Garfield the Cat</kbd> no proxecto <kbd>@local</kbd>."
+	"apihelp-readinglists+deleteentry-example-4": "Eliminar todas as entradas da páxina <kbd>Garfield the Cat</kbd> no proxecto <kbd>@local</kbd>.",
+	"apihelp-readinglists+deleteentry-example-5": "Elimina a páxina <kbd>Cat</kbd> do proxecto <kbd>@local</kbd> unicamente da lista co identificador <kbd>42</kbd>."
 }
