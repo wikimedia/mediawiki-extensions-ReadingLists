@@ -3,7 +3,7 @@
 		<ul class="reading-lists-nav-links">
 			<li>
 				<router-link
-					class="readinglists-special-nav-link"
+					class="reading-lists-special-nav-link"
 					:to="allItemsTo">
 					{{ allItemsText }}
 				</router-link>
