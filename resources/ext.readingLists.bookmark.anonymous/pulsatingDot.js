@@ -1,4 +1,4 @@
-const BOOKMARK_WRAPPER_SELECTOR = '#page-actions-bookmark';
+const BOOKMARK_WRAPPER_SELECTOR = '#ca-bookmark';
 const STORAGE_KEY_IMPRESSION = 'we-reading-list-cta-pulsating-dot-impression';
 const { ReadingListsMinervaCTAShowDot } = require( './config.json' );
 

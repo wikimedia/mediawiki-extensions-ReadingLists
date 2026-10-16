@@ -3,9 +3,12 @@ const STORAGE_KEY_IMPRESSION = 'we-reading-list-cta-pulsating-dot-impression';
 let initializePulsatingDot;
 
 function createBookmarkWrapper() {
-	const el = document.createElement( 'div' );
-	el.id = 'page-actions-bookmark';
-	document.body.appendChild( el );
+	const wrapper = document.createElement( 'li' );
+	wrapper.id = 'page-actions-bookmark';
+	const el = document.createElement( 'a' );
+	el.id = 'ca-bookmark';
+	wrapper.appendChild( el );
+	document.body.appendChild( wrapper );
 	return el;
 }
 
@@ -71,6 +74,7 @@ describe( 'initializePulsatingDot', () => {
 			test( 'adds mw-pulsating-dot class after module loads', async () => {
 				await initializePulsatingDot();
 				expect( bookmarkWrapper.classList.contains( 'mw-pulsating-dot' ) ).toBe( true );
+				expect( bookmarkWrapper.parentElement.classList.contains( 'mw-pulsating-dot' ) ).toBe( false );
 			} );
 
 			test( 'click handler stores impression with 90-day expiry and removes class', async () => {

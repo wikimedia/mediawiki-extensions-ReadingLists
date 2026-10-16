@@ -1,8 +1,10 @@
 /* stylelint-disable selector-max-id */
 // Core positions the pseudo-elements from top/left;
 // so using margin for offsets so the dot sits over the bookmark icon.
-#page-actions-bookmark.mw-pulsating-dot {
+#ca-bookmark.mw-pulsating-dot {
 	position: relative;
+	// Allow the pulse to extend beyond the Codex button.
+	overflow: visible;
 
 	&::before,
 	&::after {
