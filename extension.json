@@ -146,7 +146,7 @@
 		}
 	},
 	"Hooks": {
-		"CentralAuthPostLoginRedirect": "main",
+		"CentralAuthPostLoginRedirect": "centralauth",
 		"SkinTemplateNavigation::Universal": "main",
 		"GetBetaFeaturePreferences": "betafeatures",
 		"APIQuerySiteInfoGeneralInfo": "main",
@@ -160,9 +160,14 @@
 			"services": [
 				"MainConfig",
 				"ReadingLists.BookmarkEntryLookupService",
-				"UserOptionsManager",
 				"CentralIdLookupFactory",
 				"UserIdentityUtils"
+			]
+		},
+		"centralauth": {
+			"class": "MediaWiki\\Extension\\ReadingLists\\CentralAuthHookHandler",
+			"services": [
+				"UserOptionsManager"
 			]
 		},
 		"betafeatures": {

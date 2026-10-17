@@ -12,8 +12,6 @@ use MediaWiki\Output\OutputPage;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\Title\Title;
 use MediaWiki\User\CentralId\CentralIdLookupFactory;
-use MediaWiki\User\Options\UserOptionsManager;
-use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
 use MediaWiki\User\UserIdentityUtils;
 
@@ -29,13 +27,11 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 
 	private function createHookHandler(
 		?Config $config = null,
-		?UserOptionsManager $userOptionsManager = null,
 		?UserIdentityUtils $userIdentityUtils = null
 	): HookHandler {
 		return new HookHandler(
 			$config ?? $this->createMock( Config::class ),
 			$this->createMock( BookmarkEntryLookupService::class ),
-			$userOptionsManager ?? $this->createMock( UserOptionsManager::class ),
 			$this->createMock( CentralIdLookupFactory::class ),
 			$userIdentityUtils ?? $this->createMock( UserIdentityUtils::class )
 		);
@@ -110,7 +106,7 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 
 		$skin = $this->createSkinTemplate( 'minerva', $user, $output );
 		$links = $this->getLinks();
-		$this->createHookHandler( $config, null, $userIdentityUtils )
+		$this->createHookHandler( $config, $userIdentityUtils )
 			->onSkinTemplateNavigation__Universal( $skin, $links );
 
 		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
@@ -130,7 +126,7 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 
 		$skin = $this->createSkinTemplate( 'vector-2022', $user );
 		$links = $this->getLinks();
-		$this->createHookHandler( $config, null, $userIdentityUtils )
+		$this->createHookHandler( $config, $userIdentityUtils )
 			->onSkinTemplateNavigation__Universal( $skin, $links );
 
 		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
@@ -147,44 +143,5 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 
 		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
 		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
-	}
-
-	public function testCentralAuthPostLoginRedirectAddsReadingListsAccountJustCreatedForSignup(): void {
-		$user = $this->createMock( User::class );
-		$user->method( 'isRegistered' )->willReturn( true );
-		RequestContext::getMain()->setUser( $user );
-
-		$userOptionsManager = $this->createMock( UserOptionsManager::class );
-		$userOptionsManager->expects( $this->once() )
-			->method( 'setOption' )
-			->with( $user, 'homepage_mobile_discovery_notice_seen', 1 );
-		$userOptionsManager->expects( $this->once() )
-			->method( 'saveOptions' )
-			->with( $user );
-		$hookHandler = $this->createHookHandler( null, $userOptionsManager );
-
-		$returnTo = 'Taco';
-		$returnToQuery = 'readingListsAccountCreationCta=1&foo=bar';
-		$unused = '';
-
-		$this->assertTrue(
-			$hookHandler->onCentralAuthPostLoginRedirect(
-				$returnTo,
-				$returnToQuery,
-				false,
-				'signup',
-				$unused
-			)
-		);
-
-		$this->assertSame( 'Taco', $returnTo );
-		$this->assertSame( '', $unused );
-		$this->assertSame(
-			[
-				'foo' => 'bar',
-				'readingListsAccountJustCreated' => '1',
-			],
-			wfCgiToArray( $returnToQuery )
-		);
 	}
 }
