@@ -1,5 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { createTestingPinia } from '@pinia/testing';
+import { useReadingListsStore } from '../../../resources/ext.readingLists.special/store.js';
 
 // Imported rather than required so the test and the component under test share
 // the same module instance, which is what makes `api.stubApi()` take effect.
@@ -263,6 +264,111 @@ describe( 'Entries', () => {
 			await showMoreButton.trigger( 'click' );
 
 			expect( wrapper.element ).toMatchSnapshot();
+		} );
+	} );
+
+	describe( 'store state reset on re-render', () => {
+
+		async function mountEntriesWithPinia( pinia, props = {} ) {
+			const Entries = ( await import( ENTRIES_PATH ) ).default;
+			return mount( Entries, {
+				props,
+				global: { plugins: [ pinia ] }
+			} );
+		}
+
+		test( 'clears stale store data synchronously when mounted for a different view', async () => {
+			// Prime the store with data that would be left behind by a previous
+			// collection view, as if the pinia store persisted across routes.
+			const pinia = createTestingPinia( {
+				stubActions: false,
+				initialState: {
+					readingLists: {
+						title: 'Previous Collection',
+						description: 'Old description',
+						isDefaultList: false,
+						isAllListItems: false
+					}
+				}
+			} );
+
+			setupAllItemsApiStub();
+
+			// Mount for the all-items view.
+			const wrapper = await mountEntriesWithPinia( pinia );
+
+			// resetState() is called synchronously in setup() so the stale title
+			// is gone before the first render — it must never appear in the DOM.
+			// (loadingEntries stays true because the entries fetch is still in flight.)
+			expect( wrapper.vm.title ).toBe( '' );
+			expect( wrapper.vm.loadingEntries ).toBe( true );
+			expect( wrapper.find( '.reading-lists-title' ).exists() ).toBe( false );
+
+			wrapper.unmount();
+		} );
+
+		test( 'does not flash a stale collection title when navigating to all items', async () => {
+			const pinia = createTestingPinia( { stubActions: false } );
+			const store = useReadingListsStore( pinia );
+
+			// First view: a specific collection.
+			setupEntriesApiStub();
+			const collectionWrapper = await mountEntriesWithPinia( pinia, { listId: 12345 } );
+			await flushPromises();
+
+			expect( collectionWrapper.vm.title ).toBe( 'Example list' );
+			expect( store.isDefaultList ).toBe( false );
+			collectionWrapper.unmount();
+
+			// Navigate to the all-items view. App.vue uses :key="$route.path" so
+			// Entries is fully unmounted and remounted, re-running setup().
+			setupAllItemsApiStub();
+			const allItemsWrapper = await mountEntriesWithPinia( pinia );
+
+			// resetState() has run synchronously in setup() — the stale title is
+			// cleared before any async fetch starts, so it can never flicker in.
+			// (For the all-items path fetchListInfo has no await so loadingInfo is
+			// already false; loadingEntries confirms the entries fetch is in flight.)
+			expect( allItemsWrapper.vm.title ).toBe( '' );
+			expect( allItemsWrapper.vm.loadingEntries ).toBe( true );
+			expect( allItemsWrapper.find( '.reading-lists-title' ).exists() ).toBe( false );
+
+			await flushPromises();
+
+			// After loading completes, the all-items view has no title.
+			expect( allItemsWrapper.vm.title ).toBe( '' );
+			expect( store.isAllListItems ).toBe( true );
+			allItemsWrapper.unmount();
+		} );
+
+		test( 'resets isAllListItems when navigating from all items to a collection', async () => {
+			const pinia = createTestingPinia( { stubActions: false } );
+			const store = useReadingListsStore( pinia );
+
+			// First view: all items.
+			setupAllItemsApiStub();
+			const allItemsWrapper = await mountEntriesWithPinia( pinia );
+			await flushPromises();
+
+			expect( store.isAllListItems ).toBe( true );
+			allItemsWrapper.unmount();
+
+			// Navigate to a specific collection.
+			setupEntriesApiStub();
+			const collectionWrapper = await mountEntriesWithPinia( pinia, { listId: 12345 } );
+
+			// resetState() has run — isAllListItems is cleared before any fetch.
+			expect( store.isAllListItems ).toBe( false );
+			expect( store.isDefaultList ).toBe( true );
+			expect( collectionWrapper.vm.loadingInfo ).toBe( true );
+
+			await flushPromises();
+
+			// After loading: the collection's metadata is populated.
+			expect( collectionWrapper.vm.title ).toBe( 'Example list' );
+			expect( store.isDefaultList ).toBe( false );
+			expect( store.isAllListItems ).toBe( false );
+			collectionWrapper.unmount();
 		} );
 	} );
 } );

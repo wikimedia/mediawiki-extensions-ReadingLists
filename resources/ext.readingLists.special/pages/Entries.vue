@@ -34,7 +34,6 @@
 		<all-collections
 			v-if="isCollections"
 			:collections="entries"
-			:loading-info="loadingInfo"
 			:loading-entries="loadingEntries"
 			@create-collection="showCreateCollection = true"
 		></all-collections>
@@ -43,7 +42,6 @@
 			v-else
 			ref="collectionRef"
 			:collection-items="entries"
-			:loading-info="loadingInfo"
 			:loading-entries="loadingEntries"
 			:is-list-view="isListView"
 			:is-custom-list="isCustomList"
@@ -109,14 +107,23 @@ module.exports = exports = {
 		const router = useRouter();
 
 		const store = useReadingListsStore();
-		const { title } = storeToRefs( store );
+		const {
+			title,
+			description,
+			loadingInfo,
+			isDefaultList,
+			isAllListItems,
+			error
+		} = storeToRefs( store );
+		const {
+			resetState,
+			handleError,
+			fetchListInfo
+		} = store;
 
-		const loadingInfo = ref( true );
+		resetState();
+
 		const loadingEntries = ref( true );
-		const isDefaultList = ref( true );
-		const isAllListItems = ref( false );
-		const description = ref( '' );
-		const error = ref( '' );
 		const ready = ref( false );
 		const sort = ref( 'updated' );
 		const direction = ref( 'descending' );
@@ -161,51 +168,6 @@ module.exports = exports = {
 
 			return true;
 		} );
-
-		function handleError( err ) {
-			if ( typeof err === 'string' ) {
-				const listNotFoundErrors = [
-					'badinteger',
-					'readinglists-db-error-no-such-list',
-					'readinglists-db-error-not-own-list',
-					'readinglists-db-error-list-deleted'
-				];
-				const key = listNotFoundErrors.includes( err ) ?
-					'readinglists-special-error-list-not-found' : err;
-
-				error.value = mw.msg( key );
-			} else {
-				error.value = err.toString();
-			}
-		}
-
-		async function getList() {
-			loadingInfo.value = true;
-
-			try {
-				if ( props.imported || props.listId ) {
-					const list = props.imported || await api.getList( props.listId );
-
-					if ( list.error !== undefined ) {
-						throw list.error;
-					}
-
-					title.value = list.name;
-					description.value = list.description;
-					isDefaultList.value = !!list.default;
-				} else if ( props.isCollections ) {
-					isDefaultList.value = false;
-					isAllListItems.value = false;
-				} else {
-					isDefaultList.value = false;
-					isAllListItems.value = true;
-				}
-			} catch ( err ) {
-				handleError( err );
-			} finally {
-				loadingInfo.value = false;
-			}
-		}
 
 		function getColumnCount() {
 			// eslint-disable-next-line es-x/no-optional-chaining
@@ -340,7 +302,10 @@ module.exports = exports = {
 			// do not depend on each other, so fetch them in parallel instead of waiting for the
 			// metadata round-trip before the entries request starts. Both methods handle their
 			// own errors, so Promise.all does not reject.
-			await Promise.all( [ getList(), initializePage() ] );
+			await Promise.all( [
+				fetchListInfo( props.imported, props.listId, props.isCollections ),
+				initializePage()
+			] );
 		} );
 
 		return {

@@ -52,6 +52,8 @@
 <script>
 const { computed } = require( 'vue' );
 const { RouterLink } = require( 'vue-router' );
+const { storeToRefs } = require( 'pinia' );
+const { useReadingListsStore } = require( '../store.js' );
 const { CdxButton } = require( '../../../codex.js' );
 const { collectionsBaseUrl, CreateCollectionButton } = require( 'ext.readingLists.common' );
 const EmptyList = require( './EmptyList.vue' );
@@ -73,10 +75,6 @@ module.exports = exports = {
 			type: Array,
 			required: true
 		},
-		loadingInfo: {
-			type: Boolean,
-			required: true
-		},
 		loadingEntries: {
 			type: Boolean,
 			required: true
@@ -86,6 +84,9 @@ module.exports = exports = {
 		'create-collection'
 	],
 	setup( _props, { emit } ) {
+		const store = useReadingListsStore();
+		const { loadingInfo } = storeToRefs( store );
+
 		const ariaLabel = computed( () => mw.msg( 'readinglists-customlists-collections' ) );
 
 		const msgEmptyListHeading = computed( () => mw.msg( 'readinglists-customlists-no-collections' ) );
@@ -104,6 +105,7 @@ module.exports = exports = {
 		}
 
 		return {
+			loadingInfo,
 			ariaLabel,
 			msgEmptyListHeading,
 			emptyStateImageUrl,

@@ -66,10 +66,6 @@ module.exports = exports = {
 			type: Array,
 			required: true
 		},
-		loadingInfo: {
-			type: Boolean,
-			required: true
-		},
 		loadingEntries: {
 			type: Boolean,
 			required: true
@@ -90,7 +86,7 @@ module.exports = exports = {
 	emits: [ 'show-more' ],
 	setup( props ) {
 		const store = useReadingListsStore();
-		const { title } = storeToRefs( store );
+		const { title, loadingInfo } = storeToRefs( store );
 
 		const listWrapperRef = ref();
 		const listWrapperClasses = computed( () => (
@@ -122,6 +118,7 @@ module.exports = exports = {
 
 		return {
 			title,
+			loadingInfo,
 			listWrapperRef,
 			listWrapperClasses,
 			listRef,

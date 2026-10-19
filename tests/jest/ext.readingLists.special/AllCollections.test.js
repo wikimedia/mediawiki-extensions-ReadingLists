@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils';
+import { createTestingPinia } from '@pinia/testing';
 import AllCollections from '../../../resources/ext.readingLists.special/components/AllCollections.vue';
 
 // Base URL that mw.util.getUrl returns when given 'Special:ReadingLists'.
@@ -21,6 +22,31 @@ const COLLECTIONS = [
 	}
 ];
 
+const defaultProps = {
+	collections: COLLECTIONS,
+	loadingEntries: false
+};
+
+/**
+ * Mount the AllCollections component with the pinia testing plugin.
+ *
+ * @param {Object} props
+ * @param {boolean} loadingInfo To set initial state
+ * @return {Object}
+ */
+function mountAllCollections( props = defaultProps, loadingInfo = false ) {
+	return mount( AllCollections, {
+		props,
+		global: {
+			plugins: [
+				createTestingPinia( {
+					initialState: { readingLists: { loadingInfo } }
+				} )
+			]
+		}
+	} );
+}
+
 describe( 'AllCollections', () => {
 	beforeEach( () => {
 		mw.util.getUrl = vi.fn( ( path ) => `/wiki/${ path }` );
@@ -36,40 +62,30 @@ describe( 'AllCollections', () => {
 		[ 'finished loading with no collections', [], false, false ],
 		[ 'finished loading with collections', COLLECTIONS, false, false ]
 	] )( 'renders %s', ( _, collections, loadingInfo, loadingEntries ) => {
-		const wrapper = mount( AllCollections, {
-			props: { collections, loadingInfo, loadingEntries }
-		} );
+		const wrapper = mountAllCollections( { collections, loadingEntries }, loadingInfo );
 		expect( wrapper.element ).toMatchSnapshot();
 	} );
 
 	it( 'shows one list item per collection', () => {
-		const wrapper = mount( AllCollections, {
-			props: { collections: COLLECTIONS, loadingInfo: false, loadingEntries: false }
-		} );
+		const wrapper = mountAllCollections();
 		expect( wrapper.find( 'ul' ).exists() ).toBe( true );
 		expect( wrapper.findAll( 'li' ) ).toHaveLength( COLLECTIONS.length );
 	} );
 
 	it( 'emits create-collection when the create button is clicked', async () => {
-		const wrapper = mount( AllCollections, {
-			props: { collections: COLLECTIONS, loadingInfo: false, loadingEntries: false }
-		} );
+		const wrapper = mountAllCollections();
 		await wrapper.find( '.readinglists-create-collection-button' ).trigger( 'click' );
 		expect( wrapper.emitted( 'create-collection' ) ).toHaveLength( 1 );
 	} );
 
 	it( 'emits create-collection when the empty-state create button is clicked', async () => {
-		const wrapper = mount( AllCollections, {
-			props: { collections: [], loadingInfo: false, loadingEntries: false }
-		} );
+		const wrapper = mountAllCollections( { collections: [], loadingEntries: false } );
 		await wrapper.find( '.reading-lists-all-collections__empty-state__create-button' ).trigger( 'click' );
 		expect( wrapper.emitted( 'create-collection' ) ).toHaveLength( 1 );
 	} );
 
 	it( 'strips the base URL prefix from collection URLs passed to RouterLink', () => {
-		const wrapper = mount( AllCollections, {
-			props: { collections: COLLECTIONS, loadingInfo: false, loadingEntries: false }
-		} );
+		const wrapper = mountAllCollections();
 		const links = wrapper.findAllComponents( { name: 'RouterLink' } );
 		expect( links[ 0 ].props( 'to' ) ).toBe( '/testuser/1/My_Collection' );
 		expect( links[ 1 ].props( 'to' ) ).toBe( '/testuser/2/Science_Articles' );
