@@ -16,11 +16,28 @@
 		>
 		</collection-name-dialog>
 
+		<delete-collection-dialog
+			v-if="showDeleteCollection"
+			:list-name="title"
+			:is-deleting="isDeletingCollection"
+			@close="closeDeleteDialog"
+			@confirm="deleteCollection"
+		>
+		</delete-collection-dialog>
+
+		<cdx-message
+			v-if="deleteError"
+			type="error"
+			class="reading-lists-delete-error">
+			{{ deleteError }}
+		</cdx-message>
+
 		<navigation-bar
 			v-if="showNavBar"
 			:is-custom-list="isCustomList"
 			@create-collection="openCollectionNameDialog"
 			@rename-collection="openCollectionNameDialog( true )"
+			@delete-collection="showDeleteCollection = true"
 		>
 		</navigation-bar>
 
@@ -72,6 +89,7 @@ const api = require( 'ext.readingLists.api' );
 const { CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
 const AllCollections = require( '../components/AllCollections.vue' );
 const Collection = require( '../components/Collection.vue' );
+const DeleteCollectionDialog = require( '../components/DeleteCollectionDialog.vue' );
 const NavigationBar = require( '../components/NavigationBar.vue' );
 const Survey = require( '../components/Survey.vue' );
 
@@ -84,6 +102,7 @@ module.exports = exports = {
 		CdxMessage,
 		CdxProgressBar,
 		CollectionNameDialog,
+		DeleteCollectionDialog,
 		AllCollections,
 		Collection,
 		NavigationBar,
@@ -139,6 +158,9 @@ module.exports = exports = {
 		const collectionRef = ref();
 		const showCollectionNameDialog = ref( false );
 		const isRename = ref( false );
+		const showDeleteCollection = ref( false );
+		const isDeletingCollection = ref( false );
+		const deleteError = ref( '' );
 
 		const showInPageTitle = computed( () => {
 			if ( props.imported ) {
@@ -308,6 +330,42 @@ module.exports = exports = {
 			isRename.value = rename;
 		}
 
+		function closeDeleteDialog() {
+			if ( !isDeletingCollection.value ) {
+				showDeleteCollection.value = false;
+			}
+		}
+
+		async function onCollectionDeleted( collectionName ) {
+			const allItemsUrl = getCollectionUrl( undefined, undefined, true );
+
+			// if mobile resolution, redirect to all collections or otherwise all items
+			await router.push( isListView.value ? allItemsUrl + '/collections' : allItemsUrl );
+			mw.notify(
+				mw.msg( 'readinglists-customlists-delete-collection-success', collectionName ),
+				{ type: 'notice' }
+			);
+		}
+
+		async function deleteCollection() {
+			const collectionName = title.value;
+			isDeletingCollection.value = true;
+			deleteError.value = '';
+			try {
+				await api.deleteList( props.listId );
+				await onCollectionDeleted( collectionName );
+			} catch ( err ) {
+				mw.errorLogger.logError(
+					err instanceof Error ? err : new Error( `Failed to delete collection: ${ err }` ),
+					'error.readinglists'
+				);
+				deleteError.value = mw.msg( 'readinglists-customlists-delete-collection-error' );
+			} finally {
+				isDeletingCollection.value = false;
+				showDeleteCollection.value = false;
+			}
+		}
+
 		onMounted( async () => {
 			// The list metadata (getList) and the entries request (initializePage → getEntries)
 			// do not depend on each other, so fetch them in parallel instead of waiting for the
@@ -339,7 +397,12 @@ module.exports = exports = {
 			showCollectionNameDialog,
 			isRename,
 			routeToNewCollection,
-			openCollectionNameDialog
+			openCollectionNameDialog,
+			showDeleteCollection,
+			isDeletingCollection,
+			deleteError,
+			closeDeleteDialog,
+			deleteCollection
 		};
 	}
 };

@@ -7,6 +7,8 @@ exports[`Entries > with custom lists > nav bar does not disappear when show more
   
   <!--v-if-->
   <!--v-if-->
+  <!--v-if-->
+  <!--v-if-->
   <nav
     class="reading-lists-nav"
   >
@@ -345,6 +347,8 @@ exports[`Entries > with custom lists > nav bar only renders after content has fi
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->
+  <!--v-if-->
+  <!--v-if-->
   <div
     class="reading-lists-collection"
   >
@@ -379,6 +383,8 @@ exports[`Entries > with custom lists > renders the nav bar when custom lists are
   data-v-app=""
 >
   
+  <!--v-if-->
+  <!--v-if-->
   <!--v-if-->
   <!--v-if-->
   <nav
@@ -565,6 +571,8 @@ exports[`Entries > without custom lists > renders all items from all lists on sp
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->
+  <!--v-if-->
+  <!--v-if-->
   <div
     class="reading-lists-collection"
   >
@@ -715,6 +723,8 @@ exports[`Entries > without custom lists > renders with toolbar disabled 1`] = `
   data-v-app=""
 >
   
+  <!--v-if-->
+  <!--v-if-->
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->

@@ -5,8 +5,14 @@ import { useReadingListsStore } from '../../../resources/ext.readingLists.specia
 // Imported rather than required so the test and the component under test share
 // the same module instance, which is what makes `api.stubApi()` take effect.
 import api from '../../../resources/ext.readingLists.api/index.js';
+import i18n from '../../../i18n/en.json';
+import { nextTick } from 'vue';
+// Resolves to tests/unit-js/vueRouterStub.js, the same stub instance Entries gets.
+import { useRouter } from 'vue-router';
 
 const ENTRIES_PATH = '../../../resources/ext.readingLists.special/pages/Entries.vue';
+const NAVIGATION_BAR_PATH = '../../../resources/ext.readingLists.special/components/NavigationBar.vue';
+const DELETE_DIALOG_PATH = '../../../resources/ext.readingLists.special/components/DeleteCollectionDialog.vue';
 
 const LIST = require( '../fixtures/list.json' );
 const ENTRIES = require( '../fixtures/entries.json' );
@@ -369,6 +375,159 @@ describe( 'Entries', () => {
 			expect( store.isDefaultList ).toBe( false );
 			expect( store.isAllListItems ).toBe( false );
 			collectionWrapper.unmount();
+		} );
+	} );
+
+	describe( 'deleting a collection', () => {
+		let NavigationBar, DeleteCollectionDialog;
+
+		beforeEach( async () => {
+			mw.user.getName = vi.fn( () => 'testuser' );
+			mw.errorLogger = { logError: vi.fn() };
+			vi.spyOn( mw, 'msg' ).mockImplementation(
+				( key, param ) => ( i18n[ key ] || key ).replace( '$1', () => param )
+			);
+			NavigationBar = ( await import( NAVIGATION_BAR_PATH ) ).default;
+			DeleteCollectionDialog = ( await import( DELETE_DIALOG_PATH ) ).default;
+		} );
+
+		// Mounts the custom collection from the list fixture, with the nav bar rendered,
+		// and opens the delete dialog the way the nav bar does.
+		async function mountWithDialogOpen() {
+			setupEntriesApiStub();
+			const wrapper = await mountEntries( { listId: 12345, isCustomListsEnabled: true } );
+			await flushPromises();
+
+			wrapper.findComponent( NavigationBar ).vm.$emit( 'delete-collection' );
+			await nextTick();
+			return wrapper;
+		}
+
+		test( 'opens the dialog with the collection name when the nav bar asks for it', async () => {
+			const wrapper = await mountWithDialogOpen();
+
+			const dialog = wrapper.findComponent( DeleteCollectionDialog );
+			expect( dialog.exists() ).toBe( true );
+			expect( dialog.props( 'listName' ) ).toBe( 'Example list' );
+			expect( dialog.props( 'isDeleting' ) ).toBe( false );
+		} );
+
+		test( 'closes on cancel and can be opened again', async () => {
+			const wrapper = await mountWithDialogOpen();
+
+			wrapper.findComponent( DeleteCollectionDialog ).vm.$emit( 'close' );
+			await nextTick();
+			expect( wrapper.findComponent( DeleteCollectionDialog ).exists() ).toBe( false );
+
+			wrapper.findComponent( NavigationBar ).vm.$emit( 'delete-collection' );
+			await nextTick();
+			expect( wrapper.findComponent( DeleteCollectionDialog ).exists() ).toBe( true );
+		} );
+
+		test( 'deletes the list and goes to the collections view on mobile', async () => {
+			vi.spyOn( window, 'innerWidth', 'get' ).mockReturnValue( 375 );
+			const deleteList = vi.spyOn( api, 'deleteList' ).mockResolvedValue( {} );
+			const push = vi.spyOn( useRouter(), 'push' );
+			const wrapper = await mountWithDialogOpen();
+
+			wrapper.findComponent( DeleteCollectionDialog ).vm.$emit( 'confirm' );
+			await flushPromises();
+
+			expect( deleteList ).toHaveBeenCalledWith( 12345 );
+			expect( push ).toHaveBeenCalledWith( '/testuser/collections' );
+			expect( mw.notify ).toHaveBeenCalledWith(
+				'Collection "Example list" was deleted.',
+				{ type: 'notice' }
+			);
+			expect( wrapper.findComponent( DeleteCollectionDialog ).exists() ).toBe( false );
+		} );
+
+		test( 'notifies with the deleted collection name after returning to all items', async () => {
+			vi.spyOn( api, 'deleteList' ).mockResolvedValue( {} );
+			let resolveNavigation;
+			const push = vi.spyOn( useRouter(), 'push' ).mockReturnValue( new Promise( ( resolve ) => {
+				resolveNavigation = resolve;
+			} ) );
+			const wrapper = await mountWithDialogOpen();
+
+			wrapper.findComponent( DeleteCollectionDialog ).vm.$emit( 'confirm' );
+			await flushPromises();
+
+			expect( push ).toHaveBeenCalledWith( '/testuser' );
+			expect( mw.notify ).not.toHaveBeenCalled();
+
+			// Navigating remounts Entries and resets the shared list metadata.
+			useReadingListsStore().resetState();
+			resolveNavigation();
+			await flushPromises();
+
+			expect( mw.notify ).toHaveBeenCalledWith(
+				'Collection "Example list" was deleted.',
+				{ type: 'notice' }
+			);
+		} );
+
+		test( 'keeps the dialog mounted while the request is pending', async () => {
+			let resolveDelete;
+			vi.spyOn( api, 'deleteList' ).mockReturnValue( new Promise( ( resolve ) => {
+				resolveDelete = resolve;
+			} ) );
+			const wrapper = await mountWithDialogOpen();
+
+			wrapper.findComponent( DeleteCollectionDialog ).vm.$emit( 'confirm' );
+			await nextTick();
+			expect( wrapper.findComponent( DeleteCollectionDialog ).props( 'isDeleting' ) ).toBe( true );
+			expect( mw.notify ).not.toHaveBeenCalled();
+
+			// Cancel, Escape and backdrop clicks all arrive as close events.
+			wrapper.findComponent( DeleteCollectionDialog ).vm.$emit( 'close' );
+			await nextTick();
+			expect( wrapper.findComponent( DeleteCollectionDialog ).exists() ).toBe( true );
+
+			resolveDelete( {} );
+			await flushPromises();
+			expect( wrapper.findComponent( DeleteCollectionDialog ).exists() ).toBe( false );
+		} );
+
+		test( 'shows a localized message when the request fails', async () => {
+			vi.spyOn( api, 'deleteList' ).mockRejectedValue( 'http' );
+			const push = vi.spyOn( useRouter(), 'push' );
+			const wrapper = await mountWithDialogOpen();
+
+			wrapper.findComponent( DeleteCollectionDialog ).vm.$emit( 'confirm' );
+			await flushPromises();
+
+			const message = wrapper.get( '.reading-lists-delete-error' ).text();
+			expect( message ).toBe( i18n[ 'readinglists-customlists-delete-collection-error' ] );
+			expect( message ).not.toContain( 'http' );
+			expect( mw.errorLogger.logError ).toHaveBeenCalledWith(
+				new Error( 'Failed to delete collection: http' ),
+				'error.readinglists'
+			);
+			expect( push ).not.toHaveBeenCalled();
+			expect( mw.notify ).not.toHaveBeenCalled();
+			// The collection and its navigation stay on screen so the user can retry.
+			expect( wrapper.findComponent( NavigationBar ).exists() ).toBe( true );
+			expect( wrapper.findComponent( DeleteCollectionDialog ).exists() ).toBe( false );
+
+			// Retrying clears the message while the new request runs.
+			wrapper.findComponent( NavigationBar ).vm.$emit( 'delete-collection' );
+			await nextTick();
+			wrapper.findComponent( DeleteCollectionDialog ).vm.$emit( 'confirm' );
+			await nextTick();
+			expect( wrapper.find( '.reading-lists-delete-error' ).exists() ).toBe( false );
+		} );
+
+		test( 'shows the same message when the list was already deleted elsewhere', async () => {
+			vi.spyOn( api, 'deleteList' ).mockRejectedValue( 'readinglists-db-error-list-deleted' );
+			const wrapper = await mountWithDialogOpen();
+
+			wrapper.findComponent( DeleteCollectionDialog ).vm.$emit( 'confirm' );
+			await flushPromises();
+
+			expect( wrapper.get( '.reading-lists-delete-error' ).text() )
+				.toBe( i18n[ 'readinglists-customlists-delete-collection-error' ] );
+			expect( wrapper.findComponent( NavigationBar ).exists() ).toBe( true );
 		} );
 	} );
 } );

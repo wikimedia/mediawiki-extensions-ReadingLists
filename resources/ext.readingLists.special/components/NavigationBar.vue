@@ -78,7 +78,8 @@
 					</cdx-button>
 					<cdx-button
 						weight="quiet"
-						action="destructive">
+						action="destructive"
+						@click="deleteCollection">
 						{{ deleteCollectionLabel }}
 					</cdx-button>
 				</div>
@@ -149,7 +150,8 @@ module.exports = exports = {
 	},
 	emits: [
 		'create-collection',
-		'rename-collection'
+		'rename-collection',
+		'delete-collection'
 	],
 	setup: ( props, { emit } ) => {
 		const showDropdown = ref( mw.config.get( 'skin' ) === 'vector-2022' );
@@ -190,6 +192,11 @@ module.exports = exports = {
 			emit( 'rename-collection' );
 		};
 
+		const deleteCollection = () => {
+			showCollectionSettings.value = false;
+			emit( 'delete-collection' );
+		};
+
 		const maybeGetCollections = async () => {
 			// if the list of collections has already been updated, no need to make another api call
 			if ( collections.value.length > 0 ) {
@@ -226,6 +233,7 @@ module.exports = exports = {
 			showDropdown,
 			createCollection,
 			renameCollection,
+			deleteCollection,
 			cdxIconExpand,
 			allItemsTo,
 			allItemsText,

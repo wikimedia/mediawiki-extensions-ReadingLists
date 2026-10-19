@@ -148,5 +148,11 @@
 	"readinglists-customlists-collection-picker-add-button-label": "Label for button to add a page to a collection in the bookmark popover. Parameters:\n* $1 - Page title\n* $2 - Collection name",
 	"readinglists-customlists-collection-settings": "Accessible name for the collection settings button. Shown only when viewing a custom collection.",
 	"readinglists-customlists-rename-collection": "Label for the action that will rename the current custom collection.",
-	"readinglists-customlists-delete-collection": "Label for the action that will delete the current custom collection."
+	"readinglists-customlists-delete-collection": "Label for the action that will delete the current custom collection.",
+	"readinglists-customlists-delete-collection-dialog-title": "Title of the dialog that asks the user to confirm deleting a collection. Parameters:\n* $1 - Collection name",
+	"readinglists-customlists-delete-collection-dialog-text": "Text shown in the delete collection confirmation dialog.",
+	"readinglists-customlists-delete-collection-dialog-confirm": "Label for the confirm button in the delete collection dialog.",
+	"readinglists-customlists-delete-collection-dialog-cancel": "Label for the cancel button in the delete collection dialog.\n{{Identical|Cancel}}",
+	"readinglists-customlists-delete-collection-success": "Notification message shown on Special:ReadingLists after a collection is deleted. Parameters:\n* $1 - Collection name",
+	"readinglists-customlists-delete-collection-error": "Error message shown on Special:ReadingLists when deleting a collection fails."
 }

@@ -54,4 +54,19 @@ describe( 'NavigationBar', () => {
 		expect( button.exists() ).toBe( true );
 		expect( button.attributes( 'aria-label' ) ).toBe( 'Collection settings' );
 	} );
+
+	it( 'emits delete-collection and closes the settings popover when Delete is clicked', async () => {
+		const NavigationBar = ( await import( NAVIGATION_BAR_PATH ) ).default;
+		const wrapper = mount( NavigationBar, {
+			props: { isCustomList: true }
+		} );
+		await flushPromises();
+
+		await wrapper.get( '.reading-lists-nav-settings-button' ).trigger( 'click' );
+		await wrapper.get( '.reading-lists-collection-settings-actions .cdx-button--action-destructive' )
+			.trigger( 'click' );
+
+		expect( wrapper.emitted( 'delete-collection' ) ).toHaveLength( 1 );
+		expect( wrapper.find( '.reading-lists-collection-settings-actions' ).exists() ).toBe( false );
+	} );
 } );

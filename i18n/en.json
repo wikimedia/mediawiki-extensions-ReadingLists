@@ -138,5 +138,11 @@
 	"readinglists-customlists-collection-picker-add-button-label": "Add $1 to $2",
 	"readinglists-customlists-collection-settings": "Collection settings",
 	"readinglists-customlists-rename-collection": "Rename collection",
-	"readinglists-customlists-delete-collection": "Delete collection"
+	"readinglists-customlists-delete-collection": "Delete collection",
+	"readinglists-customlists-delete-collection-dialog-title": "Delete \"$1\"?",
+	"readinglists-customlists-delete-collection-dialog-text": "Only the collection will be deleted. Any items in this collection will remain saved.",
+	"readinglists-customlists-delete-collection-dialog-confirm": "Delete collection",
+	"readinglists-customlists-delete-collection-dialog-cancel": "Cancel",
+	"readinglists-customlists-delete-collection-success": "Collection \"$1\" was deleted.",
+	"readinglists-customlists-delete-collection-error": "The collection could not be deleted."
 }

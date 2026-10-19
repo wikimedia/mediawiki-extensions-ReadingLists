@@ -264,6 +264,12 @@
 				"readinglists-customlists-collection-settings",
 				"readinglists-customlists-rename-collection",
 				"readinglists-customlists-delete-collection",
+				"readinglists-customlists-delete-collection-dialog-title",
+				"readinglists-customlists-delete-collection-dialog-text",
+				"readinglists-customlists-delete-collection-dialog-confirm",
+				"readinglists-customlists-delete-collection-dialog-cancel",
+				"readinglists-customlists-delete-collection-success",
+				"readinglists-customlists-delete-collection-error",
 				"cdx-popover-close-button-label"
 			],
 			"packageFiles": [
@@ -276,6 +282,7 @@
 				"resources/ext.readingLists.special/components/Collection.vue",
 				"resources/ext.readingLists.special/components/CollectionItem.vue",
 				"resources/ext.readingLists.special/components/NavigationBar.vue",
+				"resources/ext.readingLists.special/components/DeleteCollectionDialog.vue",
 				"resources/ext.readingLists.special/components/Survey.vue",
 				"resources/ext.readingLists.special/pages/Entries.vue",
 				{
