@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`NavigationBar renders All items view on desktop 1`] = `
+exports[`NavigationBar > renders All items view on desktop 1`] = `
 <nav
   class="reading-lists-nav"
 >
@@ -30,7 +30,7 @@ exports[`NavigationBar renders All items view on desktop 1`] = `
 </nav>
 `;
 
-exports[`NavigationBar renders All items view on mobile 1`] = `
+exports[`NavigationBar > renders All items view on mobile 1`] = `
 <nav
   class="reading-lists-nav"
 >
@@ -60,7 +60,7 @@ exports[`NavigationBar renders All items view on mobile 1`] = `
 </nav>
 `;
 
-exports[`NavigationBar renders Collection view on desktop 1`] = `
+exports[`NavigationBar > renders Collection view on desktop 1`] = `
 <nav
   class="reading-lists-nav"
 >
@@ -122,7 +122,7 @@ exports[`NavigationBar renders Collection view on desktop 1`] = `
 </nav>
 `;
 
-exports[`NavigationBar renders Collection view on mobile 1`] = `
+exports[`NavigationBar > renders Collection view on mobile 1`] = `
 <nav
   class="reading-lists-nav"
 >
@@ -184,7 +184,7 @@ exports[`NavigationBar renders Collection view on mobile 1`] = `
 </nav>
 `;
 
-exports[`NavigationBar renders Collections view on desktop 1`] = `
+exports[`NavigationBar > renders Collections view on desktop 1`] = `
 <nav
   class="reading-lists-nav"
 >
@@ -246,7 +246,7 @@ exports[`NavigationBar renders Collections view on desktop 1`] = `
 </nav>
 `;
 
-exports[`NavigationBar renders Collections view on mobile 1`] = `
+exports[`NavigationBar > renders Collections view on mobile 1`] = `
 <nav
   class="reading-lists-nav"
 >

@@ -1,4 +1,5 @@
-const api = require( '../../../resources/ext.readingLists.api/index.js' );
+import api from '../../../resources/ext.readingLists.api/index.js';
+import { resetMockSession } from 'mediawiki.storage';
 const SETUP = require( '../fixtures/setup.json' );
 const LISTS = require( '../fixtures/lists.json' );
 const LISTS2 = require( '../fixtures/lists2.json' );
@@ -9,7 +10,6 @@ const ENTRIES2 = require( '../fixtures/entries2.json' );
 const PAGES = require( '../fixtures/pages.json' );
 const CREATEENTRY = require( '../fixtures/createentry.json' );
 const DELETEENTRY = require( '../fixtures/deleteentry.json' );
-const { resetMockSession } = require( 'mediawiki.storage' );
 
 function translateList( list ) {
 	if ( list.default ) {
@@ -73,7 +73,7 @@ function entryToPage( entry ) {
 		title: redirectTitle ? displayTitle : meta.title,
 		description: meta.description || null,
 		thumbnail: meta.thumbnail && meta.thumbnail.source || null,
-		// mw.util.getUrl is an unmocked jest.fn() in the bulk tests, so it
+		// mw.util.getUrl is an unmocked vi.fn() in the bulk tests, so it
 		// returns undefined and the url falls back to the page's canonicalurl.
 		url: meta.canonicalurl,
 		missing: meta.pageid === null
@@ -83,7 +83,7 @@ function entryToPage( entry ) {
 describe( 'setup', () => {
 	test( 'returns inserted list', async () => {
 		api.stubApi( {
-			postWithEditToken: jest.fn( ( { action, command } ) => {
+			postWithEditToken: vi.fn( ( { action, command } ) => {
 				if ( action === 'readinglists' && command === 'setup' ) {
 					return SETUP;
 				}
@@ -98,7 +98,7 @@ describe( 'setup', () => {
 describe( 'getLists', () => {
 	test( 'returns array of multiple lists', async () => {
 		api.stubApi( {
-			get: jest.fn( ( { action, meta } ) => {
+			get: vi.fn( ( { action, meta } ) => {
 				if ( action === 'query' && meta === 'readinglists' ) {
 					return LISTS;
 				}
@@ -116,7 +116,7 @@ describe( 'getLists', () => {
 		const continueToken = LISTS.continue.rlcontinue;
 
 		api.stubApi( {
-			get: jest.fn( ( { action, meta, rlcontinue } ) => {
+			get: vi.fn( ( { action, meta, rlcontinue } ) => {
 				if ( action === 'query' && meta === 'readinglists' && rlcontinue === continueToken ) {
 					return LISTS2;
 				}
@@ -134,7 +134,7 @@ describe( 'getLists', () => {
 		let isSetup = false;
 
 		api.stubApi( {
-			get: jest.fn( ( { action, meta } ) => {
+			get: vi.fn( ( { action, meta } ) => {
 				if ( action === 'query' && meta === 'readinglists' ) {
 					if ( isSetup ) {
 						return LISTS;
@@ -144,7 +144,7 @@ describe( 'getLists', () => {
 					}
 				}
 			} ),
-			postWithEditToken: jest.fn( ( { action, command } ) => {
+			postWithEditToken: vi.fn( ( { action, command } ) => {
 				if ( action === 'readinglists' && command === 'setup' ) {
 					isSetup = true;
 					return SETUP;
@@ -163,7 +163,7 @@ describe( 'getLists', () => {
 		const values = [ 'name', 'updated' ];
 
 		api.stubApi( {
-			get: jest.fn( ( { action, meta, sort } ) => {
+			get: vi.fn( ( { action, meta, sort } ) => {
 				if ( action === 'query' && meta === 'readinglists' && !values.includes( sort ) ) {
 					// eslint-disable-next-line no-throw-literal
 					throw 'badvalue';
@@ -184,7 +184,7 @@ describe( 'getList', () => {
 		const list = LIST.query.readinglists[ 0 ];
 
 		api.stubApi( {
-			get: jest.fn( ( { action, meta, rllist } ) => {
+			get: vi.fn( ( { action, meta, rllist } ) => {
 				if ( action === 'query' && meta === 'readinglists' && rllist === list.id ) {
 					return LIST;
 				}
@@ -199,7 +199,7 @@ describe( 'getList', () => {
 		const defaultList = DEFAULTLIST.query.readinglists[ 0 ];
 
 		api.stubApi( {
-			get: jest.fn( ( { action, meta, rllist } ) => {
+			get: vi.fn( ( { action, meta, rllist } ) => {
 				if ( action === 'query' && meta === 'readinglists' && rllist === defaultList.id ) {
 					return DEFAULTLIST;
 				}
@@ -215,7 +215,7 @@ describe( 'getList', () => {
 		let isSetup = false;
 
 		api.stubApi( {
-			get: jest.fn( ( { action, meta, rllist } ) => {
+			get: vi.fn( ( { action, meta, rllist } ) => {
 				if ( action === 'query' && meta === 'readinglists' && rllist === firstList.id ) {
 					if ( isSetup ) {
 						return LIST;
@@ -225,7 +225,7 @@ describe( 'getList', () => {
 					}
 				}
 			} ),
-			postWithEditToken: jest.fn( ( { action, command } ) => {
+			postWithEditToken: vi.fn( ( { action, command } ) => {
 				if ( action === 'readinglists' && command === 'setup' ) {
 					isSetup = true;
 					return SETUP;
@@ -239,7 +239,7 @@ describe( 'getList', () => {
 
 	test( 'throws on unhandled error', async () => {
 		api.stubApi( {
-			get: jest.fn( ( { action, meta, rllist } ) => {
+			get: vi.fn( ( { action, meta, rllist } ) => {
 				if ( action === 'query' && meta === 'readinglists' && isNaN( parseInt( rllist ) ) ) {
 					// eslint-disable-next-line no-throw-literal
 					throw 'badinteger';
@@ -260,7 +260,7 @@ describe( 'getEntries', () => {
 		const listId = ENTRIES.query.readinglistentries[ 0 ].listId;
 
 		api.stubApi( {
-			get: jest.fn( ( { action, list, rlelists, titles } ) => {
+			get: vi.fn( ( { action, list, rlelists, titles } ) => {
 				if ( action === 'query' ) {
 					if ( list === 'readinglistentries' && rlelists === listId ) {
 						return ENTRIES;
@@ -282,7 +282,7 @@ describe( 'getEntries', () => {
 		const listId = ENTRIES.query.readinglistentries[ 0 ].listId;
 
 		api.stubApi( {
-			get: jest.fn( ( { action, list, rlelists, titles } ) => {
+			get: vi.fn( ( { action, list, rlelists, titles } ) => {
 				if ( action === 'query' ) {
 					if ( list === 'readinglistentries' && rlelists === listId ) {
 						return ENTRIES2;
@@ -305,7 +305,7 @@ describe( 'getEntries', () => {
 		let isSetup = false;
 
 		api.stubApi( {
-			get: jest.fn( ( { action, list, rlelists, titles } ) => {
+			get: vi.fn( ( { action, list, rlelists, titles } ) => {
 				if ( action === 'query' ) {
 					if ( list === 'readinglistentries' && rlelists === listId ) {
 						if ( isSetup ) {
@@ -319,7 +319,7 @@ describe( 'getEntries', () => {
 					}
 				}
 			} ),
-			postWithEditToken: jest.fn( ( { action, command } ) => {
+			postWithEditToken: vi.fn( ( { action, command } ) => {
 				if ( action === 'readinglists' && command === 'setup' ) {
 					isSetup = true;
 					return SETUP;
@@ -336,7 +336,7 @@ describe( 'getEntries', () => {
 
 	test( 'throws on unhandled error', async () => {
 		api.stubApi( {
-			get: jest.fn( ( { action, list, rlelists } ) => {
+			get: vi.fn( ( { action, list, rlelists } ) => {
 				if ( action === 'query' && list === 'readinglistentries' && isNaN( parseInt( rlelists ) ) ) {
 					// eslint-disable-next-line no-throw-literal
 					throw 'badinteger';
@@ -362,7 +362,7 @@ describe( 'getPagesFromManifest', () => {
 
 	test( 'returns array of page metadata', async () => {
 		api.stubApi( {
-			get: jest.fn( ( { action, titles } ) => {
+			get: vi.fn( ( { action, titles } ) => {
 				if ( action === 'query' ) {
 					const parts = titles.split( '|' );
 
@@ -386,7 +386,7 @@ describe( 'getPagesFromManifest', () => {
 
 	test( 'transforms language code to url', async () => {
 		api.stubApi( {
-			get: jest.fn( ( { action, titles }, { url } ) => {
+			get: vi.fn( ( { action, titles }, { url } ) => {
 				if ( action === 'query' && url === `${ project }/w/api.php` ) {
 					const parts = titles.split( '|' );
 
@@ -412,7 +412,7 @@ describe( 'getPagesFromManifest', () => {
 		} ) );
 
 		api.stubApi( {
-			get: jest.fn( ( { action, pageids }, { url } ) => {
+			get: vi.fn( ( { action, pageids }, { url } ) => {
 				if ( action === 'query' && url === `${ project }/w/api.php` ) {
 					const parts = pageids.split( '|' ).map( ( id ) => parseInt( id ) );
 
@@ -439,7 +439,7 @@ describe( 'getPagesFromManifest', () => {
 		const entries = [ { id: 9, title: 'Sleep' } ];
 
 		api.stubApi( {
-			get: jest.fn( ( { action }, { url } ) => {
+			get: vi.fn( ( { action }, { url } ) => {
 				if ( action === 'query' && url === `${ project }/w/api.php` ) {
 					return {
 						batchcomplete: true,
@@ -464,7 +464,7 @@ describe( 'getPagesFromManifest', () => {
 		const entries = [ { id: 1, title: 'New_York_New_York' } ];
 
 		api.stubApi( {
-			get: jest.fn( ( { action }, { url } ) => {
+			get: vi.fn( ( { action }, { url } ) => {
 				if ( action === 'query' && url === `${ project }/w/api.php` ) {
 					return {
 						batchcomplete: true,
@@ -502,7 +502,7 @@ describe( 'getPagesFromManifest', () => {
 
 		mw.util.getUrl.mockReturnValueOnce( redirectUrl );
 		api.stubApi( {
-			get: jest.fn( ( { action }, { url } ) => {
+			get: vi.fn( ( { action }, { url } ) => {
 				if ( action === 'query' && url === `${ project }/w/api.php` ) {
 					return {
 						batchcomplete: true,
@@ -534,7 +534,7 @@ describe( 'getPagesFromManifest', () => {
 
 	test( 'returns fallback on error', async () => {
 		api.stubApi( {
-			get: jest.fn( ( { action }, { url } ) => {
+			get: vi.fn( ( { action }, { url } ) => {
 				if ( action === 'query' && url === `${ project }/w/api.php` ) {
 					// eslint-disable-next-line no-throw-literal
 					throw 'whatever';
@@ -557,7 +557,7 @@ describe( 'createEntry', () => {
 		const entry = CREATEENTRY.createentry.entry;
 
 		api.stubApi( {
-			postWithEditToken: jest.fn( ( { action, command, list, project, title } ) => {
+			postWithEditToken: vi.fn( ( { action, command, list, project, title } ) => {
 				if (
 					action === 'readinglists' &&
 					command === 'createentry' &&
@@ -580,7 +580,7 @@ describe( 'deleteEntry', () => {
 		const entryId = CREATEENTRY.createentry.entry.id;
 
 		api.stubApi( {
-			postWithEditToken: jest.fn( ( { action, command, entry } ) => {
+			postWithEditToken: vi.fn( ( { action, command, entry } ) => {
 				if ( action === 'readinglists' && command === 'deleteentry' && entry === entryId ) {
 					return DELETEENTRY;
 				}
@@ -597,7 +597,7 @@ describe( 'deleteEntryByPageTitle', () => {
 		const title = CREATEENTRY.createentry.entry.title;
 
 		api.stubApi( {
-			postWithEditToken: jest.fn( ( { action, command, project, title: pageTitle } ) => {
+			postWithEditToken: vi.fn( ( { action, command, project, title: pageTitle } ) => {
 				if (
 					action === 'readinglists' &&
 					command === 'deleteentry' &&
@@ -624,7 +624,7 @@ describe( 'fromBase64', () => {
 
 	test( 'returns entries with resolved pages', async () => {
 		api.stubApi( {
-			get: jest.fn( ( { action, pageids }, { url } ) => {
+			get: vi.fn( ( { action, pageids }, { url } ) => {
 				if ( action === 'query' && url === `${ project }/w/api.php` ) {
 					const parts = pageids.split( '|' ).map( ( id ) => parseInt( id ) );
 					const ids = data.list.en;
@@ -656,14 +656,13 @@ describe( 'fromBase64', () => {
 
 	test( 'returns error message', async () => {
 		const response = await api.fromBase64( 'invalid base64' );
-		expect( response ).toStrictEqual( { error: new DOMException(
-			'The string to be decoded contains invalid characters.',
-			'InvalidCharacterError'
-		) } );
+		// jsdom's DOMException and Node.js's global DOMException are different class
+		// objects, so instanceof is cross-realm unreliable. Check by name instead.
+		expect( response.error ).toMatchObject( { name: 'InvalidCharacterError' } );
 	} );
 
 	test( 'rejects project URLs before making requests', async () => {
-		const get = jest.fn();
+		const get = vi.fn();
 		api.stubApi( { get } );
 
 		const encoded = btoa( JSON.stringify( {
@@ -680,7 +679,7 @@ describe( 'fromBase64', () => {
 
 	test( 'preserves name when already present in encoded data', async () => {
 		api.stubApi( {
-			get: jest.fn( ( { action }, { url } ) => {
+			get: vi.fn( ( { action }, { url } ) => {
 				if ( action === 'query' && url === `${ project }/w/api.php` ) {
 					return PAGES;
 				}
@@ -717,7 +716,7 @@ describe( 'toBase64', () => {
 		const list = { en: PAGES.query.pages.map( ( { pageid } ) => pageid || 1 ) };
 
 		api.stubApi( {
-			get: jest.fn( ( { action }, { url } ) => {
+			get: vi.fn( ( { action }, { url } ) => {
 				if ( action === 'query' && url === `${ project }/w/api.php` ) {
 					return PAGES;
 				}
@@ -741,7 +740,7 @@ describe( 'toBase64', () => {
 
 describe( 'getListsAll', () => {
 	it( 'caches', async () => {
-		const get = jest.fn( ( { rlcontinue } ) => {
+		const get = vi.fn( ( { rlcontinue } ) => {
 			if ( rlcontinue ) {
 				return LISTS2;
 			} else {
@@ -769,8 +768,8 @@ describe( 'getListsAll', () => {
 
 describe( 'createList', () => {
 	it( 'calls postWithEditToken when creating a list', async () => {
-		const spy = jest.spyOn( api, 'invalidateSessionCache' );
-		const postWithEditToken = jest.fn();
+		const spy = vi.spyOn( api, 'invalidateSessionCache' );
+		const postWithEditToken = vi.fn();
 		api.stubApi( { postWithEditToken } );
 		await api.createList( 'My list' );
 		expect( postWithEditToken ).toHaveBeenCalled();
@@ -780,8 +779,8 @@ describe( 'createList', () => {
 
 describe( 'updateList', () => {
 	it( 'calls postWithEditToken when updating a list', async () => {
-		const spy = jest.spyOn( api, 'invalidateSessionCache' );
-		const postWithEditToken = jest.fn();
+		const spy = vi.spyOn( api, 'invalidateSessionCache' );
+		const postWithEditToken = vi.fn();
 		api.stubApi( { postWithEditToken } );
 		await api.updateList( 1, 'My list', 'My list description' );
 		expect( postWithEditToken ).toHaveBeenCalled();
@@ -791,8 +790,8 @@ describe( 'updateList', () => {
 
 describe( 'deleteList', () => {
 	it( 'calls postWithEditToken when deleting a list', async () => {
-		const spy = jest.spyOn( api, 'invalidateSessionCache' );
-		const postWithEditToken = jest.fn();
+		const spy = vi.spyOn( api, 'invalidateSessionCache' );
+		const postWithEditToken = vi.fn();
 		api.stubApi( { postWithEditToken } );
 		await api.deleteList( 1 );
 		expect( postWithEditToken ).toHaveBeenCalled();

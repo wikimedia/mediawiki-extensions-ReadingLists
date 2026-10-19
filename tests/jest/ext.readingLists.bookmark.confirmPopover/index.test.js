@@ -1,21 +1,24 @@
-jest.mock( 'vue', () => ( {
-	createMwApp: jest.fn()
+const { createMwApp } = vi.hoisted( () => ( {
+	createMwApp: vi.fn()
 } ) );
 
-jest.mock(
+vi.mock( 'vue', () => ( {
+	createMwApp
+} ) );
+
+vi.mock(
 	'../../../resources/ext.readingLists.bookmark.confirmPopover/ConfirmUnsavePopover.vue',
-	() => ( { name: 'ConfirmUnsavePopover' } )
+	() => ( { default: { name: 'ConfirmUnsavePopover' } } )
 );
 
-const { createMwApp } = require( 'vue' );
-const { confirmUnsaveFromCustomList } = require( '../../../resources/ext.readingLists.bookmark.confirmPopover/index.js' );
+import { confirmUnsaveFromCustomList } from '../../../resources/ext.readingLists.bookmark.confirmPopover/index.js';
 
 describe( 'confirmUnsaveFromCustomList', () => {
 	let mockApp;
 	let capturedProps;
 
 	beforeEach( () => {
-		mockApp = { mount: jest.fn(), unmount: jest.fn() };
+		mockApp = { mount: vi.fn(), unmount: vi.fn() };
 		createMwApp.mockImplementation( ( _component, props ) => {
 			capturedProps = props;
 			return mockApp;

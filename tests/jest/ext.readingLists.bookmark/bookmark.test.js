@@ -130,31 +130,31 @@ function createHookRegistry() {
  */
 function applyMwOverrides( { hookFn } ) {
 	Object.assign( mw.config, {
-		get: jest.fn( ( key ) => DEFAULT_CONFIG_VALUES[ key ] )
+		get: vi.fn( ( key ) => DEFAULT_CONFIG_VALUES[ key ] )
 	} );
 	Object.assign( mw.user, {
-		getName: jest.fn( () => 'TestUser' ),
+		getName: vi.fn( () => 'TestUser' ),
 		options: {
-			get: jest.fn( () => 0 )
+			get: vi.fn( () => 0 )
 		}
 	} );
 	Object.assign( mw.util, {
-		getUrl: jest.fn( ( title ) => `/wiki/${ title }` )
+		getUrl: vi.fn( ( title ) => `/wiki/${ title }` )
 	} );
 	Object.assign( mw.storage, {
-		get: jest.fn( () => null ),
+		get: vi.fn( () => null ),
 		session: {
-			get: jest.fn( () => null ),
-			remove: jest.fn()
+			get: vi.fn( () => null ),
+			remove: vi.fn()
 		}
 	} );
 	Object.assign( mw.log, {
-		error: jest.fn()
+		error: vi.fn()
 	} );
 	Object.assign( mw, {
-		msg: jest.fn( ( key ) => key ),
+		msg: vi.fn( ( key ) => key ),
 		hook: hookFn,
-		requestIdleCallback: jest.fn( ( fn ) => fn() )
+		requestIdleCallback: vi.fn( ( fn ) => fn() )
 	} );
 }
 
@@ -167,26 +167,28 @@ function setConfigValues( overrides ) {
 	mw.config.get.mockImplementation( ( key ) => configValues[ key ] );
 }
 
-beforeEach( () => {
-	jest.resetModules();
+beforeEach( async () => {
+	vi.resetModules();
 	unhandledRejections = [];
 	expectedUnhandledRejections = [];
 	applyMwOverrides( { hookFn: createHookRegistry() } );
-	confirmUnsaveFromCustomList = jest.fn();
-	jest.doMock(
+	confirmUnsaveFromCustomList = vi.fn();
+	// The transform hoists bookmark.js's `require( 'ext.readingLists.bookmark.confirmPopover' )`
+	// into a default import, mirroring the real module's `module.exports = { … }`
+	// (CJS default interop), so the mock exposes the same shape under `default`.
+	vi.doMock(
 		'ext.readingLists.bookmark.confirmPopover',
-		() => ( { confirmUnsaveFromCustomList } ),
-		{ virtual: true }
+		() => ( { default: { confirmUnsaveFromCustomList } } )
 	);
 
-	api = require( '../../../resources/ext.readingLists.api/index.js' );
+	api = ( await import( '../../../resources/ext.readingLists.api/index.js' ) ).default;
 	( { initBookmark, initOnboardingPopover } =
-		require( '../../../resources/ext.readingLists.bookmark/bookmark.js' ) );
+		await import( '../../../resources/ext.readingLists.bookmark/bookmark.js' ) );
 } );
 
 afterEach( () => {
 	expect( unhandledRejections ).toStrictEqual( expectedUnhandledRejections );
-	jest.useRealTimers();
+	vi.useRealTimers();
 	document.body.innerHTML = '';
 } );
 
@@ -250,11 +252,11 @@ describe( 'initBookmark', () => {
 	describe( 'click bookmark button to save page', () => {
 		describe( 'Vector skin bookmark click to save', () => {
 			test( 'calls createEntry, updates icon, fires hook', async () => {
-				const hookCallback = jest.fn();
-				const changeHookCallback = jest.fn();
+				const hookCallback = vi.fn();
+				const changeHookCallback = vi.fn();
 				mw.hook( 'readingLists.bookmark.edit' ).add( hookCallback );
 				mw.hook( 'readingLists.bookmark.change' ).add( changeHookCallback );
-				const postWithEditToken = jest.fn( () => CREATEENTRY );
+				const postWithEditToken = vi.fn( () => CREATEENTRY );
 
 				const bookmark = createBookmarkElement();
 				api.stubApi( {
@@ -282,7 +284,7 @@ describe( 'initBookmark', () => {
 				describe( 'and homepage discovery tour is active', () => {
 					test( 'shows notify success', async () => {
 						mw.user.options.get.mockRestore();
-						jest.useFakeTimers();
+						vi.useFakeTimers();
 
 						const anchor = document.createElement( 'div' );
 						anchor.id = 'pt-readinglists-2';
@@ -290,7 +292,7 @@ describe( 'initBookmark', () => {
 
 						const bookmark = createBookmarkElement();
 						api.stubApi( {
-							postWithEditToken: jest.fn( () => CREATEENTRY )
+							postWithEditToken: vi.fn( () => CREATEENTRY )
 						} );
 
 						mw.storage.get.mockReturnValue( null );
@@ -300,7 +302,7 @@ describe( 'initBookmark', () => {
 						bookmark.click();
 						await flushPromises();
 
-						jest.advanceTimersByTime( 1000 );
+						vi.advanceTimersByTime( 1000 );
 
 						expect( mw.loader.using ).not.toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
 
@@ -317,7 +319,7 @@ describe( 'initBookmark', () => {
 							name === 'growthexperiments-tour-homepage-discovery' ? 1 : 0
 						) );
 
-						jest.useFakeTimers();
+						vi.useFakeTimers();
 
 						const anchor = document.createElement( 'div' );
 						anchor.id = 'pt-readinglists-2';
@@ -325,7 +327,7 @@ describe( 'initBookmark', () => {
 
 						const bookmark = createBookmarkElement();
 						api.stubApi( {
-							postWithEditToken: jest.fn( () => CREATEENTRY )
+							postWithEditToken: vi.fn( () => CREATEENTRY )
 						} );
 
 						mw.storage.get.mockReturnValue( null );
@@ -335,7 +337,7 @@ describe( 'initBookmark', () => {
 						bookmark.click();
 						await flushPromises();
 
-						jest.advanceTimersByTime( 1000 );
+						vi.advanceTimersByTime( 1000 );
 
 						expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
 					} );
@@ -346,7 +348,7 @@ describe( 'initBookmark', () => {
 				test( 'shows notify success', async () => {
 					const bookmark = createBookmarkElement();
 					api.stubApi( {
-						postWithEditToken: jest.fn( () => CREATEENTRY )
+						postWithEditToken: vi.fn( () => CREATEENTRY )
 					} );
 					mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
 
@@ -364,11 +366,11 @@ describe( 'initBookmark', () => {
 
 		describe( 'Minerva skin bookmark button click to save', () => {
 			test( 'calls createEntry, updates icon, fires hook', async () => {
-				const hookCallback = jest.fn();
-				const changeHookCallback = jest.fn();
+				const hookCallback = vi.fn();
+				const changeHookCallback = vi.fn();
 				mw.hook( 'readingLists.bookmark.edit' ).add( hookCallback );
 				mw.hook( 'readingLists.bookmark.change' ).add( changeHookCallback );
-				const postWithEditToken = jest.fn( () => CREATEENTRY );
+				const postWithEditToken = vi.fn( () => CREATEENTRY );
 
 				const bookmark = createBookmarkElement( {
 					iconClass: 'minerva-icon'
@@ -400,7 +402,7 @@ describe( 'initBookmark', () => {
 					name === 'homepage_mobile_discovery_notice_seen' ? 1 : 0
 				) );
 
-				jest.useFakeTimers();
+				vi.useFakeTimers();
 
 				const anchor = document.createElement( 'div' );
 				anchor.className = 'minerva-user-menu';
@@ -410,7 +412,7 @@ describe( 'initBookmark', () => {
 					iconClass: 'minerva-icon'
 				} );
 				api.stubApi( {
-					postWithEditToken: jest.fn( () => CREATEENTRY )
+					postWithEditToken: vi.fn( () => CREATEENTRY )
 				} );
 				setConfigValues( { skin: 'minerva' } );
 				mw.storage.get.mockReturnValue( null );
@@ -420,7 +422,7 @@ describe( 'initBookmark', () => {
 				bookmark.click();
 				await flushPromises();
 
-				jest.advanceTimersByTime( 1000 );
+				vi.advanceTimersByTime( 1000 );
 
 				expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.mobile' );
 			} );
@@ -430,7 +432,7 @@ describe( 'initBookmark', () => {
 					iconClass: 'minerva-icon'
 				} );
 				api.stubApi( {
-					postWithEditToken: jest.fn( () => CREATEENTRY )
+					postWithEditToken: vi.fn( () => CREATEENTRY )
 				} );
 				mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
 
@@ -448,7 +450,7 @@ describe( 'initBookmark', () => {
 
 	describe( 'when the user rapidly clicks the bookmark button twice', () => {
 		test( 'ignores the second click while the first is still processing', async () => {
-			const postWithEditToken = jest.fn( () => CREATEENTRY );
+			const postWithEditToken = vi.fn( () => CREATEENTRY );
 			const bookmark = createBookmarkElement();
 			api.stubApi( { postWithEditToken } );
 			mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
@@ -477,7 +479,7 @@ describe( 'initBookmark', () => {
 		}
 
 		test( 'saves the page and shows onboarding', async () => {
-			const postWithEditToken = jest.fn( () => CREATEENTRY );
+			const postWithEditToken = vi.fn( () => CREATEENTRY );
 			const bookmark = createMinervaBookmark();
 			api.stubApi( { postWithEditToken } );
 			mw.storage.session.get.mockReturnValue( 'Test_Page' );
@@ -501,7 +503,7 @@ describe( 'initBookmark', () => {
 
 		test( 'shows onboarding when the Growth discovery preference is missing', async () => {
 			const bookmark = createMinervaBookmark();
-			api.stubApi( { postWithEditToken: jest.fn( () => CREATEENTRY ) } );
+			api.stubApi( { postWithEditToken: vi.fn( () => CREATEENTRY ) } );
 			mw.storage.session.get.mockReturnValue( 'Test_Page' );
 			mw.user.options.get.mockImplementation( ( _name, fallback = null ) => fallback );
 
@@ -513,7 +515,7 @@ describe( 'initBookmark', () => {
 		} );
 
 		test( 'does not save when the page is already saved', async () => {
-			const postWithEditToken = jest.fn( () => CREATEENTRY );
+			const postWithEditToken = vi.fn( () => CREATEENTRY );
 			const bookmark = createMinervaBookmark( { saved: '1' } );
 			api.stubApi( { postWithEditToken } );
 			mw.storage.session.get.mockReturnValue( 'Test_Page' );
@@ -527,7 +529,7 @@ describe( 'initBookmark', () => {
 		} );
 
 		test( 'does not save when the stored page name is for another page', async () => {
-			const postWithEditToken = jest.fn( () => CREATEENTRY );
+			const postWithEditToken = vi.fn( () => CREATEENTRY );
 			const bookmark = createMinervaBookmark();
 			api.stubApi( { postWithEditToken } );
 			mw.storage.session.get.mockReturnValue( 'Other_Page' );
@@ -540,7 +542,7 @@ describe( 'initBookmark', () => {
 		} );
 
 		test( 'does not save when there is no stored page name', async () => {
-			const postWithEditToken = jest.fn( () => CREATEENTRY );
+			const postWithEditToken = vi.fn( () => CREATEENTRY );
 			const bookmark = createMinervaBookmark();
 			api.stubApi( { postWithEditToken } );
 
@@ -554,7 +556,7 @@ describe( 'initBookmark', () => {
 		test( 'logs the error and shows no notification when the save fails', async () => {
 			const bookmark = createMinervaBookmark();
 			api.stubApi( {
-				postWithEditToken: jest.fn( () => Promise.reject( 'some-api-error' ) )
+				postWithEditToken: vi.fn( () => Promise.reject( 'some-api-error' ) )
 			} );
 			mw.storage.session.get.mockReturnValue( 'Test_Page' );
 
@@ -571,11 +573,11 @@ describe( 'initBookmark', () => {
 
 	describe( 'click bookmark button to unsave page', () => {
 		test( 'calls deleteEntryByPageTitle, updates icon, fires hook on Vector skin', async () => {
-			const hookCallback = jest.fn();
-			const changeHookCallback = jest.fn();
+			const hookCallback = vi.fn();
+			const changeHookCallback = vi.fn();
 			mw.hook( 'readingLists.bookmark.edit' ).add( hookCallback );
 			mw.hook( 'readingLists.bookmark.change' ).add( changeHookCallback );
-			const postWithEditToken = jest.fn( () => DELETEENTRY );
+			const postWithEditToken = vi.fn( () => DELETEENTRY );
 
 			const bookmark = createBookmarkElement( {
 				saved: '1'
@@ -610,11 +612,11 @@ describe( 'initBookmark', () => {
 		} );
 
 		test( 'calls deleteEntryByPageTitle, updates icon, fires hook on Minerva skin', async () => {
-			const hookCallback = jest.fn();
-			const changeHookCallback = jest.fn();
+			const hookCallback = vi.fn();
+			const changeHookCallback = vi.fn();
 			mw.hook( 'readingLists.bookmark.edit' ).add( hookCallback );
 			mw.hook( 'readingLists.bookmark.change' ).add( changeHookCallback );
-			const postWithEditToken = jest.fn( () => DELETEENTRY );
+			const postWithEditToken = vi.fn( () => DELETEENTRY );
 
 			const bookmark = createBookmarkElement( {
 				iconClass: 'minerva-icon',
@@ -650,7 +652,7 @@ describe( 'initBookmark', () => {
 		} );
 
 		test( 'loads confirm popover before removing page from a custom list', async () => {
-			const postWithEditToken = jest.fn( () => DELETEENTRY );
+			const postWithEditToken = vi.fn( () => DELETEENTRY );
 			const bookmark = createBookmarkElement( {
 				saved: '1',
 				inCustomList: '1'
@@ -676,7 +678,7 @@ describe( 'initBookmark', () => {
 		} );
 
 		test( 'does not remove page when custom list confirmation is cancelled', async () => {
-			const postWithEditToken = jest.fn( () => DELETEENTRY );
+			const postWithEditToken = vi.fn( () => DELETEENTRY );
 			const bookmark = createBookmarkElement( {
 				saved: '1',
 				inCustomList: '1'
@@ -697,7 +699,7 @@ describe( 'initBookmark', () => {
 
 	describe( 'ReadingLists list setup flow', () => {
 		test( 'saves to default list without calling setup on Vector skin', async () => {
-			const postWithEditToken = jest.fn( ( { command } ) => {
+			const postWithEditToken = vi.fn( ( { command } ) => {
 				if ( command === 'createentry' ) {
 					return CREATEENTRY;
 				}
@@ -724,26 +726,36 @@ describe( 'initBookmark', () => {
 	} );
 
 	describe( 'when ReadingListsCustomLists is enabled', () => {
-		beforeEach( () => {
-			jest.resetModules();
-			jest.doMock( '../../../resources/config.json', () => ( {
-				ReadingListsCustomLists: true
+		beforeEach( async () => {
+			vi.resetModules();
+			vi.doMock( '../../../resources/config.json', () => ( {
+				ReadingListsCustomLists: true,
+				default: { ReadingListsCustomLists: true }
 			} ) );
-			initBookmarkPopover = jest.fn( () => false );
-			jest.doMock(
+			initBookmarkPopover = vi.fn( () => false );
+			// Default-export shape, as for the confirmPopover mock above. The transform
+			// hoists bookmark.js's lazy require() to a top-level import, so the mock
+			// delegates to the current `initBookmarkPopover`, which tests may reassign.
+			vi.doMock(
 				'ext.readingLists.bookmark.bookmarkPopover',
-				() => ( { initBookmarkPopover } ),
-				{ virtual: true }
+				() => ( { default: {
+					initBookmarkPopover: ( ...args ) => initBookmarkPopover( ...args )
+				} } )
 			);
-			api = require( '../../../resources/ext.readingLists.api/index.js' );
+			api = ( await import( '../../../resources/ext.readingLists.api/index.js' ) ).default;
 			( { initBookmark } =
-				require( '../../../resources/ext.readingLists.bookmark/bookmark.js' ) );
+				await import( '../../../resources/ext.readingLists.bookmark/bookmark.js' ) );
+		} );
+
+		afterEach( () => {
+			vi.doUnmock( '../../../resources/config.json' );
+			vi.doUnmock( 'ext.readingLists.bookmark.bookmarkPopover' );
 		} );
 
 		test( 'launches bookmark popover on save instead of mw.notify', async () => {
 			const bookmark = createBookmarkElement();
 			api.stubApi( {
-				postWithEditToken: jest.fn( () => CREATEENTRY )
+				postWithEditToken: vi.fn( () => CREATEENTRY )
 			} );
 			mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
 
@@ -768,7 +780,7 @@ describe( 'initBookmark', () => {
 		test( 'shows mw.notify success when bookmarkPopover module fails to load', async () => {
 			const bookmark = createBookmarkElement();
 			api.stubApi( {
-				postWithEditToken: jest.fn( () => CREATEENTRY )
+				postWithEditToken: vi.fn( () => CREATEENTRY )
 			} );
 			mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
 			mw.loader.using.mockRejectedValueOnce( new Error( 'module load failed' ) );
@@ -786,24 +798,19 @@ describe( 'initBookmark', () => {
 		} );
 
 		test( 'fires bookmark change hooks after save, before the bookmark popover resolves', async () => {
-			const hookCallback = jest.fn();
-			const changeHookCallback = jest.fn();
+			const hookCallback = vi.fn();
+			const changeHookCallback = vi.fn();
 			mw.hook( 'readingLists.bookmark.edit' ).add( hookCallback );
 			mw.hook( 'readingLists.bookmark.change' ).add( changeHookCallback );
 
 			let resolvePopover;
-			initBookmarkPopover = jest.fn( () => new Promise( ( resolve ) => {
+			initBookmarkPopover = vi.fn( () => new Promise( ( resolve ) => {
 				resolvePopover = resolve;
 			} ) );
-			jest.doMock(
-				'ext.readingLists.bookmark.bookmarkPopover',
-				() => ( { initBookmarkPopover } ),
-				{ virtual: true }
-			);
 
 			const bookmark = createBookmarkElement();
 			api.stubApi( {
-				postWithEditToken: jest.fn( () => CREATEENTRY )
+				postWithEditToken: vi.fn( () => CREATEENTRY )
 			} );
 			mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
 
@@ -829,7 +836,7 @@ describe( 'initBookmark', () => {
 			describe( 'and homepage discovery tour is active', () => {
 				test( 'launches bookmark popover without triggering onboarding', async () => {
 					mw.user.options.get.mockRestore();
-					jest.useFakeTimers();
+					vi.useFakeTimers();
 
 					const anchor = document.createElement( 'div' );
 					anchor.id = 'pt-readinglists-2';
@@ -837,7 +844,7 @@ describe( 'initBookmark', () => {
 
 					const bookmark = createBookmarkElement();
 					api.stubApi( {
-						postWithEditToken: jest.fn( () => CREATEENTRY )
+						postWithEditToken: vi.fn( () => CREATEENTRY )
 					} );
 
 					mw.storage.get.mockReturnValue( null );
@@ -849,7 +856,7 @@ describe( 'initBookmark', () => {
 					await flushPromises();
 					await flushPromises();
 
-					jest.advanceTimersByTime( 1000 );
+					vi.advanceTimersByTime( 1000 );
 
 					expect( initBookmarkPopover ).toHaveBeenCalledWith( false );
 					expect( mw.notify ).not.toHaveBeenCalledWith(
@@ -866,7 +873,7 @@ describe( 'initBookmark', () => {
 						name === 'growthexperiments-tour-homepage-discovery' ? 1 : 0
 					) );
 
-					jest.useFakeTimers();
+					vi.useFakeTimers();
 
 					const anchor = document.createElement( 'div' );
 					anchor.id = 'pt-readinglists-2';
@@ -874,7 +881,7 @@ describe( 'initBookmark', () => {
 
 					const bookmark = createBookmarkElement();
 					api.stubApi( {
-						postWithEditToken: jest.fn( () => CREATEENTRY )
+						postWithEditToken: vi.fn( () => CREATEENTRY )
 					} );
 
 					mw.storage.get.mockReturnValue( null );
@@ -886,7 +893,7 @@ describe( 'initBookmark', () => {
 					await flushPromises();
 					await flushPromises();
 
-					jest.advanceTimersByTime( 1000 );
+					vi.advanceTimersByTime( 1000 );
 
 					expect( initBookmarkPopover ).toHaveBeenCalledWith( false );
 					expect( mw.notify ).not.toHaveBeenCalledWith(
@@ -900,10 +907,10 @@ describe( 'initBookmark', () => {
 
 		describe( 'when onboarding popover has been seen', () => {
 			test( 'launches the bookmark popover without triggering onboarding', async () => {
-				jest.useFakeTimers();
+				vi.useFakeTimers();
 				const bookmark = createBookmarkElement();
 				api.stubApi( {
-					postWithEditToken: jest.fn( () => CREATEENTRY )
+					postWithEditToken: vi.fn( () => CREATEENTRY )
 				} );
 				mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
 
@@ -913,7 +920,7 @@ describe( 'initBookmark', () => {
 				await flushPromises();
 				await flushPromises();
 
-				jest.advanceTimersByTime( 1000 );
+				vi.advanceTimersByTime( 1000 );
 
 				expect( initBookmarkPopover ).toHaveBeenCalledWith( false );
 				expect( mw.notify ).not.toHaveBeenCalledWith(
@@ -925,16 +932,11 @@ describe( 'initBookmark', () => {
 		} );
 
 		test( 'shows custom list notification when popover resolves with a listId', async () => {
-			initBookmarkPopover = jest.fn( () => ( { showNotification: true, listId: 42, listName: 'My List' } ) );
-			jest.doMock(
-				'ext.readingLists.bookmark.bookmarkPopover',
-				() => ( { initBookmarkPopover } ),
-				{ virtual: true }
-			);
+			initBookmarkPopover = vi.fn( () => ( { showNotification: true, listId: 42, listName: 'My List' } ) );
 
 			const bookmark = createBookmarkElement();
 			api.stubApi( {
-				postWithEditToken: jest.fn( () => CREATEENTRY )
+				postWithEditToken: vi.fn( () => CREATEENTRY )
 			} );
 			mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
 
@@ -957,16 +959,11 @@ describe( 'initBookmark', () => {
 		} );
 
 		test( 'shows default list notification when popover resolves without a listId', async () => {
-			initBookmarkPopover = jest.fn( () => ( { showNotification: true, listId: null, listName: null } ) );
-			jest.doMock(
-				'ext.readingLists.bookmark.bookmarkPopover',
-				() => ( { initBookmarkPopover } ),
-				{ virtual: true }
-			);
+			initBookmarkPopover = vi.fn( () => ( { showNotification: true, listId: null, listName: null } ) );
 
 			const bookmark = createBookmarkElement();
 			api.stubApi( {
-				postWithEditToken: jest.fn( () => CREATEENTRY )
+				postWithEditToken: vi.fn( () => CREATEENTRY )
 			} );
 			mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
 
@@ -993,7 +990,7 @@ describe( 'initBookmark', () => {
 		test( 'shows error notification when createEntry rejects on Vector skin', async () => {
 			const bookmark = createBookmarkElement();
 			expectedUnhandledRejections = [ 'some-api-error' ];
-			const postWithEditToken = jest.fn( ( { command } ) => {
+			const postWithEditToken = vi.fn( ( { command } ) => {
 				if ( command === 'createentry' ) {
 					// eslint-disable-next-line no-throw-literal
 					throw 'some-api-error';
@@ -1021,7 +1018,7 @@ describe( 'initBookmark', () => {
 				saved: '1'
 			} );
 			expectedUnhandledRejections = [ 'unexpected-error' ];
-			const postWithEditToken = jest.fn( ( { command } ) => {
+			const postWithEditToken = vi.fn( ( { command } ) => {
 				if ( command === 'deleteentry' ) {
 					// eslint-disable-next-line no-throw-literal
 					throw 'unexpected-error';

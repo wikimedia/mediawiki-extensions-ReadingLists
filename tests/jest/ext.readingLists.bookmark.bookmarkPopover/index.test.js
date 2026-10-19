@@ -1,21 +1,22 @@
-jest.mock( 'vue', () => ( {
-	createMwApp: jest.fn()
+vi.mock( 'vue', () => ( {
+	createMwApp: vi.fn()
 } ) );
 
-jest.mock(
+// index.js's `require( './BookmarkPopover.vue' )` is hoisted to a default import.
+vi.mock(
 	'../../../resources/ext.readingLists.bookmark.bookmarkPopover/BookmarkPopover.vue',
-	() => ( { name: 'BookmarkPopover' } )
+	() => ( { default: { name: 'BookmarkPopover' } } )
 );
 
-const { createMwApp } = require( 'vue' );
-const { initBookmarkPopover } = require( '../../../resources/ext.readingLists.bookmark.bookmarkPopover/index.js' );
+import { createMwApp } from 'vue';
+import { initBookmarkPopover } from '../../../resources/ext.readingLists.bookmark.bookmarkPopover/index.js';
 
 describe( 'initBookmarkPopover', () => {
 	let mockApp;
 	let capturedProps;
 
 	beforeEach( () => {
-		mockApp = { mount: jest.fn(), unmount: jest.fn() };
+		mockApp = { mount: vi.fn(), unmount: vi.fn() };
 		createMwApp.mockImplementation( ( _component, props ) => {
 			capturedProps = props;
 			return mockApp;

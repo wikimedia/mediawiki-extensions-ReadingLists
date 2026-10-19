@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Entries with custom lists nav bar does not disappear when show more is clicked 1`] = `
+exports[`Entries > with custom lists > nav bar does not disappear when show more is clicked 1`] = `
 <div
   data-v-app=""
 >
@@ -335,7 +335,7 @@ exports[`Entries with custom lists nav bar does not disappear when show more is 
 </div>
 `;
 
-exports[`Entries with custom lists nav bar only renders after content has finished loading 1`] = `
+exports[`Entries > with custom lists > nav bar only renders after content has finished loading 1`] = `
 <div
   data-v-app=""
 >
@@ -374,7 +374,7 @@ exports[`Entries with custom lists nav bar only renders after content has finish
 </div>
 `;
 
-exports[`Entries with custom lists renders the nav bar when custom lists are enabled 1`] = `
+exports[`Entries > with custom lists > renders the nav bar when custom lists are enabled 1`] = `
 <div
   data-v-app=""
 >
@@ -555,7 +555,7 @@ exports[`Entries with custom lists renders the nav bar when custom lists are ena
 </div>
 `;
 
-exports[`Entries without custom lists renders all items from all lists on special page 1`] = `
+exports[`Entries > without custom lists > renders all items from all lists on special page 1`] = `
 <div
   data-v-app=""
 >
@@ -710,7 +710,7 @@ exports[`Entries without custom lists renders all items from all lists on specia
 </div>
 `;
 
-exports[`Entries without custom lists renders with toolbar disabled 1`] = `
+exports[`Entries > without custom lists > renders with toolbar disabled 1`] = `
 <div
   data-v-app=""
 >

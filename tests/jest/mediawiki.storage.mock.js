@@ -1,25 +1,23 @@
 // Minimal stand-in for the `mediawiki.storage` ResourceLoader module, which
-// Jest cannot resolve via its usual require() mapping (see jest.config.js).
+// is mapped here via `resolve.alias` (see vitest.config.mjs).
 // Only implements what ext.readingLists.api/index.js actually uses.
 const store = new Map();
 
-const session = {
-	get: jest.fn( ( key ) => ( store.has( key ) ? store.get( key ) : null ) ),
-	set: jest.fn( ( key, value ) => {
+export const session = {
+	get: vi.fn( ( key ) => ( store.has( key ) ? store.get( key ) : null ) ),
+	set: vi.fn( ( key, value ) => {
 		store.set( key, value );
 		return true;
 	} ),
-	remove: jest.fn( ( key ) => {
+	remove: vi.fn( ( key ) => {
 		store.delete( key );
 		return true;
 	} )
 };
 
-function resetMockSession() {
+export function resetMockSession() {
 	store.clear();
 	session.get.mockClear();
 	session.set.mockClear();
 	session.remove.mockClear();
 }
-
-module.exports = { session, resetMockSession };

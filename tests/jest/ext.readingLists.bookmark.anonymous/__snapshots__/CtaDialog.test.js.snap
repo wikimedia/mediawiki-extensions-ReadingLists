@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`CtaDialog matches the snapshot 1`] = `
+exports[`CtaDialog > matches the snapshot 1`] = `
 <div>
   <!--teleport start-->
   <transition-stub
@@ -81,6 +81,7 @@ exports[`CtaDialog matches the snapshot 1`] = `
           </p>
           <div
             class="readinglists-cta-dialog__illustration"
+            style="background-image: url("undefined/ReadingLists/resources/assets/cta-dialog-illustration.svg");"
           />
           
         </div>

@@ -1,5 +1,14 @@
 const { mount } = require( '@vue/test-utils' );
-const CtaDialog = require( '../../../resources/ext.readingLists.bookmark.anonymous/CtaDialog.vue' );
+
+import CtaDialog from '../../../resources/ext.readingLists.bookmark.anonymous/CtaDialog.vue';
+
+mw.testKitchen = {
+	compat: {
+		getExperiment: vi.fn( () => ( {
+			send: vi.fn() // Properly mock the `send` method
+		} ) )
+	}
+};
 
 describe( 'CtaDialog', () => {
 	test( 'matches the snapshot', () => {
@@ -11,7 +20,7 @@ describe( 'CtaDialog', () => {
 	describe( 'remembers the page to save after log in or account creation', () => {
 		beforeEach( () => {
 			mw.config.get.mockImplementation( ( key ) => ( key === 'wgPageName' ? 'Test_Page' : undefined ) );
-			mw.storage.session = { set: jest.fn() };
+			mw.storage.session = { set: vi.fn() };
 		} );
 
 		test.each( [

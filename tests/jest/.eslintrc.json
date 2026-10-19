@@ -3,10 +3,18 @@
 	"extends": [
 		"../../.eslintrc.json"
 	],
+	"parserOptions": {
+		"sourceType": "module",
+		"ecmaVersion": 2020
+	},
 	"globals": {
-		"OO": "readonly"
+		"OO": "readonly",
+		"vi": "readonly"
 	},
 	"env": {
 		"jest": true
+	},
+	"rules": {
+		"es-x/no-dynamic-import": "off"
 	}
 }

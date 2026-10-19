@@ -1,6 +1,5 @@
-const { mount, config } = require( '@vue/test-utils' );
-
-const MobileOnboardingPopover = require( '../../../resources/ext.readingLists.onboarding.mobile/MobileOnboardingPopover.vue' );
+import { mount, config } from '@vue/test-utils';
+import MobileOnboardingPopover from '../../../resources/ext.readingLists.onboarding.mobile/MobileOnboardingPopover.vue';
 
 describe( 'MobileOnboardingPopover', () => {
 	let mockBookmarkElement;
@@ -40,8 +39,8 @@ describe( 'MobileOnboardingPopover', () => {
 		mockBookmarkElement = document.createElement( 'div' );
 		mockBookmarkElement.id = 'mock-bookmark-element';
 		document.body.appendChild( mockBookmarkElement );
-		mockOnDismiss = jest.fn();
-		mw.msg = jest.fn( ( key ) => key );
+		mockOnDismiss = vi.fn();
+		mw.msg = vi.fn( ( key ) => key );
 	} );
 
 	afterEach( () => {
@@ -52,7 +51,7 @@ describe( 'MobileOnboardingPopover', () => {
 		if ( mockBookmarkElement && mockBookmarkElement.parentNode ) {
 			mockBookmarkElement.parentNode.removeChild( mockBookmarkElement );
 		}
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	} );
 
 	describe( 'rendering behavior', () => {

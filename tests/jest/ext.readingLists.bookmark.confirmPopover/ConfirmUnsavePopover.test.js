@@ -1,6 +1,5 @@
-const { mount } = require( '@vue/test-utils' );
-
-const ConfirmUnsavePopover = require( '../../../resources/ext.readingLists.bookmark.confirmPopover/ConfirmUnsavePopover.vue' );
+import { mount } from '@vue/test-utils';
+import ConfirmUnsavePopover from '../../../resources/ext.readingLists.bookmark.confirmPopover/ConfirmUnsavePopover.vue';
 
 const cdxPopoverStub = {
 	name: 'CdxPopover',
@@ -45,8 +44,8 @@ describe( 'ConfirmUnsavePopover', () => {
 	}
 
 	beforeEach( () => {
-		onConfirm = jest.fn();
-		onCancel = jest.fn();
+		onConfirm = vi.fn();
+		onCancel = vi.fn();
 	} );
 
 	afterEach( () => {
@@ -54,7 +53,7 @@ describe( 'ConfirmUnsavePopover', () => {
 			wrapper.unmount();
 			wrapper = null;
 		}
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	} );
 
 	describe( 'ConfirmUnsavePopover rendering', () => {

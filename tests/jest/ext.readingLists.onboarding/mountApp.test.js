@@ -1,9 +1,13 @@
-jest.mock( 'vue', () => ( {
-	createMwApp: jest.fn()
+const { createMwApp } = vi.hoisted( () => ( {
+	createMwApp: vi.fn()
 } ) );
 
-const { createMwApp } = require( 'vue' );
-const mountApp = require( '../../../resources/ext.readingLists.onboarding/mountApp.js' );
+// mountApp.js's `const vue = require( 'vue' )` is hoisted to a default import.
+vi.mock( 'vue', () => ( {
+	default: { createMwApp }
+} ) );
+
+import mountApp from '../../../resources/ext.readingLists.onboarding/mountApp.js';
 
 describe( 'mountApp', () => {
 	let mockTarget;
@@ -11,7 +15,7 @@ describe( 'mountApp', () => {
 	let mockComponent;
 
 	beforeEach( () => {
-		mockApp = { mount: jest.fn(), unmount: jest.fn() };
+		mockApp = { mount: vi.fn(), unmount: vi.fn() };
 		createMwApp.mockReturnValue( mockApp );
 		mockComponent = { name: 'MockComponent', template: '<div />' };
 
@@ -23,26 +27,26 @@ describe( 'mountApp', () => {
 			configurable: true
 		} );
 
-		mockTarget.getBoundingClientRect = jest.fn( () => ( {
+		mockTarget.getBoundingClientRect = vi.fn( () => ( {
 			top: 0,
 			bottom: 100
 		} ) );
 
-		mw.message = jest.fn( () => ( { exists: () => true } ) );
-		mw.storage = { set: jest.fn(), get: jest.fn() };
-		mw.util = { throttle: jest.fn( ( fn ) => fn ) };
+		mw.message = vi.fn( () => ( { exists: () => true } ) );
+		mw.storage = { set: vi.fn(), get: vi.fn() };
+		mw.util = { throttle: vi.fn( ( fn ) => fn ) };
 
-		global.IntersectionObserver = jest.fn( () => ( {
-			observe: jest.fn(),
-			disconnect: jest.fn()
-		} ) );
+		global.IntersectionObserver = vi.fn( function () {
+			this.observe = vi.fn();
+			this.disconnect = vi.fn();
+		} );
 	} );
 
 	afterEach( () => {
 		if ( mockTarget && mockTarget.parentNode ) {
 			mockTarget.parentNode.removeChild( mockTarget );
 		}
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	} );
 
 	const defaultConfig = () => ( {
@@ -86,7 +90,7 @@ describe( 'mountApp', () => {
 
 	describe( 'popover not in viewport', () => {
 		test( 'does not mount when target is above the viewport', async () => {
-			mockTarget.getBoundingClientRect = jest.fn( () => ( {
+			mockTarget.getBoundingClientRect = vi.fn( () => ( {
 				top: -100,
 				bottom: -10
 			} ) );

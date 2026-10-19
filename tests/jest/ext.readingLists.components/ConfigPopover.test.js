@@ -1,16 +1,16 @@
-const { ref } = require( 'vue' );
 const { mount } = require( '@vue/test-utils' );
 
 // Mock useResizeObserver since native ResizeObserver never fires.
-jest.mock( '@wikimedia/codex', () => {
-	const actual = jest.requireActual( '@wikimedia/codex' );
+// `ref` is imported inside the factory, which `vi.mock` hoists above all imports.
+vi.mock( '@wikimedia/codex', async ( importOriginal ) => {
+	const { ref } = await import( 'vue' );
 	return {
-		...actual,
-		useResizeObserver: jest.fn( () => ref( { height: 100 } ) )
+		...await importOriginal(),
+		useResizeObserver: vi.fn( () => ref( { height: 100 } ) )
 	};
 } );
 
-const ConfigPopover = require( '../../../resources/ext.readingLists.common/ConfigPopover.vue' );
+import ConfigPopover from '../../../resources/ext.readingLists.common/ConfigPopover.vue';
 
 // Stub that exposes a `panel` element so ConfigPopover's onMounted can set
 // popoverEl = popover.value.panel without throwing.
@@ -195,7 +195,7 @@ describe( 'ConfigPopover', () => {
 		} );
 
 		test( 'adds a resize event listener on mount when skin is not Minerva', () => {
-			const addEventListenerSpy = jest.spyOn( window, 'addEventListener' );
+			const addEventListenerSpy = vi.spyOn( window, 'addEventListener' );
 			mountPopover();
 
 			const resizeCalls = addEventListenerSpy.mock.calls.filter( ( [ event ] ) => event === 'resize' );
@@ -205,7 +205,7 @@ describe( 'ConfigPopover', () => {
 		} );
 
 		test( 'removes the resize event listener on unmount when skin is not Minerva', () => {
-			const removeEventListenerSpy = jest.spyOn( window, 'removeEventListener' );
+			const removeEventListenerSpy = vi.spyOn( window, 'removeEventListener' );
 			mountPopover();
 			wrapper.unmount();
 			wrapper = null;
@@ -217,7 +217,7 @@ describe( 'ConfigPopover', () => {
 		} );
 
 		test( 'does not add a resize event listener on Minerva', () => {
-			const addEventListenerSpy = jest.spyOn( window, 'addEventListener' );
+			const addEventListenerSpy = vi.spyOn( window, 'addEventListener' );
 			mw.config.get.mockReturnValue( 'minerva' );
 			mountPopover();
 

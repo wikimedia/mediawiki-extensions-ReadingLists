@@ -1,9 +1,9 @@
-const { getCollectionUrl } = require( '../../../resources/ext.readingLists.common/index.js' );
+import { getCollectionUrl } from '../../../resources/ext.readingLists.common/index.js';
 
 describe( 'getCollectionUrl', () => {
 	beforeEach( () => {
 		mw.user.getName.mockReturnValue( 'Test' );
-		mw.util.wikiUrlencode = jest.fn( ( path ) => path );
+		mw.util.wikiUrlencode = vi.fn( ( path ) => path );
 	} );
 
 	it( 'should return the URL for all collections when listId and listName are not provided', () => {

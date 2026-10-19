@@ -1,7 +1,9 @@
-const { mount } = require( '@vue/test-utils' );
+import { mount } from '@vue/test-utils';
 
-const apiModule = require( '../../../resources/ext.readingLists.api/index.js' );
-const BookmarkPopover = require( '../../../resources/ext.readingLists.bookmark.bookmarkPopover/BookmarkPopover.vue' );
+// Imported rather than required so the test and the component under test share
+// the same module instance, which is what makes `api.stubApi()` take effect.
+import apiModule from '../../../resources/ext.readingLists.api/index.js';
+import BookmarkPopover from '../../../resources/ext.readingLists.bookmark.bookmarkPopover/BookmarkPopover.vue';
 
 const configPopoverStub = {
 	name: 'ConfigPopover',
@@ -15,8 +17,8 @@ describe( 'BookmarkPopover', () => {
 	let wrapper;
 
 	beforeEach( () => {
-		onDismiss = jest.fn();
-		mw.message.mockReturnValue( { parse: jest.fn( () => 'Save success title' ) } );
+		onDismiss = vi.fn();
+		mw.message.mockReturnValue( { parse: vi.fn( () => 'Save success title' ) } );
 	} );
 
 	afterEach( () => {
@@ -119,7 +121,7 @@ describe( 'BookmarkPopover', () => {
 		}
 
 		test( 'calls deleteEntryByPageTitle and createEntry when add-to-collection is triggered', async () => {
-			const postWithEditToken = jest.fn( () => Promise.resolve( {} ) );
+			const postWithEditToken = vi.fn( () => Promise.resolve( {} ) );
 			apiModule.stubApi( { postWithEditToken } );
 
 			mountPopoverWithCollectionPickerStub();
@@ -139,7 +141,7 @@ describe( 'BookmarkPopover', () => {
 		} );
 
 		test( 'calls onDismiss with true, listId and listName after add-to-collection', async () => {
-			apiModule.stubApi( { postWithEditToken: jest.fn( () => Promise.resolve( {} ) ) } );
+			apiModule.stubApi( { postWithEditToken: vi.fn( () => Promise.resolve( {} ) ) } );
 
 			mountPopoverWithCollectionPickerStub();
 			wrapper.vm.addToCollection( 42, 'My List' );
@@ -151,7 +153,7 @@ describe( 'BookmarkPopover', () => {
 		} );
 
 		test( 'closes the config popover after add-to-collection', async () => {
-			apiModule.stubApi( { postWithEditToken: jest.fn( () => Promise.resolve( {} ) ) } );
+			apiModule.stubApi( { postWithEditToken: vi.fn( () => Promise.resolve( {} ) ) } );
 
 			mountPopoverWithCollectionPickerStub();
 
@@ -167,7 +169,7 @@ describe( 'BookmarkPopover', () => {
 
 		test( 'calls createEntry only after deleteEntryByPageTitle resolves', async () => {
 			let resolveDelete;
-			const postWithEditToken = jest.fn( ( { command } ) => {
+			const postWithEditToken = vi.fn( ( { command } ) => {
 				if ( command === 'deleteentry' ) {
 					return new Promise( ( resolve ) => {
 						resolveDelete = resolve;

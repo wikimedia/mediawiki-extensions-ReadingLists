@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`OnboardingPopover rendering behavior matches the snapshot 1`] = `
+exports[`OnboardingPopover > rendering behavior > matches the snapshot 1`] = `
 <div
   aria-describedby="readinglists-onboarding-text"
   aria-labelledby="readinglists-onboarding-title"

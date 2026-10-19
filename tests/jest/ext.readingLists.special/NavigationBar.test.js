@@ -1,19 +1,23 @@
-const { mount, flushPromises } = require( '@vue/test-utils' );
+import { mount, flushPromises } from '@vue/test-utils';
 
-const api = require( '../../../resources/ext.readingLists.api/index.js' );
+// Imported rather than required so the test and the component under test share
+// the same module instance, which is what makes `api.stubApi()` take effect.
+import api from '../../../resources/ext.readingLists.api/index.js';
+
+const NAVIGATION_BAR_PATH = '../../../resources/ext.readingLists.special/components/NavigationBar.vue';
 
 describe( 'NavigationBar', () => {
 	beforeEach( () => {
-		mw.util.getUrl = jest.fn( ( path ) => `/wiki/${ path }` );
-		mw.util.wikiUrlencode = jest.fn( ( path ) => path );
-		mw.user.getName = jest.fn( () => 'testuser' );
-		jest.spyOn( api, 'getListsAll' ).mockResolvedValue( [
+		mw.util.getUrl = vi.fn( ( path ) => `/wiki/${ path }` );
+		mw.util.wikiUrlencode = vi.fn( ( path ) => path );
+		mw.user.getName = vi.fn( () => 'testuser' );
+		vi.spyOn( api, 'getListsAll' ).mockResolvedValue( [
 			{ id: 42, name: 'My Collection', default: false }
 		] );
 	} );
 
 	afterEach( () => {
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	} );
 
 	it.each( [
@@ -24,7 +28,7 @@ describe( 'NavigationBar', () => {
 		[ 'All items view on mobile', false ],
 		[ 'All items view on desktop', false ]
 	] )( 'renders %s', async ( _, isCustomList ) => {
-		const NavigationBar = require( '../../../resources/ext.readingLists.special/components/NavigationBar.vue' );
+		const NavigationBar = ( await import( NAVIGATION_BAR_PATH ) ).default;
 		const wrapper = mount(
 			NavigationBar,
 			{ props: { isCustomList } }
@@ -34,7 +38,7 @@ describe( 'NavigationBar', () => {
 	} );
 
 	it( 'shows the settings button only on a custom collection', async () => {
-		const NavigationBar = require( '../../../resources/ext.readingLists.special/components/NavigationBar.vue' );
+		const NavigationBar = ( await import( NAVIGATION_BAR_PATH ) ).default;
 
 		const allItems = mount( NavigationBar, {
 			props: { isCustomList: false }

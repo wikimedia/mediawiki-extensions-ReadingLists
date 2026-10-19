@@ -1,4 +1,4 @@
-// Minimal vue-router stub for jest. At runtime the real module is provided by
+// Minimal vue-router stub for unit tests. At runtime the real module is provided by
 // core via require( 'vue-router' ); tests only need the surface the components
 // touch (RouterLink/RouterView rendering and the factory functions).
 

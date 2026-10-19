@@ -21,6 +21,33 @@
 			"rules": {
 				"vue/component-name-in-template-casing": "off"
 			}
+		},
+		{
+			"files": [
+				"vitest.config.mjs",
+				"vitest.setup.js"
+			],
+			"parserOptions": {
+				"sourceType": "module",
+				"ecmaVersion": 2020
+			},
+			"env": {
+				"es2020": true,
+				"node": true
+			},
+			"globals": {
+				"vi": "readonly"
+			}
+		},
+		{
+			"files": [
+				"vitest.config.mjs"
+			],
+			"rules": {
+				"compat/compat": "off",
+				"es-x/no-import-meta": "off",
+				"es-x/no-string-prototype-matchall": "off"
+			}
 		}
 	]
 }

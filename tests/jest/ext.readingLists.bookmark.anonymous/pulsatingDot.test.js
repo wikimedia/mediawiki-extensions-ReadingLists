@@ -12,33 +12,36 @@ function createBookmarkWrapper() {
 	return el;
 }
 
-function requireModule( showDot = true ) {
-	jest.doMock( '../../../resources/ext.readingLists.bookmark.anonymous/config.json', () => ( {
-		ReadingListsMinervaCTAShowDot: showDot
+async function requireModule( showDot = true ) {
+	// The named export is what the hoisted `import { … } from './config.json'`
+	// reads; `default` mirrors the shape of the real JSON module.
+	vi.doMock( '../../../resources/ext.readingLists.bookmark.anonymous/config.json', () => ( {
+		ReadingListsMinervaCTAShowDot: showDot,
+		default: { ReadingListsMinervaCTAShowDot: showDot }
 	} ) );
-	( { initializePulsatingDot } = require(
+	( { initializePulsatingDot } = await import(
 		'../../../resources/ext.readingLists.bookmark.anonymous/pulsatingDot.js'
 	) );
 }
 
-beforeEach( () => {
-	jest.resetModules();
+beforeEach( async () => {
+	vi.resetModules();
 	mw.storage.get.mockReturnValue( null );
-	mw.log = jest.fn();
+	mw.log = vi.fn();
 	mw.loader.using.mockReturnValue( Promise.resolve() );
-	requireModule( true );
+	await requireModule( true );
 } );
 
 afterEach( () => {
-	jest.restoreAllMocks();
+	vi.restoreAllMocks();
 	document.body.innerHTML = '';
 } );
 
 describe( 'initializePulsatingDot', () => {
 	describe( 'when ReadingListsMinervaCTAShowDot is false', () => {
 		test( 'returns resolved promise without loading module', async () => {
-			jest.resetModules();
-			requireModule( false );
+			vi.resetModules();
+			await requireModule( false );
 			createBookmarkWrapper();
 
 			await expect( initializePulsatingDot() ).resolves.toBeUndefined();

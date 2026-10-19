@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AllCollections renders finished loading with collections 1`] = `
+exports[`AllCollections > renders finished loading with collections 1`] = `
 <div
   class="reading-lists-all-collections"
 >
@@ -61,7 +61,7 @@ exports[`AllCollections renders finished loading with collections 1`] = `
 </div>
 `;
 
-exports[`AllCollections renders finished loading with no collections 1`] = `
+exports[`AllCollections > renders finished loading with no collections 1`] = `
 <div
   class="reading-lists-all-collections"
 >
@@ -70,7 +70,7 @@ exports[`AllCollections renders finished loading with no collections 1`] = `
   >
     <span
       class="reading-lists-empty__image"
-      style="content: url( undefined/ReadingLists/resources/assets/all-collections-empty-state.svg );"
+      style="content: url("undefined/ReadingLists/resources/assets/all-collections-empty-state.svg");"
     />
     <h2
       class="reading-lists-empty__title"
@@ -91,6 +91,6 @@ exports[`AllCollections renders finished loading with no collections 1`] = `
 </div>
 `;
 
-exports[`AllCollections renders loading entries 1`] = `<!--v-if-->`;
+exports[`AllCollections > renders loading entries 1`] = `<!--v-if-->`;
 
-exports[`AllCollections renders loading info 1`] = `<!--v-if-->`;
+exports[`AllCollections > renders loading info 1`] = `<!--v-if-->`;

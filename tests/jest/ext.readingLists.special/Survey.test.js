@@ -1,21 +1,21 @@
-const { nextTick } = require( 'vue' );
-const { mount } = require( '@vue/test-utils' );
-const { CdxTextArea } = require( '@wikimedia/codex' );
-const Survey = require( '../../../resources/ext.readingLists.special/components/Survey.vue' );
+import { nextTick } from 'vue';
+import { mount } from '@vue/test-utils';
+import { CdxTextArea } from '@wikimedia/codex';
+import Survey from '../../../resources/ext.readingLists.special/components/Survey.vue';
 
 const SURVEY_ANSWER_NEGATIVE = 'readinglists-betafeature-quicksurvey-answer-negative';
 
 describe( 'Survey', () => {
 	beforeEach( () => {
 		mw.loader = {
-			using: jest.fn().mockReturnValue( {
+			using: vi.fn().mockReturnValue( {
 				then: () => {}
 			} )
 		};
 	} );
 
 	afterEach( () => {
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	} );
 
 	it( 'matches the snapshot', async () => {

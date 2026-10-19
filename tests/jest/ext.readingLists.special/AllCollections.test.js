@@ -1,5 +1,5 @@
-const { mount } = require( '@vue/test-utils' );
-const AllCollections = require( '../../../resources/ext.readingLists.special/components/AllCollections.vue' );
+import { mount } from '@vue/test-utils';
+import AllCollections from '../../../resources/ext.readingLists.special/components/AllCollections.vue';
 
 // Base URL that mw.util.getUrl returns when given 'Special:ReadingLists'.
 // collectionsBaseUrl in ext.readingLists.common uses mw.config.get() || 'ReadingLists',
@@ -23,11 +23,11 @@ const COLLECTIONS = [
 
 describe( 'AllCollections', () => {
 	beforeEach( () => {
-		mw.util.getUrl = jest.fn( ( path ) => `/wiki/${ path }` );
+		mw.util.getUrl = vi.fn( ( path ) => `/wiki/${ path }` );
 	} );
 
 	afterEach( () => {
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	} );
 
 	it.each( [

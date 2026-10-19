@@ -1,7 +1,9 @@
-const { mount } = require( '@vue/test-utils' );
+import { mount } from '@vue/test-utils';
 
-const apiModule = require( '../../../resources/ext.readingLists.api/index.js' );
-const CollectionPicker = require( '../../../resources/ext.readingLists.bookmark.bookmarkPopover/CollectionPicker.vue' );
+// Imported rather than required so the test and the component under test share
+// the same module instance, which is what makes `api.stubApi()` take effect.
+import apiModule from '../../../resources/ext.readingLists.api/index.js';
+import CollectionPicker from '../../../resources/ext.readingLists.bookmark.bookmarkPopover/CollectionPicker.vue';
 
 async function flushPromises() {
 	await Promise.resolve();
@@ -46,7 +48,7 @@ describe( 'CollectionPicker', () => {
 
 	describe( 'renders correctly', () => {
 		test( 'while fetch is pending', () => {
-			jest.spyOn( apiModule, 'getListsAll' ).mockReturnValue( new Promise( () => {} ) );
+			vi.spyOn( apiModule, 'getListsAll' ).mockReturnValue( new Promise( () => {} ) );
 
 			mountPicker();
 
@@ -54,7 +56,7 @@ describe( 'CollectionPicker', () => {
 		} );
 
 		test( 'after fetch with custom collections', async () => {
-			jest.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [
+			vi.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [
 				{ id: 2, name: 'A', default: false },
 				{ id: 3, name: 'B', default: false }
 			] );
@@ -67,7 +69,7 @@ describe( 'CollectionPicker', () => {
 		} );
 
 		test( 'after fetch with no collections', async () => {
-			jest.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [] );
+			vi.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [] );
 
 			mountPicker();
 			await flushPromises();
@@ -77,7 +79,7 @@ describe( 'CollectionPicker', () => {
 		} );
 
 		test( 'after fetch error', async () => {
-			jest.spyOn( apiModule, 'getListsAll' ).mockRejectedValue( new Error( 'network error' ) );
+			vi.spyOn( apiModule, 'getListsAll' ).mockRejectedValue( new Error( 'network error' ) );
 
 			mountPicker();
 			await flushPromises();
@@ -89,7 +91,7 @@ describe( 'CollectionPicker', () => {
 
 	describe( 'fetching collections on mount', () => {
 		test( 'calls getListsAll on mount', async () => {
-			const getListsAllMock = jest.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [] );
+			const getListsAllMock = vi.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [] );
 
 			mountPicker();
 			await flushPromises();
@@ -100,7 +102,7 @@ describe( 'CollectionPicker', () => {
 
 	describe( 'when the "create collection" button is clicked', () => {
 		test( 'emits a create-collection event', async () => {
-			jest.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [] );
+			vi.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [] );
 
 			mountPicker();
 
@@ -114,7 +116,7 @@ describe( 'CollectionPicker', () => {
 	describe( 'when one of the "add to collection" buttons is clicked', () => {
 		test( 'emits add-to-collection with collection id and name', async () => {
 			const customList = { id: 42, name: 'My List', default: false };
-			jest.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [ customList ] );
+			vi.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [ customList ] );
 
 			mountPicker( { title: 'Test Article' } );
 			await flushPromises();

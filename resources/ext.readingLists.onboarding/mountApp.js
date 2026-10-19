@@ -1,4 +1,4 @@
-const { createMwApp } = require( 'vue' );
+const vue = require( 'vue' );
 
 /**
  * @param {Object} config Configuration object for the onboarding popover.
@@ -98,7 +98,7 @@ function showPopover( component, anchorElement, titleMsgKey, bodyMsgKey, bannerI
 		props.bannerImagePath = bannerImagePath;
 	}
 
-	const app = createMwApp( component, props );
+	const app = vue.createMwApp( component, props );
 
 	function handleResize() {
 		if ( !anchorElement.offsetParent ) {

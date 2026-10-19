@@ -29,17 +29,20 @@ function createMinervaBookmarkElement() {
 	return bookmark;
 }
 
-function loadIndex() {
-	require( '../../../resources/ext.readingLists.bookmark/index.js' );
+// Imported rather than required so the module passes through Vite's transform and
+// shares one registry with this test, which is what lets the `vi.doMock()` below
+// intercept its `require( './bookmark.js' )`.
+async function loadIndex() {
+	await import( '../../../resources/ext.readingLists.bookmark/index.js' );
 }
 
 beforeEach( () => {
-	jest.resetModules();
+	vi.resetModules();
 	document.body.innerHTML = '';
 	setSkin( 'vector-2022' );
 
-	initBookmark = jest.fn();
-	jest.doMock( '../../../resources/ext.readingLists.bookmark/bookmark.js', () => ( {
+	initBookmark = vi.fn();
+	vi.doMock( '../../../resources/ext.readingLists.bookmark/bookmark.js', () => ( {
 		initBookmark
 	} ) );
 } );
@@ -49,19 +52,19 @@ afterEach( () => {
 } );
 
 describe( 'ext.readingLists.bookmark index', () => {
-	test( 'initializes the Vector bookmark', () => {
+	test( 'initializes the Vector bookmark', async () => {
 		const bookmark = createVectorBookmarkPortlet();
 
-		loadIndex();
+		await loadIndex();
 
 		expect( initBookmark ).toHaveBeenCalledWith( bookmark, false, 'toolbar' );
 	} );
 
-	test( 'initializes the Minerva bookmark', () => {
+	test( 'initializes the Minerva bookmark', async () => {
 		setSkin( 'minerva' );
 		const bookmark = createMinervaBookmarkElement();
 
-		loadIndex();
+		await loadIndex();
 
 		expect( initBookmark ).toHaveBeenCalledWith( bookmark, true, 'toolbar' );
 	} );

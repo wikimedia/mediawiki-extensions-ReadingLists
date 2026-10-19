@@ -1,5 +1,9 @@
-const { mount, flushPromises } = require( '@vue/test-utils' );
-const api = require( '../../../resources/ext.readingLists.api/index.js' );
+import { mount, flushPromises } from '@vue/test-utils';
+// Imported rather than required so the test and the component under test share
+// the same module instance, which is what makes `api.stubApi()` take effect.
+import api from '../../../resources/ext.readingLists.api/index.js';
+
+const ENTRIES_PATH = '../../../resources/ext.readingLists.special/pages/Entries.vue';
 
 const LIST = require( '../fixtures/list.json' );
 const ENTRIES = require( '../fixtures/entries.json' );
@@ -10,7 +14,7 @@ const ALL_PAGES = require( '../fixtures/allpages.json' );
 
 function setupEntriesApiStub() {
 	return api.stubApi( {
-		get: jest.fn( ( { action, meta, rllist, list, rlelists, prop, rlecontinue } ) => {
+		get: vi.fn( ( { action, meta, rllist, list, rlelists, prop, rlecontinue } ) => {
 			if ( action === 'query' ) {
 				if ( meta === 'readinglists' && rllist === 12345 ) {
 					return LIST;
@@ -28,7 +32,7 @@ function setupEntriesApiStub() {
 
 function setupAllItemsApiStub() {
 	return api.stubApi( {
-		get: jest.fn( ( { action, list, rlelists, prop } ) => {
+		get: vi.fn( ( { action, list, rlelists, prop } ) => {
 			if ( action === 'query' ) {
 				if ( list === 'readinglistentries' && rlelists === undefined ) {
 					return ALL_ENTRIES;
@@ -42,25 +46,25 @@ function setupAllItemsApiStub() {
 
 describe( 'Entries', () => {
 	beforeEach( () => {
-		mw.config.get = jest.fn( ( key ) => {
+		mw.config.get = vi.fn( ( key ) => {
 			// Disable the beta survey.
 			if ( key === 'wgReadingListsEnableBetaQuickSurvey' ) {
 				return false;
 			}
 		} );
-		mw.util.getUrl = jest.fn( ( path ) => `/wiki/${ path }` );
-		mw.util.wikiUrlencode = jest.fn( ( path ) => path );
+		mw.util.getUrl = vi.fn( ( path ) => `/wiki/${ path }` );
+		mw.util.wikiUrlencode = vi.fn( ( path ) => path );
 	} );
 
 	afterEach( () => {
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	} );
 
 	describe( 'without custom lists', () => {
 		test( 'renders with toolbar disabled', async () => {
 			setupEntriesApiStub();
 
-			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const Entries = ( await import( ENTRIES_PATH ) ).default;
 			const wrapper = mount( Entries, { props: { listId: 12345 } } );
 
 			await flushPromises();
@@ -71,7 +75,7 @@ describe( 'Entries', () => {
 		test( 'renders "Show more items" button', async () => {
 			setupEntriesApiStub();
 
-			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const Entries = ( await import( ENTRIES_PATH ) ).default;
 			const wrapper = mount( Entries, { props: { listId: 12345 } } );
 
 			await flushPromises();
@@ -83,13 +87,13 @@ describe( 'Entries', () => {
 
 		test( 'measures the mounted wrapper before rendering the list to load complete rows', async () => {
 			setupEntriesApiStub();
-			const getEntries = jest.spyOn( api, 'getEntries' );
+			const getEntries = vi.spyOn( api, 'getEntries' );
 			// A grid with 5 columns.
-			const getComputedStyle = jest.spyOn( window, 'getComputedStyle' ).mockReturnValue( {
+			const getComputedStyle = vi.spyOn( window, 'getComputedStyle' ).mockReturnValue( {
 				gridTemplateColumns: '200px 200px 200px 200px 200px'
 			} );
 
-			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const Entries = ( await import( ENTRIES_PATH ) ).default;
 			const wrapper = mount( Entries, { props: { listId: 12345 } } );
 			const grid = wrapper.get( '.reading-lists-items-wrapper' );
 
@@ -109,9 +113,9 @@ describe( 'Entries', () => {
 
 		test( 'renders the empty state without an empty list element', async () => {
 			setupEntriesApiStub();
-			jest.spyOn( api, 'getEntries' ).mockResolvedValue( { entries: [], next: null } );
+			vi.spyOn( api, 'getEntries' ).mockResolvedValue( { entries: [], next: null } );
 
-			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const Entries = ( await import( ENTRIES_PATH ) ).default;
 			const wrapper = mount( Entries, { props: { listId: 12345 } } );
 			await flushPromises();
 
@@ -122,12 +126,12 @@ describe( 'Entries', () => {
 		} );
 
 		test( 'loads 12 entries in mobile list view without measuring columns', async () => {
-			jest.replaceProperty( window, 'innerWidth', 375 );
+			vi.spyOn( window, 'innerWidth', 'get' ).mockReturnValue( 375 );
 			setupEntriesApiStub();
-			const getEntries = jest.spyOn( api, 'getEntries' );
-			const getComputedStyle = jest.spyOn( window, 'getComputedStyle' );
+			const getEntries = vi.spyOn( api, 'getEntries' );
+			const getComputedStyle = vi.spyOn( window, 'getComputedStyle' );
 
-			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const Entries = ( await import( ENTRIES_PATH ) ).default;
 			const wrapper = mount( Entries, { props: { listId: 12345 } } );
 
 			await flushPromises();
@@ -150,14 +154,14 @@ describe( 'Entries', () => {
 				title: `Page ${ i + 1 }`,
 				url: `/wiki/Page_${ i + 1 }`
 			} ) );
-			const getEntries = jest.spyOn( api, 'getEntries' )
+			const getEntries = vi.spyOn( api, 'getEntries' )
 				.mockResolvedValueOnce( { entries: entries.slice( 0, 15 ), next: 'next-page' } )
 				.mockResolvedValueOnce( { entries: entries.slice( 15 ), next: null } );
-			const getComputedStyle = jest.spyOn( window, 'getComputedStyle' ).mockReturnValue( {
+			const getComputedStyle = vi.spyOn( window, 'getComputedStyle' ).mockReturnValue( {
 				gridTemplateColumns: '200px 200px 200px 200px 200px'
 			} );
 
-			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const Entries = ( await import( ENTRIES_PATH ) ).default;
 			const wrapper = mount( Entries, { props: { listId: 12345 } } );
 			await flushPromises();
 
@@ -180,7 +184,7 @@ describe( 'Entries', () => {
 		test( 'renders all items from all lists on special page', async () => {
 			setupAllItemsApiStub();
 
-			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const Entries = ( await import( ENTRIES_PATH ) ).default;
 			const wrapper = mount( Entries );
 
 			await flushPromises();
@@ -192,7 +196,7 @@ describe( 'Entries', () => {
 		} );
 
 		test( 'renders import dialog slot content', async () => {
-			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const Entries = ( await import( ENTRIES_PATH ) ).default;
 			const wrapper = mount( Entries, {
 				props: {
 					imported: {
@@ -218,7 +222,7 @@ describe( 'Entries', () => {
 		test( 'renders the nav bar when custom lists are enabled', async () => {
 			setupAllItemsApiStub();
 
-			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const Entries = ( await import( ENTRIES_PATH ) ).default;
 			const wrapper = mount( Entries, { props: { isCustomListsEnabled: true } } );
 
 			await flushPromises();
@@ -230,7 +234,7 @@ describe( 'Entries', () => {
 		} );
 
 		test( 'nav bar only renders after content has finished loading', async () => {
-			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const Entries = ( await import( ENTRIES_PATH ) ).default;
 			const wrapper = mount( Entries, { props: { isCustomListsEnabled: true } } );
 
 			expect( wrapper.vm.loadingEntries ).toBe( true );
@@ -242,7 +246,7 @@ describe( 'Entries', () => {
 		test( 'nav bar does not disappear when show more is clicked', async () => {
 			setupEntriesApiStub();
 
-			const Entries = require( '../../../resources/ext.readingLists.special/pages/Entries.vue' );
+			const Entries = ( await import( ENTRIES_PATH ) ).default;
 			const wrapper = mount(
 				Entries,
 				{ props: { listId: 12345, isCustomListsEnabled: true } }
