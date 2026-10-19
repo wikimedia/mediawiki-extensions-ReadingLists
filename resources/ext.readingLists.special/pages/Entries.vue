@@ -6,17 +6,17 @@
 	<template v-else>
 		<slot v-if="$slots[ 'import-dialog' ]" name="import-dialog"></slot>
 
-		<create-collection-dialog
-			v-if="showCreateCollection"
-			@update:open="( newVal ) => showCreateCollection = newVal"
+		<collection-name-dialog
+			v-if="showCollectionNameDialog"
+			@update:open="( newVal ) => showCollectionNameDialog = newVal"
 			@success="routeToNewCollection"
 		>
-		</create-collection-dialog>
+		</collection-name-dialog>
 
 		<navigation-bar
 			v-if="showNavBar"
 			:is-custom-list="isCustomList"
-			@create-collection="showCreateCollection = true"
+			@create-collection="showCollectionNameDialog = true"
 		>
 		</navigation-bar>
 
@@ -35,7 +35,7 @@
 			v-if="isCollections"
 			:collections="entries"
 			:loading-entries="loadingEntries"
-			@create-collection="showCreateCollection = true"
+			@create-collection="showCollectionNameDialog = true"
 		></all-collections>
 
 		<collection
@@ -62,7 +62,7 @@ const { useRouter } = require( 'vue-router' );
 const { storeToRefs } = require( 'pinia' );
 const { useReadingListsStore } = require( '../store.js' );
 
-const { useIsMobileResolution, getCollectionUrl, CreateCollectionDialog } = require( 'ext.readingLists.common' );
+const { useIsMobileResolution, getCollectionUrl, CollectionNameDialog } = require( 'ext.readingLists.common' );
 const api = require( 'ext.readingLists.api' );
 
 const { CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
@@ -79,7 +79,7 @@ module.exports = exports = {
 	components: {
 		CdxMessage,
 		CdxProgressBar,
-		CreateCollectionDialog,
+		CollectionNameDialog,
 		AllCollections,
 		Collection,
 		NavigationBar,
@@ -133,7 +133,7 @@ module.exports = exports = {
 		const showSurvey = ref( false );
 		const isListView = useIsMobileResolution();
 		const collectionRef = ref();
-		const showCreateCollection = ref( false );
+		const showCollectionNameDialog = ref( false );
 
 		const showInPageTitle = computed( () => {
 			if ( props.imported ) {
@@ -294,7 +294,7 @@ module.exports = exports = {
 		function routeToNewCollection( id, name ) {
 			const collectionUrl = getCollectionUrl( id, name, true );
 			router.push( collectionUrl );
-			showCreateCollection.value = false;
+			showCollectionNameDialog.value = false;
 		}
 
 		onMounted( async () => {
@@ -325,7 +325,7 @@ module.exports = exports = {
 			showNavBar,
 			onShowMore,
 			onSurveyCompleted,
-			showCreateCollection,
+			showCollectionNameDialog,
 			routeToNewCollection
 		};
 	}

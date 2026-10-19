@@ -110,8 +110,8 @@ describe( 'BookmarkPopover', () => {
 							template: '<span />'
 						},
 						CollectionPicker: collectionPickerStub,
-						CreateCollectionDialog: {
-							name: 'CreateCollectionDialog',
+						CollectionNameDialog: {
+							name: 'CollectionNameDialog',
 							emits: [ 'success' ],
 							template: '<div />'
 						}

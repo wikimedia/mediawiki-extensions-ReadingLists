@@ -40,11 +40,11 @@
 			@add-to-collection="addToCollection"
 		></collection-picker>
 
-		<create-collection-dialog
-			v-if="isCreateCollectionDialogOpen"
+		<collection-name-dialog
+			v-if="isCollectionNameDialogOpen"
 			@success="addToCollection"
-			@update:open="isCreateCollectionDialogOpen = $event"
-		></create-collection-dialog>
+			@update:open="isCollectionNameDialogOpen = $event"
+		></collection-name-dialog>
 	</config-popover>
 </template>
 
@@ -52,7 +52,7 @@
 const { ref, computed, toRef } = require( 'vue' );
 const { CdxButton, CdxIcon } = require( '../../codex.js' );
 const { cdxIconSuccess, cdxIconClose } = require( '../../icons.json' );
-const { ConfigPopover, CreateCollectionDialog, getCollectionUrl } = require( 'ext.readingLists.common' );
+const { ConfigPopover, CollectionNameDialog, getCollectionUrl } = require( 'ext.readingLists.common' );
 const { createEntry, deleteEntryByPageTitle } = require( 'ext.readingLists.api' );
 const CollectionPicker = require( './CollectionPicker.vue' );
 
@@ -66,7 +66,7 @@ module.exports = exports = {
 		CdxButton,
 		CdxIcon,
 		ConfigPopover,
-		CreateCollectionDialog,
+		CollectionNameDialog,
 		CollectionPicker
 	},
 	props: {
@@ -94,7 +94,7 @@ module.exports = exports = {
 	},
 	setup( props ) {
 		const isConfigPopoverOpen = ref( true );
-		const isCreateCollectionDialogOpen = ref( false );
+		const isCollectionNameDialogOpen = ref( false );
 		const title = toRef( props, 'title' );
 
 		// Different popover title depending on whether the user is saving or un-saving the article.
@@ -122,7 +122,7 @@ module.exports = exports = {
 		}
 
 		function launchCreateCollection() {
-			isCreateCollectionDialogOpen.value = true;
+			isCollectionNameDialogOpen.value = true;
 		}
 
 		async function addToCollection( listId, listName ) {
@@ -144,7 +144,7 @@ module.exports = exports = {
 			handleOpenChange,
 			cdxIconClose,
 			addToCollection,
-			isCreateCollectionDialogOpen,
+			isCollectionNameDialogOpen,
 			launchCreateCollection
 		};
 	}

@@ -1,6 +1,6 @@
 const ConfigPopover = require( './ConfigPopover.vue' );
 const CreateCollectionButton = require( './CreateCollectionButton.vue' );
-const CreateCollectionDialog = require( './CreateCollectionDialog.vue' );
+const CollectionNameDialog = require( './CollectionNameDialog.vue' );
 const DialogPopover = require( './DialogPopover.vue' );
 const { useIsMobileResolution, useIsAboveMobileResolution, MAX_WIDTH_MOBILE } = require( './composables.js' );
 
@@ -29,6 +29,6 @@ module.exports = {
 	collectionsBaseUrl,
 	ConfigPopover,
 	CreateCollectionButton,
-	CreateCollectionDialog,
+	CollectionNameDialog,
 	DialogPopover
 };

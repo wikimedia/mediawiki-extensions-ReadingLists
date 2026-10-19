@@ -1,8 +1,8 @@
 <template>
 	<dialog-popover
 		:open="isOpen"
-		:title="$i18n( 'readinglists-customlists-create-collection-dialog-name' ).text()"
-		class="readinglists-create-collection-dialog"
+		:title="$i18n( 'readinglists-customlists-collection-name-dialog-title' ).text()"
+		class="readinglists-collection-name-dialog"
 		:primary-action="primaryAction"
 		:default-action="defaultAction"
 		@primary="createCollection"
@@ -10,7 +10,7 @@
 		@update:open="onUpdateOpen"
 	>
 		<cdx-text-input
-			:placeholder="$i18n( 'readinglists-customlists-create-collection-dialog-placeholder' ).text()"
+			:placeholder="$i18n( 'readinglists-customlists-collection-name-dialog-placeholder' ).text()"
 			v-model="collectionName"></cdx-text-input>
 	</dialog-popover>
 </template>
@@ -26,7 +26,7 @@ const DialogPopover = require( './DialogPopover.vue' );
  */
 // @vue/component
 module.exports = exports = {
-	name: 'CreateCollectionDialog',
+	name: 'CollectionNameDialog',
 	components: {
 		DialogPopover,
 		CdxTextInput
@@ -53,13 +53,13 @@ module.exports = exports = {
 		};
 
 		const primaryAction = computed( () => ( {
-			label: mw.msg( 'readinglists-add-collection' ),
+			label: mw.msg( 'readinglists-customlists-collection-name-dialog-save' ),
 			actionType: 'progressive',
 			disabled: !collectionName.value
 		} ) );
 
 		const defaultAction = {
-			label: mw.msg( 'readinglists-cancel-add-collection' )
+			label: mw.msg( 'readinglists-customlists-collection-name-dialog-cancel' )
 		};
 
 		const handleClose = () => {
@@ -82,7 +82,7 @@ module.exports = exports = {
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
 
-.readinglists-create-collection-dialog .cdx-dialog__footer {
+.readinglists-collection-name-dialog .cdx-dialog__footer {
 	text-align: end;
 }
 </style>

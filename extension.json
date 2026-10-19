@@ -525,11 +525,11 @@
 				"mediawiki.util"
 			],
 			"messages": [
-				"readinglists-customlists-create-collection-dialog-name",
-				"readinglists-customlists-create-collection-dialog-placeholder",
-				"readinglists-customlists-create-collection-short",
-				"readinglists-cancel-add-collection",
-				"readinglists-add-collection"
+				"readinglists-customlists-collection-name-dialog-title",
+				"readinglists-customlists-collection-name-dialog-placeholder",
+				"readinglists-customlists-collection-name-dialog-cancel",
+				"readinglists-customlists-collection-name-dialog-save",
+				"readinglists-customlists-create-collection-short"
 			],
 			"packageFiles": [
 				"resources/ext.readingLists.common/index.js",
@@ -537,7 +537,7 @@
 				"resources/ext.readingLists.common/ConfigPopover.vue",
 				"resources/ext.readingLists.common/DialogPopover.vue",
 				"resources/ext.readingLists.common/CreateCollectionButton.vue",
-				"resources/ext.readingLists.common/CreateCollectionDialog.vue"
+				"resources/ext.readingLists.common/CollectionNameDialog.vue"
 			]
 		}
 	},
