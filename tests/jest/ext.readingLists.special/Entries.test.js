@@ -1,4 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils';
+import { createTestingPinia } from '@pinia/testing';
+
 // Imported rather than required so the test and the component under test share
 // the same module instance, which is what makes `api.stubApi()` take effect.
 import api from '../../../resources/ext.readingLists.api/index.js';
@@ -44,6 +46,27 @@ function setupAllItemsApiStub() {
 	} );
 }
 
+/**
+ * Mount the Entries component with the pinia testing plugin.
+ *
+ * @param {Object} props
+ * @param {Object} slots
+ * @return {Object}
+ */
+async function mountEntries( props = { listId: 12345 }, slots = undefined ) {
+	const Entries = ( await import( ENTRIES_PATH ) ).default;
+	const options = {
+		props,
+		// By default, actions are stubbed into a no-op jest mock. We want the full, working actions
+		// from the store for these tests.
+		global: { plugins: [ createTestingPinia( { stubActions: false } ) ] }
+	};
+	if ( slots ) {
+		options.slots = slots;
+	}
+	return mount( Entries, options );
+}
+
 describe( 'Entries', () => {
 	beforeEach( () => {
 		mw.config.get = vi.fn( ( key ) => {
@@ -64,8 +87,7 @@ describe( 'Entries', () => {
 		test( 'renders with toolbar disabled', async () => {
 			setupEntriesApiStub();
 
-			const Entries = ( await import( ENTRIES_PATH ) ).default;
-			const wrapper = mount( Entries, { props: { listId: 12345 } } );
+			const wrapper = await mountEntries();
 
 			await flushPromises();
 
@@ -75,8 +97,7 @@ describe( 'Entries', () => {
 		test( 'renders "Show more items" button', async () => {
 			setupEntriesApiStub();
 
-			const Entries = ( await import( ENTRIES_PATH ) ).default;
-			const wrapper = mount( Entries, { props: { listId: 12345 } } );
+			const wrapper = await mountEntries();
 
 			await flushPromises();
 
@@ -93,8 +114,7 @@ describe( 'Entries', () => {
 				gridTemplateColumns: '200px 200px 200px 200px 200px'
 			} );
 
-			const Entries = ( await import( ENTRIES_PATH ) ).default;
-			const wrapper = mount( Entries, { props: { listId: 12345 } } );
+			const wrapper = await mountEntries();
 			const grid = wrapper.get( '.reading-lists-items-wrapper' );
 
 			expect( wrapper.vm.loadingInfo ).toBe( true );
@@ -115,8 +135,7 @@ describe( 'Entries', () => {
 			setupEntriesApiStub();
 			vi.spyOn( api, 'getEntries' ).mockResolvedValue( { entries: [], next: null } );
 
-			const Entries = ( await import( ENTRIES_PATH ) ).default;
-			const wrapper = mount( Entries, { props: { listId: 12345 } } );
+			const wrapper = await mountEntries();
 			await flushPromises();
 
 			expect( wrapper.get( '.reading-lists-items-wrapper' ).element.children ).toHaveLength( 0 );
@@ -131,8 +150,7 @@ describe( 'Entries', () => {
 			const getEntries = vi.spyOn( api, 'getEntries' );
 			const getComputedStyle = vi.spyOn( window, 'getComputedStyle' );
 
-			const Entries = ( await import( ENTRIES_PATH ) ).default;
-			const wrapper = mount( Entries, { props: { listId: 12345 } } );
+			const wrapper = await mountEntries();
 
 			await flushPromises();
 
@@ -161,8 +179,7 @@ describe( 'Entries', () => {
 				gridTemplateColumns: '200px 200px 200px 200px 200px'
 			} );
 
-			const Entries = ( await import( ENTRIES_PATH ) ).default;
-			const wrapper = mount( Entries, { props: { listId: 12345 } } );
+			const wrapper = await mountEntries();
 			await flushPromises();
 
 			getComputedStyle.mockClear().mockReturnValue( {
@@ -184,8 +201,7 @@ describe( 'Entries', () => {
 		test( 'renders all items from all lists on special page', async () => {
 			setupAllItemsApiStub();
 
-			const Entries = ( await import( ENTRIES_PATH ) ).default;
-			const wrapper = mount( Entries );
+			const wrapper = await mountEntries( {} );
 
 			await flushPromises();
 
@@ -196,20 +212,15 @@ describe( 'Entries', () => {
 		} );
 
 		test( 'renders import dialog slot content', async () => {
-			const Entries = ( await import( ENTRIES_PATH ) ).default;
-			const wrapper = mount( Entries, {
-				props: {
-					imported: {
-						name: 'Imported list',
-						description: '',
-						default: false,
-						list: []
-					}
-				},
-				slots: {
-					'import-dialog': '<div class="mock-import-dialog"></div>'
-				}
-			} );
+			const wrapper = await mountEntries(
+				{ imported: {
+					name: 'Imported list',
+					description: '',
+					default: false,
+					list: []
+				} },
+				{ 'import-dialog': '<div class="mock-import-dialog"></div>' }
+			);
 
 			await flushPromises();
 			await wrapper.vm.$nextTick();
@@ -222,8 +233,7 @@ describe( 'Entries', () => {
 		test( 'renders the nav bar when custom lists are enabled', async () => {
 			setupAllItemsApiStub();
 
-			const Entries = ( await import( ENTRIES_PATH ) ).default;
-			const wrapper = mount( Entries, { props: { isCustomListsEnabled: true } } );
+			const wrapper = await mountEntries( { isCustomListsEnabled: true } );
 
 			await flushPromises();
 
@@ -234,8 +244,7 @@ describe( 'Entries', () => {
 		} );
 
 		test( 'nav bar only renders after content has finished loading', async () => {
-			const Entries = ( await import( ENTRIES_PATH ) ).default;
-			const wrapper = mount( Entries, { props: { isCustomListsEnabled: true } } );
+			const wrapper = await mountEntries( { isCustomListsEnabled: true } );
 
 			expect( wrapper.vm.loadingEntries ).toBe( true );
 			expect( wrapper.vm.entries.length ).toBe( 0 );
@@ -246,11 +255,7 @@ describe( 'Entries', () => {
 		test( 'nav bar does not disappear when show more is clicked', async () => {
 			setupEntriesApiStub();
 
-			const Entries = ( await import( ENTRIES_PATH ) ).default;
-			const wrapper = mount(
-				Entries,
-				{ props: { listId: 12345, isCustomListsEnabled: true } }
-			);
+			const wrapper = await mountEntries( { listId: 12345, isCustomListsEnabled: true } );
 
 			await flushPromises();
 

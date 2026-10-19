@@ -227,7 +227,8 @@
 				"ext.readingLists.common",
 				"ext.readingLists.api",
 				"vue",
-				"vue-router"
+				"vue-router",
+				"pinia"
 			],
 			"messages": [
 				"readinglists-browser-error-intro",
@@ -268,6 +269,7 @@
 				"resources/ext.readingLists.special/index.js",
 				"resources/ext.readingLists.special/App.vue",
 				"resources/ext.readingLists.special/router.js",
+				"resources/ext.readingLists.special/store.js",
 				"resources/ext.readingLists.special/components/EmptyList.vue",
 				"resources/ext.readingLists.special/components/AllCollections.vue",
 				"resources/ext.readingLists.special/components/Collection.vue",

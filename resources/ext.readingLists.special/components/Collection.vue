@@ -16,7 +16,7 @@
 				role="list"
 				class="reading-lists-items"
 				:class="listClasses"
-				:aria-label="collectionTitle || allItemsAriaLabel">
+				:aria-label="title || allItemsAriaLabel">
 				<collection-item
 					v-for="item in collectionItems"
 					:key="item.id"
@@ -44,6 +44,8 @@
 
 <script>
 const { ref, computed } = require( 'vue' );
+const { storeToRefs } = require( 'pinia' );
+const { useReadingListsStore } = require( '../store.js' );
 const { CdxButton } = require( '../../../codex.js' );
 const CollectionItem = require( './CollectionItem.vue' );
 const EmptyList = require( './EmptyList.vue' );
@@ -63,10 +65,6 @@ module.exports = exports = {
 		collectionItems: {
 			type: Array,
 			required: true
-		},
-		collectionTitle: {
-			type: String,
-			default: ''
 		},
 		loadingInfo: {
 			type: Boolean,
@@ -91,6 +89,9 @@ module.exports = exports = {
 	},
 	emits: [ 'show-more' ],
 	setup( props ) {
+		const store = useReadingListsStore();
+		const { title } = storeToRefs( store );
+
 		const listWrapperRef = ref();
 		const listWrapperClasses = computed( () => (
 			{ 'reading-lists-items-wrapper--grid-view': !props.isListView }
@@ -120,6 +121,7 @@ module.exports = exports = {
 			'/ReadingLists/resources/assets/collection-empty-state.svg' );
 
 		return {
+			title,
 			listWrapperRef,
 			listWrapperClasses,
 			listRef,

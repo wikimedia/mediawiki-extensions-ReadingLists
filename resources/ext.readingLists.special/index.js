@@ -1,5 +1,6 @@
 const api = require( 'ext.readingLists.api' );
 const { createMwApp } = require( 'vue' );
+const { createPinia } = require( 'pinia' );
 const Entries = require( './pages/Entries.vue' );
 const App = require( './App.vue' );
 const router = require( './router.js' );
@@ -37,6 +38,7 @@ async function mountImportApp( imported ) {
 		`
 	} );
 
+	app.use( createPinia() );
 	// The import view does not navigate, but Entries still renders NavigationBar
 	// (whose links are router-links) when custom lists are enabled, so the router
 	// must be installed for those to resolve.
@@ -53,6 +55,7 @@ async function mountApp() {
 	}
 
 	const app = createMwApp( App );
+	app.use( createPinia() );
 	app.use( router );
 
 	// Wait for the initial route to resolve before mounting, otherwise Entries

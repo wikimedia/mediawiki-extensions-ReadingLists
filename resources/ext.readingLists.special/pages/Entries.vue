@@ -43,7 +43,6 @@
 			v-else
 			ref="collectionRef"
 			:collection-items="entries"
-			:collection-title="title"
 			:loading-info="loadingInfo"
 			:loading-entries="loadingEntries"
 			:is-list-view="isListView"
@@ -62,13 +61,18 @@
 <script>
 const { ref, computed, nextTick, onMounted } = require( 'vue' );
 const { useRouter } = require( 'vue-router' );
+const { storeToRefs } = require( 'pinia' );
+const { useReadingListsStore } = require( '../store.js' );
+
 const { useIsMobileResolution, getCollectionUrl, CreateCollectionDialog } = require( 'ext.readingLists.common' );
 const api = require( 'ext.readingLists.api' );
+
 const { CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
 const AllCollections = require( '../components/AllCollections.vue' );
 const Collection = require( '../components/Collection.vue' );
 const NavigationBar = require( '../components/NavigationBar.vue' );
 const Survey = require( '../components/Survey.vue' );
+
 const surveyStorageKey = 'readinglists-beta-survey';
 const MIN_PAGE_SIZE = 12;
 
@@ -104,9 +108,11 @@ module.exports = exports = {
 	setup( props ) {
 		const router = useRouter();
 
+		const store = useReadingListsStore();
+		const { title } = storeToRefs( store );
+
 		const loadingInfo = ref( true );
 		const loadingEntries = ref( true );
-		const title = ref( '' );
 		const isDefaultList = ref( true );
 		const isAllListItems = ref( false );
 		const description = ref( '' );
