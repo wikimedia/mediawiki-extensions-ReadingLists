@@ -73,7 +73,7 @@
 				<div
 					id="reading-lists-collection-settings-actions"
 					class="reading-lists-collection-settings-actions">
-					<cdx-button weight="quiet">
+					<cdx-button weight="quiet" @click="renameCollection">
 						{{ renameCollectionLabel }}
 					</cdx-button>
 					<cdx-button
@@ -148,7 +148,8 @@ module.exports = exports = {
 		}
 	},
 	emits: [
-		'create-collection'
+		'create-collection',
+		'rename-collection'
 	],
 	setup: ( props, { emit } ) => {
 		const showDropdown = ref( mw.config.get( 'skin' ) === 'vector-2022' );
@@ -183,6 +184,10 @@ module.exports = exports = {
 
 		const createCollection = () => {
 			emit( 'create-collection' );
+		};
+
+		const renameCollection = () => {
+			emit( 'rename-collection' );
 		};
 
 		const maybeGetCollections = async () => {
@@ -220,6 +225,7 @@ module.exports = exports = {
 		return {
 			showDropdown,
 			createCollection,
+			renameCollection,
 			cdxIconExpand,
 			allItemsTo,
 			allItemsText,

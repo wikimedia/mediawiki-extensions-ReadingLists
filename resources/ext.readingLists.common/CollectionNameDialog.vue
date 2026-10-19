@@ -5,19 +5,19 @@
 		class="readinglists-collection-name-dialog"
 		:primary-action="primaryAction"
 		:default-action="defaultAction"
-		@primary="createCollection"
+		@primary="saveCollection"
 		@default="handleClose"
 		@update:open="onUpdateOpen"
 	>
 		<cdx-text-input
-			:placeholder="$i18n( 'readinglists-customlists-collection-name-dialog-placeholder' ).text()"
-			v-model="collectionName"></cdx-text-input>
+			v-model="collectionName"
+			:placeholder="placeholder"></cdx-text-input>
 	</dialog-popover>
 </template>
 
 <script>
 const { ref, computed } = require( 'vue' );
-const { createList } = require( 'ext.readingLists.api' );
+const { createList, updateList } = require( 'ext.readingLists.api' );
 const { CdxTextInput } = require( '../../codex.js' );
 const DialogPopover = require( './DialogPopover.vue' );
 
@@ -31,10 +31,24 @@ module.exports = exports = {
 		DialogPopover,
 		CdxTextInput
 	},
+	props: {
+		title: {
+			type: String,
+			default: ''
+		},
+		listId: {
+			type: String,
+			default: null
+		},
+		isRename: {
+			type: Boolean,
+			default: false
+		}
+	},
 	emits: [ 'update:open', 'success' ],
-	setup( _props, { emit } ) {
+	setup( props, { emit } ) {
 		const isOpen = ref( true );
-		const collectionName = ref( '' );
+		const collectionName = ref( props.isRename ? props.title : '' );
 
 		/**
 		 * Handle open change based on user interaction.
@@ -46,9 +60,12 @@ module.exports = exports = {
 			emit( 'update:open', newValue );
 		};
 
-		const createCollection = async () => {
-			const result = await createList( collectionName.value );
-			emit( 'success', result.create.id, collectionName.value );
+		const saveCollection = async () => {
+			const result = ( props.isRename ) ?
+				await updateList( props.listId, collectionName.value ) :
+				await createList( collectionName.value );
+			const id = props.listId || result.create.id;
+			emit( 'success', id, collectionName.value );
 			onUpdateOpen( false );
 		};
 
@@ -62,6 +79,7 @@ module.exports = exports = {
 			label: mw.msg( 'readinglists-customlists-collection-name-dialog-cancel' )
 		};
 
+		const placeholder = mw.msg( 'readinglists-customlists-collection-name-dialog-placeholder' );
 		const handleClose = () => {
 			onUpdateOpen( false );
 		};
@@ -69,10 +87,11 @@ module.exports = exports = {
 		return {
 			primaryAction,
 			defaultAction,
+			placeholder,
 			isOpen,
 			handleClose,
 			collectionName,
-			createCollection,
+			saveCollection,
 			onUpdateOpen
 		};
 	}

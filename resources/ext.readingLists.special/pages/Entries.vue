@@ -8,6 +8,9 @@
 
 		<collection-name-dialog
 			v-if="showCollectionNameDialog"
+			:is-rename="isRename"
+			:list-id="listId"
+			:title="title"
 			@update:open="( newVal ) => showCollectionNameDialog = newVal"
 			@success="routeToNewCollection"
 		>
@@ -16,7 +19,8 @@
 		<navigation-bar
 			v-if="showNavBar"
 			:is-custom-list="isCustomList"
-			@create-collection="showCollectionNameDialog = true"
+			@create-collection="openCollectionNameDialog"
+			@rename-collection="openCollectionNameDialog( true )"
 		>
 		</navigation-bar>
 
@@ -35,7 +39,7 @@
 			v-if="isCollections"
 			:collections="entries"
 			:loading-entries="loadingEntries"
-			@create-collection="showCollectionNameDialog = true"
+			@create-collection="openCollectionNameDialog"
 		></all-collections>
 
 		<collection
@@ -134,6 +138,7 @@ module.exports = exports = {
 		const isListView = useIsMobileResolution();
 		const collectionRef = ref();
 		const showCollectionNameDialog = ref( false );
+		const isRename = ref( false );
 
 		const showInPageTitle = computed( () => {
 			if ( props.imported ) {
@@ -295,6 +300,12 @@ module.exports = exports = {
 			const collectionUrl = getCollectionUrl( id, name, true );
 			router.push( collectionUrl );
 			showCollectionNameDialog.value = false;
+			isRename.value = false;
+		}
+
+		function openCollectionNameDialog( rename = false ) {
+			showCollectionNameDialog.value = true;
+			isRename.value = rename;
 		}
 
 		onMounted( async () => {
@@ -326,7 +337,9 @@ module.exports = exports = {
 			onShowMore,
 			onSurveyCompleted,
 			showCollectionNameDialog,
-			routeToNewCollection
+			isRename,
+			routeToNewCollection,
+			openCollectionNameDialog
 		};
 	}
 };
