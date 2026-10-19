@@ -38,6 +38,7 @@
 	"readinglists-special-subpage-title": "Tallennetut",
 	"readinglists-special-custom-list-title": "Tallennetut / $1",
 	"readinglists-privacy-indicator-label": "Yksityinen",
+	"readinglists-privacy-tooltip": "Tallennetut sivusi ja kokoelmasi ovat yksityisiä ja näkyvät vain sinulle.",
 	"readinglists-description": "Kaikki tallennetut listasi yhdessä paikassa.",
 	"readinglists-loading": "Odota...",
 	"reading-list-purpose": "Kirjaudu sisään nähdäksesi yksityiset lukulistasi.",

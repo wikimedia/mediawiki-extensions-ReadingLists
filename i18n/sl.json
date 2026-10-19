@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Eleassar"
+			"Eleassar",
+			"Upwinxp"
 		]
 	},
 	"readinglists-desc": "Uporabnikom omogoča upravljanje zasebnih seznamov člankov, kot so zaznamki ali seznami »Preberi pozneje«.",
@@ -40,20 +41,31 @@
 	"readinglists-import-error": "Ni mogoče prikazati seznama iz navedenih podatkov.",
 	"readinglists-import-size-error": "Seznam je prevelik za prikaz.",
 	"special-tab-readinglists-short": "Vaši seznami",
-	"readinglists-default-title": "Shranjene strani",
-	"readinglists-default-description": "Privzeti seznam za vaše shranjene članke",
+	"readinglists-show-more": "Prikaži več predmetov",
+	"readinglists-default-title": "shranjeni predmeti",
+	"readinglists-default-description": "Privzeti seznam za vaše shranjene strani.",
+	"readinglists-empty-title": "Ni shranjenih člankov",
+	"readinglists-empty-collection-title": "V tej zbirki ni dodanih člankov",
+	"readinglists-display-sort": "Razvrsti po",
 	"readinglists-display-sort-name": "Ime",
+	"readinglists-display-direction-ascending": "Naraščajoče",
+	"readinglists-display-direction-descending": "Padajoče",
 	"action-action-readinglist-private": "branje bralnih seznamov drugih uporabnikov",
 	"readinglists-empty-message": "Nimate seznamov; zakaj ne bi enega ustvarili?",
 	"readinglists-list-empty-message": "Na tem seznamu ni nobene strani. Če želite na ta bralni seznam dodati predmete, prenesite in uporabite našo aplikacijo.",
 	"readinglists-no-title": "Seznam brez naslova",
 	"readinglists-export": "Deli seznam",
+	"readinglists-redirect-to": "Vsebina te strani se je preselila na <b>$1</b>",
 	"readinglists-watchlist": "Nadzorni seznam",
 	"readinglists-watchlist-description": "Stran, ki ste jo uredili ali jo spremljate.",
 	"readinglists-import-app-misconfigured": "To spletno mesto trenutno ne podpira uvažanja seznamov.",
 	"readinglists-import-disclaimer": "Uporabnik v tem projektu je ustvaril bralni seznam za skupno rabo z drugimi (verjetno vami). Ta seznam ni moderiran in njegova vsebina ne odraža urejevalcev projekta.",
-	"readinglists-import-button-label": "Ogled seznama",
+	"readinglists-import-button-label": "Odpri v aplikaciji",
 	"readinglists-import-button-hint": "Tapnite gumb:",
 	"readinglists-share-url-notify": "Informacije o tem bralnem seznamu so kopirane v vaše odložišče.",
-	"readinglists-import-app-launch-hint": "Preverite, ali je nameščena zadnja različica aplikacije."
+	"readinglists-import-app-launch-hint": "Preverite, ali je nameščena zadnja različica aplikacije.",
+	"readinglists-beta-feature-name": "Shranjene strani",
+	"readinglists-customlists-collection-settings": "Nastavitve zbirke",
+	"readinglists-customlists-rename-collection": "Preimenuj zbirko",
+	"readinglists-customlists-delete-collection": "Izbriši zbirko"
 }
