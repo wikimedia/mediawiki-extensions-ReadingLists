@@ -90,7 +90,7 @@ exports[`NavigationBar > renders Collection view on desktop 1`] = `
     class="reading-lists-nav-settings"
   >
     <button
-      aria-controls="readinglists-collection-settings-actions"
+      aria-controls="reading-lists-collection-settings-actions"
       aria-expanded="false"
       aria-haspopup="true"
       aria-label="Collection settings"
@@ -152,7 +152,7 @@ exports[`NavigationBar > renders Collection view on mobile 1`] = `
     class="reading-lists-nav-settings"
   >
     <button
-      aria-controls="readinglists-collection-settings-actions"
+      aria-controls="reading-lists-collection-settings-actions"
       aria-expanded="false"
       aria-haspopup="true"
       aria-label="Collection settings"
@@ -214,7 +214,7 @@ exports[`NavigationBar > renders Collections view on desktop 1`] = `
     class="reading-lists-nav-settings"
   >
     <button
-      aria-controls="readinglists-collection-settings-actions"
+      aria-controls="reading-lists-collection-settings-actions"
       aria-expanded="false"
       aria-haspopup="true"
       aria-label="Collection settings"
@@ -276,7 +276,7 @@ exports[`NavigationBar > renders Collections view on mobile 1`] = `
     class="reading-lists-nav-settings"
   >
     <button
-      aria-controls="readinglists-collection-settings-actions"
+      aria-controls="reading-lists-collection-settings-actions"
       aria-expanded="false"
       aria-haspopup="true"
       aria-label="Collection settings"

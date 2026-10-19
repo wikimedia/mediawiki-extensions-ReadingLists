@@ -56,7 +56,7 @@
 				weight="quiet"
 				:aria-label="collectionSettingsLabel"
 				aria-haspopup="true"
-				aria-controls="readinglists-collection-settings-actions"
+				aria-controls="reading-lists-collection-settings-actions"
 				:aria-expanded="showCollectionSettings"
 				@click="toggleCollectionSettings">
 				<cdx-icon :icon="cdxIconSettings" size="medium"></cdx-icon>
@@ -71,8 +71,8 @@
 				:render-in-place="true"
 				@update:open="onCollectionSettingsOpen">
 				<div
-					id="readinglists-collection-settings-actions"
-					class="readinglists-collection-settings-actions">
+					id="reading-lists-collection-settings-actions"
+					class="reading-lists-collection-settings-actions">
 					<cdx-button weight="quiet">
 						{{ renameCollectionLabel }}
 					</cdx-button>

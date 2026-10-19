@@ -36,7 +36,7 @@ exports[`Entries > with custom lists > nav bar does not disappear when show more
       class="reading-lists-nav-settings"
     >
       <button
-        aria-controls="readinglists-collection-settings-actions"
+        aria-controls="reading-lists-collection-settings-actions"
         aria-expanded="true"
         aria-haspopup="true"
         aria-label="Collection settings"
@@ -90,8 +90,8 @@ exports[`Entries > with custom lists > nav bar does not disappear when show more
             >
               
               <div
-                class="readinglists-collection-settings-actions"
-                id="readinglists-collection-settings-actions"
+                class="reading-lists-collection-settings-actions"
+                id="reading-lists-collection-settings-actions"
               >
                 <button
                   class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium"
