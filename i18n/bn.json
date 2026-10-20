@@ -59,8 +59,8 @@
 	"tooltip-ca-bookmark-add": "আপনার সংরক্ষিত আইটেমে এই পাতাটি যোগ করুন",
 	"tooltip-ca-bookmark-remove": "আপনার সংরক্ষিত আইটেম থেকে এই পাতাটি সরান",
 	"readinglists-bookmark": "বুকমার্ক",
-	"readinglists-cancel-add-collection": "বাতিল",
-	"readinglists-add-collection": "সংরক্ষণ করুন",
+	"readinglists-customlists-collection-name-dialog-cancel": "বাতিল",
+	"readinglists-customlists-collection-name-dialog-save": "সংরক্ষণ করুন",
 	"readinglists-add-bookmark": "সংরক্ষণ করুন",
 	"readinglists-remove-bookmark": "সংরক্ষণ সরান",
 	"readinglists-unsave-from-custom-list-title": "সমস্ত পঠন তালিকা থেকে সরাবেন?",
@@ -91,5 +91,5 @@
 	"readinglists-customlists-collections": "সংগ্রহ",
 	"readinglists-customlists-no-collections": "আপনার কোনো সংগ্রহ নেই",
 	"readinglists-customlists-create-collection": "নতুন সংগ্রহ তৈরি করুন",
-	"readinglists-customlists-create-collection-dialog-placeholder": "নাম লিখুন"
+	"readinglists-customlists-collection-name-dialog-placeholder": "নাম লিখুন"
 }
