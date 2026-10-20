@@ -3,16 +3,16 @@
 	"private": true,
 	"scripts": {
 		"api-testing": "mocha --timeout 0 --recursive tests/api-testing",
+		"coverage": "npm run test:unit -- --coverage",
 		"lint": "npm run lint:i18n && npm run lint:scripts && npm run lint:scripts:tests && npm run lint:styles",
 		"lint:i18n": "banana-checker i18n/ i18n/api/",
 		"lint:scripts": "eslint --cache --ignore-pattern tests/api-testing .",
 		"lint:scripts:tests": "eslint --cache --no-ignore --config tests/api-testing/.eslintrc.json tests/api-testing",
 		"lint:styles": "stylelint --cache -f verbose \"resources/**/*.{css,less,vue}\"",
 		"minify:svg": "svgo --config=.svgo.config.js --quiet --recursive --folder ./resources/assets",
-		"test": "npm run lint && npm run test:unit",
+		"test": "npm run lint && npm run coverage",
 		"test:unit": "vitest run",
-		"test:unit:update-snapshots": "npm run test:unit -- --update",
-		"coverage": "npm run test:unit -- --coverage"
+		"test:unit:update-snapshots": "npm run test:unit -- --update"
 	},
 	"devDependencies": {
 		"@pinia/testing": "1.0.3",

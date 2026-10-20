@@ -1,7 +1,6 @@
-import { resolve } from 'node:path';
-
 import MagicString from 'magic-string';
 import { defineConfig } from 'vitest/config';
+import { resolve } from 'node:path';
 import vue from '@vitejs/plugin-vue';
 
 // The plugins below edit through MagicString and return its source map, so that coverage and
@@ -235,10 +234,9 @@ export default defineConfig( {
 
 		setupFiles: [ './vitest.setup.js' ],
 
-		// Jest: `collectCoverage: true`, `collectCoverageFrom`, `coverageDirectory`,
+		// Jest: `collectCoverageFrom`, `coverageDirectory`,
 		//  `coveragePathIgnorePatterns`, `coverageThreshold`.
 		coverage: {
-			enabled: true,
 			// Use Istanbul for equal output coverage instrumentation.
 			provider: 'istanbul',
 			reportsDirectory: 'coverage',
