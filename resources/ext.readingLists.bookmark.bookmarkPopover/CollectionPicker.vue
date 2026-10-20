@@ -115,7 +115,8 @@ module.exports = exports = {
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
 
-@collection-height: 42px;
+// Each collection's height is min button height + list item padding + top border width.
+@collection-height: @min-size-interactive-pointer + ( @spacing-25 * 2 ) + @border-width-base;
 @max-collections: 6;
 
 .readinglists-collection-picker {
@@ -140,8 +141,7 @@ module.exports = exports = {
 	}
 
 	&__create-button {
-		// To match the list items, make height min button height + list item padding + top border.
-		min-height: @min-size-interactive-pointer + ( @spacing-25 * 2 ) + @border-width-base;
+		min-height: @collection-height;
 	}
 
 	&__collection {
