@@ -26,7 +26,7 @@ exports[`Entries > with custom lists > nav bar does not disappear when show more
       </li>
       <li>
         <a
-          class="readinglists-special-nav-link"
+          class="reading-lists-special-nav-link reading-lists-collections-link"
         >
           
           Collections
@@ -404,7 +404,7 @@ exports[`Entries > with custom lists > renders the nav bar when custom lists are
       </li>
       <li>
         <a
-          class="readinglists-special-nav-link"
+          class="reading-lists-special-nav-link reading-lists-collections-link"
         >
           
           Collections

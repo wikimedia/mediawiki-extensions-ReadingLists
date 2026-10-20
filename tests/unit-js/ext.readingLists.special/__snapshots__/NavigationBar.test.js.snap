@@ -18,7 +18,7 @@ exports[`NavigationBar > renders All items view on desktop 1`] = `
     </li>
     <li>
       <a
-        class="readinglists-special-nav-link"
+        class="reading-lists-special-nav-link reading-lists-collections-link"
       >
         
         Collections
@@ -48,7 +48,7 @@ exports[`NavigationBar > renders All items view on mobile 1`] = `
     </li>
     <li>
       <a
-        class="readinglists-special-nav-link"
+        class="reading-lists-special-nav-link reading-lists-collections-link"
       >
         
         Collections
@@ -78,7 +78,7 @@ exports[`NavigationBar > renders Collection view on desktop 1`] = `
     </li>
     <li>
       <a
-        class="readinglists-special-nav-link"
+        class="reading-lists-special-nav-link reading-lists-collections-link"
       >
         
         Collections
@@ -140,7 +140,7 @@ exports[`NavigationBar > renders Collection view on mobile 1`] = `
     </li>
     <li>
       <a
-        class="readinglists-special-nav-link"
+        class="reading-lists-special-nav-link reading-lists-collections-link"
       >
         
         Collections
@@ -202,7 +202,7 @@ exports[`NavigationBar > renders Collections view on desktop 1`] = `
     </li>
     <li>
       <a
-        class="readinglists-special-nav-link"
+        class="reading-lists-special-nav-link reading-lists-collections-link"
       >
         
         Collections
@@ -264,7 +264,7 @@ exports[`NavigationBar > renders Collections view on mobile 1`] = `
     </li>
     <li>
       <a
-        class="readinglists-special-nav-link"
+        class="reading-lists-special-nav-link reading-lists-collections-link"
       >
         
         Collections
