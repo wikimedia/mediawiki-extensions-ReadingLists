@@ -9,10 +9,15 @@
 	},
 	"globals": {
 		"OO": "readonly",
+		"afterAll": "readonly",
+		"afterEach": "readonly",
+		"beforeAll": "readonly",
+		"beforeEach": "readonly",
+		"describe": "readonly",
+		"expect": "readonly",
+		"it": "readonly",
+		"test": "readonly",
 		"vi": "readonly"
-	},
-	"env": {
-		"jest": true
 	},
 	"rules": {
 		"es-x/no-dynamic-import": "off"

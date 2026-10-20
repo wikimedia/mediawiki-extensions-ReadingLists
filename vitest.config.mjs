@@ -226,7 +226,8 @@ export default defineConfig( {
 		// Jest: `verbose: true`.
 		reporters: [ 'verbose' ],
 
-		// Jest: globals like `describe`, `test`, `expect`, `vi` without imports.
+		// Keeps Wikimedia's Jest convention of ambient `describe`, `test`, `expect`, `vi`.
+		// Declare any newly used global in tests/jest/.eslintrc.json.
 		globals: true,
 
 		// Jest: `clearMocks: true`.
