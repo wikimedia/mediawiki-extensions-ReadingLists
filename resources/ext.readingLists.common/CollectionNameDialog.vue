@@ -37,7 +37,7 @@ module.exports = exports = {
 			default: ''
 		},
 		listId: {
-			type: String,
+			type: Number,
 			default: null
 		},
 		isRename: {
