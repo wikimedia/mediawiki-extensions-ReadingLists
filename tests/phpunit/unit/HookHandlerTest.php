@@ -118,6 +118,7 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 			'ReadingListsEnabled' => false,
 			'ReadingListBetaFeature' => false,
 			'ReadingListsMinervaCTA' => true,
+			'ReadingListsVector2022CTA' => false,
 		] );
 		$user = $this->createMock( UserIdentity::class );
 		$user->method( 'isRegistered' )->willReturn( false );
@@ -131,6 +132,36 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 
 		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
 		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
+	}
+
+	public function testBookmarkIconButtonAddedForMainNamespacePageWithVectorCTA(): void {
+		$config = new HashConfig( [
+			'ReadingListsEnabled' => false,
+			'ReadingListBetaFeature' => false,
+			'ReadingListsVector2022CTA' => true,
+		] );
+		$user = $this->createMock( UserIdentity::class );
+		$user->method( 'isRegistered' )->willReturn( false );
+		$userIdentityUtils = $this->createMock( UserIdentityUtils::class );
+		$userIdentityUtils->method( 'isTemp' )->willReturn( false );
+
+		$title = $this->createMock( Title::class );
+		$title->method( 'getNamespace' )->willReturn( NS_MAIN );
+		$title->method( 'isContentPage' )->willReturn( true );
+		$output = $this->createMock( OutputPage::class );
+		$output->method( 'isArticle' )->willReturn( true );
+		$output->method( 'getTitle' )->willReturn( $title );
+		$output->expects( $this->once() )
+			->method( 'addModules' )
+			->with( 'ext.readingLists.bookmark.anonymous' );
+
+		$skin = $this->createSkinTemplate( 'vector-2022', $user, $output );
+		$links = $this->getLinks();
+		$this->createHookHandler( $config, null, $userIdentityUtils )
+			->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
+		$this->assertArrayHasKey( 'bookmark', $links['views'] );
 	}
 
 	public function testBookmarkNotAddedForUnsupportedSkin(): void {

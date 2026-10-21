@@ -140,6 +140,10 @@
 			"value": true,
 			"description": "Enable reading list CTA for logged out users in Minerva."
 		},
+		"ReadingListsVector2022CTA": {
+			"value": false,
+			"description": "Enable reading list CTA for logged out users in Vector 2022."
+		},
 		"ReadingListsMinervaCTAShowDot": {
 			"value": true,
 			"description": "Whether to show a pulsating blue dot on the anonymous bookmark button."

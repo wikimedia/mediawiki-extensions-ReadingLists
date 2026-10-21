@@ -54,13 +54,13 @@ class HookHandler implements
 		}
 
 		$user = $sktemplate->getUser();
+		$skinName = $sktemplate->getSkinName();
 		$readingListsEnabledForUser = $this->isReadingListsEnabledForUser( $user );
 		$inAccountCreationCta = !$user->isRegistered() &&
-			$sktemplate->getSkinName() === 'minerva' &&
-			$this->config->get( 'ReadingListsMinervaCTA' );
+			$this->isAnonymousCtaEnabledForSkin( $skinName );
 
 		// Show bookmark to logged-in opted into ReadingList
-		// Show bookmark to logged-out users in MinervaNeue when account creation CTA is enabled
+		// Show bookmark to logged-out users in MinervaNeue & Vector 2022 when account creation CTA is enabled
 		if ( $readingListsEnabledForUser ) {
 			$this->addSpecialPageLinkToUserMenu( $user, $sktemplate, $links );
 		} elseif ( !$inAccountCreationCta ) {
@@ -188,6 +188,25 @@ class HookHandler implements
 
 		if ( $betaFeatureIsAvailable ) {
 			return BetaFeatures::isFeatureEnabled( $user, Constants::PREF_KEY_BETA_FEATURES );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Whether logged-out users should see the account-creation bookmark CTA.
+	 * The CTA module is ext.readingLists.bookmark.anonymous.
+	 *
+	 * @param string $skinName
+	 * @return bool
+	 */
+	private function isAnonymousCtaEnabledForSkin( string $skinName ): bool {
+		if ( $skinName === 'minerva' ) {
+			return $this->config->get( 'ReadingListsMinervaCTA' );
+		}
+
+		if ( $skinName === 'vector-2022' ) {
+			return $this->config->get( 'ReadingListsVector2022CTA' );
 		}
 
 		return false;

@@ -6,7 +6,6 @@ const { createMwApp } = require( 'vue' );
 const CtaDialog = require( './CtaDialog.vue' );
 const { initializePulsatingDot } = require( './pulsatingDot.js' );
 
-// Note that this is currently MinervaNeue-specific.
 const bookmark = document.getElementById( 'ca-bookmark' );
 
 if ( !bookmark ) {
