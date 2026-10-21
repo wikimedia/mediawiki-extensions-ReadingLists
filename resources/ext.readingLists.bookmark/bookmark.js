@@ -63,12 +63,17 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		// The following messages are used here:
 		// * readinglists-add-bookmark
 		// * readinglists-remove-bookmark
-		label.textContent = mw.msg( `readinglists-${ ( !isSaved ? 'add' : 'remove' ) }-bookmark` );
-
-		// The following messages are used here:
+		// * readinglists-manage-bookmark
 		// * tooltip-ca-bookmark-add
 		// * tooltip-ca-bookmark-remove
-		bookmark.title = mw.msg( `tooltip-ca-bookmark-${ ( !isSaved ? 'add' : 'remove' ) }` );
+		// * tooltip-ca-bookmark-manage
+		if ( ReadingListsCustomLists && isSaved ) {
+			label.textContent = mw.msg( 'readinglists-manage-bookmark' );
+			bookmark.title = mw.msg( 'tooltip-ca-bookmark-manage' );
+		} else {
+			label.textContent = mw.msg( `readinglists-${ ( !isSaved ? 'add' : 'remove' ) }-bookmark` );
+			bookmark.title = mw.msg( `tooltip-ca-bookmark-${ ( !isSaved ? 'add' : 'remove' ) }` );
+		}
 	}
 
 	/**

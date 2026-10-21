@@ -346,12 +346,14 @@
 			"messages": [
 				"readinglists-add-bookmark",
 				"readinglists-remove-bookmark",
+				"readinglists-manage-bookmark",
 				"readinglists-browser-add-entry-success",
 				"readinglists-browser-remove-entry-success",
 				"readinglists-default-title",
 				"readinglists-browser-error-intro",
 				"tooltip-ca-bookmark-add",
 				"tooltip-ca-bookmark-remove",
+				"tooltip-ca-bookmark-manage",
 				"notloggedin"
 			],
 			"dependencies": [
