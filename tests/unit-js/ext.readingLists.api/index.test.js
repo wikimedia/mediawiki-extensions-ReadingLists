@@ -3,6 +3,7 @@ import { resetMockSession } from 'mediawiki.storage';
 const SETUP = require( '../fixtures/setup.json' );
 const LISTS = require( '../fixtures/lists.json' );
 const LISTS2 = require( '../fixtures/lists2.json' );
+const LISTS2_WITH_TITLE = require( '../fixtures/lists2-with-title.json' );
 const LIST = require( '../fixtures/list.json' );
 const DEFAULTLIST = require( '../fixtures/defaultlist.json' );
 const ENTRIES = require( '../fixtures/entries.json' );
@@ -612,6 +613,28 @@ describe( 'deleteEntryByPageTitle', () => {
 		const response = await api.deleteEntryByPageTitle( title );
 		expect( response ).toStrictEqual( DELETEENTRY );
 	} );
+
+	test( 'deletes entry by title from a specific list', async () => {
+		const title = CREATEENTRY.createentry.entry.title;
+		const listId = 42;
+
+		api.stubApi( {
+			postWithEditToken: vi.fn( ( { action, command, project, title: pageTitle, list } ) => {
+				if (
+					action === 'readinglists' &&
+					command === 'deleteentry' &&
+					project === '@local' &&
+					pageTitle === title &&
+					list === listId
+				) {
+					return DELETEENTRY;
+				}
+			} )
+		} );
+
+		const response = await api.deleteEntryByPageTitle( title, listId );
+		expect( response ).toStrictEqual( DELETEENTRY );
+	} );
 } );
 
 describe( 'fromBase64', () => {
@@ -763,6 +786,30 @@ describe( 'getListsAll', () => {
 
 		// check that 2 new calls were made after resetting the cache
 		expect( get ).toHaveBeenCalledTimes( 4 );
+	} );
+} );
+
+describe( 'getListsWithTitle', () => {
+	beforeEach( () => {
+		resetMockSession();
+	} );
+
+	it( 'returns lists with the given title', async () => {
+		const get = vi.fn( ( { rltitle } ) => {
+			if ( rltitle ) {
+				return LISTS2_WITH_TITLE;
+			} else {
+				return LISTS2;
+			}
+		} );
+		api.stubApi( { get } );
+		const result = await api.getListsWithTitle( 'Test' );
+		const allLists = await api.getListsAll();
+		expect( result ).toBeDefined();
+		expect( allLists ).toHaveLength( 12 );
+		expect( result ).toHaveLength( 1 );
+		expect( allLists.includes( result ) );
+		expect( get ).toHaveBeenCalled();
 	} );
 } );
 
