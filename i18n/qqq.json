@@ -105,7 +105,6 @@
 	"tooltip-ca-bookmark-remove": "Tooltip for the remove page from reading list button in the views menu when the page is already saved.",
 	"tooltip-ca-bookmark-manage": "Tooltip for the remove page from reading list button in the views menu when the page is already saved and custom lists is enabled",
 	"readinglists-bookmark": "Bookmark action",
-	"readinglists-customlists-collection-name-dialog-cancel": "Cancel button label for collection name dialog (creating or updating collection)",
 	"readinglists-customlists-collection-name-dialog-save": "Save button label for collection name dialog (creating or updating collection)",
 	"readinglists-add-bookmark": "Button label for adding a page bookmark",
 	"readinglists-remove-bookmark": "Button label for removing a page bookmark",

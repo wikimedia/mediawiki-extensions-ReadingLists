@@ -4,7 +4,7 @@
 		:title="$i18n( 'readinglists-customlists-collection-name-dialog-title' ).text()"
 		class="readinglists-collection-name-dialog"
 		:primary-action="primaryAction"
-		:default-action="defaultAction"
+		:use-close-button="true"
 		@primary="saveCollection"
 		@default="handleClose"
 		@update:open="onUpdateOpen"
@@ -75,10 +75,6 @@ module.exports = exports = {
 			disabled: !collectionName.value
 		} ) );
 
-		const defaultAction = {
-			label: mw.msg( 'readinglists-customlists-collection-name-dialog-cancel' )
-		};
-
 		const placeholder = mw.msg( 'readinglists-customlists-collection-name-dialog-placeholder' );
 		const handleClose = () => {
 			onUpdateOpen( false );
@@ -86,7 +82,6 @@ module.exports = exports = {
 
 		return {
 			primaryAction,
-			defaultAction,
 			placeholder,
 			isOpen,
 			handleClose,
