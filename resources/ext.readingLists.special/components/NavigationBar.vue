@@ -86,9 +86,10 @@
 <script>
 const { ref, watch, onUpdated, onMounted } = require( 'vue' );
 const { RouterLink, useRouter } = require( 'vue-router' );
-const { getCollectionUrl } = require( 'ext.readingLists.common' );
+const { getCollectionUrl, actions } = require( 'ext.readingLists.common' );
 const { CdxButton, CdxIcon, CdxMenuButton, CdxPopover } = require( '../../../codex.js' );
 const { cdxIconExpand, cdxIconSettings } = require( '../../../icons.json' );
+const { actionSettingsDeleteClick, actionSettingsRenameClick } = actions;
 
 const api = require( 'ext.readingLists.api' );
 
@@ -184,6 +185,7 @@ module.exports = exports = {
 
 		const renameCollection = () => {
 			emit( 'rename-collection' );
+			actionSettingsRenameClick();
 		};
 
 		const onSelectCollection = ( selected ) => {
@@ -201,6 +203,7 @@ module.exports = exports = {
 		const deleteCollection = () => {
 			showCollectionSettings.value = false;
 			emit( 'delete-collection' );
+			actionSettingsDeleteClick();
 		};
 
 		const maybeGetCollections = async () => {
@@ -235,6 +238,7 @@ module.exports = exports = {
 				maybeGetCollections();
 			}
 		} );
+
 		return {
 			showDropdown,
 			cdxIconExpand,

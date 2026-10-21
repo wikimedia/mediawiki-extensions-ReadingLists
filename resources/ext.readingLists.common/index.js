@@ -3,6 +3,7 @@ const CreateCollectionButton = require( './CreateCollectionButton.vue' );
 const CollectionNameDialog = require( './CollectionNameDialog.vue' );
 const DialogPopover = require( './DialogPopover.vue' );
 const { useIsMobileResolution, useIsAboveMobileResolution, MAX_WIDTH_MOBILE } = require( './composables.js' );
+const actions = require( './actions.js' );
 
 // Canonical base URL of this special page, e.g. "/wiki/Special:ReadingLists".
 // wgCanonicalSpecialPageName is the bare name ("ReadingLists") without the
@@ -26,6 +27,7 @@ function getCollectionUrl( listId, listName, isRelative = false ) {
 
 module.exports = {
 	getCollectionsBaseUrl,
+	actions,
 	MAX_WIDTH_MOBILE,
 	useIsMobileResolution,
 	useIsAboveMobileResolution,

@@ -45,7 +45,7 @@
 
 		<collection-name-dialog
 			v-if="isCollectionNameDialogOpen"
-			@success="addToCollection"
+			@success="createAndAddToCollection"
 			@update:open="isCollectionNameDialogOpen = $event"
 		></collection-name-dialog>
 
@@ -63,10 +63,11 @@
 const { ref, computed, toRef } = require( 'vue' );
 const { CdxButton, CdxIcon } = require( '../../codex.js' );
 const { cdxIconSuccess, cdxIconClose } = require( '../../icons.json' );
-const { ConfigPopover, CollectionNameDialog, getCollectionUrl } = require( 'ext.readingLists.common' );
+const { ConfigPopover, CollectionNameDialog, getCollectionUrl, actions } = require( 'ext.readingLists.common' );
 const { createEntry, deleteEntryByPageTitle } = require( 'ext.readingLists.api' );
 const CollectionPicker = require( './CollectionPicker.vue' );
 const UnsaveDialog = require( './UnsaveDialog.vue' );
+const { actionAddToCustomList, actionRemoveFromCustomList, actionSaveCustomList } = actions;
 
 /**
  * Popover for saving or un-saving an article to a reading list.
@@ -152,6 +153,7 @@ module.exports = exports = {
 			// Add to custom list.
 			try {
 				await createEntry( listId, title.value );
+				actionAddToCustomList();
 			} catch ( e ) {
 				mw.errorLogger.logError(
 					new Error( `Error ${ e } in addToCollection` ),
@@ -165,9 +167,15 @@ module.exports = exports = {
 			props.onDismiss( { isSaved: true, showNotification: true, listId, listName } );
 		}
 
+		async function createAndAddToCollection( listId, listName ) {
+			actionSaveCustomList();
+			await addToCollection( listId, listName );
+		}
+
 		async function removeFromCollection( listId ) {
 			try {
 				await deleteEntryByPageTitle( title.value, listId );
+				actionRemoveFromCustomList();
 			} catch ( e ) {
 				mw.errorLogger.logError(
 					new Error( `Error ${ e } in removeFromCollection` ),
@@ -215,6 +223,7 @@ module.exports = exports = {
 			closeButtonLabel,
 			handleOpenChange,
 			launchCreateCollection,
+			createAndAddToCollection,
 			addToCollection,
 			removeFromCollection,
 			onUnsaveClick,

@@ -1,8 +1,9 @@
 const { createRouter, createWebHistory } = require( 'vue-router' );
 const Entries = require( './pages/Entries.vue' );
-const { collectionsBaseUrl } = require( 'ext.readingLists.common' );
+const { collectionsBaseUrl, actions } = require( 'ext.readingLists.common' );
 const { ReadingListsCustomLists } = require( './config.json' );
 const isCustomListsEnabled = ReadingListsCustomLists;
+const { actionLoadPage } = actions;
 
 const routes = [
 	// A specific list: /{user}/{listId} or /{user}/{listId}/{title}
@@ -62,6 +63,22 @@ router.beforeEach( ( to ) => {
 		document.title = mw.msg( 'pagetitle', title );
 	}
 	loaded = true;
+} );
+
+router.afterEach( ( to ) => {
+	switch ( to.name ) {
+		case 'list':
+			actionLoadPage( 'load_custom_list_page' );
+			break;
+		case 'all':
+			actionLoadPage( 'load_all_items_page' );
+			break;
+		case 'collections':
+			actionLoadPage( 'load_collections_page' );
+			break;
+		default:
+			actionLoadPage( 'load_reading_list_fallback' );
+	}
 } );
 
 module.exports = router;

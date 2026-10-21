@@ -9,6 +9,7 @@
 
 <script>
 const { computed } = require( 'vue' );
+const { actionCreateCollectionButtonClick } = require( './actions.js' );
 
 /**
  * Link-style button for creating a collection.
@@ -26,6 +27,7 @@ module.exports = exports = {
 		const createButtonLabel = computed( () => mw.msg( 'readinglists-customlists-create-collection-short' ) );
 
 		function onCreateButtonClick() {
+			actionCreateCollectionButtonClick();
 			emit( 'create-collection' );
 		}
 

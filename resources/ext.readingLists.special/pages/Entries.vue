@@ -83,9 +83,10 @@ const { useRouter } = require( 'vue-router' );
 const { storeToRefs } = require( 'pinia' );
 const { useReadingListsStore } = require( '../store.js' );
 
-const { useIsMobileResolution, getCollectionUrl, CollectionNameDialog } = require( 'ext.readingLists.common' );
+const { useIsMobileResolution, getCollectionUrl, CollectionNameDialog, actions } = require( 'ext.readingLists.common' );
 const api = require( 'ext.readingLists.api' );
 
+const { actionSaveCustomList, actionSettingsDeleteConfirmClick } = actions;
 const { CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
 const AllCollections = require( '../components/AllCollections.vue' );
 const Collection = require( '../components/Collection.vue' );
@@ -319,6 +320,7 @@ module.exports = exports = {
 		}
 
 		function routeToNewCollection( id, name ) {
+			actionSaveCustomList();
 			const collectionUrl = getCollectionUrl( id, name, true );
 			router.push( collectionUrl );
 			showCollectionNameDialog.value = false;
@@ -352,6 +354,7 @@ module.exports = exports = {
 			isDeletingCollection.value = true;
 			deleteError.value = '';
 			try {
+				actionSettingsDeleteConfirmClick();
 				await api.deleteList( props.listId );
 				await onCollectionDeleted( collectionName );
 			} catch ( err ) {

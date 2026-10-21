@@ -40,7 +40,8 @@ const { ref, computed, onMounted } = require( 'vue' );
 const { CdxButton, CdxIcon } = require( '../../codex.js' );
 const { cdxIconAdd, cdxIconCheck } = require( '../../icons.json' );
 const api = require( 'ext.readingLists.api' );
-const { CreateCollectionButton } = require( 'ext.readingLists.common' );
+const { CreateCollectionButton, actions } = require( 'ext.readingLists.common' );
+const { actionUnsaveInitClick } = actions;
 
 /**
  * UI for creating or choosing a collection to add an article to.
@@ -149,6 +150,7 @@ module.exports = exports = {
 
 		function onUnsaveButtonClick() {
 			emit( 'unsave-click' );
+			actionUnsaveInitClick();
 		}
 
 		onMounted( () => {

@@ -563,6 +563,7 @@
 			],
 			"packageFiles": [
 				"resources/ext.readingLists.common/index.js",
+				"resources/ext.readingLists.common/actions.js",
 				"resources/ext.readingLists.common/composables.js",
 				"resources/ext.readingLists.common/ConfigPopover.vue",
 				"resources/ext.readingLists.common/DialogPopover.vue",
