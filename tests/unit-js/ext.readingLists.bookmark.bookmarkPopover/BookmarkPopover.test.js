@@ -120,23 +120,19 @@ describe( 'BookmarkPopover', () => {
 			} );
 		}
 
-		test( 'calls deleteEntryByPageTitle and createEntry when add-to-collection is triggered', async () => {
+		test( 'adds to the collection without deleting existing entries', async () => {
 			const postWithEditToken = vi.fn( () => Promise.resolve( {} ) );
 			apiModule.stubApi( { postWithEditToken } );
 
 			mountPopoverWithCollectionPickerStub();
-			wrapper.vm.addToCollection( 42, 'My List' );
-			await Promise.resolve();
+			await wrapper.vm.addToCollection( 42, 'My List' );
 
-			expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( {
-				command: 'deleteentry',
-				title: 'Test Page',
-				project: '@local'
-			} ) );
+			expect( postWithEditToken ).toHaveBeenCalledTimes( 1 );
 			expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( {
 				command: 'createentry',
 				list: 42,
-				title: 'Test Page'
+				title: 'Test Page',
+				project: '@local'
 			} ) );
 		} );
 
@@ -144,10 +140,7 @@ describe( 'BookmarkPopover', () => {
 			apiModule.stubApi( { postWithEditToken: vi.fn( () => Promise.resolve( {} ) ) } );
 
 			mountPopoverWithCollectionPickerStub();
-			wrapper.vm.addToCollection( 42, 'My List' );
-			// One tick for deleteEntryByPageTitle to resolve, one for createEntry to resolve.
-			await Promise.resolve();
-			await Promise.resolve();
+			await wrapper.vm.addToCollection( 42, 'My List' );
 
 			expect( onDismiss ).toHaveBeenCalledWith( true, 42, 'My List' );
 		} );
@@ -159,36 +152,32 @@ describe( 'BookmarkPopover', () => {
 
 			expect( wrapper.vm.isConfigPopoverOpen ).toBe( true );
 
-			wrapper.vm.addToCollection( 42, 'My List' );
-			// One tick for deleteEntryByPageTitle to resolve, one for createEntry to resolve.
-			await Promise.resolve();
-			await Promise.resolve();
+			await wrapper.vm.addToCollection( 42, 'My List' );
 
 			expect( wrapper.vm.isConfigPopoverOpen ).toBe( false );
 		} );
 
-		test( 'calls createEntry only after deleteEntryByPageTitle resolves', async () => {
-			let resolveDelete;
-			const postWithEditToken = vi.fn( ( { command } ) => {
-				if ( command === 'deleteentry' ) {
-					return new Promise( ( resolve ) => {
-						resolveDelete = resolve;
-					} );
-				}
-				return Promise.resolve( {} );
+		test( 'waits for createEntry before closing the popover and calling onDismiss', async () => {
+			let resolveCreate;
+			const createEntryPromise = new Promise( ( resolve ) => {
+				resolveCreate = resolve;
 			} );
+			const postWithEditToken = vi.fn( () => createEntryPromise );
 			apiModule.stubApi( { postWithEditToken } );
 
 			mountPopoverWithCollectionPickerStub();
-			wrapper.vm.addToCollection( 42, 'My List' );
-
-			expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( { command: 'deleteentry' } ) );
-			expect( postWithEditToken ).not.toHaveBeenCalledWith( expect.objectContaining( { command: 'createentry' } ) );
-
-			resolveDelete( {} );
-			await Promise.resolve();
+			const addToCollectionPromise = wrapper.vm.addToCollection( 42, 'My List' );
 
 			expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( { command: 'createentry' } ) );
+			expect( wrapper.vm.isConfigPopoverOpen ).toBe( true );
+			expect( onDismiss ).not.toHaveBeenCalled();
+
+			resolveCreate( {} );
+			await addToCollectionPromise;
+
+			expect( wrapper.vm.isConfigPopoverOpen ).toBe( false );
+			expect( onDismiss ).toHaveBeenCalledTimes( 1 );
+			expect( onDismiss ).toHaveBeenCalledWith( true, 42, 'My List' );
 		} );
 	} );
 } );

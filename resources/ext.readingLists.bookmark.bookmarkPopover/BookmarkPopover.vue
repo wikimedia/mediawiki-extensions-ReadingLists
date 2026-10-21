@@ -53,7 +53,7 @@ const { ref, computed, toRef } = require( 'vue' );
 const { CdxButton, CdxIcon } = require( '../../codex.js' );
 const { cdxIconSuccess, cdxIconClose } = require( '../../icons.json' );
 const { ConfigPopover, CollectionNameDialog, getCollectionUrl } = require( 'ext.readingLists.common' );
-const { createEntry, deleteEntryByPageTitle } = require( 'ext.readingLists.api' );
+const { createEntry } = require( 'ext.readingLists.api' );
 const CollectionPicker = require( './CollectionPicker.vue' );
 
 /**
@@ -127,8 +127,6 @@ module.exports = exports = {
 
 		async function addToCollection( listId, listName ) {
 			// TODO: Handle errors.
-			// Remove from default list.
-			await deleteEntryByPageTitle( title.value );
 			// Add to custom list.
 			await createEntry( listId, title.value );
 			// Close the popover and show a notification that the page was added to a custom list.
