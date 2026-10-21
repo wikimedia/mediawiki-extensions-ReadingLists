@@ -24,6 +24,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	// Even if there is no label defined, the <span> must exist.
 	const label = bookmark.lastElementChild;
 	const icon = bookmark.querySelector( isMinerva ? '.minerva-icon' : '.vector-icon' );
+	const pageName = mw.config.get( 'wgPageName' );
 
 	let iconSolid = isMinerva ? [ 'minerva-icon--bookmark' ] : [];
 	let iconOutline = isMinerva ? [ 'minerva-icon--bookmarkOutline' ] : [];
@@ -118,14 +119,23 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	 *
 	 * @param {boolean} isSaved Whether the article is now saved to a reading list
 	 * @param {boolean} showNotification Whether to show an mw.notification
-	 * @param {number|null} listId The ID of the collection the article was added to
-	 * @param {string|null} listName The name of the collection the article was added to
+	 * @param {boolean|null} [isError] Whether an error occurred.
+	 * @param {number|null} [listId] The ID of the collection the article was added to
+	 * @param {string|null} [listName] The name of the collection the article was added to
 	 */
-	function showPostChangeMessaging( isSaved, showNotification, listId = null, listName = null ) {
+	function showPostChangeMessaging( isSaved, showNotification, isError, listId = null, listName = null ) {
 		const homepageDiscoveryPreference = isMinerva ?
 			'homepage_mobile_discovery_notice_seen' :
 			'growthexperiments-tour-homepage-discovery';
 
+		if ( isError ) {
+			mw.notify( mw.msg( 'readinglists-browser-error' ), {
+				type: 'error'
+			} ).then( ( notification ) => {
+				activeNotification = notification;
+			} );
+			return;
+		}
 		// Show the onboarding popover only if the user has saved an article, if they haven't seen
 		// the popover before, and if the homepage discovery popover has been dismissed
 		// to ensure the popovers don't overlap (T421942).
@@ -206,16 +216,24 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	 * @return {Promise<void>}
 	 */
 	async function addPageToReadingList() {
-		// close any existing notifications
+		// Close any existing notifications.
 		if ( activeNotification ) {
 			activeNotification.close();
 		}
-		await api.saveToDefaultList( mw.config.get( 'wgPageName' ) );
+
+		// Save the page and change the bookmark button.
+		await api.saveToDefaultList( pageName );
 		updateBookmarkStatus( true );
 
 		if ( ReadingListsCustomLists ) {
-			const { showNotification, listId, listName } = await launchBookmarkPopover( false );
-			showPostChangeMessaging( true, showNotification, listId, listName );
+			const { isSaved, showNotification, isError, listId, listName } = await launchBookmarkPopover( false );
+
+			// Handle case where user immediately unsaves page.
+			if ( !isSaved ) {
+				updateBookmarkStatus( isSaved );
+			}
+
+			showPostChangeMessaging( isSaved, showNotification, isError, listId, listName );
 		} else {
 			showPostChangeMessaging( true, true );
 		}
@@ -225,13 +243,13 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	 * Saves the page if the user is returning from login or create account
 	 * via the logged-out bookmark CTA button.
 	 *
-	 * @param {string} pageName
+	 * @param {string} pageNameToSave
 	 * @return {Promise<void>}
 	 */
-	async function saveAfterCta( pageName ) {
+	async function saveAfterCta( pageNameToSave ) {
 		mw.storage.session.remove( AUTOSAVE_STORAGE_KEY );
 
-		if ( pageName !== mw.config.get( 'wgPageName' ) || bookmark.dataset.mwSaved === '1' ) {
+		if ( pageNameToSave !== pageName || bookmark.dataset.mwSaved === '1' ) {
 			return;
 		}
 
@@ -249,7 +267,6 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	 */
 	async function removePageFromReadingList() {
 		const inCustomList = bookmark.dataset.mwInCustomList === '1';
-		const pageTitle = mw.config.get( 'wgPageName' );
 
 		if ( inCustomList ) {
 			const confirmed = await confirmUnsaveFromCustomList( bookmark );
@@ -259,7 +276,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		}
 
 		try {
-			await api.deleteEntryByPageTitle( pageTitle );
+			await api.deleteEntryByPageTitle( pageName );
 		} catch ( err ) {
 			if ( err !== 'readinglists-db-error-list-entry-deleted' ) {
 				throw err;
@@ -271,21 +288,44 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	}
 
 	/**
+	 * Handle bookmark clicks when the page is currently saved.
+	 */
+	async function configurePageInReadingList() {
+		// Close any existing notifications.
+		if ( activeNotification ) {
+			activeNotification.close();
+		}
+
+		const { isSaved, showNotification, isError, listId, listName } = await launchBookmarkPopover( true );
+
+		// If the page has been unsaved, update the bookmark button.
+		if ( !isSaved ) {
+			updateBookmarkStatus( isSaved );
+		}
+
+		// Show notifications (e.g. page added to collection, page unsaved from all collections).
+		showPostChangeMessaging( isSaved, showNotification, isError, listId, listName );
+	}
+
+	/**
 	 * Shows the save/un-save popover.
 	 *
-	 * @param {boolean} isCurrentlySaved
+	 * @param {boolean} isNewSave Whether the page was just saved for the first time
 	 * @return {Promise<boolean>} Returns whether an mw.notification should display on dismiss.
 	 */
-	async function launchBookmarkPopover( isCurrentlySaved ) {
+	async function launchBookmarkPopover( isNewSave ) {
+		const listsWithPage = await api.getListsWithTitle( pageName );
+		const collectionsWithPage = listsWithPage.filter( ( list ) => !list.default );
+
 		return await mw.loader.using( [ 'ext.readingLists.bookmark.bookmarkPopover' ] )
 			.then( () => {
 				const bookmarkPopoverModule = require( 'ext.readingLists.bookmark.bookmarkPopover' );
-				return bookmarkPopoverModule.initBookmarkPopover( isCurrentlySaved );
+				return bookmarkPopoverModule.initBookmarkPopover( isNewSave, collectionsWithPage );
 			} )
 			.catch( ( error ) => {
 				mw.log.error( 'Error loading ext.readingLists.bookmark.bookmarkPopover module:', error );
-				// Fall back to the mw.notification.
-				return { showNotification: true };
+				// Fall back to the mw.notification. The page remains saved regardless of the flow.
+				return { isSaved: true, showNotification: true };
 			} );
 	}
 
@@ -329,6 +369,8 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			try {
 				if ( bookmark.dataset.mwSaved !== '1' ) {
 					await addPageToReadingList();
+				} else if ( ReadingListsCustomLists ) {
+					await configurePageInReadingList();
 				} else {
 					await removePageFromReadingList();
 				}
@@ -362,12 +404,12 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			setBookmarkStatus( newSaved );
 		} );
 
-		const pageName = mw.storage.session.get( AUTOSAVE_STORAGE_KEY );
-		if ( !pageName ) {
+		const pageNameToSave = mw.storage.session.get( AUTOSAVE_STORAGE_KEY );
+		if ( !pageNameToSave ) {
 			return;
 		}
 
-		saveAfterCta( pageName );
+		saveAfterCta( pageNameToSave );
 	}
 
 	init();

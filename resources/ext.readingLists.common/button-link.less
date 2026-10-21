@@ -1,0 +1,26 @@
+@import 'mediawiki.skin.variables.less';
+
+/**
+ * Styles for a button element styled to look similar to a link.
+ */
+.readinglists-button-link() {
+	.cdx-mixin-link();
+	width: @size-full;
+
+	// Normalize button styles.
+	background: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-family: inherit;
+	font-size: @font-size-medium;
+	font-weight: @font-weight-normal;
+	text-align: left;
+	text-transform: none;
+
+	// The outline from the link mixin looks awful, use text decoration instead.
+	&:focus-visible {
+		outline: @outline-base--focus;
+		text-decoration: @text-decoration-underline;
+	}
+}

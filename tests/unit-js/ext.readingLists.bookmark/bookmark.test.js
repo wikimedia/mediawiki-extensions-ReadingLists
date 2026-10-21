@@ -732,7 +732,7 @@ describe( 'initBookmark', () => {
 				ReadingListsCustomLists: true,
 				default: { ReadingListsCustomLists: true }
 			} ) );
-			initBookmarkPopover = vi.fn( () => false );
+			initBookmarkPopover = vi.fn( () => ( { isSaved: true, showNotification: false } ) );
 			// Default-export shape, as for the confirmPopover mock above. The transform
 			// hoists bookmark.js's lazy require() to a top-level import, so the mock
 			// delegates to the current `initBookmarkPopover`, which tests may reassign.
@@ -745,6 +745,8 @@ describe( 'initBookmark', () => {
 			api = ( await import( '../../../resources/ext.readingLists.api/index.js' ) ).default;
 			( { initBookmark } =
 				await import( '../../../resources/ext.readingLists.bookmark/bookmark.js' ) );
+			// launchBookmarkPopover now calls api.getListsWithTitle before showing the popover.
+			vi.spyOn( api, 'getListsWithTitle' ).mockResolvedValue( [] );
 		} );
 
 		afterEach( () => {
@@ -762,15 +764,17 @@ describe( 'initBookmark', () => {
 			initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
 			bookmark.click();
 
-			// We need 3 flushes for the save workflow now:
+			// 4 flushes for the save workflow:
 			// - API call to save to list
-			// - Launch bookmark popover and wait to see if user saves to a custom list
+			// - getListsWithTitle call
+			// - mw.loader.using() to resolve
 			// - Propagate resolved promises through addPageToReadingList()
 			await flushPromises();
 			await flushPromises();
 			await flushPromises();
+			await flushPromises();
 
-			expect( initBookmarkPopover ).toHaveBeenCalledWith( false );
+			expect( initBookmarkPopover ).toHaveBeenCalledWith( false, [] );
 			expect( mw.notify ).not.toHaveBeenCalledWith(
 				expect.anything(),
 				expect.objectContaining( { tag: 'saved', type: 'success' } )
@@ -787,6 +791,7 @@ describe( 'initBookmark', () => {
 
 			initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
 			bookmark.click();
+			await flushPromises();
 			await flushPromises();
 			await flushPromises();
 			await flushPromises();
@@ -817,17 +822,19 @@ describe( 'initBookmark', () => {
 			initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
 			bookmark.click();
 
-			// One flush for the save API call, one for mw.loader.using() to resolve.
+			// One flush for the save API call, one for getListsWithTitle, one for
+			// mw.loader.using().
+			await flushPromises();
 			await flushPromises();
 			await flushPromises();
 
 			// Hooks should have fired even though the popover has not yet resolved.
 			expect( hookCallback ).toHaveBeenCalledWith( true, null, null, VECTOR_EVENT_SOURCE );
 			expect( changeHookCallback ).toHaveBeenCalledWith( true, VECTOR_EVENT_SOURCE );
-			expect( initBookmarkPopover ).toHaveBeenCalledWith( false );
+			expect( initBookmarkPopover ).toHaveBeenCalledWith( false, [] );
 
 			// Resolve the popover so addPageToReadingList() completes cleanly.
-			resolvePopover( { showNotification: false } );
+			resolvePopover( { isSaved: true, showNotification: false } );
 			await flushPromises();
 			await flushPromises();
 		} );
@@ -855,10 +862,11 @@ describe( 'initBookmark', () => {
 					await flushPromises();
 					await flushPromises();
 					await flushPromises();
+					await flushPromises();
 
 					vi.advanceTimersByTime( 1000 );
 
-					expect( initBookmarkPopover ).toHaveBeenCalledWith( false );
+					expect( initBookmarkPopover ).toHaveBeenCalledWith( false, [] );
 					expect( mw.notify ).not.toHaveBeenCalledWith(
 						expect.anything(),
 						expect.objectContaining( { tag: 'saved', type: 'success' } )
@@ -892,10 +900,11 @@ describe( 'initBookmark', () => {
 					await flushPromises();
 					await flushPromises();
 					await flushPromises();
+					await flushPromises();
 
 					vi.advanceTimersByTime( 1000 );
 
-					expect( initBookmarkPopover ).toHaveBeenCalledWith( false );
+					expect( initBookmarkPopover ).toHaveBeenCalledWith( false, [] );
 					expect( mw.notify ).not.toHaveBeenCalledWith(
 						expect.anything(),
 						expect.objectContaining( { tag: 'saved', type: 'success' } )
@@ -919,10 +928,11 @@ describe( 'initBookmark', () => {
 				await flushPromises();
 				await flushPromises();
 				await flushPromises();
+				await flushPromises();
 
 				vi.advanceTimersByTime( 1000 );
 
-				expect( initBookmarkPopover ).toHaveBeenCalledWith( false );
+				expect( initBookmarkPopover ).toHaveBeenCalledWith( false, [] );
 				expect( mw.notify ).not.toHaveBeenCalledWith(
 					expect.anything(),
 					expect.objectContaining( { tag: 'saved', type: 'success' } )
@@ -932,7 +942,7 @@ describe( 'initBookmark', () => {
 		} );
 
 		test( 'shows custom list notification when popover resolves with a listId', async () => {
-			initBookmarkPopover = vi.fn( () => ( { showNotification: true, listId: 42, listName: 'My List' } ) );
+			initBookmarkPopover = vi.fn( () => ( { isSaved: true, showNotification: true, listId: 42, listName: 'My List' } ) );
 
 			const bookmark = createBookmarkElement();
 			api.stubApi( {
@@ -942,6 +952,7 @@ describe( 'initBookmark', () => {
 
 			initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
 			bookmark.click();
+			await flushPromises();
 			await flushPromises();
 			await flushPromises();
 			await flushPromises();
@@ -959,7 +970,12 @@ describe( 'initBookmark', () => {
 		} );
 
 		test( 'shows default list notification when popover resolves without a listId', async () => {
-			initBookmarkPopover = vi.fn( () => ( { showNotification: true, listId: null, listName: null } ) );
+			initBookmarkPopover = vi.fn( () => ( {
+				isSaved: true,
+				showNotification: true,
+				listId: null,
+				listName: null
+			} ) );
 
 			const bookmark = createBookmarkElement();
 			api.stubApi( {
@@ -969,6 +985,7 @@ describe( 'initBookmark', () => {
 
 			initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
 			bookmark.click();
+			await flushPromises();
 			await flushPromises();
 			await flushPromises();
 			await flushPromises();
@@ -983,6 +1000,204 @@ describe( 'initBookmark', () => {
 				expect.anything(),
 				expect.objectContaining( { tag: 'saved', type: 'success' } )
 			);
+		} );
+
+		describe( 'when a page is saved and the bookmark is clicked', () => {
+			test( 'launches bookmark popover with isNewSave=true', async () => {
+				initBookmarkPopover = vi.fn( () => ( { isSaved: true, showNotification: false } ) );
+
+				const bookmark = createBookmarkElement( { saved: '1' } );
+				mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+
+				initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+				bookmark.click();
+
+				// 3 flushes for the configure flow:
+				// - getListsWithTitle call
+				// - mw.loader.using() to resolve
+				// - Propagate resolved promises through configurePageInReadingList()
+				await flushPromises();
+				await flushPromises();
+				await flushPromises();
+
+				expect( initBookmarkPopover ).toHaveBeenCalledWith( true, [] );
+			} );
+
+			describe( 'and the page is unsaved from all lists', () => {
+				test( 'updates the bookmark button to unsaved', async () => {
+					initBookmarkPopover = vi.fn( () => ( {
+						isSaved: false,
+						showNotification: true
+					} ) );
+
+					const bookmark = createBookmarkElement( { saved: '1' } );
+					mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+
+					initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+					bookmark.click();
+
+					await flushPromises();
+					await flushPromises();
+					await flushPromises();
+
+					expect( bookmark.dataset.mwSaved ).toBeUndefined();
+					const icon = bookmark.querySelector( '.vector-icon' );
+					expectIconClasses( icon, VECTOR_OUTLINE_BOOKMARK_CLASSES );
+					expectIconClassesAbsent( icon, VECTOR_SOLID_BOOKMARK_CLASSES );
+				} );
+
+				test( 'fires bookmark change hooks', async () => {
+					const hookCallback = vi.fn();
+					const changeHookCallback = vi.fn();
+					mw.hook( 'readingLists.bookmark.edit' ).add( hookCallback );
+					mw.hook( 'readingLists.bookmark.change' ).add( changeHookCallback );
+					initBookmarkPopover = vi.fn( () => ( {
+						isSaved: false,
+						showNotification: true
+					} ) );
+
+					const bookmark = createBookmarkElement( { saved: '1' } );
+					mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+
+					initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+					bookmark.click();
+
+					await flushPromises();
+					await flushPromises();
+					await flushPromises();
+
+					expect( hookCallback ).toHaveBeenCalledWith(
+						false, null, null, VECTOR_EVENT_SOURCE
+					);
+					expect( changeHookCallback ).toHaveBeenCalledWith( false, VECTOR_EVENT_SOURCE );
+				} );
+
+				test( 'shows unsave notice notification', async () => {
+					initBookmarkPopover = vi.fn( () => ( {
+						isSaved: false,
+						showNotification: true
+					} ) );
+
+					const bookmark = createBookmarkElement( { saved: '1' } );
+					mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+
+					initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+					bookmark.click();
+
+					await flushPromises();
+					await flushPromises();
+					await flushPromises();
+
+					expect( mw.message ).toHaveBeenCalledWith(
+						'readinglists-browser-remove-entry-success',
+						expect.anything(),
+						expect.anything(),
+						expect.anything()
+					);
+					expect( mw.notify ).toHaveBeenCalledWith(
+						expect.anything(),
+						expect.objectContaining( { tag: 'saved', type: 'notice' } )
+					);
+				} );
+			} );
+
+			describe( 'and the popover is dismissed without unsaving the page', () => {
+				test( 'does not change the bookmark button when the popover resolves with isSaved:true', async () => {
+					initBookmarkPopover = vi.fn( () => ( {
+						isSaved: true,
+						showNotification: false
+					} ) );
+
+					const bookmark = createBookmarkElement( { saved: '1' } );
+					mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+
+					initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+					bookmark.click();
+
+					await flushPromises();
+					await flushPromises();
+					await flushPromises();
+
+					expect( bookmark.dataset.mwSaved ).toBe( '1' );
+					const icon = bookmark.querySelector( '.vector-icon' );
+					expectIconClasses( icon, VECTOR_SOLID_BOOKMARK_CLASSES );
+					expectIconClassesAbsent( icon, VECTOR_OUTLINE_BOOKMARK_CLASSES );
+				} );
+
+				test( 'does not fire bookmark change hooks when the page remains saved', async () => {
+					const hookCallback = vi.fn();
+					const changeHookCallback = vi.fn();
+					mw.hook( 'readingLists.bookmark.edit' ).add( hookCallback );
+					mw.hook( 'readingLists.bookmark.change' ).add( changeHookCallback );
+					initBookmarkPopover = vi.fn( () => ( {
+						isSaved: true,
+						showNotification: false
+					} ) );
+
+					const bookmark = createBookmarkElement( { saved: '1' } );
+					mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+
+					initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+					bookmark.click();
+
+					await flushPromises();
+					await flushPromises();
+					await flushPromises();
+
+					expect( hookCallback ).not.toHaveBeenCalled();
+					expect( changeHookCallback ).not.toHaveBeenCalled();
+				} );
+			} );
+
+			describe( 'and the page is saved to a new collection', () => {
+				test( 'shows success notification when the page is moved to a collection', async () => {
+					initBookmarkPopover = vi.fn( () => ( {
+						isSaved: true,
+						showNotification: true,
+						listId: 42,
+						listName: 'My List'
+					} ) );
+
+					const bookmark = createBookmarkElement( { saved: '1' } );
+					mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+
+					initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+					bookmark.click();
+
+					await flushPromises();
+					await flushPromises();
+					await flushPromises();
+
+					expect( mw.message ).toHaveBeenCalledWith(
+						'readinglists-customlists-add-entry-success',
+						expect.anything(),
+						expect.anything(),
+						expect.anything()
+					);
+					expect( mw.notify ).toHaveBeenCalledWith(
+						expect.anything(),
+						expect.objectContaining( { tag: 'saved', type: 'success' } )
+					);
+				} );
+			} );
+
+			test( 'shows mw.notify when bookmarkPopover module fails to load', async () => {
+				const bookmark = createBookmarkElement( { saved: '1' } );
+				mw.storage.get.mockReturnValue( ONBOARDING_ALREADY_SEEN );
+				mw.loader.using.mockRejectedValueOnce( new Error( 'module load failed' ) );
+
+				initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+				bookmark.click();
+
+				await flushPromises();
+				await flushPromises();
+				await flushPromises();
+
+				expect( mw.notify ).toHaveBeenCalledWith(
+					expect.anything(),
+					expect.objectContaining( { tag: 'saved', type: 'success' } )
+				);
+			} );
 		} );
 	} );
 

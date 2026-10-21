@@ -13,13 +13,13 @@
 			></cdx-icon>
 			<!-- eslint-disable vue/no-v-html -->
 			<div
-				v-if="!isCurrentlySaved"
+				v-if="!isNewSave"
 				class="cdx-popover__header__title"
 				v-html="saveTitle"
 			></div>
 			<!-- eslint-enable vue/no-v-html -->
 			<div v-else class="cdx-popover__header__title">
-				{{ title }}
+				{{ formattedTitle }}
 			</div>
 			<div class="cdx-popover__header__button-wrapper">
 				<cdx-button
@@ -36,8 +36,11 @@
 
 		<collection-picker
 			:title="title"
+			:collections-with-page="collectionsWithPage"
 			@create-collection="launchCreateCollection"
 			@add-to-collection="addToCollection"
+			@remove-from-collection="removeFromCollection"
+			@unsave-click="onUnsaveClick"
 		></collection-picker>
 
 		<collection-name-dialog
@@ -45,6 +48,14 @@
 			@success="addToCollection"
 			@update:open="isCollectionNameDialogOpen = $event"
 		></collection-name-dialog>
+
+		<unsave-dialog
+			v-if="isUnsaveDialogOpen"
+			:title="title"
+			:collections-with-page="collectionsWithPage"
+			@page-unsaved="onPageUnsaved"
+			@close="isUnsaveDialogOpen = false"
+		></unsave-dialog>
 	</config-popover>
 </template>
 
@@ -53,8 +64,9 @@ const { ref, computed, toRef } = require( 'vue' );
 const { CdxButton, CdxIcon } = require( '../../codex.js' );
 const { cdxIconSuccess, cdxIconClose } = require( '../../icons.json' );
 const { ConfigPopover, CollectionNameDialog, getCollectionUrl } = require( 'ext.readingLists.common' );
-const { createEntry } = require( 'ext.readingLists.api' );
+const { createEntry, deleteEntryByPageTitle } = require( 'ext.readingLists.api' );
 const CollectionPicker = require( './CollectionPicker.vue' );
+const UnsaveDialog = require( './UnsaveDialog.vue' );
 
 /**
  * Popover for saving or un-saving an article to a reading list.
@@ -67,21 +79,30 @@ module.exports = exports = {
 		CdxIcon,
 		ConfigPopover,
 		CollectionNameDialog,
-		CollectionPicker
+		CollectionPicker,
+		UnsaveDialog
 	},
 	props: {
-
+		/**
+		 * Title of the page.
+		 */
 		title: {
 			type: String,
 			required: true
 		},
 		/**
-		 * Whether this article is currently saved to a reading list. The popover content changes
-		 * depending on this.
+		 * Whether this page was just saved for the first time.
 		 */
-		isCurrentlySaved: {
+		isNewSave: {
 			type: Boolean,
 			default: false
+		},
+		/**
+		 * A list of collections that contain this page.
+		 */
+		collectionsWithPage: {
+			type: Array,
+			default: () => []
 		},
 		/**
 		 * Callback when the popover closes. The argument is whether to show an mw.notification
@@ -95,17 +116,19 @@ module.exports = exports = {
 	setup( props ) {
 		const isConfigPopoverOpen = ref( true );
 		const isCollectionNameDialogOpen = ref( false );
+		const isUnsaveDialogOpen = ref( false );
 		const title = toRef( props, 'title' );
+		const formattedTitle = computed( () => title.value.replace( /_/g, ' ' ) );
 
 		// Different popover title depending on whether the user is saving or un-saving the article.
 		const saveTitle = computed( () => mw.message(
 			'readinglists-customlists-add-entry-success',
-			title.value.replace( /_/g, ' ' ),
+			formattedTitle.value,
 			getCollectionUrl(),
 			mw.msg( 'readinglists-default-title' )
 		).parse() );
 
-		const popoverIcon = computed( () => props.isCurrentlySaved ? null : cdxIconSuccess );
+		const popoverIcon = computed( () => props.isNewSave ? null : cdxIconSuccess );
 		const closeButtonLabel = computed( () => mw.msg( 'cdx-popover-close-button-label' ) );
 
 		/**
@@ -117,7 +140,7 @@ module.exports = exports = {
 			if ( !newValue ) {
 				// When the user closes the popover without adding to a custom list, don't show
 				// a notification.
-				props.onDismiss( false );
+				props.onDismiss( { isSaved: true, showNotification: false } );
 			}
 		}
 
@@ -126,24 +149,77 @@ module.exports = exports = {
 		}
 
 		async function addToCollection( listId, listName ) {
-			// TODO: Handle errors.
 			// Add to custom list.
-			await createEntry( listId, title.value );
+			try {
+				await createEntry( listId, title.value );
+			} catch ( e ) {
+				mw.errorLogger.logError(
+					new Error( `Error ${ e } in addToCollection` ),
+					'error.readinglists'
+				);
+				props.onDismiss( { isSaved: false, isError: true, showNotification: true } );
+				return;
+			}
 			// Close the popover and show a notification that the page was added to a custom list.
 			isConfigPopoverOpen.value = false;
-			props.onDismiss( true, listId, listName );
+			props.onDismiss( { isSaved: true, showNotification: true, listId, listName } );
+		}
+
+		async function removeFromCollection( listId ) {
+			try {
+				await deleteEntryByPageTitle( title.value, listId );
+			} catch ( e ) {
+				mw.errorLogger.logError(
+					new Error( `Error ${ e } in removeFromCollection` ),
+					'error.readinglists'
+				);
+				props.onDismiss( { isSaved: false, isError: true, showNotification: true } );
+				return;
+			}
+		}
+
+		async function onUnsaveClick() {
+			// If the page is in a custom list, show the unsave dialog to confirm removal.
+			if ( props.collectionsWithPage.length > 0 ) {
+				isUnsaveDialogOpen.value = true;
+				return;
+			}
+
+			// Otherwise, just remove from the default list and close the popover.
+			try {
+				await deleteEntryByPageTitle( props.title );
+			} catch ( e ) {
+				mw.errorLogger.logError(
+					new Error( `Error ${ e } in onUnsaveClick` ),
+					'error.readinglists'
+				);
+				props.onDismiss( { isSaved: false, isError: true, showNotification: true } );
+			}
+			isConfigPopoverOpen.value = false;
+			props.onDismiss( { isSaved: false, showNotification: true } );
+		}
+
+		function onPageUnsaved() {
+			isUnsaveDialogOpen.value = false;
+			isConfigPopoverOpen.value = false;
+			props.onDismiss( { isSaved: false, showNotification: true } );
 		}
 
 		return {
 			isConfigPopoverOpen,
+			isCollectionNameDialogOpen,
+			isUnsaveDialogOpen,
+			formattedTitle,
 			saveTitle,
 			popoverIcon,
 			closeButtonLabel,
 			handleOpenChange,
-			cdxIconClose,
+			launchCreateCollection,
 			addToCollection,
-			isCollectionNameDialogOpen,
-			launchCreateCollection
+			removeFromCollection,
+			onUnsaveClick,
+			onPageUnsaved,
+			cdxIconClose
 		};
 	}
 };

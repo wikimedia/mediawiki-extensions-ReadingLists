@@ -113,6 +113,19 @@ describe( 'CollectionPicker', () => {
 		} );
 	} );
 
+	describe( 'unsave button', () => {
+		test( 'emits unsave-click when clicked', async () => {
+			vi.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [] );
+
+			mountPicker();
+
+			await wrapper.find( '.readinglists-collection-picker__unsave-button' ).trigger( 'click' );
+
+			expect( wrapper.emitted( 'unsave-click' ) ).toBeTruthy();
+			expect( wrapper.emitted( 'unsave-click' ).length ).toBe( 1 );
+		} );
+	} );
+
 	describe( 'when one of the "add to collection" buttons is clicked', () => {
 		test( 'emits add-to-collection with collection id and name', async () => {
 			const customList = { id: 42, name: 'My List', default: false };

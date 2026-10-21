@@ -38,27 +38,9 @@ module.exports = exports = {
 </script>
 
 <style lang="less">
-@import 'mediawiki.skin.variables.less';
+@import './button-link.less';
 
 .readinglists-create-collection-button {
-	.cdx-mixin-link();
-	width: @size-full;
-
-	// Normalize button styles.
-	background: 0;
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-family: inherit;
-	font-size: @font-size-medium;
-	font-weight: @font-weight-normal;
-	text-align: left;
-	text-transform: none;
-
-	// The outline from the link mixin looks awful, use text decoration instead.
-	&:focus-visible {
-		outline: @outline-base--focus;
-		text-decoration: @text-decoration-underline;
-	}
+	.readinglists-button-link();
 }
 </style>

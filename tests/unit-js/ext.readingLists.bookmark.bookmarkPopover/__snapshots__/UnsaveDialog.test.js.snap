@@ -1,0 +1,24 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`UnsaveDialog > renders correctly > with collections listed 1`] = `
+"<div>
+  <div class="readinglists-unsave-dialog" use-close-button="true" render-in-place="true">
+    <p>Unsaving this page will remove it from the following collections:</p>
+    <ul>
+      <li>Collection A</li>
+      <li>Collection B</li>
+    </ul>
+    <!--v-if--><button class="cdx-dialog__primary">Remove</button><button class="cdx-dialog__default">Cancel</button>
+  </div>
+</div>"
+`;
+
+exports[`UnsaveDialog > renders correctly > with no collections 1`] = `
+"<div>
+  <div class="readinglists-unsave-dialog" use-close-button="true" render-in-place="true">
+    <p>Unsaving this page will remove it from the following collections:</p>
+    <ul></ul>
+    <!--v-if--><button class="cdx-dialog__primary">Remove</button><button class="cdx-dialog__default">Cancel</button>
+  </div>
+</div>"
+`;

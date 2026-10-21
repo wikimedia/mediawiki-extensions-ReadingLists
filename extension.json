@@ -361,6 +361,7 @@
 				}
 			],
 			"messages": [
+				"readinglists-browser-error",
 				"readinglists-add-bookmark",
 				"readinglists-remove-bookmark",
 				"readinglists-manage-bookmark",
@@ -416,6 +417,8 @@
 			"class": "MediaWiki\\ResourceLoader\\CodexModule",
 			"codexComponents": [
 				"CdxButton",
+				"CdxMessage",
+				"CdxDialog",
 				"CdxIcon"
 			],
 			"dependencies": [
@@ -426,17 +429,25 @@
 				"readinglists-customlists-add-entry-success",
 				"readinglists-customlists-collection-picker-create-prompt",
 				"readinglists-customlists-collection-picker-add-button-label",
-				"cdx-popover-close-button-label"
+				"readinglists-customlists-collection-picker-remove-button-label",
+				"cdx-popover-close-button-label",
+				"readinglists-remove-bookmark",
+				"readinglists-unsave-from-custom-list-title-collections",
+				"readinglists-unsave-from-custom-list-body-collections",
+				"readinglists-unsave-from-custom-list-cancel",
+				"readinglists-unsave-from-custom-list-confirm"
 			],
 			"packageFiles": [
 				"resources/ext.readingLists.bookmark.bookmarkPopover/index.js",
 				"resources/ext.readingLists.bookmark.bookmarkPopover/BookmarkPopover.vue",
 				"resources/ext.readingLists.bookmark.bookmarkPopover/CollectionPicker.vue",
+				"resources/ext.readingLists.bookmark.bookmarkPopover/UnsaveDialog.vue",
 				{
 					"name": "icons.json",
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
 					"callbackParam": [
 						"cdxIconAdd",
+						"cdxIconCheck",
 						"cdxIconClose",
 						"cdxIconSuccess"
 					]
@@ -557,6 +568,9 @@
 				"resources/ext.readingLists.common/DialogPopover.vue",
 				"resources/ext.readingLists.common/CreateCollectionButton.vue",
 				"resources/ext.readingLists.common/CollectionNameDialog.vue"
+			],
+			"styles": [
+				"resources/ext.readingLists.common/button-link.less"
 			]
 		}
 	},

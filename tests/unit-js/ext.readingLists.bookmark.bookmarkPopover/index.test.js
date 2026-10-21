@@ -23,45 +23,50 @@ describe( 'initBookmarkPopover', () => {
 		} );
 	} );
 
-	test( 'mounts the app with isCurrentlySaved=false', async () => {
-		const promise = initBookmarkPopover( false );
+	test( 'mounts the app with isNewSave=false and collectionsWithPage', async () => {
+		const collections = [ { id: 1, name: 'My List' } ];
+		const promise = initBookmarkPopover( false, collections );
 
 		expect( createMwApp ).toHaveBeenCalledWith(
 			expect.any( Object ),
-			expect.objectContaining( { isCurrentlySaved: false } )
+			expect.objectContaining( { isNewSave: false, collectionsWithPage: collections } )
 		);
 		expect( mockApp.mount ).toHaveBeenCalled();
 
-		capturedProps.onDismiss( false );
+		capturedProps.onDismiss( { isSaved: false, showNotification: false } );
 		await promise;
 	} );
 
-	test( 'mounts the app with isCurrentlySaved=true', async () => {
-		const promise = initBookmarkPopover( true );
+	test( 'mounts the app with isNewSave=true and collectionsWithPage', async () => {
+		const collections = [ { id: 2, name: 'Another List' } ];
+		const promise = initBookmarkPopover( true, collections );
 
 		expect( createMwApp ).toHaveBeenCalledWith(
 			expect.any( Object ),
-			expect.objectContaining( { isCurrentlySaved: true } )
+			expect.objectContaining( { isNewSave: true, collectionsWithPage: collections } )
 		);
 
-		capturedProps.onDismiss( false );
+		capturedProps.onDismiss( { isSaved: true, showNotification: false } );
 		await promise;
 	} );
 
-	test( 'resolves with showNotification value and unmounts when onDismiss is called', async () => {
-		const promise = initBookmarkPopover( false );
+	test( 'resolves with the data object and unmounts when onDismiss is called', async () => {
+		const promise = initBookmarkPopover( false, [] );
 
-		capturedProps.onDismiss( false );
+		capturedProps.onDismiss( { isSaved: false, showNotification: true } );
 
-		await expect( promise ).resolves.toMatchObject( { showNotification: false } );
+		await expect( promise ).resolves.toMatchObject( {
+			isSaved: false,
+			showNotification: true
+		} );
 		expect( mockApp.unmount ).toHaveBeenCalled();
 	} );
 
 	test( 'removes the container from the document body after dismiss', async () => {
 		const initialChildCount = document.body.children.length;
-		const promise = initBookmarkPopover( false );
+		const promise = initBookmarkPopover( false, [] );
 
-		capturedProps.onDismiss( false );
+		capturedProps.onDismiss( { isSaved: false, showNotification: false } );
 		await promise;
 
 		expect( document.body.children.length ).toBe( initialChildCount );
