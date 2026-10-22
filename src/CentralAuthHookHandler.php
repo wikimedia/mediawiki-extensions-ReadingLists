@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\ReadingLists;
 
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\CentralAuth\Hooks\CentralAuthPostLoginRedirectHook;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\User\Options\UserOptionsManager;
 
 /**
@@ -16,6 +17,7 @@ class CentralAuthHookHandler implements CentralAuthPostLoginRedirectHook {
 
 	public function __construct(
 		private readonly UserOptionsManager $userOptionsManager,
+		private readonly ExtensionRegistry $extensionRegistry,
 	) {
 	}
 
@@ -41,9 +43,16 @@ class CentralAuthHookHandler implements CentralAuthPostLoginRedirectHook {
 			$returnToQueryArray['readingListsAccountJustCreated'] = '1';
 
 			// Turn off the homepage mobile discovery popover from GrowthExperiments.
-			$user = RequestContext::getMain()->getUser();
-			if ( $user && $user->isRegistered() ) {
-				$this->userOptionsManager->setOption( $user, 'homepage_mobile_discovery_notice_seen', 1 );
+			$context = RequestContext::getMain();
+			$user = $context->getUser();
+			if (
+				$this->extensionRegistry->isLoaded( 'GrowthExperiments' ) &&
+				$user && $user->isRegistered()
+			) {
+				$preference = $context->getSkinName() === 'minerva' ?
+					'homepage_mobile_discovery_notice_seen' :
+					'growthexperiments-tour-homepage-discovery';
+				$this->userOptionsManager->setOption( $user, $preference, 1 );
 				$this->userOptionsManager->saveOptions( $user );
 			}
 		}

@@ -167,7 +167,8 @@
 		"centralauth": {
 			"class": "MediaWiki\\Extension\\ReadingLists\\CentralAuthHookHandler",
 			"services": [
-				"UserOptionsManager"
+				"UserOptionsManager",
+				"ExtensionRegistry"
 			]
 		},
 		"betafeatures": {
