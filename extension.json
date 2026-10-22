@@ -146,7 +146,7 @@
 		},
 		"ReadingListsMinervaCTAShowDot": {
 			"value": true,
-			"description": "Whether to show a pulsating blue dot on the anonymous bookmark button."
+			"description": "Whether to show a pulsating blue dot on the anonymous bookmark button. Works for both MinervaNeue and Vector 2022."
 		}
 	},
 	"Hooks": {
