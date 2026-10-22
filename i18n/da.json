@@ -51,7 +51,7 @@
 	"special-tab-readinglists-short": "Dine lister",
 	"readinglists-title": "Gemte sider",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|liste|lister}}",
-	"readinglists-total-articles": "$1 {{PLURAL:$1|side|sider}}",
+	"readinglists-total-articles": "$1 {{PLURAL:$1|emne|emner}}",
 	"readinglists-show-more": "Vis flere emner",
 	"readinglists-default-title": "gemte elementer",
 	"readinglists-default-description": "Standardliste for dine gemte sider.",

@@ -54,7 +54,7 @@
 	"special-tab-readinglists-short": "Deine Listen",
 	"readinglists-title": "Gespeicherte Seiten",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|Liste|Listen}}",
-	"readinglists-total-articles": "$1 {{PLURAL:$1|Seite|Seiten}}",
+	"readinglists-total-articles": "$1 {{PLURAL:$1|Artikel}}",
 	"readinglists-show-more": "Mehr Objekte anzeigen",
 	"readinglists-default-title": "gespeicherten Seiten",
 	"readinglists-default-description": "Standardliste für deine gespeicherten Seiten.",

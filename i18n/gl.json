@@ -52,7 +52,7 @@
 	"special-tab-readinglists-short": "As túas listas",
 	"readinglists-title": "Páxinas gardadas",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|lista|listas}}",
-	"readinglists-total-articles": "$1 {{PLURAL:$1|páxina|páxinas}}",
+	"readinglists-total-articles": "$1 {{PLURAL:$1|elemento|elementos}}",
 	"readinglists-show-more": "Mostrar máis elementos",
 	"readinglists-default-title": "elementos gardados",
 	"readinglists-default-description": "Lista por defecto para as túas páxinas gardadas.",

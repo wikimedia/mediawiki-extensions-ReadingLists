@@ -34,7 +34,7 @@
 	"special-tab-readinglists-short": "I tuoi elenchi",
 	"readinglists-title": "Pagine salvate",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|elenco|elenchi}}",
-	"readinglists-total-articles": "$1 {{PLURAL:$1|pagina|pagine}}",
+	"readinglists-total-articles": "$1 {{PLURAL:$1|elemento|elementi}}",
 	"readinglists-show-more": "Mostra altri elementi",
 	"readinglists-default-title": "elementi salvati",
 	"readinglists-default-description": "Elenco predefinito per le tue pagine salvate.",
