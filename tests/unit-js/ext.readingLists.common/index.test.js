@@ -1,5 +1,19 @@
-import { getCollectionUrl } from '../../../resources/ext.readingLists.common/index.js';
+import { getCollectionUrl, getCollectionsBaseUrl } from '../../../resources/ext.readingLists.common/index.js';
 
+describe( 'getCollectionsBaseUrl', () => {
+	it( 'should return the correct base URL', () => {
+		[
+			[ 'Special:ReadingLists/Test', 'Special:ReadingLists' ],
+			[ 'Spécial:ReadingLists/NewUser123/61/Cute_animals', 'Spécial:ReadingLists' ],
+			[ 'Spécial:Saved/A', 'Spécial:Saved' ],
+			[ 'Special:ReadingLists', 'Special:ReadingLists' ],
+			[ 'Ειδικό:ReadingLists/Jon_(WMF)', 'Ειδικό:ReadingLists' ]
+		].forEach( ( [ pageTitle, expected ] ) => {
+			expect( getCollectionsBaseUrl( pageTitle ) ).toBe( expected );
+		} );
+	} );
+
+} );
 describe( 'getCollectionUrl', () => {
 	beforeEach( () => {
 		mw.user.getName.mockReturnValue( 'Test' );

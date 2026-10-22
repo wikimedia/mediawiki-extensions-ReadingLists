@@ -8,7 +8,10 @@ const { useIsMobileResolution, useIsAboveMobileResolution, MAX_WIDTH_MOBILE } = 
 // wgCanonicalSpecialPageName is the bare name ("ReadingLists") without the
 // namespace, so we prepend the canonical "Special:" prefix to build a path that
 // matches the links the app renders (mw.util.getUrl( 'Special:ReadingLists/…' )).
-const collectionsBaseUrl = `Special:${ mw.config.get( 'wgCanonicalSpecialPageName' ) || 'ReadingLists' }`;
+const getCollectionsBaseUrl = ( pageName ) => `${ pageName.split( '/' )[ 0 ] }`;
+const collectionsBaseUrl = mw.config.get( 'wgCanonicalSpecialPageName' ) === 'ReadingLists' ?
+	getCollectionsBaseUrl( mw.config.get( 'wgPageName' ) ) :
+	'Special:ReadingLists';
 
 function getCollectionUrl( listId, listName, isRelative = false ) {
 	const isAllCollectionsPage = !listId || !listName;
@@ -22,6 +25,7 @@ function getCollectionUrl( listId, listName, isRelative = false ) {
 }
 
 module.exports = {
+	getCollectionsBaseUrl,
 	MAX_WIDTH_MOBILE,
 	useIsMobileResolution,
 	useIsAboveMobileResolution,
