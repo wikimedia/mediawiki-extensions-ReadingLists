@@ -1,15 +1,30 @@
-/* stylelint-disable selector-max-id */
+@import 'mediawiki.skin.variables.less';
+
 // Core positions the pseudo-elements from top/left;
 // so using margin for offsets so the dot sits over the bookmark icon.
+/* stylelint-disable-next-line selector-max-id */
 #ca-bookmark.mw-pulsating-dot {
 	position: relative;
 	// Allow the pulse to extend beyond the Codex button.
 	overflow: visible;
 
-	&::before,
-	&::after {
-		// value ensures that the dot always sits centered underneath the bookmark icon.
-		margin-left: 50%;
-		margin-top: 2.6rem;
+	.skin-vector & {
+		&::before,
+		&::after {
+			// Ensures that the dot always sits centered underneath the bookmark button.
+			margin-left: 50%;
+			// Height of the menu item in Minerva.
+			margin-top: @min-size-interactive-pointer;
+		}
+	}
+
+	.skin-minerva & {
+		&::before,
+		&::after {
+			// Ensures that the dot always sits centered underneath the bookmark button.
+			margin-left: 50%;
+			// Height of the menu item in Minerva.
+			margin-top: @min-size-interactive-touch;
+		}
 	}
 }

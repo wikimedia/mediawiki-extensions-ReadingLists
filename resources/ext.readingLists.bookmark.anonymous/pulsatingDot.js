@@ -1,3 +1,6 @@
+// Note that this selector targets different elements in Vector 2022 and MinervaNeue:
+// - In Vector 2022, it's the list item element for the bookmark menu item
+// - In MinervaNeue, it's the anchor element within that list item
 const BOOKMARK_WRAPPER_SELECTOR = '#ca-bookmark';
 const STORAGE_KEY_IMPRESSION = 'we-reading-list-cta-pulsating-dot-impression';
 const { ReadingListsMinervaCTAShowDot } = require( './config.json' );
