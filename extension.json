@@ -384,9 +384,10 @@
 		"ext.readingLists.bookmark.anonymous": {
 			"class": "MediaWiki\\ResourceLoader\\CodexModule",
 			"codexComponents": [
-				"CdxDialog"
+				"CdxPopover"
 			],
 			"dependencies": [
+				"ext.readingLists.common",
 				"mediawiki.storage",
 				"vue"
 			],
@@ -395,7 +396,6 @@
 			],
 			"messages": [
 				"readinglists-cta-dialog-title",
-				"readinglists-cta-dialog-subtitle",
 				"readinglists-cta-dialog-call-to-action",
 				"readinglists-cta-dialog-create-account",
 				"readinglists-cta-dialog-log-in",
@@ -553,6 +553,7 @@
 			],
 			"dependencies": [
 				"vue",
+				"ext.readingLists.api",
 				"mediawiki.util"
 			],
 			"messages": [

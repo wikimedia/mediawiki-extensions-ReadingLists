@@ -1,5 +1,6 @@
 const { ref, onMounted, onUnmounted } = require( 'vue' );
 
+// Must match codex's mobile breakpoint.
 const MAX_WIDTH_MOBILE = 639;
 
 /**
@@ -31,11 +32,11 @@ function isResolution( predicate, debounceMs = 100 ) {
 }
 
 const useIsMobileResolution = () => isResolution(
-	( width ) => width < MAX_WIDTH_MOBILE
+	( width ) => width <= MAX_WIDTH_MOBILE
 );
 
 const useIsAboveMobileResolution = () => isResolution(
-	( width ) => width >= MAX_WIDTH_MOBILE
+	( width ) => width > MAX_WIDTH_MOBILE
 );
 
 module.exports = {

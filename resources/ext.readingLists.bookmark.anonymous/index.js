@@ -19,6 +19,7 @@ function launchCtaDialog() {
 	document.body.appendChild( container );
 
 	const app = createMwApp( CtaDialog, {
+		anchor: bookmark,
 		onClose: () => cleanup()
 	} );
 	app.mount( container );

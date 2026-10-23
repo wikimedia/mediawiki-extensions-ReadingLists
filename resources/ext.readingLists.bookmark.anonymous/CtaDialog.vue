@@ -1,44 +1,48 @@
 <template>
-	<div>
-		<cdx-dialog
-			v-model:open="isOpen"
-			class="readinglists-cta-dialog"
-			:title="title"
-			:subtitle="subtitle"
-			:use-close-button="true"
-			:render-in-place="true"
-			@update:open="onUpdateOpen"
-		>
-			<p>{{ callToAction }}</p>
+	<cdx-popover
+		v-model:open="isOpen"
+		class="readinglists-cta-dialog"
+		:anchor="anchor"
+		:title="title"
+		:use-close-button="true"
+		:close-button-label="closeButtonLabel"
+		:use-bottom-sheet="useBottomSheet"
+		placement="bottom"
+		@update:open="onUpdateOpen"
+	>
+		<p class="readinglists-cta-dialog__call-to-action">
+			{{ callToAction }}
+		</p>
 
-			<div
-				class="readinglists-cta-dialog__illustration"
-				:style="{ backgroundImage: `url( ${illustrationPath} )` }"
-			></div>
+		<div
+			v-if="isMobile"
+			class="readinglists-cta-dialog__illustration"
+			:style="{ backgroundImage: `url( ${illustrationPath} )` }"
+		></div>
 
-			<template #footer>
-				<div class="readinglists-cta-dialog__actions">
-					<a
-						:class="getFakeButtonClasses( 'primary' )"
-						:href="createAccountUrl"
-						@click="rememberPageToSave">
-						{{ primaryActionLabel }}
-					</a>
-					<a
-						:class="getFakeButtonClasses( 'default' )"
-						:href="loginUrl"
-						@click="rememberPageToSave">
-						{{ defaultActionLabel }}
-					</a>
-				</div>
-			</template>
-		</cdx-dialog>
-	</div>
+		<template #footer>
+			<div class="readinglists-cta-dialog__actions">
+				<a
+					:class="getFakeButtonClasses( 'primary' )"
+					:href="createAccountUrl"
+					@click="rememberPageToSave">
+					{{ primaryActionLabel }}
+				</a>
+				<a
+					:class="getFakeButtonClasses( 'default' )"
+					:href="loginUrl"
+					@click="rememberPageToSave">
+					{{ defaultActionLabel }}
+				</a>
+			</div>
+		</template>
+	</cdx-popover>
 </template>
 
 <script>
 const { computed, ref } = require( 'vue' );
-const { CdxDialog } = require( '../../codex.js' );
+const { CdxPopover } = require( '../../codex.js' );
+const { useIsMobileResolution } = require( 'ext.readingLists.common' );
 
 // this needs to match AUTOSAVE_STORAGE_KEY in bookmark.js
 const AUTOSAVE_STORAGE_KEY = 'readinglists-cta-autosave';
@@ -46,14 +50,19 @@ const AUTOSAVE_EXPIRY_SECONDS = 3600;
 
 /**
  * Dialog shown to anonymous users when they click the bookmark button, prompting sign-in.
+ * Mobile viewports use the bottom sheet variant, which includes the illustration.
  */
 // @vue/component
 module.exports = exports = {
 	name: 'CtaDialog',
 	components: {
-		CdxDialog
+		CdxPopover
 	},
 	props: {
+		anchor: {
+			type: [ HTMLElement, Object ],
+			required: true
+		},
 		onClose: {
 			type: Function,
 			default: () => {}
@@ -61,10 +70,13 @@ module.exports = exports = {
 	},
 	setup( props ) {
 		const isOpen = ref( true );
+		const isMobile = useIsMobileResolution();
+		// "responsive" follows Codex's breakpoint. This feature uses useIsMobileResolution.
+		const useBottomSheet = computed( () => ( isMobile.value ? 'always' : 'never' ) );
 
 		const title = computed( () => mw.msg( 'readinglists-cta-dialog-title' ) );
-		const subtitle = computed( () => mw.msg( 'readinglists-cta-dialog-subtitle' ) );
 		const callToAction = computed( () => mw.msg( 'readinglists-cta-dialog-call-to-action' ) );
+		const closeButtonLabel = computed( () => mw.msg( 'readinglists-cta-dialog-close' ) );
 
 		const illustrationPath = computed( () => mw.config.get( 'wgExtensionAssetsPath' ) +
 			'/ReadingLists/resources/assets/cta-dialog-illustration.svg' );
@@ -107,9 +119,11 @@ module.exports = exports = {
 
 		return {
 			isOpen,
+			isMobile,
+			useBottomSheet,
 			title,
-			subtitle,
 			callToAction,
+			closeButtonLabel,
 			illustrationPath,
 			primaryActionLabel,
 			createAccountUrl,
@@ -127,6 +141,10 @@ module.exports = exports = {
 @import 'mediawiki.skin.variables.less';
 
 .readinglists-cta-dialog {
+	&:not( .cdx-popover--bottom-sheet ) {
+		width: @size-1600;
+	}
+
 	&__illustration {
 		background-repeat: no-repeat;
 		background-position: center;

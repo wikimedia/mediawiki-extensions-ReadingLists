@@ -10,11 +10,57 @@ mw.testKitchen = {
 	}
 };
 
-describe( 'CtaDialog', () => {
-	test( 'matches the snapshot', () => {
-		const wrapper = mount( CtaDialog );
+function setViewportWidth( width ) {
+	Object.defineProperty( window, 'innerWidth', {
+		configurable: true,
+		writable: true,
+		value: width
+	} );
+}
 
-		expect( wrapper.element ).toMatchSnapshot();
+function mountPopover() {
+	return mount( CtaDialog, {
+		props: {
+			anchor: document.createElement( 'button' )
+		},
+		attachTo: document.body
+	} );
+}
+
+describe( 'CtaDialog', () => {
+	let wrapper;
+
+	beforeEach( () => {
+		setViewportWidth( 1024 );
+	} );
+
+	afterEach( () => {
+		if ( wrapper ) {
+			wrapper.unmount();
+			wrapper = null;
+		}
+		document.body.innerHTML = '';
+	} );
+
+	test( 'matches the snapshot', () => {
+		wrapper = mountPopover();
+
+		expect( document.body.querySelector( '.readinglists-cta-dialog' ) ).toMatchSnapshot();
+	} );
+
+	test( 'shows the illustration in the mobile bottom sheet', () => {
+		setViewportWidth( 400 );
+		wrapper = mountPopover();
+
+		expect( document.body.querySelector( '.cdx-popover--bottom-sheet' ) ).not.toBeNull();
+		expect( document.body.querySelector( '.readinglists-cta-dialog__illustration' ) ).not.toBeNull();
+	} );
+
+	test( 'hides the illustration in the desktop popover', () => {
+		wrapper = mountPopover();
+
+		expect( document.body.querySelector( '.cdx-popover--bottom-sheet' ) ).toBeNull();
+		expect( document.body.querySelector( '.readinglists-cta-dialog__illustration' ) ).toBeNull();
 	} );
 
 	describe( 'remembers the page to save after log in or account creation', () => {
@@ -27,9 +73,10 @@ describe( 'CtaDialog', () => {
 			[ 'create account', 0 ],
 			[ 'log in', 1 ]
 		] )( 'when the %s link is clicked', async ( _label, index ) => {
-			const wrapper = mount( CtaDialog );
+			wrapper = mountPopover();
 
-			await wrapper.findAll( '.readinglists-cta-dialog__actions a' )[ index ].trigger( 'click' );
+			const link = document.body.querySelectorAll( '.readinglists-cta-dialog__actions a' )[ index ];
+			link.click();
 
 			expect( mw.storage.session.set ).toHaveBeenCalledWith(
 				'readinglists-cta-autosave',

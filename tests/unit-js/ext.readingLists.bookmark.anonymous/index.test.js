@@ -4,11 +4,17 @@ vi.mock( 'vue', () => ( {
 } ) );
 
 vi.mock( '../../../codex.js', () => ( {
-	CdxDialog: {
-		name: 'CdxDialog',
-		template: '<div class="cdx-dialog"><slot></slot><slot name="footer"></slot></div>',
-		props: [ 'title', 'useCloseButton', 'renderInPlace' ]
+	CdxPopover: {
+		name: 'CdxPopover',
+		template: '<div class="cdx-popover"><slot></slot><slot name="footer"></slot></div>',
+		props: [ 'title', 'anchor', 'useCloseButton', 'useBottomSheet', 'placement' ]
 	}
+} ) );
+
+// CtaDialog.vue imports useIsMobileResolution from this module. The wire-up
+// test does not mount the component, so it does not need the real module.
+vi.mock( '../../../resources/ext.readingLists.common/index.js', () => ( {
+	useIsMobileResolution: vi.fn()
 } ) );
 
 mw.testKitchen = {
@@ -57,6 +63,7 @@ describe( 'Anonymous bookmark button', () => {
 
 		expect( createMwApp ).toHaveBeenCalled();
 		expect( createMwApp.mock.calls[ 0 ][ 0 ].name ).toBe( 'CtaDialog' );
+		expect( createMwApp.mock.calls[ 0 ][ 1 ].anchor ).toBe( bookmark );
 		expect( mockApp.mount ).toHaveBeenCalled();
 	} );
 } );
