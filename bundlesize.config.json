@@ -1,0 +1,14 @@
+[
+	{
+		"resourceModule": "ext.readingLists.bookmark.icons",
+		"maxSize": "0.5KB"
+	},
+	{
+		"resourceModule": "ext.readingLists.bookmark.styles",
+		"maxSize": "0.2KB"
+	},
+	{
+		"resourceModule": "ext.readingLists.bookmark.anonymous",
+		"maxSize": "1.1KB"
+	}
+]

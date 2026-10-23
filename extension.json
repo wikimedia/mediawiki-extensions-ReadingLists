@@ -141,7 +141,7 @@
 			"description": "Enable reading list CTA for logged out users in Minerva."
 		},
 		"ReadingListsVector2022CTA": {
-			"value": false,
+			"value": true,
 			"description": "Enable reading list CTA for logged out users in Vector 2022."
 		},
 		"ReadingListsMinervaCTAShowDot": {
