@@ -733,8 +733,10 @@ describe( 'initBookmark', () => {
 			api = ( await import( '../../../resources/ext.readingLists.api/index.js' ) ).default;
 			( { initBookmark } =
 				await import( '../../../resources/ext.readingLists.bookmark/bookmark.js' ) );
-			// launchBookmarkPopover now calls api.getListsWithTitle before showing the popover.
+			// launchBookmarkPopover now calls api.getListsWithTitle and api.getListsAll
+			// before showing the popover.
 			vi.spyOn( api, 'getListsWithTitle' ).mockResolvedValue( [] );
+			vi.spyOn( api, 'getListsAll' ).mockResolvedValue( [] );
 		} );
 
 		afterEach( () => {

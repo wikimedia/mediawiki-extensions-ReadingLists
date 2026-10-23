@@ -36,7 +36,7 @@
 
 		<collection-picker
 			:title="title"
-			:collections-with-page="collectionsWithPage"
+			:collections="allCollections"
 			:is-new-save="isNewSave"
 			@create-collection="launchCreateCollection"
 			@add-to-collection="addToCollection"
@@ -71,6 +71,10 @@ const UnsaveDialog = require( './UnsaveDialog.vue' );
 const { actionAddToCustomList, actionRemoveFromCustomList, actionSaveCustomList } = actions;
 
 /**
+ * @typedef {import('../types.js').CollectionWithTitle} CollectionWithTitle
+ */
+
+/**
  * Popover for saving or un-saving an article to a reading list.
  */
 // @vue/component
@@ -100,9 +104,10 @@ module.exports = exports = {
 			default: false
 		},
 		/**
-		 * A list of collections that contain this page.
+		 * A list of all collections belonging to user.
+		 * If one contains `title` it has isMember
 		 */
-		collectionsWithPage: {
+		collections: {
 			type: Array,
 			default: () => []
 		},
@@ -124,6 +129,10 @@ module.exports = exports = {
 		const truncate = ( str ) => str.length > 50 ?
 			mw.msg( 'readinglists-truncated-title', str.slice( 0, 50 ) ) : str;
 		const truncatedFormattedTitle = computed( () => truncate( formattedTitle.value ) );
+
+		const allCollections = ref( props.collections );
+		const collectionsWithPage = computed( () => allCollections.value
+			.filter( ( /** @type {CollectionWithTitle} */c ) => c.withTitle ) );
 
 		// Different popover title depending on whether the user is saving or un-saving the article.
 		const saveTitle = computed( () => mw.message(
@@ -153,6 +162,10 @@ module.exports = exports = {
 			isCollectionNameDialogOpen.value = true;
 		}
 
+		/**
+		 * @param {number} listId
+		 * @param {string} listName
+		 */
 		async function addToCollection( listId, listName ) {
 			// Add to custom list.
 			try {
@@ -180,6 +193,13 @@ module.exports = exports = {
 			try {
 				await deleteEntryByPageTitle( title.value, listId );
 				actionRemoveFromCustomList();
+				// update the collection so it is no longer with title.
+				// FIXME: Consider removing as part of https://phabricator.wikimedia.org/T443384
+				allCollections.value = allCollections.value
+					.map(
+						( /** @type {CollectionWithTitle} */c ) => c.id === listId ?
+							Object.assign( {}, c, { withTitle: false } ) : c
+					);
 			} catch ( e ) {
 				mw.errorLogger.logError(
 					new Error( `Error ${ e } in removeFromCollection` ),
@@ -192,7 +212,7 @@ module.exports = exports = {
 
 		async function onUnsaveClick() {
 			// If the page is in a custom list, show the unsave dialog to confirm removal.
-			if ( props.collectionsWithPage.length > 0 ) {
+			if ( collectionsWithPage.value.length > 0 ) {
 				isUnsaveDialogOpen.value = true;
 				return;
 			}
@@ -218,6 +238,8 @@ module.exports = exports = {
 		}
 
 		return {
+			collectionsWithPage,
+			allCollections,
 			isConfigPopoverOpen,
 			isCollectionNameDialogOpen,
 			isUnsaveDialogOpen,

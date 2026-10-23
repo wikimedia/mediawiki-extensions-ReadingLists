@@ -314,13 +314,18 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	 * @return {Promise<boolean>} Returns whether an mw.notification should display on dismiss.
 	 */
 	async function launchBookmarkPopover( isNewSave ) {
-		const listsWithPage = await api.getListsWithTitle( pageName );
-		const collectionsWithPage = listsWithPage.filter( ( list ) => !list.default );
+		const [ allLists, listsWithPage ] = await Promise.all( [
+			api.getListsAll(),
+			api.getListsWithTitle( pageName )
+		] );
+		const collectionsWithPageStatus = allLists.map( ( list ) => Object.assign( {}, list, {
+			withTitle: listsWithPage.some( ( listWithTitle ) => listWithTitle.id === list.id )
+		} ) );
 
 		return await mw.loader.using( [ 'ext.readingLists.bookmark.bookmarkPopover' ] )
 			.then( () => {
 				const bookmarkPopoverModule = require( 'ext.readingLists.bookmark.bookmarkPopover' );
-				return bookmarkPopoverModule.initBookmarkPopover( isNewSave, collectionsWithPage );
+				return bookmarkPopoverModule.initBookmarkPopover( isNewSave, collectionsWithPageStatus );
 			} )
 			.catch( ( error ) => {
 				mw.log.error( 'Error loading ext.readingLists.bookmark.bookmarkPopover module:', error );

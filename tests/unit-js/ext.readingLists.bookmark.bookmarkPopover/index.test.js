@@ -23,13 +23,13 @@ describe( 'initBookmarkPopover', () => {
 		} );
 	} );
 
-	test( 'mounts the app with isNewSave=false and collectionsWithPage', async () => {
+	test( 'mounts the app with isNewSave=false and collections', async () => {
 		const collections = [ { id: 1, name: 'My List' } ];
 		const promise = initBookmarkPopover( false, collections );
 
 		expect( createMwApp ).toHaveBeenCalledWith(
 			expect.any( Object ),
-			expect.objectContaining( { isNewSave: false, collectionsWithPage: collections } )
+			expect.objectContaining( { isNewSave: false, collections } )
 		);
 		expect( mockApp.mount ).toHaveBeenCalled();
 
@@ -37,13 +37,13 @@ describe( 'initBookmarkPopover', () => {
 		await promise;
 	} );
 
-	test( 'mounts the app with isNewSave=true and collectionsWithPage', async () => {
+	test( 'mounts the app with isNewSave=true and collections', async () => {
 		const collections = [ { id: 2, name: 'Another List' } ];
 		const promise = initBookmarkPopover( true, collections );
 
 		expect( createMwApp ).toHaveBeenCalledWith(
 			expect.any( Object ),
-			expect.objectContaining( { isNewSave: true, collectionsWithPage: collections } )
+			expect.objectContaining( { isNewSave: true, collections } )
 		);
 
 		capturedProps.onDismiss( { isSaved: true, showNotification: false } );

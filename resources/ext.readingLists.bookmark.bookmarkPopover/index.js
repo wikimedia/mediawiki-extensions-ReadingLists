@@ -2,13 +2,18 @@ const { createMwApp } = require( 'vue' );
 const BookmarkPopover = require( './BookmarkPopover.vue' );
 
 /**
+ * @typedef {import('../types.js').CollectionWithTitle} CollectionWithTitle
+ * @typedef {import('../types.js').DismissData} DismissData
+ */
+
+/**
  * Shows the save/un-save popover.
  *
  * @param {boolean} isNewSave Whether the page was just saved for the first time
- * @param {Object[]} collectionsWithPage List of collections containing the page
- * @return {Promise<boolean>} Returns whether to show an mw.notification on dismiss
+ * @param {CollectionWithTitle[]} collections List of collections, including their titles
+ * @return {Promise<DismissData>} Returns whether to show an mw.notification on dismiss
  */
-function initBookmarkPopover( isNewSave, collectionsWithPage ) {
+function initBookmarkPopover( isNewSave, collections ) {
 	const container = document.createElement( 'div' );
 	document.body.appendChild( container );
 
@@ -16,19 +21,18 @@ function initBookmarkPopover( isNewSave, collectionsWithPage ) {
 		const app = createMwApp( BookmarkPopover, {
 			title: mw.config.get( 'wgPageName' ),
 			isNewSave,
-			collectionsWithPage,
+			collections,
+			/**
+			 * @param {DismissData} data
+			 * @return {void}
+			 */
 			onDismiss: ( data ) => cleanup( data )
 		} );
 
 		/**
 		 * Remove the app and resolve the promise with a payload of data.
 		 *
-		 * @param {Object} data
-		 * @param {boolean} data.isSaved Whether the page has been saved to or unsaved from a list
-		 * @param {boolean} data.showNotification Whether to show an mw.notification. Only needed if
-		 *                                       a page is saved to a custom list or unsaved.
-		 * @param {string} listId
-		 * @param {string} listName
+		 * @param {DismissData} data
 		 */
 		function cleanup( data ) {
 			app.unmount();

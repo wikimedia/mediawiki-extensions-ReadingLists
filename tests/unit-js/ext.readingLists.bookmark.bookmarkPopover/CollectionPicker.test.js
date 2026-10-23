@@ -1,13 +1,5 @@
 import { mount } from '@vue/test-utils';
-
-// Imported rather than required so the test and the component under test share
-// the same module instance, which is what makes `api.stubApi()` take effect.
-import apiModule from '../../../resources/ext.readingLists.api/index.js';
 import CollectionPicker from '../../../resources/ext.readingLists.bookmark.bookmarkPopover/CollectionPicker.vue';
-
-async function flushPromises() {
-	await Promise.resolve();
-}
 
 const cdxButtonStub = {
 	name: 'CdxButton',
@@ -47,63 +39,26 @@ describe( 'CollectionPicker', () => {
 	}
 
 	describe( 'renders correctly', () => {
-		test( 'while fetch is pending', () => {
-			vi.spyOn( apiModule, 'getListsAll' ).mockReturnValue( new Promise( () => {} ) );
-
-			mountPicker();
-
-			expect( wrapper.html() ).toMatchSnapshot();
-		} );
-
 		test( 'after fetch with custom collections', async () => {
-			vi.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [
+			const collections = [
 				{ id: 2, name: 'A', default: false },
 				{ id: 3, name: 'B', default: false }
-			] );
+			];
 
-			mountPicker();
-			await flushPromises();
-			await flushPromises();
+			mountPicker( { collections } );
 
 			expect( wrapper.html() ).toMatchSnapshot();
 		} );
 
 		test( 'after fetch with no collections', async () => {
-			vi.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [] );
-
 			mountPicker();
-			await flushPromises();
-			await flushPromises();
 
 			expect( wrapper.html() ).toMatchSnapshot();
-		} );
-
-		test( 'after fetch error', async () => {
-			vi.spyOn( apiModule, 'getListsAll' ).mockRejectedValue( new Error( 'network error' ) );
-
-			mountPicker();
-			await flushPromises();
-			await flushPromises();
-
-			expect( wrapper.html() ).toMatchSnapshot();
-		} );
-	} );
-
-	describe( 'fetching collections on mount', () => {
-		test( 'calls getListsAll on mount', async () => {
-			const getListsAllMock = vi.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [] );
-
-			mountPicker();
-			await flushPromises();
-
-			expect( getListsAllMock ).toHaveBeenCalledTimes( 1 );
 		} );
 	} );
 
 	describe( 'when the "create collection" button is clicked', () => {
 		test( 'emits a create-collection event', async () => {
-			vi.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [] );
-
 			mountPicker();
 
 			await wrapper.find( '.readinglists-collection-picker__create-button' ).trigger( 'click' );
@@ -115,8 +70,6 @@ describe( 'CollectionPicker', () => {
 
 	describe( 'unsave button', () => {
 		test( 'emits unsave-click when clicked', async () => {
-			vi.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [] );
-
 			mountPicker();
 
 			await wrapper.find( '.readinglists-collection-picker__unsave-button' ).trigger( 'click' );
@@ -129,11 +82,8 @@ describe( 'CollectionPicker', () => {
 	describe( 'when one of the "add to collection" buttons is clicked', () => {
 		test( 'emits add-to-collection with collection id and name', async () => {
 			const customList = { id: 42, name: 'My List', default: false };
-			vi.spyOn( apiModule, 'getListsAll' ).mockResolvedValue( [ customList ] );
-
-			mountPicker( { title: 'Test Article' } );
-			await flushPromises();
-			await flushPromises();
+			const collections = [ customList ];
+			mountPicker( { title: 'Test Article', collections } );
 
 			const addButton = wrapper.find( '.readinglists-collection-picker__collection button' );
 			expect( addButton.exists() ).toBe( true );

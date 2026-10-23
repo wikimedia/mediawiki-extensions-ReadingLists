@@ -1,7 +1,7 @@
 <template>
 	<div class="readinglists-collection-picker">
 		<div
-			v-if="collections.length === 0 && collectionsFetched"
+			v-if="collections.length === 0"
 			class="readinglists-collection-picker__prompt">
 			<p>{{ noCollectionsMessage }}</p>
 		</div>
@@ -37,12 +37,15 @@
 </template>
 
 <script>
-const { ref, computed, onMounted } = require( 'vue' );
+const { computed } = require( 'vue' );
 const { CdxButton, CdxIcon } = require( '../../codex.js' );
 const { cdxIconAdd, cdxIconCheck } = require( '../../icons.json' );
-const api = require( 'ext.readingLists.api' );
 const { CreateCollectionButton, actions } = require( 'ext.readingLists.common' );
 const { actionUnsaveInitClick } = actions;
+
+/**
+ * @typedef {import('../types.js').Collection} Collection
+ */
 
 /**
  * UI for creating or choosing a collection to add an article to.
@@ -60,9 +63,10 @@ module.exports = exports = {
 			required: true
 		},
 		/**
-		 * Collections containing the page.
+		 * Collections.
+		 * @type {Collection[]}
 		 */
-		collectionsWithPage: {
+		collections: {
 			type: Array,
 			default: () => []
 		},
@@ -108,24 +112,6 @@ module.exports = exports = {
 			}
 		};
 
-		const collectionsWithPage = ref( props.collectionsWithPage );
-		const allCollections = ref( [] );
-		const collections = computed( () => allCollections.value.map(
-			( collection ) => Object.assign( {}, collection, {
-				withTitle: collectionsWithPage.value.some( ( list ) => list.id === collection.id )
-			} )
-		) );
-		const collectionsFetched = ref( false );
-
-		async function getCollections() {
-			try {
-				allCollections.value = await api.getListsAll( props.title );
-				collectionsFetched.value = true;
-			} catch ( err ) {
-				// Do nothing for now.
-			}
-		}
-
 		function onCreateButtonClick() {
 			emit( 'create-collection' );
 		}
@@ -134,8 +120,6 @@ module.exports = exports = {
 			if ( event ) {
 				event.stopPropagation();
 			}
-			// update the collection so it is no longer with title.
-			collectionsWithPage.value = collectionsWithPage.value.filter( ( c ) => c.id !== collection.id );
 			// emit an event to take care of any API calls.
 			emit( 'remove-from-collection', collection.id );
 		}
@@ -144,7 +128,6 @@ module.exports = exports = {
 			if ( event ) {
 				event.stopPropagation();
 			}
-			collectionsWithPage.value = collectionsWithPage.value.concat( collection );
 			emit( 'add-to-collection', collection.id, collection.name );
 		}
 
@@ -161,16 +144,10 @@ module.exports = exports = {
 			actionUnsaveInitClick();
 		}
 
-		onMounted( () => {
-			getCollections();
-		} );
-
 		return {
 			noCollectionsMessage,
 			unsaveMessage,
 			getAddButtonLabel,
-			collections,
-			collectionsFetched,
 			onCreateButtonClick,
 			onSelectCollection,
 			onUnsaveButtonClick,

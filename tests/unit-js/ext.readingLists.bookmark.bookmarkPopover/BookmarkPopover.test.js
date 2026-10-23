@@ -96,7 +96,7 @@ describe( 'BookmarkPopover', () => {
 	describe( 'addToCollection', () => {
 		const collectionPickerStub = {
 			name: 'CollectionPicker',
-			props: [ 'title', 'collectionsWithPage' ],
+			props: [ 'title', 'collections' ],
 			emits: [ 'create-collection', 'add-to-collection', 'unsave-click' ],
 			template: '<div />'
 		};
@@ -202,7 +202,7 @@ describe( 'BookmarkPopover', () => {
 	describe( 'onUnsaveClick', () => {
 		const collectionPickerStub = {
 			name: 'CollectionPicker',
-			props: [ 'title', 'collectionsWithPage' ],
+			props: [ 'title', 'collections' ],
 			emits: [ 'create-collection', 'add-to-collection', 'unsave-click' ],
 			template: '<div />'
 		};
@@ -247,7 +247,7 @@ describe( 'BookmarkPopover', () => {
 				const postWithEditToken = vi.fn( () => Promise.resolve( {} ) );
 				apiModule.stubApi( { postWithEditToken } );
 
-				mountPopoverWithStubs( { collectionsWithPage: [] } );
+				mountPopoverWithStubs( { collections: [] } );
 				await wrapper.vm.onUnsaveClick();
 
 				expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( {
@@ -269,7 +269,7 @@ describe( 'BookmarkPopover', () => {
 				} );
 				apiModule.stubApi( { postWithEditToken: vi.fn( () => deletePromise ) } );
 
-				mountPopoverWithStubs( { collectionsWithPage: [] } );
+				mountPopoverWithStubs( { collections: [] } );
 				const unsavePromise = wrapper.vm.onUnsaveClick();
 
 				expect( wrapper.vm.isConfigPopoverOpen ).toBe( true );
@@ -292,7 +292,7 @@ describe( 'BookmarkPopover', () => {
 				apiModule.stubApi( { postWithEditToken } );
 
 				mountPopoverWithStubs( {
-					collectionsWithPage: [ { id: 1, name: 'My List' } ]
+					collections: [ { id: 1, name: 'My List', withTitle: true } ]
 				} );
 				await wrapper.vm.onUnsaveClick();
 
