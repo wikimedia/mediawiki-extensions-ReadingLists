@@ -3,7 +3,7 @@
  */
 
 const { createMwApp } = require( 'vue' );
-const CtaDialog = require( './CtaDialog.vue' );
+const BookmarkCta = require( './BookmarkCta.vue' );
 const { initializePulsatingDot } = require( './pulsatingDot.js' );
 
 const bookmark = document.getElementById( 'ca-bookmark' );
@@ -14,11 +14,11 @@ if ( !bookmark ) {
 
 initializePulsatingDot();
 
-function launchCtaDialog() {
+function launchBookmarkCta() {
 	const container = document.createElement( 'div' );
 	document.body.appendChild( container );
 
-	const app = createMwApp( CtaDialog, {
+	const app = createMwApp( BookmarkCta, {
 		anchor: bookmark,
 		onClose: () => cleanup()
 	} );
@@ -32,5 +32,5 @@ function launchCtaDialog() {
 
 bookmark.addEventListener( 'click', ( event ) => {
 	event.preventDefault();
-	launchCtaDialog();
+	launchBookmarkCta();
 } );

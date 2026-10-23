@@ -1,7 +1,7 @@
 const api = require( 'ext.readingLists.api' );
 const ONBOARDING_STORAGE_KEY = 'readinglists-saved-pages-dialog-seen';
 
-// this needs to match AUTOSAVE_STORAGE_KEY in CtaDialog.vue
+// this needs to match AUTOSAVE_STORAGE_KEY in BookmarkCta.vue
 const AUTOSAVE_STORAGE_KEY = 'readinglists-cta-autosave';
 
 const { ReadingListsCustomLists } = require( './config.json' );

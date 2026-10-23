@@ -1,6 +1,6 @@
 const { mount } = require( '@vue/test-utils' );
 
-import CtaDialog from '../../../resources/ext.readingLists.bookmark.anonymous/CtaDialog.vue';
+import BookmarkCta from '../../../resources/ext.readingLists.bookmark.anonymous/BookmarkCta.vue';
 
 mw.testKitchen = {
 	compat: {
@@ -19,7 +19,7 @@ function setViewportWidth( width ) {
 }
 
 function mountPopover() {
-	return mount( CtaDialog, {
+	return mount( BookmarkCta, {
 		props: {
 			anchor: document.createElement( 'button' )
 		},
@@ -27,7 +27,7 @@ function mountPopover() {
 	} );
 }
 
-describe( 'CtaDialog', () => {
+describe( 'BookmarkCta', () => {
 	let wrapper;
 
 	beforeEach( () => {
@@ -45,7 +45,7 @@ describe( 'CtaDialog', () => {
 	test( 'matches the snapshot', () => {
 		wrapper = mountPopover();
 
-		expect( document.body.querySelector( '.readinglists-cta-dialog' ) ).toMatchSnapshot();
+		expect( document.body.querySelector( '.readinglists-bookmark-cta' ) ).toMatchSnapshot();
 	} );
 
 	test( 'shows the illustration in the mobile bottom sheet', () => {
@@ -53,14 +53,14 @@ describe( 'CtaDialog', () => {
 		wrapper = mountPopover();
 
 		expect( document.body.querySelector( '.cdx-popover--bottom-sheet' ) ).not.toBeNull();
-		expect( document.body.querySelector( '.readinglists-cta-dialog__illustration' ) ).not.toBeNull();
+		expect( document.body.querySelector( '.readinglists-bookmark-cta__illustration' ) ).not.toBeNull();
 	} );
 
 	test( 'hides the illustration in the desktop popover', () => {
 		wrapper = mountPopover();
 
 		expect( document.body.querySelector( '.cdx-popover--bottom-sheet' ) ).toBeNull();
-		expect( document.body.querySelector( '.readinglists-cta-dialog__illustration' ) ).toBeNull();
+		expect( document.body.querySelector( '.readinglists-bookmark-cta__illustration' ) ).toBeNull();
 	} );
 
 	describe( 'remembers the page to save after log in or account creation', () => {
@@ -75,7 +75,7 @@ describe( 'CtaDialog', () => {
 		] )( 'when the %s link is clicked', async ( _label, index ) => {
 			wrapper = mountPopover();
 
-			const link = document.body.querySelectorAll( '.readinglists-cta-dialog__actions a' )[ index ];
+			const link = document.body.querySelectorAll( '.readinglists-bookmark-cta__actions a' )[ index ];
 			link.click();
 
 			expect( mw.storage.session.set ).toHaveBeenCalledWith(

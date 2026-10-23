@@ -404,7 +404,7 @@
 			"packageFiles": [
 				"resources/ext.readingLists.bookmark.anonymous/index.js",
 				"resources/ext.readingLists.bookmark.anonymous/pulsatingDot.js",
-				"resources/ext.readingLists.bookmark.anonymous/CtaDialog.vue",
+				"resources/ext.readingLists.bookmark.anonymous/BookmarkCta.vue",
 				{
 					"name": "resources/ext.readingLists.bookmark.anonymous/config.json",
 					"config": [

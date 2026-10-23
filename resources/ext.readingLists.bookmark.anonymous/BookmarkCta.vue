@@ -1,7 +1,7 @@
 <template>
 	<cdx-popover
 		v-model:open="isOpen"
-		class="readinglists-cta-dialog"
+		class="readinglists-bookmark-cta"
 		:anchor="anchor"
 		:title="title"
 		:use-close-button="true"
@@ -10,18 +10,18 @@
 		placement="bottom"
 		@update:open="onUpdateOpen"
 	>
-		<p class="readinglists-cta-dialog__call-to-action">
+		<p class="readinglists-bookmark-cta__call-to-action">
 			{{ callToAction }}
 		</p>
 
 		<div
 			v-if="isMobile"
-			class="readinglists-cta-dialog__illustration"
+			class="readinglists-bookmark-cta__illustration"
 			:style="{ backgroundImage: `url( ${illustrationPath} )` }"
 		></div>
 
 		<template #footer>
-			<div class="readinglists-cta-dialog__actions">
+			<div class="readinglists-bookmark-cta__actions">
 				<a
 					:class="getFakeButtonClasses( 'primary' )"
 					:href="createAccountUrl"
@@ -49,12 +49,12 @@ const AUTOSAVE_STORAGE_KEY = 'readinglists-cta-autosave';
 const AUTOSAVE_EXPIRY_SECONDS = 3600;
 
 /**
- * Dialog shown to anonymous users when they click the bookmark button, prompting sign-in.
+ * Bookmark call to action shown to anonymous users when they click the bookmark button, prompting sign-in.
  * Mobile viewports use the bottom sheet variant, which includes the illustration.
  */
 // @vue/component
 module.exports = exports = {
-	name: 'CtaDialog',
+	name: 'BookmarkCta',
 	components: {
 		CdxPopover
 	},
@@ -90,7 +90,7 @@ module.exports = exports = {
 		};
 
 		// Signup instrumentation relies on type=signup and a returntoquery marker
-		// so the redirect flow can be attributed back to this dialog.
+		// so the redirect flow can be attributed back to this call to action.
 		const createAccountUrl = computed( () => mw.util.getUrl( 'Special:CreateAccount', {
 			returnto: returnTo,
 			returntoquery: 'readingListsAccountCreationCta=1',
@@ -140,7 +140,7 @@ module.exports = exports = {
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
 
-.readinglists-cta-dialog {
+.readinglists-bookmark-cta {
 	&:not( .cdx-popover--bottom-sheet ) {
 		width: @size-1600;
 	}

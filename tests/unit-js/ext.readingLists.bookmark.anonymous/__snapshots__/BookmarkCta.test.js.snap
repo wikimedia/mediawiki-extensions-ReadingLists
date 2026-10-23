@@ -1,8 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`CtaDialog > matches the snapshot 1`] = `
+exports[`BookmarkCta > matches the snapshot 1`] = `
 <div
-  class="cdx-popover readinglists-cta-dialog"
+  class="cdx-popover readinglists-bookmark-cta"
   style="position: absolute; left: 0px; top: 0px;"
 >
   <div
@@ -56,7 +56,7 @@ exports[`CtaDialog > matches the snapshot 1`] = `
   >
     
     <p
-      class="readinglists-cta-dialog__call-to-action"
+      class="readinglists-bookmark-cta__call-to-action"
     >
       Please log in or create an account to get started.
     </p>
@@ -68,7 +68,7 @@ exports[`CtaDialog > matches the snapshot 1`] = `
   >
     
     <div
-      class="readinglists-cta-dialog__actions"
+      class="readinglists-bookmark-cta__actions"
     >
       <a
         class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-primary cdx-button--action-progressive"

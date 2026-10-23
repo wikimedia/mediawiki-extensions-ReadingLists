@@ -11,7 +11,7 @@ vi.mock( '../../../codex.js', () => ( {
 	}
 } ) );
 
-// CtaDialog.vue imports useIsMobileResolution from this module. The wire-up
+// BookmarkCta.vue imports useIsMobileResolution from this module. The wire-up
 // test does not mount the component, so it does not need the real module.
 vi.mock( '../../../resources/ext.readingLists.common/index.js', () => ( {
 	useIsMobileResolution: vi.fn()
@@ -46,7 +46,7 @@ describe( 'Anonymous bookmark button', () => {
 		).rejects.toThrow( 'Bookmark not found' );
 	} );
 
-	it( 'mounts CtaDialog when bookmark is clicked', async () => {
+	it( 'mounts BookmarkCta when bookmark is clicked', async () => {
 		const bookmark = document.createElement( 'a' );
 		bookmark.id = 'ca-bookmark';
 		document.body.appendChild( bookmark );
@@ -62,7 +62,7 @@ describe( 'Anonymous bookmark button', () => {
 		bookmark.click();
 
 		expect( createMwApp ).toHaveBeenCalled();
-		expect( createMwApp.mock.calls[ 0 ][ 0 ].name ).toBe( 'CtaDialog' );
+		expect( createMwApp.mock.calls[ 0 ][ 0 ].name ).toBe( 'BookmarkCta' );
 		expect( createMwApp.mock.calls[ 0 ][ 1 ].anchor ).toBe( bookmark );
 		expect( mockApp.mount ).toHaveBeenCalled();
 	} );
