@@ -33,9 +33,6 @@ trait ApiTrait {
 	/** @var LoggerInterface */
 	private $logger;
 
-	/** @var ReadingListRepository */
-	private $repository;
-
 	/** @var ReadingListRepositoryFactory */
 	private $readingListRepositoryFactory;
 
