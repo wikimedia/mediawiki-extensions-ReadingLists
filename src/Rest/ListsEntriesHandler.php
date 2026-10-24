@@ -5,13 +5,11 @@ namespace MediaWiki\Extension\ReadingLists\Rest;
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\ReadingLists\Doc\ReadingListEntryRow;
 use MediaWiki\Extension\ReadingLists\ReadingListRepositoryException;
-use MediaWiki\Extension\ReadingLists\ReverseInterwikiLookup;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Rest\Handler;
 use MediaWiki\Rest\LocalizedHttpException;
 use MediaWiki\Rest\SimpleHandler;
 use MediaWiki\Rest\Validator\Validator;
-use MediaWiki\Title\TitleValue;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use Psr\Log\LoggerInterface;
 use Wikimedia\ParamValidator\ParamValidator;
@@ -33,7 +31,6 @@ class ListsEntriesHandler extends SimpleHandler {
 		private readonly LBFactory $dbProvider,
 		private readonly Config $config,
 		private readonly CentralIdLookup $centralIdLookup,
-		private readonly ReverseInterwikiLookup $reverseInterwikiLookup,
 	) {
 		$this->logger = LoggerFactory::getInstance( 'readinglists' );
 	}
@@ -128,38 +125,6 @@ class ListsEntriesHandler extends SimpleHandler {
 		}
 
 		return $result;
-	}
-
-	/**
-	 * Transform a row into an API result item
-	 * @param ReadingListEntryRow $row
-	 * @return ?TitleValue|string
-	 */
-	private function getResultTitle( $row ) {
-		$interwikiPrefix = $this->reverseInterwikiLookup->lookup( $row->rlp_project );
-		if ( is_string( $interwikiPrefix ) ) {
-			if ( $interwikiPrefix === '' ) {
-				$title = TitleValue::tryNew( NS_MAIN, $row->rle_title );
-				if ( !$title ) {
-					// Validation differences between wikis? Let's just return it as it is.
-					$title = TitleValue::tryNew( NS_MAIN, $row->rle_title );
-				}
-			} else {
-				// We have no way of telling what the namespace is, but Title does not support
-				// foreign namespaces anyway. Let's just pretend it's in the main namespace so
-				// the prefixed title string works out as expected.
-				$title = TitleValue::tryNew( NS_MAIN, $row->rle_title, '', $interwikiPrefix );
-			}
-			return $title;
-		} elseif ( is_array( $interwikiPrefix ) ) {
-			$title = implode( ':', array_slice( $interwikiPrefix, 1 ) ) . ':' . $row->rle_title;
-			$prefix = $interwikiPrefix[0];
-			return TitleValue::tryNew( NS_MAIN, $title, '', $prefix );
-		}
-		// For lack of a better option let's create an invalid title.
-		// ApiPageSet::populateFromTitles() is not documented to accept strings
-		// but it will actually work.
-		return 'Invalid project|' . $row->rlp_project . '|' . $row->rle_title;
 	}
 
 	/**

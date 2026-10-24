@@ -29,7 +29,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
-			$this->getMockReverseInterwikiLookup( '' )
 		);
 
 		$repository = $this->getReadingListRepository( $handler );
@@ -143,7 +142,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
-			$this->getMockReverseInterwikiLookup( '' )
 		);
 		$repository = $this->getReadingListRepository( $handler );
 		$list = $repository->addList( 'dogs', 'Woof!' );
@@ -172,7 +170,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
-			$this->getMockReverseInterwikiLookup( '' )
 		);
 		$request = new RequestData( [
 			'pathParams' => [ 'id' => $list->rl_id ],
@@ -197,7 +194,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
-			$this->getMockReverseInterwikiLookup( '' )
 		);
 
 		$repository = $this->getReadingListRepository( $handler );
@@ -225,7 +221,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
-			$this->getMockReverseInterwikiLookup( '' )
 		);
 
 		$repository = $this->getReadingListRepository( $handler );
@@ -253,7 +248,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
-			$this->getMockReverseInterwikiLookup( '' )
 		);
 		$request = new RequestData( [
 			'pathParams' => [ 'id' => $list->rl_id ],
@@ -284,7 +278,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
-			$this->getMockReverseInterwikiLookup( '' )
 		);
 
 		$repository = $this->getReadingListRepository( $handler );
@@ -317,7 +310,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
-			$this->getMockReverseInterwikiLookup( '' )
 		);
 		$repository = $this->getReadingListRepository( $handler );
 		$listId = $repository->addList( 'dogs', 'Woof!' )->rl_id;
@@ -332,7 +324,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup( false ),
-			$this->getMockReverseInterwikiLookup( '' )
 		);
 
 		$this->expectException( LocalizedHttpException::class );
