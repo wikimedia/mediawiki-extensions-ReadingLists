@@ -7,6 +7,9 @@
 	position: relative;
 	// Allow the pulse to extend beyond the Codex button.
 	overflow: visible;
+	// Ensure the pulse overlaps the content section, e.g. hatnotes.
+	// See T440995.
+	z-index: @z-index-above-content;
 
 	.skin-vector & {
 		&::before,
