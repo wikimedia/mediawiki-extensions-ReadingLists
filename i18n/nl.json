@@ -93,6 +93,7 @@
 	"tooltip-ca-bookmark-add": "Deze pagina toevoegen aan uw opgeslagen items",
 	"tooltip-ca-bookmark-remove": "Deze pagina verwijderen uit uw opgeslagen items",
 	"readinglists-bookmark": "Bladwijzer",
+	"readinglists-customlists-collection-name-dialog-save": "Opslaan",
 	"readinglists-add-bookmark": "Opslaan",
 	"readinglists-remove-bookmark": "Verwijderen",
 	"readinglists-unsave-from-custom-list-title": "Van alle leeslijsten verwijderen?",
@@ -122,5 +123,6 @@
 	"readinglists-customlists-allitems": "Alle items",
 	"readinglists-customlists-collections": "Verzamelingen",
 	"readinglists-customlists-no-collections": "U heeft geen verzamelingen",
-	"readinglists-customlists-create-collection": "nieuwe verzameling maken"
+	"readinglists-customlists-create-collection": "nieuwe verzameling maken",
+	"readinglists-customlists-delete-collection-dialog-cancel": "Annuleren"
 }
