@@ -56,12 +56,12 @@ describe( 'BookmarkPopover', () => {
 
 	describe( 'renders correctly', () => {
 		test( 'when article is not yet saved', () => {
-			mountPopover( { isNewSave: false } );
+			mountPopover( { isNewSave: true } );
 			expect( wrapper.html() ).toMatchSnapshot();
 		} );
 
 		test( 'when article is already saved', () => {
-			mountPopover( { isNewSave: true } );
+			mountPopover( { isNewSave: false } );
 			expect( wrapper.html() ).toMatchSnapshot();
 		} );
 	} );

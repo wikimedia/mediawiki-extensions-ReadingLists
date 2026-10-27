@@ -774,7 +774,7 @@ describe( 'initBookmark', () => {
 			await flushPromises();
 			await flushPromises();
 
-			expect( initBookmarkPopover ).toHaveBeenCalledWith( false, [] );
+			expect( initBookmarkPopover ).toHaveBeenCalledWith( true, [] );
 			expect( mw.notify ).not.toHaveBeenCalledWith(
 				expect.anything(),
 				expect.objectContaining( { tag: 'saved', type: 'success' } )
@@ -831,7 +831,7 @@ describe( 'initBookmark', () => {
 			// Hooks should have fired even though the popover has not yet resolved.
 			expect( hookCallback ).toHaveBeenCalledWith( true, null, null, VECTOR_EVENT_SOURCE );
 			expect( changeHookCallback ).toHaveBeenCalledWith( true, VECTOR_EVENT_SOURCE );
-			expect( initBookmarkPopover ).toHaveBeenCalledWith( false, [] );
+			expect( initBookmarkPopover ).toHaveBeenCalledWith( true, [] );
 
 			// Resolve the popover so addPageToReadingList() completes cleanly.
 			resolvePopover( { isSaved: true, showNotification: false } );
@@ -866,7 +866,7 @@ describe( 'initBookmark', () => {
 
 					vi.advanceTimersByTime( 1000 );
 
-					expect( initBookmarkPopover ).toHaveBeenCalledWith( false, [] );
+					expect( initBookmarkPopover ).toHaveBeenCalledWith( true, [] );
 					expect( mw.notify ).not.toHaveBeenCalledWith(
 						expect.anything(),
 						expect.objectContaining( { tag: 'saved', type: 'success' } )
@@ -904,7 +904,7 @@ describe( 'initBookmark', () => {
 
 					vi.advanceTimersByTime( 1000 );
 
-					expect( initBookmarkPopover ).toHaveBeenCalledWith( false, [] );
+					expect( initBookmarkPopover ).toHaveBeenCalledWith( true, [] );
 					expect( mw.notify ).not.toHaveBeenCalledWith(
 						expect.anything(),
 						expect.objectContaining( { tag: 'saved', type: 'success' } )
@@ -932,7 +932,7 @@ describe( 'initBookmark', () => {
 
 				vi.advanceTimersByTime( 1000 );
 
-				expect( initBookmarkPopover ).toHaveBeenCalledWith( false, [] );
+				expect( initBookmarkPopover ).toHaveBeenCalledWith( true, [] );
 				expect( mw.notify ).not.toHaveBeenCalledWith(
 					expect.anything(),
 					expect.objectContaining( { tag: 'saved', type: 'success' } )
@@ -1020,7 +1020,7 @@ describe( 'initBookmark', () => {
 				await flushPromises();
 				await flushPromises();
 
-				expect( initBookmarkPopover ).toHaveBeenCalledWith( true, [] );
+				expect( initBookmarkPopover ).toHaveBeenCalledWith( false, [] );
 			} );
 
 			describe( 'and the page is unsaved from all lists', () => {

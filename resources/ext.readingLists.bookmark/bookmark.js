@@ -226,7 +226,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		updateBookmarkStatus( true );
 
 		if ( ReadingListsCustomLists ) {
-			const { isSaved, showNotification, isError, listId, listName } = await launchBookmarkPopover( false );
+			const { isSaved, showNotification, isError, listId, listName } = await launchBookmarkPopover( true );
 
 			// Handle case where user immediately unsaves page.
 			if ( !isSaved ) {
@@ -296,7 +296,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			activeNotification.close();
 		}
 
-		const { isSaved, showNotification, isError, listId, listName } = await launchBookmarkPopover( true );
+		const { isSaved, showNotification, isError, listId, listName } = await launchBookmarkPopover( false );
 
 		// If the page has been unsaved, update the bookmark button.
 		if ( !isSaved ) {

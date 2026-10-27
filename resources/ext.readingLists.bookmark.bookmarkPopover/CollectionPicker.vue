@@ -6,6 +6,7 @@
 			<p>{{ noCollectionsMessage }}</p>
 		</div>
 		<button
+			v-if="!isNewSave"
 			class="readinglists-collection-picker__unsave-button"
 			@click="onUnsaveButtonClick"
 		>
@@ -64,6 +65,13 @@ module.exports = exports = {
 		collectionsWithPage: {
 			type: Array,
 			default: () => []
+		},
+		/**
+		 * Whether this page was just saved for the first time.
+		 */
+		isNewSave: {
+			type: Boolean,
+			default: false
 		}
 	},
 	emits: [
@@ -178,7 +186,7 @@ module.exports = exports = {
 @import '../ext.readingLists.common/button-link.less';
 
 // Each collection's height is min button height + list item padding + top border width.
-@collection-height: @min-size-interactive-pointer + ( @spacing-25 * 2 ) + @border-width-base;
+@height-collection: @min-size-interactive-pointer + ( @spacing-75 * 2 ) + @border-width-base;
 @max-collections: 6;
 
 .readinglists-collection-picker {
@@ -189,7 +197,7 @@ module.exports = exports = {
 			list-style: none;
 			margin: 0;
 			padding: 0;
-			max-height: @collection-height * @max-collections;
+			max-height: @height-collection * @max-collections;
 		}
 	}
 
@@ -205,7 +213,7 @@ module.exports = exports = {
 
 	&__unsave-button,
 	&__create-button {
-		min-height: @collection-height;
+		min-height: @height-collection;
 	}
 
 	&__unsave-button {
@@ -221,12 +229,14 @@ module.exports = exports = {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		word-break: normal;
+		overflow-wrap: anywhere;
 
 		// Override skin list item styles. `.content` class needed for Minerva.
 		&,
 		.content & {
 			margin: 0;
-			padding: @spacing-25 0;
+			padding: @spacing-75 0;
 		}
 	}
 }
