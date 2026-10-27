@@ -1,5 +1,6 @@
 <template>
 	<cdx-popover
+		ref="popover"
 		v-model:open="isOpen"
 		class="readinglists-bookmark-cta"
 		:anchor="anchor"
@@ -40,7 +41,7 @@
 </template>
 
 <script>
-const { computed, ref } = require( 'vue' );
+const { computed, nextTick, onMounted, ref } = require( 'vue' );
 const { CdxPopover } = require( '../../codex.js' );
 const { useIsMobileResolution } = require( 'ext.readingLists.common' );
 
@@ -69,6 +70,7 @@ module.exports = exports = {
 		}
 	},
 	setup( props ) {
+		const popover = ref();
 		const isOpen = ref( true );
 		const isMobile = useIsMobileResolution();
 		// "responsive" follows Codex's breakpoint. This feature uses useIsMobileResolution.
@@ -111,13 +113,67 @@ module.exports = exports = {
 			};
 		}
 
+		onMounted( async () => {
+			// The popover is not reachable by keyboard so move focus to it.
+			// We must move focus to the body and not a button bc codex buttons activate on keyup.
+			// So keydown opens the popover and keyup triggers the button it lands on.
+			await nextTick();
+			if ( !popover.value ) {
+				return;
+			}
+			const popoverFocusHolder = popover.value.focusHolder;
+			// Focus on the CdxPopover's focus holder. The next tab keypress
+			// will go to the first focusable element.
+			if ( popoverFocusHolder ) {
+				popoverFocusHolder.focus( { preventScroll: true } );
+			}
+
+			const popoverPanel = popover.value.panel;
+			if ( !popoverPanel ) {
+				return;
+			}
+
+			const closeButton = popoverPanel.querySelector( '.cdx-popover__header__close-button' );
+			if ( !closeButton ) {
+				return;
+			}
+			// useFocusTrap in Codex calls scrollIntoView on the popover body when the focus wraps
+			// btw the last button and the close button.
+			// This is causing the screen to scroll in an unexpected way.
+			closeButton.scrollIntoView = () => {};
+			// Move focus ourselves to prevent undesired scrolling behavior.
+			const lastLink = popoverPanel.querySelector(
+				'.readinglists-bookmark-cta__actions a:last-child'
+			);
+			popoverPanel.addEventListener( 'keydown', ( event ) => {
+				if ( event.key !== 'Tab' ) {
+					return;
+				}
+				const active = document.activeElement;
+				if ( !event.shiftKey && active === lastLink ) {
+					event.preventDefault();
+					closeButton.focus( { preventScroll: true } );
+					return;
+				}
+				if ( event.shiftKey && active === closeButton && lastLink ) {
+					event.preventDefault();
+					lastLink.focus( { preventScroll: true } );
+				}
+			} );
+		} );
+
 		function onUpdateOpen( newOpenState ) {
 			if ( !newOpenState ) {
 				props.onClose();
+				// Focus is lost after the popover is closed. Move focus back to the anchor.
+				// #ca-bookmark is the list item. The link inside it is what can take focus.
+				const anchor = props.anchor.querySelector( 'a' ) || props.anchor;
+				anchor.focus( { preventScroll: true } );
 			}
 		}
 
 		return {
+			popover,
 			isOpen,
 			isMobile,
 			useBottomSheet,
