@@ -64,7 +64,7 @@ module.exports = exports = {
 			const result = ( props.isRename ) ?
 				await updateList( props.listId, collectionName.value ) :
 				await createList( collectionName.value );
-			const id = props.listId || result.create.id;
+			const id = props.isRename ? props.listId : result.create.id;
 			emit( 'success', id, collectionName.value );
 			onUpdateOpen( false );
 		};
