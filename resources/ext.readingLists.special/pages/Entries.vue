@@ -232,7 +232,7 @@ module.exports = exports = {
 						{
 							id,
 							title: name,
-							description: mw.msg( 'readinglists-total-articles', size ),
+							description: mw.msg( 'readinglists-total-articles', mw.language.convertNumber( size ) ),
 							url: mw.util.getUrl( getCollectionUrl( id, name ) )
 						}
 					) );

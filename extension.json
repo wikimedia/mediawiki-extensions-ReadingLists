@@ -235,6 +235,7 @@
 			],
 			"dependencies": [
 				"mediawiki.util",
+				"mediawiki.language",
 				"ext.readingLists.common",
 				"ext.readingLists.api",
 				"vue",
