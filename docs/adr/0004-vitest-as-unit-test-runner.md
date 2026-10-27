@@ -212,6 +212,7 @@ limited to configuration. It does not extend to how we write tests.
 - Test files stay in 'tests/jest/' for now, to keep the migration patch reviewable, and
   'tests/jest/.eslintrc.json' still sets `env: { jest: true }`. A follow-up renames the directory
   and drops the leftover Jest environment.
+  *Update: the follow-up renamed the directory to the runner-agnostic 'tests/unit-js/'.*
 
 ### References
 

@@ -1,0 +1,91 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`BookmarkCta > matches the snapshot 1`] = `
+<div
+  class="cdx-popover readinglists-bookmark-cta"
+  style="position: absolute; left: 0px; top: 0px;"
+>
+  <div
+    class="cdx-popover-focus-trap"
+    tabindex="-1"
+  />
+  <header
+    class="cdx-popover__header"
+  >
+    
+    <!--v-if-->
+    <div
+      class="cdx-popover__header__title"
+    >
+      Save articles
+    </div>
+    <div
+      class="cdx-popover__header__button-wrapper"
+    >
+      <button
+        aria-label="Close"
+        class="cdx-button cdx-button--action-default cdx-button--weight-quiet cdx-button--size-medium cdx-button--icon-only cdx-popover__header__close-button"
+        type="button"
+      >
+        
+        <span
+          class="cdx-icon cdx-icon--medium"
+        >
+          <svg
+            aria-hidden="true"
+            height="20"
+            viewBox="0 0 20 20"
+            width="20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!--v-if-->
+            <g>
+              <path
+                d="M16.707 4.707 11.414 10l5.293 5.293-1.414 1.414L10 11.414l-5.293 5.293-1.414-1.414L8.586 10 3.293 4.707l1.414-1.414L10 8.586l5.293-5.293z"
+              />
+            </g>
+          </svg>
+        </span>
+        
+      </button>
+    </div>
+    
+  </header>
+  <div
+    class="cdx-popover__body"
+  >
+    
+    <p
+      class="readinglists-bookmark-cta__call-to-action"
+    >
+      Please log in or create an account to get started.
+    </p>
+    <!--v-if-->
+    
+  </div>
+  <footer
+    class="cdx-popover__footer"
+  >
+    
+    <div
+      class="readinglists-bookmark-cta__actions"
+    >
+      <a
+        class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-primary cdx-button--action-progressive"
+      >
+        Create account
+      </a>
+      <a
+        class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled"
+      >
+        Log in
+      </a>
+    </div>
+    
+  </footer>
+  <div
+    class="cdx-popover__arrow"
+    style="left: 0px; top: 0px; right: 0px; bottom: 0px; transform: none;"
+  />
+</div>
+`;

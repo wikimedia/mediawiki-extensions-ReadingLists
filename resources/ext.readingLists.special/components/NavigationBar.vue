@@ -16,31 +16,26 @@
 					weight="quiet"
 					:menu-items="collections"
 					:menu-config="menuConfig"
-					@click="maybeGetCollections">
+					@click="maybeGetCollections"
+					@update:selected="onSelectCollection">
 					{{ collectionsText }}
 					<cdx-icon size="medium" :icon="cdxIconExpand"></cdx-icon>
 					<template #menu-item="{ menuItem }">
-						<router-link
+						<span
 							v-if="menuItem.url"
-							class="cdx-menu-item__content"
-							:to="menuItem.url">
+							class="cdx-menu-item__content">
 							<span class="cdx-menu-item__text"><bdi>{{ menuItem.label }}</bdi></span>
-						</router-link>
+						</span>
 						<span
 							v-else
-							class="cdx-menu-item__content"
-							@click="createCollection">
-							<cdx-icon
-								v-if="menuItem.icon"
-								:icon="menuItem.icon"
-								class="cdx-menu-item__icon"></cdx-icon>
+							class="cdx-menu-item__content">
 							<span class="cdx-menu-item__text"><bdi>{{ menuItem.label }}</bdi></span>
 						</span>
 					</template>
 				</cdx-menu-button>
 				<router-link
 					v-else
-					class="readinglists-special-nav-link"
+					class="reading-lists-special-nav-link reading-lists-collections-link"
 					:to="collectionsUrl">
 					{{ collectionsText }}
 				</router-link>
@@ -73,12 +68,13 @@
 				<div
 					id="reading-lists-collection-settings-actions"
 					class="reading-lists-collection-settings-actions">
-					<cdx-button weight="quiet">
+					<cdx-button weight="quiet" @click="renameCollection">
 						{{ renameCollectionLabel }}
 					</cdx-button>
 					<cdx-button
 						weight="quiet"
-						action="destructive">
+						action="destructive"
+						@click="deleteCollection">
 						{{ deleteCollectionLabel }}
 					</cdx-button>
 				</div>
@@ -89,10 +85,11 @@
 
 <script>
 const { ref, watch, onUpdated, onMounted } = require( 'vue' );
-const { RouterLink } = require( 'vue-router' );
-const { getCollectionUrl } = require( 'ext.readingLists.common' );
+const { RouterLink, useRouter } = require( 'vue-router' );
+const { getCollectionUrl, actions } = require( 'ext.readingLists.common' );
 const { CdxButton, CdxIcon, CdxMenuButton, CdxPopover } = require( '../../../codex.js' );
-const { cdxIconAdd, cdxIconExpand, cdxIconSettings } = require( '../../../icons.json' );
+const { cdxIconExpand, cdxIconSettings } = require( '../../../icons.json' );
+const { actionSettingsDeleteClick, actionSettingsRenameClick } = actions;
 
 const api = require( 'ext.readingLists.api' );
 
@@ -106,14 +103,16 @@ const collectionsPath = '/collections';
 const createCollectionEntry = {
 	label: mw.msg( 'readinglists-customlists-create-collection' ),
 	value: 0,
-	icon: cdxIconAdd
+	class: 'reading-list-create-collection-menu-item',
+	action: 'progressive'
 };
 
 // default entry, to also be used when the user has no collections
 const noCollectionsEntry = {
 	label: mw.msg( 'readinglists-customlists-no-collections' ),
-	value: -1,
-	disabled: true
+	class: 'reading-list-no-collection-menu-item',
+	disabled: true,
+	value: -1
 };
 
 // helper function to turn api respose into select dropdown entries
@@ -148,9 +147,12 @@ module.exports = exports = {
 		}
 	},
 	emits: [
-		'create-collection'
+		'create-collection',
+		'rename-collection',
+		'delete-collection'
 	],
 	setup: ( props, { emit } ) => {
+		const router = useRouter();
 		const showDropdown = ref( mw.config.get( 'skin' ) === 'vector-2022' );
 
 		// Router target (relative to the special page base) for the all-items
@@ -181,8 +183,27 @@ module.exports = exports = {
 			}
 		} );
 
-		const createCollection = () => {
-			emit( 'create-collection' );
+		const renameCollection = () => {
+			emit( 'rename-collection' );
+			actionSettingsRenameClick();
+		};
+
+		const onSelectCollection = ( selected ) => {
+			const selectedItem = collections.value.find( ( item ) => item.value === selected );
+			if ( selectedItem ) {
+				if ( selectedItem.url ) {
+					router.push( selectedItem.url );
+				} else {
+					emit( 'create-collection' );
+				}
+				selectedCollection.value = null;
+			}
+		};
+
+		const deleteCollection = () => {
+			showCollectionSettings.value = false;
+			emit( 'delete-collection' );
+			actionSettingsDeleteClick();
 		};
 
 		const maybeGetCollections = async () => {
@@ -217,9 +238,9 @@ module.exports = exports = {
 				maybeGetCollections();
 			}
 		} );
+
 		return {
 			showDropdown,
-			createCollection,
 			cdxIconExpand,
 			allItemsTo,
 			allItemsText,
@@ -229,6 +250,8 @@ module.exports = exports = {
 			collections,
 			selectedCollection,
 			maybeGetCollections,
+			renameCollection,
+			deleteCollection,
 			cdxIconSettings,
 			collectionSettingsLabel,
 			renameCollectionLabel,
@@ -236,7 +259,8 @@ module.exports = exports = {
 			showCollectionSettings,
 			settingsButton,
 			toggleCollectionSettings,
-			onCollectionSettingsOpen
+			onCollectionSettingsOpen,
+			onSelectCollection
 		};
 	}
 };
@@ -267,6 +291,8 @@ module.exports = exports = {
 	}
 
 	a.reading-lists-special-nav-link {
+		font-weight: bold;
+
 		// needed to explicitly specify no visited styles - I welcome a better way to do this
 		&:visited,
 		&:visited:hover {
@@ -275,18 +301,31 @@ module.exports = exports = {
 
 		&.router-link-active {
 			color: @color-base;
-			font-weight: bold;
 
 			&:visited,
 			&:visited:hover {
 				color: @color-base;
 			}
 		}
+
+		&.reading-lists-collections-link {
+			// Add spacing between the All Items and Collections link
+			// Because the collections link on Minerva isnt a menu button and doesnt have padding
+			margin-left: @spacing-125;
+		}
 	}
 
 	ul {
 		padding-left: 0;
 		padding-inline: 0;
+	}
+
+	.reading-list-create-collection-menu-item {
+		border-bottom: @border-base;
+	}
+
+	.reading-list-no-collection-menu-item {
+		color: @color-subtle;
 	}
 }
 

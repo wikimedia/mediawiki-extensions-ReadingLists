@@ -5,6 +5,12 @@
 			class="readinglists-collection-picker__prompt">
 			<p>{{ noCollectionsMessage }}</p>
 		</div>
+		<button
+			class="readinglists-collection-picker__unsave-button"
+			@click="onUnsaveButtonClick"
+		>
+			{{ unsaveMessage }}
+		</button>
 		<create-collection-button
 			class="readinglists-collection-picker__create-button"
 			@create-collection="onCreateButtonClick"
@@ -14,15 +20,15 @@
 				v-for="collection in collections"
 				:key="collection.id"
 				class="readinglists-collection-picker__collection"
-				@click="( e ) => onAddToCollection( e, collection )"
+				@click="( e ) => onSelectCollection( e, collection )"
 			>
 				{{ collection.name }}
 				<cdx-button
 					weight="quiet"
-					:aria-label="getAddButtonLabel( collection.name )"
-					@click="( e ) => onAddToCollection( e, collection )"
+					:aria-label="getAddButtonLabel( collection )"
+					@click="( e ) => onSelectCollection( e, collection )"
 				>
-					<cdx-icon :icon="cdxIconAdd"></cdx-icon>
+					<cdx-icon :icon="collection.withTitle ? cdxIconCheck : cdxIconAdd"></cdx-icon>
 				</cdx-button>
 			</li>
 		</ul>
@@ -32,9 +38,10 @@
 <script>
 const { ref, computed, onMounted } = require( 'vue' );
 const { CdxButton, CdxIcon } = require( '../../codex.js' );
-const { cdxIconAdd } = require( '../../icons.json' );
+const { cdxIconAdd, cdxIconCheck } = require( '../../icons.json' );
 const api = require( 'ext.readingLists.api' );
-const { CreateCollectionButton } = require( 'ext.readingLists.common' );
+const { CreateCollectionButton, actions } = require( 'ext.readingLists.common' );
+const { actionUnsaveInitClick } = actions;
 
 /**
  * UI for creating or choosing a collection to add an article to.
@@ -45,11 +52,18 @@ module.exports = exports = {
 	components: { CdxButton, CdxIcon, CreateCollectionButton },
 	props: {
 		/**
-		 * Title of the article being saved.
+		 * Title of the page.
 		 */
 		title: {
 			type: String,
 			required: true
+		},
+		/**
+		 * Collections containing the page.
+		 */
+		collectionsWithPage: {
+			type: Array,
+			default: () => []
 		}
 	},
 	emits: [
@@ -63,21 +77,41 @@ module.exports = exports = {
 		 * @param {number} listId - The ID of the collection.
 		 * @param {string} listName - The name of the collection.
 		 */
-		'add-to-collection'
+		'add-to-collection',
+		/**
+		 * When the user clicks "remove" for a collection.
+		 *
+		 * @param {number} listId - The ID of the collection.
+		 */
+		'remove-from-collection',
+		/**
+		 * When the user clicks "Unsave".
+		 */
+		'unsave-click'
 	],
 	setup( props, { emit } ) {
 		const noCollectionsMessage = computed( () => mw.msg( 'readinglists-customlists-collection-picker-create-prompt' ) );
-		function getAddButtonLabel( collectionTitle ) {
-			return mw.msg( 'readinglists-customlists-collection-picker-add-button-label', props.title, collectionTitle );
-		}
+		const unsaveMessage = computed( () => mw.msg( 'readinglists-remove-bookmark' ) );
+		const getAddButtonLabel = ( collection ) => {
+			if ( collection.withTitle ) {
+				return mw.msg( 'readinglists-customlists-collection-picker-remove-button-label', props.title, collection.name );
+			} else {
+				return mw.msg( 'readinglists-customlists-collection-picker-add-button-label', props.title, collection.name );
+			}
+		};
 
-		const collections = ref( [] );
+		const collectionsWithPage = ref( props.collectionsWithPage );
+		const allCollections = ref( [] );
+		const collections = computed( () => allCollections.value.map(
+			( collection ) => Object.assign( {}, collection, {
+				withTitle: collectionsWithPage.value.some( ( list ) => list.id === collection.id )
+			} )
+		) );
 		const collectionsFetched = ref( false );
 
 		async function getCollections() {
 			try {
-				const allLists = await api.getListsAll();
-				collections.value = collections.value.concat( allLists );
+				allCollections.value = await api.getListsAll( props.title );
 				collectionsFetched.value = true;
 			} catch ( err ) {
 				// Do nothing for now.
@@ -88,11 +122,35 @@ module.exports = exports = {
 			emit( 'create-collection' );
 		}
 
+		function onRemoveFromCollection( event, collection ) {
+			if ( event ) {
+				event.stopPropagation();
+			}
+			// update the collection so it is no longer with title.
+			collectionsWithPage.value = collectionsWithPage.value.filter( ( c ) => c.id !== collection.id );
+			// emit an event to take care of any API calls.
+			emit( 'remove-from-collection', collection.id );
+		}
+
 		function onAddToCollection( event, collection ) {
 			if ( event ) {
 				event.stopPropagation();
 			}
+			collectionsWithPage.value = collectionsWithPage.value.concat( collection );
 			emit( 'add-to-collection', collection.id, collection.name );
+		}
+
+		function onSelectCollection( event, collection ) {
+			if ( collection.withTitle ) {
+				onRemoveFromCollection( event, collection );
+			} else {
+				onAddToCollection( event, collection );
+			}
+		}
+
+		function onUnsaveButtonClick() {
+			emit( 'unsave-click' );
+			actionUnsaveInitClick();
 		}
 
 		onMounted( () => {
@@ -101,11 +159,14 @@ module.exports = exports = {
 
 		return {
 			noCollectionsMessage,
+			unsaveMessage,
 			getAddButtonLabel,
 			collections,
 			collectionsFetched,
 			onCreateButtonClick,
-			onAddToCollection,
+			onSelectCollection,
+			onUnsaveButtonClick,
+			cdxIconCheck,
 			cdxIconAdd
 		};
 	}
@@ -114,8 +175,10 @@ module.exports = exports = {
 
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
+@import '../ext.readingLists.common/button-link.less';
 
-@collection-height: 42px;
+// Each collection's height is min button height + list item padding + top border width.
+@collection-height: @min-size-interactive-pointer + ( @spacing-25 * 2 ) + @border-width-base;
 @max-collections: 6;
 
 .readinglists-collection-picker {
@@ -130,6 +193,7 @@ module.exports = exports = {
 		}
 	}
 
+	&__unsave-button,
 	&__create-button,
 	&__collection {
 		border-top: @border-width-base @border-style-base @border-color-subtle;
@@ -139,9 +203,18 @@ module.exports = exports = {
 		}
 	}
 
+	&__unsave-button,
 	&__create-button {
-		// To match the list items, make height min button height + list item padding + top border.
-		min-height: @min-size-interactive-pointer + ( @spacing-25 * 2 ) + @border-width-base;
+		min-height: @collection-height;
+	}
+
+	&__unsave-button {
+		.readinglists-button-link();
+		color: @color-destructive;
+
+		&:hover {
+			color: @color-destructive--hover;
+		}
 	}
 
 	&__collection {

@@ -8,15 +8,36 @@
 
 		<collection-name-dialog
 			v-if="showCollectionNameDialog"
+			:is-rename="isRename"
+			:list-id="listId"
+			:title="title"
 			@update:open="( newVal ) => showCollectionNameDialog = newVal"
 			@success="routeToNewCollection"
 		>
 		</collection-name-dialog>
 
+		<delete-collection-dialog
+			v-if="showDeleteCollection"
+			:list-name="title"
+			:is-deleting="isDeletingCollection"
+			@close="closeDeleteDialog"
+			@confirm="deleteCollection"
+		>
+		</delete-collection-dialog>
+
+		<cdx-message
+			v-if="deleteError"
+			type="error"
+			class="reading-lists-delete-error">
+			{{ deleteError }}
+		</cdx-message>
+
 		<navigation-bar
 			v-if="showNavBar"
 			:is-custom-list="isCustomList"
-			@create-collection="showCollectionNameDialog = true"
+			@create-collection="openCollectionNameDialog"
+			@rename-collection="openCollectionNameDialog( true )"
+			@delete-collection="showDeleteCollection = true"
 		>
 		</navigation-bar>
 
@@ -35,7 +56,7 @@
 			v-if="isCollections"
 			:collections="entries"
 			:loading-entries="loadingEntries"
-			@create-collection="showCollectionNameDialog = true"
+			@create-collection="openCollectionNameDialog"
 		></all-collections>
 
 		<collection
@@ -62,12 +83,14 @@ const { useRouter } = require( 'vue-router' );
 const { storeToRefs } = require( 'pinia' );
 const { useReadingListsStore } = require( '../store.js' );
 
-const { useIsMobileResolution, getCollectionUrl, CollectionNameDialog } = require( 'ext.readingLists.common' );
+const { useIsMobileResolution, getCollectionUrl, CollectionNameDialog, actions } = require( 'ext.readingLists.common' );
 const api = require( 'ext.readingLists.api' );
 
+const { actionSaveCustomList, actionSettingsDeleteConfirmClick } = actions;
 const { CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
 const AllCollections = require( '../components/AllCollections.vue' );
 const Collection = require( '../components/Collection.vue' );
+const DeleteCollectionDialog = require( '../components/DeleteCollectionDialog.vue' );
 const NavigationBar = require( '../components/NavigationBar.vue' );
 const Survey = require( '../components/Survey.vue' );
 
@@ -80,6 +103,7 @@ module.exports = exports = {
 		CdxMessage,
 		CdxProgressBar,
 		CollectionNameDialog,
+		DeleteCollectionDialog,
 		AllCollections,
 		Collection,
 		NavigationBar,
@@ -134,6 +158,10 @@ module.exports = exports = {
 		const isListView = useIsMobileResolution();
 		const collectionRef = ref();
 		const showCollectionNameDialog = ref( false );
+		const isRename = ref( false );
+		const showDeleteCollection = ref( false );
+		const isDeletingCollection = ref( false );
+		const deleteError = ref( '' );
 
 		const showInPageTitle = computed( () => {
 			if ( props.imported ) {
@@ -292,9 +320,53 @@ module.exports = exports = {
 		}
 
 		function routeToNewCollection( id, name ) {
+			actionSaveCustomList();
 			const collectionUrl = getCollectionUrl( id, name, true );
 			router.push( collectionUrl );
 			showCollectionNameDialog.value = false;
+			isRename.value = false;
+		}
+
+		function openCollectionNameDialog( rename = false ) {
+			showCollectionNameDialog.value = true;
+			isRename.value = rename;
+		}
+
+		function closeDeleteDialog() {
+			if ( !isDeletingCollection.value ) {
+				showDeleteCollection.value = false;
+			}
+		}
+
+		async function onCollectionDeleted( collectionName ) {
+			const allItemsUrl = getCollectionUrl( undefined, undefined, true );
+
+			// if mobile resolution, redirect to all collections or otherwise all items
+			await router.push( isListView.value ? allItemsUrl + '/collections' : allItemsUrl );
+			mw.notify(
+				mw.msg( 'readinglists-customlists-delete-collection-success', collectionName ),
+				{ type: 'notice' }
+			);
+		}
+
+		async function deleteCollection() {
+			const collectionName = title.value;
+			isDeletingCollection.value = true;
+			deleteError.value = '';
+			try {
+				actionSettingsDeleteConfirmClick();
+				await api.deleteList( props.listId );
+				await onCollectionDeleted( collectionName );
+			} catch ( err ) {
+				mw.errorLogger.logError(
+					err instanceof Error ? err : new Error( `Failed to delete collection: ${ err }` ),
+					'error.readinglists'
+				);
+				deleteError.value = mw.msg( 'readinglists-customlists-delete-collection-error' );
+			} finally {
+				isDeletingCollection.value = false;
+				showDeleteCollection.value = false;
+			}
 		}
 
 		onMounted( async () => {
@@ -326,7 +398,14 @@ module.exports = exports = {
 			onShowMore,
 			onSurveyCompleted,
 			showCollectionNameDialog,
-			routeToNewCollection
+			isRename,
+			routeToNewCollection,
+			openCollectionNameDialog,
+			showDeleteCollection,
+			isDeletingCollection,
+			deleteError,
+			closeDeleteDialog,
+			deleteCollection
 		};
 	}
 };

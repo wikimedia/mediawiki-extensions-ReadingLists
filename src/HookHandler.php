@@ -5,7 +5,6 @@ namespace MediaWiki\Extension\ReadingLists;
 use MediaWiki\Api\ApiQuerySiteinfo;
 use MediaWiki\Api\Hook\APIQuerySiteInfoGeneralInfoHook;
 use MediaWiki\Config\Config;
-use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\BetaFeatures\BetaFeatures;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupResult;
 use MediaWiki\Extension\ReadingLists\Service\BookmarkEntryLookupService;
@@ -15,7 +14,6 @@ use MediaWiki\Skin\Hook\SkinTemplateNavigation__UniversalHook;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\CentralId\CentralIdLookupFactory;
-use MediaWiki\User\Options\UserOptionsManager;
 use MediaWiki\User\UserIdentity;
 use MediaWiki\User\UserIdentityUtils;
 use Wikimedia\ArrayUtils\ArrayUtils;
@@ -37,7 +35,6 @@ class HookHandler implements
 	public function __construct(
 		private readonly Config $config,
 		private readonly BookmarkEntryLookupService $bookmarkEntryLookupService,
-		private readonly UserOptionsManager $userOptionsManager,
 		private readonly CentralIdLookupFactory $centralIdLookupFactory,
 		private readonly UserIdentityUtils $userIdentityUtils
 	) {
@@ -57,13 +54,13 @@ class HookHandler implements
 		}
 
 		$user = $sktemplate->getUser();
+		$skinName = $sktemplate->getSkinName();
 		$readingListsEnabledForUser = $this->isReadingListsEnabledForUser( $user );
 		$inAccountCreationCta = !$user->isRegistered() &&
-			$sktemplate->getSkinName() === 'minerva' &&
-			$this->config->get( 'ReadingListsMinervaCTA' );
+			$this->isAnonymousCtaEnabledForSkin( $skinName );
 
 		// Show bookmark to logged-in opted into ReadingList
-		// Show bookmark to logged-out users in MinervaNeue when account creation CTA is enabled
+		// Show bookmark to logged-out users in MinervaNeue & Vector 2022 when account creation CTA is enabled
 		if ( $readingListsEnabledForUser ) {
 			$this->addSpecialPageLinkToUserMenu( $user, $sktemplate, $links );
 		} elseif ( !$inAccountCreationCta ) {
@@ -197,6 +194,25 @@ class HookHandler implements
 	}
 
 	/**
+	 * Whether logged-out users should see the account-creation bookmark CTA.
+	 * The CTA module is ext.readingLists.bookmark.anonymous.
+	 *
+	 * @param string $skinName
+	 * @return bool
+	 */
+	private function isAnonymousCtaEnabledForSkin( string $skinName ): bool {
+		if ( $skinName === 'minerva' ) {
+			return $this->config->get( 'ReadingListsMinervaCTA' );
+		}
+
+		if ( $skinName === 'vector-2022' ) {
+			return $this->config->get( 'ReadingListsVector2022CTA' );
+		}
+
+		return false;
+	}
+
+	/**
 	 * Show the reading list and bookmark if the skin is Vector 2022 or Minerva.
 	 * @see https://phabricator.wikimedia.org/T395332
 	 * @param string $skinName
@@ -232,39 +248,6 @@ class HookHandler implements
 	/** @inheritDoc */
 	public function onResourceLoaderGetConfigVars( array &$vars, $skin, Config $config ): void {
 		$vars['wgReadingListsEnableBetaQuickSurvey'] = $this->isBetaSurveyEnabled();
-	}
-
-	/** @inheritDoc */
-	public function onCentralAuthPostLoginRedirect(
-		string &$returnTo,
-		string &$returnToQuery,
-		bool $_unused1,
-		string $type,
-		string &$_unused2
-	): bool {
-		$returnToQueryArray = wfCgiToArray( $returnToQuery );
-		$isFromReadingListsAccountCreationCta = array_key_exists(
-			'readingListsAccountCreationCta',
-			$returnToQueryArray
-		);
-		unset( $returnToQueryArray['readingListsAccountCreationCta'] );
-
-		// If the URL parameter is present, the user came from the account creation CTA.
-		if ( $isFromReadingListsAccountCreationCta ) {
-			// For the account creation reading list cta, add a URL parameter that will
-			// be used to send an account_created event.
-			$returnToQueryArray['readingListsAccountJustCreated'] = '1';
-
-			// Turn off the homepage mobile discovery popover from GrowthExperiments.
-			$user = RequestContext::getMain()->getUser();
-			if ( $user && $user->isRegistered() ) {
-				$this->userOptionsManager->setOption( $user, 'homepage_mobile_discovery_notice_seen', 1 );
-				$this->userOptionsManager->saveOptions( $user );
-			}
-		}
-
-		$returnToQuery = wfArrayToCgi( $returnToQueryArray );
-		return true;
 	}
 
 	/**

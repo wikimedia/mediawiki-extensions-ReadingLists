@@ -3,23 +3,16 @@
  */
 
 const { createMwApp } = require( 'vue' );
-const CtaDialog = require( './CtaDialog.vue' );
+const BookmarkCta = require( './BookmarkCta.vue' );
 const { initializePulsatingDot } = require( './pulsatingDot.js' );
+const BOOKMARK_SELECTOR = '#ca-bookmark, #ca-bookmark-more';
 
-// Note that this is currently MinervaNeue-specific.
-const bookmark = document.getElementById( 'ca-bookmark' );
-
-if ( !bookmark ) {
-	throw new Error( 'Bookmark not found' );
-}
-
-initializePulsatingDot();
-
-function launchCtaDialog() {
+function launchBookmarkCta( bookmark ) {
 	const container = document.createElement( 'div' );
 	document.body.appendChild( container );
 
-	const app = createMwApp( CtaDialog, {
+	const app = createMwApp( BookmarkCta, {
+		anchor: bookmark,
 		onClose: () => cleanup()
 	} );
 	app.mount( container );
@@ -30,7 +23,28 @@ function launchCtaDialog() {
 	}
 }
 
-bookmark.addEventListener( 'click', ( event ) => {
+function onBookmarkClick( event ) {
+	const bookmark = event.target.closest( BOOKMARK_SELECTOR );
+	if ( !bookmark ) {
+		return;
+	}
 	event.preventDefault();
-	launchCtaDialog();
-} );
+	launchBookmarkCta( bookmark );
+}
+
+function init() {
+	const bookmark = document.querySelector( BOOKMARK_SELECTOR );
+	if ( !bookmark ) {
+		throw new Error( 'Bookmark not found' );
+	}
+
+	initializePulsatingDot();
+	document.documentElement.addEventListener( 'click', onBookmarkClick );
+}
+
+if ( typeof vitest === 'undefined' ) {
+	init();
+}
+module.exports = {
+	init
+};

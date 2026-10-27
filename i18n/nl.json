@@ -54,7 +54,7 @@
 	"special-tab-readinglists-short": "Uw lijsten",
 	"readinglists-title": "Opgeslagen pagina’s",
 	"readinglists-total-lists": "$1 lijst{{PLURAL:$1||en}}",
-	"readinglists-total-articles": "$1 {{PLURAL:$1|pagina|pagina's}}",
+	"readinglists-total-articles": "$1 {{PLURAL:$1|item|items}}",
 	"readinglists-show-more": "Meer items weergeven",
 	"readinglists-default-title": "opgeslagen items",
 	"readinglists-default-description": "De standaardlijst voor uw opgeslagen pagina's.",
@@ -93,6 +93,7 @@
 	"tooltip-ca-bookmark-add": "Deze pagina toevoegen aan uw opgeslagen items",
 	"tooltip-ca-bookmark-remove": "Deze pagina verwijderen uit uw opgeslagen items",
 	"readinglists-bookmark": "Bladwijzer",
+	"readinglists-customlists-collection-name-dialog-save": "Opslaan",
 	"readinglists-add-bookmark": "Opslaan",
 	"readinglists-remove-bookmark": "Verwijderen",
 	"readinglists-unsave-from-custom-list-title": "Van alle leeslijsten verwijderen?",
@@ -122,5 +123,6 @@
 	"readinglists-customlists-allitems": "Alle items",
 	"readinglists-customlists-collections": "Verzamelingen",
 	"readinglists-customlists-no-collections": "U heeft geen verzamelingen",
-	"readinglists-customlists-create-collection": "nieuwe verzameling maken"
+	"readinglists-customlists-create-collection": "nieuwe verzameling maken",
+	"readinglists-customlists-delete-collection-dialog-cancel": "Annuleren"
 }

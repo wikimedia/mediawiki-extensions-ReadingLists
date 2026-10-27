@@ -12,8 +12,6 @@ use MediaWiki\Output\OutputPage;
 use MediaWiki\Skin\SkinTemplate;
 use MediaWiki\Title\Title;
 use MediaWiki\User\CentralId\CentralIdLookupFactory;
-use MediaWiki\User\Options\UserOptionsManager;
-use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
 use MediaWiki\User\UserIdentityUtils;
 
@@ -29,13 +27,11 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 
 	private function createHookHandler(
 		?Config $config = null,
-		?UserOptionsManager $userOptionsManager = null,
 		?UserIdentityUtils $userIdentityUtils = null
 	): HookHandler {
 		return new HookHandler(
 			$config ?? $this->createMock( Config::class ),
 			$this->createMock( BookmarkEntryLookupService::class ),
-			$userOptionsManager ?? $this->createMock( UserOptionsManager::class ),
 			$this->createMock( CentralIdLookupFactory::class ),
 			$userIdentityUtils ?? $this->createMock( UserIdentityUtils::class )
 		);
@@ -110,7 +106,7 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 
 		$skin = $this->createSkinTemplate( 'minerva', $user, $output );
 		$links = $this->getLinks();
-		$this->createHookHandler( $config, null, $userIdentityUtils )
+		$this->createHookHandler( $config, $userIdentityUtils )
 			->onSkinTemplateNavigation__Universal( $skin, $links );
 
 		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
@@ -122,6 +118,7 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 			'ReadingListsEnabled' => false,
 			'ReadingListBetaFeature' => false,
 			'ReadingListsMinervaCTA' => true,
+			'ReadingListsVector2022CTA' => false,
 		] );
 		$user = $this->createMock( UserIdentity::class );
 		$user->method( 'isRegistered' )->willReturn( false );
@@ -130,11 +127,41 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 
 		$skin = $this->createSkinTemplate( 'vector-2022', $user );
 		$links = $this->getLinks();
-		$this->createHookHandler( $config, null, $userIdentityUtils )
+		$this->createHookHandler( $config, $userIdentityUtils )
 			->onSkinTemplateNavigation__Universal( $skin, $links );
 
 		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
 		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
+	}
+
+	public function testBookmarkIconButtonAddedForMainNamespacePageWithVectorCTA(): void {
+		$config = new HashConfig( [
+			'ReadingListsEnabled' => false,
+			'ReadingListBetaFeature' => false,
+			'ReadingListsVector2022CTA' => true,
+		] );
+		$user = $this->createMock( UserIdentity::class );
+		$user->method( 'isRegistered' )->willReturn( false );
+		$userIdentityUtils = $this->createMock( UserIdentityUtils::class );
+		$userIdentityUtils->method( 'isTemp' )->willReturn( false );
+
+		$title = $this->createMock( Title::class );
+		$title->method( 'getNamespace' )->willReturn( NS_MAIN );
+		$title->method( 'isContentPage' )->willReturn( true );
+		$output = $this->createMock( OutputPage::class );
+		$output->method( 'isArticle' )->willReturn( true );
+		$output->method( 'getTitle' )->willReturn( $title );
+		$output->expects( $this->once() )
+			->method( 'addModules' )
+			->with( 'ext.readingLists.bookmark.anonymous' );
+
+		$skin = $this->createSkinTemplate( 'vector-2022', $user, $output );
+		$links = $this->getLinks();
+		$this->createHookHandler( $config, null, $userIdentityUtils )
+			->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
+		$this->assertArrayHasKey( 'bookmark', $links['views'] );
 	}
 
 	public function testBookmarkNotAddedForUnsupportedSkin(): void {
@@ -147,44 +174,5 @@ class HookHandlerTest extends \MediaWikiUnitTestCase {
 
 		$this->assertArrayNotHasKey( 'readinglists', $links['user-menu'] );
 		$this->assertArrayNotHasKey( 'bookmark', $links['views'] );
-	}
-
-	public function testCentralAuthPostLoginRedirectAddsReadingListsAccountJustCreatedForSignup(): void {
-		$user = $this->createMock( User::class );
-		$user->method( 'isRegistered' )->willReturn( true );
-		RequestContext::getMain()->setUser( $user );
-
-		$userOptionsManager = $this->createMock( UserOptionsManager::class );
-		$userOptionsManager->expects( $this->once() )
-			->method( 'setOption' )
-			->with( $user, 'homepage_mobile_discovery_notice_seen', 1 );
-		$userOptionsManager->expects( $this->once() )
-			->method( 'saveOptions' )
-			->with( $user );
-		$hookHandler = $this->createHookHandler( null, $userOptionsManager );
-
-		$returnTo = 'Taco';
-		$returnToQuery = 'readingListsAccountCreationCta=1&foo=bar';
-		$unused = '';
-
-		$this->assertTrue(
-			$hookHandler->onCentralAuthPostLoginRedirect(
-				$returnTo,
-				$returnToQuery,
-				false,
-				'signup',
-				$unused
-			)
-		);
-
-		$this->assertSame( 'Taco', $returnTo );
-		$this->assertSame( '', $unused );
-		$this->assertSame(
-			[
-				'foo' => 'bar',
-				'readingListsAccountJustCreated' => '1',
-			],
-			wfCgiToArray( $returnToQuery )
-		);
 	}
 }

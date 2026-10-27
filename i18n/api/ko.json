@@ -83,11 +83,13 @@
 	"apihelp-readinglists+createentry-example-2": "여러 문서를 목록에 추가합니다.",
 	"apihelp-readinglists+deleteentry-summary": "현재 사용자에 속하는 목록의 문서를 삭제합니다.",
 	"apihelp-readinglists+deleteentry-param-entry": "엔트리 ID입니다. 일괄 삭제가 아니라면 필수입니다.",
-	"apihelp-readinglists+deleteentry-param-project": "페이지를 호스팅하는 위키의 프로젝트 이름입니다. 반드시 <var>$1title</var>과 함께 사용해야 합니다. 지정된 프로젝트와 제목에 해당하는 모든 항목을 삭제합니다.",
+	"apihelp-readinglists+deleteentry-param-project": "페이지를 호스팅하는 위키의 프로젝트 이름입니다. 반드시 <var>$1title</var>과 함께 사용해야 합니다. <var>$1list</var>가 같이 주어지지 않는 이상 지정된 프로젝트와 제목에 해당하는 모든 항목을 삭제합니다.",
 	"apihelp-readinglists+deleteentry-param-title": "삭제할 문서 제목입니다. <var>$1project</var>와 함께 사용되어야 합니다.",
+	"apihelp-readinglists+deleteentry-param-list": "목록 ID입니다. 이 목록에서만 문서를 삭제합니다. <var>$1project</var> 및 <var>$1title</var>과 함께 사용해야 합니다.",
 	"apihelp-readinglists+deleteentry-param-batch": "여러 목록을 한 요청만에 삭제하기 위한 일괄 데이터입니다. 데이터는 <var>entry/var> 필드를 가진 하나 이상의 객체가 포함된 JSON 배열 형식입니다.",
 	"apihelp-readinglists+deleteentry-example-1": "ID <kbd>8</kbd>의 목록 엔트리를 삭제합니다.",
 	"apihelp-readinglists+deleteentry-example-2": "여러 목록 항목을 삭제합니다.",
 	"apihelp-readinglists+deleteentry-example-3": "<kbd>en.wikipedia.org</kbd> 프로젝트에서 <kbd>Dog</kbd> 문서의 모든 항목을 삭제합니다.",
-	"apihelp-readinglists+deleteentry-example-4": "<kbd>@local</kbd> 프로젝트에서 <kbd>Garfield the Cat</kbd> 문서의 모든 항목을 삭제합니다."
+	"apihelp-readinglists+deleteentry-example-4": "<kbd>@local</kbd> 프로젝트에서 <kbd>Garfield the Cat</kbd> 문서의 모든 항목을 삭제합니다.",
+	"apihelp-readinglists+deleteentry-example-5": "ID가 <kbd>42</kbd>인 목록에서 <kbd>@local</kbd> 프로젝트의 <kbd>Cat</kbd> 문서만 삭제합니다."
 }

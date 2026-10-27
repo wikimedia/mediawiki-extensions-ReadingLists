@@ -4,6 +4,16 @@ const origin = window.location.protocol + '//' + window.location.hostname;
 const CACHE_LIFETIME_SECONDS = 60 * 20; // 20 minutes
 
 /**
+ * @typedef {Object} Collection
+ * @property {number} id
+ * @property {boolean} [default]
+ *
+ * @typedef {Object} CollectionWithTitle
+ * @extends Collection
+ * @property {boolean} withTitle
+ */
+
+/**
  * Enroll the current user in the reading list feature.
  *
  * @return {Promise<any>}
@@ -133,6 +143,39 @@ async function getListsAll() {
 	// store for 20 minutes until invalidated.
 	session.set( cacheKey, JSON.stringify( lists ), CACHE_LIFETIME_SECONDS );
 	return lists.filter( ( list ) => !list.default );
+}
+
+/**
+ * Retrieves all lists with a given title, including the default list.
+ *
+ * @param {string} title
+ * @return {Promise<CollectionWithTitle[]>}
+ */
+async function getListsWithTitle( title ) {
+	/**
+	 * @param {string|null} next
+	 * @return {CollectionWithTitle[]}
+	 */
+	const getListsWithTitleFromApi = async ( next = null ) => {
+		const response = await api.get( {
+			action: 'query',
+			meta: 'readinglists',
+			rlproject: '@local',
+			rltitle: title,
+			rllimit: 'max',
+			rlcontinue: next || undefined,
+			formatversion: 2
+		} );
+		const rlcontinue = response.continue && response.continue.rlcontinue || null;
+		const readinglists = response.query.readinglists;
+		if ( rlcontinue ) {
+			const morelists = await getListsWithTitleFromApi( rlcontinue );
+			return readinglists.concat( morelists );
+		} else {
+			return readinglists;
+		}
+	};
+	return getListsWithTitleFromApi();
 }
 
 /**
@@ -393,16 +436,22 @@ function deleteEntry( entryId ) {
  * Delete all entries for a given page title on the local project.
  *
  * @param {string} title
+ * @param {string|undefined} [listId] Optional list ID to limit the
+ *  deletion to a specific list. If not passed item is deleted from all lists.
  * @return {Promise<any>}
  */
-function deleteEntryByPageTitle( title ) {
-	return api.postWithEditToken( {
+function deleteEntryByPageTitle( title, listId ) {
+	const args = {
 		action: 'readinglists',
 		command: 'deleteentry',
 		title,
 		project: '@local',
 		formatversion: 2
-	} );
+	};
+	if ( listId ) {
+		args.list = listId;
+	}
+	return api.postWithEditToken( args );
 }
 
 /**
@@ -523,6 +572,7 @@ module.exports = exports = {
 	updateList,
 	deleteList,
 	getListsAll,
+	getListsWithTitle,
 	getLists,
 	getList,
 	getEntries,

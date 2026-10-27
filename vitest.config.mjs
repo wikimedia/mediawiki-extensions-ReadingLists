@@ -1,7 +1,6 @@
-import { resolve } from 'node:path';
-
 import MagicString from 'magic-string';
 import { defineConfig } from 'vitest/config';
+import { resolve } from 'node:path';
 import vue from '@vitejs/plugin-vue';
 
 // The plugins below edit through MagicString and return its source map, so that coverage and
@@ -208,14 +207,14 @@ export default defineConfig( {
 				replacement: '@wikimedia/codex-icons'
 			},
 			{
-				// Jest: `'^mediawiki\\.storage$'` → tests/jest/mediawiki.storage.mock.js.
+				// Jest: `'^mediawiki\\.storage$'` → tests/unit-js/mediawiki.storage.mock.js.
 				find: /^mediawiki\.storage$/,
-				replacement: resolve( import.meta.dirname, 'tests/jest/mediawiki.storage.mock.js' )
+				replacement: resolve( import.meta.dirname, 'tests/unit-js/mediawiki.storage.mock.js' )
 			},
 			{
-				// Jest: `'^vue-router$': '<rootDir>/tests/jest/vueRouterStub.js'`.
+				// Jest: `'^vue-router$': '<rootDir>/tests/unit-js/vueRouterStub.js'`.
 				find: /^vue-router$/,
-				replacement: resolve( import.meta.dirname, 'tests/jest/vueRouterStub.js' )
+				replacement: resolve( import.meta.dirname, 'tests/unit-js/vueRouterStub.js' )
 			}
 		]
 	},
@@ -227,7 +226,8 @@ export default defineConfig( {
 		// Jest: `verbose: true`.
 		reporters: [ 'verbose' ],
 
-		// Jest: globals like `describe`, `test`, `expect`, `vi` without imports.
+		// Keeps Wikimedia's Jest convention of ambient `describe`, `test`, `expect`, `vi`.
+		// Declare any newly used global in tests/unit-js/.eslintrc.json.
 		globals: true,
 
 		// Jest: `clearMocks: true`.
@@ -235,10 +235,9 @@ export default defineConfig( {
 
 		setupFiles: [ './vitest.setup.js' ],
 
-		// Jest: `collectCoverage: true`, `collectCoverageFrom`, `coverageDirectory`,
+		// Jest: `collectCoverageFrom`, `coverageDirectory`,
 		//  `coveragePathIgnorePatterns`, `coverageThreshold`.
 		coverage: {
-			enabled: true,
 			// Use Istanbul for equal output coverage instrumentation.
 			provider: 'istanbul',
 			reportsDirectory: 'coverage',

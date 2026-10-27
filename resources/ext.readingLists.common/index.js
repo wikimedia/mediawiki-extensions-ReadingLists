@@ -3,12 +3,16 @@ const CreateCollectionButton = require( './CreateCollectionButton.vue' );
 const CollectionNameDialog = require( './CollectionNameDialog.vue' );
 const DialogPopover = require( './DialogPopover.vue' );
 const { useIsMobileResolution, useIsAboveMobileResolution, MAX_WIDTH_MOBILE } = require( './composables.js' );
+const actions = require( './actions.js' );
 
 // Canonical base URL of this special page, e.g. "/wiki/Special:ReadingLists".
 // wgCanonicalSpecialPageName is the bare name ("ReadingLists") without the
 // namespace, so we prepend the canonical "Special:" prefix to build a path that
 // matches the links the app renders (mw.util.getUrl( 'Special:ReadingLists/…' )).
-const collectionsBaseUrl = `Special:${ mw.config.get( 'wgCanonicalSpecialPageName' ) || 'ReadingLists' }`;
+const getCollectionsBaseUrl = ( pageName ) => `${ pageName.split( '/' )[ 0 ] }`;
+const collectionsBaseUrl = mw.config.get( 'wgCanonicalSpecialPageName' ) === 'ReadingLists' ?
+	getCollectionsBaseUrl( mw.config.get( 'wgPageName' ) ) :
+	'Special:ReadingLists';
 
 function getCollectionUrl( listId, listName, isRelative = false ) {
 	const isAllCollectionsPage = !listId || !listName;
@@ -22,6 +26,8 @@ function getCollectionUrl( listId, listName, isRelative = false ) {
 }
 
 module.exports = {
+	getCollectionsBaseUrl,
+	actions,
 	MAX_WIDTH_MOBILE,
 	useIsMobileResolution,
 	useIsAboveMobileResolution,

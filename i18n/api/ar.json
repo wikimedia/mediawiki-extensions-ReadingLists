@@ -80,11 +80,13 @@
 	"apihelp-readinglists+createentry-example-2": "أضف صفحات متعددة إلى قائمة.",
 	"apihelp-readinglists+deleteentry-summary": "حذف صفحة من قائمة تنتمي إلى المستخدم الحالي.",
 	"apihelp-readinglists+deleteentry-param-entry": "معرف الإدخال، مطلوب ما لم يُستخدَم حذف دفعة.",
-	"apihelp-readinglists+deleteentry-param-project": "اسم مشروع الويكي الذي يستضيف الصفحة. يجب استخدامه مع <var>العنوان $1</var> . يحذف جميع الإدخالات المطابقة للمشروع والعنوان المحددين.",
+	"apihelp-readinglists+deleteentry-param-project": "اسم مشروع الويكي الذي يستضيف الصفحة. يجب استخدامه مع <var>العنوان $1</var> . يحذف جميع الإدخالات المطابقة للمشروع والعنوان المحددين، إلا إذا تم تحديد <var>قائمة $1</var> أيضًا.",
 	"apihelp-readinglists+deleteentry-param-title": "عنوان الصفحة المراد حذفه. يجب استخدامه مع <var>مشروع $1</var> .",
+	"apihelp-readinglists+deleteentry-param-list": "معرّف القائمة. احذف الصفحة فقط من هذه القائمة. يجب استخدامه مع <var>مشروع $1</var> <var>وعنوان بقيمة $1</var> .",
 	"apihelp-readinglists+deleteentry-param-batch": "بيانات مجمعة لحذف إدخالات قوائم متعددة في طلب واحد، في شكل مصفوفة JSON مع كائن أو أكثر مع حقل <var>entry</var>.",
 	"apihelp-readinglists+deleteentry-example-1": "حذف إدخال القائمة بالمعرف <kbd>8</kbd>.",
 	"apihelp-readinglists+deleteentry-example-2": "حذف إدخالات قائمة متعددة.",
 	"apihelp-readinglists+deleteentry-example-3": "احذف جميع الإدخالات الخاصة بصفحة <kbd>\"الكلب\"</kbd> من مشروع <kbd>en.wikipedia.org</kbd> .",
-	"apihelp-readinglists+deleteentry-example-4": "احذف جميع الإدخالات الخاصة بصفحة <kbd>\"غارفيلد القط\"</kbd> من المشروع <kbd>@local</kbd> ."
+	"apihelp-readinglists+deleteentry-example-4": "احذف جميع الإدخالات الخاصة بصفحة <kbd>\"غارفيلد القط\"</kbd> من المشروع <kbd>@local</kbd> .",
+	"apihelp-readinglists+deleteentry-example-5": "احذف صفحة <kbd>Cat</kbd> من مشروع <kbd>@local</kbd> فقط من القائمة التي تحمل المعرف <kbd>42</kbd> ."
 }

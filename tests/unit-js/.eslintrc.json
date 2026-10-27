@@ -1,0 +1,25 @@
+{
+	"root": true,
+	"extends": [
+		"../../.eslintrc.json"
+	],
+	"parserOptions": {
+		"sourceType": "module",
+		"ecmaVersion": 2020
+	},
+	"globals": {
+		"OO": "readonly",
+		"afterAll": "readonly",
+		"afterEach": "readonly",
+		"beforeAll": "readonly",
+		"beforeEach": "readonly",
+		"describe": "readonly",
+		"expect": "readonly",
+		"it": "readonly",
+		"test": "readonly",
+		"vi": "readonly"
+	},
+	"rules": {
+		"es-x/no-dynamic-import": "off"
+	}
+}

@@ -165,8 +165,7 @@
 					"services": [
 						"DBLoadBalancerFactory",
 						"MainConfig",
-						"CentralIdLookup",
-						"ReadingLists.ReverseInterwikiLookup"
+						"CentralIdLookup"
 					]
 				}
 			},
@@ -190,8 +189,7 @@
 					"services": [
 						"DBLoadBalancerFactory",
 						"MainConfig",
-						"CentralIdLookup",
-						"ReadingLists.ReverseInterwikiLookup"
+						"CentralIdLookup"
 					]
 				}
 			},
