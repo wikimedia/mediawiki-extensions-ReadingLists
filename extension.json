@@ -548,6 +548,7 @@
 				"CdxDialog",
 				"CdxButton",
 				"CdxTextInput",
+				"CdxMessage",
 				"useModelWrapper",
 				"useResizeObserver"
 			],
@@ -560,7 +561,10 @@
 				"readinglists-customlists-collection-name-dialog-title",
 				"readinglists-customlists-collection-name-dialog-placeholder",
 				"readinglists-customlists-collection-name-dialog-save",
-				"readinglists-customlists-create-collection-short"
+				"readinglists-customlists-create-collection-short",
+				"readinglists-db-error-empty-name",
+				"readinglists-db-error-duplicate-list",
+				"readinglists-browser-error"
 			],
 			"packageFiles": [
 				"resources/ext.readingLists.common/index.js",
