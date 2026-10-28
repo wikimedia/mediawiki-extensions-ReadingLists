@@ -34,7 +34,7 @@ describe.each( [
 	} );
 
 	it.each( [
-		[ 'readinglists-db-error-empty-name', '   ', 'readinglists-db-error-empty-name', true ],
+		[ 'readinglists-db-error-empty-name', 'Dogs', 'readinglists-db-error-empty-name', true ],
 		[ 'http', 'Dogs', 'readinglists-browser-error', false ],
 		[ 'unknown-error', 'Dogs', 'readinglists-browser-error', false ]
 	] )( 'shows a visible error for %s and retains the input', async ( code, name, messageKey, isError ) => {
@@ -69,7 +69,7 @@ describe.each( [
 
 	it( 'clears the validation error when the name changes', async () => {
 		postWithEditToken.mockRejectedValueOnce( 'readinglists-db-error-empty-name' );
-		await wrapper.get( 'input' ).setValue( '   ' );
+		await wrapper.get( 'input' ).setValue( 'Cats' );
 		await wrapper.vm.saveCollection();
 		expect( wrapper.find( '[role="alert"]' ).exists() ).toBe( true );
 
@@ -123,6 +123,69 @@ describe.each( [
 
 		resolveSave( { create: { id: 42 } } );
 		await saving;
+		expect( wrapper.emitted( 'success' ) ).toEqual( [ [ expectedId, 'Dogs' ] ] );
+	} );
+
+	it.each( [ '', '   ', '\t', '\u00a0', '\u3000', '\ufeff' ] )(
+		'disables Save and blocks submission for blank input %j',
+		async ( name ) => {
+			await wrapper.get( 'input' ).setValue( name );
+
+			expect( wrapper.getComponent( dialogPopoverStub ).props( 'primaryAction' ).disabled )
+				.toBe( true );
+
+			await wrapper.vm.saveCollection();
+
+			expect( postWithEditToken ).not.toHaveBeenCalled();
+			expect( wrapper.emitted( 'success' ) ).toBeUndefined();
+			expect( wrapper.emitted( 'update:open' ) ).toBeUndefined();
+		}
+	);
+
+	it.each( [
+		[ 'Dogs', 'Dogs' ],
+		[ '0', '0' ],
+		[ ' Cats ', 'Cats' ],
+		[ '\u00a0Cats\u3000', 'Cats' ],
+		[ '  Big  cats  ', 'Big  cats' ]
+	] )(
+		'enables Save and submits and emits the trimmed name for %j',
+		async ( input, name ) => {
+			await wrapper.get( 'input' ).setValue( input );
+
+			expect( wrapper.getComponent( dialogPopoverStub ).props( 'primaryAction' ).disabled )
+				.toBe( false );
+
+			await wrapper.vm.saveCollection();
+
+			expect( postWithEditToken ).toHaveBeenCalledTimes( 1 );
+			expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( {
+				action: 'readinglists',
+				command,
+				name,
+				...( isRename ? { list: 7 } : {} )
+			} ) );
+			expect( wrapper.emitted( 'success' ) ).toEqual( [ [ expectedId, name ] ] );
+			expect( wrapper.emitted( 'update:open' ) ).toEqual( [ [ false ] ] );
+		}
+	);
+
+	it( 'emits the submitted name if the input changes while saving', async () => {
+		let resolveSave;
+		postWithEditToken.mockImplementation( () => new Promise( ( resolve ) => {
+			resolveSave = resolve;
+		} ) );
+		await wrapper.get( 'input' ).setValue( ' Dogs ' );
+		const saving = wrapper.vm.saveCollection();
+
+		// Change component state directly because the input is disabled while saving.
+		wrapper.vm.collectionName = 'Cats';
+		await wrapper.vm.$nextTick();
+		expect( wrapper.emitted( 'success' ) ).toBeUndefined();
+		resolveSave( { create: { id: 42 } } );
+		await saving;
+
+		expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( { name: 'Dogs' } ) );
 		expect( wrapper.emitted( 'success' ) ).toEqual( [ [ expectedId, 'Dogs' ] ] );
 	} );
 } );

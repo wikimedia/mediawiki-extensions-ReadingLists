@@ -63,6 +63,7 @@ module.exports = exports = {
 	setup( props, { emit } ) {
 		const isOpen = ref( true );
 		const collectionName = ref( props.isRename ? props.title : '' );
+		const normalizedCollectionName = computed( () => collectionName.value.trim() );
 		const isSaving = ref( false );
 		const error = ref( '' );
 		const isError = ref( false );
@@ -93,11 +94,11 @@ module.exports = exports = {
 		};
 
 		const saveCollection = async () => {
-			if ( isSaving.value ) {
+			const name = normalizedCollectionName.value;
+			if ( isSaving.value || name === '' ) {
 				return;
 			}
 
-			const name = collectionName.value;
 			clearError();
 			isSaving.value = true;
 			try {
@@ -117,7 +118,7 @@ module.exports = exports = {
 		const primaryAction = computed( () => ( {
 			label: mw.msg( 'readinglists-customlists-collection-name-dialog-save' ),
 			actionType: 'progressive',
-			disabled: isSaving.value || !collectionName.value
+			disabled: isSaving.value || normalizedCollectionName.value === ''
 		} ) );
 
 		const placeholder = mw.msg( 'readinglists-customlists-collection-name-dialog-placeholder' );
