@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extension\ReadingLists\Tests\Api;
 
+use MediaWiki\Api\ApiUsageException;
 use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
 
@@ -73,6 +74,24 @@ class ApiReadingListsCreateTest extends ApiTestCase {
 					'Meow!'
 				],
 			],
+		];
+	}
+
+	/**
+	 * @dataProvider provideBlankNameParams
+	 */
+	public function testCreateBlankName( array $params ) {
+		$this->expectException( ApiUsageException::class );
+		$this->expectExceptionMessage( 'The list name cannot be empty or contain only whitespace.' );
+		$this->doApiRequestWithToken( $this->apiParams + $params, null, $this->user );
+	}
+
+	public static function provideBlankNameParams() {
+		return [
+			'empty name' => [ [ 'name' => '' ] ],
+			'whitespace name' => [ [ 'name' => " \t\n " ] ],
+			'empty name in batch' => [ [ 'batch' => json_encode( [ [ 'name' => '' ] ] ) ] ],
+			'whitespace name in batch' => [ [ 'batch' => json_encode( [ [ 'name' => '   ' ] ] ) ] ],
 		];
 	}
 

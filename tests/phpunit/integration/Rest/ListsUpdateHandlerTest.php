@@ -63,7 +63,7 @@ class ListsUpdateHandlerTest extends \MediaWikiIntegrationTestCase {
 	/**
 	 * @dataProvider updateFailureProvider
 	 */
-	public function testListsUpdateFailure( $id, $bodyParams ) {
+	public function testListsUpdateFailure( $id, $bodyParams, ?string $errorKey = null ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsUpdateHandler(
 			$services->getDBLoadBalancerFactory(),
@@ -76,6 +76,10 @@ class ListsUpdateHandlerTest extends \MediaWikiIntegrationTestCase {
 		$listId = (int)$list->rl_id;
 
 		$this->expectException( LocalizedHttpException::class );
+		if ( $errorKey !== null ) {
+			$this->expectExceptionMessage( $errorKey );
+			$this->expectExceptionCode( 400 );
+		}
 
 		$request = new RequestData(	[
 			'method' => 'POST',
@@ -93,7 +97,17 @@ class ListsUpdateHandlerTest extends \MediaWikiIntegrationTestCase {
 	public static function updateFailureProvider() {
 		return [
 			'invalid id' => [ 0, [ 'name' => 'dogs', 'description' => 'Woof!' ] ],
-			'no body params' => [ null, [] ]
+			'no body params' => [ null, [] ],
+			'empty name with description' => [
+				null,
+				[ 'name' => '', 'description' => 'New description' ],
+				'readinglists-db-error-empty-name',
+			],
+			'whitespace name' => [
+				null,
+				[ 'name' => " \t\n " ],
+				'readinglists-db-error-empty-name',
+			],
 		];
 	}
 

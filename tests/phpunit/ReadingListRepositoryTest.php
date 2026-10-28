@@ -360,6 +360,53 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		} );
 	}
 
+	/**
+	 * @dataProvider provideBlankListNames
+	 */
+	public function testAddList_blankName( string $name ) {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$this->assertFailsWith( 'readinglists-db-error-empty-name',
+			static fn () => $repository->addList( $name )
+		);
+		$this->assertSame( 1, $this->getDb()->newSelectQueryBuilder()
+			->select( '1' )
+			->from( 'reading_list' )
+			->where( [ 'rl_user_id' => 1 ] )
+			->caller( __METHOD__ )->fetchRowCount() );
+	}
+
+	public static function provideBlankListNames() {
+		return [
+			'empty' => [ '' ],
+			'spaces' => [ '   ' ],
+			'tab and line breaks' => [ "\t\r\n" ],
+			'mixed trim characters' => [ " \t\r\n\0\x0B " ],
+		];
+	}
+
+	/**
+	 * @dataProvider provideValidListNames
+	 */
+	public function testAddList_preservesName( string $name ) {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$list = $repository->addList( $name );
+		$this->assertSame( $name, $list->rl_name );
+	}
+
+	public static function provideValidListNames() {
+		return [
+			'zero' => [ '0' ],
+			'leading and trailing spaces' => [ '  Dogs  ' ],
+			'non-ASCII name' => [ '犬' ],
+		];
+	}
+
 	public function testAddList_count() {
 		$this->addProjects( [ 'dummy' ] );
 		$repository = $this->getReadingListRepository( 1 );
@@ -600,6 +647,48 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				$repository->updateList( $defaultId, 'not default' );
 			}
 		);
+	}
+
+	/**
+	 * @dataProvider provideBlankListNames
+	 */
+	public function testUpdateList_blankName( string $name ) {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+		$list = $repository->addList( 'dogs', 'Woof!' );
+		$listId = (int)$list->rl_id;
+
+		$this->assertFailsWith( 'readinglists-db-error-empty-name',
+			static fn () => $repository->updateList( $listId, $name, 'New description' )
+		);
+		$unchangedList = $repository->selectValidList( $listId );
+		$this->assertSame( 'dogs', $unchangedList->rl_name );
+		$this->assertSame( 'Woof!', $unchangedList->rl_description );
+	}
+
+	/**
+	 * @dataProvider provideValidListNames
+	 */
+	public function testUpdateList_preservesName( string $name ) {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+		$list = $repository->addList( 'original name' );
+
+		$updatedList = $repository->updateList( (int)$list->rl_id, $name );
+		$this->assertSame( $name, $updatedList->rl_name );
+	}
+
+	public function testUpdateList_descriptionOnly() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+		$list = $repository->addList( 'dogs', 'Woof!' );
+
+		$updatedList = $repository->updateList( (int)$list->rl_id, null, 'New description' );
+		$this->assertSame( 'dogs', $updatedList->rl_name );
+		$this->assertSame( 'New description', $updatedList->rl_description );
 	}
 
 	public function testDeleteList() {

@@ -284,7 +284,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 */
 	public function addList( $name, $description = '' ) {
 		$this->assertUser();
-		self::assertFieldLength( 'rl_name', $name );
+		self::assertListName( $name );
 		self::assertFieldLength( 'rl_description', $description );
 		if ( !$this->getDefaultListIdForUser( IDBAccessObject::READ_LOCKING ) ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-not-set-up' );
@@ -412,7 +412,9 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 */
 	public function updateList( $id, $name = null, $description = null ) {
 		$this->assertUser();
-		self::assertFieldLength( 'rl_name', $name );
+		if ( $name !== null ) {
+			self::assertListName( $name );
+		}
 		self::assertFieldLength( 'rl_description', $description );
 		$row = $this->selectValidList( $id, IDBAccessObject::READ_LOCKING );
 		if ( $row->rl_is_default ) {
@@ -1357,6 +1359,17 @@ class ReadingListRepository implements LoggerAwareInterface {
 	private function assertUser() {
 		if ( !is_int( $this->userId ) ) {
 			throw new ReadingListRepositoryException( 'readinglists-db-error-user-required' );
+		}
+	}
+
+	/**
+	 * @param string $name
+	 * @throws ReadingListRepositoryException
+	 */
+	private static function assertListName( string $name ): void {
+		self::assertFieldLength( 'rl_name', $name );
+		if ( trim( $name ) === '' ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-empty-name' );
 		}
 	}
 
