@@ -7,9 +7,12 @@
 			"Rasal Lia",
 			"San1joy23",
 			"Scblr",
-			"আফতাবুজ্জামান"
+			"আফতাবুজ্জামান",
+			"Tausheef Hassan"
 		]
 	},
+	"readinglists-desc": "ব্যবহারকারীরা বুকমার্ক বা \"সংরক্ষিত পাতা\"র তালিকার মতো ব্যক্তিগত আইটেম তৈরি ও পরিচালনা করতে পারবেন।",
+	"readinglists-db-error-not-set-up": "এই ব্যবহারকারীর জন্য এখনো কোনো পঠন তালিকা তৈরি করা হয়নি।",
 	"readinglists-db-error-list-limit": "ব্যবহারকারীদের $1টির বেশী {{PLURAL:$1|তালিকা}} থাকতে পারবে না।",
 	"readinglists-db-error-entry-limit": "$1 তালিকায় $2টির বেশী {{PLURAL:$2|ভুক্তি}} থাকতে পারবে না।",
 	"readinglists-db-error-too-long": "$1 এর মান $2 বাইটের বেশী হতে পারবে না।",
@@ -49,6 +52,8 @@
 	"readinglists-import-disclaimer": "এই সাইটের একজন ব্যবহারকারী (সম্ভবত আপনি) অন্যদের সাথে শেয়ার করার জন্য একটি পঠন তালিকা তৈরি করেছেন। এটি নিয়ন্ত্রিত নয়, এবং এর বিষয়বস্তু সাইটের সম্পাদকদের প্রতিফলিত করে না।",
 	"readinglists-import-button-label": "অ্যাপে খুলুন",
 	"readinglists-import-button-hint": "বোতামে ট্যাপ করুন:",
+	"readinglists-share-url-notify": "এই পঠন তালিকা সম্পর্কিত তথ্য আপনার ক্লিপবোর্ডে অনুলিপি করা হয়েছে।",
+	"readinglists-import-app-launch-hint": "অনুগ্রহ করে নিশ্চিত করুন যে অ্যাপটির সর্বশেষ সংস্করণ ইনস্টল করা আছে।",
 	"readinglists-beta-feature-name": "সংরক্ষিত পাতা",
 	"readinglists-menu-item": "সংরক্ষিত",
 	"tooltip-pt-readinglists": "আপনার সংরক্ষিত আইটেম",
@@ -60,6 +65,7 @@
 	"readinglists-add-bookmark": "সংরক্ষণ করুন",
 	"readinglists-remove-bookmark": "সংরক্ষণ সরান",
 	"readinglists-unsave-from-custom-list-title": "সমস্ত পঠন তালিকা থেকে সরাবেন?",
+	"readinglists-unsave-from-custom-list-body": "এই পাতাটি উইকিপিডিয়ার অ্যাপে আপনার এক বা একাধিক পঠন তালিকায় রয়েছে।",
 	"readinglists-unsave-from-custom-list-confirm": "সরান",
 	"readinglists-unsave-from-custom-list-cancel": "বাতিল",
 	"readinglists-onboarding-close-button": "বন্ধ করুন",
@@ -71,6 +77,7 @@
 	"readinglists-betafeature-quicksurvey-question": "আপনি কি এই বৈশিষ্ট্যটি উপভোগ করছেন?",
 	"readinglists-betafeature-quicksurvey-answer-positive": "হ্যাঁ",
 	"readinglists-betafeature-quicksurvey-answer-negative": "না",
+	"readinglists-betafeature-quicksurvey-question-feedback": "কী কী সুবিধা যোগ করলে এটি আপনার আরও কাজে লাগবে?",
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "আপনার প্রতিক্রিয়া জানান",
 	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement/bn গোপনীয়তার নীতি]",
 	"readinglists-betafeature-quicksurvey-submit": "জমা দিন",
