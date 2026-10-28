@@ -529,7 +529,9 @@ const createList = async ( name ) => {
 	const response = await api.postWithEditToken( {
 		action: 'readinglists',
 		command: 'create',
-		name
+		name,
+		rejectduplicates: true,
+		formatversion: 2
 	} );
 	// Clear cache for all lists
 	exports.invalidateSessionCache( 'all' );
@@ -548,7 +550,8 @@ const updateList = async ( id, name, description ) => {
 		command: 'update',
 		list: id,
 		name,
-		description
+		description,
+		formatversion: 2
 	} );
 	// Clear cache for all lists
 	exports.invalidateSessionCache( 'all' );

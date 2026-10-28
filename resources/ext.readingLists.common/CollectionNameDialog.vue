@@ -9,30 +9,47 @@
 		@default="handleClose"
 		@update:open="onUpdateOpen"
 	>
-		<cdx-text-input
-			v-model="collectionName"
+		<cdx-field
+			:status="status"
+			:messages="messages"
 			:disabled="isSaving"
-			:status="isError ? 'error' : 'default'"
-			:aria-invalid="isError || undefined"
-			:aria-errormessage="isError ? errorId : undefined"
-			:placeholder="placeholder"></cdx-text-input>
+			:hide-label="true"
+		>
+			<cdx-text-input
+				v-model="collectionName"
+				:aria-invalid="status === 'error' || undefined"
+				:aria-errormessage="status === 'error' ? errorId : undefined"
+				:placeholder="placeholder"
+			></cdx-text-input>
+			<template #label>
+				{{ $i18n( 'readinglists-customlists-collection-name-dialog-title' ).text() }}
+			</template>
+			<!-- Give the error text an ID so the input's aria-errormessage can point to it. -->
+			<template #error>
+				<span :id="errorId">{{ messages.error }}</span>
+			</template>
+		</cdx-field>
 		<cdx-message
-			v-if="error"
-			:id="errorId"
+			v-if="saveError"
 			class="readinglists-collection-name-dialog__error"
 			type="error"
 			:inline="true"
 		>
-			{{ error }}
+			{{ saveError }}
 		</cdx-message>
 	</dialog-popover>
 </template>
 
 <script>
-const { ref, computed, watch } = require( 'vue' );
+const { ref, computed } = require( 'vue' );
 const { createList, updateList } = require( 'ext.readingLists.api' );
-const { CdxTextInput, CdxMessage } = require( '../../codex.js' );
+const { CdxField, CdxTextInput, CdxMessage } = require( '../../codex.js' );
 const DialogPopover = require( './DialogPopover.vue' );
+
+const nameErrors = {
+	'readinglists-db-error-empty-name': 'readinglists-customlists-collection-name-dialog-required',
+	'readinglists-db-error-duplicate-list': 'readinglists-customlists-collection-name-dialog-duplicate'
+};
 
 /**
  * Dialog shown to anonymous users when they click the bookmark button, prompting sign-in.
@@ -42,6 +59,7 @@ module.exports = exports = {
 	name: 'CollectionNameDialog',
 	components: {
 		DialogPopover,
+		CdxField,
 		CdxTextInput,
 		CdxMessage
 	},
@@ -63,25 +81,20 @@ module.exports = exports = {
 	setup( props, { emit } ) {
 		const isOpen = ref( true );
 		const collectionName = ref( props.isRename ? props.title : '' );
-		const normalizedCollectionName = computed( () => collectionName.value.trim() );
 		const isSaving = ref( false );
-		const error = ref( '' );
-		const isError = ref( false );
 		const errorId = 'readinglists-collection-name-error';
+		const messages = ref( {} );
+		const saveError = ref( '' );
+		const status = computed( () => messages.value.error ? 'error' : 'default' );
 
-		const clearError = () => {
-			error.value = '';
-			isError.value = false;
+		const showError = ( code ) => {
+			const messageKey = nameErrors[ code ];
+			if ( messageKey ) {
+				messages.value = { error: mw.msg( messageKey ) };
+			} else {
+				saveError.value = mw.msg( 'readinglists-browser-error' );
+			}
 		};
-		const handleError = ( code ) => {
-			const nameErrors = [
-				'readinglists-db-error-empty-name'
-			];
-			isError.value = nameErrors.includes( code );
-			error.value = mw.msg( isError.value ? code : 'readinglists-browser-error' );
-		};
-
-		watch( collectionName, clearError );
 
 		/**
 		 * Handle open change based on user interaction.
@@ -94,22 +107,29 @@ module.exports = exports = {
 		};
 
 		const saveCollection = async () => {
-			const name = normalizedCollectionName.value;
-			if ( isSaving.value || name === '' ) {
+			if ( isSaving.value ) {
 				return;
 			}
 
-			clearError();
+			messages.value = {};
+			saveError.value = '';
+			collectionName.value = collectionName.value.trim();
+			const name = collectionName.value;
+			if ( name === '' ) {
+				showError( 'readinglists-db-error-empty-name' );
+				return;
+			}
+
 			isSaving.value = true;
 			try {
-				const result = props.isRename ?
+				const response = props.isRename ?
 					await updateList( props.listId, name ) :
 					await createList( name );
-				const id = props.isRename ? props.listId : result.create.id;
-				emit( 'success', id, name );
+				const result = props.isRename ? response.update : response.create;
+				emit( 'success', result.id, name );
 				onUpdateOpen( false );
 			} catch ( code ) {
-				handleError( code );
+				showError( code );
 			} finally {
 				isSaving.value = false;
 			}
@@ -118,7 +138,7 @@ module.exports = exports = {
 		const primaryAction = computed( () => ( {
 			label: mw.msg( 'readinglists-customlists-collection-name-dialog-save' ),
 			actionType: 'progressive',
-			disabled: isSaving.value || normalizedCollectionName.value === ''
+			disabled: isSaving.value
 		} ) );
 
 		const placeholder = mw.msg( 'readinglists-customlists-collection-name-dialog-placeholder' );
@@ -131,8 +151,9 @@ module.exports = exports = {
 			placeholder,
 			isOpen,
 			isSaving,
-			error,
-			isError,
+			status,
+			messages,
+			saveError,
 			errorId,
 			handleClose,
 			collectionName,

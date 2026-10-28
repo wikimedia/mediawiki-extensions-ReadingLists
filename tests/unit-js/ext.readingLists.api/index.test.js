@@ -855,13 +855,24 @@ describe( 'getListsWithTitle', () => {
 } );
 
 describe( 'createList', () => {
-	it( 'calls postWithEditToken when creating a list', async () => {
+	it( 'requests duplicate rejection when creating a list', async () => {
 		const spy = vi.spyOn( api, 'invalidateSessionCache' );
-		const postWithEditToken = vi.fn();
+		const response = { create: { id: 42 } };
+		const postWithEditToken = vi.fn().mockResolvedValue( response );
 		api.stubApi( { postWithEditToken } );
-		await api.createList( 'My list' );
-		expect( postWithEditToken ).toHaveBeenCalled();
+
+		expect( await api.createList( 'My list' ) ).toEqual( response );
+		expect( postWithEditToken ).toHaveBeenCalledWith( {
+			action: 'readinglists', command: 'create', name: 'My list', rejectduplicates: true, formatversion: 2
+		} );
 		expect( spy ).toHaveBeenCalledWith( 'all' );
+	} );
+
+	it( 'propagates duplicate-name errors', async () => {
+		const postWithEditToken = vi.fn().mockRejectedValue( 'readinglists-db-error-duplicate-list' );
+		api.stubApi( { postWithEditToken } );
+
+		await expect( api.createList( 'My list' ) ).rejects.toBe( 'readinglists-db-error-duplicate-list' );
 	} );
 } );
 
@@ -871,7 +882,14 @@ describe( 'updateList', () => {
 		const postWithEditToken = vi.fn();
 		api.stubApi( { postWithEditToken } );
 		await api.updateList( 1, 'My list', 'My list description' );
-		expect( postWithEditToken ).toHaveBeenCalled();
+		expect( postWithEditToken ).toHaveBeenCalledWith( {
+			action: 'readinglists',
+			command: 'update',
+			list: 1,
+			name: 'My list',
+			description: 'My list description',
+			formatversion: 2
+		} );
 		expect( spy ).toHaveBeenCalledWith( 'all' );
 	} );
 } );
