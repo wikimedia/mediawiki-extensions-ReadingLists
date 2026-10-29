@@ -86,7 +86,7 @@
 <script>
 const { ref, watch, onUpdated, onMounted } = require( 'vue' );
 const { RouterLink, useRouter } = require( 'vue-router' );
-const { getCollectionUrl, actions } = require( 'ext.readingLists.common' );
+const { actions } = require( 'ext.readingLists.common' );
 const { CdxButton, CdxIcon, CdxMenuButton, CdxPopover } = require( '../../../codex.js' );
 const { cdxIconExpand, cdxIconSettings } = require( '../../../icons.json' );
 const { actionSettingsDeleteClick, actionSettingsRenameClick,
@@ -94,6 +94,7 @@ const { actionSettingsDeleteClick, actionSettingsRenameClick,
 } = actions;
 
 const api = require( 'ext.readingLists.api' );
+const { getCollectionUrl } = api;
 
 // how many collections to initially load, as well as how many to show at once
 const collectionsPageSize = 8;

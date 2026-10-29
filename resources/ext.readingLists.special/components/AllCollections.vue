@@ -55,7 +55,8 @@ const { RouterLink } = require( 'vue-router' );
 const { storeToRefs } = require( 'pinia' );
 const { useReadingListsStore } = require( '../store.js' );
 const { CdxButton } = require( '../../../codex.js' );
-const { collectionsBaseUrl, CreateCollectionButton } = require( 'ext.readingLists.common' );
+const { CreateCollectionButton } = require( 'ext.readingLists.common' );
+const { collectionsBaseUrl } = require( 'ext.readingLists.api' );
 const EmptyList = require( './EmptyList.vue' );
 
 /**

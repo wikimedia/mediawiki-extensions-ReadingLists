@@ -63,8 +63,8 @@
 const { ref, computed, toRef } = require( 'vue' );
 const { CdxButton, CdxIcon } = require( '../../codex.js' );
 const { cdxIconSuccess, cdxIconClose } = require( '../../icons.json' );
-const { ConfigPopover, CollectionNameDialog, getCollectionUrl, actions } = require( 'ext.readingLists.common' );
-const { createEntry, deleteEntryByPageTitle } = require( 'ext.readingLists.api' );
+const { ConfigPopover, CollectionNameDialog, actions } = require( 'ext.readingLists.common' );
+const { createEntry, deleteEntryByPageTitle, getCollectionUrl } = require( 'ext.readingLists.api' );
 const CollectionPicker = require( './CollectionPicker.vue' );
 const UnsaveDialog = require( './UnsaveDialog.vue' );
 const { actionAddToCustomList, actionRemoveFromCustomList, actionSaveCustomList } = actions;

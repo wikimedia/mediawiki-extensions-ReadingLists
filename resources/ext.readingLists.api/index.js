@@ -1,5 +1,6 @@
 let api = new mw.Api();
 const { session } = require( 'mediawiki.storage' );
+const { getCollectionsBaseUrl, getCollectionUrl, collectionsBaseUrl } = require( './urls.js' );
 const origin = window.location.protocol + '//' + window.location.hostname;
 const CACHE_LIFETIME_SECONDS = 60 * 20; // 20 minutes
 
@@ -584,5 +585,8 @@ module.exports = exports = {
 	fromBase64,
 	toBase64,
 	stubApi,
-	invalidateSessionCache
+	invalidateSessionCache,
+	getCollectionsBaseUrl,
+	getCollectionUrl,
+	collectionsBaseUrl
 };

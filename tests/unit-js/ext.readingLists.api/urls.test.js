@@ -1,4 +1,4 @@
-import { getCollectionUrl, getCollectionsBaseUrl } from '../../../resources/ext.readingLists.common/index.js';
+import { getCollectionUrl, getCollectionsBaseUrl } from '../../../resources/ext.readingLists.api/urls.js';
 
 describe( 'getCollectionsBaseUrl', () => {
 	it( 'should return the correct base URL', () => {

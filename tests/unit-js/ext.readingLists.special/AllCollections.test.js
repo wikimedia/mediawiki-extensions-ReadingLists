@@ -3,7 +3,7 @@ import { createTestingPinia } from '@pinia/testing';
 import AllCollections from '../../../resources/ext.readingLists.special/components/AllCollections.vue';
 
 // Base URL that mw.util.getUrl returns when given 'Special:ReadingLists'.
-// collectionsBaseUrl in ext.readingLists.common uses mw.config.get() || 'ReadingLists',
+// collectionsBaseUrl in ext.readingLists.api uses mw.config.get() || 'ReadingLists',
 // which resolves to 'Special:ReadingLists' because mw.config.get is a no-op mock.
 const BASE_URL = '/wiki/Special:ReadingLists';
 

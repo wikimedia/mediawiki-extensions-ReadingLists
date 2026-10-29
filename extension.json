@@ -210,14 +210,16 @@
 			"dependencies": [
 				"mediawiki.storage",
 				"mediawiki.user",
-				"mediawiki.api"
+				"mediawiki.api",
+				"mediawiki.util"
 			],
 			"messages": [
 				"readinglists-default-title",
 				"readinglists-default-description"
 			],
 			"packageFiles": [
-				"resources/ext.readingLists.api/index.js"
+				"resources/ext.readingLists.api/index.js",
+				"resources/ext.readingLists.api/urls.js"
 			]
 		},
 		"ext.readingLists.special": {
@@ -377,7 +379,6 @@
 			"dependencies": [
 				"ext.readingLists.api",
 				"ext.readingLists.bookmark.icons",
-				"ext.readingLists.common",
 				"mediawiki.storage"
 			]
 		},

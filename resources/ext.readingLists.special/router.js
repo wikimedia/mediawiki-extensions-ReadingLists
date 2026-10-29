@@ -1,6 +1,7 @@
 const { createRouter, createWebHistory } = require( 'vue-router' );
 const Entries = require( './pages/Entries.vue' );
-const { collectionsBaseUrl, actions } = require( 'ext.readingLists.common' );
+const { actions } = require( 'ext.readingLists.common' );
+const { collectionsBaseUrl } = require( 'ext.readingLists.api' );
 const { ReadingListsCustomLists } = require( './config.json' );
 const isCustomListsEnabled = ReadingListsCustomLists;
 const { actionLoadPage } = actions;

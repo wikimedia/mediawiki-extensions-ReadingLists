@@ -5,7 +5,7 @@ const ONBOARDING_STORAGE_KEY = 'readinglists-saved-pages-dialog-seen';
 const AUTOSAVE_STORAGE_KEY = 'readinglists-cta-autosave';
 
 const { ReadingListsCustomLists } = require( './config.json' );
-const { getCollectionUrl } = require( 'ext.readingLists.common' );
+const { getCollectionUrl } = api;
 
 function getErrorMessage( err ) {
 	if ( typeof err === 'string' ) {

@@ -83,8 +83,9 @@ const { useRouter } = require( 'vue-router' );
 const { storeToRefs } = require( 'pinia' );
 const { useReadingListsStore } = require( '../store.js' );
 
-const { useIsMobileResolution, getCollectionUrl, CollectionNameDialog, actions } = require( 'ext.readingLists.common' );
+const { useIsMobileResolution, CollectionNameDialog, actions } = require( 'ext.readingLists.common' );
 const api = require( 'ext.readingLists.api' );
+const { getCollectionUrl } = api;
 
 const { actionSaveCustomList, actionSettingsDeleteConfirmClick } = actions;
 const { CdxMessage, CdxProgressBar } = require( '../../../codex.js' );
