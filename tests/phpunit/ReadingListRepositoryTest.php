@@ -355,6 +355,15 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertEquals( $list->rl_id, $mergedList->rl_id );
 		$this->assertTrue( $mergedList->merged );
 
+		// Leading and trailing whitespace is trimmed, so 'bar ' is the existing 'bar' list.
+		$mergedList = $repository->addList( 'bar ', 'more bar' );
+		$this->assertEquals( $list->rl_id, $mergedList->rl_id );
+		$this->assertTrue( $mergedList->merged );
+
+		$list = $repository->addList( ' baz ' );
+		$this->assertSame( 'baz', $list->rl_name );
+		$this->assertFalse( $list->merged );
+
 		$this->assertFailsWith( 'readinglists-db-error-too-long', static function () use ( $repository ) {
 			$repository->addList( 'boom', str_pad( '', 1000, 'x' ) );
 		} );
@@ -388,15 +397,25 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * @dataProvider provideValidListNames
+	 * @dataProvider provideNormalizedListNames
 	 */
-	public function testAddList_preservesName( string $name ) {
+	public function testAddList_normalizesName( string $name, string $expectedName ) {
 		$this->addProjects( [ 'dummy' ] );
 		$repository = $this->getReadingListRepository( 1 );
 		$repository->setupForUser();
 
 		$list = $repository->addList( $name );
-		$this->assertSame( $name, $list->rl_name );
+		$this->assertSame( $expectedName, $list->rl_name );
+	}
+
+	public static function provideNormalizedListNames() {
+		return [
+			'zero' => [ '0', '0' ],
+			'leading and trailing spaces' => [ '  Dogs  ', 'Dogs' ],
+			'tab and line breaks' => [ "\tDogs\r\n", 'Dogs' ],
+			'internal spaces' => [ '  Big  dogs  ', 'Big  dogs' ],
+			'non-ASCII name' => [ '犬', '犬' ],
+		];
 	}
 
 	public static function provideValidListNames() {

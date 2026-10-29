@@ -284,6 +284,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 	 */
 	public function addList( $name, $description = '' ) {
 		$this->assertUser();
+		$name = trim( $name );
 		self::assertListName( $name );
 		self::assertFieldLength( 'rl_description', $description );
 		if ( !$this->getDefaultListIdForUser( IDBAccessObject::READ_LOCKING ) ) {
