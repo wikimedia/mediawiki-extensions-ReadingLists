@@ -7,9 +7,11 @@
 			"San1joy23",
 			"Scblr",
 			"আফতাবুজ্জামান",
-			"R1F4T"
+			"R1F4T",
+			"Tausheef Hassan"
 		]
 	},
+	"readinglists-db-error-not-set-up": "এই ব্যবহারকারীর জন্য এখনো কোনো পঠন তালিকা তৈরি করা হয়নি।",
 	"readinglists-db-error-list-limit": "ব্যবহারকারীদের $1টির বেশী {{PLURAL:$1|তালিকা}} থাকতে পারবে না।",
 	"readinglists-db-error-entry-limit": "$1 তালিকায় $2টির বেশী {{PLURAL:$2|ভুক্তি}} থাকতে পারবে না।",
 	"readinglists-db-error-too-long": "$1 এর মান $2 বাইটের বেশী হতে পারবে না।",
@@ -42,6 +44,8 @@
 	"readinglists-import-disclaimer": "এই সাইটের একজন ব্যবহারকারী (সম্ভবত আপনি) অন্যদের সাথে শেয়ার করার জন্য একটি পঠন তালিকা তৈরি করেছেন। এটি নিয়ন্ত্রিত নয়, এবং এর বিষয়বস্তু সাইটের সম্পাদকদের প্রতিফলিত করে না।",
 	"readinglists-import-button-label": "অ্যাপে খুলুন",
 	"readinglists-import-button-hint": "বোতামে ট্যাপ করুন:",
+	"readinglists-share-url-notify": "এই পঠন তালিকা সম্পর্কিত তথ্য আপনার ক্লিপবোর্ডে অনুলিপি করা হয়েছে।",
+	"readinglists-import-app-launch-hint": "অনুগ্রহ করে নিশ্চিত করুন যে অ্যাপটির সর্বশেষ সংস্করণ ইনস্টল করা আছে।",
 	"readinglists-bookmark": "বুকমার্ক",
 	"readinglists-add-bookmark": "সংরক্ষণ করুন",
 	"readinglists-remove-bookmark": "সংরক্ষণ সরান",

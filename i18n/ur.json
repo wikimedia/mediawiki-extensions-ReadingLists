@@ -4,7 +4,8 @@
 			"Dbrant",
 			"Hindustanilanguage",
 			"Scblr",
-			"Zainab Meher"
+			"Zainab Meher",
+			"Muhammad Shuaib"
 		]
 	},
 	"readinglists-db-error-no-such-list": "فہرست  $1 موجود نہیں ہے۔",
@@ -12,9 +13,28 @@
 	"readinglists-db-error-list-deleted": "فہرست $1 کو حذف کردیا گیا۔",
 	"readinglists-db-error-duplicate-page": "فہرست میں یہ صفحہ پہلے سے موجود ہے۔",
 	"readinglists-db-error-user-required": "اس طریقہ کو صارف کی وضاحت کیے بنا برسرعمل نہیں کیا جا سکتا۔",
+	"readinglists-browser-extension-info-link-text": "مزید تفصیلات",
+	"readinglists-browser-extension-product-title": "ویکی فہرستیں برائے مطالعہ",
 	"readinglists-special-subpage-title": "مطالعہ شدہ صفحات",
-	"special-tab-readinglists-short": "آپ کی فہرستیں۔",
+	"readinglists-loading": "براہ مہربانی کچھ دیر انتظار کریں۔۔۔",
+	"special-tab-readinglists-short": "آپ کی فہرستیں",
+	"readinglists-title": "محفوظ کردہ صفحات",
+	"readinglists-default-title": "محفوظات",
+	"readinglists-display-sort": "ترتیب بمطابق",
+	"readinglists-display-sort-name": "نام",
+	"readinglists-display-sort-updated": "تجدید شدہ",
+	"readinglists-display-direction": "جہت",
+	"readinglists-display-direction-ascending": "صعودی",
+	"readinglists-display-direction-descending": "نزولی",
+	"readinglists-no-title": "بلا عنوان فہرست",
+	"readinglists-export": "ربط بھیجیں",
+	"readinglists-watchlist": "زیرنظر فہرست",
 	"readinglists-import-disclaimer": "اس سائٹ پر ایک صارف نے دوسروں کے ساتھ شیئر کرنے کے لیے ایک مطالعہ کی فہرست بنائی ہے (ممکنہ طور پر آپ نے)۔ یہ فہرست ماڈریٹ کردہ نہیں ہے اور اس کے مواد سے سائٹ کی ایڈیٹرز کی عکاسی نہیں ہوتی ہے۔",
-	"readinglists-import-button-label": "درآمد کریں",
-	"readinglists-import-button-hint": "ایپ انسٹال کرنے کے بعد، فہرست کو درآمد کرنے کے لیے اس بٹن پر ٹیپ کریں:"
+	"readinglists-import-button-label": "ایپ میں کھولیں",
+	"readinglists-import-button-hint": "بٹن دبائیں:",
+	"readinglists-share-url-text": "[$1] $2\n$3",
+	"readinglists-bookmark": "بک مارک",
+	"readinglists-add-bookmark": "محفوظ کریں",
+	"readinglists-remove-bookmark": "غیر محفوظ کریں",
+	"readinglists-onboarding-close-button": "بند کریں"
 }
