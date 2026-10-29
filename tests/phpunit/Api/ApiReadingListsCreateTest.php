@@ -52,6 +52,78 @@ class ApiReadingListsCreateTest extends ApiTestCase {
 	}
 
 	/**
+	 * @dataProvider provideCreateModes
+	 */
+	public function testCreateWithRejectDuplicates( bool $batch ) {
+		$params = [ 'name' => 'cats', 'description' => 'Meow!' ];
+		if ( $batch ) {
+			$params = [ 'batch' => json_encode( [ $params ] ) ];
+		}
+		$params['rejectduplicates'] = true;
+		$result = $this->doApiRequestWithToken( $this->apiParams + $params, null, $this->user );
+		$list = $batch ? $result[0]['create']['lists'][0] : $result[0]['create']['list'];
+
+		$this->assertSame( 'Success', $result[0]['create']['result'] );
+		$this->assertSame( 'cats', $list['name'] );
+		$this->assertSame( 'Meow!', $list['description'] );
+		$this->assertFalse( $list['duplicate'] );
+	}
+
+	/**
+	 * @dataProvider provideCreateModes
+	 */
+	public function testRejectDuplicatePreservesExistingList( bool $batch ) {
+		[ $listId ] = $this->addLists( $this->user->getId(), [ [
+			'rl_name' => 'cats',
+			'rl_description' => 'Meow!',
+			'rl_date_created' => '20240101120000',
+			'rl_date_updated' => '20240101120000',
+		] ] );
+		$repository = $this->getServiceContainer()->getService( 'ReadingLists.ReadingListRepositoryFactory' )
+			->create( $this->user->getId() );
+		$originalList = $repository->selectValidList( $listId );
+		$params = [ 'name' => 'cats' ];
+		if ( $batch ) {
+			$params = [ 'batch' => json_encode( [ $params ] ) ];
+		}
+		$params['rejectduplicates'] = true;
+
+		$this->assertApiUsage( 'readinglists-db-error-duplicate-list',
+			fn () => $this->doApiRequestWithToken( $this->apiParams + $params, null, $this->user )
+		);
+
+		$this->assertEquals( $originalList, $repository->selectValidList( $listId ) );
+	}
+
+	/**
+	 * @dataProvider provideCreateModes
+	 */
+	public function testCreateMergesDuplicatesByDefault( bool $batch ) {
+		$original = $this->doApiRequestWithToken(
+			$this->apiParams + [ 'name' => 'cats', 'description' => 'Meow!' ], null, $this->user
+		);
+		$params = [ 'name' => 'cats' ];
+		if ( $batch ) {
+			$params = [ 'batch' => json_encode( [ $params ] ) ];
+		}
+
+		$result = $this->doApiRequestWithToken( $this->apiParams + $params, null, $this->user );
+		$list = $batch ? $result[0]['create']['lists'][0] : $result[0]['create']['list'];
+
+		$this->assertSame( 'Success', $result[0]['create']['result'] );
+		$this->assertSame( $original[0]['create']['list']['id'], $list['id'] );
+		$this->assertTrue( $list['duplicate'] );
+		$this->assertSame( '', $list['description'] );
+	}
+
+	public static function provideCreateModes() {
+		return [
+			'single' => [ false ],
+			'batch' => [ true ],
+		];
+	}
+
+	/**
 	 * @dataProvider createBatchProvider
 	 */
 	public function testCreateBatch( $batch, $expectedDescriptions ) {

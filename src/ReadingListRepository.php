@@ -276,13 +276,15 @@ class ReadingListRepository implements LoggerAwareInterface {
 
 	/**
 	 * Create a new list.
-	 * List name is unique for a given user; on conflict, update the existing list.
+	 * List name is unique for a given user; on conflict, update the existing list
+	 * unless $rejectDuplicates is true.
 	 * @param string $name
 	 * @param string $description
+	 * @param bool $rejectDuplicates
 	 * @return ReadingListRowWithMergeFlag The new (or updated) list.
 	 * @throws ReadingListRepositoryException
 	 */
-	public function addList( $name, $description = '' ) {
+	public function addList( $name, $description = '', bool $rejectDuplicates = false ) {
 		$this->assertUser();
 		$name = trim( $name );
 		self::assertListName( $name );
@@ -299,7 +301,7 @@ class ReadingListRepository implements LoggerAwareInterface {
 		}
 
 		// rl_user_id + rlname is unique for non-deleted lists. On conflict, update the
-		// existing page instead. Also enforce that deleted lists cannot have the same name,
+		// existing list unless duplicates are rejected. Deleted lists cannot have the same name,
 		// in anticipation of eventually using a unique index for list names.
 		/** @var false|ReadingListRow $row */
 		$row = $this->dbw->newSelectQueryBuilder()
@@ -333,6 +335,8 @@ class ReadingListRepository implements LoggerAwareInterface {
 				'user_central_id' => $this->userId,
 			] );
 			throw new LogicException( 'Encountered deleted list with non-unique name on insert' );
+		} elseif ( $rejectDuplicates ) {
+			throw new ReadingListRepositoryException( 'readinglists-db-error-duplicate-list' );
 		} elseif ( $row->rl_description === $description ) {
 			// List already exists with the same details; nothing to do, just return the ID.
 			$id = $row->rl_id;

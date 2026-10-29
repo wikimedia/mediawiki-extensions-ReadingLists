@@ -29,7 +29,7 @@ class ApiReadingListsCreate extends ApiBase {
 		$repository = $this->getReadingListRepository( $this->getUser() );
 		if ( isset( $params['name'] ) ) {
 			$description = $params['description'] ?? '';
-			$list = $repository->addList( $params['name'], $description );
+			$list = $repository->addList( $params['name'], $description, $params['rejectduplicates'] );
 			$listData = $this->getListFromRow( $list );
 			$this->getResult()->addValue( null, $this->getModuleName(),
 				[ 'id' => $list->rl_id, 'list' => $listData ] );
@@ -38,7 +38,7 @@ class ApiReadingListsCreate extends ApiBase {
 			foreach ( $this->getBatchOps( $params['batch'] ) as $op ) {
 				$description = $op['description'] ?? '';
 				$this->requireAtLeastOneBatchParameter( $op, 'name' );
-				$list = $repository->addList( $op['name'], $description );
+				$list = $repository->addList( $op['name'], $description, $params['rejectduplicates'] );
 				$listIds[] = $list->rl_id;
 				$listData[] = $this->getListFromRow( $list );
 			}
@@ -62,6 +62,7 @@ class ApiReadingListsCreate extends ApiBase {
 				ParamValidator::PARAM_TYPE => 'string',
 				self::PARAM_MAX_BYTES => ReadingListRepository::$fieldLength['rl_description'],
 			],
+			'rejectduplicates' => false,
 			'batch' => [
 				ParamValidator::PARAM_TYPE => 'string',
 			]

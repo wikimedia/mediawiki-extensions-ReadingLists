@@ -370,6 +370,32 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 	}
 
 	/**
+	 * @dataProvider provideDuplicateListDescriptions
+	 */
+	public function testAddList_rejectDuplicates( string $description ) {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+		$list = $repository->addList( 'cats', 'Meow!' );
+		$originalList = $repository->selectValidList( $list->rl_id );
+		MWTimestamp::setFakeTime( '20240101130000' );
+
+		$this->assertFailsWith( 'readinglists-db-error-duplicate-list',
+			static fn () => $repository->addList( 'cats', $description, true )
+		);
+
+		$this->assertEquals( $originalList, $repository->selectValidList( $list->rl_id ) );
+	}
+
+	public static function provideDuplicateListDescriptions() {
+		return [
+			'empty description' => [ '' ],
+			'same description' => [ 'Meow!' ],
+			'different description' => [ 'New description' ],
+		];
+	}
+
+	/**
 	 * @dataProvider provideBlankListNames
 	 */
 	public function testAddList_blankName( string $name ) {

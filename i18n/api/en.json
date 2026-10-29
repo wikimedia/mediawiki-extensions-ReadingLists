@@ -53,6 +53,7 @@
 	"apihelp-readinglists+create-extended-description": "The user must have fewer than $1 (non-deleted) {{PLURAL:$1|list|lists}}.",
 	"apihelp-readinglists+create-param-name": "List name. Required unless using batch creation.",
 	"apihelp-readinglists+create-param-description": "List description.",
+	"apihelp-readinglists+create-param-rejectduplicates": "Reject list creation when the user already has a list with the same name, returning an error instead of modifying or merging with the existing list. Applies to each list in a batch. Existing lists are merged when this parameter is omitted.",
 	"apihelp-readinglists+create-param-batch": "Batch data for creating multiple lists in a single request, in the form of a JSON array with one or more objects with <var>name</var> and (optionally) <var>description</var> fields.",
 	"apihelp-readinglists+create-example-1": "Create a new reading list.",
 	"apihelp-readinglists+create-example-2": "Create multiple new lists.",

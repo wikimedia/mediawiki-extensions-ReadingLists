@@ -58,6 +58,7 @@
 	"apihelp-readinglists+create-extended-description": "{{doc-apihelp-extended-description|readinglists+create|params=* $1 - Maximum number of lists per user.|paramstart=2}}",
 	"apihelp-readinglists+create-param-name": "{{doc-apihelp-param|readinglists+create|name}}",
 	"apihelp-readinglists+create-param-description": "{{doc-apihelp-param|readinglists+create|description}}",
+	"apihelp-readinglists+create-param-rejectduplicates": "{{doc-apihelp-param|readinglists+create|rejectduplicates}} Explains that this optional flag prevents a duplicate creation request from modifying or merging with an existing list with the same name.",
 	"apihelp-readinglists+create-param-batch": "{{doc-apihelp-param|readinglists+create|batch}}",
 	"apihelp-readinglists+create-example-1": "{{doc-apihelp-example|readinglists+create}}",
 	"apihelp-readinglists+create-example-2": "{{doc-apihelp-example|readinglists+create}}",
