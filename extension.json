@@ -382,29 +382,15 @@
 			]
 		},
 		"ext.readingLists.bookmark.anonymous": {
-			"class": "MediaWiki\\ResourceLoader\\CodexModule",
-			"codexComponents": [
-				"CdxPopover"
-			],
 			"dependencies": [
-				"ext.readingLists.common",
-				"mediawiki.storage",
-				"vue"
+				"mediawiki.storage"
 			],
 			"styles": [
 				"resources/ext.readingLists.bookmark.anonymous/pulsatingDot.less"
 			],
-			"messages": [
-				"readinglists-cta-dialog-title",
-				"readinglists-cta-dialog-call-to-action",
-				"readinglists-cta-dialog-create-account",
-				"readinglists-cta-dialog-log-in",
-				"readinglists-cta-dialog-close"
-			],
 			"packageFiles": [
 				"resources/ext.readingLists.bookmark.anonymous/index.js",
 				"resources/ext.readingLists.bookmark.anonymous/pulsatingDot.js",
-				"resources/ext.readingLists.bookmark.anonymous/BookmarkCta.vue",
 				{
 					"name": "resources/ext.readingLists.bookmark.anonymous/config.json",
 					"config": [
@@ -564,7 +550,12 @@
 				"readinglists-customlists-create-collection-short",
 				"readinglists-db-error-empty-name",
 				"readinglists-db-error-duplicate-list",
-				"readinglists-browser-error"
+				"readinglists-browser-error",
+				"readinglists-cta-dialog-title",
+				"readinglists-cta-dialog-call-to-action",
+				"readinglists-cta-dialog-create-account",
+				"readinglists-cta-dialog-log-in",
+				"readinglists-cta-dialog-close"
 			],
 			"packageFiles": [
 				"resources/ext.readingLists.common/index.js",
@@ -573,7 +564,8 @@
 				"resources/ext.readingLists.common/ConfigPopover.vue",
 				"resources/ext.readingLists.common/DialogPopover.vue",
 				"resources/ext.readingLists.common/CreateCollectionButton.vue",
-				"resources/ext.readingLists.common/CollectionNameDialog.vue"
+				"resources/ext.readingLists.common/CollectionNameDialog.vue",
+				"resources/ext.readingLists.common/BookmarkCta.vue"
 			],
 			"styles": [
 				"resources/ext.readingLists.common/button-link.less"
