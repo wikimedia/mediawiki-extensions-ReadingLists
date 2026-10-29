@@ -106,6 +106,38 @@ class ApiReadingListsUpdateTest extends ApiTestCase {
 	}
 
 	/**
+	 * @dataProvider provideBlankNames
+	 */
+	public function testUpdateBlankName( string $name, bool $batch ) {
+		[ $listId ] = $this->addLists( $this->user->mId, [
+			[
+				'rl_is_default' => 0,
+				'rl_name' => 'dogs',
+				'rl_date_created' => wfTimestampNow(),
+				'rl_date_updated' => wfTimestampNow(),
+				'rl_deleted' => 0,
+			],
+		] );
+		$params = [ 'list' => $listId, 'name' => $name ];
+		if ( $batch ) {
+			$params = [ 'batch' => json_encode( [ $params ] ) ];
+		}
+
+		$this->expectException( ApiUsageException::class );
+		$this->expectExceptionMessage( 'The list name cannot be empty or contain only whitespace.' );
+		$this->doApiRequestWithToken( $this->apiParams + $params, null, $this->user );
+	}
+
+	public static function provideBlankNames() {
+		return [
+			'empty name' => [ '', false ],
+			'whitespace name' => [ " \t\n ", false ],
+			'empty name in batch' => [ '', true ],
+			'whitespace name in batch' => [ '   ', true ],
+		];
+	}
+
+	/**
 	 * @dataProvider updateProvider
 	 */
 	public function testUpdateDefault() {

@@ -355,9 +355,75 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		$this->assertEquals( $list->rl_id, $mergedList->rl_id );
 		$this->assertTrue( $mergedList->merged );
 
+		// Leading and trailing whitespace is trimmed, so 'bar ' is the existing 'bar' list.
+		$mergedList = $repository->addList( 'bar ', 'more bar' );
+		$this->assertEquals( $list->rl_id, $mergedList->rl_id );
+		$this->assertTrue( $mergedList->merged );
+
+		$list = $repository->addList( ' baz ' );
+		$this->assertSame( 'baz', $list->rl_name );
+		$this->assertFalse( $list->merged );
+
 		$this->assertFailsWith( 'readinglists-db-error-too-long', static function () use ( $repository ) {
 			$repository->addList( 'boom', str_pad( '', 1000, 'x' ) );
 		} );
+	}
+
+	/**
+	 * @dataProvider provideBlankListNames
+	 */
+	public function testAddList_blankName( string $name ) {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$this->assertFailsWith( 'readinglists-db-error-empty-name',
+			static fn () => $repository->addList( $name )
+		);
+		$this->assertSame( 1, $this->getDb()->newSelectQueryBuilder()
+			->select( '1' )
+			->from( 'reading_list' )
+			->where( [ 'rl_user_id' => 1 ] )
+			->caller( __METHOD__ )->fetchRowCount() );
+	}
+
+	public static function provideBlankListNames() {
+		return [
+			'empty' => [ '' ],
+			'spaces' => [ '   ' ],
+			'tab and line breaks' => [ "\t\r\n" ],
+			'mixed trim characters' => [ " \t\r\n\0\x0B " ],
+		];
+	}
+
+	/**
+	 * @dataProvider provideNormalizedListNames
+	 */
+	public function testAddList_normalizesName( string $name, string $expectedName ) {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+
+		$list = $repository->addList( $name );
+		$this->assertSame( $expectedName, $list->rl_name );
+	}
+
+	public static function provideNormalizedListNames() {
+		return [
+			'zero' => [ '0', '0' ],
+			'leading and trailing spaces' => [ '  Dogs  ', 'Dogs' ],
+			'tab and line breaks' => [ "\tDogs\r\n", 'Dogs' ],
+			'internal spaces' => [ '  Big  dogs  ', 'Big  dogs' ],
+			'non-ASCII name' => [ '犬', '犬' ],
+		];
+	}
+
+	public static function provideValidListNames() {
+		return [
+			'zero' => [ '0' ],
+			'leading and trailing spaces' => [ '  Dogs  ' ],
+			'non-ASCII name' => [ '犬' ],
+		];
 	}
 
 	public function testAddList_count() {
@@ -600,6 +666,48 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 				$repository->updateList( $defaultId, 'not default' );
 			}
 		);
+	}
+
+	/**
+	 * @dataProvider provideBlankListNames
+	 */
+	public function testUpdateList_blankName( string $name ) {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+		$list = $repository->addList( 'dogs', 'Woof!' );
+		$listId = (int)$list->rl_id;
+
+		$this->assertFailsWith( 'readinglists-db-error-empty-name',
+			static fn () => $repository->updateList( $listId, $name, 'New description' )
+		);
+		$unchangedList = $repository->selectValidList( $listId );
+		$this->assertSame( 'dogs', $unchangedList->rl_name );
+		$this->assertSame( 'Woof!', $unchangedList->rl_description );
+	}
+
+	/**
+	 * @dataProvider provideValidListNames
+	 */
+	public function testUpdateList_preservesName( string $name ) {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+		$list = $repository->addList( 'original name' );
+
+		$updatedList = $repository->updateList( (int)$list->rl_id, $name );
+		$this->assertSame( $name, $updatedList->rl_name );
+	}
+
+	public function testUpdateList_descriptionOnly() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+		$list = $repository->addList( 'dogs', 'Woof!' );
+
+		$updatedList = $repository->updateList( (int)$list->rl_id, null, 'New description' );
+		$this->assertSame( 'dogs', $updatedList->rl_name );
+		$this->assertSame( 'New description', $updatedList->rl_description );
 	}
 
 	public function testDeleteList() {

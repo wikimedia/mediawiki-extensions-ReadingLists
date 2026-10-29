@@ -43,7 +43,7 @@
 <script>
 const { computed, nextTick, onMounted, ref } = require( 'vue' );
 const { CdxPopover } = require( '../../codex.js' );
-const { useIsMobileResolution } = require( 'ext.readingLists.common' );
+const { useIsMobileResolution } = require( './composables.js' );
 
 // this needs to match AUTOSAVE_STORAGE_KEY in bookmark.js
 const AUTOSAVE_STORAGE_KEY = 'readinglists-cta-autosave';

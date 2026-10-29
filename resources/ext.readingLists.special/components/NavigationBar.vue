@@ -89,7 +89,9 @@ const { RouterLink, useRouter } = require( 'vue-router' );
 const { getCollectionUrl, actions } = require( 'ext.readingLists.common' );
 const { CdxButton, CdxIcon, CdxMenuButton, CdxPopover } = require( '../../../codex.js' );
 const { cdxIconExpand, cdxIconSettings } = require( '../../../icons.json' );
-const { actionSettingsDeleteClick, actionSettingsRenameClick } = actions;
+const { actionSettingsDeleteClick, actionSettingsRenameClick,
+	actionCreateCollectionButtonClick
+} = actions;
 
 const api = require( 'ext.readingLists.api' );
 
@@ -195,6 +197,7 @@ module.exports = exports = {
 					router.push( selectedItem.url );
 				} else {
 					emit( 'create-collection' );
+					actionCreateCollectionButtonClick();
 				}
 				selectedCollection.value = null;
 			}

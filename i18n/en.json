@@ -21,6 +21,7 @@
 	"readinglists-db-error-duplicate-list": "A list by this name already exists.",
 	"readinglists-db-error-duplicate-page": "The list already contains this page.",
 	"readinglists-db-error-empty-list-ids": "List ids parameter must not be empty.",
+	"readinglists-db-error-empty-name": "The list name cannot be empty or contain only whitespace.",
 	"readinglists-db-error-user-required": "This method cannot be called without specifying the user.",
 	"readinglists-db-error-list-limit": "Users cannot have more than $1 {{PLURAL:$1|list|lists}}.",
 	"readinglists-db-error-entry-limit": "List $1 cannot have more than $2 {{PLURAL:$2|entry|entries}}.",

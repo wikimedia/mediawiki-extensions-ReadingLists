@@ -65,7 +65,7 @@ class ListsCreateHandlerTest extends \MediaWikiIntegrationTestCase {
 	/**
 	 * @dataProvider createFailureProvider
 	 */
-	public function testListsCreateFailure( $bodyParams ) {
+	public function testListsCreateFailure( $bodyParams, ?string $errorKey = null ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsCreateHandler(
 			$services->getDBLoadBalancerFactory(),
@@ -73,6 +73,10 @@ class ListsCreateHandlerTest extends \MediaWikiIntegrationTestCase {
 			$this->getMockCentralIdLookup() );
 
 		$this->expectException( LocalizedHttpException::class );
+		if ( $errorKey !== null ) {
+			$this->expectExceptionMessage( $errorKey );
+			$this->expectExceptionCode( 400 );
+		}
 
 		$request = new RequestData( [
 			'method' => 'POST',
@@ -88,6 +92,11 @@ class ListsCreateHandlerTest extends \MediaWikiIntegrationTestCase {
 		return [
 			'no params' => [ [] ],
 			'missing name' => [ [ 'description' => 'Woof!' ] ],
+			'empty name' => [ [ 'name' => '' ] ],
+			'whitespace name' => [
+				[ 'name' => " \t\n " ],
+				'readinglists-db-error-empty-name',
+			],
 		];
 	}
 

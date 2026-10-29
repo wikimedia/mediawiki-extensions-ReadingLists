@@ -238,6 +238,10 @@ module.exports = exports = {
 @import 'mediawiki.skin.variables.less';
 
 .readinglists-bookmark-popover {
+	// Ensure popover doesnt scale with font size setting
+	// FIXME: https://phabricator.wikimedia.org/T442786
+	--font-size-medium: @font-size-medium;
+
 	&.cdx-popover--bottom-sheet {
 		// Set the width to the max-width of the CdxPopover's bottom sheet version.
 		width: @size-5600;

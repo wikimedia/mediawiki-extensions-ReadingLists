@@ -12,41 +12,41 @@ const HTML_MINERVA_BOOKMARK = `<li id="page-actions-bookmark" class="page-action
 		</a>
 </li>`;
 
-vi.mock( 'vue', () => ( {
-	createMwApp: vi.fn(),
-	defineComponent: vi.fn()
-} ) );
+const COMMON_MODULE = 'ext.readingLists.common';
+const BookmarkCta = { name: 'BookmarkCta' };
 
-vi.mock( '../../../codex.js', () => ( {
-	CdxPopover: {
-		name: 'CdxPopover',
-		template: '<div class="cdx-popover"><slot></slot><slot name="footer"></slot></div>',
-		props: [ 'title', 'anchor', 'useCloseButton', 'useBottomSheet', 'placement' ]
-	}
-} ) );
+async function flushPromises() {
+	await new Promise( ( resolve ) => {
+		setTimeout( resolve );
+	} );
+}
 
-// BookmarkCta.vue imports useIsMobileResolution from this module. The wire-up
-// test does not mount the component, so it does not need the real module.
-vi.mock( '../../../resources/ext.readingLists.common/index.js', () => ( {
-	useIsMobileResolution: vi.fn()
-} ) );
-
-mw.testKitchen = {
-	compat: {
-		getExperiment: vi.fn( () => ( {
-			send: vi.fn() // Properly mock the `send` method
-		} ) )
-	}
-};
+function addBookmark( html ) {
+	const list = document.createElement( 'ul' );
+	list.innerHTML = html;
+	document.body.appendChild( list );
+	return list.querySelector( 'a' );
+}
 
 describe( 'Anonymous bookmark button', () => {
 	let mockApp;
+	let createMwApp;
 
 	beforeEach( () => {
 		mockApp = { mount: vi.fn(), unmount: vi.fn() };
+		createMwApp = vi.fn( () => mockApp );
+		const modules = {
+			vue: { createMwApp },
+			[ COMMON_MODULE ]: { BookmarkCta }
+		};
+		mw.loader.using.mockImplementation( () => Promise.resolve( ( name ) => modules[ name ] ) );
 	} );
 
 	afterEach( () => {
+		// Close every popover so the next test can open one again.
+		createMwApp.mock.calls.forEach( ( [ , props ] ) => props.onClose() );
+		mw.loader.using.mockReset();
+		mw.loader.using.mockImplementation( () => Promise.resolve() );
 		document.body.innerHTML = '';
 		vi.clearAllMocks();
 	} );
@@ -55,34 +55,83 @@ describe( 'Anonymous bookmark button', () => {
 		expect( () => init() ).toThrow( 'Bookmark not found' );
 	} );
 
-	const testBookmark = async ( html ) => {
-		const bookmark = document.createElement( 'ul' );
-		bookmark.innerHTML = html;
-		document.body.appendChild( bookmark );
-
-		const { createMwApp } = await import( 'vue' );
-		createMwApp.mockReturnValue( mockApp );
-
+	it( 'does not load ext.readingLists.common on page load', () => {
+		addBookmark( HTML_VECTOR_BOOKMARK );
 		init();
-		const bookmarkLink = bookmark.querySelector( 'a' );
-		bookmarkLink.click();
 
-		expect( createMwApp ).toHaveBeenCalled();
-		expect( createMwApp.mock.calls[ 0 ][ 0 ].name ).toBe( 'BookmarkCta' );
+		expect( mw.loader.using ).not.toHaveBeenCalledWith( COMMON_MODULE );
+	} );
+
+	it.each( [
+		[ 'Vector bookmark', HTML_VECTOR_BOOKMARK ],
+		[ 'Vector bookmark in more menu', HTML_VECTOR_BOOKMARK_MORE ],
+		[ 'Minerva bookmark', HTML_MINERVA_BOOKMARK ]
+	] )( 'loads ext.readingLists.common and mounts BookmarkCta when the %s is clicked', async ( _label, html ) => {
+		const bookmarkLink = addBookmark( html );
+		init();
+
+		bookmarkLink.click();
+		await flushPromises();
+
+		expect( mw.loader.using ).toHaveBeenCalledWith( COMMON_MODULE );
+		expect( createMwApp ).toHaveBeenCalledTimes( 1 );
+		expect( createMwApp.mock.calls[ 0 ][ 0 ] ).toBe( BookmarkCta );
 		expect( createMwApp.mock.calls[ 0 ][ 1 ].anchor )
 			.toBe( bookmarkLink.closest( '#ca-bookmark, #ca-bookmark-more' ) );
-		expect( mockApp.mount ).toHaveBeenCalled();
-	};
-
-	it( 'mounts BookmarkCta when Vector bookmark is clicked', async () => {
-		await testBookmark( HTML_VECTOR_BOOKMARK );
+		expect( mockApp.mount ).toHaveBeenCalledTimes( 1 );
 	} );
 
-	it( 'mounts BookmarkCta when Vector bookmark is clicked in more menu', async () => {
-		await testBookmark( HTML_VECTOR_BOOKMARK_MORE );
+	it( 'prevents navigation when the bookmark is clicked', () => {
+		const bookmarkLink = addBookmark( HTML_VECTOR_BOOKMARK );
+		init();
+
+		const event = new MouseEvent( 'click', { bubbles: true, cancelable: true } );
+		bookmarkLink.dispatchEvent( event );
+
+		expect( event.defaultPrevented ).toBe( true );
 	} );
 
-	it( 'mounts BookmarkCta when Minerva bookmark is clicked', async () => {
-		await testBookmark( HTML_MINERVA_BOOKMARK );
+	it( 'mounts BookmarkCta only once for a double click', async () => {
+		const bookmarkLink = addBookmark( HTML_VECTOR_BOOKMARK );
+		init();
+
+		bookmarkLink.click();
+		bookmarkLink.click();
+		await flushPromises();
+
+		expect( createMwApp ).toHaveBeenCalledTimes( 1 );
+	} );
+
+	it( 'unmounts BookmarkCta when it closes and mounts it again on the next click', async () => {
+		const bookmarkLink = addBookmark( HTML_VECTOR_BOOKMARK );
+		init();
+
+		bookmarkLink.click();
+		await flushPromises();
+		createMwApp.mock.calls[ 0 ][ 1 ].onClose();
+
+		expect( mockApp.unmount ).toHaveBeenCalledTimes( 1 );
+
+		bookmarkLink.click();
+		await flushPromises();
+
+		expect( createMwApp ).toHaveBeenCalledTimes( 2 );
+	} );
+
+	it( 'logs an error and allows a new click when ext.readingLists.common does not load', async () => {
+		const bookmarkLink = addBookmark( HTML_VECTOR_BOOKMARK );
+		init();
+		mw.loader.using.mockImplementationOnce( () => Promise.reject( new Error( 'Network error' ) ) );
+
+		bookmarkLink.click();
+		await flushPromises();
+
+		expect( mw.log.error ).toHaveBeenCalled();
+		expect( createMwApp ).not.toHaveBeenCalled();
+
+		bookmarkLink.click();
+		await flushPromises();
+
+		expect( createMwApp ).toHaveBeenCalledTimes( 1 );
 	} );
 } );

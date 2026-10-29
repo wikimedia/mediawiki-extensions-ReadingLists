@@ -80,7 +80,7 @@ class ListsCreateBatchHandlerTest extends \MediaWikiIntegrationTestCase {
 	/**
 	 * @dataProvider createFailureProvider
 	 */
-	public function testListsCreateFailure( $bodyParams ) {
+	public function testListsCreateFailure( $bodyParams, ?string $errorKey = null ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsCreateBatchHandler(
 			$services->getDBLoadBalancerFactory(),
@@ -88,6 +88,10 @@ class ListsCreateBatchHandlerTest extends \MediaWikiIntegrationTestCase {
 			$this->getMockCentralIdLookup() );
 
 		$this->expectException( LocalizedHttpException::class );
+		if ( $errorKey !== null ) {
+			$this->expectExceptionMessage( $errorKey );
+			$this->expectExceptionCode( 400 );
+		}
 
 		$request = new RequestData( [
 			'method' => 'POST',
@@ -104,6 +108,14 @@ class ListsCreateBatchHandlerTest extends \MediaWikiIntegrationTestCase {
 			'no params' => [ [] ],
 			'empty batch' => [ [ 'batch' => [] ] ],
 			'invalid batch' => [ [ 'batch' => 0 ] ],
+			'empty name' => [
+				[ 'batch' => [ [ 'name' => '' ] ] ],
+				'readinglists-db-error-empty-name',
+			],
+			'whitespace name' => [
+				[ 'batch' => [ [ 'name' => " \t\n " ] ] ],
+				'readinglists-db-error-empty-name',
+			],
 		];
 	}
 

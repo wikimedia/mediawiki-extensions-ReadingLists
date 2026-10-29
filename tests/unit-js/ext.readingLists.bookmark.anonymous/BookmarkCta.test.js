@@ -1,6 +1,6 @@
 const { mount } = require( '@vue/test-utils' );
 
-import BookmarkCta from '../../../resources/ext.readingLists.bookmark.anonymous/BookmarkCta.vue';
+import BookmarkCta from '../../../resources/ext.readingLists.common/BookmarkCta.vue';
 
 mw.testKitchen = {
 	compat: {
