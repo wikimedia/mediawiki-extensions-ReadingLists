@@ -50,7 +50,7 @@ describe( 'NavigationBar', () => {
 			props: { isCustomList: true }
 		} );
 		await flushPromises();
-		const button = customList.find( '.reading-lists-nav-settings-button' );
+		const button = customList.find( '.reading-lists-nav-settings-button .cdx-button' );
 		expect( button.exists() ).toBe( true );
 		expect( button.attributes( 'aria-label' ) ).toBe( 'Collection settings' );
 	} );
@@ -63,7 +63,7 @@ describe( 'NavigationBar', () => {
 		await flushPromises();
 
 		await wrapper.get( '.reading-lists-nav-settings-button' ).trigger( 'click' );
-		await wrapper.get( '.reading-lists-collection-settings-actions .cdx-button--action-destructive' )
+		await wrapper.get( '.reading-lists-nav-settings-button .cdx-menu-item--destructive' )
 			.trigger( 'click' );
 
 		expect( wrapper.emitted( 'delete-collection' ) ).toHaveLength( 1 );

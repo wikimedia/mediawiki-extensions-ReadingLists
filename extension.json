@@ -231,7 +231,6 @@
 				"CdxIcon",
 				"CdxMenuButton",
 				"CdxMessage",
-				"CdxPopover",
 				"CdxProgressBar",
 				"CdxTextArea"
 			],

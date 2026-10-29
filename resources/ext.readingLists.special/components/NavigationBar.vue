@@ -11,7 +11,7 @@
 			<li>
 				<cdx-menu-button
 					v-if="showDropdown"
-					v-model:selected="selectedCollection"
+					:selected="selectedCollection"
 					action="progressive"
 					weight="quiet"
 					:menu-items="collections"
@@ -45,49 +45,24 @@
 		<div
 			v-if="isCustomList"
 			class="reading-lists-nav-settings">
-			<cdx-button
-				ref="settingsButton"
-				class="reading-lists-nav-settings-button"
+			<cdx-menu-button
+				:selected="null"
+				:menu-items="collectionSettings"
 				weight="quiet"
+				class="reading-lists-nav-settings-button"
 				:aria-label="collectionSettingsLabel"
-				aria-haspopup="true"
-				aria-controls="reading-lists-collection-settings-actions"
-				:aria-expanded="showCollectionSettings"
-				@click="toggleCollectionSettings">
+				@update:selected="onSelectSetting">
 				<cdx-icon :icon="cdxIconSettings" size="medium"></cdx-icon>
-			</cdx-button>
-			<cdx-popover
-				v-if="showCollectionSettings"
-				class="readinglists-collection-settings-popover"
-				open
-				:anchor="settingsButton"
-				placement="bottom-end"
-				:hide-arrow="true"
-				:render-in-place="true"
-				@update:open="onCollectionSettingsOpen">
-				<div
-					id="reading-lists-collection-settings-actions"
-					class="reading-lists-collection-settings-actions">
-					<cdx-button weight="quiet" @click="renameCollection">
-						{{ renameCollectionLabel }}
-					</cdx-button>
-					<cdx-button
-						weight="quiet"
-						action="destructive"
-						@click="deleteCollection">
-						{{ deleteCollectionLabel }}
-					</cdx-button>
-				</div>
-			</cdx-popover>
+			</cdx-menu-button>
 		</div>
 	</nav>
 </template>
 
 <script>
-const { ref, watch, onUpdated, onMounted } = require( 'vue' );
+const { ref, onUpdated, onMounted } = require( 'vue' );
 const { RouterLink, useRouter } = require( 'vue-router' );
 const { actions } = require( 'ext.readingLists.common' );
-const { CdxButton, CdxIcon, CdxMenuButton, CdxPopover } = require( '../../../codex.js' );
+const { CdxIcon, CdxMenuButton } = require( '../../../codex.js' );
 const { cdxIconExpand, cdxIconSettings } = require( '../../../icons.json' );
 const { actionSettingsDeleteClick, actionSettingsRenameClick,
 	actionCreateCollectionButtonClick
@@ -137,10 +112,8 @@ const deleteCollectionLabel = mw.msg( 'readinglists-customlists-delete-collectio
 // @vue/component
 module.exports = exports = {
 	components: {
-		CdxButton,
 		CdxIcon,
 		CdxMenuButton,
-		CdxPopover,
 		RouterLink
 	},
 	props: {
@@ -168,28 +141,17 @@ module.exports = exports = {
 
 		const collections = ref( [] );
 		const selectedCollection = ref( null );
-
-		const showCollectionSettings = ref( false );
-		const settingsButton = ref( null );
-
-		const toggleCollectionSettings = () => {
-			showCollectionSettings.value = !showCollectionSettings.value;
-		};
-
-		const onCollectionSettingsOpen = ( value ) => {
-			showCollectionSettings.value = value;
-		};
-
-		watch( () => props.isCustomList, ( customList ) => {
-			if ( !customList ) {
-				showCollectionSettings.value = false;
+		const collectionSettings = [
+			{
+				label: renameCollectionLabel,
+				value: 'rename'
+			},
+			{
+				label: deleteCollectionLabel,
+				value: 'delete',
+				action: 'destructive'
 			}
-		} );
-
-		const renameCollection = () => {
-			emit( 'rename-collection' );
-			actionSettingsRenameClick();
-		};
+		];
 
 		const onSelectCollection = ( selected ) => {
 			const selectedItem = collections.value.find( ( item ) => item.value === selected );
@@ -202,12 +164,6 @@ module.exports = exports = {
 				}
 				selectedCollection.value = null;
 			}
-		};
-
-		const deleteCollection = () => {
-			showCollectionSettings.value = false;
-			emit( 'delete-collection' );
-			actionSettingsDeleteClick();
 		};
 
 		const maybeGetCollections = async () => {
@@ -243,6 +199,16 @@ module.exports = exports = {
 			}
 		} );
 
+		const onSelectSetting = ( selected ) => {
+			if ( selected === 'rename' ) {
+				emit( 'rename-collection' );
+				actionSettingsRenameClick();
+			} else if ( selected === 'delete' ) {
+				emit( 'delete-collection' );
+				actionSettingsDeleteClick();
+			}
+		};
+
 		return {
 			showDropdown,
 			cdxIconExpand,
@@ -253,18 +219,12 @@ module.exports = exports = {
 			menuConfig,
 			collections,
 			selectedCollection,
+			onSelectCollection,
 			maybeGetCollections,
-			renameCollection,
-			deleteCollection,
 			cdxIconSettings,
 			collectionSettingsLabel,
-			renameCollectionLabel,
-			deleteCollectionLabel,
-			showCollectionSettings,
-			settingsButton,
-			toggleCollectionSettings,
-			onCollectionSettingsOpen,
-			onSelectCollection
+			collectionSettings,
+			onSelectSetting
 		};
 	}
 };
