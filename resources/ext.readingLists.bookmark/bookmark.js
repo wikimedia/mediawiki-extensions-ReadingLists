@@ -391,8 +391,6 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	}
 
 	function init() {
-		setBookmarkStatus( bookmark.dataset.mwSaved === '1' );
-
 		if ( bookmark.dataset.mwInCustomList === '1' ) {
 			const anchorElement = document.querySelector( '#ca-bookmark' );
 			preloadConfirmDialog( anchorElement );

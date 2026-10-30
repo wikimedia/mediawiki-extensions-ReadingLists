@@ -23,6 +23,17 @@ const DEFAULT_CONFIG_VALUES = {
 	wgExtensionAssetsPath: '/extensions'
 };
 
+const VECTOR_SOLID_BOOKMARK_CLASSES = [
+	'mw-ui-icon-bookmark',
+	'mw-ui-icon-wikimedia-bookmark'
+];
+const VECTOR_OUTLINE_BOOKMARK_CLASSES = [
+	'mw-ui-icon-bookmarkOutline',
+	'mw-ui-icon-wikimedia-bookmarkOutline'
+];
+const MINERVA_SOLID_BOOKMARK_CLASSES = [ 'minerva-icon--bookmark' ];
+const MINERVA_OUTLINE_BOOKMARK_CLASSES = [ 'minerva-icon--bookmarkOutline' ];
+
 async function flushPromises() {
 	await Promise.resolve();
 }
@@ -67,6 +78,16 @@ function createBookmarkElement( {
 	// * vector-icon
 	// * minerva-icon
 	icon.classList.add( iconClass );
+	const isSaved = saved === '1';
+	if ( iconClass === 'minerva-icon' ) {
+		icon.classList.add(
+			...( isSaved ? MINERVA_SOLID_BOOKMARK_CLASSES : MINERVA_OUTLINE_BOOKMARK_CLASSES )
+		);
+	} else {
+		icon.classList.add(
+			...( isSaved ? VECTOR_SOLID_BOOKMARK_CLASSES : VECTOR_OUTLINE_BOOKMARK_CLASSES )
+		);
+	}
 	bookmark.appendChild( icon );
 	bookmark.appendChild( label );
 
@@ -81,17 +102,6 @@ function createBookmarkElement( {
 	document.body.appendChild( bookmark );
 	return bookmark;
 }
-
-const VECTOR_SOLID_BOOKMARK_CLASSES = [
-	'mw-ui-icon-bookmark',
-	'mw-ui-icon-wikimedia-bookmark'
-];
-const VECTOR_OUTLINE_BOOKMARK_CLASSES = [
-	'mw-ui-icon-bookmarkOutline',
-	'mw-ui-icon-wikimedia-bookmarkOutline'
-];
-const MINERVA_SOLID_BOOKMARK_CLASSES = [ 'minerva-icon--bookmark' ];
-const MINERVA_OUTLINE_BOOKMARK_CLASSES = [ 'minerva-icon--bookmarkOutline' ];
 
 function expectIconClasses( icon, expectedClasses ) {
 	expectedClasses.forEach( ( className ) => {
@@ -195,58 +205,28 @@ afterEach( () => {
 describe( 'initBookmark', () => {
 
 	describe( 'initialization', () => {
-		describe( 'Vector skin initBookmark', () => {
-			test( 'sets outline icon and add bookmark label for unsaved page', () => {
-				const bookmark = createBookmarkElement();
-				initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
-
-				const icon = bookmark.querySelector( '.vector-icon' );
-				expectIconClasses( icon, VECTOR_OUTLINE_BOOKMARK_CLASSES );
-				expectIconClassesAbsent( icon, VECTOR_SOLID_BOOKMARK_CLASSES );
-
-				expect( bookmark.lastElementChild.textContent ).toBe( 'readinglists-add-bookmark' );
-			} );
-
-			test( 'sets solid icon and remove bookmark label for saved page', () => {
+		test.each( [
+			[ 'Vector', IS_NOT_MINERVA, undefined, 'Save', 'Add this page to your saved items' ],
+			[ 'Vector', IS_NOT_MINERVA, '1', 'Unsave', 'Remove this page from your saved items' ],
+			[ 'Minerva', IS_MINERVA, undefined, 'Save', 'Add this page to your saved items' ],
+			[ 'Minerva', IS_MINERVA, '1', 'Unsave', 'Remove this page from your saved items' ]
+		] )( 'preserves server-rendered markup for %s (isMinerva=%s, saved=%s)',
+			( skin, isMinerva, saved, label, tooltip ) => {
 				const bookmark = createBookmarkElement( {
-					saved: '1'
+					iconClass: isMinerva ? 'minerva-icon' : 'vector-icon',
+					saved
 				} );
-				initBookmark( bookmark, IS_NOT_MINERVA, VECTOR_EVENT_SOURCE );
+				bookmark.lastElementChild.textContent = label;
+				bookmark.title = tooltip;
+				const serverMarkup = bookmark.outerHTML;
+				mw.msg.mockClear();
 
-				const icon = bookmark.querySelector( '.vector-icon' );
-				expectIconClasses( icon, VECTOR_SOLID_BOOKMARK_CLASSES );
-				expectIconClassesAbsent( icon, VECTOR_OUTLINE_BOOKMARK_CLASSES );
+				initBookmark( bookmark, isMinerva, 'toolbar' );
 
-				expect( bookmark.lastElementChild.textContent ).toBe( 'readinglists-remove-bookmark' );
-			} );
-		} );
-
-		describe( 'Minerva skin initBookmark', () => {
-			test( 'uses Minerva icon classes', () => {
-				const bookmark = createBookmarkElement( {
-					iconClass: 'minerva-icon'
-				} );
-				initBookmark( bookmark, IS_MINERVA, MINERVA_EVENT_SOURCE );
-
-				const icon = bookmark.querySelector( '.minerva-icon' );
-				expectIconClasses( icon, MINERVA_OUTLINE_BOOKMARK_CLASSES );
-				expectIconClassesAbsent( icon, MINERVA_SOLID_BOOKMARK_CLASSES );
-			} );
-
-			test( 'sets solid icon and remove bookmark label for saved page', () => {
-				const bookmark = createBookmarkElement( {
-					iconClass: 'minerva-icon',
-					saved: '1'
-				} );
-				initBookmark( bookmark, IS_MINERVA, MINERVA_EVENT_SOURCE );
-
-				const icon = bookmark.querySelector( '.minerva-icon' );
-				expectIconClasses( icon, MINERVA_SOLID_BOOKMARK_CLASSES );
-				expectIconClassesAbsent( icon, MINERVA_OUTLINE_BOOKMARK_CLASSES );
-				expect( bookmark.lastElementChild.textContent ).toBe( 'readinglists-remove-bookmark' );
-			} );
-		} );
-
+				expect( bookmark.outerHTML ).toBe( serverMarkup );
+				expect( mw.msg ).not.toHaveBeenCalled();
+			}
+		);
 	} );
 
 	describe( 'click bookmark button to save page', () => {
@@ -273,6 +253,8 @@ describe( 'initBookmark', () => {
 				expectIconClasses( icon, VECTOR_SOLID_BOOKMARK_CLASSES );
 				expectIconClassesAbsent( icon, VECTOR_OUTLINE_BOOKMARK_CLASSES );
 				expect( bookmark.dataset.mwSaved ).toBe( '1' );
+				expect( bookmark.lastElementChild.textContent ).toBe( 'readinglists-remove-bookmark' );
+				expect( bookmark.title ).toBe( 'tooltip-ca-bookmark-remove' );
 				expect( hookCallback ).toHaveBeenCalledWith( true, null, null, 'toolbar' );
 				expect( changeHookCallback ).toHaveBeenCalledWith( true, 'toolbar' );
 				expect( postWithEditToken ).toHaveBeenCalledWith( expect.not.objectContaining( {
@@ -388,6 +370,8 @@ describe( 'initBookmark', () => {
 				expectIconClasses( icon, MINERVA_SOLID_BOOKMARK_CLASSES );
 				expectIconClassesAbsent( icon, MINERVA_OUTLINE_BOOKMARK_CLASSES );
 				expect( bookmark.dataset.mwSaved ).toBe( '1' );
+				expect( bookmark.lastElementChild.textContent ).toBe( 'readinglists-remove-bookmark' );
+				expect( bookmark.title ).toBe( 'tooltip-ca-bookmark-remove' );
 				expect( hookCallback ).toHaveBeenCalledWith(
 					true, null, null, MINERVA_EVENT_SOURCE
 				);
@@ -597,6 +581,8 @@ describe( 'initBookmark', () => {
 			expectIconClassesAbsent( icon, VECTOR_SOLID_BOOKMARK_CLASSES );
 
 			expect( bookmark.dataset.mwSaved ).toBeUndefined();
+			expect( bookmark.lastElementChild.textContent ).toBe( 'readinglists-add-bookmark' );
+			expect( bookmark.title ).toBe( 'tooltip-ca-bookmark-add' );
 			expect( hookCallback ).toHaveBeenCalledWith( false, null, null, 'toolbar' );
 			expect( changeHookCallback ).toHaveBeenCalledWith( false, 'toolbar' );
 			expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( {
@@ -637,6 +623,8 @@ describe( 'initBookmark', () => {
 			expectIconClassesAbsent( icon, MINERVA_SOLID_BOOKMARK_CLASSES );
 
 			expect( bookmark.dataset.mwSaved ).toBeUndefined();
+			expect( bookmark.lastElementChild.textContent ).toBe( 'readinglists-add-bookmark' );
+			expect( bookmark.title ).toBe( 'tooltip-ca-bookmark-add' );
 			expect( hookCallback ).toHaveBeenCalledWith( false, null, null, MINERVA_EVENT_SOURCE );
 			expect( changeHookCallback ).toHaveBeenCalledWith( false, MINERVA_EVENT_SOURCE );
 			expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( {
@@ -754,6 +742,25 @@ describe( 'initBookmark', () => {
 			vi.doUnmock( 'ext.readingLists.bookmark.bookmarkPopover' );
 		} );
 
+		test.each( [ IS_MINERVA, IS_NOT_MINERVA ] )(
+			'preserves the server-rendered Saved label and tooltip (isMinerva=%s)',
+			( isMinerva ) => {
+				const bookmark = createBookmarkElement( {
+					iconClass: isMinerva ? 'minerva-icon' : 'vector-icon',
+					saved: '1'
+				} );
+				bookmark.lastElementChild.textContent = 'Saved';
+				bookmark.title = 'Manage saved page';
+				const serverMarkup = bookmark.outerHTML;
+				mw.msg.mockClear();
+
+				initBookmark( bookmark, isMinerva, 'toolbar' );
+
+				expect( bookmark.outerHTML ).toBe( serverMarkup );
+				expect( mw.msg ).not.toHaveBeenCalled();
+			}
+		);
+
 		test( 'launches bookmark popover on save instead of mw.notify', async () => {
 			const bookmark = createBookmarkElement();
 			api.stubApi( {
@@ -775,6 +782,8 @@ describe( 'initBookmark', () => {
 			await flushPromises();
 
 			expect( initBookmarkPopover ).toHaveBeenCalledWith( true, [] );
+			expect( bookmark.lastElementChild.textContent ).toBe( 'readinglists-manage-bookmark' );
+			expect( bookmark.title ).toBe( 'tooltip-ca-bookmark-manage' );
 			expect( mw.notify ).not.toHaveBeenCalledWith(
 				expect.anything(),
 				expect.objectContaining( { tag: 'saved', type: 'success' } )
@@ -1041,6 +1050,8 @@ describe( 'initBookmark', () => {
 					await flushPromises();
 
 					expect( bookmark.dataset.mwSaved ).toBeUndefined();
+					expect( bookmark.lastElementChild.textContent ).toBe( 'readinglists-add-bookmark' );
+					expect( bookmark.title ).toBe( 'tooltip-ca-bookmark-add' );
 					const icon = bookmark.querySelector( '.vector-icon' );
 					expectIconClasses( icon, VECTOR_OUTLINE_BOOKMARK_CLASSES );
 					expectIconClassesAbsent( icon, VECTOR_SOLID_BOOKMARK_CLASSES );
