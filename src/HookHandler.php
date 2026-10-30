@@ -108,16 +108,21 @@ class HookHandler implements
 			}
 		}
 
+		$bookmarkAction = $isSaved ? 'remove' : 'add';
+		if ( $isSaved && $this->config->get( 'ReadingListsCustomLists' ) ) {
+			$bookmarkAction = 'manage';
+		}
+
 		$links['views']['bookmark'] = [
 			'text' => $sktemplate->msg(
-				'readinglists-' . ( $isSaved ? 'remove' : 'add' ) . '-bookmark'
+				'readinglists-' . $bookmarkAction . '-bookmark'
 			)->text(),
 			'icon' => $isSaved ? 'bookmark' : 'bookmarkOutline',
 			'href' => '#',
 			'data-mw-saved' => $isSaved ? 1 : null,
 			'data-mw-in-custom-list' => $hasCustomListEntry ? 1 : null,
 			'link-class' => 'reading-lists-bookmark',
-			'single-id' => $isSaved ? 'ca-bookmark-remove' : 'ca-bookmark-add',
+			'single-id' => 'ca-bookmark-' . $bookmarkAction,
 			'tooltiponly' => true,
 		];
 

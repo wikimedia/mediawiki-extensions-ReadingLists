@@ -244,7 +244,51 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 
 		$this->assertSame( 1, $links['views']['bookmark']['data-mw-saved'] );
 		$this->assertSame( 1, $links['views']['bookmark']['data-mw-in-custom-list'] );
-		$this->assertSame( 'ca-bookmark-remove', $links['views']['bookmark']['single-id'] );
+	}
+
+	/**
+	 * @dataProvider provideBookmarkLabelAndTooltip
+	 */
+	public function testBookmarkLabelAndTooltip(
+		string $skinName,
+		bool $customListsEnabled,
+		bool $isSaved,
+		string $expectedLabel,
+		string $expectedTooltipId
+	): void {
+		$this->setupWebEnabled();
+		$this->overrideConfigValue( 'ReadingListsCustomLists', $customListsEnabled );
+		$this->hookHandler = $this->createHookHandler(
+			$this->createMockRepository( $isSaved ? [ (object)[ 'rl_id' => 1, 'rl_is_default' => 1 ] ] : [] )
+		);
+
+		$title = Title::makeTitle( NS_MAIN, 'TestPage' );
+		$skin = $this->createSkinTemplate( $title, true, $skinName );
+		$links = $this->getLinks();
+
+		$this->hookHandler->onSkinTemplateNavigation__Universal( $skin, $links );
+
+		$bookmark = $links['views']['bookmark'];
+		$this->assertSame( $expectedLabel, $bookmark['text'] );
+		$this->assertSame( $expectedTooltipId, $bookmark['single-id'] );
+		$this->assertTrue( $bookmark['tooltiponly'] );
+	}
+
+	public static function provideBookmarkLabelAndTooltip(): iterable {
+		foreach ( [ 'minerva', 'vector-2022' ] as $skinName ) {
+			yield "$skinName, custom lists enabled, saved" => [
+				$skinName, true, true, 'Saved', 'ca-bookmark-manage',
+			];
+			yield "$skinName, custom lists disabled, saved" => [
+				$skinName, false, true, 'Unsave', 'ca-bookmark-remove',
+			];
+			yield "$skinName, custom lists enabled, unsaved" => [
+				$skinName, true, false, 'Save', 'ca-bookmark-add',
+			];
+			yield "$skinName, custom lists disabled, unsaved" => [
+				$skinName, false, false, 'Save', 'ca-bookmark-add',
+			];
+		}
 	}
 
 	public function testBookmarkIconButtonNotAddedForTalkPageWithBetaFeatureEnabled() {
