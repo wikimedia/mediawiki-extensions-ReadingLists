@@ -56,6 +56,7 @@
 	"readinglists-customlists-collection-name-dialog-save": "Salva",
 	"readinglists-add-bookmark": "Salva",
 	"readinglists-remove-bookmark": "Annulla salvataggio",
+	"readinglists-manage-bookmark": "Salvato",
 	"readinglists-unsave-from-custom-list-title": "Rimuovi da tutti gli elenchi di lettura?",
 	"readinglists-unsave-from-custom-list-body": "Questa pagina è presente in uno o più dei tuoi elenchi di lettura nell'applicazione di Wikipedia.",
 	"readinglists-unsave-from-custom-list-confirm": "Rimuovi",
@@ -72,12 +73,12 @@
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Aggiungi il tuo commento",
 	"readinglists-betafeature-quicksurvey-submit": "Invia",
 	"readinglists-betafeature-quicksurvey-thank-you": "Grazie per il tuo feedback",
-	"readinglists-cta-dialog-title": "Salva pagine",
+	"readinglists-cta-dialog-title": "Salva voci",
 	"readinglists-cta-dialog-create-account": "Registrati",
 	"readinglists-cta-dialog-log-in": "Entra",
 	"readinglists-cta-dialog-close": "Chiudi",
 	"readinglists-customlists-create-collection-short": "Crea raccolta",
-	"readinglists-customlists-collection-name-dialog-title": "Nome della raccolta",
+	"readinglists-customlists-collection-name-dialog-title": "Nome raccolta",
 	"readinglists-customlists-collection-name-dialog-placeholder": "Inserisci il nome",
 	"readinglists-customlists-add-entry-success": "$1 aggiunto a [[$2|$3]]."
 }

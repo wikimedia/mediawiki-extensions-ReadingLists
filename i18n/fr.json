@@ -127,9 +127,9 @@
 	"readinglists-betafeature-quicksurvey-submit": "Soumettre",
 	"readinglists-betafeature-quicksurvey-thank-you": "Merci pour vos commentaires",
 	"readinglists-cta-dialog-title": "Enregistrer des pages",
-	"readinglists-cta-dialog-subtitle": "Vous pouvez désormais enregistrer des pages Wikipédia dans votre liste personnelle.",
 	"readinglists-cta-dialog-call-to-action": "Veuillez vous connecter ou créer un compte pour enregistrer des articles.",
 	"readinglists-cta-dialog-create-account": "Créer un compte",
 	"readinglists-cta-dialog-log-in": "Se connecter",
-	"readinglists-cta-dialog-close": "Fermer"
+	"readinglists-cta-dialog-close": "Fermer",
+	"readinglists-customlists-delete-collection-dialog-cancel": "Annuler"
 }
