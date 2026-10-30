@@ -97,34 +97,34 @@ describe( 'setup', () => {
 } );
 
 describe( 'getLists', () => {
-	test( 'returns array of multiple lists', async () => {
-		api.stubApi( {
-			get: vi.fn( ( { action, meta } ) => {
-				if ( action === 'query' && meta === 'readinglists' ) {
-					return LISTS;
-				}
-			} )
-		} );
+	test( 'requests the maximum page size by default', async () => {
+		const get = vi.fn().mockResolvedValue( LISTS );
+		api.stubApi( { get } );
 
 		const response = await api.getLists();
+		expect( get ).toHaveBeenCalledWith( expect.objectContaining( {
+			action: 'query',
+			meta: 'readinglists',
+			rllimit: 'max'
+		} ) );
 		expect( response ).toStrictEqual( {
 			lists: LISTS.query.readinglists.map( translateList ),
 			next: LISTS.continue.rlcontinue
 		} );
 	} );
 
-	test( 'paginates with continue token', async () => {
+	test( 'paginates with continue token and an explicit limit', async () => {
 		const continueToken = LISTS.continue.rlcontinue;
-
-		api.stubApi( {
-			get: vi.fn( ( { action, meta, rlcontinue } ) => {
-				if ( action === 'query' && meta === 'readinglists' && rlcontinue === continueToken ) {
-					return LISTS2;
-				}
-			} )
-		} );
+		const get = vi.fn().mockResolvedValue( LISTS2 );
+		api.stubApi( { get } );
 
 		const response = await api.getLists( 'name', 'ascending', 12, continueToken );
+		expect( get ).toHaveBeenCalledWith( expect.objectContaining( {
+			action: 'query',
+			meta: 'readinglists',
+			rllimit: 12,
+			rlcontinue: continueToken
+		} ) );
 		expect( response ).toStrictEqual( {
 			lists: LISTS2.query.readinglists.map( translateList ),
 			next: null
@@ -762,7 +762,12 @@ describe( 'toBase64', () => {
 } );
 
 describe( 'getListsAll', () => {
-	it( 'caches', async () => {
+	it( 'fetches all pages at the maximum limit and caches the collections', async () => {
+		resetMockSession();
+
+		const expectedLists = LISTS.query.readinglists.slice( 1 )
+			.concat( LISTS2.query.readinglists );
+
 		const get = vi.fn( ( { rlcontinue } ) => {
 			if ( rlcontinue ) {
 				return LISTS2;
@@ -771,18 +776,30 @@ describe( 'getListsAll', () => {
 			}
 		} );
 		api.stubApi( { get } );
-		await api.getListsAll();
-		// check that both lists were returned
+		expect( await api.getListsAll() ).toStrictEqual( expectedLists );
+
 		expect( get ).toHaveBeenCalledTimes( 2 );
+		expect( get ).toHaveBeenNthCalledWith( 1, expect.objectContaining( {
+			rlsort: 'updated',
+			rldir: 'descending',
+			rllimit: 'max',
+			rlcontinue: undefined
+		} ) );
+		expect( get ).toHaveBeenNthCalledWith( 2, expect.objectContaining( {
+			rlsort: 'updated',
+			rldir: 'descending',
+			rllimit: 'max',
+			rlcontinue: LISTS.continue.rlcontinue
+		} ) );
 
 		// now call again..
-		await api.getListsAll();
+		expect( await api.getListsAll() ).toStrictEqual( expectedLists );
 		// check that the cache was used and get was not called again
 		expect( get ).toHaveBeenCalledTimes( 2 );
 
 		// reset the mock session to clear the cache and run again
 		resetMockSession();
-		await api.getListsAll();
+		expect( await api.getListsAll() ).toStrictEqual( expectedLists );
 
 		// check that 2 new calls were made after resetting the cache
 		expect( get ).toHaveBeenCalledTimes( 4 );

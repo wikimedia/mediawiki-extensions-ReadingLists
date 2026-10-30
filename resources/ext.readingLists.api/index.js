@@ -32,11 +32,11 @@ function setup() {
  *
  * @param {string} sort
  * @param {string} direction
- * @param {number} limit
+ * @param {number|string} limit Number of lists to return, or 'max'
  * @param {string|null} next
  * @return {Promise<any>}
  */
-async function getLists( sort = 'name', direction = 'ascending', limit = 12, next = null ) {
+async function getLists( sort = 'name', direction = 'ascending', limit = 'max', next = null ) {
 	try {
 		const { query: { readinglists: lists }, continue: rlcontinue } = await api.get( {
 			action: 'query',
@@ -130,7 +130,7 @@ async function getListsAll() {
 	if ( all ) {
 		return JSON.parse( all ).filter( ( list ) => !list.default );
 	}
-	const LIMIT_PER_QUERY = 5;
+	const LIMIT_PER_QUERY = 'max';
 	const getListsFromApi = async ( next = null ) => {
 		const result = await getLists( 'updated', 'descending', LIMIT_PER_QUERY, next );
 		if ( result.next ) {
