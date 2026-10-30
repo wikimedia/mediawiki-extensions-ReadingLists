@@ -16,7 +16,7 @@ use Wikimedia\ParamValidator\ParamValidator;
 class ApiReadingLists extends ApiBase {
 
 	/** @var array Module name => module class */
-	private static $submodules = [
+	private const SUBMODULES = [
 		'setup' => ApiReadingListsSetup::class,
 		'teardown' => ApiReadingListsTeardown::class,
 		'create' => ApiReadingListsCreate::class,
@@ -69,7 +69,7 @@ class ApiReadingLists extends ApiBase {
 						'MainConfig',
 					],
 				];
-			}, self::$submodules );
+			}, self::SUBMODULES );
 			$this->moduleManager = new ApiModuleManager(
 				$this,
 				MediaWikiServices::getInstance()->getObjectFactory()
