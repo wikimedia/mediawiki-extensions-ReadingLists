@@ -91,8 +91,8 @@ class ListsHandler extends Handler {
 	protected function getLists( array $params ): array {
 		$this->checkAuthority( $this->getAuthority() );
 
-		$params['sort'] = self::$sortParamMap[$params['sort']];
-		$params['dir'] = self::$sortParamMap[$params['dir']];
+		$params['sort'] = self::SORT_PARAM_MAP[$params['sort']];
+		$params['dir'] = self::SORT_PARAM_MAP[$params['dir']];
 		$params['next'] = $this->decodeNext( $params['next'], $params['sort'] );
 
 		// timestamp from before querying the DB

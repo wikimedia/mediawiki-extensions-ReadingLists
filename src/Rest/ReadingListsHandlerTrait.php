@@ -32,13 +32,13 @@ trait ReadingListsHandlerTrait {
 
 	private ?ReadingListRepository $repository = null;
 
-	private static int $MAX_BATCH_SIZE = 500;
+	private const int MAX_BATCH_SIZE = 500;
 
 	/**
 	 * Map of sort/dir keywords used by the API to sort/dir keywords used by the repo.
 	 * @var string[]
 	 */
-	private static array $sortParamMap = [
+	private const array SORT_PARAM_MAP = [
 		'name' => ReadingListRepository::SORT_BY_NAME,
 		'updated' => ReadingListRepository::SORT_BY_UPDATED,
 		'ascending' => ReadingListRepository::SORT_DIR_ASC,
@@ -211,8 +211,8 @@ trait ReadingListsHandlerTrait {
 
 		$i = 0;
 		foreach ( $batch as &$op ) {
-			if ( ++$i > self::$MAX_BATCH_SIZE ) {
-				$this->die( 'apierror-readinglists-batch-toomanyvalues', [ self::$MAX_BATCH_SIZE ] );
+			if ( ++$i > self::MAX_BATCH_SIZE ) {
+				$this->die( 'apierror-readinglists-batch-toomanyvalues', [ self::MAX_BATCH_SIZE ] );
 			}
 			// Each batch operation must be an associative array with scalar fields.
 			if (

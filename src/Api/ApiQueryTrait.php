@@ -15,47 +15,38 @@ use Wikimedia\ParamValidator\TypeDef\NumericDef;
 trait ApiQueryTrait {
 
 	// Mode constants, to support different sorting / paging / deleted item behavior for different
-	// parameter combinations. For no particular reason, PHP does not allow constants in traits,
-	// so we'll use statics instead.
+	// parameter combinations.
 
 	/**
 	 * Return all lists, or all entries of the specified list(s).
 	 * Intended for initial copy of data to a new device, or for devices which have information
 	 * that's too outdated for normal sync. Might also be useful for devices with limited storage
 	 * capacity, such as web clients.
-	 *
-	 * @var string
 	 */
-	private static $MODE_ALL = 'all';
+	private const string MODE_ALL = 'all';
 
 	/**
 	 * Return lists/entries which have been changed (or deleted) recently.
 	 * Intended for syncing updates to a device which has an older snapshot of the data.
 	 * "Recently" is defined by the changedsince parameter.
-	 *
-	 * @var string
 	 */
-	private static $MODE_CHANGES = 'changes';
+	private const string MODE_CHANGES = 'changes';
 
 	/**
 	 * Return lists which include a given page.
 	 * Intended for status indicators and such (e.g. showing a star on the current page if it's
 	 * included in some list).
-	 *
-	 * @var string
 	 */
-	private static $MODE_PAGE = 'page';
+	private const string MODE_PAGE = 'page';
 
 	/**
 	 * Return lists/entries by ID.
 	 * Intended for clients which have a limited local caching ability.
-	 *
-	 * @var string
 	 */
-	private static $MODE_ID = 'id';
+	private const string MODE_ID = 'id';
 
-	/** @var string[] Map of sort keywords used by the API to sort keywords used by the repo. */
-	private static $sortParamMap = [
+	/** Map of sort keywords used by the API to sort keywords used by the repo. */
+	private const array SORT_PARAM_MAP = [
 		'name' => ReadingListRepository::SORT_BY_NAME,
 		'updated' => ReadingListRepository::SORT_BY_UPDATED,
 		'ascending' => ReadingListRepository::SORT_DIR_ASC,
@@ -73,7 +64,7 @@ trait ApiQueryTrait {
 	 * @suppress PhanUndeclaredStaticProperty
 	 */
 	private function encodeContinuationParameter( array $item, $mode, $sort, $rawName = null ) {
-		if ( $mode === self::$MODE_PAGE ) {
+		if ( $mode === self::MODE_PAGE ) {
 			return $item['id'];
 		} elseif ( $sort === ReadingListRepository::SORT_BY_NAME ) {
 			if ( $rawName !== null ) {
@@ -107,7 +98,7 @@ trait ApiQueryTrait {
 			return null;
 		}
 
-		if ( $mode === self::$MODE_PAGE ) {
+		if ( $mode === self::MODE_PAGE ) {
 			$this->dieContinueUsageIf( $continue !== (string)(int)$continue );
 			return (int)$continue;
 		} else {

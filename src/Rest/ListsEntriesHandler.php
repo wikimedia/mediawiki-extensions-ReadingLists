@@ -100,8 +100,8 @@ class ListsEntriesHandler extends SimpleHandler {
 
 		$this->checkAuthority( $this->getAuthority() );
 
-		$sort = self::$sortParamMap[$sort];
-		$dir = self::$sortParamMap[$dir];
+		$sort = self::SORT_PARAM_MAP[$sort];
+		$dir = self::SORT_PARAM_MAP[$dir];
 		$next = $this->decodeNext( $next, $sort );
 
 		$result = [

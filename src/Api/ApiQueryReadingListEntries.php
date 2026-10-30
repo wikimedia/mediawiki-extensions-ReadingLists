@@ -69,28 +69,28 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 		$this->requireMaxOneParameter( $this->extractRequestParams(), 'lists', 'changedsince' );
 
 		if ( $changedSince !== null ) {
-			$mode = self::$MODE_CHANGES;
+			$mode = self::MODE_CHANGES;
 		} elseif ( $lists !== null ) {
-			$mode = self::$MODE_ID;
+			$mode = self::MODE_ID;
 		} else {
-			$mode = self::$MODE_ALL;
+			$mode = self::MODE_ALL;
 		}
 
 		if ( $sort === null ) {
-			$sort = ( $mode === self::$MODE_CHANGES ) ? 'updated' : 'name';
+			$sort = ( $mode === self::MODE_CHANGES ) ? 'updated' : 'name';
 		}
 
-		if ( $mode === self::$MODE_CHANGES && $sort === 'name' ) {
+		if ( $mode === self::MODE_CHANGES && $sort === 'name' ) {
 			// We don't have the right DB index for this. Wouldn't make much sense anyway.
 			$errorMessage = $this->msg( 'apierror-readinglists-invalidsort-notbyname', static::$prefix );
 			$this->dieWithError( $errorMessage, 'invalidparammix' );
 		}
 
-		$sort = self::$sortParamMap[$sort];
-		$dir = self::$sortParamMap[$dir];
+		$sort = self::SORT_PARAM_MAP[$sort];
+		$dir = self::SORT_PARAM_MAP[$dir];
 		$continue = $this->decodeContinuationParameter( $continue, $mode, $sort );
 
-		if ( $mode === self::$MODE_CHANGES ) {
+		if ( $mode === self::MODE_CHANGES ) {
 			$expiry = Utils::getDeletedExpiry();
 
 			if ( $changedSince < $expiry ) {
@@ -106,7 +106,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 
 		$repository = $this->getReadingListRepository( $this->getUser() );
 
-		if ( $mode === self::$MODE_CHANGES ) {
+		if ( $mode === self::MODE_CHANGES ) {
 			$res = $repository->getListEntriesByDateUpdated(
 				$changedSince,
 				$dir,
@@ -114,7 +114,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 				$continue,
 				$projects
 			);
-		} elseif ( $mode === self::$MODE_ID ) {
+		} elseif ( $mode === self::MODE_ID ) {
 			$res = $repository->getListEntries(
 				$lists,
 				$sort,
@@ -235,7 +235,7 @@ class ApiQueryReadingListEntries extends ApiQueryGeneratorBase {
 	 * @return array
 	 */
 	private function getResultItem( $row, $mode ) {
-		if ( $row->rle_deleted && $mode !== self::$MODE_CHANGES ) {
+		if ( $row->rle_deleted && $mode !== self::MODE_CHANGES ) {
 			$this->logger->error( 'Deleted row returned in non-changes mode', [
 				'rle_id' => $row->rle_id,
 				'rl_id' => $row->rle_rl_id,

@@ -52,7 +52,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 			$mode = null;
 			$this->requireMaxOneParameter( $this->extractRequestParams(), 'list', 'title', 'changedsince' );
 			if ( $project !== null && $title !== null ) {
-				$mode = self::$MODE_PAGE;
+				$mode = self::MODE_PAGE;
 			} elseif ( $project !== null || $title !== null ) {
 				$errorMessage = $this->msg( 'apierror-readinglists-project-title-param', static::$prefix );
 				$this->dieWithError( $errorMessage, 'missingparam' );
@@ -63,7 +63,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 						wfTimestamp( TS_ISO_8601, $expiry ) );
 					$this->dieWithError( $errorMessage );
 				}
-				$mode = self::$MODE_CHANGES;
+				$mode = self::MODE_CHANGES;
 			} elseif ( $listId !== null ) {
 				// FIXME 'dir' and 'limit' aren't compatible either but requireMaxOneParameter
 				// does not work with parameters which have a default value
@@ -71,23 +71,23 @@ class ApiQueryReadingLists extends ApiQueryBase {
 				foreach ( $params as $name ) {
 					$this->requireMaxOneParameter( $this->extractRequestParams(), 'list', $name );
 				}
-				$mode = self::$MODE_ID;
+				$mode = self::MODE_ID;
 			} else {
-				$mode = self::$MODE_ALL;
+				$mode = self::MODE_ALL;
 			}
 
 			if ( $sort === null ) {
-				$sort = ( $mode === self::$MODE_CHANGES ) ? 'updated' : 'name';
+				$sort = ( $mode === self::MODE_CHANGES ) ? 'updated' : 'name';
 			}
-			$sort = self::$sortParamMap[$sort];
-			$dir = self::$sortParamMap[$dir];
+			$sort = self::SORT_PARAM_MAP[$sort];
+			$dir = self::SORT_PARAM_MAP[$dir];
 			$continue = $this->decodeContinuationParameter( $continue, $mode, $sort );
 			// timestamp from before querying the DB
 			$timestamp = new DateTime( 'now', new DateTimeZone( 'GMT' ) );
 
-			if ( $mode === self::$MODE_PAGE ) {
+			if ( $mode === self::MODE_PAGE ) {
 				$res = $repository->getListsByPage( $project, $title, $limit + 1, $continue );
-			} elseif ( $mode === self::$MODE_CHANGES ) {
+			} elseif ( $mode === self::MODE_CHANGES ) {
 				$res = $repository->getListsByDateUpdated(
 					$changedSince,
 					$sort,
@@ -95,7 +95,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 					$limit + 1,
 					$continue
 				);
-			} elseif ( $mode === self::$MODE_ID ) {
+			} elseif ( $mode === self::MODE_ID ) {
 				$res = [ $repository->selectValidList( $listId ) ];
 			} else {
 				$res = $repository->getAllLists( $sort, $dir, $limit + 1, $continue );
@@ -202,7 +202,7 @@ class ApiQueryReadingLists extends ApiQueryBase {
 	 * @return array
 	 */
 	private function getResultItem( $row, $mode ) {
-		if ( $row->rl_deleted && $mode !== self::$MODE_CHANGES ) {
+		if ( $row->rl_deleted && $mode !== self::MODE_CHANGES ) {
 			$this->logger->error( 'Deleted row returned in non-changes mode', [
 				'rl_id' => $row->rl_id,
 				'user_central_id' => $row->rl_user_id,
