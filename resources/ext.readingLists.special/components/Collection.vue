@@ -138,12 +138,17 @@ module.exports = exports = {
 
 @min-width-card: @size-1200;
 
+p.reading-lists-sorting {
+	margin: 0;
+}
+
 .reading-lists-items-wrapper {
 	&--grid-view {
 		display: grid;
 		// Add as many cards to a row as possible & ensure cards don't shrink below their min-width.
 		grid-template-columns: repeat( auto-fill, minmax( @min-width-card, 1fr ) );
 		gap: @spacing-100;
+		margin-top: @spacing-50;
 	}
 
 	// "Show more" button.
@@ -152,10 +157,6 @@ module.exports = exports = {
 		margin-top: @spacing-200;
 		margin-left: auto;
 		margin-right: auto;
-	}
-
-	p.reading-lists-sorting {
-		margin: 0;
 	}
 }
 
