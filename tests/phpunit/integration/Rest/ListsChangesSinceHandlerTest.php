@@ -92,7 +92,6 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsChangesSinceSuccess( $pathParams, $queryParams, $expected, $paginating ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsChangesSinceHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -225,7 +224,6 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 		$changedSince = wfTimestamp( TS_ISO_8601, strtotime( "-7 days" ) );
 
 		$handler = new ListsChangesSinceHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 		$request = new RequestData( [
@@ -255,7 +253,6 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 		// Use a separate handler instance. This avoids double-initialization errors, and also
 		// ensures there are no side effects between invocations.
 		$handler = new ListsChangesSinceHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 		$request = new RequestData( [
@@ -289,7 +286,6 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsChangesSinceFailure( $pathParams, $queryParams ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsChangesSinceHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -338,7 +334,6 @@ class ListsChangesSinceHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsAccess() {
 		$services = $this->getServiceContainer();
 		$handler = new ListsChangesSinceHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup( false ) );
 

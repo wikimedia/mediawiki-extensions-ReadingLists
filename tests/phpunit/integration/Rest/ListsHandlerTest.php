@@ -25,7 +25,6 @@ class ListsHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsSuccess( $newLists, $queryParams, $expected ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 		$repository = $this->getReadingListRepository( $handler );
@@ -132,7 +131,6 @@ class ListsHandlerTest extends \MediaWikiIntegrationTestCase {
 		$services = $this->getServiceContainer();
 
 		$handler = new ListsHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 		$repository = $this->getReadingListRepository( $handler );
@@ -157,7 +155,6 @@ class ListsHandlerTest extends \MediaWikiIntegrationTestCase {
 		// Use a separate handler instance. This avoids double-initialization errors, and also
 		// ensures there are no side effects between invocations.
 		$handler = new ListsHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 		$request = new RequestData( [ 'queryParams' => [ 'limit' => 1, 'next' => $data['next'] ] ] );
@@ -182,7 +179,6 @@ class ListsHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsFailure( $queryParams ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -205,7 +201,6 @@ class ListsHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsAccess() {
 		$services = $this->getServiceContainer();
 		$handler = new ListsHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup( false ) );
 

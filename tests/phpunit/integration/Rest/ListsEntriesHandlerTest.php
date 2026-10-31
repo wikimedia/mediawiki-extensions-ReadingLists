@@ -26,7 +26,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsEntries( $newEntries, $queryParams, $expected ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsEntriesHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
 		);
@@ -139,7 +138,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 		$services = $this->getServiceContainer();
 
 		$handler = new ListsEntriesHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
 		);
@@ -167,7 +165,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 		// Use a separate handler instance. This avoids double-initialization errors, and also
 		// ensures there are no side effects between invocations.
 		$handler = new ListsEntriesHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
 		);
@@ -191,7 +188,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsEntriesTitleWithUnderscores(): void {
 		$services = $this->getServiceContainer();
 		$handler = new ListsEntriesHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
 		);
@@ -218,7 +214,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsEntriesTitleWithUnderscoresPaginationUsesRawNextToken(): void {
 		$services = $this->getServiceContainer();
 		$handler = new ListsEntriesHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
 		);
@@ -245,7 +240,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 		$this->assertSame( 'Banana_split|' . (int)$bananaSplit->rle_id, $data['next'] );
 
 		$handler = new ListsEntriesHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
 		);
@@ -275,7 +269,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsFailure( $queryParams ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsEntriesHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
 		);
@@ -307,7 +300,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 
 		// Add data, so that we can (try to) delete it.  We must use a privileged handler here.
 		$handler = new ListsEntriesHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup(),
 		);
@@ -321,7 +313,6 @@ class ListsEntriesHandlerTest extends \MediaWikiIntegrationTestCase {
 		] );
 
 		$handler = new ListsEntriesHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup( false ),
 		);

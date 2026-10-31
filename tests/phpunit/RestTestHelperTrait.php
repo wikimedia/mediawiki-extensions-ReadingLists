@@ -298,7 +298,6 @@ trait RestTestHelperTrait {
 		$request = new RequestData();
 		$services = $this->getServiceContainer();
 		$handler = new SetupHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup()
 		);
@@ -311,7 +310,6 @@ trait RestTestHelperTrait {
 		$request = new RequestData();
 		$services = $this->getServiceContainer();
 		$handler = new TeardownHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 		return $this->executeReadingListsHandler( $handler, $request );

@@ -17,7 +17,6 @@ use MediaWiki\Utils\MWTimestamp;
 use Psr\Log\LoggerInterface;
 use Wikimedia\ParamValidator\ParamValidator;
 use Wikimedia\Rdbms\IResultWrapper;
-use Wikimedia\Rdbms\LBFactory;
 
 /**
  * Handle GET requests to /{module}/lists
@@ -42,7 +41,6 @@ class ListsHandler extends Handler {
 	private const MAX_LIMIT = 10;
 
 	public function __construct(
-		private readonly LBFactory $dbProvider,
 		private readonly Config $config,
 		private readonly CentralIdLookup $centralIdLookup,
 	) {

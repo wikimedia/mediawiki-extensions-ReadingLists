@@ -13,7 +13,6 @@ use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use Psr\Log\LoggerInterface;
 use Wikimedia\ParamValidator\ParamValidator;
-use Wikimedia\Rdbms\LBFactory;
 
 /**
  * Handle GET requests to /{module}/lists/{id}/entries
@@ -28,7 +27,6 @@ class ListsEntriesHandler extends SimpleHandler {
 	private const MAX_LIMIT = 100;
 
 	public function __construct(
-		private readonly LBFactory $dbProvider,
 		private readonly Config $config,
 		private readonly CentralIdLookup $centralIdLookup,
 	) {

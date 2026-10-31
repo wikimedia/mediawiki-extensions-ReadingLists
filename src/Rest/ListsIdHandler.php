@@ -10,7 +10,6 @@ use Wikimedia\ParamValidator\ParamValidator;
 use Wikimedia\ParamValidator\TypeDef\NumericDef;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IResultWrapper;
-use Wikimedia\Rdbms\LBFactory;
 
 /**
  * Handle GET requests to /{module}/lists/{id}.
@@ -18,11 +17,10 @@ use Wikimedia\Rdbms\LBFactory;
  */
 class ListsIdHandler extends ListsHandler {
 	public function __construct(
-		LBFactory $dbProvider,
 		Config $config,
 		CentralIdLookup $centralIdLookup,
 	) {
-		parent::__construct( $dbProvider, $config, $centralIdLookup );
+		parent::__construct( $config, $centralIdLookup );
 	}
 
 	/**

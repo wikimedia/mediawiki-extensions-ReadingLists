@@ -12,7 +12,6 @@ use MediaWiki\User\CentralId\CentralIdLookup;
 use Psr\Log\LoggerInterface;
 use Wikimedia\ParamValidator\ParamValidator;
 use Wikimedia\ParamValidator\TypeDef\NumericDef;
-use Wikimedia\Rdbms\LBFactory;
 
 /**
  * Handle POST requests to /{module}/lists/{id}/entries/batch
@@ -26,7 +25,6 @@ class ListsEntriesCreateBatchHandler extends SimpleHandler {
 	private readonly LoggerInterface $logger;
 
 	public function __construct(
-		private readonly LBFactory $dbProvider,
 		private readonly Config $config,
 		private readonly CentralIdLookup $centralIdLookup,
 	) {

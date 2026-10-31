@@ -24,7 +24,6 @@ class ListsIdHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsIdSuccess() {
 		$services = $this->getServiceContainer();
 		$handler = new ListsIdHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 		$repository = $this->getReadingListRepository( $handler );
@@ -51,7 +50,6 @@ class ListsIdHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsIdFailure( $pathParams ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsIdHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -75,7 +73,6 @@ class ListsIdHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsIdAccess() {
 		$services = $this->getServiceContainer();
 		$handler = new ListsIdHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup( false ) );
 

@@ -19,7 +19,6 @@ class SetupAndTeardownHandlersTest extends \MediaWikiIntegrationTestCase {
 	public function testSetupAccess() {
 		$services = $this->getServiceContainer();
 		$handler = new SetupHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup( false )
 		);
@@ -34,7 +33,6 @@ class SetupAndTeardownHandlersTest extends \MediaWikiIntegrationTestCase {
 	public function testSetupToken() {
 		$services = $this->getServiceContainer();
 		$handler = new SetupHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -61,7 +59,6 @@ class SetupAndTeardownHandlersTest extends \MediaWikiIntegrationTestCase {
 	public function testTeardownAccess() {
 		$services = $this->getServiceContainer();
 		$handler = new TeardownHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup( false )
 		);
@@ -76,7 +73,6 @@ class SetupAndTeardownHandlersTest extends \MediaWikiIntegrationTestCase {
 	public function testTeardownToken() {
 		$services = $this->getServiceContainer();
 		$handler = new TeardownHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 

@@ -28,7 +28,6 @@ class ListsDeleteHandlerTest extends \MediaWikiIntegrationTestCase {
 
 		$services = $this->getServiceContainer();
 		$handler = new ListsDeleteHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -52,7 +51,6 @@ class ListsDeleteHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsDeleteFailure() {
 		$services = $this->getServiceContainer();
 		$handler = new ListsDeleteHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -72,7 +70,6 @@ class ListsDeleteHandlerTest extends \MediaWikiIntegrationTestCase {
 
 		// Add a list, so that we can (try to) delete it.  We must use a privileged handler here.
 		$handler = new ListsDeleteHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 		$repository = $this->getReadingListRepository( $handler );
@@ -80,7 +77,6 @@ class ListsDeleteHandlerTest extends \MediaWikiIntegrationTestCase {
 		$listId = (int)$list->rl_id;
 
 		$handler = new ListsDeleteHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup( false ) );
 

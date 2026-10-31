@@ -15,7 +15,6 @@ use Psr\Log\LoggerInterface;
 use Wikimedia\ParamValidator\ParamValidator;
 use Wikimedia\ParamValidator\TypeDef\NumericDef;
 use Wikimedia\ParamValidator\TypeDef\StringDef;
-use Wikimedia\Rdbms\LBFactory;
 
 /**
  * Handle PUT requests to /{module}/lists/{id}
@@ -29,7 +28,6 @@ class ListsUpdateHandler extends SimpleHandler {
 	private readonly LoggerInterface $logger;
 
 	public function __construct(
-		private readonly LBFactory $dbProvider,
 		private readonly Config $config,
 		private readonly CentralIdLookup $centralIdLookup,
 	) {

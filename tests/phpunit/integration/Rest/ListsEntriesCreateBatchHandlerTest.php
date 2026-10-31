@@ -85,7 +85,6 @@ class ListsEntriesCreateBatchHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsBatchCreateSuccess( $listName, $batch, $expectedProjects, $expectedTitles ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsEntriesCreateBatchHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -138,7 +137,6 @@ class ListsEntriesCreateBatchHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsEntriesCreateFailure( $id, $bodyParams ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsEntriesCreateBatchHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -174,7 +172,6 @@ class ListsEntriesCreateBatchHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsCreateBatchAccess() {
 		$services = $this->getServiceContainer();
 		$handler = new ListsEntriesCreateBatchHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup( false ) );
 
@@ -196,7 +193,6 @@ class ListsEntriesCreateBatchHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsCreateBatchToken() {
 		$services = $this->getServiceContainer();
 		$handler = new ListsEntriesCreateBatchHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 

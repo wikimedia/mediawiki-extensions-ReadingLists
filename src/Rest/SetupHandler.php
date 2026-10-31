@@ -12,7 +12,6 @@ use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use Psr\Log\LoggerInterface;
 use stdClass;
-use Wikimedia\Rdbms\LBFactory;
 
 /**
  * Sets up reading lists for the logged-in user
@@ -24,7 +23,6 @@ class SetupHandler extends Handler {
 	private readonly LoggerInterface $logger;
 
 	public function __construct(
-		private readonly LBFactory $dbProvider,
 		private readonly Config $config,
 		private readonly CentralIdLookup $centralIdLookup,
 	) {

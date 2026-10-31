@@ -22,7 +22,6 @@ class ListsUpdateHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsUpdateSuccess() {
 		$services = $this->getServiceContainer();
 		$handler = new ListsUpdateHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -66,7 +65,6 @@ class ListsUpdateHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsUpdateFailure( $id, $bodyParams, ?string $errorKey = null ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsUpdateHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -116,7 +114,6 @@ class ListsUpdateHandlerTest extends \MediaWikiIntegrationTestCase {
 
 		// Add a list, so that we can (try to) update it. We must use a privileged handler here.
 		$handler = new ListsUpdateHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 		$repository = $this->getReadingListRepository( $handler );
@@ -125,7 +122,6 @@ class ListsUpdateHandlerTest extends \MediaWikiIntegrationTestCase {
 
 		// Now create the unprivileged handler to test.
 		$handler = new ListsUpdateHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup( false ) );
 
@@ -152,7 +148,6 @@ class ListsUpdateHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsUpdateToken() {
 		$services = $this->getServiceContainer();
 		$handler = new ListsUpdateHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 

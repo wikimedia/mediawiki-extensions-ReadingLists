@@ -25,7 +25,6 @@ class ListsCreateHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsCreateSuccess( $name, $description, $extra ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsCreateHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -68,7 +67,6 @@ class ListsCreateHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsCreateFailure( $bodyParams, ?string $errorKey = null ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsCreateHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -103,7 +101,6 @@ class ListsCreateHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsCreateAccess() {
 		$services = $this->getServiceContainer();
 		$handler = new ListsCreateHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup( false ) );
 
@@ -126,7 +123,6 @@ class ListsCreateHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsCreateToken() {
 		$services = $this->getServiceContainer();
 		$handler = new ListsCreateHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 

@@ -85,7 +85,6 @@ class ListsPagesHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsPagesSuccess( $pathParams, $queryParams, $expected, $paginating ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsPagesHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -149,7 +148,6 @@ class ListsPagesHandlerTest extends \MediaWikiIntegrationTestCase {
 		$services = $this->getServiceContainer();
 
 		$handler = new ListsPagesHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 		$request = new RequestData( [
@@ -173,7 +171,6 @@ class ListsPagesHandlerTest extends \MediaWikiIntegrationTestCase {
 		// Use a separate handler instance. This avoids double-initialization errors, and also
 		// ensures there are no side effects between invocations.
 		$handler = new ListsPagesHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 		$request = new RequestData( [
@@ -201,7 +198,6 @@ class ListsPagesHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsPagesFailure( $pathParams, $queryParams ) {
 		$services = $this->getServiceContainer();
 		$handler = new ListsPagesHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup() );
 
@@ -236,7 +232,6 @@ class ListsPagesHandlerTest extends \MediaWikiIntegrationTestCase {
 	public function testListsPagesAccess() {
 		$services = $this->getServiceContainer();
 		$handler = new ListsPagesHandler(
-			$services->getDBLoadBalancerFactory(),
 			$services->getMainConfig(),
 			$this->getMockCentralIdLookup( false ) );
 

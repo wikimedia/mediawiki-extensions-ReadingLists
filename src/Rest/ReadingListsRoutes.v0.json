@@ -14,7 +14,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\SetupHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -28,7 +27,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\TeardownHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -41,7 +39,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -52,7 +49,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsCreateHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -65,7 +61,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -76,7 +71,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsCreateHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -89,7 +83,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsIdHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -100,7 +93,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsUpdateHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -111,7 +103,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsDeleteHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -124,7 +115,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsCreateBatchHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -137,7 +127,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsPagesHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -150,7 +139,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsChangesSinceHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -163,7 +151,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -174,7 +161,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -187,7 +173,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -198,7 +183,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -211,7 +195,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesCreateBatchHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]
@@ -224,7 +207,6 @@
 				"handler": {
 					"class": "MediaWiki\\Extension\\ReadingLists\\Rest\\ListsEntriesDeleteHandler",
 					"services": [
-						"DBLoadBalancerFactory",
 						"MainConfig",
 						"CentralIdLookup"
 					]

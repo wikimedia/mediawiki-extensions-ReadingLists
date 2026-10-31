@@ -10,7 +10,6 @@ use MediaWiki\Extension\ReadingLists\Utils;
 use MediaWiki\User\CentralId\CentralIdLookup;
 use Wikimedia\ParamValidator\ParamValidator;
 use Wikimedia\Rdbms\IResultWrapper;
-use Wikimedia\Rdbms\LBFactory;
 
 /**
  * Handle GET requests to /{module}/lists/changes/since.
@@ -21,11 +20,10 @@ class ListsChangesSinceHandler extends ListsHandler {
 	private const MAX_LIMIT = 10;
 
 	public function __construct(
-		LBFactory $dbProvider,
 		Config $config,
 		CentralIdLookup $centralIdLookup,
 	) {
-		parent::__construct( $dbProvider, $config, $centralIdLookup );
+		parent::__construct( $config, $centralIdLookup );
 		$this->allowDeletedRowsInResponse = true;
 	}
 
