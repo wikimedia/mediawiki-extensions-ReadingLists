@@ -228,7 +228,8 @@ module.exports = exports = {
 				let newNext = null;
 
 				if ( props.isCollections ) {
-					const lists = await api.getListsAll();
+					// Avoid stale collection item counts from session cache.
+					const lists = await api.getListsAll( { skipCache: true } );
 					newEntries = lists.map( ( { name, id, size } ) => (
 						{
 							id,

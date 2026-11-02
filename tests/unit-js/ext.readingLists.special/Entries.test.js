@@ -9,6 +9,7 @@ import i18n from '../../../i18n/en.json';
 import { nextTick } from 'vue';
 // Resolves to tests/unit-js/vueRouterStub.js, the same stub instance Entries gets.
 import { useRouter } from 'vue-router';
+import { resetMockSession } from 'mediawiki.storage';
 
 const ENTRIES_PATH = '../../../resources/ext.readingLists.special/pages/Entries.vue';
 const NAVIGATION_BAR_PATH = '../../../resources/ext.readingLists.special/components/NavigationBar.vue';
@@ -248,6 +249,32 @@ describe( 'Entries', () => {
 			expect( wrapper.vm.entries.length ).toBeGreaterThan( 0 );
 			expect( wrapper.vm.showNavBar ).toBe( true );
 			expect( wrapper.element ).toMatchSnapshot();
+		} );
+
+		test( 'reads collections fresh so the item counts are current', async () => {
+			resetMockSession();
+			const listWithSize = ( size ) => ( {
+				query: { readinglists: [ { id: 2, name: 'A', default: false, size } ] }
+			} );
+			const get = vi.fn( () => listWithSize( 1 ) );
+			api.stubApi( { get } );
+
+			// Fill the session cache with a stale size, as the bookmark popover would.
+			await api.getListsAll();
+			get.mockImplementation( () => listWithSize( 2 ) );
+			mw.msg.mockClear();
+
+			const wrapper = await mountEntries( {
+				isCollections: true,
+				isCustomListsEnabled: true
+			} );
+
+			await flushPromises();
+
+			expect( get ).toHaveBeenCalledTimes( 2 );
+			expect( mw.msg ).toHaveBeenCalledWith( 'readinglists-total-articles', '2' );
+			expect( wrapper.findAll( '.reading-lists-all-collections__list-item' ) ).toHaveLength( 1 );
+			wrapper.unmount();
 		} );
 
 		test( 'nav bar only renders after content has finished loading', async () => {

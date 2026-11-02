@@ -121,11 +121,14 @@ const getCacheKey = ( resourceKey ) => `USER-READING-LISTS-${ mw.user.getName() 
  * Get all reading lists created by the current user sorted by
  * updated without the default list. Cached to session storage.
  *
+ * @param {Object} [options]
+ * @param {boolean} [options.skipCache=false] Fetch from the API
+ * rather than the session cache.
  * @return {Promise<any>}
  */
-async function getListsAll() {
+async function getListsAll( { skipCache = false } = {} ) {
 	const cacheKey = getCacheKey( 'all' );
-	const all = session.get( cacheKey );
+	const all = skipCache ? null : session.get( cacheKey );
 
 	if ( all ) {
 		return JSON.parse( all ).filter( ( list ) => !list.default );

@@ -1,5 +1,5 @@
 import api from '../../../resources/ext.readingLists.api/index.js';
-import { resetMockSession } from 'mediawiki.storage';
+import { resetMockSession, session } from 'mediawiki.storage';
 const SETUP = require( '../fixtures/setup.json' );
 const LISTS = require( '../fixtures/lists.json' );
 const LISTS2 = require( '../fixtures/lists2.json' );
@@ -803,6 +803,30 @@ describe( 'getListsAll', () => {
 
 		// check that 2 new calls were made after resetting the cache
 		expect( get ).toHaveBeenCalledTimes( 4 );
+	} );
+
+	it( 'refetches and updates the cache when skipCache is true', async () => {
+		resetMockSession();
+
+		const expectedLists = LISTS.query.readinglists.slice( 1 )
+			.concat( LISTS2.query.readinglists );
+		const get = vi.fn( ( { rlcontinue } ) => ( rlcontinue ? LISTS2 : LISTS ) );
+		api.stubApi( { get } );
+
+		// Fill the cache first.
+		await api.getListsAll();
+		expect( get ).toHaveBeenCalledTimes( 2 );
+		session.set.mockClear();
+
+		expect( await api.getListsAll( { skipCache: true } ) ).toStrictEqual( expectedLists );
+
+		// The API was called again, the cache was not read, and the fresh result was stored.
+		expect( get ).toHaveBeenCalledTimes( 4 );
+		expect( session.get ).toHaveBeenCalledTimes( 1 );
+		expect( session.set ).toHaveBeenCalledTimes( 1 );
+		expect( JSON.parse( session.set.mock.calls[ 0 ][ 1 ] ) ).toStrictEqual(
+			LISTS.query.readinglists.concat( LISTS2.query.readinglists ).map( translateList )
+		);
 	} );
 } );
 
