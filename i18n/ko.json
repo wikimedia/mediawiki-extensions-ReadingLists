@@ -53,7 +53,7 @@
 	"special-tab-readinglists-short": "당신의 목록",
 	"readinglists-title": "저장된 문서",
 	"readinglists-total-lists": "{{PLURAL:$1|목록}} $1개",
-	"readinglists-total-articles": "{{PLURAL:$1|문서}} $1개",
+	"readinglists-total-articles": "{{PLURAL:$1|항목}} $1개",
 	"readinglists-show-more": "항목 더 보기",
 	"readinglists-default-title": "저장된 항목",
 	"readinglists-default-description": "저장된 문서를 위한 기본 목록입니다.",
@@ -123,7 +123,7 @@
 	"readinglists-customlists-no-collections": "모음집이 없습니다",
 	"readinglists-customlists-create-collection": "새 모음집 만들기",
 	"readinglists-customlists-create-collection-short": "모음집 만들기",
-	"readinglists-customlists-collection-name-dialog-title": "모음집의 이름",
+	"readinglists-customlists-collection-name-dialog-title": "모음집 이름",
 	"readinglists-customlists-collection-name-dialog-placeholder": "이름 입력",
 	"readinglists-customlists-add-entry-success": "$1이(가) [[$2|$3]]에 추가되었습니다."
 }

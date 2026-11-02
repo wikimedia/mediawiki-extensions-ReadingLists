@@ -20,6 +20,7 @@
 	"readinglists-db-error-duplicate-list": "Bu adla siyahı artıq mövcuddur.",
 	"readinglists-db-error-duplicate-page": "Siyahıda artıq bu səhifə var.",
 	"readinglists-db-error-empty-list-ids": "Siyahı idləri parametri boş olmamalıdır.",
+	"readinglists-db-error-empty-name": "Siyahı adı boş ola bilməz və ya yalnız boşluqdan ibarət ola bilməz.",
 	"readinglists-db-error-user-required": "Bu metod istifadəçini göstərmədən çağırıla bilməz.",
 	"readinglists-db-error-list-limit": "İstifadəçilər $1 {{PLURAL:$1|siyahıdan}} artığını yarada bilməzlər.",
 	"readinglists-db-error-entry-limit": "$1№-li siyahıya $2 {{PLURAL:$2|elementdən}} artığı daxil ola bilməz.",

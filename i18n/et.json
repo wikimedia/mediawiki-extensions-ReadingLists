@@ -12,7 +12,7 @@
 	"readinglists-privacy-tooltip": "Sinu salvestatud üksused ja kogud on privaatsed ja nähtavad ainult sulle.",
 	"readinglists-special-error-list-not-found": "Sul puudub juurdepääs sellele leheküljele. Võimalik, et oled sisse logitud teisele kontole, mitte URL-iga seotud kontole.",
 	"readinglists-title": "Salvestatud leheküljed",
-	"readinglists-total-articles": "$1 {{PLURAL:$1|lehekülg|lehekülge}}",
+	"readinglists-total-articles": "$1 {{PLURAL:$1|üksus|üksust}}",
 	"readinglists-default-title": "salvestatud üksuste",
 	"readinglists-empty-title": "Salvestatud artikleid pole",
 	"readinglists-empty-cta": "Kasuta järjehoidjaikooni mis tahes artiklis, et salvestada artikkel hilisemaks siia.",
@@ -24,6 +24,8 @@
 	"tooltip-ca-bookmark-add": "Lisa see lehekülg enda salvestatud üksustesse",
 	"tooltip-ca-bookmark-remove": "Eemalda see lehekülg enda salvestatud üksustest",
 	"readinglists-bookmark": "Järjehoidja",
+	"readinglists-add-bookmark": "Salvesta",
+	"readinglists-remove-bookmark": "Eemalda",
 	"readinglists-onboarding-close-button": "Sule",
 	"readinglists-onboarding-ok-button": "Sobib",
 	"readinglists-onboarding-saved-pages-title": "Salvestatud",
@@ -37,5 +39,9 @@
 	"readinglists-betafeature-quicksurvey-feedback-placeholder": "Lisa tagasiside",
 	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Andmekaitsereeglid]",
 	"readinglists-betafeature-quicksurvey-submit": "Saada",
-	"readinglists-betafeature-quicksurvey-thank-you": "Aitäh tagasiside eest"
+	"readinglists-betafeature-quicksurvey-thank-you": "Aitäh tagasiside eest",
+	"readinglists-cta-dialog-title": "Artiklite salvestamine",
+	"readinglists-cta-dialog-call-to-action": "Palun logi sisse või loo konto, et alustada.",
+	"readinglists-cta-dialog-create-account": "Loo konto",
+	"readinglists-cta-dialog-log-in": "Logi sisse"
 }

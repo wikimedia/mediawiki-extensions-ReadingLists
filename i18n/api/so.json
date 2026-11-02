@@ -53,6 +53,7 @@
 	"apihelp-readinglists+create-extended-description": "Isticmaaluhu waa inuu haystaa wax ka yar $1 {{PLURAL:$1|liis|liisyada}} (aan la tirtirin).",
 	"apihelp-readinglists+create-param-name": "Magaca liiska. Waa loo baahan yahay haddii aan la isticmaalin abuurista dufcadda.",
 	"apihelp-readinglists+create-param-description": "Sharaxaadda liiska.",
+	"apihelp-readinglists+create-param-rejectduplicates": "Diid abuurista liiska haddii isticmaaluhu hore u leeyahay liis leh magac isku mid ah, adigoo soo celinaya khalad halkii aad wax ka beddeli lahayd ama ku dari lahayd liiska jira. Tani waxay khusaysaa liis kasta oo ku jira hawl dufcad ah. Liisaska jira waa la isku daraa marka cabbirkan aan la cayimin.",
 	"apihelp-readinglists+create-param-batch": "Xogta dufcadda ee lagu abuurayo liisas badan hal codsi gudaheed, oo ah qaab isku-xir JSON ah oo leh hal ama in ka badan oo walxo ah oo leh goobaha <var>name</var> iyo (ikhtiyaari ahaan) <var>description</var>.",
 	"apihelp-readinglists+create-example-1": "Abuur liis akhris cusub.",
 	"apihelp-readinglists+create-example-2": "Abuur liisas cusub oo badan.",

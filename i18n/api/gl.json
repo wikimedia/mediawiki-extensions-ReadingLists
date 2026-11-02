@@ -56,6 +56,7 @@
 	"apihelp-readinglists+create-extended-description": "O usuario debe ter menos de $1 {{PLURAL:$1|lista (non eliminada)|listas (non eliminadas)}}.",
 	"apihelp-readinglists+create-param-name": "Nome da lista. Obrigatorio a menos que esteas utilizando unha creación por lotes.",
 	"apihelp-readinglists+create-param-description": "Descrición da lista.",
+	"apihelp-readinglists+create-param-rejectduplicates": "Rexeitar a creación dunha lista cando o usuario xa teña unha lista co mesmo nome, devolvendo un erro en lugar de modificala ou fusionala coa lista existente. Aplícase a cada lista dun lote. As listas existentes fusiónanse cando se omite este parámetro.",
 	"apihelp-readinglists+create-param-batch": "Datos por lotes para crear varias listas nunha única solicitude, en forma de matriz JSON cun ou máis obxectos cos campos <var>name</var> e (opcionalmente) <var>description</var>.",
 	"apihelp-readinglists+create-example-1": "Crear unha lista de lectura nova.",
 	"apihelp-readinglists+create-example-2": "Crear varias listas novas.",

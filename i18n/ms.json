@@ -19,6 +19,7 @@
 	"readinglists-db-error-duplicate-list": "Senarai dengan nama ini sudah wujud.",
 	"readinglists-db-error-duplicate-page": "Senarai ini sudah mengandungi laman ini.",
 	"readinglists-db-error-empty-list-ids": "Parameter id senarai tidak boleh kosong.",
+	"readinglists-db-error-empty-name": "Nama senarai tidak boleh kosong atau hanya mengandungi aksara jarak.",
 	"readinglists-db-error-user-required": "Kaedah ini tidak boleh dipanggil tanpa menyatakan pengguna.",
 	"readinglists-db-error-list-limit": "Pengguna tidak boleh mempunyai lebih daripada $1 {{PLURAL:$1|senarai}}.",
 	"readinglists-db-error-entry-limit": "Senarai $1 tidak boleh mempunyai lebih daripada $2 {{PLURAL:$2|masukan}}.",
