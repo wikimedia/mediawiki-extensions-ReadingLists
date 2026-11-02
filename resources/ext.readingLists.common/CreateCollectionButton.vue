@@ -1,6 +1,6 @@
 <template>
 	<button
-		class="readinglists-create-collection-button"
+		class="readinglists-collection-picker-button-link readinglists-create-collection-button"
 		@click="onCreateButtonClick"
 	>
 		{{ createButtonLabel }}
@@ -41,8 +41,4 @@ module.exports = exports = {
 
 <style lang="less">
 @import './button-link.less';
-
-.readinglists-create-collection-button {
-	.readinglists-button-link();
-}
 </style>

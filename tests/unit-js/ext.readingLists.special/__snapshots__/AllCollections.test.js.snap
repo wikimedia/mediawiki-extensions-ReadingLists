@@ -6,7 +6,7 @@ exports[`AllCollections > renders finished loading with collections 1`] = `
 >
   
   <button
-    class="readinglists-create-collection-button reading-lists-all-collections__create-button"
+    class="readinglists-collection-picker-button-link readinglists-create-collection-button reading-lists-all-collections__create-button"
   >
     Create collection
   </button>

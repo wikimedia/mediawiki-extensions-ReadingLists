@@ -13,7 +13,7 @@
 			></cdx-icon>
 			<!-- eslint-disable vue/no-v-html -->
 			<div
-				v-if="!isNewSave"
+				v-if="isNewSave"
 				class="cdx-popover__header__title"
 				v-html="saveTitle"
 			></div>
@@ -37,6 +37,7 @@
 		<collection-picker
 			:title="title"
 			:collections-with-page="collectionsWithPage"
+			:is-new-save="isNewSave"
 			@create-collection="launchCreateCollection"
 			@add-to-collection="addToCollection"
 			@remove-from-collection="removeFromCollection"
@@ -129,7 +130,7 @@ module.exports = exports = {
 			mw.msg( 'readinglists-default-title' )
 		).parse() );
 
-		const popoverIcon = computed( () => props.isNewSave ? null : cdxIconSuccess );
+		const popoverIcon = computed( () => props.isNewSave ? cdxIconSuccess : null );
 		const closeButtonLabel = computed( () => mw.msg( 'cdx-popover-close-button-label' ) );
 
 		/**
@@ -246,6 +247,10 @@ module.exports = exports = {
 		// Set the width to the max-width of the CdxPopover's bottom sheet version.
 		width: @size-5600;
 		max-width: @size-full;
+
+		.cdx-popover__body {
+			padding-top: 0;
+		}
 	}
 
 	&.cdx-popover:not( .cdx-popover--bottom-sheet ) {

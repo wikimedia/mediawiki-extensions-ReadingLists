@@ -7,7 +7,7 @@
 		</div>
 		<button
 			v-if="!isNewSave"
-			class="readinglists-collection-picker__unsave-button"
+			class="readinglists-collection-picker-button-link readinglists-collection-picker__unsave-button"
 			@click="onUnsaveButtonClick"
 		>
 			{{ unsaveMessage }}
@@ -23,7 +23,7 @@
 				class="readinglists-collection-picker__collection"
 				@click="( e ) => onSelectCollection( e, collection )"
 			>
-				{{ collection.name }}
+				<span>{{ collection.name }}</span>
 				<cdx-button
 					weight="quiet"
 					:aria-label="getAddButtonLabel( collection )"
@@ -186,8 +186,30 @@ module.exports = exports = {
 @import '../ext.readingLists.common/button-link.less';
 
 // Each collection's height is min button height + list item padding + top border width.
-@height-collection: @min-size-interactive-pointer + ( @spacing-75 * 2 ) + @border-width-base;
+@height-popover-collection: @min-size-interactive-pointer + ( @spacing-25 * 2 ) + @border-width-base;
+@height-bottom-sheet-collection: @min-size-interactive-pointer + ( @spacing-35 * 2 ) + @border-width-base;
 @max-collections: 6;
+
+.cdx-popover--bottom-sheet .readinglists-collection-picker {
+	&__collections {
+		&,
+		.content & {
+			max-height: @height-bottom-sheet-collection * @max-collections;
+		}
+	}
+
+	&__unsave-button,
+	&__create-button {
+		min-height: @height-bottom-sheet-collection;
+	}
+
+	&__collection {
+		&,
+		.content & {
+			padding: @spacing-35 0;
+		}
+	}
+}
 
 .readinglists-collection-picker {
 	// Override skin list styles. `.content` class needed for Minerva.
@@ -197,7 +219,7 @@ module.exports = exports = {
 			list-style: none;
 			margin: 0;
 			padding: 0;
-			max-height: @height-collection * @max-collections;
+			max-height: @height-popover-collection * @max-collections;
 		}
 	}
 
@@ -213,11 +235,10 @@ module.exports = exports = {
 
 	&__unsave-button,
 	&__create-button {
-		min-height: @height-collection;
+		min-height: @height-popover-collection;
 	}
 
 	&__unsave-button {
-		.readinglists-button-link();
 		color: @color-destructive;
 
 		&:hover {
@@ -236,7 +257,16 @@ module.exports = exports = {
 		&,
 		.content & {
 			margin: 0;
-			padding: @spacing-75 0;
+			padding: @spacing-25 0;
+
+			span {
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				overflow-wrap: anywhere;
+			}
 		}
 	}
 }
