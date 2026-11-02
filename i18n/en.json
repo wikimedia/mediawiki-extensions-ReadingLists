@@ -101,6 +101,7 @@
 	"readinglists-add-bookmark": "Save",
 	"readinglists-remove-bookmark": "Unsave",
 	"readinglists-manage-bookmark": "Saved",
+	"readinglists-truncated-title": "$1…",
 	"readinglists-unsave-from-custom-list-title": "Remove from all reading lists?",
 	"readinglists-unsave-from-custom-list-body": "This page is in one or more of your reading lists in the Wikipedia app.",
 	"readinglists-unsave-from-custom-list-title-collections": "Remove from all collections?",

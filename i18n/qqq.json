@@ -111,6 +111,7 @@
 	"readinglists-add-bookmark": "Button label for adding a page bookmark",
 	"readinglists-remove-bookmark": "Button label for removing a page bookmark",
 	"readinglists-manage-bookmark": "Button label for removing a page bookmark when custom lists is enabled",
+	"readinglists-truncated-title": "A collection title, truncated to a certain number of characters. Parameters:\n* $1 - truncated name of title",
 	"readinglists-unsave-from-custom-list-title": "Title of the confirmation dialog shown when a user tries to unsave a page that is also present in at least one custom saved list.",
 	"readinglists-unsave-from-custom-list-body": "Body text of the confirmation dialog shown when a user tries to unsave a page that is also present in at least one custom saved list.",
 	"readinglists-unsave-from-custom-list-title-collections": "Title of the updated confirmation dialog shown when a user tries to unsave a page.",

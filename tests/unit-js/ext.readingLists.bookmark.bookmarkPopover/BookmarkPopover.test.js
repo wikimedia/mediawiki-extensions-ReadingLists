@@ -80,10 +80,16 @@ describe( 'BookmarkPopover', () => {
 		} );
 	} );
 
-	describe( 'formattedTitle', () => {
+	describe( 'truncatedFormattedTitle', () => {
 		test( 'replaces underscores with spaces', () => {
 			mountPopover( { title: 'Test_Page_With_Underscores' } );
-			expect( wrapper.vm.formattedTitle ).toBe( 'Test Page With Underscores' );
+			expect( wrapper.vm.truncatedFormattedTitle ).toBe( 'Test Page With Underscores' );
+		} );
+
+		test( 'truncates long words', () => {
+			const longTitle = 'Taumatawhakatangi­hangakoauauotamatea­turipukakapikimaunga­horonukupokaiwhen­uakitanatahu';
+			mountPopover( { title: longTitle } );
+			expect( wrapper.vm.truncatedFormattedTitle ).toBe( '$1…' );
 		} );
 	} );
 

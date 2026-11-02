@@ -19,7 +19,7 @@
 			></div>
 			<!-- eslint-enable vue/no-v-html -->
 			<div v-else class="cdx-popover__header__title">
-				{{ formattedTitle }}
+				{{ truncatedFormattedTitle }}
 			</div>
 			<div class="cdx-popover__header__button-wrapper">
 				<cdx-button
@@ -121,11 +121,14 @@ module.exports = exports = {
 		const isUnsaveDialogOpen = ref( false );
 		const title = toRef( props, 'title' );
 		const formattedTitle = computed( () => title.value.replace( /_/g, ' ' ) );
+		const truncate = ( str ) => str.length > 50 ?
+			mw.msg( 'readinglists-truncated-title', str.slice( 0, 50 ) ) : str;
+		const truncatedFormattedTitle = computed( () => truncate( formattedTitle.value ) );
 
 		// Different popover title depending on whether the user is saving or un-saving the article.
 		const saveTitle = computed( () => mw.message(
 			'readinglists-customlists-add-entry-success',
-			formattedTitle.value,
+			truncate( formattedTitle.value ),
 			getCollectionUrl(),
 			mw.msg( 'readinglists-default-title' )
 		).parse() );
@@ -218,7 +221,6 @@ module.exports = exports = {
 			isConfigPopoverOpen,
 			isCollectionNameDialogOpen,
 			isUnsaveDialogOpen,
-			formattedTitle,
 			saveTitle,
 			popoverIcon,
 			closeButtonLabel,
@@ -228,6 +230,7 @@ module.exports = exports = {
 			addToCollection,
 			removeFromCollection,
 			onUnsaveClick,
+			truncatedFormattedTitle,
 			onPageUnsaved,
 			cdxIconClose
 		};
@@ -260,6 +263,10 @@ module.exports = exports = {
 
 	.cdx-popover__header__icon {
 		color: @color-success;
+	}
+
+	.cdx-popover__header__title {
+		overflow-wrap: anywhere;
 	}
 }
 </style>
