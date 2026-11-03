@@ -7,6 +7,10 @@ const AUTOSAVE_STORAGE_KEY = 'readinglists-cta-autosave';
 const { ReadingListsCustomLists } = require( './config.json' );
 const { getCollectionUrl } = api;
 
+/**
+ * @typedef {import('../types.js').BookmarkPopoverResult} BookmarkPopoverResult
+ */
+
 function getErrorMessage( err ) {
 	if ( typeof err === 'string' ) {
 		return mw.msg( err );
@@ -117,13 +121,16 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 	 * An mw.notification is not needed in some cases, like when the user just saves a page to
 	 * their default list, because they already see a success message in the bookmark popover.
 	 *
-	 * @param {boolean} isSaved Whether the article is now saved to a reading list
-	 * @param {boolean} showNotification Whether to show an mw.notification
-	 * @param {boolean|null} [isError] Whether an error occurred.
-	 * @param {number|null} [listId] The ID of the collection the article was added to
-	 * @param {string|null} [listName] The name of the collection the article was added to
+	 * @param {BookmarkPopoverResult} data Saved state and notification details
 	 */
-	function showPostChangeMessaging( isSaved, showNotification, isError, listId = null, listName = null ) {
+	function showPostChangeMessaging( {
+		isSaved,
+		showNotification,
+		isError,
+		isRemoved = !isSaved,
+		listId = null,
+		listName = null
+	} ) {
 		const homepageDiscoveryPreference = isMinerva ?
 			'homepage_mobile_discovery_notice_seen' :
 			'growthexperiments-tour-homepage-discovery';
@@ -142,7 +149,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		// If GrowthExperiments is unavailable, set a fallback for the preference.
 		// If the onboarding popover is not displayed, show a confirmation toast notification.
 		if (
-			isSaved &&
+			isSaved && !isRemoved &&
 			!mw.storage.get( ONBOARDING_STORAGE_KEY ) &&
 			mw.user.options.get( homepageDiscoveryPreference, 1 )
 		) {
@@ -155,8 +162,9 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			// * readinglists-browser-add-entry-success
 			// * readinglists-browser-remove-entry-success
 			// * readinglists-customlists-add-entry-success
+			// * readinglists-customlists-remove-entry-success
 			const msg = mw.message(
-				`readinglists-${ ( listId ? 'customlists' : 'browser' ) }-${ ( isSaved ? 'add' : 'remove' ) }-entry-success`,
+				`readinglists-${ ( listId ? 'customlists' : 'browser' ) }-${ ( isRemoved ? 'remove' : 'add' ) }-entry-success`,
 				mw.config.get( 'wgTitle' ),
 				route,
 				listNameParam
@@ -168,7 +176,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			// * mw-notification-type-notice
 			mw.notify( msg, {
 				tag: 'saved',
-				type: isSaved ? 'success' : 'notice'
+				type: isRemoved ? 'notice' : 'success'
 			} ).then( ( notification ) => {
 				activeNotification = notification;
 			} );
@@ -226,16 +234,16 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		updateBookmarkStatus( true );
 
 		if ( ReadingListsCustomLists ) {
-			const { isSaved, showNotification, isError, listId, listName } = await launchBookmarkPopover( true );
+			const popoverResult = await launchBookmarkPopover( true );
 
 			// Handle case where user immediately unsaves page.
-			if ( !isSaved ) {
-				updateBookmarkStatus( isSaved );
+			if ( !popoverResult.isSaved ) {
+				updateBookmarkStatus( popoverResult.isSaved );
 			}
 
-			showPostChangeMessaging( isSaved, showNotification, isError, listId, listName );
+			showPostChangeMessaging( popoverResult );
 		} else {
-			showPostChangeMessaging( true, true );
+			showPostChangeMessaging( { isSaved: true, showNotification: true } );
 		}
 	}
 
@@ -284,7 +292,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		}
 
 		updateBookmarkStatus( false );
-		showPostChangeMessaging( false, true );
+		showPostChangeMessaging( { isSaved: false, showNotification: true } );
 	}
 
 	/**
@@ -296,28 +304,31 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			activeNotification.close();
 		}
 
-		const { isSaved, showNotification, isError, listId, listName } = await launchBookmarkPopover( false );
+		const popoverResult = await launchBookmarkPopover( false );
 
 		// If the page has been unsaved, update the bookmark button.
-		if ( !isSaved ) {
-			updateBookmarkStatus( isSaved );
+		if ( !popoverResult.isSaved ) {
+			updateBookmarkStatus( popoverResult.isSaved );
 		}
 
 		// Show notifications (e.g. page added to collection, page unsaved from all collections).
-		showPostChangeMessaging( isSaved, showNotification, isError, listId, listName );
+		showPostChangeMessaging( popoverResult );
 	}
 
 	/**
 	 * Shows the save/un-save popover.
 	 *
 	 * @param {boolean} isNewSave Whether the page was just saved for the first time
-	 * @return {Promise<boolean>} Returns whether an mw.notification should display on dismiss.
+	 * @return {Promise<BookmarkPopoverResult>} Saved state and notification details on dismiss
 	 */
 	async function launchBookmarkPopover( isNewSave ) {
 		const [ allLists, listsWithPage ] = await Promise.all( [
 			api.getListsAll(),
 			api.getListsWithTitle( pageName )
 		] );
+		// A successful new save already establishes default-list membership.
+		const isInDefaultList = isNewSave || listsWithPage.some( ( list ) => list.default );
+
 		const collectionsWithPageStatus = allLists.map( ( list ) => Object.assign( {}, list, {
 			withTitle: listsWithPage.some( ( listWithTitle ) => listWithTitle.id === list.id )
 		} ) );
@@ -325,7 +336,11 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 		return await mw.loader.using( [ 'ext.readingLists.bookmark.bookmarkPopover' ] )
 			.then( () => {
 				const bookmarkPopoverModule = require( 'ext.readingLists.bookmark.bookmarkPopover' );
-				return bookmarkPopoverModule.initBookmarkPopover( isNewSave, collectionsWithPageStatus );
+				return bookmarkPopoverModule.initBookmarkPopover(
+					isNewSave,
+					collectionsWithPageStatus,
+					isInDefaultList
+				);
 			} )
 			.catch( ( error ) => {
 				mw.log.error( 'Error loading ext.readingLists.bookmark.bookmarkPopover module:', error );

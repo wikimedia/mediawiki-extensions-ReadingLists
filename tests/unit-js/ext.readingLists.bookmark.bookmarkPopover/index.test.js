@@ -23,13 +23,13 @@ describe( 'initBookmarkPopover', () => {
 		} );
 	} );
 
-	test( 'mounts the app with isNewSave=false and collections', async () => {
+	test.each( [ true, false ] )( 'passes default-list membership to the popover (%s)', async ( isInDefaultList ) => {
 		const collections = [ { id: 1, name: 'My List' } ];
-		const promise = initBookmarkPopover( false, collections );
+		const promise = initBookmarkPopover( false, collections, isInDefaultList );
 
 		expect( createMwApp ).toHaveBeenCalledWith(
 			expect.any( Object ),
-			expect.objectContaining( { isNewSave: false, collections } )
+			expect.objectContaining( { isNewSave: false, collections, isInDefaultList } )
 		);
 		expect( mockApp.mount ).toHaveBeenCalled();
 
@@ -39,11 +39,11 @@ describe( 'initBookmarkPopover', () => {
 
 	test( 'mounts the app with isNewSave=true and collections', async () => {
 		const collections = [ { id: 2, name: 'Another List' } ];
-		const promise = initBookmarkPopover( true, collections );
+		const promise = initBookmarkPopover( true, collections, true );
 
 		expect( createMwApp ).toHaveBeenCalledWith(
 			expect.any( Object ),
-			expect.objectContaining( { isNewSave: true, collections } )
+			expect.objectContaining( { isNewSave: true, collections, isInDefaultList: true } )
 		);
 
 		capturedProps.onDismiss( { isSaved: true, showNotification: false } );
@@ -51,7 +51,7 @@ describe( 'initBookmarkPopover', () => {
 	} );
 
 	test( 'resolves with the data object and unmounts when onDismiss is called', async () => {
-		const promise = initBookmarkPopover( false, [] );
+		const promise = initBookmarkPopover( false, [], false );
 
 		capturedProps.onDismiss( { isSaved: false, showNotification: true } );
 
@@ -64,7 +64,7 @@ describe( 'initBookmarkPopover', () => {
 
 	test( 'removes the container from the document body after dismiss', async () => {
 		const initialChildCount = document.body.children.length;
-		const promise = initBookmarkPopover( false, [] );
+		const promise = initBookmarkPopover( false, [], false );
 
 		capturedProps.onDismiss( { isSaved: false, showNotification: false } );
 		await promise;

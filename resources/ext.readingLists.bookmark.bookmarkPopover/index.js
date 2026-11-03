@@ -3,7 +3,7 @@ const BookmarkPopover = require( './BookmarkPopover.vue' );
 
 /**
  * @typedef {import('../types.js').CollectionWithTitle} CollectionWithTitle
- * @typedef {import('../types.js').DismissData} DismissData
+ * @typedef {import('../types.js').BookmarkPopoverResult} BookmarkPopoverResult
  */
 
 /**
@@ -11,9 +11,10 @@ const BookmarkPopover = require( './BookmarkPopover.vue' );
  *
  * @param {boolean} isNewSave Whether the page was just saved for the first time
  * @param {CollectionWithTitle[]} collections List of collections, including their titles
- * @return {Promise<DismissData>} Returns whether to show an mw.notification on dismiss
+ * @param {boolean} isInDefaultList Whether the page is saved in the default list
+ * @return {Promise<BookmarkPopoverResult>} Saved state and notification details on dismiss
  */
-function initBookmarkPopover( isNewSave, collections ) {
+function initBookmarkPopover( isNewSave, collections, isInDefaultList ) {
 	const container = document.createElement( 'div' );
 	document.body.appendChild( container );
 
@@ -22,8 +23,9 @@ function initBookmarkPopover( isNewSave, collections ) {
 			title: mw.config.get( 'wgPageName' ),
 			isNewSave,
 			collections,
+			isInDefaultList,
 			/**
-			 * @param {DismissData} data
+			 * @param {BookmarkPopoverResult} data
 			 * @return {void}
 			 */
 			onDismiss: ( data ) => cleanup( data )
@@ -32,7 +34,7 @@ function initBookmarkPopover( isNewSave, collections ) {
 		/**
 		 * Remove the app and resolve the promise with a payload of data.
 		 *
-		 * @param {DismissData} data
+		 * @param {BookmarkPopoverResult} data
 		 */
 		function cleanup( data ) {
 			app.unmount();

@@ -112,6 +112,13 @@ module.exports = exports = {
 			default: () => []
 		},
 		/**
+		 * Whether the page is also saved in the default list.
+		 */
+		isInDefaultList: {
+			type: Boolean,
+			default: false
+		},
+		/**
 		 * Callback when the popover closes. The argument is whether to show an mw.notification
 		 * (handled in bookmark.js).
 		 */
@@ -176,7 +183,7 @@ module.exports = exports = {
 					new Error( `Error ${ e } in addToCollection` ),
 					'error.readinglists'
 				);
-				props.onDismiss( { isSaved: false, isError: true, showNotification: true } );
+				props.onDismiss( { isSaved: true, isError: true, showNotification: true } );
 				return;
 			}
 			// Close the popover and show a notification that the page was added to a custom list.
@@ -189,7 +196,11 @@ module.exports = exports = {
 			await addToCollection( listId, listName );
 		}
 
-		async function removeFromCollection( listId ) {
+		/**
+		 * @param {number} listId
+		 * @param {string} listName
+		 */
+		async function removeFromCollection( listId, listName ) {
 			try {
 				await deleteEntryByPageTitle( title.value, listId );
 				actionRemoveFromCustomList();
@@ -205,9 +216,21 @@ module.exports = exports = {
 					new Error( `Error ${ e } in removeFromCollection` ),
 					'error.readinglists'
 				);
-				props.onDismiss( { isSaved: false, isError: true, showNotification: true } );
+				// Don't clear the bookmark if removing the page failed.
+				// Also the page should still be in the default list.
+				props.onDismiss( { isSaved: true, isError: true, showNotification: true } );
 				return;
 			}
+
+			isConfigPopoverOpen.value = false;
+
+			props.onDismiss( {
+				isSaved: props.isInDefaultList || collectionsWithPage.value.length > 0,
+				isRemoved: true,
+				showNotification: true,
+				listId,
+				listName
+			} );
 		}
 
 		async function onUnsaveClick() {
@@ -225,7 +248,9 @@ module.exports = exports = {
 					new Error( `Error ${ e } in onUnsaveClick` ),
 					'error.readinglists'
 				);
-				props.onDismiss( { isSaved: false, isError: true, showNotification: true } );
+				// Do not clear saved status if an error occurred when unsaving the page.
+				props.onDismiss( { isSaved: true, isError: true, showNotification: true } );
+				return;
 			}
 			isConfigPopoverOpen.value = false;
 			props.onDismiss( { isSaved: false, showNotification: true } );

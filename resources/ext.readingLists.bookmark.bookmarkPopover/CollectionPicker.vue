@@ -94,6 +94,7 @@ module.exports = exports = {
 		 * When the user clicks "remove" for a collection.
 		 *
 		 * @param {number} listId - The ID of the collection.
+		 * @param {string} listName - The name of the collection.
 		 */
 		'remove-from-collection',
 		/**
@@ -121,7 +122,8 @@ module.exports = exports = {
 				event.stopPropagation();
 			}
 			// emit an event to take care of any API calls.
-			emit( 'remove-from-collection', collection.id );
+			// include collection name for the notification message.
+			emit( 'remove-from-collection', collection.id, collection.name );
 		}
 
 		function onAddToCollection( event, collection ) {

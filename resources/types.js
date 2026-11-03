@@ -35,13 +35,15 @@
  */
 
 /**
- * @typedef {Object} DismissData
- * @property {boolean} isSaved Whether the page has been saved to or unsaved from a list
+ * @typedef {Object} BookmarkPopoverResult
+ * @property {boolean} isSaved Whether the page remains saved in any reading list
  * @property {boolean} showNotification Whether to show an mw.notification. Only needed if
  *                                      a page is saved to a custom list or unsaved.
  * @property {boolean} [isError] Did an error occur?
- * @property {string} [listId] ID of the list the page was saved to, if any.
- * @property {string} [listName] Name of the list the page was saved to, if any.
+ * @property {boolean} [isRemoved] Whether the action removed the page from a list.
+ *                               Defaults to !isSaved for removal from all lists.
+ * @property {number} [listId] ID of the collection the page was added to or removed from, if any.
+ * @property {string} [listName] Name of that collection, if any.
  */
 
 module.exports = {};

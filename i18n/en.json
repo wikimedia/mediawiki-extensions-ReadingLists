@@ -139,6 +139,7 @@
 	"readinglists-customlists-collection-name-dialog-required": "Collection name is required.",
 	"readinglists-customlists-collection-name-dialog-duplicate": "You already have a collection with this name.",
 	"readinglists-customlists-add-entry-success": "$1 added to [[$2|$3]].",
+	"readinglists-customlists-remove-entry-success": "$1 has been removed from [[$2|$3]].",
 	"readinglists-customlists-collection-picker-create-prompt": "Organize your saved item into a collection",
 	"readinglists-customlists-collection-picker-add-button-label": "Add $1 to $2",
 	"readinglists-customlists-collection-picker-remove-button-label": "Remove $1 from $2",

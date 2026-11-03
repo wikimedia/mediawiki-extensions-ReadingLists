@@ -18,6 +18,7 @@ describe( 'BookmarkPopover', () => {
 
 	beforeEach( () => {
 		onDismiss = vi.fn();
+		mw.errorLogger = { logError: vi.fn() };
 		mw.message.mockReturnValue( { parse: vi.fn( () => 'Save success title' ) } );
 	} );
 
@@ -158,6 +159,22 @@ describe( 'BookmarkPopover', () => {
 			expect( onDismiss ).toHaveBeenCalledWith( { isSaved: true, showNotification: true, listId: 42, listName: 'My List' } );
 		} );
 
+		test( 'preserves the saved state when adding to a collection fails', async () => {
+			apiModule.stubApi( {
+				postWithEditToken: vi.fn().mockRejectedValue( new Error( 'API failed' ) )
+			} );
+
+			mountPopoverWithCollectionPickerStub( { isNewSave: true } );
+			await wrapper.vm.addToCollection( 42, 'My List' );
+
+			expect( onDismiss ).toHaveBeenCalledTimes( 1 );
+			expect( onDismiss ).toHaveBeenCalledWith( {
+				isSaved: true,
+				isError: true,
+				showNotification: true
+			} );
+		} );
+
 		test( 'closes the config popover after add-to-collection', async () => {
 			apiModule.stubApi( { postWithEditToken: vi.fn( () => Promise.resolve( {} ) ) } );
 
@@ -194,6 +211,91 @@ describe( 'BookmarkPopover', () => {
 				isSaved: true,
 				listId: 42,
 				listName: 'My List',
+				showNotification: true
+			} );
+		} );
+	} );
+
+	describe( 'removeFromCollection', () => {
+		test( 'waits for removal before closing and notifying, preserving default-list membership', async () => {
+			let resolveDelete;
+			const deletePromise = new Promise( ( resolve ) => {
+				resolveDelete = resolve;
+			} );
+			const postWithEditToken = vi.fn( () => deletePromise );
+			apiModule.stubApi( { postWithEditToken } );
+
+			mountPopover( {
+				isInDefaultList: true,
+				collections: [ { id: 42, name: 'My List', withTitle: true } ]
+			} );
+			const removePromise = wrapper.vm.removeFromCollection( 42, 'My List' );
+
+			expect( postWithEditToken ).toHaveBeenCalledTimes( 1 );
+			expect( postWithEditToken ).toHaveBeenCalledWith( expect.objectContaining( {
+				command: 'deleteentry',
+				list: 42,
+				title: 'Test Page',
+				project: '@local'
+			} ) );
+			expect( wrapper.vm.isConfigPopoverOpen ).toBe( true );
+			expect( onDismiss ).not.toHaveBeenCalled();
+
+			resolveDelete( {} );
+			await removePromise;
+
+			expect( wrapper.vm.isConfigPopoverOpen ).toBe( false );
+			expect( onDismiss ).toHaveBeenCalledTimes( 1 );
+			expect( onDismiss ).toHaveBeenCalledWith( {
+				isSaved: true,
+				isRemoved: true,
+				showNotification: true,
+				listId: 42,
+				listName: 'My List'
+			} );
+		} );
+
+		test.each( [ true, false ] )(
+			'reports remaining custom-list membership when not in the default list (withTitle=%s)',
+			async ( withTitle ) => {
+				apiModule.stubApi( { postWithEditToken: vi.fn().mockResolvedValue( {} ) } );
+				mountPopover( {
+					isInDefaultList: false,
+					collections: [
+						{ id: 42, name: 'My List', withTitle: true },
+						{ id: 43, name: 'Other List', withTitle }
+					]
+				} );
+
+				await wrapper.vm.removeFromCollection( 42, 'My List' );
+
+				expect( wrapper.vm.isConfigPopoverOpen ).toBe( false );
+				expect( onDismiss ).toHaveBeenCalledTimes( 1 );
+				expect( onDismiss ).toHaveBeenCalledWith( {
+					isSaved: withTitle,
+					isRemoved: true,
+					showNotification: true,
+					listId: 42,
+					listName: 'My List'
+				} );
+			}
+		);
+
+		test( 'preserves the saved state and collection membership when removal fails', async () => {
+			apiModule.stubApi( {
+				postWithEditToken: vi.fn().mockRejectedValue( new Error( 'API failed' ) )
+			} );
+
+			mountPopover( {
+				collections: [ { id: 42, name: 'My List', withTitle: true } ]
+			} );
+			await wrapper.vm.removeFromCollection( 42, 'My List' );
+
+			expect( wrapper.vm.allCollections[ 0 ].withTitle ).toBe( true );
+			expect( onDismiss ).toHaveBeenCalledTimes( 1 );
+			expect( onDismiss ).toHaveBeenCalledWith( {
+				isSaved: true,
+				isError: true,
 				showNotification: true
 			} );
 		} );
@@ -258,6 +360,22 @@ describe( 'BookmarkPopover', () => {
 				expect( wrapper.vm.isConfigPopoverOpen ).toBe( false );
 				expect( onDismiss ).toHaveBeenCalledWith( {
 					isSaved: false,
+					showNotification: true
+				} );
+			} );
+
+			test( 'dismisses once with the saved state preserved when unsaving fails', async () => {
+				apiModule.stubApi( {
+					postWithEditToken: vi.fn().mockRejectedValue( new Error( 'API failed' ) )
+				} );
+
+				mountPopoverWithStubs( { collections: [] } );
+				await wrapper.vm.onUnsaveClick();
+
+				expect( onDismiss ).toHaveBeenCalledTimes( 1 );
+				expect( onDismiss ).toHaveBeenCalledWith( {
+					isSaved: true,
+					isError: true,
 					showNotification: true
 				} );
 			} );

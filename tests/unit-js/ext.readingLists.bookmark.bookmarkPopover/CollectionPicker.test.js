@@ -3,7 +3,7 @@ import CollectionPicker from '../../../resources/ext.readingLists.bookmark.bookm
 
 const cdxButtonStub = {
 	name: 'CdxButton',
-	template: '<button @click="$emit( \'click\' )"><slot /></button>',
+	template: '<button @click="$emit( \'click\', $event )"><slot /></button>',
 	emits: [ 'click' ]
 };
 
@@ -94,5 +94,19 @@ describe( 'CollectionPicker', () => {
 			expect( emitted ).toBeTruthy();
 			expect( emitted[ 0 ] ).toEqual( [ 42, 'My List' ] );
 		} );
+	} );
+
+	test.each( [
+		'.readinglists-collection-picker__collection',
+		'.readinglists-collection-picker__collection button'
+	] )( 'emits removal once with the collection id and name when clicking %s', async ( selector ) => {
+		mountPicker( {
+			collections: [ { id: 42, name: 'My List', withTitle: true } ]
+		} );
+
+		await wrapper.find( selector ).trigger( 'click' );
+
+		expect( wrapper.emitted( 'remove-from-collection' ) ).toEqual( [ [ 42, 'My List' ] ] );
+		expect( wrapper.emitted( 'add-to-collection' ) ).toBeUndefined();
 	} );
 } );

@@ -368,6 +368,8 @@
 				"readinglists-manage-bookmark",
 				"readinglists-browser-add-entry-success",
 				"readinglists-browser-remove-entry-success",
+				"readinglists-customlists-add-entry-success",
+				"readinglists-customlists-remove-entry-success",
 				"readinglists-default-title",
 				"readinglists-browser-error-intro",
 				"tooltip-ca-bookmark-add",
@@ -376,6 +378,7 @@
 				"notloggedin"
 			],
 			"dependencies": [
+				"mediawiki.notification",
 				"ext.readingLists.api",
 				"ext.readingLists.bookmark.icons",
 				"mediawiki.storage"
@@ -409,6 +412,7 @@
 			],
 			"dependencies": [
 				"vue",
+				"mediawiki.notification",
 				"ext.readingLists.common"
 			],
 			"messages": [
