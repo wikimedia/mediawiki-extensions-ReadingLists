@@ -138,46 +138,44 @@ module.exports = exports = {
 
 @min-width-card: @size-1200;
 
-.reading-lists-collection {
-	p.reading-lists-sorting {
-		font-size: @font-size-x-small;
+.reading-lists-collection p.reading-lists-sorting {
+	font-size: @font-size-x-small;
+	margin: 0;
+}
+
+.reading-lists-items-wrapper {
+	&--grid-view {
+		display: grid;
+		// Add as many cards to a row as possible & ensure cards don't shrink below their
+		// min-width.
+		grid-template-columns: repeat( auto-fill, minmax( @min-width-card, 1fr ) );
+		gap: @spacing-100;
+		margin-top: @spacing-50;
+	}
+
+	// "Show more" button.
+	+ .cdx-button {
+		display: block;
+		margin-top: @spacing-200;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+.reading-lists-items {
+	grid-column: 1 / -1;
+
+	.content ul&,
+	& {
+		list-style: none;
 		margin: 0;
+		padding: 0;
 	}
 
-	.reading-lists-items-wrapper {
-		&--grid-view {
-			display: grid;
-			// Add as many cards to a row as possible & ensure cards don't shrink below their
-			// min-width.
-			grid-template-columns: repeat( auto-fill, minmax( @min-width-card, 1fr ) );
-			gap: @spacing-100;
-			margin-top: @spacing-50;
-		}
-
-		// "Show more" button.
-		+ .cdx-button {
-			display: block;
-			margin-top: @spacing-200;
-			margin-left: auto;
-			margin-right: auto;
-		}
-	}
-
-	.reading-lists-items {
-		grid-column: 1 / -1;
-
-		.content ul&,
-		& {
-			list-style: none;
-			margin: 0;
-			padding: 0;
-		}
-
-		&--grid-view {
-			display: grid;
-			grid-template-columns: inherit;
-			gap: inherit;
-		}
+	&--grid-view {
+		display: grid;
+		grid-template-columns: inherit;
+		gap: inherit;
 	}
 }
 </style>
