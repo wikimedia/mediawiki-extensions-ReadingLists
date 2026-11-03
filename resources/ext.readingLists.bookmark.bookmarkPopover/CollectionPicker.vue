@@ -190,27 +190,6 @@ module.exports = exports = {
 @height-bottom-sheet-collection: @min-size-interactive-pointer + ( @spacing-35 * 2 ) + @border-width-base;
 @max-collections: 6;
 
-.cdx-popover--bottom-sheet .readinglists-collection-picker {
-	&__collections {
-		&,
-		.content & {
-			max-height: @height-bottom-sheet-collection * @max-collections;
-		}
-	}
-
-	&__unsave-button,
-	&__create-button {
-		min-height: @height-bottom-sheet-collection;
-	}
-
-	&__collection {
-		&,
-		.content & {
-			padding: @spacing-35 0;
-		}
-	}
-}
-
 .readinglists-collection-picker {
 	// Override skin list styles. `.content` class needed for Minerva.
 	&__collections {
@@ -267,6 +246,36 @@ module.exports = exports = {
 				text-overflow: ellipsis;
 				overflow-wrap: anywhere;
 			}
+		}
+	}
+
+	// Collection picker in bottom sheet popover.
+	.cdx-popover--bottom-sheet & {
+		&__collections {
+			&,
+			.content & {
+				max-height: @height-bottom-sheet-collection * @max-collections;
+			}
+		}
+
+		&__unsave-button,
+		&__create-button {
+			min-height: @height-bottom-sheet-collection;
+		}
+
+		&__collection {
+			&,
+			.content & {
+				padding: @spacing-35 0;
+			}
+		}
+	}
+
+	// Override Codex popover dividers.
+	.cdx-popover--bottom-sheet.cdx-popover--dividers & {
+		&__unsave-button:first-child,
+		&__create-button:first-child {
+			border-top: 0;
 		}
 	}
 }
