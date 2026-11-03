@@ -251,6 +251,11 @@ module.exports = exports = {
 		width: @size-5600;
 		max-width: @size-full;
 
+		.cdx-popover__header {
+			// T443389: Override default bottom sheet design and remove border
+			border: 0;
+		}
+
 		.cdx-popover__body {
 			padding-top: 0;
 		}

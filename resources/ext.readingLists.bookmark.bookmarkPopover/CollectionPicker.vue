@@ -270,13 +270,5 @@ module.exports = exports = {
 			}
 		}
 	}
-
-	// Override Codex popover dividers.
-	.cdx-popover--bottom-sheet.cdx-popover--dividers & {
-		&__unsave-button:first-child,
-		&__create-button:first-child {
-			border-top: 0;
-		}
-	}
 }
 </style>
