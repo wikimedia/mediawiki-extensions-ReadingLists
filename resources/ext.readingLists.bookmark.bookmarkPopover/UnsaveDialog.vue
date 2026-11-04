@@ -5,7 +5,7 @@
 			class="readinglists-unsave-dialog"
 			:title="dialogTitle"
 			:use-close-button="true"
-			:render-in-place="true"
+			:render-in-place="renderInPlace"
 			:primary-action="primaryAction"
 			:default-action="defaultAction"
 			@primary="unsavePage"
@@ -35,6 +35,7 @@
 const { computed, ref } = require( 'vue' );
 const { CdxDialog, CdxMessage } = require( '../../codex.js' );
 const { deleteEntryByPageTitle } = require( 'ext.readingLists.api' );
+const { useIsMobileResolution } = require( 'ext.readingLists.common' );
 
 /**
  * Dialog for confirming whether to unsave a page from all collections.
@@ -74,6 +75,12 @@ module.exports = exports = {
 	],
 	setup( props, { emit } ) {
 		const isOpen = ref( true );
+		const skinName = computed( () => mw.config.get( 'skin' ) );
+		const isMinerva = computed( () => skinName.value === 'minerva' );
+		const isMobile = useIsMobileResolution();
+		// Render in place only when BookmarkPopover is in popover mode. Refer to T443481.
+		const renderInPlace = computed( () => isMinerva.value ? false : !isMobile.value );
+
 		const unsaveIsPending = ref( false );
 		const error = ref( '' );
 
@@ -111,8 +118,9 @@ module.exports = exports = {
 		}
 
 		return {
-			error,
 			isOpen,
+			renderInPlace,
+			error,
 			dialogTitle,
 			bodyText,
 			collectionNames,
