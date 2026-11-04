@@ -103,6 +103,7 @@
 	"readinglists-add-bookmark": "Zapisz",
 	"readinglists-remove-bookmark": "Usuń z zakładek",
 	"readinglists-manage-bookmark": "Zapisano",
+	"readinglists-truncated-title": "$1…",
 	"readinglists-unsave-from-custom-list-title": "Usunąć stronę ze wszystkich list zapisanych stron?",
 	"readinglists-unsave-from-custom-list-body": "Ta strona znajduje się na jednej lub kilku z Twoich list zapisanych stron w aplikacji Wikipedii.",
 	"readinglists-unsave-from-custom-list-title-collections": "Usunąć stronę ze wszystkich kolekcji?",

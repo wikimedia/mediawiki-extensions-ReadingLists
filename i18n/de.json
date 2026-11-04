@@ -100,6 +100,7 @@
 	"readinglists-add-bookmark": "Speichern",
 	"readinglists-remove-bookmark": "Löschen",
 	"readinglists-manage-bookmark": "Gespeichert",
+	"readinglists-truncated-title": "$1 …",
 	"readinglists-unsave-from-custom-list-title": "Aus allen Leselisten entfernen?",
 	"readinglists-unsave-from-custom-list-body": "Diese Seite ist in einer oder mehreren deiner Leselisten in der Wikipedia-App enthalten.",
 	"readinglists-unsave-from-custom-list-title-collections": "Aus allen Sammlungen entfernen?",

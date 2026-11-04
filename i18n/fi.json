@@ -21,6 +21,7 @@
 	"readinglists-db-error-list-entry-deleted": "Listan kohde $1 on poistettu.",
 	"readinglists-db-error-duplicate-list": "Tämän niminen lista on jo olemassa.",
 	"readinglists-db-error-duplicate-page": "Tämä sivu on jo listalla.",
+	"readinglists-db-error-empty-name": "Listan nimi ei voi olla tyhjä eikä sisältää pelkkiä välilyöntejä.",
 	"readinglists-db-error-list-limit": "Käyttäjällä voi olla enintään $1 {{PLURAL:$1|lista|listaa}}.",
 	"readinglists-db-error-entry-limit": "Listassa $1 voi olla enintään $2 {{PLURAL:$2|kohde|kohdetta}}.",
 	"readinglists-db-error-too-long": "Kentän $1 arvo ei voi olla pidempi kuin $2 tavua.",

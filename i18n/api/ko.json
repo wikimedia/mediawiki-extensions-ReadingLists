@@ -57,6 +57,7 @@
 	"apihelp-readinglists+create-extended-description": "사용자는 $1개 미만의 (삭제되지 않은) {{PLURAL:$1|목록}}이 있어야 합니다.",
 	"apihelp-readinglists+create-param-name": "목록 이름입니다. 일괄 생성이 아니라면 필수입니다.",
 	"apihelp-readinglists+create-param-description": "목록의 설명입니다.",
+	"apihelp-readinglists+create-param-rejectduplicates": "이미 동일한 이름의 목록이 있는 경우, 기존 목록을 수정하거나 병합하는 대신 목록 생성을 거부하고 오류를 반환합니다. 이 설정은 일괄 처리되는 각 목록에 적용됩니다. 이 매개변수를 생략하면 기존 목록은 병합됩니다.",
 	"apihelp-readinglists+create-param-batch": "하나의 요청으로 여러 목록을 생성하기 위한 배치 데이터입니다. 이 데이터는 <var>name</var> 과 (선택적으로) <var>description</var> 필드를 가진 하나 이상의 객체가 포함된 JSON 배열 형식입니다.",
 	"apihelp-readinglists+create-example-1": "새로운 읽기 목록을 만듭니다.",
 	"apihelp-readinglists+create-example-2": "새로운 여러 목록을 만듭니다.",

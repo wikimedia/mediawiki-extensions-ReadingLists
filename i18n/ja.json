@@ -26,6 +26,7 @@
 	"readinglists-db-error-duplicate-list": "この名前のリストは既に存在します。",
 	"readinglists-db-error-duplicate-page": "リストには既にこのページが含まれています。",
 	"readinglists-db-error-empty-list-ids": "リストIDは空であってはなりません。",
+	"readinglists-db-error-empty-name": "リスト名は空にしたり、空白文字のみにすることはできません。",
 	"readinglists-db-error-user-required": "このメソッドは利用者を指定しないと呼び出すことはできません。",
 	"readinglists-db-error-list-limit": "利用者ひとりが作成できる一覧の上限は$1 {{PLURAL:$1|list|件}}です。",
 	"readinglists-db-error-entry-limit": "$1 に入力できる上限は$2 {{PLURAL:$2|entry|件}}です。",
