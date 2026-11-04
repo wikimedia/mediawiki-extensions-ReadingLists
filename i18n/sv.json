@@ -119,5 +119,11 @@
 	"readinglists-customlists-collections": "Samlingar",
 	"readinglists-customlists-no-collections": "Du har inga samlingar",
 	"readinglists-customlists-create-collection": "skapa ny samling",
-	"readinglists-customlists-add-entry-success": "$1 lades till i [[$2|$3]]."
+	"readinglists-customlists-create-collection-short": "Skapa samling",
+	"readinglists-customlists-add-entry-success": "$1 lades till i [[$2|$3]].",
+	"readinglists-customlists-collection-picker-create-prompt": "Organisera ditt sparade objekt i en samling",
+	"readinglists-customlists-collection-picker-add-button-label": "Lägg till $1 i $2",
+	"readinglists-customlists-collection-settings": "Samlingsinställningar",
+	"readinglists-customlists-rename-collection": "Byt namn på samling",
+	"readinglists-customlists-delete-collection": "Radera samling"
 }

@@ -122,5 +122,12 @@
 	"readinglists-customlists-allitems": "Alle items",
 	"readinglists-customlists-collections": "Verzamelingen",
 	"readinglists-customlists-no-collections": "U heeft geen verzamelingen",
-	"readinglists-customlists-create-collection": "nieuwe verzameling maken"
+	"readinglists-customlists-create-collection": "nieuwe verzameling maken",
+	"readinglists-customlists-create-collection-short": "Verzameling aanmaken",
+	"readinglists-customlists-add-entry-success": "$1 toegevoegd aan [[$2|$3]].",
+	"readinglists-customlists-collection-picker-create-prompt": "Organiseer uw opgeslagen items in een verzameling",
+	"readinglists-customlists-collection-picker-add-button-label": "$1 aan $2 toevoegen",
+	"readinglists-customlists-collection-settings": "Verzamelingsinstellingen",
+	"readinglists-customlists-rename-collection": "Verzameling hernoemen",
+	"readinglists-customlists-delete-collection": "Verzameling verwijderen"
 }

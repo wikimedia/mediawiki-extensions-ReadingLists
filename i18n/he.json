@@ -38,6 +38,8 @@
 	"readinglists-browser-page-not-supported": "ההרחבה \"$1\" אינה תומכת בדף זה",
 	"readinglists-special-title-imported": "רשימות קריאה: יבוא ממשתמש אחר",
 	"readinglists-special-subpage-title": "שמורים",
+	"readinglists-special-custom-list-title": "נשמר / $1",
+	"readinglists-privacy-indicator-label": "פרטי",
 	"readinglists-description": "כל הרשימות השמורות שלך במקום אחד.",
 	"readinglists-loading": "נא להמתין...",
 	"reading-list-purpose": "נא להיכנס לחשבון כדי לראות את רשימות הקריאה הפרטיות שלך.",
