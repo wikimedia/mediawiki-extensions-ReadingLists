@@ -245,6 +245,7 @@
 			"messages": [
 				"readinglists-browser-error-intro",
 				"readinglists-special-error-list-not-found",
+				"readinglists-special-error-generic",
 				"readinglists-empty-cta",
 				"readinglists-empty-title",
 				"readinglists-empty-collection-cta",
@@ -309,6 +310,7 @@
 						"cdxIconInfo",
 						"cdxIconDie",
 						"cdxIconEdit",
+						"cdxIconError",
 						"cdxIconExpand",
 						"cdxIconSettings",
 						"cdxIconViewCompact",

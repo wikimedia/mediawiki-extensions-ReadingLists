@@ -61,6 +61,7 @@
 	"readinglists-import-error": "Error that shows when you try to import bad data.",
 	"readinglists-import-size-error": "Error that shows on large lists.",
 	"readinglists-special-error-list-not-found": "Error shown on Special:Saved when a user tries to view a reading list that does not exist or has been deleted.",
+	"readinglists-special-error-generic": "Error shown on Special:ReadingLists when a request to the API fails, for example because the user is offline, or when another unexpected error occurs. Shown on the page and in the collections dropdown.",
 	"special-tab-readinglists-short": "Tab that shows on special page to take you back to your lists",
 	"readinglists-total-lists": "Message that shows the total number of reading lists a user created.\n\nParameters:\n* $1 - Lists count",
 	"readinglists-total-articles": "Message that shows the total number of pages in a reading list.\n\nParameters:\n* $1 - Items count",

@@ -16,7 +16,7 @@
 					weight="quiet"
 					:menu-items="collections"
 					:menu-config="menuConfig"
-					@click="maybeGetCollections"
+					@click="maybeGetCollections( true )"
 					@update:selected="onSelectCollection">
 					{{ collectionsText }}
 					<cdx-icon size="medium" :icon="cdxIconExpand"></cdx-icon>
@@ -29,6 +29,11 @@
 						<span
 							v-else
 							class="cdx-menu-item__content">
+							<cdx-icon
+								v-if="menuItem.value === loadErrorEntry.value"
+								class="cdx-menu-item__icon"
+								:icon="cdxIconError"
+							></cdx-icon>
 							<span class="cdx-menu-item__text"><bdi>{{ menuItem.label }}</bdi></span>
 						</span>
 					</template>
@@ -63,7 +68,7 @@ const { ref, onUpdated, onMounted } = require( 'vue' );
 const { RouterLink, useRouter } = require( 'vue-router' );
 const { actions } = require( 'ext.readingLists.common' );
 const { CdxIcon, CdxMenuButton } = require( '../../../codex.js' );
-const { cdxIconExpand, cdxIconSettings } = require( '../../../icons.json' );
+const { cdxIconError, cdxIconExpand, cdxIconSettings } = require( '../../../icons.json' );
 const { actionSettingsDeleteClick, actionSettingsRenameClick,
 	actionCreateCollectionButtonClick
 } = actions;
@@ -91,6 +96,14 @@ const noCollectionsEntry = {
 	class: 'reading-list-no-collection-menu-item',
 	disabled: true,
 	value: -1
+};
+
+// entry to show when the collections cannot be loaded
+const loadErrorEntry = {
+	label: mw.msg( 'readinglists-special-error-generic' ),
+	class: 'reading-list-load-error-menu-item',
+	disabled: true,
+	value: -2
 };
 
 // helper function to turn api respose into select dropdown entries
@@ -165,9 +178,11 @@ module.exports = exports = {
 			}
 		};
 
-		const maybeGetCollections = async () => {
+		const maybeGetCollections = async ( retry = false ) => {
 			// if the list of collections has already been updated, no need to make another api call
-			if ( collections.value.length > 0 ) {
+			// after a failed load, only make the call again when the user clicks the dropdown.
+			const hasLoadError = collections.value.includes( loadErrorEntry );
+			if ( collections.value.length > 0 && !( retry && hasLoadError ) ) {
 				return;
 			}
 
@@ -181,7 +196,8 @@ module.exports = exports = {
 						[ noCollectionsEntry ]
 				);
 			} catch ( err ) {
-				// T434119 - unclear what we should do in this case besides fail silently
+				// T434119 - show an error entry. A click on the dropdown tries again.
+				collections.value = [ createCollectionEntry, loadErrorEntry ];
 			}
 		};
 
@@ -210,7 +226,9 @@ module.exports = exports = {
 
 		return {
 			showDropdown,
+			cdxIconError,
 			cdxIconExpand,
+			loadErrorEntry,
 			allItemsTo,
 			allItemsText,
 			collectionsUrl,
@@ -289,6 +307,14 @@ module.exports = exports = {
 
 	.reading-list-no-collection-menu-item {
 		color: @color-subtle;
+	}
+
+	.reading-list-load-error-menu-item {
+		color: @color-error;
+
+		.cdx-icon {
+			color: @color-icon-error;
+		}
 	}
 }
 

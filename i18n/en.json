@@ -50,6 +50,7 @@
 	"readinglists-import-error": "Unable to display the list from the data given.",
 	"readinglists-import-size-error": "The list is too large to display.",
 	"readinglists-special-error-list-not-found": "List not found.",
+	"readinglists-special-error-generic": "Something went wrong. Please try again later.",
 	"special-tab-readinglists-short": "Your lists",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|list|lists}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|item|items}}",

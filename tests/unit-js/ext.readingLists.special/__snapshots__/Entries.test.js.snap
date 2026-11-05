@@ -8,7 +8,6 @@ exports[`Entries > with custom lists > nav bar does not disappear when show more
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->
-  <!--v-if-->
   <nav
     class="reading-lists-nav"
   >
@@ -160,6 +159,8 @@ exports[`Entries > with custom lists > nav bar does not disappear when show more
       </div>
     </div>
   </nav>
+  
+  <!--v-if-->
   <!--v-if-->
   <!--v-if-->
   <div
@@ -371,6 +372,7 @@ exports[`Entries > with custom lists > nav bar does not disappear when show more
   </div>
   <!--v-if-->
   
+  
 </div>
 `;
 
@@ -383,6 +385,7 @@ exports[`Entries > with custom lists > nav bar only renders after content has fi
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->
+  
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->
@@ -412,6 +415,7 @@ exports[`Entries > with custom lists > nav bar only renders after content has fi
   <!--v-if-->
   
   
+  
 </div>
 `;
 
@@ -420,7 +424,6 @@ exports[`Entries > with custom lists > renders the nav bar when custom lists are
   data-v-app=""
 >
   
-  <!--v-if-->
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->
@@ -451,6 +454,8 @@ exports[`Entries > with custom lists > renders the nav bar when custom lists are
     </ul>
     <!--v-if-->
   </nav>
+  
+  <!--v-if-->
   <!--v-if-->
   <!--v-if-->
   <div
@@ -594,6 +599,7 @@ exports[`Entries > with custom lists > renders the nav bar when custom lists are
     
   </div>
   <!--v-if-->
+  
   
 </div>
 `;
@@ -607,6 +613,7 @@ exports[`Entries > without custom lists > renders all items from all lists on sp
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->
+  
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->
@@ -752,6 +759,7 @@ exports[`Entries > without custom lists > renders all items from all lists on sp
   </div>
   <!--v-if-->
   
+  
 </div>
 `;
 
@@ -764,6 +772,7 @@ exports[`Entries > without custom lists > renders with toolbar disabled 1`] = `
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->
+  
   <!--v-if-->
   
   <h2
@@ -986,6 +995,7 @@ exports[`Entries > without custom lists > renders with toolbar disabled 1`] = `
     
   </div>
   <!--v-if-->
+  
   
 </div>
 `;

@@ -1,45 +1,45 @@
 <template>
+	<collection-name-dialog
+		v-if="showCollectionNameDialog"
+		:is-rename="isRename"
+		:list-id="listId"
+		:title="title"
+		@update:open="( newVal ) => showCollectionNameDialog = newVal"
+		@success="routeToNewCollection"
+	>
+	</collection-name-dialog>
+
+	<delete-collection-dialog
+		v-if="showDeleteCollection"
+		:list-name="title"
+		:is-deleting="isDeletingCollection"
+		@close="closeDeleteDialog"
+		@confirm="deleteCollection"
+	>
+	</delete-collection-dialog>
+
+	<cdx-message
+		v-if="deleteError"
+		type="error"
+		class="reading-lists-delete-error">
+		{{ deleteError }}
+	</cdx-message>
+
+	<navigation-bar
+		v-if="showNavBar"
+		:is-custom-list="isCustomList"
+		@create-collection="openCollectionNameDialog"
+		@rename-collection="openCollectionNameDialog( true )"
+		@delete-collection="showDeleteCollection = true"
+	>
+	</navigation-bar>
+
 	<cdx-message v-if="error" type="error">
 		{{ error }}
 	</cdx-message>
 
 	<template v-else>
 		<slot v-if="$slots[ 'import-dialog' ]" name="import-dialog"></slot>
-
-		<collection-name-dialog
-			v-if="showCollectionNameDialog"
-			:is-rename="isRename"
-			:list-id="listId"
-			:title="title"
-			@update:open="( newVal ) => showCollectionNameDialog = newVal"
-			@success="routeToNewCollection"
-		>
-		</collection-name-dialog>
-
-		<delete-collection-dialog
-			v-if="showDeleteCollection"
-			:list-name="title"
-			:is-deleting="isDeletingCollection"
-			@close="closeDeleteDialog"
-			@confirm="deleteCollection"
-		>
-		</delete-collection-dialog>
-
-		<cdx-message
-			v-if="deleteError"
-			type="error"
-			class="reading-lists-delete-error">
-			{{ deleteError }}
-		</cdx-message>
-
-		<navigation-bar
-			v-if="showNavBar"
-			:is-custom-list="isCustomList"
-			@create-collection="openCollectionNameDialog"
-			@rename-collection="openCollectionNameDialog( true )"
-			@delete-collection="showDeleteCollection = true"
-		>
-		</navigation-bar>
 
 		<template v-if="showInPageTitle">
 			<h2 v-if="title" class="reading-lists-title">

@@ -46,12 +46,14 @@ const useReadingListsStore = defineStore( 'readingLists', () => {
 	 * @param {string|Error} err
 	 */
 	function handleError( err ) {
-		if ( typeof err === 'string' ) {
-			const key = LIST_NOT_FOUND_ERRORS.includes( err ) ?
-				'readinglists-special-error-list-not-found' : err;
-			error.value = mw.msg( key );
+		if ( typeof err === 'string' && LIST_NOT_FOUND_ERRORS.includes( err ) ) {
+			error.value = mw.msg( 'readinglists-special-error-list-not-found' );
 		} else {
-			error.value = err.toString();
+			mw.errorLogger.logError(
+				err instanceof Error ? err : new Error( `Failed to load reading list: ${ err }` ),
+				'error.readinglists'
+			);
+			error.value = mw.msg( 'readinglists-special-error-generic' );
 		}
 	}
 

@@ -278,6 +278,8 @@ describe( 'Entries', () => {
 		} );
 
 		test( 'nav bar only renders after content has finished loading', async () => {
+			// Keep the requests pending, so that the content stays in the loading state.
+			api.stubApi( { get: vi.fn( () => new Promise( () => {} ) ) } );
 			const wrapper = await mountEntries( { isCustomListsEnabled: true } );
 
 			expect( wrapper.vm.loadingEntries ).toBe( true );
@@ -556,5 +558,57 @@ describe( 'Entries', () => {
 				.toBe( i18n[ 'readinglists-customlists-delete-collection-error' ] );
 			expect( wrapper.findComponent( NavigationBar ).exists() ).toBe( true );
 		} );
+	} );
+
+	describe( 'when the list does not load', () => {
+		beforeEach( () => {
+			mw.errorLogger = { logError: vi.fn() };
+			vi.spyOn( mw, 'msg' ).mockImplementation( ( key ) => i18n[ key ] || key );
+		} );
+
+		test( 'shows the error under the navigation bar', async () => {
+			api.stubApi( { get: vi.fn( () => Promise.reject( 'http' ) ) } );
+			const NavigationBar = ( await import( NAVIGATION_BAR_PATH ) ).default;
+
+			const wrapper = await mountEntries( { listId: 12345, isCustomListsEnabled: true } );
+			await flushPromises();
+
+			const navigationBar = wrapper.findComponent( NavigationBar );
+			const message = wrapper.get( '.cdx-message--error' );
+			expect( navigationBar.exists() ).toBe( true );
+			expect( message.text() ).toBe( i18n[ 'readinglists-special-error-generic' ] );
+			// The message comes directly after the navigation bar.
+			const nextElement = navigationBar.element.nextElementSibling;
+			expect( nextElement.contains( message.element ) ).toBe( true );
+			expect( wrapper.find( '.reading-lists-items-wrapper' ).exists() ).toBe( false );
+		} );
+
+		test.each( [
+			[ 'an unknown error code', 'foo', new Error( 'Failed to load reading list: foo' ) ],
+			[ 'an Error object', new TypeError( 'bad' ), new TypeError( 'bad' ) ]
+		] )( 'shows the friendly message and logs %s', async ( _, rejection, logged ) => {
+			api.stubApi( { get: vi.fn( () => Promise.reject( rejection ) ) } );
+
+			const wrapper = await mountEntries( { listId: 12345, isCustomListsEnabled: true } );
+			await flushPromises();
+
+			expect( wrapper.get( '.cdx-message--error' ).text() )
+				.toBe( i18n[ 'readinglists-special-error-generic' ] );
+			expect( mw.errorLogger.logError ).toHaveBeenCalledWith( logged, 'error.readinglists' );
+		} );
+
+		test( 'shows the "not found" message for a list that belongs to another user', async () => {
+			api.stubApi( {
+				get: vi.fn( () => Promise.reject( 'readinglists-db-error-not-own-list' ) )
+			} );
+
+			const wrapper = await mountEntries( { listId: 12345, isCustomListsEnabled: true } );
+			await flushPromises();
+
+			expect( wrapper.get( '.cdx-message--error' ).text() )
+				.toBe( i18n[ 'readinglists-special-error-list-not-found' ] );
+			expect( mw.errorLogger.logError ).not.toHaveBeenCalled();
+		} );
+
 	} );
 } );
