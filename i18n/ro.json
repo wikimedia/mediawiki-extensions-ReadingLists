@@ -1,11 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
-			"Vellion Eagle"
+			"Vellion Eagle",
+			"Paloi Sciurala"
 		]
 	},
 	"readinglists-description": "Toate listele dvs. salvate, într-un singur loc.",
 	"readinglists-title": "Pagini salvate",
 	"readinglists-default-title": "elemente salvate",
-	"readinglists-sorted-by-recent": "Sortate după cele mai recente."
+	"readinglists-sorted-by-recent": "Sortate după cele mai recente.",
+	"readinglists-add-bookmark": "Salvare",
+	"readinglists-remove-bookmark": "Scoate",
+	"readinglists-onboarding-close-button": "Închide"
 }
