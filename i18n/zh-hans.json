@@ -138,6 +138,8 @@
 	"readinglists-customlists-create-collection-short": "创建收藏",
 	"readinglists-customlists-collection-name-dialog-title": "收藏名称",
 	"readinglists-customlists-collection-name-dialog-placeholder": "请输入名称",
+	"readinglists-customlists-collection-name-dialog-required": "收藏名称为必填项。",
+	"readinglists-customlists-collection-name-dialog-duplicate": "您已有相同名称的收藏。",
 	"readinglists-customlists-add-entry-success": "$1已添加到[[$2|$3]]。",
 	"readinglists-customlists-collection-picker-create-prompt": "将已保存的项目整理到收藏中",
 	"readinglists-customlists-collection-picker-add-button-label": "将$1添加到$2",

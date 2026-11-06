@@ -133,6 +133,8 @@
 	"readinglists-customlists-create-collection-short": "Sammlung erstellen",
 	"readinglists-customlists-collection-name-dialog-title": "Sammlungsname",
 	"readinglists-customlists-collection-name-dialog-placeholder": "Name eingeben",
+	"readinglists-customlists-collection-name-dialog-required": "Die Angabe eines Sammlungsnamens ist erforderlich.",
+	"readinglists-customlists-collection-name-dialog-duplicate": "Du besitzt bereits eine Sammlung mit diesem Namen.",
 	"readinglists-customlists-add-entry-success": "$1 wurde zu [[$2|$3]] hinzugefügt.",
 	"readinglists-customlists-collection-picker-create-prompt": "Ordne deine gespeicherten Artikel in einer Sammlung",
 	"readinglists-customlists-collection-picker-add-button-label": "Füge $1 zu $2 hinzu",

@@ -128,6 +128,8 @@
 	"readinglists-customlists-create-collection-short": "Cipta koleksi",
 	"readinglists-customlists-collection-name-dialog-title": "Nama koleksi",
 	"readinglists-customlists-collection-name-dialog-placeholder": "Masukkan nama",
+	"readinglists-customlists-collection-name-dialog-required": "Nama koleksi diperlukan.",
+	"readinglists-customlists-collection-name-dialog-duplicate": "Anda sudah mempunyai koleksi dengan nama ini.",
 	"readinglists-customlists-add-entry-success": "$1 ditambah ke [[$2|$3]].",
 	"readinglists-customlists-collection-picker-create-prompt": "Susun item yang disimpan ke dalam sebuah koleksi",
 	"readinglists-customlists-collection-picker-add-button-label": "Tambah $1 ke dalam $2",
