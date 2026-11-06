@@ -18,6 +18,8 @@
 	"readinglists-beta-feature-description": "* Saad salvestada leheküljed hilisemaks lugemiseks või viitamiseks.\n* Ühes loendis sünkroonitakse kõik Vikipeedia rakenduses ja veebisaidil salvestatud leheküljed.\n\nPane tähele:\n* Beetaversiooni katsetamise ajal võidakse lisada uusi funktsioone.\n* See beetaversioon on siin juulini 2026, mille järel saab sellest Vikipeedia püsifunktsioon. Sinu tagasiside on oodatud ülallingitud aruteluleheküljel.",
 	"readinglists-menu-item": "Salvestatud leheküljed",
 	"readinglists-bookmark": "Järjehoidja",
+	"readinglists-add-bookmark": "Salvesta",
+	"readinglists-remove-bookmark": "Eemalda",
 	"readinglists-onboarding-title": "Salvesta leheküljed hilisemaks",
 	"readinglists-onboarding-text": "Kas leidsid midagi huvitavat? Saad nüüd salvestada selle isiklikku loendisse.",
 	"readinglists-onboarding-close-button": "Sule",

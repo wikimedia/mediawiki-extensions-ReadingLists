@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Vellion Eagle"
+			"Vellion Eagle",
+			"Paloi Sciurala"
 		]
 	},
 	"readinglists-desc": "Permite utilizatorilor să gestioneze liste private de elemente, cum ar fi marcaje sau liste de „Pagini salvate”.",
@@ -13,6 +14,17 @@
 	"readinglists-sorted-by-recent": "Sortate după cele mai recente.",
 	"readinglists-beta-feature-name": "Pagini salvate",
 	"readinglists-beta-feature-description": "* Puteți salva pagini pentru citire sau consultare ulterioară.\n* Paginile salvate din aplicația Wikipedia și de pe site vor fi sincronizate într-o singură listă.\n\nVă rugăm să rețineți:\n* Este posibil să adăugăm noi funcționalități cât timp suntem în versiunea beta.\n* Această funcție beta va funcționa până în iulie 2026, după care va deveni o funcție accesibilă permanent pe Wikipedia. Așteptăm cu nerăbdare feedback-ul dumneavoastră prin linkul de discuție de mai sus.",
+	"readinglists-add-bookmark": "Salvare",
+	"readinglists-remove-bookmark": "Scoate",
+	"readinglists-unsave-from-custom-list-confirm": "Elimină",
+	"readinglists-unsave-from-custom-list-cancel": "Anulare",
+	"readinglists-onboarding-close-button": "Închide",
+	"readinglists-onboarding-ok-button": "OK",
 	"readinglists-onboarding-saved-pages-text": "Accesați toate paginile dvs. salvate aici.",
-	"readinglists-mobile-onboarding-saved-pages-text": "Accesați toate paginile dvs. salvate din acest meniu."
+	"readinglists-mobile-onboarding-saved-pages-text": "Accesați toate paginile dvs. salvate din acest meniu.",
+	"readinglists-betafeature-quicksurvey-answer-positive": "Da",
+	"readinglists-betafeature-quicksurvey-answer-negative": "Nu",
+	"readinglists-betafeature-quicksurvey-privacy-policy": "[https://foundation.wikimedia.org/wiki/Legal:Reading_List_Feature_Survey_Privacy_Statement Politica de confidențialitate]",
+	"readinglists-betafeature-quicksurvey-submit": "Trimite",
+	"readinglists-betafeature-quicksurvey-thank-you": "Vă mulțumim pentru feedback"
 }
