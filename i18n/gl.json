@@ -130,6 +130,8 @@
 	"readinglists-customlists-create-collection-short": "Crear unha colección",
 	"readinglists-customlists-collection-name-dialog-title": "Nome da colección",
 	"readinglists-customlists-collection-name-dialog-placeholder": "Escribe o nome",
+	"readinglists-customlists-collection-name-dialog-required": "Cómpre o nome da colección.",
+	"readinglists-customlists-collection-name-dialog-duplicate": "Xa tes unha colección con este nome.",
 	"readinglists-customlists-add-entry-success": "«$1» engadiuse a «[[$2|$3]]».",
 	"readinglists-customlists-collection-picker-create-prompt": "Organiza o teu elemento gardado nunha colección",
 	"readinglists-customlists-collection-picker-add-button-label": "Engadir «$1» a «$2»",

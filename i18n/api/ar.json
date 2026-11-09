@@ -54,6 +54,7 @@
 	"apihelp-readinglists+create-extended-description": "يجب أن يكون لدى المستخدم أقل من $1 {{PLURAL:$1|قائمة|قوائم}} (غير محذوفة).",
 	"apihelp-readinglists+create-param-name": "اسم القائمة، مطلوب ما لم يُستخدَم إنشاء الدفعة.",
 	"apihelp-readinglists+create-param-description": "وصف القائمة.",
+	"apihelp-readinglists+create-param-rejectduplicates": "رفض إنشاء قائمة جديدة إذا كان لدى المستخدم قائمة أخرى بنفس الاسم، مع إرجاع خطأ بدلاً من تعديل القائمة الحالية أو دمجها معها. ينطبق هذا على كل قائمة في المجموعة. يتم دمج القوائم الموجودة عند حذف هذا المعامل.",
 	"apihelp-readinglists+create-param-batch": "بيانات مجمعة لإنشاء قوائم متعددة في طلب واحد، في شكل مصفوفة JSON مع واحد أو أكثر من الكائنات مع حقول <var>name</var> و(اختياريا) <var>description</var>.",
 	"apihelp-readinglists+create-example-1": "إنشاء قائمة قراءة جديدة.",
 	"apihelp-readinglists+create-example-2": "إنشاء قوائم جديدة متعددة.",
