@@ -60,7 +60,7 @@ const { collectionsBaseUrl } = require( 'ext.readingLists.api' );
 const EmptyList = require( './EmptyList.vue' );
 
 /**
- * List of all collections on Special:ReadingLists.
+ * List of all collections on Special:Saved/collections.
  */
 // @vue/component
 module.exports = exports = {

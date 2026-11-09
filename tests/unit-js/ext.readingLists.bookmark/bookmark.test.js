@@ -1039,7 +1039,11 @@ describe( 'initBookmark', () => {
 				saved: isNewSave ? undefined : '1'
 			} );
 
-			initBookmark( bookmark, isMinerva, isMinerva ? MINERVA_EVENT_SOURCE : VECTOR_EVENT_SOURCE );
+			initBookmark(
+				bookmark,
+				isMinerva,
+				isMinerva ? MINERVA_EVENT_SOURCE : VECTOR_EVENT_SOURCE
+			);
 			bookmark.click();
 			await flushPromises();
 			await flushPromises();
@@ -1049,7 +1053,7 @@ describe( 'initBookmark', () => {
 			expect( mw.message ).toHaveBeenCalledWith(
 				'readinglists-customlists-remove-entry-success',
 				'Test Page',
-				'Special:ReadingLists/TestUser/42/My List',
+				'Special:Saved/42/My List',
 				'My List'
 			);
 			expect( mw.notify ).toHaveBeenCalledTimes( 1 );
@@ -1102,11 +1106,14 @@ describe( 'initBookmark', () => {
 
 				expect( bookmark.dataset.mwSaved ).toBeUndefined();
 				expectIconClasses( bookmark.firstElementChild, VECTOR_OUTLINE_BOOKMARK_CLASSES );
-				expectIconClassesAbsent( bookmark.firstElementChild, VECTOR_SOLID_BOOKMARK_CLASSES );
+				expectIconClassesAbsent(
+					bookmark.firstElementChild,
+					VECTOR_SOLID_BOOKMARK_CLASSES
+				);
 				expect( mw.message ).toHaveBeenCalledWith(
 					'readinglists-customlists-remove-entry-success',
 					'Test Page',
-					'Special:ReadingLists/TestUser/42/My List',
+					'Special:Saved/42/My List',
 					'My List'
 				);
 				expect( mw.notify ).toHaveBeenCalledWith(

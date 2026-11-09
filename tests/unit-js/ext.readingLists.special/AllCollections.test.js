@@ -2,23 +2,23 @@ import { mount } from '@vue/test-utils';
 import { createTestingPinia } from '@pinia/testing';
 import AllCollections from '../../../resources/ext.readingLists.special/components/AllCollections.vue';
 
-// Base URL that mw.util.getUrl returns when given 'Special:ReadingLists'.
-// collectionsBaseUrl in ext.readingLists.api uses mw.config.get() || 'ReadingLists',
-// which resolves to 'Special:ReadingLists' because mw.config.get is a no-op mock.
-const BASE_URL = '/wiki/Special:ReadingLists';
+// Base URL that mw.util.getUrl returns when given 'Special:Saved'.
+// collectionsBaseUrl in ext.readingLists.api falls back to 'Special:Saved'
+// when mw.config.get( 'wgCanonicalSpecialPageName' ) is not 'Saved' (as in the no-op test mock).
+const BASE_URL = '/wiki/Special:Saved';
 
 const COLLECTIONS = [
 	{
 		id: 1,
 		title: 'My Collection',
 		description: 'A great collection of articles',
-		url: `${ BASE_URL }/testuser/1/My_Collection`
+		url: `${ BASE_URL }/1/My_Collection`
 	},
 	{
 		id: 2,
 		title: 'Science Articles',
 		description: '',
-		url: `${ BASE_URL }/testuser/2/Science_Articles`
+		url: `${ BASE_URL }/2/Science_Articles`
 	}
 ];
 
@@ -87,7 +87,7 @@ describe( 'AllCollections', () => {
 	it( 'strips the base URL prefix from collection URLs passed to RouterLink', () => {
 		const wrapper = mountAllCollections();
 		const links = wrapper.findAllComponents( { name: 'RouterLink' } );
-		expect( links[ 0 ].props( 'to' ) ).toBe( '/testuser/1/My_Collection' );
-		expect( links[ 1 ].props( 'to' ) ).toBe( '/testuser/2/Science_Articles' );
+		expect( links[ 0 ].props( 'to' ) ).toBe( '/1/My_Collection' );
+		expect( links[ 1 ].props( 'to' ) ).toBe( '/2/Science_Articles' );
 	} );
 } );

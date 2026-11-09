@@ -62,7 +62,7 @@ class HookHandler implements
 		// Show bookmark to logged-in opted into ReadingList
 		// Show bookmark to logged-out users in MinervaNeue & Vector 2022 when account creation CTA is enabled
 		if ( $readingListsEnabledForUser ) {
-			$this->addSpecialPageLinkToUserMenu( $user, $sktemplate, $links );
+			$this->addSpecialPageLinkToUserMenu( $sktemplate, $links );
 		} elseif ( !$inAccountCreationCta ) {
 			// Hide bookmark for everyone else
 			return;
@@ -149,7 +149,6 @@ class HookHandler implements
 	}
 
 	private function addSpecialPageLinkToUserMenu(
-		UserIdentity $user,
 		SkinTemplate $sktemplate,
 		array &$links
 	): void {
@@ -162,8 +161,7 @@ class HookHandler implements
 			$insertAfter = 'sandbox';
 		}
 
-		$userName = $user->getName();
-		$specialPageUrl = SpecialPage::getTitleFor( 'ReadingLists', $userName )->getLinkURL();
+		$specialPageUrl = SpecialPage::getTitleFor( 'Saved' )->getLinkURL();
 
 		$readingListsArray = [
 			'readinglists' => [

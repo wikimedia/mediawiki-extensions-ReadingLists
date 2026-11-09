@@ -131,11 +131,10 @@ module.exports = exports = {
 		const router = useRouter();
 		const showDropdown = ref( mw.config.get( 'skin' ) === 'vector-2022' );
 
-		// Router target (relative to the special page base) for the all-items
-		// view, derived from the canonical URL so it matches the router's routes.
-		const allItemsTo = getCollectionUrl( undefined, undefined, true );
+		// Router target (relative to the special page base) for the all-items view.
+		const allItemsTo = '/';
 		const allItemsText = mw.msg( 'readinglists-customlists-allitems' );
-		const collectionsUrl = allItemsTo.concat( collectionsPath );
+		const collectionsUrl = collectionsPath;
 		const collectionsText = mw.msg( 'readinglists-customlists-collections' );
 		const menuConfig = { visibleItemLimit: collectionsPageSize };
 

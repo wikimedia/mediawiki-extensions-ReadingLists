@@ -344,7 +344,7 @@ module.exports = exports = {
 			const allItemsUrl = getCollectionUrl( undefined, undefined, true );
 
 			// if mobile resolution, redirect to all collections or otherwise all items
-			await router.push( isListView.value ? allItemsUrl + '/collections' : allItemsUrl );
+			await router.push( isListView.value ? allItemsUrl + 'collections' : allItemsUrl );
 			mw.notify(
 				mw.msg( 'readinglists-customlists-delete-collection-success', collectionName ),
 				{ type: 'notice' }

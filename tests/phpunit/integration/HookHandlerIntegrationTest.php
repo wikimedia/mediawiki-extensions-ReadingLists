@@ -371,9 +371,9 @@ class HookHandlerIntegrationTest extends MediaWikiIntegrationTestCase {
 		$this->assertSame( 'Saved', $readingListsLink['text'] );
 		$this->assertSame( 'bookmarkList', $readingListsLink['icon'] );
 		$this->assertStringEndsWith(
-			'Special:ReadingLists/' . strtr( $this->user->getName(), ' ', '_' ),
+			'Special:Saved',
 			$readingListsLink['href'],
-			'URL should be like Special:ReadingLists/{user_name}'
+			'URL should be Special:Saved'
 		);
 	}
 

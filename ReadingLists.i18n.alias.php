@@ -1,6 +1,6 @@
 <?php
 /**
- * Aliases for MobileFrontend extension
+ * Aliases for ReadingLists extension
  *
  * @file
  * @ingroup Extensions
@@ -10,10 +10,10 @@ $specialPageAliases = [];
 
 /** English (English) */
 $specialPageAliases['en'] = [
-	'ReadingLists' => [ 'ReadingLists' ],
+	'Saved' => [ 'Saved', 'ReadingLists' ],
 ];
 
 /** Ukrainian (Українська) */
 $specialPageAliases['uk'] = [
-	'ReadingLists' => [ 'Списки_читання' ],
+	'Saved' => [ 'Списки_читання' ],
 ];

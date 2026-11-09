@@ -12,9 +12,9 @@ use MediaWiki\User\User;
 
 /**
  * @group Database
- * @covers \MediaWiki\Extension\ReadingLists\SpecialReadingLists
+ * @covers \MediaWiki\Extension\ReadingLists\SpecialSaved
  */
-class SpecialReadingListsTest extends SpecialPageTestBase {
+class SpecialSavedTest extends SpecialPageTestBase {
 	use ReadingListsTestHelperTrait;
 
 	private User $user;
@@ -61,7 +61,7 @@ class SpecialReadingListsTest extends SpecialPageTestBase {
 	}
 
 	protected function newSpecialPage() {
-		return $this->getServiceContainer()->getSpecialPageFactory()->getPage( 'ReadingLists' );
+		return $this->getServiceContainer()->getSpecialPageFactory()->getPage( 'Saved' );
 	}
 
 	/**
@@ -92,57 +92,10 @@ class SpecialReadingListsTest extends SpecialPageTestBase {
 		return $this->getSpecialPageOutput( $subPage )->getPageTitle();
 	}
 
-	/**
-	 * @dataProvider provideCustomListsEnabled
-	 */
-	public function testDifferentUserSubpageIsRejected( bool $customListsEnabled ) {
-		$this->overrideConfigValue( 'ReadingListsCustomLists', $customListsEnabled );
-		$differentUserName = $this->getTestSysop()->getUser()->getName();
-		$nonexistentUserName = 'Nonexistent user';
-		$subPages = [
-			$differentUserName,
-			$differentUserName . '/' . $this->customListId,
-			$nonexistentUserName,
-			$nonexistentUserName . '/' . $this->customListId,
-		];
-
-		foreach ( $subPages as $subPage ) {
-			$output = $this->getSpecialPageOutput( $subPage );
-			$this->assertStringContainsString(
-				wfMessage( 'readinglists-special-error-list-not-found' )->inLanguage( 'en' )->escaped(),
-				$output->getHTML()
-			);
-			$this->assertStringNotContainsString( 'reading-lists-container', $output->getHTML() );
-			$this->assertNotContains( 'ext.readingLists.special', $output->getModules() );
-			$this->assertStringNotContainsString( 'Favorite Dogs', $output->getPageTitle() );
-		}
-	}
-
-	public static function provideCustomListsEnabled() {
-		yield 'custom lists disabled' => [ false ];
-		yield 'custom lists enabled' => [ true ];
-	}
-
-	public function testOwnUserSubpageAcceptsNormalizedUserName() {
-		$this->user = $this->getMutableTestUser( [], 'Reading list owner!' )->getUser();
-		$userName = $this->user->getName();
-		$subPages = [
-			$userName,
-			str_replace( ' ', '_', $userName ),
-			lcfirst( $userName ),
-		];
-
-		foreach ( $subPages as $subPage ) {
-			$output = $this->getSpecialPageOutput( $subPage );
-			$this->assertContains( 'ext.readingLists.special', $output->getModules() );
-			$this->assertStringContainsString( 'reading-lists-container', $output->getHTML() );
-		}
-	}
-
-	public function testImportAndExportDoNotRequireMatchingUserName() {
+	public function testImportAndExportWork() {
 		foreach ( [ 'limport', 'lexport' ] as $parameter ) {
 			$output = $this->getSpecialPageOutput(
-				'Different user',
+				'',
 				new FauxRequest( [ $parameter => 'serialized-list' ] )
 			);
 			$this->assertContains( 'ext.readingLists.special', $output->getModules() );
@@ -153,7 +106,7 @@ class SpecialReadingListsTest extends SpecialPageTestBase {
 	public function testPageTitleForUserSubpageWithoutCustomLists() {
 		$this->overrideConfigValue( 'ReadingListsCustomLists', false );
 
-		$output = $this->getSpecialPageOutput( $this->user->getName() );
+		$output = $this->getSpecialPageOutput( '' );
 		$title = $output->getPageTitle();
 		$this->assertStringContainsString( 'Saved', $title );
 		$this->assertStringNotContainsString( 'Favorite Dogs', $title );
@@ -172,9 +125,7 @@ class SpecialReadingListsTest extends SpecialPageTestBase {
 	public function testPageTitleForCustomListWithFlagOff() {
 		$this->overrideConfigValue( 'ReadingListsCustomLists', false );
 
-		$title = $this->getSpecialPageTitle(
-			$this->user->getName() . '/' . $this->customListId
-		);
+		$title = $this->getSpecialPageTitle( (string)$this->customListId );
 		$this->assertStringContainsString( 'Saved', $title );
 		$this->assertStringNotContainsString( 'Favorite Dogs', $title );
 		$this->assertStringContainsString( 'reading-lists-privacy-indicator', $title );
@@ -186,7 +137,7 @@ class SpecialReadingListsTest extends SpecialPageTestBase {
 		$page = $this->newSpecialPage();
 		( new SpecialPageExecutor() )->executeSpecialPage(
 			$page,
-			$this->user->getName() . '/' . $this->customListId,
+			(string)$this->customListId,
 			null,
 			'en',
 			$this->user
@@ -200,9 +151,7 @@ class SpecialReadingListsTest extends SpecialPageTestBase {
 	public function testPageTitleForDefaultListWithFlagOn() {
 		$this->overrideConfigValue( 'ReadingListsCustomLists', true );
 
-		$title = $this->getSpecialPageTitle(
-			$this->user->getName() . '/' . $this->defaultListId
-		);
+		$title = $this->getSpecialPageTitle( (string)$this->defaultListId );
 		$this->assertStringContainsString( 'Saved', $title );
 		$this->assertStringNotContainsString( 'Saved /', $title );
 		$this->assertStringContainsString( 'reading-lists-privacy-indicator', $title );
@@ -211,7 +160,7 @@ class SpecialReadingListsTest extends SpecialPageTestBase {
 	public function testPageTitleForUserSubpageWithFlagOn() {
 		$this->overrideConfigValue( 'ReadingListsCustomLists', true );
 
-		$title = $this->getSpecialPageTitle( $this->user->getName() );
+		$title = $this->getSpecialPageTitle( '' );
 		$this->assertStringContainsString( 'Saved', $title );
 		$this->assertStringNotContainsString( 'Favorite Dogs', $title );
 		$this->assertStringContainsString( 'reading-lists-privacy-indicator', $title );

@@ -461,7 +461,7 @@ describe( 'Entries', () => {
 			await flushPromises();
 
 			expect( deleteList ).toHaveBeenCalledWith( 12345 );
-			expect( push ).toHaveBeenCalledWith( '/testuser/collections' );
+			expect( push ).toHaveBeenCalledWith( '/collections' );
 			expect( mw.notify ).toHaveBeenCalledWith(
 				'Collection "Example list" was deleted.',
 				{ type: 'notice' }
@@ -480,7 +480,7 @@ describe( 'Entries', () => {
 			wrapper.findComponent( DeleteCollectionDialog ).vm.$emit( 'confirm' );
 			await flushPromises();
 
-			expect( push ).toHaveBeenCalledWith( '/testuser' );
+			expect( push ).toHaveBeenCalledWith( '/' );
 			expect( mw.notify ).not.toHaveBeenCalled();
 
 			// Navigating remounts Entries and resets the shared list metadata.

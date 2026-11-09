@@ -31,7 +31,7 @@
 		"MediaWiki\\Extension\\ReadingLists\\Tests\\": "tests/phpunit/"
 	},
 	"ExtensionMessagesFiles": {
-		"ReadingListsAlias": "ReadingLists.alias.php"
+		"ReadingListsAlias": "ReadingLists.i18n.alias.php"
 	},
 	"APIModules": {
 		"readinglists": "MediaWiki\\Extension\\ReadingLists\\Api\\ApiReadingLists"
@@ -66,12 +66,11 @@
 		"ReadingLists": "MediaWiki\\Config\\GlobalVarConfig::newInstance"
 	},
 	"SpecialPages": {
-		"ReadingLists": {
-			"class": "MediaWiki\\Extension\\ReadingLists\\SpecialReadingLists",
+		"Saved": {
+			"class": "MediaWiki\\Extension\\ReadingLists\\SpecialSaved",
 			"services": [
 				"MainConfig",
-				"ReadingLists.ReadingListRepositoryFactory",
-				"UserNameUtils"
+				"ReadingLists.ReadingListRepositoryFactory"
 			]
 		}
 	},
