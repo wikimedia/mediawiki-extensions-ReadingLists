@@ -3,7 +3,6 @@
 		:open="true"
 		:title="title"
 		class="reading-lists-delete-collection-dialog"
-		:use-close-button="isMobile"
 		:render-in-place="true"
 		:primary-action="primaryAction"
 		:default-action="defaultAction"
@@ -18,7 +17,6 @@
 <script>
 const { computed } = require( 'vue' );
 const { CdxDialog } = require( '../../../codex.js' );
-const { useIsMobileResolution } = require( 'ext.readingLists.common' );
 
 /**
  * Confirmation dialog for deleting a collection.
@@ -41,7 +39,6 @@ module.exports = exports = {
 	},
 	emits: [ 'confirm', 'close' ],
 	setup( props ) {
-		const isMobile = useIsMobileResolution();
 		const dialogText = mw.msg( 'readinglists-customlists-delete-collection-dialog-text' );
 
 		const title = computed( () => mw.msg(
@@ -61,7 +58,6 @@ module.exports = exports = {
 		} ) );
 
 		return {
-			isMobile,
 			title,
 			dialogText,
 			primaryAction,

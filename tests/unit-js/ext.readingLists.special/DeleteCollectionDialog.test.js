@@ -43,19 +43,10 @@ describe( 'DeleteCollectionDialog', () => {
 
 	// Codex always renders the close button and hides it with CSS when
 	// useCloseButton is false, so check the header class rather than the element.
-	it( 'has no close button on desktop', async () => {
+	it( 'has no close button', async () => {
 		const wrapper = await mountDialog();
 		expect( wrapper.get( '.cdx-dialog__header' ).classes() )
 			.toContain( 'cdx-dialog__header--no-close-button' );
-	} );
-
-	it( 'emits close from the close button on mobile', async () => {
-		vi.spyOn( window, 'innerWidth', 'get' ).mockReturnValue( 375 );
-		const wrapper = await mountDialog();
-		expect( wrapper.get( '.cdx-dialog__header' ).classes() )
-			.not.toContain( 'cdx-dialog__header--no-close-button' );
-		await wrapper.get( '.cdx-dialog__header__close-button' ).trigger( 'click' );
-		expect( wrapper.emitted( 'close' ) ).toEqual( [ [] ] );
 	} );
 
 	it( 'disables both buttons while deleting', async () => {
