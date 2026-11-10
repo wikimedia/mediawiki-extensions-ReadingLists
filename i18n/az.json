@@ -132,6 +132,7 @@
 	"readinglists-customlists-collection-name-dialog-required": "Kolleksiya adı tələb olunur.",
 	"readinglists-customlists-collection-name-dialog-duplicate": "Bu adda kolleksiyanız var.",
 	"readinglists-customlists-add-entry-success": "[[$2|$3]]-ə $1 əlavə edildi.",
+	"readinglists-customlists-remove-entry-success": "$1 [[$2|$3]] kolleksiyasından silindi.",
 	"readinglists-customlists-collection-picker-create-prompt": "Yadda saxlanılan elementinizi kolleksiyaya əlavə edin",
 	"readinglists-customlists-collection-picker-add-button-label": "$1 səhifəsini $2 kolleksiyasına əlavə et",
 	"readinglists-customlists-collection-picker-remove-button-label": "$1 səhifəsini $2 kolleksiyasından sil",

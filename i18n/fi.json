@@ -130,6 +130,7 @@
 	"readinglists-customlists-collection-name-dialog-required": "Kokoelman nimi on pakollinen.",
 	"readinglists-customlists-collection-name-dialog-duplicate": "Sinulla on jo kokoelma tällä nimellä.",
 	"readinglists-customlists-add-entry-success": "$1 lisätty listalle [[$2|$3]].",
+	"readinglists-customlists-remove-entry-success": "Poistettu sivu $1 kokoelmasta [[$2|$3]].",
 	"readinglists-customlists-collection-picker-create-prompt": "Järjestä tallentamasi sivut kokoelmiin",
 	"readinglists-customlists-collection-picker-add-button-label": "Lisää sivu $1 kokoelmaan $2",
 	"readinglists-customlists-collection-picker-remove-button-label": "Poista $1 kokoelmasta $2",
