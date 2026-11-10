@@ -10,10 +10,34 @@ use MediaWiki\Tests\Specials\SpecialPageTestBase;
 /**
  * @covers \MediaWiki\Extension\ReadingLists\SpecialSaved
  */
-class SpecialSavedScriptPathTest extends SpecialPageTestBase {
+class SpecialSavedRedirectsTest extends SpecialPageTestBase {
 
 	protected function newSpecialPage() {
-		return $this->getServiceContainer()->getSpecialPageFactory()->getPage( 'Saved' );
+		return $this->getServiceContainer()->getSpecialPageFactory()->getPage( 'ReadingLists' );
+	}
+
+	/**
+	 * @dataProvider provideUsernameRedirects
+	 */
+	public function testUsernameIsStrippedFromSubPage(
+		string $subPage,
+		?string $expectedSubPage
+	): void {
+		[ , $response ] = $this->executeSpecialPage( $subPage );
+
+		$expectedUrl = SpecialPage::getTitleFor( 'Saved', $expectedSubPage ?? false )->getLocalURL();
+
+		$this->assertSame( 301, $response->getStatusCode() );
+		$this->assertSame( $expectedUrl, $response->getHeader( 'Location' ) );
+	}
+
+	public static function provideUsernameRedirects(): array {
+		return [
+			'username only' => [ 'ExampleUser', null ],
+			'username and collections' => [ 'ExampleUser/collections', 'collections' ],
+			'username, list ID, and title' => [ 'ExampleUser/42/My_List', '42/My_List' ],
+			'username and list ID' => [ 'ExampleUser/42', '42' ],
+		];
 	}
 
 	/**

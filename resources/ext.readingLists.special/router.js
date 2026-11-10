@@ -17,16 +17,6 @@ const routes = [
 			isCustomListsEnabled
 		} )
 	},
-	// DEPRECATED: A specific list: /{user}/{listId} or /{user}/{listId}/{title}
-	{
-		path: '/:user/:listId(\\d+)/:title?',
-		name: 'list-deprecated',
-		component: Entries,
-		props: ( route ) => ( {
-			listId: Number( route.params.listId ),
-			isCustomListsEnabled
-		} )
-	},
 	// The collections view: /collections.
 	{
 		path: '/collections',
@@ -37,27 +27,10 @@ const routes = [
 			isCustomListsEnabled
 		} )
 	},
-	// DEPRECATED: The lists view: /${user}/collections
-	{
-		path: '/:user/collections',
-		name: 'collections-deprecated',
-		component: Entries,
-		props: () => ( {
-			isCollections: true,
-			isCustomListsEnabled
-		} )
-	},
 	// The all-items view and fallback (base URL or unrecognized path).
 	{
 		path: '/:pathMatch(.*)*',
 		name: 'all',
-		component: Entries,
-		props: { isCustomListsEnabled }
-	},
-	// DEPRECATED: The all-items view: /{user}
-	{
-		path: '/:user',
-		name: 'all-deprecated',
 		component: Entries,
 		props: { isCustomListsEnabled }
 	}
@@ -103,15 +76,12 @@ router.afterEach( ( to ) => {
 
 	switch ( to.name ) {
 		case 'list':
-		case 'list-deprecated':
 			actionLoadPage( 'load_custom_list_page' );
 			break;
 		case 'all':
-		case 'all-deprecated':
 			actionLoadPage( 'load_all_items_page' );
 			break;
 		case 'collections':
-		case 'collections-deprecated':
 			actionLoadPage( 'load_collections_page' );
 			break;
 		default:

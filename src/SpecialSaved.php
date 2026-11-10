@@ -61,6 +61,19 @@ class SpecialSaved extends UnlistedSpecialPage {
 			return;
 		}
 
+		// Redirect legacy URLs that included a username as the first path segment.
+		if ( $subPage !== '' && $subPage !== null ) {
+			$parts = explode( '/', $subPage );
+			if ( !ctype_digit( $parts[0] ) && $parts[0] !== 'collections' ) {
+				$newSubPage = count( $parts ) > 1 ? implode( '/', array_slice( $parts, 1 ) ) : '';
+				$this->getOutput()->redirect(
+					$this->getPageTitle( $newSubPage ?: false )->getLocalURL(),
+					'301'
+				);
+				return;
+			}
+		}
+
 		if ( !$this->getUser()->isNamed() ) {
 			$this->requireNamedUser();
 			return;
