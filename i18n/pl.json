@@ -139,6 +139,7 @@
 	"readinglists-customlists-collection-name-dialog-required": "Nazwa kolekcji jest wymagana.",
 	"readinglists-customlists-collection-name-dialog-duplicate": "Istnieje już kolekcja o tej nazwie.",
 	"readinglists-customlists-add-entry-success": "Zapisano „$1” w kolekcji „[[$2|$3]]”",
+	"readinglists-customlists-remove-entry-success": "Strona „$1” została usunięta z kolekcji „[[$2|$3]]”",
 	"readinglists-customlists-collection-picker-create-prompt": "Zgrupuj zapisane pozycje w kolekcji",
 	"readinglists-customlists-collection-picker-add-button-label": "Dodaj „$1” do kolekcji „$2”",
 	"readinglists-customlists-collection-picker-remove-button-label": "Usuń „$1” z kolekcji „$2”",

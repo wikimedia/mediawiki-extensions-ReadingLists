@@ -16,7 +16,7 @@
 	"readinglists-total-articles": "$1 {{PLURAL:$1|ставка|ставке}}",
 	"readinglists-show-more": "Прикажи више ставки",
 	"readinglists-default-title": "сачуване странице",
-	"readinglists-empty-title": "Ваш списак је празан.",
+	"readinglists-empty-title": "Нема сачуваних чланака.",
 	"readinglists-display-sort": "Поређај по",
 	"readinglists-display-sort-name": "Назив",
 	"readinglists-display-direction": "Путања",
