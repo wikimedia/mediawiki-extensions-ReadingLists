@@ -1,14 +1,5 @@
 import { config } from '@vue/test-utils';
 import i18n from './i18n/en.json';
-import mountDesktopOnboarding from 'ext.readingLists.onboarding.desktop';
-import mountMobileOnboarding from 'ext.readingLists.onboarding.mobile';
-
-// Modules returned by `mw.loader.require()`. Imported through Vite, unlike Node's require(), so
-// they share the test files' module registry and are instrumented for coverage.
-const loaderModules = {
-	'ext.readingLists.onboarding.desktop': mountDesktopOnboarding,
-	'ext.readingLists.onboarding.mobile': mountMobileOnboarding
-};
 
 function ApiMock() {
 	this.get = vi.fn();
@@ -55,8 +46,7 @@ vi.stubGlobal( 'mw', {
 		fire: vi.fn()
 	} ),
 	loader: {
-		using: vi.fn( () => Promise.resolve() ),
-		require: vi.fn( ( moduleName ) => loaderModules[ moduleName ] )
+		using: vi.fn( () => Promise.resolve() )
 	},
 	requestIdleCallback: vi.fn( ( fn ) => fn() ),
 	log: {

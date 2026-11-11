@@ -479,16 +479,6 @@
 			]
 		},
 		"ext.readingLists.onboarding": {
-			"dependencies": [
-				"mediawiki.storage",
-				"vue"
-			],
-			"packageFiles": [
-				"resources/ext.readingLists.onboarding/index.js",
-				"resources/ext.readingLists.onboarding/mountApp.js"
-			]
-		},
-		"ext.readingLists.onboarding.desktop": {
 			"class": "MediaWiki\\ResourceLoader\\CodexModule",
 			"codexComponents": [
 				"CdxButton",
@@ -496,16 +486,22 @@
 				"CdxPopover"
 			],
 			"dependencies": [
-				"ext.readingLists.onboarding"
+				"mediawiki.storage",
+				"vue"
 			],
 			"messages": [
 				"readinglists-onboarding-close-button",
 				"readinglists-onboarding-saved-pages-title",
-				"readinglists-onboarding-saved-pages-text"
+				"readinglists-onboarding-saved-pages-text",
+				"readinglists-onboarding-ok-button",
+				"readinglists-mobile-onboarding-saved-pages-title",
+				"readinglists-mobile-onboarding-saved-pages-text"
 			],
 			"packageFiles": [
-				"resources/ext.readingLists.onboarding.desktop/index.js",
-				"resources/ext.readingLists.onboarding.desktop/OnboardingPopover.vue",
+				"resources/ext.readingLists.onboarding/index.js",
+				"resources/ext.readingLists.onboarding/mountApp.js",
+				"resources/ext.readingLists.onboarding/OnboardingPopover.vue",
+				"resources/ext.readingLists.onboarding/MobileOnboardingPopover.vue",
 				{
 					"name": "icons.json",
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
@@ -515,22 +511,22 @@
 				}
 			]
 		},
-		"ext.readingLists.onboarding.mobile": {
-			"class": "MediaWiki\\ResourceLoader\\CodexModule",
-			"codexComponents": [
-				"CdxPopover"
-			],
+		"ext.readingLists.onboarding.desktop": {
+			"deprecated": "Use \"ext.readingLists.onboarding\" instead.",
 			"dependencies": [
 				"ext.readingLists.onboarding"
 			],
-			"messages": [
-				"readinglists-onboarding-ok-button",
-				"readinglists-mobile-onboarding-saved-pages-title",
-				"readinglists-mobile-onboarding-saved-pages-text"
+			"packageFiles": [
+				"resources/ext.readingLists.onboarding.desktop/index.js"
+			]
+		},
+		"ext.readingLists.onboarding.mobile": {
+			"deprecated": "Use \"ext.readingLists.onboarding\" instead.",
+			"dependencies": [
+				"ext.readingLists.onboarding"
 			],
 			"packageFiles": [
-				"resources/ext.readingLists.onboarding.mobile/index.js",
-				"resources/ext.readingLists.onboarding.mobile/MobileOnboardingPopover.vue"
+				"resources/ext.readingLists.onboarding.mobile/index.js"
 			]
 		},
 		"ext.readingLists.common": {

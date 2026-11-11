@@ -190,7 +190,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 				titleMsgKey: 'readinglists-mobile-onboarding-saved-pages-title',
 				bodyMsgKey: 'readinglists-mobile-onboarding-saved-pages-text',
 				bannerImagePath: null,
-				moduleName: 'ext.readingLists.onboarding.mobile'
+				variant: 'mobile'
 			},
 			'vector-2022': {
 				anchorSelector: '#pt-readinglists-2',
@@ -198,7 +198,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 				bodyMsgKey: 'readinglists-onboarding-saved-pages-text',
 				bannerImagePath: mw.config.get( 'wgExtensionAssetsPath' ) +
 					'/ReadingLists/resources/assets/onboarding-saved-list.svg',
-				moduleName: 'ext.readingLists.onboarding.desktop'
+				variant: 'desktop'
 			}
 		};
 
@@ -214,7 +214,7 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 			config.titleMsgKey,
 			config.bodyMsgKey,
 			config.bannerImagePath,
-			config.moduleName
+			config.variant
 		);
 	}
 
@@ -434,14 +434,14 @@ function initBookmark( bookmark, isMinerva, eventSource ) {
 }
 
 /**
- * Initializes the onboarding popover by loading the appropriate skin-specific module.
+ * Initializes the onboarding popover for the given skin variant.
  *
  * @param {string} anchorSelector CSS selector for the element to anchor popover to.
  * @param {string} storageKey Local storage key for popover display status.
  * @param {string} titleMsgKey i18n message key for popover title.
  * @param {string} bodyMsgKey i18n message key for popover body text.
  * @param {string|null} bannerImagePath Path to banner image (desktop only, null for mobile).
- * @param {string} moduleName Resource loader module name to load.
+ * @param {string} variant Popover variant, 'desktop' or 'mobile'.
  */
 function initOnboardingPopover(
 	anchorSelector,
@@ -449,7 +449,7 @@ function initOnboardingPopover(
 	titleMsgKey,
 	bodyMsgKey,
 	bannerImagePath,
-	moduleName
+	variant
 ) {
 	const targetElement = document.querySelector( anchorSelector );
 
@@ -457,15 +457,16 @@ function initOnboardingPopover(
 		return;
 	}
 
-	mw.loader.using( moduleName ).then( () => {
-		const mountAppFn = mw.loader.require( moduleName );
+	mw.loader.using( 'ext.readingLists.onboarding' ).then( () => {
+		const mountAppFn = require( 'ext.readingLists.onboarding' );
 		try {
 			mountAppFn( {
 				target: targetElement,
 				storageKey,
 				titleMsgKey,
 				bodyMsgKey,
-				bannerImagePath
+				bannerImagePath,
+				variant
 			} ).catch( ( error ) => {
 				mw.log.error( 'Failed to mount onboarding popover:', error );
 			} );

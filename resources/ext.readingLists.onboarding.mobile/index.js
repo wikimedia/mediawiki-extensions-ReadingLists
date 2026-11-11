@@ -1,14 +1,6 @@
-const mountApp = require( 'ext.readingLists.onboarding' );
-const MobileOnboardingPopover = require( './MobileOnboardingPopover.vue' );
+const mountOnboarding = require( 'ext.readingLists.onboarding' );
 
-/**
- * @param {Object} config Configuration object for the onboarding popover.
- * @param {Element} config.target DOM element to anchor the popover to.
- * @param {string} config.storageKey Local storage key for popover display status.
- * @param {string} config.titleMsgKey i18n message key for popover title.
- * @param {string} config.bodyMsgKey i18n message key for popover body text.
- * @return {Promise<void>}
- */
+// Keep this module for old cached code. New code uses ext.readingLists.onboarding.
 module.exports = function ( config ) {
-	return mountApp( Object.assign( { component: MobileOnboardingPopover }, config ) );
+	return mountOnboarding( Object.assign( { variant: 'mobile' }, config ) );
 };

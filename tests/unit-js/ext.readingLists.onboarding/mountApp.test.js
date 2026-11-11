@@ -1,3 +1,5 @@
+import mountApp from '../../../resources/ext.readingLists.onboarding/mountApp.js';
+
 const { createMwApp } = vi.hoisted( () => ( {
 	createMwApp: vi.fn()
 } ) );
@@ -6,8 +8,6 @@ const { createMwApp } = vi.hoisted( () => ( {
 vi.mock( 'vue', () => ( {
 	default: { createMwApp }
 } ) );
-
-import mountApp from '../../../resources/ext.readingLists.onboarding/mountApp.js';
 
 describe( 'mountApp', () => {
 	let mockTarget;

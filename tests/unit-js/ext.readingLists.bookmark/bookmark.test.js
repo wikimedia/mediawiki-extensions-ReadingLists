@@ -6,6 +6,7 @@ let confirmUnsaveFromCustomList;
 let initBookmarkPopover;
 let initBookmark;
 let initOnboardingPopover;
+let mountOnboarding;
 let unhandledRejections;
 let expectedUnhandledRejections;
 
@@ -36,6 +37,19 @@ const MINERVA_OUTLINE_BOOKMARK_CLASSES = [ 'minerva-icon--bookmarkOutline' ];
 
 async function flushPromises() {
 	await Promise.resolve();
+}
+
+/**
+ * Waits for the `mw.loader.using()` callback, then checks the popover variant that
+ * 'bookmark.js' passes to the onboarding module.
+ *
+ * @param {string} variant
+ */
+async function expectOnboardingVariant( variant ) {
+	await flushPromises();
+	await flushPromises();
+	expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding' );
+	expect( mountOnboarding ).toHaveBeenCalledWith( expect.objectContaining( { variant } ) );
 }
 
 /**
@@ -190,6 +204,8 @@ beforeEach( async () => {
 		'ext.readingLists.bookmark.confirmPopover',
 		() => ( { default: { confirmUnsaveFromCustomList } } )
 	);
+	mountOnboarding = vi.fn( () => Promise.resolve() );
+	vi.doMock( 'ext.readingLists.onboarding', () => ( { default: mountOnboarding } ) );
 
 	api = ( await import( '../../../resources/ext.readingLists.api/index.js' ) ).default;
 	( { initBookmark, initOnboardingPopover } =
@@ -286,7 +302,7 @@ describe( 'initBookmark', () => {
 
 						vi.advanceTimersByTime( 1000 );
 
-						expect( mw.loader.using ).not.toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
+						expect( mw.loader.using ).not.toHaveBeenCalledWith( 'ext.readingLists.onboarding' );
 
 						expect( mw.notify ).toHaveBeenCalledWith(
 							expect.anything(),
@@ -321,7 +337,7 @@ describe( 'initBookmark', () => {
 
 						vi.advanceTimersByTime( 1000 );
 
-						expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
+						await expectOnboardingVariant( 'desktop' );
 					} );
 				} );
 			} );
@@ -408,7 +424,7 @@ describe( 'initBookmark', () => {
 
 				vi.advanceTimersByTime( 1000 );
 
-				expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.mobile' );
+				await expectOnboardingVariant( 'mobile' );
 			} );
 
 			test( 'shows notify success when onboarding already seen', async () => {
@@ -481,7 +497,7 @@ describe( 'initBookmark', () => {
 				title: 'Test_Page'
 			} ) );
 			expect( bookmark.dataset.mwSaved ).toBe( '1' );
-			expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.mobile' );
+			await expectOnboardingVariant( 'mobile' );
 			expect( mw.notify ).not.toHaveBeenCalled();
 		} );
 
@@ -494,7 +510,7 @@ describe( 'initBookmark', () => {
 			initBookmark( bookmark, IS_MINERVA, MINERVA_EVENT_SOURCE );
 			await flushPromises();
 
-			expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.mobile' );
+			await expectOnboardingVariant( 'mobile' );
 			expect( mw.notify ).not.toHaveBeenCalled();
 		} );
 
@@ -882,7 +898,7 @@ describe( 'initBookmark', () => {
 						expect.anything(),
 						expect.objectContaining( { tag: 'saved', type: 'success' } )
 					);
-					expect( mw.loader.using ).not.toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
+					expect( mw.loader.using ).not.toHaveBeenCalledWith( 'ext.readingLists.onboarding' );
 				} );
 			} );
 
@@ -920,7 +936,7 @@ describe( 'initBookmark', () => {
 						expect.anything(),
 						expect.objectContaining( { tag: 'saved', type: 'success' } )
 					);
-					expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
+					await expectOnboardingVariant( 'desktop' );
 				} );
 			} );
 		} );
@@ -948,7 +964,7 @@ describe( 'initBookmark', () => {
 					expect.anything(),
 					expect.objectContaining( { tag: 'saved', type: 'success' } )
 				);
-				expect( mw.loader.using ).not.toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
+				expect( mw.loader.using ).not.toHaveBeenCalledWith( 'ext.readingLists.onboarding' );
 			} );
 		} );
 
@@ -1066,8 +1082,7 @@ describe( 'initBookmark', () => {
 				bookmark.firstElementChild,
 				isMinerva ? MINERVA_SOLID_BOOKMARK_CLASSES : VECTOR_SOLID_BOOKMARK_CLASSES
 			);
-			expect( mw.loader.using ).not.toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
-			expect( mw.loader.using ).not.toHaveBeenCalledWith( 'ext.readingLists.onboarding.mobile' );
+			expect( mw.loader.using ).not.toHaveBeenCalledWith( 'ext.readingLists.onboarding' );
 		} );
 
 		describe( 'when a page is saved and the bookmark is clicked', () => {
@@ -1394,14 +1409,14 @@ describe( 'initOnboardingPopover', () => {
 			'title-key',
 			'body-key',
 			null,
-			'ext.readingLists.onboarding.mobile'
+			'mobile'
 		);
 
 		expect( mw.storage.get ).not.toHaveBeenCalled();
 		expect( mw.loader.using ).not.toHaveBeenCalled();
 	} );
 
-	test( 'loads onboarding popover module immediately', () => {
+	test( 'loads onboarding popover module immediately', async () => {
 		const anchor = document.createElement( 'div' );
 		anchor.id = 'test-anchor';
 		document.body.appendChild( anchor );
@@ -1414,9 +1429,9 @@ describe( 'initOnboardingPopover', () => {
 			'title-key',
 			'body-key',
 			'/path/to/banner.svg',
-			'ext.readingLists.onboarding.desktop'
+			'desktop'
 		);
 
-		expect( mw.loader.using ).toHaveBeenCalledWith( 'ext.readingLists.onboarding.desktop' );
+		await expectOnboardingVariant( 'desktop' );
 	} );
 } );

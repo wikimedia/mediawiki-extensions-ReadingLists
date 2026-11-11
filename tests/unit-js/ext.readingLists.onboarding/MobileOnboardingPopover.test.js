@@ -1,5 +1,5 @@
 import { mount, config } from '@vue/test-utils';
-import MobileOnboardingPopover from '../../../resources/ext.readingLists.onboarding.mobile/MobileOnboardingPopover.vue';
+import MobileOnboardingPopover from '../../../resources/ext.readingLists.onboarding/MobileOnboardingPopover.vue';
 
 describe( 'MobileOnboardingPopover', () => {
 	let mockBookmarkElement;
