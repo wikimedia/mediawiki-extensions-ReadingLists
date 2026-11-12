@@ -321,6 +321,7 @@ module.exports = exports = {
 		function routeToNewCollection( id, name ) {
 			actionSaveCustomList();
 			const collectionUrl = getCollectionUrl( id, name, true );
+			title.value = name;
 			router.push( collectionUrl );
 			showCollectionNameDialog.value = false;
 			isRename.value = false;

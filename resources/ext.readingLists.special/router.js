@@ -3,6 +3,7 @@ const Entries = require( './pages/Entries.vue' );
 const { actions } = require( 'ext.readingLists.common' );
 const { collectionsBaseUrl } = require( 'ext.readingLists.api' );
 const { ReadingListsCustomLists } = require( './config.json' );
+const { useReadingListsStore } = require( './store.js' );
 const isCustomListsEnabled = ReadingListsCustomLists;
 const { actionLoadPage } = actions;
 
@@ -52,13 +53,18 @@ const titleElement = document.querySelector( '.reading-lists-title-text' );
 let loaded;
 router.beforeEach( ( to ) => {
 	if ( titleElement && loaded ) {
-		const title = to.params.title ? mw.msg(
-			'readinglists-special-custom-list-title',
-			to.params.title.replace( /_/g, ' ' )
-		) : mw.msg( 'readinglists-special-subpage-title' );
+		const store = useReadingListsStore();
+		// If the title param is not present, clear the store title
+		// to avoid showing the previous list's title
+		if ( !to.params.title ) {
+			store.title = '';
+		}
 
-		titleElement.textContent = title;
-		document.title = mw.msg( 'pagetitle', title );
+		const title = store.title;
+		const titleMsg = title ? mw.msg( 'readinglists-special-custom-list-title', title ) :
+			mw.msg( 'readinglists-special-subpage-title' );
+		titleElement.textContent = titleMsg;
+		document.title = mw.msg( 'pagetitle', titleMsg );
 	}
 	loaded = true;
 } );

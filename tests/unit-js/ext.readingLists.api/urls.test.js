@@ -46,8 +46,8 @@ describe( 'getCollectionUrl', () => {
 		expect( mw.util.wikiUrlencode ).toHaveBeenCalledWith( '/123/My Collection' );
 	} );
 
-	it( 'leaves page titles unencoded for callers of mw.util.getUrl', () => {
-		expect( getCollectionUrl( '123', 'My Collection' ) ).toBe( 'Special:Saved/123/My Collection' );
+	it( 'replaces special characters in page titles with underscore', () => {
+		expect( getCollectionUrl( '123', 'Collection()/レシピCafé' ) ).toBe( 'Special:Saved/123/Collection___レシピCafé' );
 		expect( mw.util.wikiUrlencode ).not.toHaveBeenCalled();
 	} );
 } );

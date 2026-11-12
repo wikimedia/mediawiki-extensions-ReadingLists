@@ -66,6 +66,8 @@
 <script>
 const { ref, onUpdated, onMounted } = require( 'vue' );
 const { RouterLink, useRouter } = require( 'vue-router' );
+const { storeToRefs } = require( 'pinia' );
+const { useReadingListsStore } = require( '../store.js' );
 const { actions } = require( 'ext.readingLists.common' );
 const { CdxIcon, CdxMenuButton } = require( '../../../codex.js' );
 const { cdxIconError, cdxIconExpand, cdxIconSettings } = require( '../../../icons.json' );
@@ -142,6 +144,9 @@ module.exports = exports = {
 	],
 	setup: ( props, { emit } ) => {
 		const router = useRouter();
+		const store = useReadingListsStore();
+		const { title } = storeToRefs( store );
+
 		const showDropdown = ref( mw.config.get( 'skin' ) === 'vector-2022' );
 
 		// Router target (relative to the special page base) for the all-items view.
@@ -169,6 +174,7 @@ module.exports = exports = {
 			const selectedItem = collections.value.find( ( item ) => item.value === selected );
 			if ( selectedItem ) {
 				if ( selectedItem.url ) {
+					title.value = selectedItem.label;
 					router.push( selectedItem.url );
 				} else {
 					emit( 'create-collection' );

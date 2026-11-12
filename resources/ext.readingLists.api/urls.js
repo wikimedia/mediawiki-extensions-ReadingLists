@@ -12,6 +12,11 @@ const collectionsBaseUrl = mw.config.get( 'wgCanonicalSpecialPageName' ) === 'Sa
 
 function getCollectionUrl( listId, listName, isRelative = false ) {
 	const isAllCollectionsPage = !listId || !listName;
+	if ( !isAllCollectionsPage ) {
+		// \p{L} any letter, p{M} any mark, \p{N} any number, _ and space are allowed
+		// All other characters are replaced with an underscore
+		listName = listName.replace( /[^\p{L}\p{M}\p{N}_ ]/gu, '_' );
+	}
 	let url = isAllCollectionsPage ? collectionsBaseUrl : `${ collectionsBaseUrl }/${ listId }/${ listName }`;
 	if ( isRelative ) {
 		// Remove the base URL prefix and encode the path to match MediaWiki's URLs.

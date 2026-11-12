@@ -129,7 +129,7 @@ exports[`NavigationBar > renders Collection view on desktop 1`] = `
         <!--teleport start-->
         <div
           class="cdx-menu cdx-menu-button__menu"
-          style="display: none;"
+          style="display: none; visibility: hidden; position: absolute; top: 0px; right: unset; left: 0px; transform: translate(0px, 0px);"
         >
           <ul
             aria-labelledby="v-0"
@@ -283,7 +283,7 @@ exports[`NavigationBar > renders Collection view on mobile 1`] = `
         <!--teleport start-->
         <div
           class="cdx-menu cdx-menu-button__menu"
-          style="display: none;"
+          style="display: none; visibility: hidden; position: absolute; top: 0px; right: unset; left: 0px; transform: translate(0px, 0px);"
         >
           <ul
             aria-labelledby="v-0"
@@ -437,7 +437,7 @@ exports[`NavigationBar > renders Collections view on desktop 1`] = `
         <!--teleport start-->
         <div
           class="cdx-menu cdx-menu-button__menu"
-          style="display: none;"
+          style="display: none; visibility: hidden; position: absolute; top: 0px; right: unset; left: 0px; transform: translate(0px, 0px);"
         >
           <ul
             aria-labelledby="v-0"
@@ -591,7 +591,7 @@ exports[`NavigationBar > renders Collections view on mobile 1`] = `
         <!--teleport start-->
         <div
           class="cdx-menu cdx-menu-button__menu"
-          style="display: none;"
+          style="display: none; visibility: hidden; position: absolute; top: 0px; right: unset; left: 0px; transform: translate(0px, 0px);"
         >
           <ul
             aria-labelledby="v-0"

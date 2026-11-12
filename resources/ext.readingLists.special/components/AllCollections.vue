@@ -19,6 +19,7 @@
 					<router-link
 						class="reading-lists-all-collections__list-item__link"
 						:to="getUrlSection( collection.url )"
+						@click="onNavigate( collection.title )"
 					>
 						<span class="reading-lists-all-collections__list-item__title">
 							{{ collection.title }}
@@ -86,7 +87,7 @@ module.exports = exports = {
 	],
 	setup( _props, { emit } ) {
 		const store = useReadingListsStore();
-		const { loadingInfo } = storeToRefs( store );
+		const { title, loadingInfo } = storeToRefs( store );
 
 		const ariaLabel = computed( () => mw.msg( 'readinglists-customlists-collections' ) );
 
@@ -105,6 +106,10 @@ module.exports = exports = {
 			emit( 'create-collection' );
 		}
 
+		function onNavigate( newTitle ) {
+			title.value = newTitle;
+		}
+
 		return {
 			loadingInfo,
 			ariaLabel,
@@ -112,7 +117,8 @@ module.exports = exports = {
 			emptyStateImageUrl,
 			createButtonLabel,
 			getUrlSection,
-			onCreateButtonClick
+			onCreateButtonClick,
+			onNavigate
 		};
 	}
 };
