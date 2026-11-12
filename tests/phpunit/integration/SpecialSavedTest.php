@@ -3,6 +3,7 @@
 namespace MediaWiki\Extension\ReadingLists\Tests\Integration;
 
 use MediaWiki\Extension\ReadingLists\Tests\ReadingListsTestHelperTrait;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Request\FauxRequest;
 use MediaWiki\Request\WebRequest;
@@ -177,5 +178,18 @@ class SpecialSavedTest extends SpecialPageTestBase {
 				$output->getPageTitle()
 			);
 		}
+	}
+
+	public function testNoRedirectLoopWithoutShortUrls() {
+		$this->overrideConfigValues( [
+			MainConfigNames::Script => '/w/index.php',
+			MainConfigNames::ArticlePath => '/w/index.php?title=$1',
+		] );
+		$request = new FauxRequest( [ 'title' => 'Special:Saved' ] );
+		$request->setRequestURL( '/w/index.php?title=Special:Saved' );
+
+		$output = $this->getSpecialPageOutput( '', $request );
+		$this->assertSame( '', $output->getRedirect() );
+		$this->assertContains( 'ext.readingLists.special', $output->getModules() );
 	}
 }

@@ -50,10 +50,11 @@ class SpecialSaved extends UnlistedSpecialPage {
 		} catch ( \MWException ) {
 			// FauxRequest in tests does not set a request URL; skip the script-path check.
 		}
-		if ( $requestPath === $scriptPath ) {
+		$url = $this->getPageTitle( $subPage ?: false )->getLocalURL();
+		// Without short URLs, the article path is the script path. Do not redirect, to prevent a loop.
+		if ( $requestPath === $scriptPath && parse_url( $url, PHP_URL_PATH ) !== $scriptPath ) {
 			$query = $req->getQueryValues();
 			unset( $query['title'] );
-			$url = $this->getPageTitle( $subPage ?: false )->getLocalURL();
 			if ( $query ) {
 				$url = wfAppendQuery( $url, $query );
 			}
