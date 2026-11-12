@@ -519,14 +519,20 @@ describe( 'Entries', () => {
 		} );
 
 		test( 'shows a localized message when the request fails', async () => {
-			vi.spyOn( api, 'deleteList' ).mockRejectedValue( 'http' );
+			// Fail on the first call then succeed on the second.
+			let callCount = 0;
+			vi.spyOn( api, 'deleteList' ).mockImplementation( () => {
+				callCount++;
+				return callCount === 1 ? Promise.reject( 'http' ) : new Promise( () => {} );
+			} );
+
 			const push = vi.spyOn( useRouter(), 'push' );
 			const wrapper = await mountWithDialogOpen();
 
 			wrapper.findComponent( DeleteCollectionDialog ).vm.$emit( 'confirm' );
 			await flushPromises();
 
-			const message = wrapper.get( '.reading-lists-delete-error' ).text();
+			const message = wrapper.get( '.reading-lists-error-message' ).text();
 			expect( message ).toBe( i18n[ 'readinglists-customlists-delete-collection-error' ] );
 			expect( message ).not.toContain( 'http' );
 			expect( mw.errorLogger.logError ).toHaveBeenCalledWith(
@@ -544,7 +550,8 @@ describe( 'Entries', () => {
 			await nextTick();
 			wrapper.findComponent( DeleteCollectionDialog ).vm.$emit( 'confirm' );
 			await nextTick();
-			expect( wrapper.find( '.reading-lists-delete-error' ).exists() ).toBe( false );
+
+			expect( wrapper.find( '.reading-lists-error-message' ).exists() ).toBe( false );
 		} );
 
 		test( 'shows the same message when the list was already deleted elsewhere', async () => {
@@ -554,7 +561,7 @@ describe( 'Entries', () => {
 			wrapper.findComponent( DeleteCollectionDialog ).vm.$emit( 'confirm' );
 			await flushPromises();
 
-			expect( wrapper.get( '.reading-lists-delete-error' ).text() )
+			expect( wrapper.get( '.reading-lists-error-message' ).text() )
 				.toBe( i18n[ 'readinglists-customlists-delete-collection-error' ] );
 			expect( wrapper.findComponent( NavigationBar ).exists() ).toBe( true );
 		} );

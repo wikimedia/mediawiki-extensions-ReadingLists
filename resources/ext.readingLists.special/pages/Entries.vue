@@ -18,13 +18,6 @@
 	>
 	</delete-collection-dialog>
 
-	<cdx-message
-		v-if="deleteError"
-		type="error"
-		class="reading-lists-delete-error">
-		{{ deleteError }}
-	</cdx-message>
-
 	<navigation-bar
 		v-if="showNavBar"
 		:is-custom-list="isCustomList"
@@ -34,8 +27,12 @@
 	>
 	</navigation-bar>
 
-	<cdx-message v-if="error" type="error">
-		{{ error }}
+	<cdx-message
+		v-if="deleteError || error"
+		class="reading-lists-error-message"
+		type="error"
+	>
+		{{ deleteError || error }}
 	</cdx-message>
 
 	<template v-else>
