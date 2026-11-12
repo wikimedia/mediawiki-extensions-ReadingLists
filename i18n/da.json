@@ -132,6 +132,7 @@
 	"readinglists-customlists-collection-name-dialog-required": "Samlingsnavn er påkrævet.",
 	"readinglists-customlists-collection-name-dialog-duplicate": "Du har allerede en samling med dette navn.",
 	"readinglists-customlists-add-entry-success": "$1 tilføjet til [[$2|$3]].",
+	"readinglists-customlists-remove-entry-success": "$1 er blevet fjernet fra [[$2|$3]].",
 	"readinglists-customlists-collection-picker-create-prompt": "Organiser dit gemte element i en samling",
 	"readinglists-customlists-collection-picker-add-button-label": "Læg $1 til $2",
 	"readinglists-customlists-collection-picker-remove-button-label": "Fjern $1 fra $2",
