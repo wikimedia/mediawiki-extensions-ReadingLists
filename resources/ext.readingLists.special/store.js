@@ -10,7 +10,7 @@ const LIST_NOT_FOUND_ERRORS = [
 ];
 
 /**
- * Central store for the Special:ReadingLists page.
+ * Central store for the Special:Saved page.
  */
 const useReadingListsStore = defineStore( 'readingLists', () => {
 

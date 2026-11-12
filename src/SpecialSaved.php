@@ -92,9 +92,7 @@ class SpecialSaved extends UnlistedSpecialPage {
 		// Special:Saved/42 is a subpage with a specific reading list (by list ID).
 		// Special:Saved shows all items from all lists for the user.
 		$parts = $subPage !== '' && $subPage !== null ? explode( '/', $subPage ) : [];
-		$titleMsg = count( $parts ) >= 1
-			? $this->msg( 'readinglists-special-subpage-title' )
-			: $this->msg( 'readinglists-title' );
+		$titleMsg = $this->msg( 'readinglists-special-subpage-title' );
 
 		if ( $customListsEnabled && isset( $parts[0] ) && ctype_digit( $parts[0] ) ) {
 			$listName = $this->getCustomListName( (int)$parts[0] );

@@ -12,7 +12,7 @@ The extension is designed for use on wiki farms; it stores articles as domain na
 ```
 $wgReadingListBetaFeature = true;
 $wgReadingListsDeveloperMode = true;
-# Enable toolbar (sorting etc.) on Special:ReadingLists.
+# Enable toolbar (sorting etc.) on Special:Saved.
 $wgReadingListsEnableSpecialPageToolbar = true;
 $wgReadingListsWebAuthenticatedPreviews = true;
 $wgReadingListAndroidAppDownloadLink = "https://play.google.com/store/apps/details?id=org.wikipedia&referrer=utm_source%3DreadingListsShare";
@@ -22,7 +22,7 @@ $wgReadingListsCustomLists = true;
 ```
 * Navigate to your MediaWiki installation and login to your account.
 * Visit the "Beta" link in your user menu (or go to Preferences -> Beta features) and enable the "Reading lists" feature.
-* Navigate to any regular page in your MediaWiki installation, and you should now see a "Bookmark" option in the "More" menu. You should also see a "Reading lists" link under your user menu, which will take you to the Special:ReadingLists page that's used for managing your lists.
+* Navigate to any regular page in your MediaWiki installation, and you should now see a "Bookmark" option in the "More" menu. You should also see a "Reading lists" link under your user menu, which will take you to the Special:Saved page that's used for managing your lists.
 
 # Rollout
 
