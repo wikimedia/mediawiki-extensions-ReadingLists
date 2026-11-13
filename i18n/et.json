@@ -20,6 +20,8 @@
 	"readinglists-bookmark": "Järjehoidja",
 	"readinglists-add-bookmark": "Salvesta",
 	"readinglists-remove-bookmark": "Eemalda",
+	"readinglists-unsave-from-custom-list-confirm": "Eemalda",
+	"readinglists-unsave-from-custom-list-cancel": "Loobu",
 	"readinglists-onboarding-title": "Salvesta leheküljed hilisemaks",
 	"readinglists-onboarding-text": "Kas leidsid midagi huvitavat? Saad nüüd salvestada selle isiklikku loendisse.",
 	"readinglists-onboarding-close-button": "Sule",
