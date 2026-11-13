@@ -45,7 +45,6 @@
 	"readinglists-import-size-error": "Списокот е преголем за да се прикаже.",
 	"readinglists-special-error-list-not-found": "Не можев да го пронајдам овој список.",
 	"special-tab-readinglists-short": "Ваши списоци",
-	"readinglists-title": "Зачувани страници",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|список|списоци}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|страница|страници}}",
 	"readinglists-show-more": "Прикажи повеќе",

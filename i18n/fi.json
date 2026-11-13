@@ -50,7 +50,6 @@
 	"readinglists-import-size-error": "Lista on liian pitkä näytettäväksi.",
 	"readinglists-special-error-list-not-found": "Et voi käyttää tätä sivua. Olet ehkä kirjautuneena eri tunnukselle kuin URL-osoitteessa annettu käyttäjätunnus.",
 	"special-tab-readinglists-short": "Listasi",
-	"readinglists-title": "Tallennetut sivut",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|lista|listaa}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|kohde|kohdetta}}",
 	"readinglists-show-more": "Näytä lisää kohteita",

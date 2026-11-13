@@ -43,7 +43,6 @@
 	"readinglists-privacy-indicator-label": "Gizli",
 	"readinglists-privacy-tooltip": "Kaydedilen öge ve koleksiyonlarınız gizli olup yalnızca siz görebilirsiniz.",
 	"readinglists-loading": "Lütfen bekleyin...",
-	"readinglists-title": "Kaydedilen sayfalar",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|liste|listeler}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|sayfa|sayfalar}}",
 	"readinglists-default-title": "kaydedilen ögeler",

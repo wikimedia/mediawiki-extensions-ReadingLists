@@ -56,7 +56,6 @@
 	"readinglists-import-size-error": "リストが大きすぎて表示できません。",
 	"readinglists-special-error-list-not-found": "このページにアクセスできません。URLに記載されているものと異なるアカウントでログインしている可能性があります。",
 	"special-tab-readinglists-short": "自分のリスト",
-	"readinglists-title": "保存済みページ",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|リスト}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|項目}}",
 	"readinglists-show-more": "項目をさらに表示",

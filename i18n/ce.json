@@ -43,7 +43,6 @@
 	"readinglists-import-error": "ДӀабеллачу хаамашна тӀера могӀам гайта аьтто бац.",
 	"readinglists-import-size-error": "МогӀам гайта йиш йоцуш тӀех боккха бу.",
 	"special-tab-readinglists-short": "Хьан могӀамаш",
-	"readinglists-title": "Йешаран могӀамаш",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|могӀам|могӀамаш}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|йаззам|йаззамаш}}",
 	"readinglists-show-more": "Гайта кхин",

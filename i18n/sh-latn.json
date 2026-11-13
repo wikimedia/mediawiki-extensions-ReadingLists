@@ -9,7 +9,6 @@
 	"readinglists-browser-remove-entry-success": "Stranica <b>$1</b> uklonjena je s liste [[$2|$3]].",
 	"readinglists-special-subpage-title": "Sačuvane stranice",
 	"readinglists-loading": "Pričekajte...",
-	"readinglists-title": "Sačuvane stranice",
 	"readinglists-default-title": "Sačuvane stranice",
 	"readinglists-empty-title": "Još nema sačuvanih stranica",
 	"readinglists-empty-cta": "Pritisnite simbol za obilježavanje na željenoj stranici da biste je dodali ovdje.",

@@ -51,7 +51,6 @@
 	"readinglists-import-size-error": "D'Lëscht ass ze grouss fir ugewisen ze ginn.",
 	"readinglists-special-error-list-not-found": "Dir hutt keen Zougrëff op dës Säit. Villäicht sidd Dir ënner engem anere Kont ageloggt wéi deem aus der URL.",
 	"special-tab-readinglists-short": "Är Lëschten",
-	"readinglists-title": "Gespäichert Säiten",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|Lëscht|Lëschten}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|Element|Elementer}}",
 	"readinglists-show-more": "Méi Elementer weisen",

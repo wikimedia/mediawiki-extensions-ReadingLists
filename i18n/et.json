@@ -13,7 +13,6 @@
 	"readinglists-special-custom-list-title": "Salvestatud / $1",
 	"readinglists-privacy-tooltip": "Sinu salvestatud üksused ja kogud on privaatsed ja nähtavad ainult sulle.",
 	"readinglists-special-error-list-not-found": "Sul puudub juurdepääs sellele leheküljele. Võimalik, et oled sisse logitud teisele kontole, mitte URL-iga seotud kontole.",
-	"readinglists-title": "Salvestatud leheküljed",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|üksus|üksust}}",
 	"readinglists-default-title": "salvestatud üksuste",
 	"readinglists-empty-title": "Salvestatud artikleid pole.",

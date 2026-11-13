@@ -46,7 +46,6 @@
 	"readinglists-import-size-error": "Danh sách quá lớn để hiển thị.",
 	"readinglists-special-error-list-not-found": "Bạn không thể truy cập trang này. Có thể bạn đang đăng nhập bằng một tài khoản khác với tài khoản được hiển thị trong URL.",
 	"special-tab-readinglists-short": "Danh sách của bạn",
-	"readinglists-title": "Các trang đã lưu",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|danh sách}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|trang}}",
 	"readinglists-show-more": "Hiện thêm",

@@ -47,7 +47,6 @@
 	"readinglists-import-error": "顯示唔到畀出嚟嘅資料入面嘅清單。",
 	"readinglists-import-size-error": "呢個清單太大，顯示唔到。",
 	"special-tab-readinglists-short": "你嘅清單",
-	"readinglists-title": "閱讀清單",
 	"readinglists-total-lists": "{{formatnum:$1}}{{plural:$1|個清單}}",
 	"readinglists-total-articles": "{{formatnum:$1}}{{plural:$1|篇文章}}",
 	"readinglists-show-more": "睇多啲",

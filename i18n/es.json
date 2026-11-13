@@ -54,7 +54,6 @@
 	"readinglists-import-size-error": "Tu lista es demasiado grande para ser mostrada.",
 	"readinglists-special-error-list-not-found": "No puedes acceder a esta página. Es posible que hayas iniciado sesión en una cuenta diferente a la que figura en la URL.",
 	"special-tab-readinglists-short": "Tus listas",
-	"readinglists-title": "Guardar páginas",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|lista|listas}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|página|páginas}}",
 	"readinglists-show-more": "Ver más",

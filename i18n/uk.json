@@ -52,7 +52,6 @@
 	"readinglists-import-size-error": "Список занадто великий, щоб його відобразити.",
 	"readinglists-special-error-list-not-found": "Ви не можете отримати доступ до цієї сторінки. Ви, можливо,  увійшли в інший обліковий запис, ніж той, який є в URL.",
 	"special-tab-readinglists-short": "Ваші списки",
-	"readinglists-title": "Збережені сторінки",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|список|списки|списків}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|сторінка|сторінки|сторінок}}",
 	"readinglists-show-more": "Показати більше",

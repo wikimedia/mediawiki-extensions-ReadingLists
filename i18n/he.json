@@ -49,7 +49,6 @@
 	"readinglists-import-error": "לא ניתן להציג את הרשימה מהנתונים שניתנו.",
 	"readinglists-import-size-error": "הרשימה גדולה מדי להצגה.",
 	"special-tab-readinglists-short": "הרשימות שלך",
-	"readinglists-title": "דפים שמורים",
 	"readinglists-total-lists": "{{PLURAL:$1|רשימה אחת|$1 רשימות}}",
 	"readinglists-total-articles": "{{PLURAL:$1|פריט אחד|$1 פריטים}}",
 	"readinglists-show-more": "להציג יותר פריטים",

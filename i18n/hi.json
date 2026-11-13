@@ -49,7 +49,6 @@
 	"readinglists-import-size-error": "सूची दिखाने के लिए कुछ ज़्यादा ही बड़ा है।",
 	"readinglists-special-error-list-not-found": "आप इस पृष्ठ तक नहीं पहुँच सकते। हो सकता है आपने URL में उल्लिखित खाते से अलग किसी खाते से लॉग-इन किया हुआ हो।",
 	"special-tab-readinglists-short": "आपकी सूचियाँ",
-	"readinglists-title": "सहेेजे हुए पृष्ठ",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|सूची|सूचियाँ}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|पृष्ठ}}",
 	"readinglists-show-more": "और दिखाएँ",

@@ -50,7 +50,6 @@
 	"readinglists-import-size-error": "Siyahı həddən artıq böyük olduğundan nümayiş etdirilə bilmir.",
 	"readinglists-special-error-list-not-found": "Bu səhifə sizin üçün əlçatan deyil. Ola bilsin, URL-dəkindən fərqli bir hesaba daxil olmusunuz.",
 	"special-tab-readinglists-short": "Siyahılarınız",
-	"readinglists-title": "Saxlanılmış səhifələr",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|siyahı}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|element}}",
 	"readinglists-show-more": "Daha çoxunu göstər",

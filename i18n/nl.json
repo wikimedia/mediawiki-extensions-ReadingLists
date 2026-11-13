@@ -53,7 +53,6 @@
 	"readinglists-import-size-error": "De lijst is te groot om weer te geven.",
 	"readinglists-special-error-list-not-found": "U hebt geen toegang tot deze pagina. Mogelijk bent u aangemeld met een ander account dan het account dat in de URL wordt vermeld.",
 	"special-tab-readinglists-short": "Uw lijsten",
-	"readinglists-title": "Opgeslagen pagina’s",
 	"readinglists-total-lists": "$1 lijst{{PLURAL:$1||en}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|item|items}}",
 	"readinglists-show-more": "Meer items weergeven",

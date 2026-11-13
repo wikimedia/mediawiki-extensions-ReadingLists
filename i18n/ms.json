@@ -49,7 +49,6 @@
 	"readinglists-import-size-error": "Senarai ini terlalu besar untuk dipaparkan.",
 	"readinglists-special-error-list-not-found": "Anda tidak boleh mengakses laman ini. Anda mungkin telah melog masuk ke dalam akaun yang berbeza daripada akaun yang tertera dalam URL tersebut.",
 	"special-tab-readinglists-short": "Senarai anda",
-	"readinglists-title": "Laman simpanan",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|senarai}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|butir}}",
 	"readinglists-show-more": "Tunjukkan lagi butir",

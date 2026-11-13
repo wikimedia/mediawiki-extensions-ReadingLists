@@ -48,7 +48,6 @@
 	"readinglists-import-size-error": "Seznam je ke zobrazení příliš velký.",
 	"readinglists-special-error-list-not-found": "K této stránce nemáte přístup. Možná jste přihlášeni k jinému účtu, než je ten uvedený v URL adrese.",
 	"special-tab-readinglists-short": "Vaše seznamy",
-	"readinglists-title": "Uložené stránky",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|seznam|seznamy|seznamů}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|stránka|stránky|stránek}}",
 	"readinglists-show-more": "Zobrazit více položek",

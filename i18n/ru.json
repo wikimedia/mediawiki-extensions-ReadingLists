@@ -60,7 +60,6 @@
 	"readinglists-import-size-error": "Список слишком велик для отображения.",
 	"readinglists-special-error-list-not-found": "Невозможно зайти на эту страницу. Возможно, вы вошли в систему под другой учётной записью, нежели та, что указана в URL-адресе.",
 	"special-tab-readinglists-short": "Ваши списки",
-	"readinglists-title": "Сохранённые страницы",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|список|списка|списков}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|статья|статьи|статей}}",
 	"readinglists-show-more": "Показать больше",

@@ -12,7 +12,6 @@
 	"readinglists-special-subpage-title": "Сачувано",
 	"readinglists-loading": "Молимо сачекајте...",
 	"readinglists-special-error-list-not-found": "Не можете приступити овој страници. Можда сте пријављени на други налог у односу на онај у URL-у.",
-	"readinglists-title": "Сачуване странице",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|ставка|ставке}}",
 	"readinglists-show-more": "Прикажи више ставки",
 	"readinglists-default-title": "сачуване странице",

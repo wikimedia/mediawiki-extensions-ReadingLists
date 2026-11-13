@@ -42,7 +42,6 @@
 	"readinglists-import-size-error": "Тізім — көрсетілу үшін тым үлкен.",
 	"readinglists-special-error-list-not-found": "Бұл бетті аша алмайсыз. Сіз URL-дағыдан басқа аккаунтқа кірген болуыңыз мүмкін.",
 	"special-tab-readinglists-short": "Тізімдеріңіз",
-	"readinglists-title": "Сақталған беттер",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|тізім}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|элемент}}",
 	"readinglists-show-more": "Тағы да көрсетіңіз",

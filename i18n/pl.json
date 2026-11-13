@@ -56,7 +56,6 @@
 	"readinglists-import-size-error": "Ta lista jest za duża, aby ją wyświetlić.",
 	"readinglists-special-error-list-not-found": "Nie masz dostępu do tej strony. Być może korzystasz z innego konta niż to podane w adresie URL.",
 	"special-tab-readinglists-short": "Twoje listy",
-	"readinglists-title": "Zapisane strony",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|lista|listy|list}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|pozycja|pozycje|pozycji}}",
 	"readinglists-show-more": "Pokaż więcej pozycji",

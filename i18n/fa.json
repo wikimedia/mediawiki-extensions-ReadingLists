@@ -52,7 +52,6 @@
 	"readinglists-import-size-error": "فهرست برای نمایش خیلی بزرگ است.",
 	"readinglists-special-error-list-not-found": "شما نمی‌توانید به این صفحه دسترسی پیدا کنید. ممکن است با حسابی غیر از حساب کاربری موجود در URL وارد شده باشید.",
 	"special-tab-readinglists-short": "فهرست‌های شما",
-	"readinglists-title": "صفحات ذخیره‌شده",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|فهرست}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|صفحه}}",
 	"readinglists-show-more": "نمایش بیشتر",

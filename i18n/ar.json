@@ -56,7 +56,6 @@
 	"readinglists-import-size-error": "القائمة أكبر من أن يتم عرضها.",
 	"readinglists-special-error-list-not-found": "لا يمكنك الوصول إلى هذه الصفحة. ربما تكون قد سجلت الدخول إلى حساب مختلف عن الحساب الموجود في عنوان URL.",
 	"special-tab-readinglists-short": "قوائمك",
-	"readinglists-title": "الصفحات المحفوظة",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|قائمة|قوائم}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|عنصر|عناصر}}",
 	"readinglists-show-more": "عرض المزيد من العناصر",

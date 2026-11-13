@@ -43,7 +43,6 @@
 	"readinglists-import-error": "Não é possível apresentar a lista tendo por base os dados fornecidos.",
 	"readinglists-import-size-error": "A lista é demasiado grande para ser apresentada.",
 	"special-tab-readinglists-short": "Listas",
-	"readinglists-title": "Listas de leitura",
 	"readinglists-total-lists": "{{formatnum:$1}} {{plural:$1|lista|listas}}",
 	"readinglists-total-articles": "{{formatnum:$1}} {{plural:$1|artigo|artigos}}",
 	"readinglists-show-more": "Mostrar mais",

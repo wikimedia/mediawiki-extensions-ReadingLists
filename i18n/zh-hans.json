@@ -60,7 +60,6 @@
 	"readinglists-import-size-error": "列表太大无法显示。",
 	"readinglists-special-error-list-not-found": "您无法访问此页面。您可能登录了与URL中所示账号不同的账号。",
 	"special-tab-readinglists-short": "您的列表",
-	"readinglists-title": "已保存的页面",
 	"readinglists-total-lists": "$1{{PLURAL:$1|个列表}}",
 	"readinglists-total-articles": "$1{{PLURAL:$1|项}}",
 	"readinglists-show-more": "显示更多项目",

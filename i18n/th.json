@@ -44,7 +44,6 @@
 	"readinglists-import-size-error": "รายการนี้ใหญ่เกินที่จะแสดงผล",
 	"readinglists-special-error-list-not-found": "คุณไม่สามารถเข้าถึงหน้านี้ได้ คุณอาจเข้าสู่ระบบบัญชีอื่นที่แตกต่างจากใน URL",
 	"special-tab-readinglists-short": "รายการของคุณ",
-	"readinglists-title": "หน้าที่บันทึกไว้",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|รายการ}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|หน้า}}",
 	"readinglists-show-more": "แสดงเพิ่มเติม",

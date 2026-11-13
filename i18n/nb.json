@@ -48,7 +48,6 @@
 	"readinglists-import-size-error": "Listen er for stor til å vises.",
 	"readinglists-special-error-list-not-found": "Du har ikke tilgang til denne siden. Det kan hende du er logget på en annen konto en den som er i URL-en.",
 	"special-tab-readinglists-short": "Listene dine",
-	"readinglists-title": "Lagrede sider",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|liste|lister}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|side|sider}}",
 	"readinglists-show-more": "Vis mer",

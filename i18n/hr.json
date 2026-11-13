@@ -43,7 +43,6 @@
 	"readinglists-import-size-error": "Popis je prevelik da bi se prikazao",
 	"readinglists-special-error-list-not-found": "Ne možete pristupiti ovoj stranici. Možda ste prijavljeni pod suradničkim imenom različitim od onoga u URL-u.",
 	"special-tab-readinglists-short": "Vaši popisi",
-	"readinglists-title": "Sačuvane stranice",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|popis|popisa}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|stranica|stranice|stranica}}",
 	"readinglists-show-more": "Prikaži više",

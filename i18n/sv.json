@@ -50,7 +50,6 @@
 	"readinglists-import-size-error": "Listan är för stor för att visas.",
 	"readinglists-special-error-list-not-found": "Du kan kan inte komma åt den här sidan. Du kanske är inloggad på ett annat konto än den i URL:en.",
 	"special-tab-readinglists-short": "Dina listor",
-	"readinglists-title": "Sparade sidor",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|lista|listor}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|objekt}}",
 	"readinglists-show-more": "Visa fler objekt",

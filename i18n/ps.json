@@ -47,7 +47,6 @@
 	"readinglists-import-size-error": "دا لړليک د ښکارېدنې لپاره ډېر لوی دی.",
 	"readinglists-special-error-list-not-found": "تاسو دې مخ ته لاسرسی نشئ لرلی. تاسو ښايي په وېبتړ کې د ورکړي گڼون پرځای بل گڼون ته ننوتلي ياست.",
 	"special-tab-readinglists-short": "ستاسو لړليکونه",
-	"readinglists-title": "خوندي شوي مخونه",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|لړليک|لړليکونه}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|توکی|توکي}}",
 	"readinglists-show-more": "نور توکي ښودل",

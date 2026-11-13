@@ -51,7 +51,6 @@
 	"readinglists-import-size-error": "Listen er for stor til at blive vist.",
 	"readinglists-special-error-list-not-found": "Du kan ikke få adgang til denne side. Du er muligvis logget ind på en anden konto end den, der er angivet i URL'en.",
 	"special-tab-readinglists-short": "Dine lister",
-	"readinglists-title": "Gemte sider",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|liste|lister}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|emne|emner}}",
 	"readinglists-show-more": "Vis flere emner",

@@ -48,7 +48,6 @@
 	"readinglists-import-size-error": "Списъкът е твърде голям, за да бъде показан.",
 	"readinglists-special-error-list-not-found": "Нямате достъп до тази страница. Възможно е да сте влезли в различна сметка от тази в URL адреса.",
 	"special-tab-readinglists-short": "Вашите списъци",
-	"readinglists-title": "Запазени страници",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|списък|списъци}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|страница|страници}}",
 	"readinglists-show-more": "Показване на обекти",
