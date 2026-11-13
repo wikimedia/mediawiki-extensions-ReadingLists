@@ -33,7 +33,7 @@ class RestUtilTraitTest extends MediaWikiUnitTestCase {
 				return 'Formatted test error message';
 			}
 		};
-		$responseFactory = new ResponseFactory( [ 'qqx' => $formatter ] );
+		$responseFactory = $this->newResponseFactory( [ 'textFormatters' => [ 'qqx' => $formatter ] ] );
 
 		$handler = new class( $responseFactory ) extends Handler {
 			// As of v2024.1.1, PhpStorm doesn't like this syntax, but PHP itself is fine with it.
