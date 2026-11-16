@@ -23,6 +23,7 @@
 			"SleaY",
 			"Terio legale",
 			"Urhixidur",
+			"Uriel",
 			"Verdy p",
 			"Wladek92"
 		]
@@ -67,6 +68,7 @@
 	"readinglists-import-error": "Impossible d’afficher la liste à partir des données fournies.",
 	"readinglists-import-size-error": "La liste est trop grande pour être affichée.",
 	"readinglists-special-error-list-not-found": "Vous ne pouvez pas accéder à cette page. Il se peut que vous soyez connecté à un compte différent de celui indiqué dans l'URL.",
+	"readinglists-special-error-generic": "Une erreur s'est produite. Veuillez réessayer plus tard.",
 	"special-tab-readinglists-short": "Vos listes",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|liste|listes}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|page|pages}}",

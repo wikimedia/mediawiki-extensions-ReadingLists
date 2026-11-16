@@ -30,7 +30,7 @@
 	"readinglists-loading": "Attendi per favore...",
 	"reading-list-purpose-for-temp-user": "Crea un'utenza per creare elenchi di lettura privati.",
 	"readinglists-import-size-error": "L'elenco è troppo grande per essere visualizzato.",
-	"readinglists-special-error-list-not-found": "Non puoi accedere a questa pagina. Potresti aver effettuato l'accesso con un'utenza diversa da quella specificata nell'URL.",
+	"readinglists-special-error-list-not-found": "Elenco non trovato.",
 	"special-tab-readinglists-short": "I tuoi elenchi",
 	"readinglists-total-lists": "$1 {{PLURAL:$1|elenco|elenchi}}",
 	"readinglists-total-articles": "$1 {{PLURAL:$1|elemento|elementi}}",

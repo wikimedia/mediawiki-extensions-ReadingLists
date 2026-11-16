@@ -40,6 +40,8 @@
 	"readinglists-error": "Vaš brskalnik ne more uporabljati funkcije bralnih seznamov. Omogočite JavaScript ali poskusite v drugem brskalniku.",
 	"readinglists-import-error": "Ni mogoče prikazati seznama iz navedenih podatkov.",
 	"readinglists-import-size-error": "Seznam je prevelik za prikaz.",
+	"readinglists-special-error-list-not-found": "Seznam ni najden.",
+	"readinglists-special-error-generic": "Nekaj je šlo narobe. Prosimo, poskusite znova pozneje.",
 	"special-tab-readinglists-short": "Vaši seznami",
 	"readinglists-show-more": "Prikaži več predmetov",
 	"readinglists-default-title": "shranjeni predmeti",
