@@ -618,7 +618,10 @@ class ReadingListRepository implements LoggerAwareInterface {
 		if ( $type !== 'merged' ) {
 			$this->dbw->newUpdateQueryBuilder()
 				->update( 'reading_list' )
-				->set( [ 'rl_size' => new RawSQLValue( 'rl_size + 1' ) ] )
+				->set( [
+					'rl_size' => new RawSQLValue( 'rl_size + 1' ),
+					'rl_date_updated' => $this->dbw->timestamp(),
+				] )
 				->where( [ 'rl_id' => $listId ] )
 				->caller( __METHOD__ )->execute();
 		}
@@ -888,7 +891,10 @@ class ReadingListRepository implements LoggerAwareInterface {
 		}
 		$this->dbw->newUpdateQueryBuilder()
 			->update( 'reading_list' )
-			->set( [ 'rl_size' => new RawSQLValue( 'rl_size - 1' ) ] )
+			->set( [
+				'rl_size' => new RawSQLValue( 'rl_size - 1' ),
+				'rl_date_updated' => $this->dbw->timestamp(),
+			] )
 			->where( [
 				'rl_id' => $row->rl_id,
 				$this->dbw->expr( 'rl_size', '>', 0 ),
@@ -946,7 +952,10 @@ class ReadingListRepository implements LoggerAwareInterface {
 					$deletedCount = count( $entryIdsForList );
 					$this->dbw->newUpdateQueryBuilder()
 						->update( 'reading_list' )
-						->set( [ 'rl_size' => new RawSQLValue( 'rl_size - ' . $deletedCount ) ] )
+						->set( [
+							'rl_size' => new RawSQLValue( 'rl_size - ' . $deletedCount ),
+							'rl_date_updated' => $this->dbw->timestamp(),
+						] )
 						->where( [
 							'rl_id' => $matchedListId,
 							// Match deleteListEntry(), avoid decrementing to negative.

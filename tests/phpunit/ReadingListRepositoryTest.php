@@ -1137,6 +1137,81 @@ class ReadingListRepositoryTest extends MediaWikiIntegrationTestCase {
 		);
 	}
 
+	/**
+	 * Resets the `rl_date_updated` field for the given lists to the specified time.
+	 *
+	 * @param int $listId
+	 * @param int $otherListId
+	 * @param string $oldTime
+	 */
+	private function resetDates( $listId, $otherListId, $oldTime ) {
+		$this->getDb()->newUpdateQueryBuilder()
+			->update( 'reading_list' )
+			->set( [ 'rl_date_updated' => $this->getDb()->timestamp( $oldTime ) ] )
+			->where( [ 'rl_id' => [ $listId, $otherListId ] ] )
+			->caller( __METHOD__ )
+			->execute();
+	}
+
+	/**
+	 * Retrieves the `rl_date_updated` field for a specific list.
+	 *
+	 * @param int $id
+	 * @return string|null
+	 */
+	private function getDate( $id ) {
+		return $this->getDb()->newSelectQueryBuilder()
+			->select( 'rl_date_updated' )
+			->from( 'reading_list' )
+			->where( [ 'rl_id' => $id ] )
+			->caller( __METHOD__ )->fetchField();
+	}
+
+	public function testListDateUpdatedChangesWhenEntriesChange() {
+		$this->addProjects( [ 'dummy' ] );
+		$repository = $this->getReadingListRepository( 1 );
+		$repository->setupForUser();
+		$this->addProjects( [ 'https://en.wikipedia.org' ] );
+		[ $listId, $otherListId ] = $this->addLists( 1, [
+			[ 'rl_name' => 'foo', 'rl_deleted' => '0' ],
+			[ 'rl_name' => 'bar', 'rl_deleted' => '0' ],
+		] );
+		$oldTime = '20100101000000';
+
+		// Adding an entry bumps the list's date
+		$this->resetDates( $listId, $otherListId, $oldTime );
+		$entry = $repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
+		$this->assertTimestampEquals( self::FAKE_TIME, $this->getDate( $listId ) );
+		$this->assertTimestampEquals( $oldTime, $this->getDate( $otherListId ) );
+
+		// Re-adding an existing entry is a no-op and does not bump the date
+		$this->resetDates( $listId, $otherListId, $oldTime );
+		$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
+		$this->assertTimestampEquals( $oldTime, $this->getDate( $listId ) );
+
+		// Deleting an entry bumps the list's date
+		$this->resetDates( $listId, $otherListId, $oldTime );
+		$repository->deleteListEntry( $entry->rle_id );
+		$this->assertTimestampEquals( self::FAKE_TIME, $this->getDate( $listId ) );
+		$this->assertTimestampEquals( $oldTime, $this->getDate( $otherListId ) );
+
+		// Re-creating a deleted entry bumps the list's date
+		$this->resetDates( $listId, $otherListId, $oldTime );
+		$repository->addListEntry( $listId, 'https://en.wikipedia.org', 'Foo' );
+		$this->assertTimestampEquals( self::FAKE_TIME, $this->getDate( $listId ) );
+
+		// Deleting by title bumps only the lists that contained the page
+		$this->resetDates( $listId, $otherListId, $oldTime );
+		$repository->deleteListEntriesByPageTitleAndProject( 'Foo', 'https://en.wikipedia.org' );
+		$this->assertTimestampEquals( self::FAKE_TIME, $this->getDate( $listId ) );
+		$this->assertTimestampEquals( $oldTime, $this->getDate( $otherListId ) );
+
+		// Deleting by title with no matches does not bump any list
+		$this->resetDates( $listId, $otherListId, $oldTime );
+		$repository->deleteListEntriesByPageTitleAndProject( 'Foo', 'https://en.wikipedia.org' );
+		$this->assertTimestampEquals( $oldTime, $this->getDate( $listId ) );
+	}
+
 	public function testDeleteListEntriesByPageTitleAndProject() {
 		$this->addProjects( [ 'dummy' ] );
 		$repository = $this->getReadingListRepository( 1 );
