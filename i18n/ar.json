@@ -137,6 +137,7 @@
 	"readinglists-customlists-collection-name-dialog-required": "اسم المجموعة مطلوب.",
 	"readinglists-customlists-collection-name-dialog-duplicate": "لديك بالفعل مجموعة بهذا الاسم.",
 	"readinglists-customlists-add-entry-success": "تمت إضافة $1 إلى [[$2|$3]].",
+	"readinglists-customlists-remove-entry-success": "تمت إزالة $1 من [[$2|$3]].",
 	"readinglists-customlists-collection-picker-create-prompt": "قم بتنظيم العناصر المحفوظة في مجموعة",
 	"readinglists-customlists-collection-picker-add-button-label": "أضف من $1 إلى $2",
 	"readinglists-customlists-collection-picker-remove-button-label": "اطرح $1 من $2",
