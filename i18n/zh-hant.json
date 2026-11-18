@@ -32,7 +32,7 @@
 	"readinglists-db-error-no-such-project": "「$1」不是認可的專案。",
 	"readinglists-browser-add-entry-success": "<b>$1</b>已新增到您的[[$2|$3]]。",
 	"readinglists-browser-remove-entry-success": "<b>$1</b>已從您的[[$2|$3]]移除。",
-	"readinglists-browser-login-prompt": "登入以儲存頁目",
+	"readinglists-browser-login-prompt": "登入以儲存頁面",
 	"readinglists-browser-error-intro": "發生錯誤：$1",
 	"readinglists-browser-enable-sync-prompt": "在您的維基百科應用程式上啟用同步即可開始儲存頁面",
 	"readinglists-browser-extension-info-link-text": "瞭解更多",
@@ -77,6 +77,7 @@
 	"readinglists-list-empty-message": "此清單上沒有頁面。請下載並使用應用程式，來將項目添加到此閱讀清單。",
 	"readinglists-no-title": "無標題清單",
 	"readinglists-export": "分享清單",
+	"readinglists-redirect-to": "本頁的內容已移至 <b>$1</b>",
 	"readinglists-watchlist": "監視清單",
 	"readinglists-watchlist-description": "讓您關注這些頁面上的新編輯。",
 	"readinglists-watchlist-monitor": "您可以使用[$1 監視清單]工具來留意在此清單上頁面發生的編輯。",
@@ -122,5 +123,6 @@
 	"readinglists-customlists-allitems": "所有的項目",
 	"readinglists-customlists-collections": "集錦",
 	"readinglists-customlists-no-collections": "您目前沒有任何集錦",
-	"readinglists-customlists-create-collection": "建立新集錦"
+	"readinglists-customlists-create-collection": "建立新集錦",
+	"readinglists-customlists-create-collection-short": "建立集錦"
 }

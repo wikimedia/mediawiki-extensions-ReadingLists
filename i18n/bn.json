@@ -41,6 +41,7 @@
 	"readinglists-default-title": "সংরক্ষিত আইটেম",
 	"readinglists-empty-title": "কোনও সংরক্ষিত নিবন্ধ নেই",
 	"readinglists-empty-cta": "পরে পড়ার জন্য যেকোনো নিবন্ধ এখানে সংরক্ষণ করতে সেই নিবন্ধের বুকমার্ক আইকনে ক্লিক করুন।",
+	"readinglists-empty-collection-title": "এই সংগ্রহে কোনও নিবন্ধ যোগ করা হয়নি",
 	"readinglists-display-menu": "মেনু প্রদর্শন করুন",
 	"readinglists-display-sort": "এই অনুসারে সাজান",
 	"readinglists-display-sort-name": "নাম",
@@ -90,5 +91,10 @@
 	"readinglists-customlists-collections": "সংগ্রহ",
 	"readinglists-customlists-no-collections": "আপনার কোনো সংগ্রহ নেই",
 	"readinglists-customlists-create-collection": "নতুন সংগ্রহ তৈরি করুন",
-	"readinglists-customlists-create-collection-dialog-placeholder": "নাম লিখুন"
+	"readinglists-customlists-create-collection-short": "সংগ্রহ তৈরি করুন",
+	"readinglists-customlists-create-collection-dialog-placeholder": "নাম লিখুন",
+	"readinglists-customlists-add-entry-success": "[[$2|$3]] তালিকায় $1 যোগ করা হয়েছে।",
+	"readinglists-customlists-collection-settings": "সংগ্রহের সেটিংস",
+	"readinglists-customlists-rename-collection": "সংগ্রহ নামান্তর করুন",
+	"readinglists-customlists-delete-collection": "সংগ্রহ মুছে ফেলুন"
 }

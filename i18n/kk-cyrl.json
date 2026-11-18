@@ -22,6 +22,7 @@
 	"readinglists-browser-remove-entry-success": "<b>$1</b> [[$2|$3]] ішінен алынып тасталған.",
 	"readinglists-browser-login-prompt": "Беттерді сақтау үшін кіріңіз",
 	"readinglists-browser-error-intro": "Қате орын алды: $1",
+	"readinglists-browser-enable-sync-prompt": "Беттерді сақтауды бастау үшін Уикипедия қосымшаңызға синхронизацияны қосыңыз",
 	"readinglists-browser-extension-info-link-text": "Көбірек білу",
 	"readinglists-browser-list-entry-limit-exceeded": "Бетті сақтау мүмкін емес. Сіз тізімдегі $1 элемент шегіне жеттіңіз",
 	"readinglists-browser-extension-product-title": "Уикипедия оқу тізімдері",
@@ -69,6 +70,7 @@
 	"readinglists-watchlist-description": "Жаңа өңдемелер үшін сіз жазылған беттер.",
 	"readinglists-watchlist-monitor": "Сіз осы тізімдегі беттерге жасалған өңдемелерді [$1 watchlist] құралы арқылы бақылай аласыз.",
 	"readinglists-import-app-misconfigured": "Бұл сайт әзірше тізімдерді импорттауды қолдамайды.",
+	"readinglists-import-disclaimer": "Осы сайттағы қатысушы басқалармен бөлісу үшін оқу тізімін жасады (мүмкін сіз шығарсыз). Оған модерация жасалмайды және ішіндегі мазмұны сайт редакторларын білдірмейді",
 	"readinglists-import-button-label": "Қосымшадан ашу",
 	"readinglists-import-button-hint": "Түймені басыңыз:",
 	"readinglists-share-url-text": "[$1] $2\n$3",
@@ -108,5 +110,11 @@
 	"readinglists-customlists-allitems": "Барлығы",
 	"readinglists-customlists-collections": "Жинақтар",
 	"readinglists-customlists-no-collections": "Сізде жинақ жоқ",
-	"readinglists-customlists-create-collection": "жаңа жинақ жасау"
+	"readinglists-customlists-create-collection": "жаңа жинақ жасау",
+	"readinglists-customlists-create-collection-short": "Жинақ жасау",
+	"readinglists-customlists-add-entry-success": "$1 [[$2|$3]] ішіне қосылды.",
+	"readinglists-customlists-collection-picker-add-button-label": "$1 бетін $2 ішіне қосу",
+	"readinglists-customlists-collection-settings": "Жинақ баптаулары",
+	"readinglists-customlists-rename-collection": "Жинақтың атын өзгерту",
+	"readinglists-customlists-delete-collection": "Жинақты өшіру"
 }
