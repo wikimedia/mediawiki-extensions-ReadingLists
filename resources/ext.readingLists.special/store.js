@@ -22,6 +22,7 @@ const useReadingListsStore = defineStore( 'readingLists', () => {
 	const loadingInfo = ref( true );
 	const isDefaultList = ref( true );
 	const isAllListItems = ref( false );
+	const isCollections = ref( false );
 
 	// Page-wide error message.
 	const error = ref( '' );
@@ -30,13 +31,16 @@ const useReadingListsStore = defineStore( 'readingLists', () => {
 
 	/**
 	 * Reset all view-specific state before loading a new route.
+	 *
+	 * @param {boolean} isCollectionsParam Whether this is the list of all collections
 	 */
-	function resetState() {
+	function resetState( isCollectionsParam ) {
 		title.value = '';
 		description.value = '';
 		loadingInfo.value = true;
 		isDefaultList.value = true;
 		isAllListItems.value = false;
+		isCollections.value = isCollectionsParam || false;
 		error.value = '';
 	}
 
@@ -62,9 +66,8 @@ const useReadingListsStore = defineStore( 'readingLists', () => {
 	 *
 	 * @param {Object|null} imported Imported list data, if any
 	 * @param {number|null} listId List ID, or null if this is all items
-	 * @param {boolean} isCollections Whether this is the list of all collections
 	 */
-	async function fetchListInfo( imported, listId, isCollections ) {
+	async function fetchListInfo( imported, listId ) {
 		loadingInfo.value = true;
 
 		try {
@@ -78,7 +81,7 @@ const useReadingListsStore = defineStore( 'readingLists', () => {
 				title.value = list.name;
 				description.value = list.description;
 				isDefaultList.value = !!list.default;
-			} else if ( isCollections ) {
+			} else if ( isCollections.value ) {
 				isDefaultList.value = false;
 				isAllListItems.value = false;
 			} else {
@@ -99,6 +102,7 @@ const useReadingListsStore = defineStore( 'readingLists', () => {
 		loadingInfo,
 		isDefaultList,
 		isAllListItems,
+		isCollections,
 		error,
 
 		// Actions.

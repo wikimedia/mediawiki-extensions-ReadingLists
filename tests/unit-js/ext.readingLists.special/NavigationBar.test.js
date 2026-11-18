@@ -10,14 +10,23 @@ const NAVIGATION_BAR_PATH = '../../../resources/ext.readingLists.special/compone
 /**
  * Mount the NavigationBar component with the pinia testing plugin.
  *
- * @param {Boolean} isCustomList
+ * @param {boolean} isCustomList
+ * @param {Object} [initialState] Initial state of the readingLists store
+ * @param {boolean} [isListView]
  * @return {Promise<Object>}
  */
-async function mountNavigationBar( isCustomList = true ) {
+async function mountNavigationBar( isCustomList = true, initialState = {}, isListView = false ) {
 	const NavigationBar = ( await import( NAVIGATION_BAR_PATH ) ).default;
 	return mount( NavigationBar, {
-		props: { isCustomList },
-		global: { plugins: [ createTestingPinia( { stubActions: false } ) ] }
+		props: { isCustomList, isListView },
+		global: {
+			plugins: [
+				createTestingPinia( {
+					stubActions: false,
+					initialState: { readingLists: initialState }
+				} )
+			]
+		}
 	} );
 }
 
@@ -69,5 +78,29 @@ describe( 'NavigationBar', () => {
 
 		expect( wrapper.emitted( 'delete-collection' ) ).toHaveLength( 1 );
 		expect( wrapper.find( '.reading-lists-collection-settings-actions' ).exists() ).toBe( false );
+	} );
+
+	describe( 'create collection button', () => {
+		const CREATE_BUTTON = '.reading-lists-nav-create-button';
+
+		// The button shows only on the collections view in grid view (desktop). In list view
+		// (mobile), the collections list shows its own create button.
+		it.each( [
+			[ 'shows on the collections view in grid view', false, true, false ],
+			[ 'does not show on the collections view in list view', false, true, true ],
+			[ 'does not show on all items in grid view', false, false, false ],
+			[ 'does not show on a custom collection in grid view', true, false, false ]
+		] )( '%s', async ( _, isCustomList, isCollections, isListView ) => {
+			const wrapper = await mountNavigationBar( isCustomList, { isCollections }, isListView );
+			expect( wrapper.element ).toMatchSnapshot();
+		} );
+
+		it( 'emits create-collection when clicked', async () => {
+			const wrapper = await mountNavigationBar( false, { isCollections: true } );
+
+			await wrapper.get( CREATE_BUTTON ).trigger( 'click' );
+
+			expect( wrapper.emitted( 'create-collection' ) ).toHaveLength( 1 );
+		} );
 	} );
 } );

@@ -307,6 +307,7 @@
 					"name": "icons.json",
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
 					"callbackParam": [
+						"cdxIconAdd",
 						"cdxIconInfo",
 						"cdxIconDie",
 						"cdxIconEdit",

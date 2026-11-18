@@ -157,6 +157,7 @@ exports[`Entries > with custom lists > nav bar does not disappear when show more
         </div>
       </div>
     </div>
+    <!--v-if-->
   </nav>
   
   <!--v-if-->
@@ -449,6 +450,7 @@ exports[`Entries > with custom lists > renders the nav bar when custom lists are
         </a>
       </li>
     </ul>
+    <!--v-if-->
     <!--v-if-->
   </nav>
   

@@ -1,6 +1,83 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AllCollections > renders finished loading with collections 1`] = `
+exports[`AllCollections > in grid view (desktop) > renders a grid of outlined cards without the create button 1`] = `
+<div
+  class="reading-lists-all-collections"
+>
+  
+  <!--v-if-->
+  <!-- role="list" needed for Safari support, refer to T435864. -->
+  <ul
+    aria-label="Collections"
+    class="reading-lists-all-collections__list reading-lists-all-collections__list--grid-view"
+    role="list"
+  >
+    
+    <li
+      class="reading-lists-all-collections__list-item"
+    >
+      <a
+        class="cdx-card cdx-card--is-link reading-lists-all-collections__list-item__card"
+        href="/wiki/Special:Saved/1/My_Collection"
+      >
+        <!--v-if-->
+        <span
+          class="cdx-card__text"
+        >
+          <span
+            class="cdx-card__text__title"
+          >
+            
+            My Collection
+            
+          </span>
+          <span
+            class="cdx-card__text__description"
+          >
+            
+            5 items
+            
+          </span>
+          <!--v-if-->
+        </span>
+      </a>
+    </li>
+    <li
+      class="reading-lists-all-collections__list-item"
+    >
+      <a
+        class="cdx-card cdx-card--is-link reading-lists-all-collections__list-item__card"
+        href="/wiki/Special:Saved/2/Science_Articles"
+      >
+        <!--v-if-->
+        <span
+          class="cdx-card__text"
+        >
+          <span
+            class="cdx-card__text__title"
+          >
+            
+            Science Articles
+            
+          </span>
+          <span
+            class="cdx-card__text__description"
+          >
+            
+            0 items
+            
+          </span>
+          <!--v-if-->
+        </span>
+      </a>
+    </li>
+    
+  </ul>
+  
+</div>
+`;
+
+exports[`AllCollections > in list view (mobile) > renders the create button and a list of cards with dividers 1`] = `
 <div
   class="reading-lists-all-collections"
 >
@@ -13,7 +90,7 @@ exports[`AllCollections > renders finished loading with collections 1`] = `
   <!-- role="list" needed for Safari support, refer to T435864. -->
   <ul
     aria-label="Collections"
-    class="reading-lists-all-collections__list"
+    class="reading-lists-all-collections__list reading-lists-all-collections__list--list-view"
     role="list"
   >
     
@@ -21,38 +98,135 @@ exports[`AllCollections > renders finished loading with collections 1`] = `
       class="reading-lists-all-collections__list-item"
     >
       <a
-        class="reading-lists-all-collections__list-item__link"
+        class="cdx-card cdx-card--is-link cdx-card--separation-divider reading-lists-all-collections__list-item__card"
+        href="/wiki/Special:Saved/1/My_Collection"
       >
-        
+        <!--v-if-->
         <span
-          class="reading-lists-all-collections__list-item__title"
+          class="cdx-card__text"
         >
-          My Collection
+          <span
+            class="cdx-card__text__title"
+          >
+            
+            My Collection
+            
+          </span>
+          <span
+            class="cdx-card__text__description"
+          >
+            
+            5 items
+            
+          </span>
+          <!--v-if-->
         </span>
-        <span
-          class="reading-lists-all-collections__list-item__description"
-        >
-          A great collection of articles
-        </span>
-        
       </a>
     </li>
     <li
       class="reading-lists-all-collections__list-item"
     >
       <a
-        class="reading-lists-all-collections__list-item__link"
+        class="cdx-card cdx-card--is-link cdx-card--separation-divider reading-lists-all-collections__list-item__card"
+        href="/wiki/Special:Saved/2/Science_Articles"
       >
-        
+        <!--v-if-->
         <span
-          class="reading-lists-all-collections__list-item__title"
+          class="cdx-card__text"
         >
-          Science Articles
+          <span
+            class="cdx-card__text__title"
+          >
+            
+            Science Articles
+            
+          </span>
+          <span
+            class="cdx-card__text__description"
+          >
+            
+            0 items
+            
+          </span>
+          <!--v-if-->
         </span>
+      </a>
+    </li>
+    
+  </ul>
+  
+</div>
+`;
+
+exports[`AllCollections > renders finished loading with collections 1`] = `
+<div
+  class="reading-lists-all-collections"
+>
+  
+  <!--v-if-->
+  <!-- role="list" needed for Safari support, refer to T435864. -->
+  <ul
+    aria-label="Collections"
+    class="reading-lists-all-collections__list reading-lists-all-collections__list--grid-view"
+    role="list"
+  >
+    
+    <li
+      class="reading-lists-all-collections__list-item"
+    >
+      <a
+        class="cdx-card cdx-card--is-link reading-lists-all-collections__list-item__card"
+        href="/wiki/Special:Saved/1/My_Collection"
+      >
+        <!--v-if-->
         <span
-          class="reading-lists-all-collections__list-item__description"
-        />
-        
+          class="cdx-card__text"
+        >
+          <span
+            class="cdx-card__text__title"
+          >
+            
+            My Collection
+            
+          </span>
+          <span
+            class="cdx-card__text__description"
+          >
+            
+            5 items
+            
+          </span>
+          <!--v-if-->
+        </span>
+      </a>
+    </li>
+    <li
+      class="reading-lists-all-collections__list-item"
+    >
+      <a
+        class="cdx-card cdx-card--is-link reading-lists-all-collections__list-item__card"
+        href="/wiki/Special:Saved/2/Science_Articles"
+      >
+        <!--v-if-->
+        <span
+          class="cdx-card__text"
+        >
+          <span
+            class="cdx-card__text__title"
+          >
+            
+            Science Articles
+            
+          </span>
+          <span
+            class="cdx-card__text__description"
+          >
+            
+            0 items
+            
+          </span>
+          <!--v-if-->
+        </span>
       </a>
     </li>
     

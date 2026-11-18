@@ -11,13 +11,13 @@ const COLLECTIONS = [
 	{
 		id: 1,
 		title: 'My Collection',
-		description: 'A great collection of articles',
+		description: '5 items',
 		url: `${ BASE_URL }/1/My_Collection`
 	},
 	{
 		id: 2,
 		title: 'Science Articles',
-		description: '',
+		description: '0 items',
 		url: `${ BASE_URL }/2/Science_Articles`
 	}
 ];
@@ -72,22 +72,32 @@ describe( 'AllCollections', () => {
 		expect( wrapper.findAll( 'li' ) ).toHaveLength( COLLECTIONS.length );
 	} );
 
-	it( 'emits create-collection when the create button is clicked', async () => {
-		const wrapper = mountAllCollections();
-		await wrapper.find( '.readinglists-create-collection-button' ).trigger( 'click' );
-		expect( wrapper.emitted( 'create-collection' ) ).toHaveLength( 1 );
+	describe( 'in list view (mobile)', () => {
+		const listViewProps = { ...defaultProps, isListView: true };
+
+		it( 'emits create-collection when the create button is clicked', async () => {
+			const wrapper = mountAllCollections( listViewProps );
+			await wrapper.get( '.readinglists-create-collection-button' ).trigger( 'click' );
+			expect( wrapper.emitted( 'create-collection' ) ).toHaveLength( 1 );
+		} );
+
+		it( 'renders the create button and a list of cards with dividers', () => {
+			const wrapper = mountAllCollections( listViewProps );
+			expect( wrapper.element ).toMatchSnapshot();
+		} );
+	} );
+
+	describe( 'in grid view (desktop)', () => {
+		it( 'renders a grid of outlined cards without the create button', () => {
+			// The navigation bar shows the create button in grid view.
+			const wrapper = mountAllCollections( { ...defaultProps, isListView: false } );
+			expect( wrapper.element ).toMatchSnapshot();
+		} );
 	} );
 
 	it( 'emits create-collection when the empty-state create button is clicked', async () => {
 		const wrapper = mountAllCollections( { collections: [], loadingEntries: false } );
 		await wrapper.find( '.reading-lists-all-collections__empty-state__create-button' ).trigger( 'click' );
 		expect( wrapper.emitted( 'create-collection' ) ).toHaveLength( 1 );
-	} );
-
-	it( 'strips the base URL prefix from collection URLs passed to RouterLink', () => {
-		const wrapper = mountAllCollections();
-		const links = wrapper.findAllComponents( { name: 'RouterLink' } );
-		expect( links[ 0 ].props( 'to' ) ).toBe( '/1/My_Collection' );
-		expect( links[ 1 ].props( 'to' ) ).toBe( '/2/Science_Articles' );
 	} );
 } );

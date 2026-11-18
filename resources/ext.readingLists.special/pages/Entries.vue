@@ -21,6 +21,7 @@
 	<navigation-bar
 		v-if="showNavBar"
 		:is-custom-list="isCustomList"
+		:is-list-view="isListView"
 		@create-collection="openCollectionNameDialog"
 		@rename-collection="openCollectionNameDialog( true )"
 		@delete-collection="showDeleteCollection = true"
@@ -53,6 +54,7 @@
 			v-if="isCollections"
 			:collections="entries"
 			:loading-entries="loadingEntries"
+			:is-list-view="isListView"
 			@create-collection="openCollectionNameDialog"
 		></all-collections>
 
@@ -143,7 +145,7 @@ module.exports = exports = {
 			fetchListInfo
 		} = store;
 
-		resetState();
+		resetState( props.isCollections );
 
 		const loadingEntries = ref( true );
 		const ready = ref( false );
@@ -375,7 +377,7 @@ module.exports = exports = {
 			// metadata round-trip before the entries request starts. Both methods handle their
 			// own errors, so Promise.all does not reject.
 			await Promise.all( [
-				fetchListInfo( props.imported, props.listId, props.isCollections ),
+				fetchListInfo( props.imported, props.listId ),
 				initializePage()
 			] );
 		} );

@@ -2,32 +2,35 @@
 	<div v-if="!loadingInfo && !loadingEntries" class="reading-lists-all-collections">
 		<template v-if="collections.length !== 0">
 			<create-collection-button
+				v-if="isListView"
 				class="reading-lists-all-collections__create-button"
 				@create-collection="onCreateButtonClick"
 			></create-collection-button>
-
 			<!-- role="list" needed for Safari support, refer to T435864. -->
 			<ul
 				role="list"
 				class="reading-lists-all-collections__list"
-				:aria-label="ariaLabel">
+				:class="listClasses"
+				:aria-label="ariaLabel"
+			>
 				<li
 					v-for="collection in collections"
 					:key="collection.id"
 					class="reading-lists-all-collections__list-item"
 				>
-					<router-link
-						class="reading-lists-all-collections__list-item__link"
-						:to="getUrlSection( collection.url )"
-						@click="onNavigate( collection.title )"
+					<cdx-card
+						class="reading-lists-all-collections__list-item__card"
+						:url="collection.url"
+						:separation="isListView ? 'divider' : 'outline'"
+						@click="( e ) => onNavigate( e, collection )"
 					>
-						<span class="reading-lists-all-collections__list-item__title">
+						<template #title>
 							{{ collection.title }}
-						</span>
-						<span class="reading-lists-all-collections__list-item__description">
+						</template>
+						<template v-if="collection.description" #description>
 							{{ collection.description }}
-						</span>
-					</router-link>
+						</template>
+					</cdx-card>
 				</li>
 			</ul>
 		</template>
@@ -52,13 +55,17 @@
 
 <script>
 const { computed } = require( 'vue' );
-const { RouterLink } = require( 'vue-router' );
+const { useRouter } = require( 'vue-router' );
 const { storeToRefs } = require( 'pinia' );
 const { useReadingListsStore } = require( '../store.js' );
-const { CdxButton } = require( '../../../codex.js' );
+const { CdxButton, CdxCard } = require( '../../../codex.js' );
 const { CreateCollectionButton } = require( 'ext.readingLists.common' );
 const { collectionsBaseUrl } = require( 'ext.readingLists.api' );
 const EmptyList = require( './EmptyList.vue' );
+
+/**
+ * @typedef {import('../../types.js').CollectionWithTitle} CollectionWithTitle
+ */
 
 /**
  * List of all collections on Special:Saved/collections.
@@ -67,8 +74,8 @@ const EmptyList = require( './EmptyList.vue' );
 module.exports = exports = {
 	name: 'AllCollections',
 	components: {
-		RouterLink,
 		CdxButton,
+		CdxCard,
 		CreateCollectionButton,
 		EmptyList
 	},
@@ -80,14 +87,26 @@ module.exports = exports = {
 		loadingEntries: {
 			type: Boolean,
 			required: true
+		},
+		/**
+		 * Whether to display the cards as a list with simple dividers (as opposed to a grid).
+		 */
+		isListView: {
+			type: Boolean,
+			default: false
 		}
 	},
 	emits: [
 		'create-collection'
 	],
-	setup( _props, { emit } ) {
+	setup( props, { emit } ) {
+		const router = useRouter();
 		const store = useReadingListsStore();
 		const { title, loadingInfo } = storeToRefs( store );
+
+		const listClasses = computed( () => ( {
+			[ `reading-lists-all-collections__list--${ props.isListView ? 'list' : 'grid' }-view` ]: true
+		} ) );
 
 		const ariaLabel = computed( () => mw.msg( 'readinglists-customlists-collections' ) );
 
@@ -96,27 +115,41 @@ module.exports = exports = {
 			'/ReadingLists/resources/assets/all-collections-empty-state.svg' );
 		const createButtonLabel = computed( () => mw.msg( 'readinglists-customlists-create-collection-short' ) );
 
+		function onCreateButtonClick() {
+			emit( 'create-collection' );
+		}
+
 		function getUrlSection( url ) {
 			return url.slice(
 				mw.util.getUrl( collectionsBaseUrl ).length
 			);
 		}
 
-		function onCreateButtonClick() {
-			emit( 'create-collection' );
-		}
+		/**
+		 * Handle card click.
+		 *
+		 * @param {Event} e The click event
+		 * @param {CollectionWithTitle} collection
+		 */
+		function onNavigate( e, collection ) {
+			// Allow the link click to work normally if the user modified the click, e.g. to open
+			// in a new tab.
+			if ( e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0 ) {
+				return;
+			}
 
-		function onNavigate( newTitle ) {
-			title.value = newTitle;
+			e.preventDefault();
+			title.value = collection.title;
+			router.push( getUrlSection( collection.url ) );
 		}
 
 		return {
 			loadingInfo,
+			listClasses,
 			ariaLabel,
 			msgEmptyListHeading,
 			emptyStateImageUrl,
 			createButtonLabel,
-			getUrlSection,
 			onCreateButtonClick,
 			onNavigate
 		};
@@ -127,7 +160,8 @@ module.exports = exports = {
 <style lang="less">
 @import 'mediawiki.skin.variables.less';
 
-@min-width-card: @size-1200;
+@min-width-card: @size-1600;
+@min-height-card: @size-600;
 
 .reading-lists-all-collections {
 	&__list,
@@ -141,37 +175,50 @@ module.exports = exports = {
 		}
 	}
 
-	&__create-button {
-		min-height: @size-400;
-	}
-
-	&__create-button,
-	&__list-item {
-		border-top: @border-width-base @border-style-base @border-color-subtle;
-	}
-
-	&__list-item {
-		&__link {
-			display: flex;
-			flex-direction: column;
-			padding: @spacing-75 0;
-			border-radius: @border-radius-sharp;
-
-			&,
-			&:visited {
-				color: @color-base;
+	&__list {
+		&--list-view {
+			.cdx-card__text__title {
+				font-size: @font-size-large;
+				font-weight: @font-weight-normal;
 			}
 		}
 
-		/* stylelint-disable-next-line no-descending-specificity */
-		&__title {
-			font-size: @font-size-large;
+		&--grid-view {
+			display: grid;
+			// Add as many cards to a row as possible & ensure cards don't shrink below their
+			// min-width.
+			grid-template-columns: repeat( auto-fill, minmax( @min-width-card, 1fr ) );
+			gap: @spacing-100;
+
+			// These styles make the cards full width and height within their li element.
+			.reading-lists-all-collections__list-item {
+				display: flex;
+				min-height: @min-height-card;
+
+				&__card {
+					width: @size-full;
+				}
+			}
+		}
+	}
+
+	&__list-item {
+		// Simulate divider separation styles from Codex. The style in Codex expects `.cdx-card`
+		// elements to be direct siblings, while we wrap ours in `<li>`s.
+		& + & > .cdx-card--separation-divider {
+			border-top: @border-base;
 		}
 
-		/* stylelint-disable-next-line no-descending-specificity */
-		&__description {
+		.cdx-card__text__description {
 			font-size: @font-size-small;
+			margin-top: @spacing-50;
 		}
+	}
+
+	&__create-button {
+		min-height: @size-400;
+		border-top: @border-base;
+		border-bottom: @border-base;
 	}
 
 	&__empty-state__create-button.cdx-button {

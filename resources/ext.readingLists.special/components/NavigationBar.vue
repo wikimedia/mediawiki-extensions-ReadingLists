@@ -60,17 +60,28 @@
 				<cdx-icon :icon="cdxIconSettings" size="medium"></cdx-icon>
 			</cdx-menu-button>
 		</div>
+
+		<cdx-button
+			v-if="isCollections && !isListView"
+			class="reading-lists-nav-create-button"
+			action="progressive"
+			weight="quiet"
+			@click="onCreateCollection"
+		>
+			<cdx-icon :icon="cdxIconAdd"></cdx-icon>
+			{{ createButtonLabel }}
+		</cdx-button>
 	</nav>
 </template>
 
 <script>
-const { ref, onUpdated, onMounted } = require( 'vue' );
+const { ref, computed, onUpdated, onMounted } = require( 'vue' );
 const { RouterLink, useRouter } = require( 'vue-router' );
 const { storeToRefs } = require( 'pinia' );
 const { useReadingListsStore } = require( '../store.js' );
 const { actions } = require( 'ext.readingLists.common' );
-const { CdxIcon, CdxMenuButton } = require( '../../../codex.js' );
-const { cdxIconError, cdxIconExpand, cdxIconSettings } = require( '../../../icons.json' );
+const { CdxButton, CdxIcon, CdxMenuButton } = require( '../../../codex.js' );
+const { cdxIconAdd, cdxIconError, cdxIconExpand, cdxIconSettings } = require( '../../../icons.json' );
 const { actionSettingsDeleteClick, actionSettingsRenameClick,
 	actionCreateCollectionButtonClick
 } = actions;
@@ -127,6 +138,7 @@ const deleteCollectionLabel = mw.msg( 'readinglists-customlists-delete-collectio
 // @vue/component
 module.exports = exports = {
 	components: {
+		CdxButton,
 		CdxIcon,
 		CdxMenuButton,
 		RouterLink
@@ -135,6 +147,13 @@ module.exports = exports = {
 		isCustomList: {
 			type: Boolean,
 			required: true
+		},
+		/**
+		 * Whether the page shows a list view (as opposed to a grid view).
+		 */
+		isListView: {
+			type: Boolean,
+			default: false
 		}
 	},
 	emits: [
@@ -145,7 +164,7 @@ module.exports = exports = {
 	setup: ( props, { emit } ) => {
 		const router = useRouter();
 		const store = useReadingListsStore();
-		const { title } = storeToRefs( store );
+		const { title, isCollections } = storeToRefs( store );
 
 		const showDropdown = ref( mw.config.get( 'skin' ) === 'vector-2022' );
 
@@ -170,6 +189,13 @@ module.exports = exports = {
 			}
 		];
 
+		const createButtonLabel = computed( () => mw.msg( 'readinglists-customlists-create-collection-short' ) );
+
+		const onCreateCollection = () => {
+			emit( 'create-collection' );
+			actionCreateCollectionButtonClick();
+		};
+
 		const onSelectCollection = ( selected ) => {
 			const selectedItem = collections.value.find( ( item ) => item.value === selected );
 			if ( selectedItem ) {
@@ -177,8 +203,7 @@ module.exports = exports = {
 					title.value = selectedItem.label;
 					router.push( selectedItem.url );
 				} else {
-					emit( 'create-collection' );
-					actionCreateCollectionButtonClick();
+					onCreateCollection();
 				}
 				selectedCollection.value = null;
 			}
@@ -231,7 +256,9 @@ module.exports = exports = {
 		};
 
 		return {
+			isCollections,
 			showDropdown,
+			cdxIconAdd,
 			cdxIconError,
 			cdxIconExpand,
 			loadErrorEntry,
@@ -242,12 +269,14 @@ module.exports = exports = {
 			menuConfig,
 			collections,
 			selectedCollection,
+			onCreateCollection,
 			onSelectCollection,
 			maybeGetCollections,
 			cdxIconSettings,
 			collectionSettingsLabel,
 			collectionSettings,
-			onSelectSetting
+			onSelectSetting,
+			createButtonLabel
 		};
 	}
 };
