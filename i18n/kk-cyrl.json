@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Casserium"
+			"Casserium",
+			"Wikuiser"
 		]
 	},
 	"readinglists-db-error-not-set-up": "Бұл қатысушыға оқу тізімдері орнатылмаған.",
@@ -53,6 +54,7 @@
 	"readinglists-watchlist-description": "Жаңа өңдемелер үшін сіз жазылған беттер.",
 	"readinglists-watchlist-monitor": "Сіз осы тізімдегі беттерге жасалған өңдемелерді [$1 watchlist] құралы арқылы бақылай аласыз.",
 	"readinglists-import-app-misconfigured": "Бұл сайт әзірше тізімдерді импорттауды қолдамайды.",
+	"readinglists-import-disclaimer": "Осы сайттағы қатысушы басқалармен бөлісу үшін оқу тізімін жасады (мүмкін сіз шығарсыз). Оған модерация жасалмайды және ішіндегі мазмұны сайт редакторларын білдірмейді",
 	"readinglists-import-button-label": "Қосымшадан ашу",
 	"readinglists-import-button-hint": "Түймені басыңыз:",
 	"readinglists-share-url-text": "[$1] $2\n$3",
