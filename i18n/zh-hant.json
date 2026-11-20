@@ -32,7 +32,7 @@
 	"readinglists-db-error-no-such-project": "「$1」不是認可的專案。",
 	"readinglists-browser-add-entry-success": "<b>$1</b>已新增到您的[[$2|$3]]。",
 	"readinglists-browser-remove-entry-success": "<b>$1</b>已從您的[[$2|$3]]移除。",
-	"readinglists-browser-login-prompt": "登入以儲存頁目",
+	"readinglists-browser-login-prompt": "登入以儲存頁面",
 	"readinglists-browser-error-intro": "發生錯誤：$1",
 	"readinglists-browser-enable-sync-prompt": "在您的維基百科應用程式上啟用同步即可開始儲存頁面",
 	"readinglists-browser-extension-info-link-text": "瞭解更多",
