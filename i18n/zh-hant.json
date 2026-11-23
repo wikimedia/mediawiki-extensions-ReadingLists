@@ -4,6 +4,7 @@
 			"EBlackorby-WMF",
 			"Entropy lover nagnto",
 			"Kly",
+			"LNDDYL",
 			"LowensteinYang",
 			"Mutolisp",
 			"Winston Sung",
@@ -31,7 +32,7 @@
 	"readinglists-db-error-entry-limit": "清單 $1 不可超過 $2 個{{PLURAL:$2|項目|項目}}。",
 	"readinglists-db-error-too-long": "用於 $1 欄位的值不可超過 $2 位元組。",
 	"readinglists-db-error-no-such-project": "「$1」不是認可的專案。",
-	"readinglists-browser-add-entry-success": "<b>$1</b>已新增到您的[[$2|$3]]。",
+	"readinglists-browser-add-entry-success": "<b>$1</b> 已新增至您的 [[$2|$3]]。",
 	"readinglists-browser-remove-entry-success": "<b>$1</b>已從您的[[$2|$3]]移除。",
 	"readinglists-browser-login-prompt": "登入以儲存頁面",
 	"readinglists-browser-error": "發生了不可預期的錯誤。請再試一次。",
@@ -134,5 +135,7 @@
 	"readinglists-customlists-collection-name-dialog-title": "集錦名稱",
 	"readinglists-customlists-collection-name-dialog-placeholder": "輸入名稱",
 	"readinglists-customlists-collection-name-dialog-required": "必需要有集錦的名稱",
-	"readinglists-customlists-collection-name-dialog-duplicate": "您已經有一個同名的集錦了。"
+	"readinglists-customlists-collection-name-dialog-duplicate": "您已經有一個同名的集錦了。",
+	"readinglists-customlists-add-entry-success": "$1 已新增至 [[$2|$3]]。",
+	"readinglists-customlists-collection-picker-create-prompt": "將儲存的項目整理至集錦中"
 }
