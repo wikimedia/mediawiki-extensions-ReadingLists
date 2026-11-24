@@ -10,14 +10,21 @@
 			"Geraki"
 		]
 	},
+	"readinglists-db-error-not-set-up": "Δεν έχουν δημιουργηθεί λίστες ανάγνωσης για τον χρήστη.",
 	"readinglists-db-error-cannot-update-default-list": "Η προεπιλεγμένη λίστα δεν μπορεί να ανανεωθεί.",
 	"readinglists-db-error-list-limit": "Οι χρήστες δεν μπορούν να έχουν περισσότερο από $1 {{PLURAL:$1|list|lists}}.",
-	"readinglists-db-error-entry-limit": "Η λίστα $1 δεν μπορεί να περιέχει περισσότερα από $2 {{PLURAL:$2|entry|entries}}.",
+	"readinglists-db-error-entry-limit": "Η λίστα $1 δεν μπορεί να περιέχει περισσότερες από $2 {{PLURAL:$2|καταχώρηση|καταχωρήσεις}}.",
 	"readinglists-db-error-too-long": "Η τιμή πεδίου $1 δεν μπορεί να είναι μεγαλύτερη από $2 bytes.",
-	"readinglists-db-error-no-such-project": "'$1' δεν είναι αναγνωρισμένο πρότζεκτ.",
+	"readinglists-db-error-no-such-project": "«$1» δεν είναι αναγνωρισμένο έργο.",
 	"readinglists-browser-add-entry-success": "το $1 αποθηκεύτηκε στην λίστα ανάγνωσής σας",
 	"readinglists-browser-login-prompt": "Συνδεθείτε για να αποθηκεύσετε άρθρα",
 	"readinglists-browser-error-intro": "Ενα σφάλμα συνέβη: $1",
 	"readinglists-browser-extension-info-link-text": "Μάθετε περισσότερα",
-	"readinglists-browser-list-entry-limit-exceeded": "Το άρθρο δεν μπορεί να αποθηκευθεί. Έχετε φτάσει το όριο των $1 άρθρων ανά λίστα"
+	"readinglists-browser-list-entry-limit-exceeded": "Το άρθρο δεν μπορεί να αποθηκευθεί. Έχετε φτάσει το όριο των $1 άρθρων ανά λίστα",
+	"readinglists-browser-extension-product-title": "Λίστες Ανάγνωσης της Βικιπαίδειας",
+	"readinglists-browser-page-not-supported": "Το $1 δεν υποστηρίζει αυτή τη σελίδα",
+	"readinglists-special-title-imported": "Λίστες ανάγνωσης: εισαγωγή από άλλον χρήστη",
+	"readinglists-description": "Όλες οι αποθηκευμένες λίστες σας σε ένα μέρος.",
+	"reading-list-purpose": "Παρακαλούμε να συνδεθείτε για να δείτε τις ιδιωτικές σας λίστες ανάγνωσης.",
+	"reading-list-purpose-for-temp-user": "Παρακαλούμε δημιουργήστε ένα λογαριασμό για να δημιουργήσετε ιδιωτικές λίστες ανάγνωσης."
 }
