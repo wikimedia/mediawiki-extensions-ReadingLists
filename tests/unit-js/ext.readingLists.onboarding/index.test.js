@@ -4,15 +4,13 @@ vi.mock( '../../../resources/ext.readingLists.onboarding/mountApp.js', () => ( {
 
 const RESOURCES = '../../../resources';
 let mountApp, OnboardingPopover, MobileOnboardingPopover;
-let mountOnboarding, mountDesktopOnboarding, mountMobileOnboarding;
+let mountOnboarding;
 
 beforeAll( async () => {
 	mountApp = ( await import( `${ RESOURCES }/ext.readingLists.onboarding/mountApp.js` ) ).default;
 	OnboardingPopover = ( await import( `${ RESOURCES }/ext.readingLists.onboarding/OnboardingPopover.vue` ) ).default;
 	MobileOnboardingPopover = ( await import( `${ RESOURCES }/ext.readingLists.onboarding/MobileOnboardingPopover.vue` ) ).default;
 	mountOnboarding = ( await import( `${ RESOURCES }/ext.readingLists.onboarding/index.js` ) ).default;
-	mountDesktopOnboarding = ( await import( `${ RESOURCES }/ext.readingLists.onboarding.desktop/index.js` ) ).default;
-	mountMobileOnboarding = ( await import( `${ RESOURCES }/ext.readingLists.onboarding.mobile/index.js` ) ).default;
 } );
 
 describe( 'ext.readingLists.onboarding', () => {
@@ -30,21 +28,5 @@ describe( 'ext.readingLists.onboarding', () => {
 			.rejects.toThrow( 'config.variant must be' );
 
 		expect( mountApp ).not.toHaveBeenCalled();
-	} );
-
-	test( 'ext.readingLists.onboarding.desktop mounts the desktop popover', async () => {
-		await mountDesktopOnboarding( { storageKey: 'key' } );
-
-		expect( mountApp ).toHaveBeenCalledWith(
-			expect.objectContaining( { component: OnboardingPopover } )
-		);
-	} );
-
-	test( 'ext.readingLists.onboarding.mobile mounts the mobile popover', async () => {
-		await mountMobileOnboarding( { storageKey: 'key' } );
-
-		expect( mountApp ).toHaveBeenCalledWith(
-			expect.objectContaining( { component: MobileOnboardingPopover } )
-		);
 	} );
 } );

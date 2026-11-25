@@ -512,24 +512,6 @@
 				}
 			]
 		},
-		"ext.readingLists.onboarding.desktop": {
-			"deprecated": "Use \"ext.readingLists.onboarding\" instead.",
-			"dependencies": [
-				"ext.readingLists.onboarding"
-			],
-			"packageFiles": [
-				"resources/ext.readingLists.onboarding.desktop/index.js"
-			]
-		},
-		"ext.readingLists.onboarding.mobile": {
-			"deprecated": "Use \"ext.readingLists.onboarding\" instead.",
-			"dependencies": [
-				"ext.readingLists.onboarding"
-			],
-			"packageFiles": [
-				"resources/ext.readingLists.onboarding.mobile/index.js"
-			]
-		},
 		"ext.readingLists.common": {
 			"class": "MediaWiki\\ResourceLoader\\CodexModule",
 			"codexComponents": [
