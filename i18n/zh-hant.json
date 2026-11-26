@@ -7,7 +7,8 @@
 			"Winston Sung",
 			"捍粵者",
 			"Entropy lover nagnto",
-			"EBlackorby-WMF"
+			"EBlackorby-WMF",
+			"LNDDYL"
 		]
 	},
 	"readinglists-desc": "允許使用者來管理個人用條目清單，例如像是書籤或「已儲存頁面」清單。",
@@ -30,7 +31,7 @@
 	"readinglists-db-error-entry-limit": "清單 $1 不可超過 $2 個{{PLURAL:$2|項目|項目}}。",
 	"readinglists-db-error-too-long": "用於 $1 欄位的值不可超過 $2 位元組。",
 	"readinglists-db-error-no-such-project": "「$1」不是認可的專案。",
-	"readinglists-browser-add-entry-success": "<b>$1</b>已新增到您的[[$2|$3]]。",
+	"readinglists-browser-add-entry-success": "<b>$1</b> 已新增至您的 [[$2|$3]]。",
 	"readinglists-browser-remove-entry-success": "<b>$1</b>已從您的[[$2|$3]]移除。",
 	"readinglists-browser-login-prompt": "登入以儲存條目",
 	"readinglists-browser-error-intro": "發生錯誤：$1",
