@@ -5,9 +5,11 @@
 			"Kizule"
 		]
 	},
+	"readinglists-db-error-no-such-list": "Листа $1 не постоји.",
 	"readinglists-browser-add-entry-success": "<b>$1</b> је додата у [[$2|$3]].",
 	"readinglists-browser-remove-entry-success": "<b>$1</b> је уклоњена из [[$2|$3]].",
 	"readinglists-browser-login-prompt": "Пријавите се да сачувате странице",
+	"readinglists-browser-extension-info-link-text": "Сазнајте више",
 	"readinglists-browser-list-entry-limit-exceeded": "Страница не може бити сачувана. Максимално $1 по списку.",
 	"readinglists-special-subpage-title": "Сачувано",
 	"readinglists-loading": "Молимо сачекајте...",
@@ -23,6 +25,8 @@
 	"readinglists-display-direction-ascending": "Растући",
 	"readinglists-display-direction-descending": "Опадајући",
 	"readinglists-import-empty-message": "Не можете увозити списак спискова.",
+	"readinglists-no-title": "Неименована листа",
+	"readinglists-export": "Дели листу",
 	"readinglists-watchlist": "Списак надгледања",
 	"readinglists-watchlist-description": "Странице које сте уређивали или пратите",
 	"readinglists-import-button-label": "Отвори у апликацији",
