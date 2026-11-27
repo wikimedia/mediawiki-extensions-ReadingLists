@@ -43,6 +43,7 @@
 	"readinglists-empty-title": "কোনও সংরক্ষিত নিবন্ধ নেই",
 	"readinglists-empty-cta": "পরে পড়ার জন্য যেকোনো নিবন্ধ এখানে সংরক্ষণ করতে সেই নিবন্ধের বুকমার্ক আইকনে ক্লিক করুন।",
 	"readinglists-empty-collection-title": "এই সংগ্রহে কোনও নিবন্ধ যোগ করা হয়নি",
+	"readinglists-empty-collection-cta": "একটি সংগ্রহে যেকোনো নিবন্ধ যুক্ত করতে সেই নিবন্ধের বুকমার্ক আইকনটি ব্যবহার করুন।",
 	"readinglists-display-menu": "মেনু প্রদর্শন করুন",
 	"readinglists-display-sort": "এই অনুসারে সাজান",
 	"readinglists-display-sort-name": "নাম",
@@ -104,6 +105,9 @@
 	"readinglists-customlists-rename-collection": "সংগ্রহ নামান্তর করুন",
 	"readinglists-customlists-delete-collection": "সংগ্রহ মুছে ফেলুন",
 	"readinglists-customlists-delete-collection-dialog-title": "\"$1\" মুছে ফেলবেন?",
+	"readinglists-customlists-delete-collection-dialog-text": "শুধু সংগ্রহটি মুছে ফেলা হবে। এই সংগ্রহে থাকা কোনো আইটেম মুছে ফেলা হবে না; সেগুলো সংরক্ষিত থাকবে।",
 	"readinglists-customlists-delete-collection-dialog-confirm": "সংগ্রহ মুছে ফেলুন",
-	"readinglists-customlists-delete-collection-dialog-cancel": "বাতিল"
+	"readinglists-customlists-delete-collection-dialog-cancel": "বাতিল",
+	"readinglists-customlists-delete-collection-success": "সংগ্রহ \"$1\" মুছে ফেলা হয়েছে।",
+	"readinglists-customlists-delete-collection-error": "সংগ্রহটি মুছে ফেলা সম্ভব হয়নি।"
 }
